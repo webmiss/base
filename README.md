@@ -71,8 +71,8 @@ flutter pub get
 flutter run
 ```
 
-## 七、Docs接口工具
-API接口请求工具，docs > src > config.js 添加接口
+## 七、API接口请求工具
+docs > src > config.js 添加接口
 ```bash
 # 进入目录
 cd docs
