@@ -6,7 +6,7 @@ return [
   'token_time'=>7*24*3600,
   'login_num'=>50,
   'login_num_time'=>12*3600,
-  // 数据库
+  /* 数据库 */
   'database' => [
     'adapter'=>'Mysql',
     'host'=>'localhost',
@@ -15,37 +15,39 @@ return [
     'dbname'=>'mvc_vue',
     'charset'=>'utf8',
   ],
-  // 缓存
+  /* 缓存 */
   'redis'=>[
     'host'=>'127.0.0.1',
     'port'=>6379,
     'pwd'=>'',
     'db'=>0,
   ],
-  // APP配置
+  /* APP配置 */
   'application' => [
     'appDir'=>APP_PATH.'/',
     'cacheDir'=> BASE_PATH.'/cache/',
     'baseUri'=>'',
   ],
-  // Socket
+  /* Socket */
   'socket_port'=> 9010,
   // 'socket'=>'ws://39.108.152.251:9010',
   'socket'=>'wss://webmis.vip:9010',
-  // 百度AI
+  'ssl_cert_file'=>'/etc/letsencrypt/live/webmis.vip/fullchain.pem',
+  'ssl_key_file'=>'/etc/letsencrypt/live/webmis.vip/privkey.pem',
+  /* 百度AI */
   'baidu_appKey'=>'fFu2i5oNALIrRQ1KAhAvV5v5',
   'baidu_appSecret'=>'AQsHFNfgugbGErIdu7Dwxap6Pvreiu0z',
-  // 钉钉
+  /* 钉钉 */
   'ding_appKey'=>'',
   'ding_appSecret'=>'',
-  // 微信小程序
+  /* 微信小程序 */
   'wechat_token'=>'',
   'wechat_EncodingAESKey'=>'',
   'wechat_AppID'=>'',
   'wechat_AppSecret'=>'',
   'wechat_MchID'=>'',
   'wechat_Key'=>'',
-  // 支付宝
+  /* 支付宝 */
   'alipay_appId'=>'',
   'alipay_signType'=>'RSA2',
   'alipay_charset'=>'UTF-8',
