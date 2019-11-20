@@ -17,7 +17,7 @@ export default {
   // 地图
   amapKey: 'd956f0c3e15489a1b5bf291e5d133c8a',
   // Socket
-  socketServer: 'ws://39.108.152.251:9010',
+  socketServer: 'wss://39.108.152.251:9010',
   msgRead: 1000,
   msgNew: 1*60*1000,
   msgContent: 'title',

@@ -9,7 +9,14 @@ class SocketTask extends Base{
   function mainAction(){
 
     /* Socket服务器 */
-    $server = new WebSocket('0.0.0.0', $this->config->socket_port);
+    // $server = new WebSocket('0.0.0.0', $this->config->socket_port);
+    /* WSS */
+    $server = new WebSocket('0.0.0.0', $this->config->socket_port,SWOOLE_PROCESS, SWOOLE_SOCK_TCP | SWOOLE_SSL);
+    $server->set([
+      'daemonize'=> true,
+      'ssl_cert_file'=> '/etc/letsencrypt/live/webmis.vip/fullchain.pem',
+      'ssl_key_file'=> '/etc/letsencrypt/live/webmis.vip/privkey.pem',
+    ]);
 
     /* 链接成功 */
     $server->on('open', function ($server, $request) {
