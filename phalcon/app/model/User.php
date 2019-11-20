@@ -13,9 +13,9 @@ class User extends BaseModel{
   protected $email;
   protected $password;
 
-  /* 数据表 */
-  public function getSource(){
-    return "user";
+  public function initialize(){
+    // 数据表
+    $this->setSource('user');
   }
 
   /* 用户名 */

@@ -10,9 +10,9 @@ class SysMenu extends BaseModel{
   private $fid;
   private $title;
 
-  /* 数据表 */
-  public function getSource(){
-    return "sys_menus";
+  public function initialize(){
+    // 数据表
+    $this->setSource('sys_menus');
   }
 
   /* FID */

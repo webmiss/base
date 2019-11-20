@@ -9,9 +9,9 @@ class UserRole extends BaseModel{
   private $role;
   private $utime;
 
-  /* 数据表 */
-  public function getSource(){
-    return "user_role";
+  public function initialize(){
+    // 数据表
+    $this->setSource('user_role');
   }
 
   /* 名称 */

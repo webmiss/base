@@ -8,9 +8,9 @@ class UserInfo extends BaseModel{
   public $id;
   protected $birthday;
   
-  /* 数据表 */
-  public function getSource(){
-    return "user_info";
+  public function initialize(){
+    // 数据表
+    $this->setSource('user_info');
   }
 
   /* 生日 */

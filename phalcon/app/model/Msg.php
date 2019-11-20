@@ -6,9 +6,9 @@ class Msg extends BaseModel{
 
   public $id;
 
-  /* 数据表 */
-	public function getSource(){
-		return "web_msg";
+  public function initialize(){
+    // 数据表
+    $this->setSource('web_msg');
   }
 
 }

@@ -7,9 +7,9 @@ class SysConfig extends BaseModel{
 
   public $id;
 
-  /* 数据表 */
-  public function getSource(){
-    return 'sys_config';
+  public function initialize(){
+    // 数据表
+    $this->setSource('sys_config');
   }
 
 }

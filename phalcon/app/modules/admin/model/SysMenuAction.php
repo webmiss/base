@@ -11,9 +11,9 @@ class SysMenuAction extends BaseModel{
   private $action;
   private $perm;
 
-  /* 数据表 */
-  public function getSource(){
-    return "sys_menus_action";
+  public function initialize(){
+    // 数据表
+    $this->setSource('sys_menus_action');
   }
   
   /* 名称 */

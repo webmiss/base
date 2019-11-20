@@ -8,9 +8,9 @@ class UserPerm extends BaseModel{
   public $id;
   protected $utime;
 
-  /* 数据表 */
-  public function getSource(){
-    return "user_perm";
+  public function initialize(){
+    // 数据表
+    $this->setSource('user_perm');
   }
 
   /* 更新时间 */
