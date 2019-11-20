@@ -4,6 +4,7 @@ use Phalcon\Di;
 use Phalcon\Mvc\Router;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Application;
+use Phalcon\Config\Adapter\Php as phpConfig;
 
 // 开发模式(1.Development，2.Production)
 $mode = 'Development';
@@ -19,7 +20,7 @@ try {
   $di = new Di();
   /* 注册：配置 */
 	$di->setShared('config', function () {
-    return new Phalcon\Config\Adapter\Php(APP_PATH.'/config/env.php');
+    return new phpConfig(APP_PATH.'/config/env.php');
   });
   // 自动加载
   require APP_PATH.'/config/loader.php';

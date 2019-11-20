@@ -1,8 +1,8 @@
 <?php
 namespace app\modules\api;
 
-// use Phalcon\DiInterface;	// Phalcon3
-use Phalcon\Di\DiInterface;	// Phalcon4
+use Phalcon\DiInterface;	// Phalcon3
+// use Phalcon\Di\DiInterface;	// Phalcon4
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\ModuleDefinitionInterface;

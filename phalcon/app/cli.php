@@ -2,6 +2,7 @@
 
 use Phalcon\Di\FactoryDefault\Cli;
 use Phalcon\Cli\Console;
+use Phalcon\Config\Adapter\Php as phpConfig;
 
 define('BASE_PATH', dirname(__DIR__));
 define('APP_PATH', BASE_PATH . '/app');
@@ -14,8 +15,7 @@ $di = new Cli();
 
 /* 注册：配置 */
 $di->setShared('config', function () {
-  // return include APP_PATH . "/config/config.php";
-  return new Phalcon\Config\Adapter\Php(APP_PATH.'/config/env.php');
+  return new phpConfig(APP_PATH.'/config/env.php');
 });
 
 // 自动加载

@@ -23,7 +23,7 @@ class UserController extends Base{
     $builder->addfrom('app\model\User', 'a');
     $builder->leftJoin('app\model\UserInfo', 'a.id=b.uid', 'b');
     $builder->where(
-      '(uname = :uname: OR tel = :uname: OR email= :uname:) AND password = :passwd:',
+      '(a.uname = :uname: OR a.tel = :uname: OR a.email= :uname:) AND a.password = :passwd:',
       ['uname'=>$uname, 'passwd'=>md5($passwd)]
     );
     $builder->columns('a.id,a.state,a.state_admin,b.position,b.nickname,b.name,b.gender,b.birthday,b.img');

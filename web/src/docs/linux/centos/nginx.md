@@ -12,7 +12,7 @@ firewall-cmd --reload
 ```bash
 yum install epel-release -y
 
-# PHP7.4
+# PHP7.3
 yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm -y
 ```
 
@@ -116,17 +116,17 @@ http://服务器IP/test.html
 # PHP5
 yum install php-fpm php-mysql php-cli php-gd php-pdo php-mbstring -y
 
-# PHP7.4
-yum install php74-php-fpm php74-php-cli php74-php-gd php74-php-pdo php74-php-mbstring -y
+# PHP7.3
+yum install php73-php-fpm php73-php-cli php73-php-gd php73-php-pdo php73-php-mbstring -y
 
 # Phalcon
-yum install php74-php-phalcon4
+yum install php73-php-phalcon3 -y
 
 # Swoole
-yum install php74-php-pecl-swoole4
+yum install php73-php-pecl-swoole4 -y
 
 # Redis
-yum install redis  php74-php-pecl-redis5
+yum install redis php73-php-pecl-redis5 -y
 
 # 开机启动
 systemctl enable php-fpm
@@ -135,26 +135,26 @@ systemctl start php-fpm
 systemctl enable redis
 systemctl start redis
 
-systemctl enable php74-php-fpm
-systemctl start php74-php-fpm
+systemctl enable php73-php-fpm
+systemctl start php73-php-fpm
 ```
 
 ### 配置
 ```bash
 vi /etc/php.ini
-vi /etc/opt/remi/php74/php.ini
+vi /etc/opt/remi/php73/php.ini
 ```
 - date.timezone = "Asia/Shanghai"	#时区
 - session.save_path = "/tmp"	#Session目录
 
 ### Session问题
 ```bash
-chmod -R 777 /var/opt/remi/php74/lib/php/session
+chmod -R 777 /var/opt/remi/php73/lib/php/session
 ```
 
 ### PHP-FPM配置
 ```bash
-vi /etc/opt/remi/php74/php-fpm.d/www.conf
+vi /etc/opt/remi/php73/php-fpm.d/www.conf
 ```
 - user = nginx
 - group = nginx
