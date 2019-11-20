@@ -1,0 +1,112 @@
+<!-- UI组件 -->
+<van-notify id="van-notify" />
+<van-dialog id="van-dialog" />
+<!-- 图片裁切 -->
+<canvas canvas-id="compressCanvas" style="position: fixed; top: 100%; width: {{imgData.width}}px; height: {{imgData.height}}px;" />
+<!-- 二维码生成 -->
+<canvas canvas-id="QRcodeCanvas" style="position: fixed; top: 100%; width: {{qrCodeSize}}px; height: {{qrCodeSize}}px;" />
+<!-- 客服 -->
+<label class="service">
+  <van-icon name="service" color="{{themeColor}}" size="28px" info="3" />
+  <button open-type="contact" size="mini" plain='true' hidden='true'></button>
+</label>
+
+<!-- 首页 -->
+<page-view hidden="{{tabBar.active==0?false:true}}" immersed="{{true}}" bgColor="rgba(111,183,55,{{navColor}})" color="#FFF">
+  <view slot="left">
+    <text>昆明市</text>
+  </view>
+  <scroll-view slot="body" class="nav_body" scroll-y="true" bindscroll="indexScroll" bindscrolltoupper="indexRefresh" bindscrolltolower="indexLoad">
+    <!-- 轮播 -->
+    <swiper class="swiper_image" indicator-dots="{{true}}" autoplay="{{true}}">
+      <block wx:for="{{imgUrls}}" wx:key="index">
+        <swiper-item style="background-image: url({{item}});"></swiper-item>
+      </block>
+    </swiper>
+    <!-- 功能菜单 -->
+    <view class="flex_left in_menus">
+      <view class="ct" bind:tap="getCity">
+        <view><van-icon name="location-o" color="{{themeColor}}" size="28px" /></view>
+        <text>定位</text>
+      </view>
+      <view class="ct" bind:tap="getAddress">
+        <view><van-icon name="shop-collect-o" color="{{themeColor}}" size="28px" /></view>
+        <text>附近地址</text>
+      </view>
+      <view class="ct" bind:tap="getPost">
+        <view><van-icon name="cluster-o" color="{{themeColor}}" size="28px" /></view>
+        <text>网络</text>
+      </view>
+      <view class="ct" bind:tap="getStorage">
+        <view><van-icon name="points" color="{{themeColor}}" size="28px" /></view>
+        <text>本地存储</text>
+      </view>
+      <view class="ct" bind:tap="compressImage">
+        <view><van-icon name="photo-o" color="{{themeColor}}" size="28px" /></view>
+        <text>图片裁切</text>
+      </view>
+      <view class="ct" bind:tap="getQRcode">
+        <view><van-icon name="qr" color="{{themeColor}}" size="28px" /></view>
+        <text>二维码</text>
+      </view>
+      <view class="ct" bind:tap="getPay">
+        <view><van-icon name="balance-pay" color="{{themeColor}}" size="28px" /></view>
+        <text>支付</text>
+      </view>
+      <view class="ct" bind:tap="getMap">
+        <view><van-icon name="fire-o" color="{{themeColor}}" size="28px" /></view>
+        <text>地图</text>
+      </view>
+    </view>
+    <!-- 测试 -->
+    <view class="test">
+      <view><text class="icons icon_logo" style="font-size: 32px;"></text></view>
+      <view>1</view><view>2</view><view>3</view><view>4</view><view>5</view><view>6</view><view>7</view><view>8</view><view>9</view>
+    </view>
+  </scroll-view>
+</page-view>
+<!-- 首页 End -->
+
+<!-- 商城 -->
+<page-view hidden="{{tabBar.active==1?false:true}}">
+  <text slot="title">商城</text>
+  <scroll-view slot="body" class="nav_body" scroll-y="true">
+    <view class="test">
+      <view>内容</view><view>1</view><view>2</view><view>3</view><view>4</view><view>5</view><view>6</view><view>7</view><view>8</view><view>9</view>
+    </view>
+  </scroll-view>
+</page-view>
+<!-- 商城 End -->
+
+<!-- 购物车 -->
+<page-view hidden="{{tabBar.active==2?false:true}}">
+  <text slot="title">购物车</text>
+  <scroll-view slot="body" class="nav_body" scroll-y="true">
+    <view class="test">
+      <view>内容</view><view>1</view><view>2</view><view>3</view><view>4</view><view>5</view><view>6</view><view>7</view><view>8</view><view>9</view>
+    </view>
+  </scroll-view>
+</page-view>
+<!-- 购物车 End -->
+
+<!-- 我的 -->
+<page-view hidden="{{tabBar.active==3?false:true}}">
+  <text slot="title">我的</text>
+  <scroll-view slot="body" class="nav_body" scroll-y="true">
+    <view class="test">
+      <view>内容</view><view>1</view><view>2</view><view>3</view><view>4</view><view>5</view><view>6</view><view>7</view><view>8</view><view>9</view>
+    </view>
+  </scroll-view>
+</page-view>
+<!-- 我的 End -->
+
+<!-- 底部导航 -->
+<view>
+  <van-tabbar class="nav_tabbar" active="{{ tabBar.active }}" active-color="{{themeColor}}" bind:change="navTab">
+    <van-tabbar-item wx:for="{{tabBar.list}}" wx:key="index" info="{{item.info}}">
+      <icon slot="icon" class="{{item.ico}}" />
+      <icon slot="icon-active" class="{{item.ico}}" style="color: {{themeColor}};"/>
+      <text>{{item.title}}</text>
+    </van-tabbar-item>
+  </van-tabbar>
+</view>

@@ -1,0 +1,8 @@
+/* 轮播图片 */
+.swiper_image{width: 100%; height: 55vmin;}
+.swiper_image .van-swipe-item{height: 100%; background-size: 100% auto; background-repeat: no-repeat; background-position: center center;}
+/* 功能 */
+.tools{background-color: #FFF; margin-top: -1px;}
+/* 测试 */
+.test{margin: 1px 0;}
+.test div{margin: 1px 0; line-height: 120px; background-color: #FFF; text-align: center;}

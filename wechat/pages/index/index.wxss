@@ -1,0 +1,12 @@
+/* 轮播图片 */
+.swiper_image{width: 100%; height: 210px;}
+.swiper_image swiper-item{background-size: 100% auto; background-repeat: no-repeat; background-position: conter;}
+
+/* 菜单 */
+.in_menus{padding: 15px 0; background-color: #FFF;}
+.in_menus .ct{width: 25%; text-align: center; padding: 10px 0;}
+.in_menus text{font-size: 14px;}
+
+/* 测试 */
+.test{background-color: #F2F2F2; margin: 1px 0;}
+.test view{margin: 1px 0; line-height: 120px; background-color: #FFF; text-align: center;}

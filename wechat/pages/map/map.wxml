@@ -1,0 +1,9 @@
+<page-view>
+  <view slot="left">
+    <icon class="icons icon_left" bindtap="goBack" />
+  </view>
+  <text slot="title">地图</text>
+  <view slot="body" class="html">
+    <map class="map" latitude="{{map.latitude}}" longitude="{{map.longitude}}" scale="16" show-location="true" markers="{{ markers }}" bindmarkertap="makertap"></map>
+  </view>
+</page-view>

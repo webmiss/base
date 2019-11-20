@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "page-view": "/component/page-view/index",
+    "van-tabbar": "/ui/tabbar/index",
+    "van-notify": "/ui/notify/index",
+    "van-tabbar-item": "/ui/tabbar-item/index",
+    "van-dialog": "/ui/dialog/index",
+    "van-icon": "/ui/icon/index"
+  },
+  "navigationStyle": "custom"
+}

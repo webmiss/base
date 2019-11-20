@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "page-view": "/component/page-view/index"
+  },
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": true
+}

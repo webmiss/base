@@ -1,0 +1,21 @@
+<view class="page_view_html" hidden="{{hidden}}">
+  <view wx:if="{{header}}" class="page_view_header" style="height: {{height}}px; line-height: {{height}}px; padding-top: {{custom.top}}px; padding-bottom: {{custom.top-statusBar}}px;  background-color: {{bgColor}}; color: {{color}};">
+    <!-- Left -->
+    <view class="page_view_left" style="height: {{height}}px; line-height: {{height}}px;">
+      <slot name="left"></slot>
+    </view>
+    <!-- Right -->
+    <view class="page_view_right" style="height: {{height}}px; line-height: {{height}}px; right: calc(100% - {{custom.left}}px)">
+      <slot name="right"></slot>
+    </view>
+    <!-- Title -->
+    <view class="page_view_title">
+      <slot name="title"></slot>
+    </view>
+  </view>
+  <!-- Body -->
+  <view wx:if="{{!immersed}}" class="page_view_body" style="padding-top: {{height+custom.top+custom.top-statusBar}}px; height: calc(100% - {{height+custom.top+custom.top-statusBar}}px);">
+    <slot name="body"></slot>
+  </view>
+  <view wx:else class="page_view_body"><slot name="body"></slot></view>
+</view>
