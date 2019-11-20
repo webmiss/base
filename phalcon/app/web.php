@@ -7,7 +7,7 @@ use Phalcon\Mvc\Application;
 use Phalcon\Config\Adapter\Php as phpConfig;
 
 // 开发模式(1.Development，2.Production)
-$mode = 'Development';
+$mode = 'Production';
 
 define('BASE_PATH', dirname(__DIR__));
 define('APP_PATH', BASE_PATH . '/app');
