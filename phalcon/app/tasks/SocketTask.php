@@ -13,7 +13,7 @@ class SocketTask extends Base{
     /* WSS */
     $server = new WebSocket('0.0.0.0', $this->config->socket_port,SWOOLE_PROCESS, SWOOLE_SOCK_TCP | SWOOLE_SSL);
     $server->set([
-      'daemonize'=> false,
+      'daemonize'=> true,
       'ssl_cert_file'=> '/etc/letsencrypt/live/webmis.vip/fullchain.pem',
       'ssl_key_file'=> '/etc/letsencrypt/live/webmis.vip/privkey.pem',
     ]);
