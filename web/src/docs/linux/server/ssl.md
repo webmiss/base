@@ -2,14 +2,13 @@
 ``` bash
 # Epel源
 yum install epel-release
-# 下载
-cd /home/sh
-wget https://dl.eff.org/certbot-auto --no-check-certificate
-chmod +x ./certbot-auto
-# 安装
-./certbot-auto -n
-# 测试
-./certbot-auto -h
+# 证书工具
+yum install certbot python2-certbot-nginx
+# pyOpenSSL错误、urllib3错误
+pip install --upgrade --force-reinstall 'requests==2.6.0'
+pip install --upgrade urllib3
+# 自动安装证书(不能使用中文)
+certbot --nginx
 ```
 
 ## 获取证书
@@ -38,9 +37,9 @@ mkdir /home/www/webmis/public/.well-known
 chmod -R 755 /home/www/webmis/public/.well-known
 ```
 
-### 2、生成证书
+### 2、手动生成证书
 ``` bash
-/home/sh/certbot-auto certonly --webroot --email admin@webmis.vip -w /home/www/webmis/public/ -d webmis.vip -d www.webmis.vip
+certbot certonly --webroot --email admin@webmis.vip -w /home/www/webmis/public/ -d webmis.vip -d www.webmis.vip
 ```
 注意：执行此命令后会生成证书, 保存在 /etc/letsencrypt/live 中对应的域名目录下面。<br>
 <br>
@@ -63,15 +62,15 @@ server {
 ## 定时续期证书
 ``` bash
 # crontab -e
-0 2 28 * * /home/sh/certbot-auto renew --quiet && systemctl restart nginx 2>&1
+0 2 28 * * certbot renew --quiet && systemctl restart nginx 2>&1
 ```
 每月28号2点更新证书后重启Nginx
 
 ### 其他
 ``` bash
 # 测试续期
-/home/sh/certbot-auto renew --dry-run
+certbot renew --dry-run
 
 # 禁止输出信息
-/home/sh/certbot-auto renew --quiet
+certbot renew --quiet
 ```

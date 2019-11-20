@@ -147,28 +147,23 @@ vi /etc/opt/remi/php74/php.ini
 - date.timezone = "Asia/Shanghai"	#时区
 - session.save_path = "/tmp"	#Session目录
 
+### Session问题
+```bash
+chmod -R 777 /var/opt/remi/php74/lib/php/session
+```
+
 ### PHP-FPM配置
 ```bash
 vi /etc/opt/remi/php74/php-fpm.d/www.conf
 ```
 - user = nginx
 - group = nginx
-- listen = /run/php-fpm/php-fpm.sock
-
-```bash
-# 端口文件
-mkdir /run/php-fpm/
-echo '' > /run/php-fpm/php-fpm.sock
-# 重启PHP-FPM
-systemctl restart php74-php-fpm
-```
 
 ### Nginx调用PHP
 ```nginx
 	# 调用PHP环境
 	location ~ \.php$ {
 		fastcgi_pass   127.0.0.1:9000;
-		#fastcgi_pass   unix:/run/php-fpm/php-fpm.sock;
 		fastcgi_index  index.php;
 		fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
 		include        fastcgi_params;
