@@ -114,10 +114,10 @@ http://服务器IP/test.html
 ## 三、安装PHP
 ```bash
 # PHP5
-yum install php-fpm php-mysql php-cli php-gd php-pdo -y
+yum install php-fpm php-mysql php-cli php-gd php-pdo php-mbstring -y
 
 # PHP7.4
-yum install php74-php-fpm php74-php-cli php74-php-gd php74-php-pdo -y
+yum install php74-php-fpm php74-php-cli php74-php-gd php74-php-pdo php74-php-mbstring -y
 
 # Phalcon
 yum install php74-php-phalcon4
