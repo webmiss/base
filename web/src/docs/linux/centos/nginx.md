@@ -125,9 +125,15 @@ yum install php74-php-phalcon4
 # Swoole
 yum install php74-php-pecl-swoole4
 
+# Redis
+yum install redis  php74-php-pecl-redis5
+
 # 开机启动
 systemctl enable php-fpm
 systemctl start php-fpm
+
+systemctl enable redis
+systemctl start redis
 
 systemctl enable php74-php-fpm
 systemctl start php74-php-fpm

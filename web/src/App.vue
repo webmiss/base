@@ -91,10 +91,10 @@ input:focus, textarea:focus{box-shadow: 0 0 6px rgba(153, 153, 153, 0.7);}
 .doc_print a{cursor: pointer; padding: 5px 15px;}
 .doc_body{background-color: #FFF;}
 .doc_title{padding: 20px 0; text-align: center; font-size: 20px;}
-.doc_html h1{padding: 15px 0; font-size: 18px;}
-.doc_html h2{padding: 15px 0; font-size: 16px;}
-.doc_html h3{padding: 10px 0; font-size: 14px;}
-.doc_html p{padding: 10px 0; line-height: 24px;}
+.doc_html h1{padding: 20px 0 5px; font-size: 18px;}
+.doc_html h2{padding: 20px 0 5px; font-size: 16px;}
+.doc_html h3{padding: 20px 0 5px; font-size: 14px;}
+.doc_html p{padding: 5px 0; line-height: 24px; color: #666;}
 .doc_html pre{border-radius: 5px;}
 .doc_html li{line-height: 28px;}
 

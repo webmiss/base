@@ -3,7 +3,7 @@
     <!-- 内容 -->
     <el-container>
       <!-- 菜单 -->
-      <el-aside class="doc_menus" width="260px">
+      <el-aside class="doc_menus" width="240px">
         <el-menu :default-active="defaultMenu" unique-opened>
           <el-submenu v-for="(val1,key1) in $menus" :key="key1" :index="''+key1">
             <template slot="title"><span>{{val1.title}}</span></template>
@@ -52,6 +52,8 @@ export default {
   },
   mounted(){
     document.title = this.docTitle;
+    // Code刷新
+    Inc.load(['/prism/prism.css','/prism/prism.js'],true);
   },
   methods: {
 
