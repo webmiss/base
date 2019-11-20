@@ -6,7 +6,7 @@ use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Application;
 
 // 开发模式(1.Development，2.Production)
-$mode = 'Production';
+$mode = 'Development';
 
 define('BASE_PATH', dirname(__DIR__));
 define('APP_PATH', BASE_PATH . '/app');
@@ -19,7 +19,7 @@ try {
   $di = new Di();
   /* 注册：配置 */
 	$di->setShared('config', function () {
-		return include APP_PATH . "/config/config.php";
+    return new Phalcon\Config\Adapter\Php(APP_PATH.'/config/env.php');
   });
   // 自动加载
   require APP_PATH.'/config/loader.php';

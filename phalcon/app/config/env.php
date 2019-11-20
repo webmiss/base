@@ -7,17 +7,27 @@ return [
   'login_num'=>50,
   'login_num_time'=>12*3600,
   // 数据库
-  'db_adapter'=>'Mysql',
-  'db_host'=>'localhost',
-  'db_username'=>'webmis',
-  'db_password'=>'webmis',
-  'db_name'=>'mvc_vue',
-  'db_charset'=>'utf8',
+  'database' => [
+    'adapter'=>'Mysql',
+    'host'=>'localhost',
+    'username'=>'webmis',
+    'password'=>'webmis',
+    'dbname'=>'mvc_vue',
+    'charset'=>'utf8',
+  ],
   // 缓存
-  'redis_host'=>'127.0.0.1',
-  'redis_port'=>6379,
-  'redis_pwd'=>'',
-  'redis_db'=>0,
+  'redis'=>[
+    'host'=>'127.0.0.1',
+    'port'=>6379,
+    'pwd'=>'',
+    'db'=>0,
+  ],
+  // APP配置
+  'application' => [
+    'appDir'=>APP_PATH.'/',
+    'cacheDir'=> BASE_PATH.'/cache/',
+    'baseUri'=>'',
+  ],
   // Socket
   'socket_port'=> 9010,
   'socket'=>'ws://39.108.152.251:9010',

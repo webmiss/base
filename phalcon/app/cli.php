@@ -14,7 +14,8 @@ $di = new Cli();
 
 /* 注册：配置 */
 $di->setShared('config', function () {
-  return include APP_PATH . "/config/config.php";
+  // return include APP_PATH . "/config/config.php";
+  return new Phalcon\Config\Adapter\Php(APP_PATH.'/config/env.php');
 });
 
 // 自动加载
