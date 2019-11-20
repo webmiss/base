@@ -60,7 +60,8 @@ try {
   // 路由适配
   require APP_PATH . '/config/routes.php';
   // 执行
-	$app->handle()->send();
+  $uri = explode('?', $di->get('request')->getURI());
+	$app->handle($uri[0]??'/')->send();
 }catch (\Exception $e){
   if($mode=='Development'){
     echo $e->getMessage().'<br>';
