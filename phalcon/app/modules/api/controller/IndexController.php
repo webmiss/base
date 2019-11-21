@@ -50,13 +50,12 @@ class IndexController extends Base{
 		$fd = $this->redis->hGet('SocketUid',1);
 		$fds[] = $fd;
 		print_r($fds);
-		$data = json_encode([
+		if(!empty($fds)) Socket::send(json_encode([
 			'type'=>'system',
 			'title'=>'系统消息',
 			'content'=>'系统发送消息',
 			'fds'=>$fds
-		]);
-		Socket::send($data);
+		]));
 	}
 
 	/* 支付宝 */
