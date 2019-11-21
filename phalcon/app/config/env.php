@@ -30,8 +30,8 @@ return [
   ],
   /* Socket */
   'socket_port'=> 9010,
-  'socket'=>'ws://39.108.152.251:9010',
-  // 'socket'=>'wss://webmis.vip:9010',
+  // 'socket'=>'ws://39.108.152.251:9010',
+  'socket'=>'wss://webmis.vip:9010',
   'ssl_cert_file'=>'/etc/letsencrypt/live/webmis.vip/fullchain.pem',
   'ssl_key_file'=>'/etc/letsencrypt/live/webmis.vip/privkey.pem',
   /* 百度AI */
