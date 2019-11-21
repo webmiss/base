@@ -12,7 +12,7 @@ class SocketTask extends Base{
     // $server = new WebSocket('0.0.0.0', $this->config->socket_port);
     /* WSS */
     $server = new WebSocket('0.0.0.0', $this->config->socket_port,SWOOLE_PROCESS, SWOOLE_SOCK_TCP | SWOOLE_SSL);
-    $server->set(['daemonize'=> true, 'ssl_cert_file'=>$this->config->ssl_cert_file, 'ssl_key_file'=>$this->config->ssl_key_file]);
+    $server->set(['daemonize'=>false, 'ssl_cert_file'=>$this->config->ssl_cert_file, 'ssl_key_file'=>$this->config->ssl_key_file]);
 
     /* 链接成功 */
     $server->on('open', function ($server, $request) {
@@ -58,7 +58,7 @@ class SocketTask extends Base{
     /* 系统消息 */
     $uid = $this->redis->hMget('SocketFd:'.$frame->fd,['uid'])['uid'];
     if($data->type=='system' && $uid=='system'){
-      if(isset($data->fd)){
+      if(isset($data->fds)){
         // 单发
         $data->code = 0;
         $fds = $data->fds;

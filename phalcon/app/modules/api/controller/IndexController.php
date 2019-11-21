@@ -47,10 +47,14 @@ class IndexController extends Base{
 
 	/* Socket客户端 */
 	function socketAction(){
+		$fd = $this->redis->hGet('SocketUid',1);
+		$fds[] = $fd;
+		print_r($fds);
 		$data = json_encode([
 			'type'=>'system',
 			'title'=>'系统消息',
 			'content'=>'系统发送消息',
+			'fds'=>$fds
 		]);
 		echo Socket::send($data);
 	}
