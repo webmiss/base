@@ -56,7 +56,7 @@ class IndexController extends Base{
 			'content'=>'系统发送消息',
 			'fds'=>$fds
 		]);
-		echo Socket::send($data);
+		// echo Socket::send($data);
 	}
 
 	/* 支付宝 */
