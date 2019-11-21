@@ -21,14 +21,12 @@
 					</ul>
 				</div>
 				<div>
-					<router-link to="https://github.com/webmiss">Github</router-link>
+					<a href="https://github.com/webmiss/base">Github</a>
 				</div>
 			</div>
 		</div>
 		<!-- Content -->
-		<!-- <div class="content_body"> -->
-			<router-view/>
-		<!-- </div> -->
+		<router-view />
 		<!-- Copy -->
 		<div class="bottom_copy">WebMIS © 2019-2022 备案号: 滇ICP备14000710号</div>
   </div>
