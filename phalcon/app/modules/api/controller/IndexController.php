@@ -48,11 +48,11 @@ class IndexController extends Base{
 	/* Socket客户端 */
 	function socketAction(){
 		$fd = $this->redis->hGet('SocketUid',1);
-		if(!empty($fd)) Socket::send([
+		Socket::send([
 			'type'=>'system',
 			'title'=>'系统消息1',
 			'content'=>'系统发送消息',
-			'fd'=>$fd
+			// 'fd'=>$fd
 		]);
 	}
 
