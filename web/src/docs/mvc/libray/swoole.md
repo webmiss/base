@@ -46,3 +46,22 @@ php -S localhost:8001 server.php
 </script>
 ```
 
+## 三、Nginx( wss )
+```nginx
+upstream websocket {
+    server 127.0.0.1:9502;
+}
+server {
+    listen       443 http2 ssl;
+
+    location /demo {
+        proxy_pass http://websocket;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header Connection "keep-alive";
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+

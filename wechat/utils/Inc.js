@@ -57,7 +57,7 @@ export default {
       msgAudio.title = title;
       setTimeout(()=>{
         let text = Config.msgContent=='title'?title:content;
-        msgAudio.src = 'http://tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
+        msgAudio.src = '//tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
         msgAudio.play();
       },Config.msgRead);
     });

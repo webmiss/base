@@ -8,12 +8,18 @@ use \WebSocket\Client;
 
 class Socket{
 
-  /* 客户端-链接 */
+  static private $client = null;
+
+  /* WebSocket-发送 */
   static function send($msg){
-    $config = require APP_PATH.'/config/env.php';
-    $client = new Client($config['socket'].'?token='.$config['key']);
-    $client->send($msg);
-    // echo $client->receive();
+    // 链接
+    if(!self::$client){
+      $config = require APP_PATH.'/config/env.php';
+      self::$client = new Client($config['socket_client'].'?token='.$config['key']);
+    }
+    // 发送
+    self::$client->send(json_encode($msg));
+    // echo self::$client->receive();
   }
 
 }

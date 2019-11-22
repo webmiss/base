@@ -112,27 +112,38 @@ export default {
       /* 链接 */
       this.$obj.socket.onopen = ()=>{
         console.log('消息系统');
-        // 获取新消息
+        // 心跳包
+        clearInterval(this.heartbeat);
+        this.heartbeat = setInterval(()=>{
+          if(this.$obj.socket) this.$obj.socket.send(JSON.stringify({type:''}));
+        },10000);
+        // 新消息
+        this.$obj.socket.send(JSON.stringify({type:'newMsg'}));
         clearInterval(this.msgInterval);
         this.msgInterval = setInterval(()=>{
           this.$obj.socket.send(JSON.stringify({type:'newMsg'}));
+          this.$obj.socket.send(JSON.stringify({type:'getMsg'}));
         },Env.msgNew);
       }
       /* 消息 */
       this.$obj.socket.onmessage = (e)=>{
         const msg = JSON.parse(e.data);
         if(msg.code==0 && msg.type=='system'){
+          // 提示
           Plus.notify(msg.title,msg.content,(obj)=>{
+            if(msg.id) this.closeMsg(msg.id);
             obj.close();
           });
+          // 刷新消息数
+          this.$obj.socket.send(JSON.stringify({type:'newMsg'}));
         }else if(msg.code==0 && msg.type=='newMsg'){
           this.msgNew = msg.num;
           this.$storage.setItem('msgNew',msg.num);
-          if(msg.num>0){
+        }else if(msg.code==0 && msg.type=='getMsg'){
+          if(msg.title){
             Plus.notify(msg.title,msg.content,(obj)=>{
-              this.$ajax.post(this.$config.apiUrl+'UserMain/msgNewState','token='+this.$storage.getItem('token')+'&id='+msg.id).then((res)=>{
-                obj.close();
-              });
+              if(msg.id) this.closeMsg(msg.id);
+              obj.close();
             });
           }
         }
@@ -141,7 +152,15 @@ export default {
       this.$obj.socket.onclose = ()=>{
         console.log('关闭消息');
         clearInterval(this.msgInterval);
+        this.$obj.socket = null;
       }
+    },
+    /* 已读消息 */
+    closeMsg(id){
+      this.$ajax.post(this.$config.apiUrl+'UserMain/msgNewState','token='+this.$storage.getItem('token')+'&id='+id).then((res)=>{
+        // 刷新消息数
+        this.$obj.socket.send(JSON.stringify({type:'newMsg'}));
+      });
     },
 
     /* 系统信息 */

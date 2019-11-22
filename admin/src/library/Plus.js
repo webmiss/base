@@ -36,7 +36,7 @@ export default {
     axios.post(Env.apiUrl+'index/baiduToken').then((res)=>{
       const msgAudio = document.getElementById('msg');
       let text = Env.msgContent=='title'?title:content;
-      msgAudio.src = 'http://tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
+      msgAudio.src = '//tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
       setTimeout(()=>{
         try{
           if(plus.os.name=='iOS'){
