@@ -1,5 +1,6 @@
 import Env from '@/env'
 import Plus from '@/library/Plus'
+import Socket from '@/library/Socket'
 
 export default {
   name: 'APP',
