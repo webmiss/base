@@ -1,13 +1,17 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:webmis/config.dart';
-
-import 'package:webmis/public/Scroll.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
-import 'package:webmis/public/Alert.dart';
-import 'package:webmis/public/Picker.dart';
-import 'package:webmis/public/Scan.dart';
+import 'package:webmis/library/Scroll.dart';
+import 'package:webmis/library/Storage.dart';
+import 'package:webmis/library/Location.dart';
+import 'package:webmis/library/Toast.dart';
+import 'package:webmis/library/Alert.dart';
+import 'package:webmis/library/Picker.dart';
+import 'package:webmis/library/Scan.dart';
+import 'package:webmis/library/Img.dart';
+import 'package:webmis/library/File.dart';
 
 import 'package:webmis/views/Demo.dart';
 import 'package:webmis/views/tools/Code.dart';
@@ -72,7 +76,7 @@ class IndexState extends State<Index> {
 
   /* 定位 */
   Future<Null> _location() async {
-    Inc.location().then((res){
+    getLocation().then((res){
       if(res==null) return;
       setState(()=>_city = res.city);
       setState(()=>location={'city':res.city,'longitude':res.longitude,'latitude':res.latitude});
@@ -84,10 +88,10 @@ class IndexState extends State<Index> {
   Future<Null> _loadData() async {
 
     // 本地存储
-    Inc.setItem('test', 'Test');
+    Storage.setItem('test', 'Test');
     // Inc.removeItem('test');
     // Inc.clearItem();
-    Inc.getItem('test').then((res){
+    Storage.getItem('test').then((res){
       print(res);
     });
 
@@ -233,38 +237,37 @@ class IndexState extends State<Index> {
       child: Wrap(
         children: <Widget>[
           _toolBox(Icons.photo,'图片裁切',(){
-            Inc.getPhoto().then((img){
+            Img.getPhoto().then((img){
               if(img==null) return;
               // 裁切图片
-              Inc.cropImage(img).then((res){
+              Img.cropImage(img).then((res){
                 print(res.path);
               });
             });
           }),
           _toolBox(Icons.camera,'相机',(){
             // 拍照
-            Inc.getCamera().then((img){
+            Img.getCamera().then((img){
               if(img==null) return;
               print(img);
             });
           }),
           _toolBox(Icons.file_upload,'图片上传',(){
-            Inc.getPhoto().then((img){
+            Img.getPhoto().then((img){
               if(img==null) return;
               // 压缩图片
-              Inc.compress(img,200,200).then((img1){
+              Img.compress(img,200,200).then((img1){
                 print(img1.path);
                 print(img1.lengthSync());
                 // 上传
-                Inc.upFile(Inc.apiUrl+'index/upLoad', img1.path, (t,p){
+                File.upFile(Inc.apiUrl+'index/upLoad', img1.path, (t,p){
                   print(t);
                   print(p);
-
                 }).then((res){
                   print(res);
                 });
                 // 转Base64
-                Inc.imageBase64(img1.path).then((base64){
+                Img.imageBase64(img1.path).then((base64){
                   print(base64);
                 });
               });
@@ -294,9 +297,9 @@ class IndexState extends State<Index> {
       child: Wrap(
         children: <Widget>[
           _toolBox(Icons.info,'提示',(){
-            Inc.toast(context: context, msg: '提示信息');
-            // Inc.toast(context: context, type: 'success', msg: '成功');
-            // Inc.toast(context: context, type: 'error', msg: '操作失败');
+            toast(context: context, msg: '提示信息');
+            // toast(context: context, type: 'success', msg: '成功');
+            // toast(context: context, type: 'error', msg: '操作失败');
           }),
           _toolBox(Icons.sim_card_alert,'弹框',(){
             alert(context: context, title: '标题', body: '测试内容');

@@ -8,7 +8,8 @@ import 'package:webmis/config.dart';
 import 'package:webmis/App.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:webmis/public/China.dart';
+import 'package:webmis/library/China.dart';
+import 'package:webmis/library/Info.dart';
 
 void main(){
 
@@ -81,7 +82,7 @@ class _SplashScreenState extends State<SplashScreen> {
   /* 检测更新 */
   Future _checkUpdate() async {
     // 获取当前版本
-    Inc.appInfo().then((info){
+    Info.appInfo().then((info){
       Inc.get(Inc.apiUrl+'Index/appUpdate',{'os':info['platform']}).then((res){
         // 是否下载
         if(info['version']==res['version']){

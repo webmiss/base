@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:webmis/config.dart';
-import 'package:webmis/public/Alert.dart';
+import 'package:webmis/library/Loading.dart';
+import 'package:webmis/library/Alert.dart';
+import 'package:webmis/library/Info.dart';
 
-import 'package:webmis/public/Amap.dart';
+import 'package:webmis/library/Location.dart';
+import 'package:webmis/library/Amap.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Maps extends StatefulWidget {
@@ -17,7 +20,7 @@ class MapsState extends State<Maps> {
   /* 打开地图 */
   Future<Null> openMap() async {
     String url;
-    Inc.appInfo().then((info) async {
+    Info.appInfo().then((info) async {
       if(info['platform']=='Android'){
         url = 'androidamap://keywordNavi?sourceApplication=softname&keyword=宛委山景区&style=2';
       }else{
@@ -46,14 +49,14 @@ class MapsState extends State<Maps> {
       ),
       body: new Stack(
         children: <Widget>[
-          Inc.loading(),
+          loading(),
           AmapShow(
             controller:(res){
               // 控制器
               _controller=res;
               _controller.evaluateJavascript('openMap()');
               // 获取定位
-              Inc.location().then((res){
+              getLocation().then((res){
                 if(res==null) return;
                 // 打开地图
                 String me = '['+res.longitude.toString()+','+res.latitude.toString()+']';
