@@ -50,6 +50,7 @@ php -S localhost:8001 server.php
 ```nginx
 upstream websocket {
     server 127.0.0.1:9502;
+    keepalive 1024;
 }
 server {
     listen       443 http2 ssl;

@@ -80,88 +80,17 @@ export default {
           this.getMenus();
           this.uinfo = res.data.uinfo;
           /* 消息推送 */
-          this.openSocket();
-          /* Socket重连机制 */
-          document.addEventListener('visibilitychange',()=>{
-            if(document.visibilityState == 'hidden') {
-              let hiddenTime = new Date().getTime();
-              this.$storage.setItem('HiddenTime',hiddenTime);
-            }else{
-              // 10秒后关闭
-              let hiddenTime = this.$storage.getItem('HiddenTime');
-              let visibleTime = new Date().getTime();
-              if((visibleTime-hiddenTime)/1000 > 10){
-                this.$obj.socket.close();
-                setTimeout(()=>{
-                  this.openSocket();
-                },3000);
-              }else{console.log('保持链接');}
-            }
-          });
+          Socket.event();
+          Socket.start();
+          clearInterval(this.msgInterval);
+          this.msgInterval = setInterval(()=>{
+            this.msgNew = this.$storage.getItem('msgNew');
+          },1000);
         }
       });
     }
   },
   methods:{
-
-    /* Socket */
-    openSocket(){
-      let token = this.$storage.getItem('token');
-      if(!token) return;
-      this.$obj.socket = new WebSocket(Env.socketServer+'?token='+token);
-      /* 链接 */
-      this.$obj.socket.onopen = ()=>{
-        console.log('消息系统');
-        // 心跳包
-        clearInterval(this.heartbeat);
-        this.heartbeat = setInterval(()=>{
-          if(this.$obj.socket) this.$obj.socket.send(JSON.stringify({type:''}));
-        },10000);
-        // 新消息
-        this.$obj.socket.send(JSON.stringify({type:'newMsg'}));
-        clearInterval(this.msgInterval);
-        this.msgInterval = setInterval(()=>{
-          this.$obj.socket.send(JSON.stringify({type:'newMsg'}));
-          this.$obj.socket.send(JSON.stringify({type:'getMsg'}));
-        },Env.msgNew);
-      }
-      /* 消息 */
-      this.$obj.socket.onmessage = (e)=>{
-        const msg = JSON.parse(e.data);
-        if(msg.code==0 && msg.type=='system'){
-          // 提示
-          Plus.notify(msg.title,msg.content,(obj)=>{
-            if(msg.id) this.closeMsg(msg.id);
-            obj.close();
-          });
-          // 刷新消息数
-          this.$obj.socket.send(JSON.stringify({type:'newMsg'}));
-        }else if(msg.code==0 && msg.type=='newMsg'){
-          this.msgNew = msg.num;
-          this.$storage.setItem('msgNew',msg.num);
-        }else if(msg.code==0 && msg.type=='getMsg'){
-          if(msg.title){
-            Plus.notify(msg.title,msg.content,(obj)=>{
-              if(msg.id) this.closeMsg(msg.id);
-              obj.close();
-            });
-          }
-        }
-      }
-      /* 关闭 */
-      this.$obj.socket.onclose = ()=>{
-        console.log('关闭消息');
-        clearInterval(this.msgInterval);
-        this.$obj.socket = null;
-      }
-    },
-    /* 已读消息 */
-    closeMsg(id){
-      this.$ajax.post(this.$config.apiUrl+'UserMain/msgNewState','token='+this.$storage.getItem('token')+'&id='+id).then((res)=>{
-        // 刷新消息数
-        this.$obj.socket.send(JSON.stringify({type:'newMsg'}));
-      });
-    },
 
     /* 系统信息 */
     getConfig(){
