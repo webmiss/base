@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:webmis/config.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:webmis/library/Scroll.dart';
 import 'package:webmis/library/Storage.dart';
 import 'package:webmis/library/Location.dart';

@@ -7,6 +7,11 @@ const Map<String, dynamic> config = {
   'name': 'WebMIS',
   'copy': 'Copyright © WebMIS.VIP 2019',
   'themeColor': '#6FB737',
+  // Socket
+  'socketServer': 'wss://webmis.vip/wss',
+  'msgRead': 1000,
+  'msgNew': 5*60*1000,
+  'msgContent': 'title',
   // 更新
   'update': false,
   'upDateColor': {'bg':'','logo':'','loading':'#FFFFFF','loaded':'#666666'},

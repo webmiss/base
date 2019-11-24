@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:ota_update/ota_update.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:webmis/Global.dart';
 import 'package:webmis/config.dart';
 import 'package:webmis/App.dart';
 
@@ -11,45 +12,48 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:webmis/library/China.dart';
 import 'package:webmis/library/Info.dart';
 
-void main(){
+void main() => Global.init().then((e) => runApp(MyApp()));
 
-  // SystemChrome.setPreferredOrientations([
-  //   // 强制竖屏
-  //   DeviceOrientation.portraitUp,
-  //   DeviceOrientation.portraitDown
-  //   // 强制横屏
-  //   // DeviceOrientation.landscapeLeft,
-  //   // DeviceOrientation.landscapeRight
-  // ]);
+class MyApp extends StatelessWidget {
 
-  /* 启动 */
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    // 中文
-    localizationsDelegates: [
-      // Input长按修复
-      ChineseCupertinoLocalizations.delegate,
+  Widget build(BuildContext context) {
 
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-    ],
-    supportedLocales: [
-      const Locale('en','US'),
-      const Locale('zh','CH'),
-    ],
-    // 主题
-    theme: ThemeData(
-      brightness: Brightness.light,
-      accentColor: Inc.getColor(Inc.themeColor),
-      primaryColor: Inc.getColor(Inc.themeColor),
-      platform: TargetPlatform.iOS,
-    ),
-    home: SplashScreen(),
-    routes: <String, WidgetBuilder>{
-      '/home': (BuildContext context) => new Home()
-    },
-  ));
+    // SystemChrome.setPreferredOrientations([
+    //   // 强制竖屏
+    //   DeviceOrientation.portraitUp,
+    //   DeviceOrientation.portraitDown
+    //   // 强制横屏
+    //   // DeviceOrientation.landscapeLeft,
+    //   // DeviceOrientation.landscapeRight
+    // ]);
 
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      // 中文
+      localizationsDelegates: [
+        // Input长按修复
+        ChineseCupertinoLocalizations.delegate,
+
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en','US'),
+        const Locale('zh','CH'),
+      ],
+      // 主题
+      theme: ThemeData(
+        brightness: Brightness.light,
+        accentColor: Inc.getColor(Inc.themeColor),
+        primaryColor: Inc.getColor(Inc.themeColor),
+        platform: TargetPlatform.iOS,
+      ),
+      home: SplashScreen(),
+      routes: <String, WidgetBuilder>{
+        '/home': (BuildContext context) => new Home()
+      },
+    );
+  }
 }
 
 /* 启动界面 */
@@ -99,6 +103,14 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
+  /* 跳转首页 */
+  Future startTime() async {
+    var _duration = Duration(seconds: 3);
+    return Timer(_duration, (){
+      Navigator.of(context).pushReplacementNamed('/home');
+    });
+  }
+
   /* 下载更新 */
   Future _upDataDown() async {
     setState(()=>_isUpButton = false);
@@ -125,14 +137,6 @@ class _SplashScreenState extends State<SplashScreen> {
         setState(()=> _upMsg='无法打开应用商店！');
       }
     }
-  }
-
-  /* 跳转首页 */
-  Future startTime() async {
-    var _duration = Duration(seconds: 3);
-    return Timer(_duration, (){
-      Navigator.of(context).pushReplacementNamed('/home');
-    });
   }
 
   @override
