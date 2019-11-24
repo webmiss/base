@@ -3,16 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ota_update/ota_update.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'package:webmis/Global.dart';
 import 'package:webmis/config.dart';
 import 'package:webmis/App.dart';
-
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:webmis/library/China.dart';
 import 'package:webmis/library/Info.dart';
 
-void main() => Global.init().then((e) => runApp(MyApp()));
+void main() => Inc.init().then((e) => runApp(MyApp()));
 
 class MyApp extends StatelessWidget {
 

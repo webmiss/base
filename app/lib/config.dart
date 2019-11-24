@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:async';
 import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
@@ -18,6 +19,13 @@ class Inc {
   static final bool update = false;
   static final Map<String,String> upDateColor = config['upDateColor'];
   static final String upIosUrl = config['upIosUrl'];
+  // Socket
+  static Socket socket;
+
+  /* 初始化 */
+  static Future init() async {
+    print('Global');
+  }
   
   /* 十六进制颜色值 */
   static Color getColor(String s) {
