@@ -87,8 +87,17 @@ class IndexState extends State<Index> {
   /* 加载内容 */
   Future<Null> _loadData() async {
 
+    // Socket
+    Inc.send().then((res){
+      print(res);
+    });
+    // Inc.socket.add('{"type":"newMsg"}');
+    // Inc.socket.stream.listen((message) {
+    //   print(message);
+    // });
+
     // 本地存储
-    Storage.setItem('test', 'Test');
+    Storage.setItem('test', '本地存储');
     // Inc.removeItem('test');
     // Inc.clearItem();
     Storage.getItem('test').then((res){

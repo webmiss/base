@@ -28,15 +28,25 @@ class Inc {
     print('Global');
     // Socket
     String _token = '1fBB/6k3i8cV83M+ld2RFtCZSDmYP9vggwyPhOLHvTKmNxsm1Dz6c0jhYDzwGML9nMozHpim8bTbygAc5S93tS5Q82n8QkLfZ8ZeL/wDpeRzLi8w';
-    socket = await IOWebSocketChannel.connect(config['socketServer']+'?token='+_token);
-    print(socket);
+    socket = IOWebSocketChannel.connect(config['socketServer']+'?token='+_token);
+    print(socket.runtimeType);
     socket.sink.add('{"type":"newMsg"}');
     print('Send');
     socket.stream.listen((message) {
-      socket.sink.add('{"type":"newMsg"}');
+      // socket.sink.add('{"type":"newMsg"}');
       // socket.sink.close(status.goingAway);
       print(message);
     });
+
+  }
+
+  /* Socket 发送 */
+  static Future send() async {
+    print('newMsg');
+    socket.sink.add('{"type":"newMsg"}');
+    // socket.stream.listen((message) {
+    //   return message;
+    // });
   }
   
   /* 十六进制颜色值 */
