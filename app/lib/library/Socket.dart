@@ -17,7 +17,7 @@ class Socket{
     channel = IOWebSocketChannel.connect(config['socketServer']+'?token='+_token);
     // 心跳包
     Timer.periodic(Duration(seconds: 10), (t){
-      channel.sink.add('{"type":"newMsg"}');
+      channel.sink.add('{"type":""}');
     });
     // 监听消息
     channel.stream.listen((message) {

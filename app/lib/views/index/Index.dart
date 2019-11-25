@@ -77,7 +77,7 @@ class IndexState extends State<Index> {
   /* 定位 */
   Future<Null> _location() async {
     getLocation().then((res){
-      if(res==null) return;
+      if(res==null || res.city==null) return;
       setState(()=>_city = res.city);
       setState(()=>location={'city':res.city,'longitude':res.longitude,'latitude':res.latitude});
     });
