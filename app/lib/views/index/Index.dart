@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:webmis/config.dart';
+import 'package:webmis/library/Request.dart';
 
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:webmis/library/Scroll.dart';
@@ -11,7 +12,6 @@ import 'package:webmis/library/Alert.dart';
 import 'package:webmis/library/Picker.dart';
 import 'package:webmis/library/Scan.dart';
 import 'package:webmis/library/Img.dart';
-import 'package:webmis/library/File.dart';
 
 import 'package:webmis/views/Demo.dart';
 import 'package:webmis/views/tools/Code.dart';
@@ -260,7 +260,7 @@ class IndexState extends State<Index> {
                 print(img1.path);
                 print(img1.lengthSync());
                 // 上传
-                File.upFile(Inc.apiUrl+'index/upLoad', img1.path, (t,p){
+                Request.upFile(Inc.apiUrl+'index/upLoad', img1.path, (t,p){
                   print(t);
                   print(p);
                 }).then((res){

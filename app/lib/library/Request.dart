@@ -2,16 +2,16 @@ import 'package:dio/dio.dart';
 import 'package:path/path.dart' as path;
 
 /* 文件类 */
-class File{
+class Request{
 
-  // 请求、响应
+  /* 配置 */
   static final _dio = new Dio(BaseOptions(
     connectTimeout: 5000,
     receiveTimeout: 3000,
     headers: {
     'accept-language': 'zh-cn',
-    'content-type': 'application/json',
-    // 'content-type': 'application/x-www-form-urlencoded',
+    // 'content-type': 'application/json',
+    'content-type': 'application/x-www-form-urlencoded',
     }
   ));
 
