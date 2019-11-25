@@ -8,7 +8,7 @@ const Map<String, dynamic> config = {
   'copy': 'Copyright © WebMIS.VIP 2019',
   'themeColor': '#6FB737',
   // Socket
-  'socketServer': 'wss://webmis.vip/wss',
+  'socketServer': 'wss://webmis.vip:443/wss',
   'msgRead': 1000,
   'msgNew': 5*60*1000,
   'msgContent': 'title',

@@ -34,6 +34,9 @@ dependencies:
   flutter_alert: ^0.4.0 #弹框
   flutter_picker: ^1.0.15 #选择器
   toast: ^0.1.5  #提示信息
+  flutter_alipay: ^0.1.2  #支付宝
+  fluwx: ^1.1.3  #微信支付
+  web_socket_channel: ^1.1.0  #Socket
 
 dev_dependencies:
   flutter_test:

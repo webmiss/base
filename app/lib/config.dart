@@ -1,8 +1,9 @@
-import 'dart:io';
 import 'dart:async';
 import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/status.dart' as status;
 
 // 配置文件
 import 'env.dart';
@@ -20,11 +21,22 @@ class Inc {
   static final Map<String,String> upDateColor = config['upDateColor'];
   static final String upIosUrl = config['upIosUrl'];
   // Socket
-  static Socket socket;
+  static var socket;
 
   /* 初始化 */
   static Future init() async {
     print('Global');
+    // Socket
+    String _token = '1fBB/6k3i8cV83M+ld2RFtCZSDmYP9vggwyPhOLHvTKmNxsm1Dz6c0jhYDzwGML9nMozHpim8bTbygAc5S93tS5Q82n8QkLfZ8ZeL/wDpeRzLi8w';
+    socket = await IOWebSocketChannel.connect(config['socketServer']+'?token='+_token);
+    print(socket);
+    socket.sink.add('{"type":"newMsg"}');
+    print('Send');
+    socket.stream.listen((message) {
+      socket.sink.add('{"type":"newMsg"}');
+      // socket.sink.close(status.goingAway);
+      print(message);
+    });
   }
   
   /* 十六进制颜色值 */

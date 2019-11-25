@@ -116,11 +116,11 @@ class IndexState extends State<Index> {
     });
 
     // 异步请求
-    Inc.post('https://api.ynjici.com/xxx/',{'name':'小明','age':'25'}).then((res){
-      print(res);
-    }).catchError((e){
-      print(e);
-    });
+    // Inc.post('https://api.ynjici.com/xxx/',{'name':'小明','age':'25'}).then((res){
+    //   print(res);
+    // }).catchError((e){
+    //   print(e);
+    // });
 
   }
 

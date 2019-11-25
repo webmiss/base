@@ -53,5 +53,18 @@
 	<string>获取定位，查询用户所在地区附近的店铺、商品</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>获取定位，查询用户所在地区附近的店铺、商品</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+				<key>CFBundleURLName</key>
+				<string>alipay</string>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+						<string>YOUR APP SCHEME NAME</string>
+				</array>
+		</dict>
+	</array>
 </dict>
 </plist>
