@@ -15,6 +15,12 @@ class _HomeState extends State<Home> {
   // 导航内容
   int _currentIndex = 0;
   final List<Widget> _page = [Index(),Shop(),Cart(),Me()];
+
+  /* 销毁 */
+  @override
+  void dispose() {
+    super.dispose();
+  }
   
   @override
   Widget build(BuildContext context) {
