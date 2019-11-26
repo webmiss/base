@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webmis/library/Notify.dart';
 
 import 'package:webmis/views/index/Index.dart';
 import 'package:webmis/views/index/Shop.dart';
@@ -15,12 +16,6 @@ class _HomeState extends State<Home> {
   // 导航内容
   int _currentIndex = 0;
   final List<Widget> _page = [Index(),Shop(),Cart(),Me()];
-
-  /* 销毁 */
-  @override
-  void dispose() {
-    super.dispose();
-  }
   
   @override
   Widget build(BuildContext context) {
@@ -49,6 +44,7 @@ class _HomeState extends State<Home> {
 
   /* 切换导航 */
   void changeTab(int index){
+    Notify.show(0,'测试消息','内容信息');
     setState((){_currentIndex = index;});
   }
   

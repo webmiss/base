@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ota_update/ota_update.dart';
@@ -9,6 +10,8 @@ import 'package:webmis/config.dart';
 import 'package:webmis/App.dart';
 import 'package:webmis/library/China.dart';
 import 'package:webmis/library/Info.dart';
+import 'package:webmis/library/Socket.dart';
+import 'package:webmis/library/Notify.dart';
 
 void main() => Inc.init().then((e) => runApp(MyApp()));
 
@@ -66,6 +69,7 @@ class _SplashScreenState extends State<SplashScreen> {
   double _upProgress = 0.00;
   String _upMsg = '检测更新';
   Map<String, String> _appInfo = {};
+  int _msgNum = 0;
 
   /* 构造函数 */
   @override
@@ -79,6 +83,20 @@ class _SplashScreenState extends State<SplashScreen> {
       setState(()=>_isUpDate=false);
       startTime();
     }
+    // 消息
+    Notify.init();
+    // Socket
+    Socket.init('Token').then((res){
+      _message();
+    });
+  }
+
+  /* 监听消息 */
+  Future _message() async {
+    Socket.channel.stream.listen((message) {
+      Map data = convert.jsonDecode(message);
+      Notify.show(_msgNum++,data['title'],data['content']);
+    });
   }
 
   /* 检测更新 */

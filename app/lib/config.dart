@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:webmis/library/Socket.dart';
-import 'package:webmis/library/Notify.dart';
 
 // 配置文件
 import 'env.dart';
@@ -24,10 +22,6 @@ class Inc {
   /* 初始化 */
   static Future init() async {
     print('Global');
-    // Socket
-    Socket.init();
-    // Notify
-    Notify.init();
   }
   
   /* 十六进制颜色值 */
