@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:webmis/library/Notify.dart';
 
 import 'package:webmis/views/index/Index.dart';
 import 'package:webmis/views/index/Shop.dart';
@@ -44,7 +43,6 @@ class _HomeState extends State<Home> {
 
   /* 切换导航 */
   void changeTab(int index){
-    Notify.show(0,'测试消息','内容信息');
     setState((){_currentIndex = index;});
   }
   
