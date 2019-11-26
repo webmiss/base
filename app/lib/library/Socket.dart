@@ -12,7 +12,6 @@ class Socket{
   /* 初始化 */
   static Future init(String token) async {
     // Socket
-    token = '1fBB/6k3i8cV83M+ld2RFtCZSDmYP9vggwyPhOLHvTKmNxsm1Dz6c0jhYDzwGML9nMozHpim8bTbygAc5S93tS5Q82n8QkLfZ8ZeL/wDpeRzLi8w';
     channel = IOWebSocketChannel.connect(config['socketServer']+'?token='+token);
     // 心跳包
     Timer.periodic(Duration(seconds: 10), (t){

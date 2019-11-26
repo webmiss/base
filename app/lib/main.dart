@@ -86,7 +86,8 @@ class _SplashScreenState extends State<SplashScreen> {
     // 消息
     Notify.init();
     // Socket
-    Socket.init('Token').then((res){
+    String _token = '1fBB/6k3i8cV83M+ld2RFtCZSDmYP9vggwyPhOLHvTKmNxsm1Dz6c0jhYDzwGML9nMozHpim8bTbygAc5S93tS5Q82n8QkLfZ8ZeL/wDpeRzLi8w';
+    Socket.init(_token).then((res){
       _message();
     });
   }
