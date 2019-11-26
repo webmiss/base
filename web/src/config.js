@@ -80,6 +80,9 @@ const install = (Vue)=>{
         {title: '环境搭配',content: require('./docs/mvc/java/install.md'), menus:[]},
         {title: 'SpringBoot',content: require('./docs/mvc/java/springboot.md'), menus:[]},
       ]},
+      {title: 'Flutter', menus:[
+        {title: '环境搭配',content: require('./docs/mvc/app/flutter.md'), menus:[]},
+      ]},
     ]},
     // Linux文档
     {title:'Linux文档',menus:[
