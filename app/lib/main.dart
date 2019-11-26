@@ -6,6 +6,7 @@ import 'package:ota_update/ota_update.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'package:webmis/env.dart';
 import 'package:webmis/config.dart';
 import 'package:webmis/App.dart';
 import 'package:webmis/library/China.dart';
@@ -94,9 +95,24 @@ class _SplashScreenState extends State<SplashScreen> {
 
   /* 监听消息 */
   Future _message() async {
+    // 定时获取新消息
+    Timer.periodic(Duration(seconds: config['msgNew']), (t){
+      Socket.channel.sink.add('{"type":"newMsg"}');
+    });
+    // 监听消息
     Socket.channel.stream.listen((message) {
-      Map data = convert.jsonDecode(message);
-      Notify.show(_msgNum++,data['title'],data['content']);
+      Map d = convert.jsonDecode(message);
+      print(d);
+      // 获取新信息
+      if(d['code']==0 && d['type']=='NewMsg' && d['num']>0){
+        Socket.channel.sink.add('{"type":"getMsg"}');
+      // 新消息
+      }else if(d['code']==0 && d['type']=='getMsg'){
+        Notify.show(_msgNum++,d['title'],d['content']);
+      // 系统消息
+      }else if(d['code']==0 && d['type']=='system'){
+        Notify.show(_msgNum++,d['title'],d['content']);
+      }
     });
   }
 

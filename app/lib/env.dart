@@ -10,7 +10,7 @@ const Map<String, dynamic> config = {
   // Socket
   'socketServer': 'wss://webmis.vip:443/wss',
   'msgRead': 1000,
-  'msgNew': 5*60*1000,
+  'msgNew': 10,
   'msgContent': 'title',
   // 更新
   'update': false,
