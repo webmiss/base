@@ -20,6 +20,10 @@ git clone https://github.com/webmiss/base
 ### 2) Nginx配置
 配置参考文件: phalcon/nginx.conf
 
+### 3) Socket消息推送
+https://api.webmis.vip/api/index/socket
+
+
 ## 二、Admin后台管理
 多用户、多权限、多角色管理，必要时可打包成APP自动更新
 ```bash
@@ -30,6 +34,7 @@ yarn install
 # 运行
 yarn serve
 ```
+### 在线体验( https://admin.webmis.vip 帐号: admin 密码: 123456 )
 
 ## 三、Web前端
 多年开发总结的技术文档，包括工具安装、Linux服务器配置等
@@ -41,6 +46,7 @@ yarn install
 # 运行
 yarn serve
 ```
+### 在线体验( https://webmis.vip )
 
 ## 四、WebAPP混合型
 使用Vue路由模拟手机页面切换效果，HBuilder打包和访问原生功能
@@ -52,6 +58,7 @@ yarn install
 # 运行
 yarn serve
 ```
+### 在线体验( https://webapp.webmis.vip/ )
 
 ## 五、Wechat微信小程序
 图片压缩、高德地图、定位、socket消息推送、客服消息、支付、本地硬盘等
