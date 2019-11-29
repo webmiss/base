@@ -1,4 +1,5 @@
-// import * as echarts from 'echarts';
+import G2 from '@antv/g2'
+
 export default {
   data(){
     return {
@@ -58,7 +59,7 @@ export default {
         { genre: '11月', sold: 72 },
         { genre: '12月', sold: 94 },
       ];
-      chart = new this.$G2.Chart({container: 'chart',forceFit: true,height: 320,padding: [30,50,80,50]});
+      chart = new G2.Chart({container: 'chart',forceFit: true,height: 320,padding: [30,50,80,50]});
       chart.source(data).tooltip({showTitle: false});
       chart.interval().position('genre*sold').color('genre');
       chart.render();

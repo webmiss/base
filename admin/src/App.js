@@ -1,5 +1,4 @@
 import Env from '@/env'
-import Plus from '@/library/Plus'
 import Socket from '@/library/Socket'
 
 export default {
@@ -25,45 +24,10 @@ export default {
     }
   },
   mounted(){
-    try{
-      plus
-      // Plus组件
-      Plus.isPlus(()=>{
-        // 竖屏
-        plus.screen.lockOrientation("portrait-primary");
-        // 状态栏
-        plus.navigator.setStatusBarStyle('dark');
-        plus.navigator.setStatusBarBackground(Env.themeColor);
-        // Android返回键
-        let backcount = 0;
-        let webview = plus.webview.currentWebview();
-        plus.key.addEventListener('backbutton', ()=>{
-          webview.canBack((e)=>{
-            if(e.canBack){
-              this.$router.go(-1);
-              // 关闭项目
-              if(this.$obj.scan) this.$obj.scan.close();
-            }else{
-              if(backcount>0) plus.runtime.quit();
-              this.$createToast({txt:'再按一次退出应用!'}).show();
-              backcount++;
-              setTimeout(()=>{backcount=0;},2000);
-            }
-          });
-        }, false);
-        // 更新
-        if(Env.update) this.isUpdate();
-      });
-    }catch(e){
-      // 浏览器后退
-      window.history.pushState('forward', null, '#');
-      window.history.forward(1);
-      window.addEventListener("popstate", (e)=>{
-        this.$router.go(-1);
-      });
-      // 播放声音
-      document.body.ontouchstart = ()=>{document.createElement('audio');}
-    }
+    // 初始化
+    setTimeout(()=>{this.init()},3000);
+    // 播放声音
+    document.body.ontouchstart = ()=>{document.createElement('audio');}
     // 默认菜单
     this.isCollapse = this.$storage.getItem('isCollapse')=='true'?true:false;
     this.defaultMenu = this.$storage.getItem('defaultMenu')?this.$storage.getItem('defaultMenu'):'3';
@@ -92,6 +56,44 @@ export default {
     }
   },
   methods:{
+
+    /* 初始化 */
+    init(){
+      try{
+        plus
+        // 竖屏
+        // plus.screen.lockOrientation("portrait-primary");
+        // 状态栏
+        plus.navigator.setStatusBarStyle('dark');
+        plus.navigator.setStatusBarBackground(Env.themeColor);
+        // Android返回键
+        let backcount = 0;
+        let webview = plus.webview.currentWebview();
+        plus.key.addEventListener('backbutton', ()=>{
+          webview.canBack((e)=>{
+            if(e.canBack){
+              this.$router.go(-1);
+              // 关闭项目
+              if(this.$obj.scan) this.$obj.scan.close();
+            }else{
+              if(backcount>0) plus.runtime.quit();
+              this.$createToast({txt:'再按一次退出应用!'}).show();
+              backcount++;
+              setTimeout(()=>{backcount=0;},2000);
+            }
+          });
+        }, false);
+        // 更新
+        if(Env.update) this.isUpdate();
+      }catch(e){
+        // 浏览器后退
+        window.history.pushState('forward', null, '#');
+        window.history.forward(1);
+        window.addEventListener("popstate", (e)=>{
+          this.$router.go(-1);
+        });
+      }
+    },
 
     /* 系统信息 */
     getConfig(){
@@ -217,7 +219,7 @@ export default {
       if (this.update.os == 'iOS') {
         // 苹果手机
         this.update.msg = '请在桌面查看安装进度';
-        window.open(this.update.file);
+        window.open(Env.upIosUrl);
         // 关闭APP
         setTimeout(()=>{
           plus.runtime.quit();

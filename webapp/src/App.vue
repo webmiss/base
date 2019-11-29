@@ -11,7 +11,7 @@
         <div class="loading" :style="{backgroundImage: 'linear-gradient(to right, '+upDateColor.loading+', '+upDateColor.loading+' '+update.loading+', '+upDateColor.loaded+' '+update.loading+', '+upDateColor.loaded+' 100%)'}"></div>
         <div class="load_msg" v-html="update.msg">正在加载应用</div>
         <div class="load_button">
-          <cube-button v-if="update.down" @click="updateDown()" :inline="true" :style="{backgroundColor: $config.themeColor}">立即更新</cube-button>
+          <van-button round size="small" v-if="update.down" @click="updateDown()" :style="{color: $config.themeColor}">下载并安装</van-button>
         </div>
       </div>
       <div class="update_logo" :style="{color:upDateColor.copy}"><h1>{{$config.title}}</h1><h2>{{$config.copy}}</h2></div>
@@ -53,8 +53,8 @@ body .van-grid-item__content::after,body .van-hairline--top::after{border-color:
 .update_logo{position: fixed; width: 100%; left: 0; bottom: 15px; line-height: 20px; text-align: center; padding: 10px 0;}
 .update_logo h1{font-size: 16px;}
 .update_logo h2{font-size: 10px; font-weight: normal;}
-.update_ct{position: absolute; width: 210px; height: 210px; margin: auto; left: 0; right: 0; top: 0; bottom: 0;}
-.update_ct .logo{width: 100px; height: 100px; margin: 0px auto 20px; border-radius: 50%;}
+.update_ct{position: absolute; width: 220px; height: 220px; margin: auto; left: 0; right: 0; top: 0; bottom: 0;}
+.update_ct .logo{width: 120px; height: 120px; margin: 0px auto 20px; border-radius: 50%;}
 .update_ct .logo div{height: 100%; background: url('./assets/logo.png') no-repeat center; background-size: 65%;}
 .update_ct .loading{height: 5px; border-radius: 5px;}
 .update_ct .load_msg{color: #FFF; text-align: center; padding: 8px 0; font-size: 14px;}

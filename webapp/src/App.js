@@ -1,5 +1,9 @@
 import Env from '@/env'
-import Plus from '@/library/Plus'
+import Socket from '@/library/Socket'
+
+import Vue from 'vue';
+import { Button } from 'vant';
+Vue.use(Button);
 
 export default {
   watch:{
@@ -16,7 +20,7 @@ export default {
       // 切换动画
       transitionName: 'slide-left',
       // 更新APP
-      update: {show:false,os:'',down:false,loading:'0%',msg:'检测更新',file:'',total:0},
+      update: {show:false, os:'', down:false, loading:'0%', msg:'检测更新', file:'', total:0},
       upDateColor: Env.upDateColor,
       // 新消息
       msgNew: 0,
@@ -24,10 +28,27 @@ export default {
     }
   },
   mounted(){
-    try{
-      plus
-      // Plus组件
-      Plus.isPlus(()=>{
+    // 初始化
+    setTimeout(()=>{this.init()},3000);
+    // 播放声音
+    document.body.ontouchstart = ()=>{document.createElement('audio');}
+    /* 消息推送 */
+    const token = this.$storage.getItem('token');
+    if(token){
+      Socket.event();
+      Socket.start();
+      clearInterval(this.msgInterval);
+      this.msgInterval = setInterval(()=>{
+        this.msgNew = this.$storage.getItem('msgNew');
+      },1000);
+    }
+  },
+  methods:{
+
+    /* 初始化 */
+    init(){
+      try{
+        plus
         // 竖屏
         plus.screen.lockOrientation("portrait-primary");
         // 状态栏
@@ -49,75 +70,16 @@ export default {
               setTimeout(()=>{backcount=0;},2000);
             }
           });
-        }, false);
-        // 更新
-        if(Env.update) this.isUpdate();
-      });
-    }catch(e){
-      // 浏览器后退
-      window.history.pushState('forward', null, '#');
-      window.history.forward(1);
-      window.addEventListener("popstate", (e)=>{
-        this.$router.goBack(-1);
-      });
-      // 播放声音
-      document.body.ontouchstart = ()=>{document.createElement('audio');}
-    }
-
-    /* 消息推送 */
-    this.openSocket();
-    /* Socket重连机制 */
-    document.addEventListener('visibilitychange',()=>{
-      if(document.visibilityState == 'hidden') {
-        let hiddenTime = new Date().getTime();
-        this.$storage.setItem('HiddenTime',hiddenTime);
-      }else{
-        // 10秒后关闭
-        let hiddenTime = this.$storage.getItem('HiddenTime');
-        let visibleTime = new Date().getTime();
-        if((visibleTime-hiddenTime)/1000 > 10){
-          this.$obj.socket.close();
-          setTimeout(()=>{
-            this.openSocket();
-          },3000);
-        }else{console.log('保持链接');}
-      }
-    });
-
-  },
-  methods:{
-
-    /* Socket */
-    openSocket(){
-      let token = this.$storage.getItem('token');
-      if(!token) return;
-      this.$obj.socket = new WebSocket(Env.socketServer+'?token='+token);
-      /* 链接 */
-      this.$obj.socket.onopen = function(){
-        console.log('消息系统');
-        // 获取新消息
-        clearInterval(this.msgInterval);
-        this.msgInterval = setInterval(()=>{
-          this.$obj.socket.send(JSON.stringify({type:'newMsg'}));
-        },Env.msgNew);
-      }
-      /* 消息 */
-      this.$obj.socket.onmessage = (e)=>{
-        const msg = JSON.parse(e.data);
-        if(msg.code==0 && msg.type=='system'){
-          Plus.notify(msg.title,msg.content);
-        }else if(msg.code==0 && msg.type=='newMsg'){
-          this.msgNew = msg.num;
-          this.$storage.setItem('msgNew',msg.num);
-          if(msg.num>0){
-            Plus.notify(msg.title,msg.content);
-          }
-        }
-      }
-      /* 关闭 */
-      this.$obj.socket.onclose = ()=>{
-        console.log('关闭消息');
-        clearInterval(this.msgInterval);
+          // 更新
+          if(Env.update) this.isUpdate();
+        });
+      }catch(e){
+        // 浏览器后退
+        window.history.pushState('forward', null, '#');
+        window.history.forward(1);
+        window.addEventListener("popstate", (e)=>{
+          this.$router.goBack(-1);
+        });
       }
     },
 
@@ -144,50 +106,45 @@ export default {
 
     /* 下载更新 */
     updateDown(){
-      this.$createDialog({
-        type:'confirm',title:'下载并安装',content:'是否确认更新',confirmBtn:{text: '更新'},
-        onConfirm: ()=>{
-          this.update.down = false;
-          this.update.msg = '开始下载';
-          this.update.loading = '0%';
-          if (this.update.os == 'iOS') {
-            // 苹果手机
-            this.update.msg = '请在桌面查看安装进度';
-            window.open(Env.upIosUrl);
-            // 关闭APP
-            setTimeout(()=>{
-              plus.runtime.quit();
-            },5000);
+      this.update.down = false;
+      this.update.msg = '开始下载';
+      this.update.loading = '0%';
+      if (this.update.os == 'iOS') {
+        // 苹果手机
+        this.update.msg = '请在桌面查看安装进度';
+        window.open(Env.upIosUrl);
+        // 关闭APP
+        setTimeout(()=>{
+          plus.runtime.quit();
+        },5000);
+      }else{
+        // 安卓手机
+        let down = plus.downloader.createDownload(this.update.file, {
+          'filename':'_doc/download/',
+          'timeout': 30,
+        },(d, status)=>{
+          if(status == 200){
+            // 安装并重启
+            plus.runtime.install(d.filename, {force:true},()=>{
+              plus.runtime.restart();
+            },(e)=>{
+              this.$createToast({txt:'安装失败'}).show();
+            });
           }else{
-            // 安卓手机
-            let down = plus.downloader.createDownload(this.update.file, {
-              'filename':'_doc/download/',
-              'timeout': 30,
-            },(d, status)=>{
-              if(status == 200){
-                // 安装并重启
-                plus.runtime.install(d.filename, {force:true},()=>{
-                  plus.runtime.restart();
-                },(e)=>{
-                  this.$createToast({txt:'安装失败'}).show();
-                });
-              }else{
-                this.update.down = true;
-                this.update.msg = '下载失败';
-              }
-            });
-            // 开始任务
-            down.start();
-            // 下载进度
-            down.addEventListener('statechanged',(res, status)=>{
-              let complete = parseInt(res.downloadedSize/this.update.total*100);
-              this.update.loading = complete+'%';
-              this.update.msg = '正在下载：'+this.update.loading;
-              if (complete >= 100) this.update.msg = '下载完成，安装并重启';
-            });
+            this.update.down = true;
+            this.update.msg = '下载失败';
           }
-        }
-      }).show();
+        });
+        // 开始任务
+        down.start();
+        // 下载进度
+        down.addEventListener('statechanged',(res, status)=>{
+          let complete = parseInt(res.downloadedSize/this.update.total*100);
+          this.update.loading = complete+'%';
+          this.update.msg = '正在下载：'+this.update.loading;
+          if (complete >= 100) this.update.msg = '下载完成，安装并重启';
+        });
+      }
     },
 
   }
