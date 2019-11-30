@@ -41,30 +41,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>io.flutter.embedded_views_preview</key>
-	<true/>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>上传商品图片、封面图</string>
-	<key>NSCameraUsageDescription</key>
-	<string>扫描二维码、商品拍照</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>商品视频拍摄</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>获取定位，查询用户所在地区附近的店铺、商品</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>获取定位，查询用户所在地区附近的店铺、商品</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-				<key>CFBundleURLName</key>
-				<string>alipay</string>
-				<key>CFBundleTypeRole</key>
-				<string>Editor</string>
-				<key>CFBundleURLSchemes</key>
-				<array>
-						<string>YOUR APP SCHEME NAME</string>
-				</array>
-		</dict>
-	</array>
 </dict>
 </plist>

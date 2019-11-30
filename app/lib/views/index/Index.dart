@@ -6,7 +6,7 @@ import 'package:webmis/library/Request.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:webmis/library/Scroll.dart';
 import 'package:webmis/library/Storage.dart';
-import 'package:webmis/library/Location.dart';
+// import 'package:webmis/library/Location.dart';
 import 'package:webmis/library/Toast.dart';
 import 'package:webmis/library/Alert.dart';
 import 'package:webmis/library/Picker.dart';
@@ -16,7 +16,7 @@ import 'package:webmis/library/Img.dart';
 import 'package:webmis/views/Demo.dart';
 import 'package:webmis/views/tools/Code.dart';
 import 'package:webmis/views/tools/Search.dart';
-import 'package:webmis/views/tools/Maps.dart';
+// import 'package:webmis/views/tools/Maps.dart';
 
 class Index extends StatefulWidget {
   @override
@@ -76,11 +76,11 @@ class IndexState extends State<Index> {
 
   /* 定位 */
   Future<Null> _location() async {
-    getLocation().then((res){
-      if(res==null || res.city==null) return;
-      setState(()=>_city = res.city);
-      setState(()=>location={'city':res.city,'longitude':res.longitude,'latitude':res.latitude});
-    });
+    // getLocation().then((res){
+    //   if(res==null || res.city==null) return;
+    //   setState(()=>_city = res.city);
+    //   setState(()=>location={'city':res.city,'longitude':res.longitude,'latitude':res.latitude});
+    // });
     return ;
   }
 
@@ -116,11 +116,11 @@ class IndexState extends State<Index> {
     });
 
     // 异步请求
-    // Inc.post('https://api.ynjici.com/xxx/',{'name':'小明','age':'25'}).then((res){
-    //   print(res);
-    // }).catchError((e){
-    //   print(e);
-    // });
+    Inc.post('https://api.ynjici.com/xxx/',{'name':'小明','age':'25'}).then((res){
+      print(res);
+    }).catchError((e){
+      print(e);
+    });
 
   }
 
@@ -240,9 +240,9 @@ class IndexState extends State<Index> {
             Img.getPhoto().then((img){
               if(img==null) return;
               // 裁切图片
-              Img.cropImage(img).then((res){
-                print(res.path);
-              });
+              // Img.cropImage(img).then((res){
+              //   print(res.path);
+              // });
             });
           }),
           _toolBox(Icons.camera,'相机',(){
@@ -283,7 +283,7 @@ class IndexState extends State<Index> {
             Navigator.push(context, MaterialPageRoute(builder: (context) => Search()));
           }),
           _toolBox(Icons.map,'地图',(){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => Maps()));
+            // Navigator.push(context, MaterialPageRoute(builder: (context) => Maps()));
           }),
         ],
       ),

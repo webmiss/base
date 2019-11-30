@@ -24,7 +24,6 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-// apply plugin: 'com.aliyun.ams.emas-services'
 
 def keystorePropertiesFile = rootProject.file("key.properties")
 def keystoreProperties = new Properties()
@@ -49,10 +48,6 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        // 高德
-        manifestPlaceholders = [
-            AMAP_KEY : "ee4a1c67b5a8720449b09982c740ae8b",
-        ]
     }
 
     signingConfigs {
@@ -68,7 +63,8 @@ android {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            // signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -78,7 +74,6 @@ flutter {
 }
 
 dependencies {
-    implementation 'com.amap.api:location:latest.integration'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
