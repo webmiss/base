@@ -70,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
   double _upProgress = 0.00;
   String _upMsg = '检测更新';
   Map<String, String> _appInfo = {};
-  int _msgNum = 0;
+  // int _msgNum = 0;
 
   /* 构造函数 */
   @override
