@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:image_picker/image_picker.dart';
-// import 'package:image_cropper/image_cropper.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 /* 图片类 */
@@ -31,17 +31,17 @@ class Img{
   }
 
   /* 图片裁切 */
-  // static Future<File> cropImage(File imageFile, [int width, int height]) async {
-  //   width = width!=null?width:340;
-  //   height = height!=null?height:340;
-  //   return await ImageCropper.cropImage(
-  //     sourcePath: imageFile.path,
-  //     // ratioX: 1.0,
-  //     // ratioY: 1.0,
-  //     maxWidth: width,
-  //     maxHeight: height,
-  //   );
-  // }
+  static Future<File> cropImage(File imageFile, [int width, int height]) async {
+    width = width!=null?width:340;
+    height = height!=null?height:340;
+    return await ImageCropper.cropImage(
+      sourcePath: imageFile.path,
+      // ratioX: 1.0,
+      // ratioY: 1.0,
+      maxWidth: width,
+      maxHeight: height,
+    );
+  }
 
   /* 图片压缩 */
   static Future<File> compress(File file, [int minWidth, int minHeight]) async {

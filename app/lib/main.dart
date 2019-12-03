@@ -12,7 +12,7 @@ import 'package:webmis/App.dart';
 import 'package:webmis/library/China.dart';
 import 'package:webmis/library/Info.dart';
 import 'package:webmis/library/Socket.dart';
-// import 'package:webmis/library/Notify.dart';
+import 'package:webmis/library/Notify.dart';
 
 void main() => Inc.init().then((e) => runApp(MyApp()));
 
@@ -85,7 +85,7 @@ class _SplashScreenState extends State<SplashScreen> {
       startTime();
     }
     // 消息
-    // Notify.init();
+    Notify.init();
     // Socket
     String _token = '1fBB/6k3i8cV83M+ld2RFtCZSDmYP9vggwyPhOLHvTKmNxsm1Dz6c0jhYDzwGML9nMozHpim8bTbygAc5S93tS5Q82n8QkLfZ8ZeL/wDpeRzLi8w';
     Socket.init(_token).then((res){
