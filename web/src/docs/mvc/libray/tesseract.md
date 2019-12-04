@@ -19,3 +19,25 @@ tesseract -l chi_sim+eng test.png file
 # Java软件
 jTessBoxEditor
 ```
+
+## 二维码识别
+```bash
+pacman -S zbari
+```
+```php
+  /* 识别二维码 */
+	function qrcodeAction(){
+		$base64 = $this->request->get('base64');
+		// 上传
+		$dir = 'upload/';
+		$up = Upload::base64($dir,$base64);
+		$file = $dir.$up['file'];
+		// 处理
+		$url = shell_exec('zbarimg -q '.$file);
+		$url = ltrim($url,'QR-Code:');
+		$url = rtrim($url,"\n");
+		// 删除缓存
+		unlink($file);
+		return self::getJSON(['code'=>0,'url'=>$url]);
+	}
+```
