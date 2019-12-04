@@ -22,7 +22,7 @@ jTessBoxEditor
 
 ## 二维码识别
 ```bash
-pacman -S zbari
+pacman -S zbar
 ```
 ```php
   /* 识别二维码 */
