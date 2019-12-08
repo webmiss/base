@@ -29,7 +29,7 @@ export default {
   },
   mounted(){
     // 初始化
-    setTimeout(()=>{this.init()},3000);
+    setTimeout(()=>{this.init()},1000);
     // 播放声音
     document.body.ontouchstart = ()=>{document.createElement('audio');}
     /* 消息推送 */
@@ -49,6 +49,8 @@ export default {
     init(){
       try{
         plus
+        // 状态栏高度
+        Env.statusBar.height = plus.os.name=='Android'?'20px':'env(safe-area-inset-top)';
         // 竖屏
         plus.screen.lockOrientation("portrait-primary");
         // 状态栏
