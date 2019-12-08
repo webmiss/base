@@ -166,7 +166,7 @@ export default {
       // 创建文件对象
       let fileObj = document.createElement('input');
       fileObj.setAttribute('type','file');
-      fileObj.setAttribute("style",'visibility: hidden');
+      fileObj.setAttribute("style",'display: none');
       // 返回文件对象
       document.body.appendChild(fileObj);
       fileObj.click();
@@ -202,7 +202,7 @@ export default {
       // 创建文件对象
       let fileObj = document.createElement('input');
       fileObj.setAttribute('type','file');
-      fileObj.setAttribute("style",'visibility: hidden');
+      fileObj.setAttribute("style",'display: none');
       // 是否多选
       if(multiple) fileObj.setAttribute('multiple','multiple');
       // 返回文件对象

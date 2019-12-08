@@ -75,11 +75,11 @@ export default {
         });
       }catch(e){
         // 浏览器后退
-        window.history.pushState('forward', null, '#');
-        window.history.forward(1);
-        window.addEventListener("popstate", (e)=>{
-          this.$router.goBack(-1);
-        });
+        // window.history.pushState('forward', null, '#');
+        // window.history.forward(1);
+        // window.addEventListener("popstate", (e)=>{
+        //   this.$router.goBack(-1);
+        // });
       }
     },
 

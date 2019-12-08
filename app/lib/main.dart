@@ -65,7 +65,7 @@ class SplashScreen extends StatefulWidget {
 }
 class _SplashScreenState extends State<SplashScreen> {
 
-  bool _isUpDate = true;
+  bool _isUpDate = false;
   bool _isUpButton = false;
   double _upProgress = 0.00;
   String _upMsg = '检测更新';
@@ -78,10 +78,8 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     // 强制更新
     if(Inc.update){
-      setState(()=>_isUpDate=true);
       _checkUpdate();
     }else{
-      setState(()=>_isUpDate=false);
       startTime();
     }
     // 消息
@@ -127,6 +125,7 @@ class _SplashScreenState extends State<SplashScreen> {
           startTime();
         }else{
           setState((){
+            _isUpDate=true;
             _isUpButton = true;
             _upMsg = '当前: '+info['version']+'  最新: '+res['version']+'  大小: '+(res['size']/1024/1024).toStringAsFixed(2)+'MB';
             _appInfo = {'os':info['platform'],'appName':info['appName'],'packageName':info['packageName'],'file':Inc.baseUrl+res['file']};
