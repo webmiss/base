@@ -16,6 +16,14 @@ export default {
     document.addEventListener('plusready',callback,false);
   },
 
+  /* 状态栏高度 */
+  getStatusBarHeight(){
+    let immersed = 0;
+    const ms=(/Html5Plus\/.+\s\(.*(Immersed\/(\d+\.?\d*).*)\)/gi).exec(navigator.userAgent);
+    if(ms&&ms.length>=3) immersed=parseFloat(ms[2]);
+    return immersed;
+  },
+
   /* 本地消息 */
   notify(title,content,callback){
     /* 浏览器 */

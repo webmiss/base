@@ -1,4 +1,5 @@
 import Env from '@/env'
+import Plus from '@/library/Plus'
 import Socket from '@/library/Socket'
 
 import Vue from 'vue';
@@ -45,16 +46,6 @@ export default {
   },
   methods:{
 
-    /* 状态栏高度 */
-    getStatusBarHeight: ()=>{
-      let immersed = 0;
-      const ms=(/Html5Plus\/.+\s\(.*(Immersed\/(\d+\.?\d*).*)\)/gi).exec(navigator.userAgent);
-      if(ms&&ms.length>=3){
-        immersed=parseFloat(ms[2]);
-      }
-      return immersed;
-    },
-
     /* 初始化 */
     init(){
       try{
@@ -64,8 +55,7 @@ export default {
         // 状态栏
         plus.navigator.setStatusBarStyle('dark');
         plus.navigator.setStatusBarBackground(Env.themeColor);
-        Env.statusBar.height = this.getStatusBarHeight()+'px';
-        // Env.statusBar.height = plus.os.name=='Android'?this.getStatusBarHeight()+'px':'env(safe-area-inset-top)';
+        Env.statusBar.height = Plus.getStatusBarHeight()+'px';
         // Android返回键
         let backcount = 0;
         let webview = plus.webview.currentWebview();

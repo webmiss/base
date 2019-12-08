@@ -1,4 +1,5 @@
 import Env from '@/env'
+import Plus from '@/library/Plus'
 import Socket from '@/library/Socket'
 
 export default {
@@ -66,6 +67,7 @@ export default {
         // 状态栏
         plus.navigator.setStatusBarStyle('dark');
         plus.navigator.setStatusBarBackground(Env.themeColor);
+        Env.statusBar.height = Plus.getStatusBarHeight()+'px';
         // Android返回键
         let backcount = 0;
         let webview = plus.webview.currentWebview();
