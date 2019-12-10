@@ -13,5 +13,8 @@ https://developer.apple.com/
 - 3) Devices  // 调试设备UDID 例如: 79dd895e0e6733603914a81af4f6d94544a2acba
 - 4) Profiles // 描述文件 例如: iOS App Development(开发版)、App Store(应用商店)
 
-### 上架
+### 上架资料
 https://appstoreconnect.apple.com/
+
+### 提交IPA包
+xcode > Product > Archive

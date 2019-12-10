@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.1
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
 -- 主机： localhost
--- 生成日期： 2019-11-07 13:47:11
--- 服务器版本： 10.4.8-MariaDB
--- PHP 版本： 7.3.11
+-- 生成日期： 2019-12-10 13:37:26
+-- 服务器版本： 10.4.10-MariaDB
+-- PHP 版本： 7.3.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -79,10 +79,11 @@ INSERT INTO `sys_menus` (`id`, `fid`, `title`, `url`, `perm`, `ico`, `ctime`, `u
 (6, 2, '角色权限', 'SysRole', 31, 'ico_mask ico_role', '2018-12-15 00:00:00', NULL, 0, ''),
 (7, 0, '平台', '', 0, 'ico_mask ico_platform', '2018-12-15 00:00:00', NULL, 0, ''),
 (8, 2, '基本配置', 'SysConfig', 1, 'ico_mask ico_config', '2018-12-15 00:00:00', '2019-06-25 12:53:50', 0, ''),
-(9, 2, '菜单管理', 'SysMenus', 31, 'ico_mask ico_menu', '2018-12-15 00:00:00', NULL, 0, ''),
+(9, 2, '菜单管理', 'SysMenus', 21, 'ico_mask ico_menu', '2018-12-15 00:00:00', '2019-12-10 13:00:34', 0, ''),
 (10, 2, '菜单动作', 'SysMenusAction', 31, 'ico_mask ico_action', '2019-01-27 11:28:31', NULL, 0, ''),
 (11, 1, '基本资料', 'UserInfo', 1, 'ico_mask ico_userinfo', '2019-01-27 11:29:09', NULL, 0, ''),
-(12, 1, '修改密码', 'UserPasswd', 1, 'ico_mask ico_passwd', '2019-01-27 11:31:10', '2019-06-29 18:21:32', 0, '');
+(12, 1, '修改密码', 'UserPasswd', 1, 'ico_mask ico_passwd', '2019-01-27 11:31:10', '2019-06-29 18:21:32', 0, ''),
+(13, 2, '文件目录', 'SysFileManage', 1, 'ico_mask ico_file', '2019-12-10 13:01:38', '2019-12-10 13:19:49', 0, '');
 
 -- --------------------------------------------------------
 
@@ -138,7 +139,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `uname`, `tel`, `email`, `password`, `rtime`, `ltime`, `utime`, `state`, `state_admin`, `state_app`) VALUES
-(1, 'admin', '', 'klingsoul@163.com', 'e10adc3949ba59abbe56e057f20f883e', '2018-12-15 00:00:00', '2019-11-05 18:21:35', '2019-07-01 10:50:30', '1', '1', '0'),
+(1, 'admin', '', 'klingsoul@163.com', 'e10adc3949ba59abbe56e057f20f883e', '2018-12-15 00:00:00', '2019-11-09 09:25:08', '2019-07-01 10:50:30', '1', '1', '0'),
 (2, 'test1', '', '', 'e10adc3949ba59abbe56e057f20f883e', '2019-06-27 09:06:09', '2019-06-27 09:17:18', NULL, '1', '0', '1');
 
 -- --------------------------------------------------------
@@ -184,7 +185,7 @@ CREATE TABLE `user_perm` (
 --
 
 INSERT INTO `user_perm` (`id`, `uid`, `utime`, `perm`, `role`) VALUES
-(1, 1, NULL, '1:0 2:0 3:1 4:19 5:31 6:31 8:1 9:31 10:31 11:1 12:1', '0'),
+(1, 1, NULL, '1:0 2:0 3:1 4:19 5:31 6:31 7:0 8:1 9:21 10:31 11:1 12:1 13:1', '0'),
 (2, 2, NULL, '', '0');
 
 -- --------------------------------------------------------
@@ -295,7 +296,7 @@ ALTER TABLE `sys_config`
 -- 使用表AUTO_INCREMENT `sys_menus`
 --
 ALTER TABLE `sys_menus`
-  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=13;
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=14;
 
 --
 -- 使用表AUTO_INCREMENT `sys_menus_action`

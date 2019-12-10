@@ -264,6 +264,8 @@ body .tox-silver-sink{z-index: 3000;}
 .ico_config{mask-image: url('assets/ico/config.svg'); mask-size: auto 90%;}
 .ico_menu{mask-image: url('assets/ico/menu.svg'); mask-size: auto 90%;}
 .ico_action{mask-image: url('assets/ico/action.svg'); mask-size: auto 90%;}
+.ico_folder{mask-image: url('assets/ico/folder.svg'); mask-size: auto 90%;}
+.ico_file{mask-image: url('assets/ico/file.svg'); mask-size: auto 90%;}
 
 .ico_platform{mask-image: url('assets/ico/platform.svg'); mask-size: auto 70%;}
 
