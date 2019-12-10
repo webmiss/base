@@ -58,6 +58,7 @@ const install = (Vue)=>{
         {title: '套接字(Socket)',content: require('./docs/mvc/libray/socket.md'), menus:[]},
         {title: 'Html5流媒体(Segments)',content: require('./docs/mvc/libray/segments.md'), menus:[]},
         {title: '图片识别(Tesseract)',content: require('./docs/mvc/libray/tesseract.md'), menus:[]},
+        {title: '苹果上架(AppStore)',content: require('./docs/mvc/libray/appstore.md'), menus:[]},
       ]},
       {title: 'PHP', menus:[
         {title: 'Composer创建项目',content: require('./docs/mvc/php/composer.md'), menus:[]},
