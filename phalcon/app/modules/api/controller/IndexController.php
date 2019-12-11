@@ -93,8 +93,9 @@ class IndexController extends Base{
 		if($type=='JSAPI'){
 			$data['trade_type'] = 'JSAPI';
 			// OpenID
-			$code = $this->request->get('code','string');
+			echo $code = $this->request->get('code','string');
 			$data['openid'] = Wechat::getOpenid($code);
+			self::bug($data);
 		}else if($type=='MWEB'){
 			$data['trade_type'] = 'MWEB';
 		}else if($type=='APP'){

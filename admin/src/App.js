@@ -46,10 +46,10 @@ export default {
           this.getMenus();
           this.uinfo = res.data.uinfo;
           /* 消息推送 */
-          Socket.event();
           Socket.start();
           clearInterval(this.msgInterval);
           this.msgInterval = setInterval(()=>{
+            // 刷新数量
             this.msgNew = this.$storage.getItem('msgNew');
           },1000);
         }
@@ -89,11 +89,11 @@ export default {
         if(Env.update) this.isUpdate();
       }catch(e){
         // 浏览器后退
-        window.history.pushState('forward', null, '#');
-        window.history.forward(1);
-        window.addEventListener("popstate", (e)=>{
-          this.$router.go(-1);
-        });
+        // window.history.pushState('forward', null, '#');
+        // window.history.forward(1);
+        // window.addEventListener("popstate", (e)=>{
+        //   this.$router.go(-1);
+        // });
       }
     },
 

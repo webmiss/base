@@ -15,15 +15,18 @@ export default {
       // 心跳包
       clearInterval(this.heartbeat);
       this.heartbeat = setInterval(()=>{
-        if(Vue.prototype.$obj.socket) Vue.prototype.$obj.socket.send(JSON.stringify({type:''}));
+        try{
+          Vue.prototype.$obj.socket.send(JSON.stringify({type:''}));
+        }catch(e){ this.start(); }
       },10000);
       // 新消息
-      Vue.prototype.$obj.socket.send(JSON.stringify({type:'newMsg'}));
-      clearInterval(this.msgInterval);
-      this.msgInterval = setInterval(()=>{
+      try{
         Vue.prototype.$obj.socket.send(JSON.stringify({type:'newMsg'}));
-        Vue.prototype.$obj.socket.send(JSON.stringify({type:'getMsg'}));
-      },Env.msgNew);
+        clearInterval(this.msgInterval);
+        this.msgInterval = setInterval(()=>{
+          Vue.prototype.$obj.socket.send(JSON.stringify({type:'newMsg'}));
+        },Env.msgNew);
+      }catch(e){ this.start(); }
     }
     /* 消息 */
     Vue.prototype.$obj.socket.onmessage = (e)=>{
@@ -38,6 +41,7 @@ export default {
         Vue.prototype.$obj.socket.send(JSON.stringify({type:'newMsg'}));
       }else if(msg.code==0 && msg.type=='newMsg'){
         Vue.prototype.$storage.setItem('msgNew',msg.num);
+        if(msg.num>0) Vue.prototype.$obj.socket.send(JSON.stringify({type:'getMsg'}));
       }else if(msg.code==0 && msg.type=='getMsg'){
         if(msg.title){
           Plus.notify(msg.title,msg.content,(obj)=>{
@@ -51,9 +55,8 @@ export default {
     Vue.prototype.$obj.socket.onclose = ()=>{
       console.log('消息关闭');
       clearInterval(this.msgInterval);
-      Vue.prototype.$obj.socket = null;
-      setTimeout(()=>{
-        if(!Vue.prototype.$obj.socket) this.start();
+      this.msgInterval = setInterval(()=>{
+        this.start();
       },10000);
     }
   },
@@ -63,26 +66,6 @@ export default {
     Vue.prototype.$ajax.post(Vue.prototype.$config.apiUrl+'UserMain/msgNewState','token='+Vue.prototype.$storage.getItem('token')+'&id='+id).then((res)=>{
       // 刷新消息数
       Vue.prototype.$obj.socket.send(JSON.stringify({type:'newMsg'}));
-    });
-  },
-
-  /* 重启机制 */
-  event(){
-    document.addEventListener('visibilitychange',()=>{
-      if(document.visibilityState == 'hidden') {
-        let hiddenTime = new Date().getTime();
-        Vue.prototype.$storage.setItem('HiddenTime',hiddenTime);
-      }else{
-        // 10秒后关闭
-        let hiddenTime = Vue.prototype.$storage.getItem('HiddenTime');
-        let visibleTime = new Date().getTime();
-        if((visibleTime-hiddenTime)/1000 > 10){
-          if(Vue.prototype.$obj.socket) Vue.prototype.$obj.socket.close();
-          setTimeout(()=>{
-            this.start();
-          },1000);
-        }else{console.log('保持链接');}
-      }
     });
   },
 

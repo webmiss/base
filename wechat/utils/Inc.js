@@ -53,13 +53,11 @@ export default {
     if(Config.msgRead==0) return;
     // 百度Token
     this.post(Config.apiUrl+'index/baiduToken',{},(res)=>{
-      const msgAudio = wx.getBackgroundAudioManager();
-      msgAudio.title = title;
-      setTimeout(()=>{
+      let msgAudio = wx.getBackgroundAudioManager();
+        msgAudio.title = title;
         let text = Config.msgContent=='title'?title:content;
-        msgAudio.src = '//tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
-        msgAudio.play();
-      },Config.msgRead);
+        msgAudio.src = Config.httpType+'tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
+        setTimeout(()=>{ msgAudio.play(); },Config.msgRead);
     });
   },
 

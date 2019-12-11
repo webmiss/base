@@ -1,5 +1,6 @@
 import Config from './config'
 import Inc from './utils/Inc'
+import Socket from './utils/Socket'
 App({
   /* 公共数据 */
   globalData:{
@@ -24,55 +25,10 @@ App({
       }
     });
     // Socket
-    this.openSocket();
+    Socket.start();
   },
   onHide(){
-    /* Socket重连机制 */
-    let hiddenTime = new Date().getTime();
-    Inc.storage.setItem('HiddenTime',hiddenTime);
   },
   onShow(){
-    // 10秒后关闭Socker
-    let hiddenTime = Inc.storage.getItem('HiddenTime');
-    let visibleTime = new Date().getTime();
-    if((visibleTime-hiddenTime)/1000 > 10){
-      wx.closeSocket();
-      setTimeout(()=>{
-        this.openSocket();
-      },3000);
-    }else{console.log('保持链接');}
-  },
-  /* Socket */
-  openSocket(){
-    let token = Inc.storage.getItem('token');
-    if(!token) return;
-    wx.connectSocket({url:Config.socketServer+'?token='+token});
-    /* 链接 */
-    wx.onSocketOpen(()=>{
-      console.log('消息系统');
-      // 获取新消息
-      clearInterval(this.globalData.msgInterval);
-      this.globalData.msgInterval = setInterval(()=>{
-        wx.sendSocketMessage({data:JSON.stringify({type:'newMsg'})});
-      },Config.msgNew);
-    });
-    /* 消息 */
-    wx.onSocketMessage((e)=>{
-      Inc.notify('消息',e.data);
-      const msg = JSON.parse(e.data);
-      if(msg.code==0 && msg.type=='system'){
-        Inc.notify(msg.title,msg.content);
-      }else if(msg.code==0 && msg.type=='newMsg'){
-        this.globalData.msgNew = msg.num;
-        if(msg.num>0){
-          Inc.notify(msg.title,msg.content);
-        }
-      }
-    });
-    /* 关闭 */
-    wx.onSocketClose(()=>{
-      console.log('关闭消息');
-        clearInterval(this.globalData.msgInterval);
-    });
   },
 });

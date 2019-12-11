@@ -36,10 +36,10 @@ export default {
     /* 消息推送 */
     const token = this.$storage.getItem('token');
     if(token){
-      Socket.event();
       Socket.start();
       clearInterval(this.msgInterval);
       this.msgInterval = setInterval(()=>{
+        // 刷新数量
         this.msgNew = this.$storage.getItem('msgNew');
       },1000);
     }
