@@ -63,9 +63,9 @@ class Wechat{
     $data['appid'] = $config['wechat_AppID'];
     $data['partnerid'] = $config['wechat_MchID'];
     $data['prepayid'] = $prepay_id;
-    $data['package'] = 'prepay_id=WXPay';
-    $data['nonceStr'] = md5(date('YmdHis'));
-    $data['timeStamp'] = (String)time();
+    $data['package'] = 'Sign=WXPay';
+    $data['noncestr'] = md5(date('YmdHis'));
+    $data['timestamp'] = (String)time();
     $data['sign'] = self::getSign($data);
     return $data;
   }
