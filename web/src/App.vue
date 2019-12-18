@@ -2,33 +2,27 @@
   <div id="app">
 		<!-- TOP -->
 		<div class="top_html">
-			<div class="body flex">
+			<div class="body">
 				<div class="flex">
 					<!-- Logo -->
 					<div class="flex top_logo">
 						<h1>W</h1><h2>EBMIS</h2>
 					</div>
 					<ul class="top_nav flex">
-						<li>
-							<router-link to="/" :class="$route.path=='/'?'an':''">首页</router-link>
-						</li>
-						<!-- <li>
-							<router-link to="/project" :class="$route.path=='/project'?'an':''">项目</router-link>
-						</li> -->
-						<li>
-							<router-link to="/doc" :class="$route.path=='/doc'?'an':''">文档</router-link>
-						</li>
+						<li><router-link to="/" :class="$route.path=='/'?'an':''">首页</router-link></li>
+						<li><router-link to="/doc" :class="$route.path=='/doc'?'an':''">文档</router-link></li>
 					</ul>
 				</div>
-				<div>
-					<a href="https://github.com/webmiss/base">Github</a>
+				<div class="top_right flex">
+					<a class="github" href="https://github.com/webmiss/base">Github</a>
+					<a class="el-icon-menu" @click="$store.state.showMenu=!$store.state.showMenu" title="菜单"></a>
 				</div>
 			</div>
 		</div>
 		<!-- Content -->
 		<router-view />
 		<!-- Copy -->
-		<div class="bottom_copy">WebMIS © 2019-2022 备案号: 滇ICP备14000710号</div>
+		<div class="bottom_copy">WebMIS © 2019-2022 滇ICP备14000710号</div>
   </div>
 </template>
 
@@ -68,6 +62,10 @@ input:focus, textarea:focus{box-shadow: 0 0 6px rgba(153, 153, 153, 0.7);}
 .top_nav a{color: #999;}
 .top_nav .an{color: #6FB737;}
 
+.top_right{position: absolute; right: 0; background-color: #24292E; color: #666;}
+.top_right a{padding: 0 8px; margin: 0 8px;}
+.top_right .el-icon-menu{font-size: 20px; line-height: 60px;}
+
 /* Content */
 .body{max-width: 1200px; margin: 0 auto;}
 .content_body{padding-top: 60px;}
@@ -75,12 +73,14 @@ input:focus, textarea:focus{box-shadow: 0 0 6px rgba(153, 153, 153, 0.7);}
 .bottom_copy{overflow: hidden; line-height: 60px; color: #999; text-align: center;}
 
 /* Doc */
+.doc_menus{width: 240px;}
 .doc_menus .el-menu{border: none;}
 .doc_menus .el-submenu__title{height: 42px; line-height: 42px;}
 .doc_menus .el-submenu__title:hover{background-color: #F2F2F2;}
 .doc_menus .el-submenu .el-menu-item{height: 30px; line-height: 30px; color: #333;}
 .doc_menus .el-menu-item:hover{background-color: #F2F2F2; color: #6FB737;}
 .doc_menus .el-menu-item.is-active{color: #6FB737;}
+.doc_bg{display: none; position: fixed; width: 100%; height: 100%; background-color: rgba(0,0,0,.6);}
 
 .doc_copy{line-height: 36px; font-size: 12px; color: #CCC; text-align: center; border-top: #F2F2F2 1px solid;}
 
@@ -101,13 +101,17 @@ input:focus, textarea:focus{box-shadow: 0 0 6px rgba(153, 153, 153, 0.7);}
 	
 }
 @media screen and ( max-width: 768px ) {
-	
+	.doc_bg{display: block;}
+	.doc_menus{position: fixed; right: 0;}
 }
 @media screen and ( max-width: 640px ) {
 	
 }
 @media screen and ( max-width: 420px ) {
-	
+	.top_logo h2{display: none;}
+}
+@media screen and ( max-width: 360px ) {
+	.top_right .github{display: none;}
 }
 
 </style>

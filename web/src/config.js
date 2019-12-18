@@ -9,6 +9,7 @@ const install = (Vue)=>{
   Vue.prototype.$config = Env;
   // 全局变量
   Vue.prototype.$obj = {
+    showMenu: true,
     scan: null,
     setTime: null,
     socket: null,

@@ -1,9 +1,11 @@
 <template>
   <div class="body content_body">
+    <!-- 背景 -->
+    <div class="doc_bg" v-show="$store.state.showMenu" @click="$store.state.showMenu=!$store.state.showMenu"></div>
     <!-- 内容 -->
     <el-container>
       <!-- 菜单 -->
-      <el-aside class="doc_menus" width="240px">
+      <el-aside class="doc_menus" v-show="$store.state.showMenu">
         <el-menu :default-active="defaultMenu" unique-opened>
           <el-submenu v-for="(val1,key1) in $menus" :key="key1" :index="''+key1">
             <template slot="title"><span>{{val1.title}}</span></template>
