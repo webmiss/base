@@ -83,7 +83,7 @@
           <div class="flex">
             <!-- 功能图标 -->
             <div class="menu_ico flex_center">
-              <el-badge :value="msgNew">
+              <el-badge :value="$store.state.msgNum">
                 <i class="c_main el-icon-chat-line-round" @click="openUrl('ico_mask ico_msg','WebMsg','4','我的消息',true)"></i>
               </el-badge>
             </div>

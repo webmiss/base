@@ -20,7 +20,6 @@ export default {
       // 左侧菜单
       menus: [],
       // 新消息
-      msgNew: 0,
       msgInterval: null,
     }
   },
@@ -50,7 +49,7 @@ export default {
           clearInterval(this.msgInterval);
           this.msgInterval = setInterval(()=>{
             // 刷新数量
-            this.msgNew = this.$storage.getItem('msgNew');
+            this.$store.state.msgNum = this.$storage.getItem('msgNew');
           },1000);
         }
       });

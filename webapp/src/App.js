@@ -24,7 +24,6 @@ export default {
       update: {show:false, os:'', down:false, loading:'0%', msg:'检测更新', file:'', total:0},
       upDateColor: Env.upDateColor,
       // 新消息
-      msgNew: 0,
       msgInterval: null,
     }
   },
@@ -40,7 +39,7 @@ export default {
       clearInterval(this.msgInterval);
       this.msgInterval = setInterval(()=>{
         // 刷新数量
-        this.msgNew = this.$storage.getItem('msgNew');
+        this.$store.state.msgNum = this.$storage.getItem('msgNew');
       },1000);
     }
   },

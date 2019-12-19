@@ -17,7 +17,8 @@
     "tinymce": "^5.0.12",
     "vue": "^2.6.10",
     "vue-amap": "^0.5.10",
-    "vue-router": "^3.0.3"
+    "vue-router": "^3.0.3",
+    "vuex": "^3.1.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",

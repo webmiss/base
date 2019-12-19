@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import router from './router'
+import store from './store'
 import axios from 'axios'
 import QRCode from 'qrcode'
 
@@ -17,6 +18,7 @@ Vue.prototype.$qrcode = QRCode;
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')
 
