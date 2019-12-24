@@ -5,7 +5,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    // 消息数
-    msgNum: 0
+    system: {}, // 系统信息
+    uinfo: {},  // 用户信息
+    msgNum: 0,  // 消息数
   }
 });

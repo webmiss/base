@@ -14,6 +14,11 @@ useradd -G gitgroup -M gituser
 ``` bash
 passwd gituser
 ```
+### 用户权限
+``` bash
+vi /etc/passwd
+```
+gituser:x:1001:1001:,,,:/home/git:/usr/bin/git-shell
 
 ## 二、仓库
 ``` bash

@@ -32,15 +32,18 @@ export default {
     /* 提交表单 */
     onSubmit(){
       const loading = this.$loading({text: '提交数据'});
+      const data = JSON.stringify(this.form);
       this.$ajax.post(
         this.$config.apiUrl+'SysConfig/edit',
-        'token='+this.$storage.getItem('token')+'&data='+JSON.stringify(this.form)
+        'token='+this.$storage.getItem('token')+'&data='+data
       ).then((res)=>{
         loading.close();
         const d = res.data;
         if(d.code==0){
           // 刷新
-          window.location.reload();
+          const tmp = JSON.parse(data);
+          this.$store.state.system.title = tmp.title;
+          this.$store.state.system.copy = tmp.copy;
           return this.$message.success(d.msg);
         }else{
           return this.$message.error(d.msg);
@@ -71,8 +74,13 @@ export default {
           const d = res.data;
           if(d.code == 0){
             this.$message.success(d.msg);
-            if(type=='logo') this.form.logo = d.img;
-            else if(type=='bg') this.form.login_bg = d.img;
+            if(type=='logo'){
+              this.form.logo = d.img;
+              this.$store.state.system.logo = d.img;
+            }else if(type=='bg'){
+              this.form.login_bg = d.img;
+              this.$store.state.system.login_bg = d.img;
+            }
           }else{
             this.$message.error(d.msg);
           }

@@ -32,15 +32,16 @@ export default {
     /* 提交表单 */
     onSubmit(){
       const loading = this.$loading({text: '提交数据'});
+      const data = JSON.stringify(this.form);
       this.$ajax.post(
         this.$config.apiUrl+'UserInfo/edit',
-        'token='+this.$storage.getItem('token')+'&data='+JSON.stringify(this.form)
+        'token='+this.$storage.getItem('token')+'&data='+data
       ).then((res)=>{
         loading.close();
         const d = res.data;
         if(d.code==0){
           // 刷新
-          window.location.reload();
+          this.$store.state.uinfo = JSON.parse(data);
           return this.$message.success(d.msg);
         }else{
           return this.$message.error(d.msg);
@@ -65,6 +66,7 @@ export default {
           if(d.code == 0){
             this.$message.success(d.msg);
             this.form.img = d.img;
+            this.$store.state.uinfo.img = d.img;
           }else{
             this.$message.error(d.msg);
           }

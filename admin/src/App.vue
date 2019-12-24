@@ -19,12 +19,12 @@
     <!-- 更新APP End -->
 
     <!-- 登录 -->
-    <el-container v-show="!isLogin" class="login_body bgimg bgcover" v-if="system.login_bg" :style="{backgroundImage:'url('+$config.baseUrl+system.login_bg+')'}">
+    <el-container v-show="!isLogin" class="login_body bgimg bgcover" v-if="$store.state.system.login_bg" :style="{backgroundImage:'url('+$config.baseUrl+$store.state.system.login_bg+')'}">
       <div class="login_ct">
         <div class="logo flex_center">
-          <div class="bgimg radius" v-if="!system.logo"></div>
-          <div class="bgimg radius bgcover" v-else :style="{backgroundImage:'url('+$config.baseUrl+system.logo+')'}"></div>
-          <h1 class="nowrap">{{system.title}}</h1>
+          <div class="bgimg radius" v-if="!$store.state.system.logo"></div>
+          <div class="bgimg radius bgcover" v-else :style="{backgroundImage:'url('+$config.baseUrl+$store.state.system.logo+')'}"></div>
+          <h1 class="nowrap">{{$store.state.system.title}}</h1>
         </div>
         <h2>用户登录</h2>
         <div class="item">
@@ -40,7 +40,7 @@
         <div class="item">
           <el-button @click="loginSub()" type="primary" style="width:100%" :disabled="login.dis">{{login.subText}}</el-button>
         </div>
-        <div class="copy nowrap">&copy; {{system.copy}} license&nbsp;&nbsp;版本：{{$config.version}}</div>
+        <div class="copy nowrap">&copy; {{$store.state.system.copy}} license&nbsp;&nbsp;版本：{{$config.version}}</div>
       </div>
     </el-container>
     <!-- 登录 End -->
@@ -51,9 +51,9 @@
       <el-aside class="app_menus" :style="{width: isCollapse?'64px':'200px'}">
         <!-- 头像 -->
         <div class="app_img" @click="openUrl('ico_mask ico_userinfo','UserInfo','11','基本资料',true)">
-          <div class="bgimg bgcover" v-if="uinfo.img" :style="{backgroundImage:'url('+$config.baseUrl+uinfo.img+')'}"></div>
+          <div class="bgimg bgcover" v-if="$store.state.uinfo.img" :style="{backgroundImage:'url('+$config.baseUrl+$store.state.uinfo.img+')'}"></div>
           <div class="bgimg" v-else></div>
-          <p class="nowrap">{{uinfo.nickname || '昵称'}}({{uinfo.name || '姓名'}})</p>
+          <p class="nowrap">{{$store.state.uinfo.nickname || '昵称'}}({{$store.state.uinfo.name || '姓名'}})</p>
         </div>
         <!-- 菜单 -->
         <el-menu :default-active="defaultMenu" :collapse="isCollapse" unique-opened>
@@ -78,7 +78,7 @@
         <!-- 头部信息 -->
         <el-header class="app_top flex">
           <el-tooltip class="logo" effect="dark" content="点击”收缩/展开“左侧菜单" placement="bottom-start">
-            <a @click="hideMenus()"><i class="el-icon-menu"></i> {{ $storage.getItem('MenuName') || system.title}}</a>
+            <a @click="hideMenus()"><i class="el-icon-menu"></i> {{ $storage.getItem('MenuName') || $store.state.system.title}}</a>
           </el-tooltip>
           <div class="flex">
             <!-- 功能图标 -->
@@ -88,13 +88,13 @@
               </el-badge>
             </div>
             <!-- 登录信息 -->
-            <div class="uinfo">{{uinfo.position}}({{uinfo.uname || '系统用户'}})&nbsp;&nbsp;|&nbsp;&nbsp;<span @click="logout()">退出</span></div>
+            <div class="uinfo">{{$store.state.uinfo.position}}( {{$storage.getItem('uname') || '空'}} )&nbsp;&nbsp;|&nbsp;&nbsp;<span @click="logout()">退出</span></div>
           </div>
         </el-header>
         <!-- 中间部分 -->
         <el-main class="app_main">
           <router-view/>
-          <div class="app_copy">所属：{{system.title}}&nbsp;&nbsp;&copy; {{system.copy}}&nbsp;&nbsp;版本：{{$config.version}}</div>
+          <div class="app_copy">所属：{{$store.state.system.title}}&nbsp;&nbsp;&copy; {{$store.state.system.copy}}&nbsp;&nbsp;版本：{{$config.version}}</div>
         </el-main>
       </el-container>
     </el-container>

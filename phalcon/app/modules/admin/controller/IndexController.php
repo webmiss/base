@@ -33,8 +33,9 @@ class IndexController extends Base{
 	public function getConfigAction(){
 		$config = SysConfig::find(['','columns'=>'name,title,val'])->toArray();
 		$data = [];
+		$arr = ['title','copy','login_bg','logo'];
 		foreach($config as $val){
-			$data[$val['name']] = $val['val'];
+			if(in_array($val['name'],$arr)) $data[$val['name']] = $val['val'];
 		}
 		return self::getJSON(['code'=>0,'list'=>$data]);
 	}

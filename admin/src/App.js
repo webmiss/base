@@ -16,7 +16,6 @@ export default {
       login: {uname:'',passwd:'',subText:'登录',dis:false},
       // 系统信息
       system: {},
-      uinfo: {},
       // 左侧菜单
       menus: [],
       // 新消息
@@ -34,26 +33,7 @@ export default {
     // 系统信息
     this.getConfig();
     // 登录验证
-    const token = this.$storage.getItem('token');
-    if(token){
-      this.isLogin = true;
-      this.token((res)=>{
-        if(res.data.code!=0){
-          return this.logout();
-        }else{
-          // 获取菜单
-          this.getMenus();
-          this.uinfo = res.data.uinfo;
-          /* 消息推送 */
-          Socket.start();
-          clearInterval(this.msgInterval);
-          this.msgInterval = setInterval(()=>{
-            // 刷新数量
-            this.$store.state.msgNum = this.$storage.getItem('msgNew');
-          },1000);
-        }
-      });
-    }
+    this.loginVerify();
   },
   methods:{
 
@@ -102,7 +82,30 @@ export default {
         this.$config.apiUrl+'index/getConfig'
       ).then((res)=>{
         const d = res.data;
-        if(d.code==0) this.system = d.list;
+        if(d.code==0) this.$store.state.system = d.list;
+      });
+    },
+
+    /* 登录检测 */
+    loginVerify(){
+      const token = this.$storage.getItem('token');
+      if(!token) return false;
+      this.isLogin = true;
+      this.token((res)=>{
+        if(res.data.code!=0){
+          return this.logout();
+        }else{
+          // 获取菜单
+          this.getMenus();
+          this.$store.state.uinfo = res.data.uinfo;
+          /* 消息推送 */
+          Socket.start();
+          clearInterval(this.msgInterval);
+          this.msgInterval = setInterval(()=>{
+            // 刷新数量
+            this.$store.state.msgNum = this.$storage.getItem('msgNew');
+          },1000);
+        }
       });
     },
 
@@ -164,9 +167,10 @@ export default {
         }else{
           this.isLogin = true;
           this.$storage.setItem('token',d.token);
+          this.$storage.setItem('uname',uname);
           this.$storage.setItem('uinfo',JSON.stringify(d.uinfo));
           // 刷新
-          window.location.reload();
+          this.loginVerify();
         }
       });
     },

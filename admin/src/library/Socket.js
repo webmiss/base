@@ -56,7 +56,8 @@ export default {
       console.log('消息关闭');
       clearInterval(this.msgInterval);
       this.msgInterval = setInterval(()=>{
-        this.start();
+        // this.start();
+        window.location.reload();
       },10000);
     }
   },
