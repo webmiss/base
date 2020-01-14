@@ -15,9 +15,9 @@
       <!-- 文件信息 -->
       <el-row class="file_path">
         <span class="path">
-          <span @click="backDir()" v-html="path=='/'?'返回上级':'<a>返回上级</a>'"></span>|<span>{{ path }}</span>
+          <span @click="backDir()" v-html="path=='/'?'返回上级':'<a>返回上级</a>'"></span>|<span><a @click="loadData()">刷新</a></span>|<span>{{ path }}</span>
         </span>
-        <span class="info">文件夹( {{ lists.dirNum }} ) 文件( {{ lists.fileNum }} ) 大小( {{ lists.size }} ) | <a @click="loadData()">刷新</a></span>
+        <span class="info">文件夹( {{ lists.dirNum }} ) 文件( {{ lists.fileNum }} ) 大小( {{ lists.size }} )</span>
       </el-row>
       <!-- 上传进度 -->
       <el-row class="file_load" :style="{backgroundImage: 'linear-gradient(to right, '+$config.themeColor+', '+$config.themeColor+' '+loaded+', #F2F4F6 '+loaded+', #F2F4F6 100%)'}">
@@ -113,11 +113,11 @@
 .file:hover{background-color: #F2F4F6;}
 .file .name{line-height: 38px; text-align: center; padding: 0 5px;}
 
-.file_click{position: absolute; z-index: 10; opacity: 0.1; color: #6FB737; width: 40px; height: 40px; line-height: 40px; font-size: 20px; text-align: center;}
+.file_click{position: absolute; z-index: 10; opacity: 0.1; color: #009688; width: 40px; height: 40px; line-height: 40px; font-size: 20px; text-align: center;}
 .file_state:hover .file_click{opacity: 0.5;}
 .file_active .file_click{opacity: 1;}
 .file_active:hover .file_click{opacity: 1;}
-.file_active .file{border-color: #6FB737; background-color: #F2F4F6;}
+.file_active .file{border-color: #009688; background-color: #F2F4F6;}
 
 .file_folder{background-color: #FFD65D; width: 100%; height: 82px; margin-top: 8px; mask-size: auto 70%;}
 .file_file{background-color: #B9C9D6; width: 100%; height: 82px; margin-top: 8px; mask-size: auto 60%;}

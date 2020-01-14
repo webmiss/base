@@ -4,6 +4,7 @@ namespace app\modules\admin\controller;
 
 use app\controller\Base;
 use app\model\SysConfig;
+use app\library\Upload;
 use app\library\baidu\Ai;
 
 /**
@@ -26,7 +27,7 @@ class IndexController extends Base{
 			$file = 'upload/admin/down/android.apk';
 			$size = filesize($file);
 		}
-		return self::getJSON(['code'=>0,'version'=>'0.0.1','size'=>$size,'file'=>$file]);
+		return self::getJSON(['code'=>0,'version'=>'1.0.1','size'=>$size,'file'=>$file]);
 	}
 
 	/* 系统配置 */
@@ -63,6 +64,22 @@ class IndexController extends Base{
 		header("Content-Disposition:attachment;filename=$name.xls");
 		header("Pragma: no-cache");
 		header("Expires: 0");
-  }
+	}
+	
+	/* 识别二维码 */
+	function qrcodeAction(){
+		$base64 = $this->request->get('base64');
+		// 上传
+		$dir = 'upload/';
+		$up = Upload::base64($dir,$base64);
+		$file = $dir.$up['file'];
+		// 处理
+		$url = shell_exec('zbarimg -q '.$file);
+		$url = ltrim($url,'QR-Code:');
+		$url = rtrim($url,"\n");
+		// 删除缓存
+		unlink($file);
+		return self::getJSON(['code'=>0,'url'=>$url]);
+	}
 
 }

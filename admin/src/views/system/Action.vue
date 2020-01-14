@@ -6,7 +6,7 @@
     <!-- 内容 -->
     <el-row class="body">
       <el-table :data="pageData.list" stripe @selection-change="getSelect">
-        <el-table-column type="selection" width="40"></el-table-column>
+        <el-table-column type="selection" width="45"></el-table-column>
         <el-table-column prop="id" label="ID" width="50"></el-table-column>
         <el-table-column prop="name" label="名称" width="80"></el-table-column>
         <el-table-column prop="action" label="命名" width="80"></el-table-column>

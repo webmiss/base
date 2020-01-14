@@ -9,11 +9,23 @@ use app\library\Wechat;
 use app\library\Socket;
 use app\library\baidu\Ai;
 
+use app\library\Safety;
+
 class IndexController extends Base{
 
 	/* 首页 */
 	function indexAction(){
 		return self::getJSON(['code'=>0]);
+	}
+
+	/* 加密解密 */
+	function safetyAction(){
+		echo $token = Safety::encode(['uid'=>1,'data'=>['uname'=>'admin','name'=>'管理员']],$this->config->key);
+		echo '<br>';
+		print_r(strlen($token));
+		echo '<br>';
+		$res = Safety::decode('6zxYk0evJ5khQxFTYR9fYoQlurU5qNDstuURxuGnvvRmqZORkxANfiqCJjmWmhWwqXbv4NWOJbR0z76ssjLuqchh5UtQmCaC5HEyV1THeXwTX2j0riap5ciWR/Zj/Z+uknS27eQLNf1wd3y0MzAbpU2j9Mcqw5x87FUQc3uVHJmylHkmdhWO0TesMwD181UuAaFWSPgBcF4Z3tQ=',$this->config->key);
+		print_r($res);
 	}
 	
 	/* 错误代码 */
@@ -93,13 +105,10 @@ class IndexController extends Base{
 		if($type=='JSAPI'){
 			$data['trade_type'] = 'JSAPI';
 			// OpenID
-			echo $code = $this->request->get('code','string');
+			$code = $this->request->get('code','string');
 			$data['openid'] = Wechat::getOpenid($code);
-			self::bug($data);
 		}else if($type=='MWEB'){
 			$data['trade_type'] = 'MWEB';
-		}else if($type=='APP'){
-			$data['trade_type'] = 'APP';
 		}else{
 			return self::getJSON(['code'=>4000,'msg'=>'支付类型错误']);
 		}
@@ -111,16 +120,12 @@ class IndexController extends Base{
 		$data['notify_url'] = 'https://api.ynjici.com/api/index/wechatNotify';
 		// 统一下单
 		$prepay_id = Wechat::getUnifiedOrder($data);
-		if(!is_string($prepay_id)) return self::getJSON(['code'=>50000,'info'=>$prepay_id]);
-		// 小程序参数
-		if($type=='JSAPI'){
+		// 支付参数
+		if(is_string($prepay_id)){
 			$res = Wechat::getWappPay($prepay_id);
 			return self::getJSON(['code'=>0,'pay'=>$res]);
-		}else if($type=='APP'){
-			$res = Wechat::getAppPay($prepay_id);
-			return self::getJSON(['code'=>0,'pay'=>$res]);
 		}else{
-			return self::getJSON(['code'=>50000,'msg'=>$prepay_id]);
+			return self::getJSON(['code'=>50000,'info'=>$prepay_id]);
 		}
 	}
 

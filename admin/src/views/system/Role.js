@@ -75,7 +75,7 @@ export default {
     loadData(){
       const loading = this.$loading({text: '分页数据'});
       this.$ajax.post(
-        this.$config.apiUrl+'SysRole/list',
+        this.$config.apiUrl+'Sysrole/list',
         'token='+this.$storage.getItem('token')+'&page='+this.pageData.page+'&limit='+this.pageData.limit+'&data='+JSON.stringify(this.seaData.form)
       ).then((res)=>{
         loading.close();
@@ -102,7 +102,7 @@ export default {
       // 提交
       const loading = this.$loading({text: '正在添加'});
       this.$ajax.post(
-        this.$config.apiUrl+'SysRole/add',
+        this.$config.apiUrl+'Sysrole/add',
         'token='+this.$storage.getItem('token')+'&data='+JSON.stringify(this.addData.form)
       ).then((res)=>{
         loading.close();
@@ -123,7 +123,7 @@ export default {
       // 提交
       const loading = this.$loading({text: '正在更新'});
       this.$ajax.post(
-        this.$config.apiUrl+'SysRole/edit',
+        this.$config.apiUrl+'Sysrole/edit',
         'token='+this.$storage.getItem('token')+'&id='+this.editData.form.id+'&data='+JSON.stringify(this.editData.form)
       ).then((res)=>{
         loading.close();
@@ -144,7 +144,7 @@ export default {
       // 提交
       const loading = this.$loading({text: '正在删除'});
       this.$ajax.post(
-        this.$config.apiUrl+'SysRole/del',
+        this.$config.apiUrl+'Sysrole/del',
         'token='+this.$storage.getItem('token')+'&data='+this.delData.id
       ).then((res)=>{
         loading.close();
@@ -162,7 +162,7 @@ export default {
     /* 全部菜单 */
     allAction(){
       this.$ajax.post(
-        this.$config.apiUrl+'UserMain/getActionAll',
+        this.$config.apiUrl+'Usermain/getActionAll',
         'token='+this.$storage.getItem('token')
       ).then((res)=>{
         let d = res.data;
@@ -180,7 +180,7 @@ export default {
       this.permData.id = id;
       const loading = this.$loading({text: '更改状态'});
       this.$ajax.post(
-        this.$config.apiUrl+'SysRole/allMenus',
+        this.$config.apiUrl+'Sysrole/allMenus',
         'token='+this.$storage.getItem('token')
       ).then((res)=>{
         const d = res.data;
@@ -229,7 +229,7 @@ export default {
       this.permData.show=false;
       const loading = this.$loading({text: '编辑'});
       this.$ajax.post(
-        this.$config.apiUrl+'SysRole/perm',
+        this.$config.apiUrl+'Sysrole/perm',
         'token='+this.$storage.getItem('token')+'&id='+this.permData.id+'&perm='+perm
       ).then((res)=>{
         loading.close();

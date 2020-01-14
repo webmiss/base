@@ -22,7 +22,7 @@ const install = (Vue)=>{
       tel: /^[1]\d{10}$/,
       email: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/,
       vcode: /^\d{4}$/,
-      passwd: /^\w{6,16}$/,
+      passwd: /^[a-zA-Z0-9|_|@|-|*|&]{6,16}$/,
     }
     switch(name){
       case 'uname':

@@ -1,9 +1,9 @@
 {
     "@platforms" : [ "android", "iPhone", "iPad" ],
-    "id" : "H5B3D0B2B", /*应用的标识*/
-    "name" : "后台框架", /*应用名称，程序桌面图标名称*/
+    "id" : "H5F34D809", /*应用的标识*/
+    "name" : "济慈康复", /*应用名称，程序桌面图标名称*/
     "version" : {
-        "name" : "1.0.0", /*应用版本名称*/
+        "name" : "1.0.1", /*应用版本名称*/
         "code" : ""
     },
     "description" : "基础框架", /*应用描述信息*/
@@ -165,14 +165,14 @@
                         "settings-normal" : "", /*iPhone4设置页面程序图标，分辨率：29x29*/
                         "settings-retina" : "", /*iPhone4S/5/6设置页面程序图标，分辨率：58x58*/
                         "settings-retina8" : "", /*iPhone6Plus设置页面程序图标，分辨率：87x87*/
-                        "app@2x" : "",
-                        "app@3x" : "",
-                        "notification@2x" : "",
-                        "notification@3x" : "",
-                        "settings@2x" : "",
-                        "settings@3x" : "",
-                        "spotlight@2x" : "",
-                        "spotlight@3x" : ""
+                        "app@2x" : "res/icons/120x120.png",
+                        "app@3x" : "res/icons/180x180.png",
+                        "notification@2x" : "res/icons/40x40.png",
+                        "notification@3x" : "res/icons/60x60.png",
+                        "settings@2x" : "res/icons/58x58.png",
+                        "settings@3x" : "res/icons/87x87.png",
+                        "spotlight@2x" : "res/icons/80x80.png",
+                        "spotlight@3x" : "res/icons/120x120.png"
                     },
                     "ipad" : {
                         "normal" : "", /*iPad普通屏幕程序图标，分辨率：72x72*/
@@ -185,25 +185,25 @@
                         "spotlight-retina7" : "", /*iPad iOS7高分屏Spotlight搜索程序图标，分辨率：80x80*/
                         "settings-normal" : "", /*iPad设置页面程序图标，分辨率：29x29*/
                         "settings-retina" : "", /*iPad高分屏设置页面程序图标，分辨率：58x58*/
-                        "app" : "",
-                        "app@2x" : "",
-                        "notification" : "",
-                        "notification@2x" : "",
-                        "proapp@2x" : "",
-                        "settings" : "",
-                        "settings@2x" : "",
-                        "spotlight" : "",
-                        "spotlight@2x" : ""
+                        "app" : "res/icons/76x76.png",
+                        "app@2x" : "res/icons/152x152.png",
+                        "notification" : "res/icons/20x20.png",
+                        "notification@2x" : "res/icons/40x40.png",
+                        "proapp@2x" : "res/icons/167x167.png",
+                        "settings" : "res/icons/29x29.png",
+                        "settings@2x" : "res/icons/58x58.png",
+                        "spotlight" : "res/icons/40x40.png",
+                        "spotlight@2x" : "res/icons/80x80.png"
                     },
-                    "appstore" : ""
+                    "appstore" : "res/icons/1024x1024.png"
                 },
                 "android" : {
                     "mdpi" : "res/icons/48x48.png", /*普通屏程序图标，分辨率：48x48*/
                     "ldpi" : "res/icons/48x48.png", /*大屏程序图标，分辨率：48x48*/
-                    "hdpi" : "", /*高分屏程序图标，分辨率：72x72*/
-                    "xhdpi" : "", /*720P高分屏程序图标，分辨率：96x96*/
-                    "xxhdpi" : "", /*1080P 高分屏程序图标，分辨率：144x144*/
-                    "xxxhdpi" : ""
+                    "hdpi" : "res/icons/72x72.png", /*高分屏程序图标，分辨率：72x72*/
+                    "xhdpi" : "res/icons/96x96.png", /*720P高分屏程序图标，分辨率：96x96*/
+                    "xxhdpi" : "res/icons/144x144.png", /*1080P 高分屏程序图标，分辨率：144x144*/
+                    "xxxhdpi" : "res/icons/192x192.png"
                 }
             },
             "splashscreen" : {
@@ -224,13 +224,16 @@
                         "portrait-retina" : "", /*iPad高分屏竖屏图片，分辨率：1536x2008*/
                         "landscape" : "", /*iPad横屏启动图片，分辨率：1024x748*/
                         "landscape-retina" : "", /*iPad高分屏横屏启动图片，分辨率：2048x1496*/
-                        "portrait7" : "", /*iPad iOS7竖屏启动图片，分辨率：768x1024*/
-                        "portrait-retina7" : "", /*iPad iOS7高分屏竖屏图片，分辨率：1536x2048*/
-                        "landscape7" : "", /*iPad iOS7横屏启动图片，分辨率：1024x768*/
-                        "landscape-retina7" : "", /*iPad iOS7高分屏横屏启动图片，分辨率：2048x1536*/
-                        "portrait-1112h@2x" : "",
-                        "portrait-1194h@2" : "",
-                        "portrait-1366h@2x" : ""
+                        "portrait7" : "res/screen/ipad(1668x2388).png", /*iPad iOS7竖屏启动图片，分辨率：768x1024*/
+                        "portrait-retina7" : "res/screen/ipad(1668x2388).png", /*iPad iOS7高分屏竖屏图片，分辨率：1536x2048*/
+                        "landscape7" : "res/screen/ipad(1668x2388).png", /*iPad iOS7横屏启动图片，分辨率：1024x768*/
+                        "landscape-retina7" : "res/screen/ipad(2388x1668).png", /*iPad iOS7高分屏横屏启动图片，分辨率：2048x1536*/
+                        "portrait-1112h@2x" : "res/screen/ipad(1668x2388).png",
+                        "portrait-1194h@2" : "res/screen/ipad(1668x2388).png",
+                        "portrait-1366h@2x" : "",
+                        "landscape-1194h@2x" : "res/screen/ipad(2388x1668).png",
+                        "landscape-1112h@2x" : "res/screen/ipad(2388x1668).png",
+                        "landscape-1366h@2x" : ""
                     }
                 },
                 "android" : {
@@ -238,7 +241,7 @@
                     "ldpi" : "", /*大屏启动图片，分辨率：320x442*/
                     "hdpi" : "", /*高分屏启动图片，分辨率：480x762*/
                     "xhdpi" : "", /*720P高分屏启动图片，分辨率：720x1242*/
-                    "xxhdpi" : "" /*1080P高分屏启动图片，分辨率：1080x1882*/
+                    "xxhdpi" : "res/screen/ipad(1668x2388).png" /*1080P高分屏启动图片，分辨率：1080x1882*/
                 }
             },
             "plugins" : {

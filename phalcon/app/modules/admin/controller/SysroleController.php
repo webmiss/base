@@ -120,14 +120,14 @@ class SysRoleController extends UserBase {
     return self::getJSON(['code'=>0,'menus'=>$data,'id'=>$allID]);
   }
   // 递归菜单
-  static private function getMenu($fid=0){
+	static private function getMenu($fid=0){
     $data=[];
     $M = isset(self::$menus[$fid])?self::$menus[$fid]:[];
-    foreach($M as $val){
+		foreach($M as $val){
       $val['menus'] = self::getMenu($val['id']);
-      $data[] = $val;
-    }
-    return $data;
+			$data[] = $val;
+		}
+		return $data;
   }
 
   /* 编辑权限 */

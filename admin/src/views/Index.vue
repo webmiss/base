@@ -1,5 +1,6 @@
 <template>
   <div class="in_body flex">
+
     <!-- Left -->
     <div class="in_left">
       <div class="flex">
@@ -21,18 +22,18 @@
         <el-card shadow="hover" class="cut">
           <div slot="header"><span>数据统计</span></div>
           <div class="flex">
-            <div class="in_total"><p>注册用户</p><h2 class="c_main">0</h2></div>
-            <div class="in_total"><p>订单数</p><h2 class="c_main">0</h2></div>
+            <div class="in_total"><p>注册用户</p><h2 class="c_main">{{ total.user }}</h2></div>
+            <div class="in_total"><p>订单数</p><h2 class="c_main">{{ total.order }}</h2></div>
           </div>
           <div class="flex">
-            <div class="in_total"><p>总收入</p><h2 class="c_main">0</h2></div>
-            <div class="in_total"><p>今日交易量</p><h2 class="c_main">0</h2></div>
+            <div class="in_total"><p>总收入</p><h2 class="c_main">{{ total.amount }}</h2></div>
+            <div class="in_total"><p>今日交易量</p><h2 class="c_main">{{ total.volume }}</h2></div>
           </div>
         </el-card>
       </div>
       <!-- 图表统计 -->
       <el-card shadow="hover">
-        <div slot="header"><span>图表统计</span></div>
+        <div slot="header"><span>销量统计</span></div>
         <div id="chart" class="in_chart"></div>
       </el-card>
       <div class="flex">
@@ -53,19 +54,19 @@
     <div class="in_right">
       <!-- 效益报告 -->
       <el-card shadow="hover">
-        <div slot="header"><span>本月效益报告</span></div>
+        <div slot="header"><span>今日比例</span></div>
         <div class="in_ratio">
-          <div class="title"><label>订单转化率</label><span> (增长10%)</span></div>
-          <el-progress :percentage="60"></el-progress>
-          <div class="title"><label>任务计划</label><span> (下降20%)</span></div>
-          <el-progress :percentage="80" color="#FF6600"></el-progress>
+          <div class="title"><label>转化率 ({{ ratio.s1.num }}人)</label></div>
+          <el-progress :percentage="ratio.s1.ratio"></el-progress>
+          <div class="title"><label>成交率 ({{ ratio.s2.num }}人)</label></div>
+          <el-progress :percentage="ratio.s2.ratio" color="#f56c6c"></el-progress>
         </div>
       </el-card>
       <!-- 数据监控 -->
       <el-card shadow="hover">
-        <div slot="header"><span>数据监控</span></div>
+        <div slot="header"><span>完成率 ({{ ratio.s3.num }}元)</span></div>
         <div class="in_trend">
-          <el-progress type="circle" :percentage="30"></el-progress>
+          <el-progress type="circle" :percentage="ratio.s3.ratio"></el-progress>
         </div>
       </el-card>
       <!-- 我的消息 -->
@@ -74,7 +75,7 @@
         <el-timeline v-if="msg.length!=0">
           <el-timeline-item v-for="(val,key) in msg" :key="key" :timestamp="val.ctime" type="primary" placement="top">
               <el-card>
-                <el-tag type="primary" size="mini">{{ val.title }}</el-tag>
+                <el-tag :type="val.is_new==0?'primary':'info'" size="mini">{{ val.title }}</el-tag>
                 <div class="msg_ct">{{ val.content }}</div>
               </el-card>
           </el-timeline-item>
@@ -100,7 +101,7 @@
 
 /* 响应式 */
 @media screen and ( max-width: 990px ) {
-  .in_left{width: 100%;}
+	.in_left{width: 100%;}
   .in_left .cut{width: 100%;}
   .in_right{width: 100%;}
 }

@@ -5,7 +5,7 @@
       <el-form :model="form" :label-width="LabelWidth">
         <el-form-item label="头像">
           <label for="logo" class="upload bgimg radius" v-if="!form.img"></label>
-          <label for="logo" class="upload bgimg radius bgcover" v-else :style="{backgroundImage:'url('+$config.baseUrl+form.img+')'}"></label>
+          <label for="logo" class="upload bgimg radius bgcover" v-else :style="{backgroundImage:'url('+form.img+')'}"></label>
           <input type="file" id="logo" @change="upImage($event,'img')" class="hide">
         </el-form-item>
         <el-form-item label="昵称">
@@ -36,7 +36,7 @@
 </template>
 
 <style scoped>
-.upload{display: inline-block; width: 80px; height: 80px;}
+.upload{display: inline-block; width: 80px; height: 80px; border: #F2F2F2 1px solid;}
 </style>
 
 <script src="./UserInfo.js"></script>

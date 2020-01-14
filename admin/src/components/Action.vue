@@ -23,7 +23,7 @@ export default {
     /* 动作菜单 */
     getAction(url){
       this.$ajax.post(
-        this.$config.apiUrl+'UserMain/getMenusAction',
+        this.$config.apiUrl+'Usermain/getMenusAction',
         'token='+this.$storage.getItem('token')+'&url='+url
       ).then((res)=>{
         const d = res.data;

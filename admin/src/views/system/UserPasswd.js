@@ -29,7 +29,7 @@ export default {
       // 提交
       const loading = this.$loading({text: '提交数据'});
       this.$ajax.post(
-        this.$config.apiUrl+'UserPasswd/edit',
+        this.$config.apiUrl+'Userpasswd/edit',
         'token='+this.$storage.getItem('token')+'&passwd='+passwd+'&passwd1='+passwd1
       ).then((res)=>{
         loading.close();

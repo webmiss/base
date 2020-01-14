@@ -1,6 +1,10 @@
 import Env from '@/env'
+import Inc from '@/library/Inc'
 import Plus from '@/library/Plus'
-import Socket from '@/library/Socket'
+// Scroll
+import BScroll from '@better-scroll/core'
+import Pullup from '@better-scroll/pull-up'
+BScroll.use(Pullup);
 
 export default {
   name: 'APP',
@@ -14,19 +18,32 @@ export default {
       upDateColor: Env.upDateColor,
       // 登录数据
       login: {uname:'',passwd:'',subText:'登录',dis:false},
-      // 系统信息
-      system: {},
       // 左侧菜单
       menus: [],
       // 新消息
+      msgNew: 0,
       msgInterval: null,
+      // 扫码
+      scan:{show:false},
+      scanData:{show:false,active:'one',title:'今日患者医嘱( '+Inc.getDay(0)+' )',uid:'',pid:'',info:'',data:{}},
+      scanTimeout:null,
+      // 会诊、转诊
+      msgData:{show:false,scroll:null,y:0,title:'会诊/转诊',content:'',gid:'',data:[],group:[]},
+      msgGroup:{show:false,class:[],add:{uid:'',title:''}},
     }
   },
   mounted(){
     // 初始化
-    setTimeout(()=>{this.init()},3000);
+    setTimeout(()=>{this.init();},3000);
     // 播放声音
-    document.body.ontouchstart = ()=>{document.createElement('audio');}
+    document.body.onclick = ()=>{
+      let el = document.getElementById('msgAudio');
+      if(!el){
+        let audio = document.createElement('audio');
+        audio.setAttribute('id','msgAudio');
+        document.body.appendChild(audio);
+      }
+    }
     // 默认菜单
     this.isCollapse = this.$storage.getItem('isCollapse')=='true'?true:false;
     this.defaultMenu = this.$storage.getItem('defaultMenu')?this.$storage.getItem('defaultMenu'):'3';
@@ -40,13 +57,13 @@ export default {
     /* 初始化 */
     init(){
       try{
-        plus
+        plus;
         // 竖屏
         // plus.screen.lockOrientation("portrait-primary");
         // 状态栏
         plus.navigator.setStatusBarStyle('dark');
         plus.navigator.setStatusBarBackground(Env.themeColor);
-        Env.statusBar.height = Plus.getStatusBarHeight()+'px';
+        this.$store.state.statusBar.height = Plus.getStatusBarHeight()+'px';
         // Android返回键
         let backcount = 0;
         let webview = plus.webview.currentWebview();
@@ -67,12 +84,7 @@ export default {
         // 更新
         if(Env.update) this.isUpdate();
       }catch(e){
-        // 浏览器后退
-        // window.history.pushState('forward', null, '#');
-        // window.history.forward(1);
-        // window.addEventListener("popstate", (e)=>{
-        //   this.$router.go(-1);
-        // });
+        console.log('plus: 不兼容');
       }
     },
 
@@ -92,27 +104,88 @@ export default {
       if(!token) return false;
       this.isLogin = true;
       this.token((res)=>{
-        if(res.data.code!=0){
+        let d = res.data;
+        if(d.code!=0){
           return this.logout();
         }else{
+          // 用户信息
+          this.$store.state.uinfo = d.uinfo;
+          this.$storage.setItem('uinfo',JSON.stringify(d.uinfo));
           // 获取菜单
           this.getMenus();
-          this.$store.state.uinfo = res.data.uinfo;
           /* 消息推送 */
-          Socket.start();
-          clearInterval(this.msgInterval);
-          this.msgInterval = setInterval(()=>{
-            // 刷新数量
-            this.$store.state.msgNum = this.$storage.getItem('msgNew');
-          },1000);
+          this.socketStart();
         }
       });
+    },
+
+    /* Socket */
+    socketStart(){
+      this.$ajax.post(
+        this.$config.apiUrl+'Usermain/centreToken','token='+this.$storage.getItem('token')
+      ).then((res)=>{
+        if(res.data.code==0) this.socket(res.data.token,res.data.uid);
+      });
+    },
+    socket(token,uid){
+      this.$store.state.socket = new WebSocket(Env.socketServer+'?token='+token+'&uid='+uid);
+      /* 链接 */
+      this.$store.state.socket.onopen = ()=>{
+        console.log('消息系统');
+        // 心跳包
+        clearInterval(this.heartbeat);
+        this.heartbeat = setInterval(()=>{
+          try{ this.$store.state.socket.send(JSON.stringify({type:''})); }catch(e){ this.socketStart(); }
+        },10000);
+        // 消息组(发送)
+        this.$store.state.socket.send(JSON.stringify({type:'group'}));
+      }
+      /* 关闭 */
+      this.$store.state.socket.onclose = ()=>{
+        console.log('消息关闭');
+        setTimeout(()=>{ this.socketStart(); },10000);
+      }
+      /* 接收 */
+      this.$store.state.socket.onmessage = (e)=>{
+        const msg = JSON.parse(e.data);
+        // 消息组
+        if(msg.code==0 && msg.type=='group'){
+          this.msgData.group = msg.data;
+          // 消息数
+          this.getMsgNum();
+        }else if(msg.code==0 && msg.type=='msg'){
+          // 系统消息
+          if(msg.gid==1){
+            msg.data.img = this.$config.baseUrl+this.$store.state.system.logo;
+            if(msg.data.title){
+              // 提示
+              Plus.notify(msg.data.title,msg.data.content,(obj)=>{
+                obj.close();
+              });
+            }
+          }
+          // 追加消息
+          this.msgData.group[''+msg.gid].data.push(msg.data);
+          if(!this.msgData.show || msg.gid!=this.msgData.gid) this.msgData.group[''+msg.gid].num += 1;
+          // 消息数
+          this.getMsgNum();
+          // 刷新信息
+          this.reMsgScroll();
+        }
+      }
+    },
+    /* 消息数 */
+    getMsgNum(){
+      const data = this.msgData.group;
+      let num = 0;
+      for(let i in data) num += data[i].num;
+      this.$store.state.msgNum = num;
     },
 
     /* 获取菜单 */
     getMenus(){
       this.$ajax.post(
-        this.$config.apiUrl+'UserMain/getMenus','token='+this.$storage.getItem('token')
+        this.$config.apiUrl+'Usermain/getMenus','token='+this.$storage.getItem('token')
       ).then((res)=>{
         let d = res.data;
         if(d.code==0) this.menus = d.menus;
@@ -168,7 +241,6 @@ export default {
           this.isLogin = true;
           this.$storage.setItem('token',d.token);
           this.$storage.setItem('uname',uname);
-          this.$storage.setItem('uinfo',JSON.stringify(d.uinfo));
           // 刷新
           this.loginVerify();
         }
@@ -258,6 +330,95 @@ export default {
         });
       }
     },
+
+    /* 消息 */
+    openMsg(){
+      this.msgData.show = true;
+      // 刷新频道
+      if(this.msgData.gid) this.getChannel();
+      // 事件
+      setTimeout(()=>{
+        let el = this.$refs.msgSend;
+        document.onkeydown = (e)=>{
+          if(e.ctrlKey && e.keyCode==13){ this.msgData.content+='\n'; return false; }
+          else if(e.keyCode==13){ this.sendMsg(); return false; }
+        };
+      },300);
+    },
+    /* 打开信息 */
+    getMsg(gid,row){
+      this.msgData.gid = gid;
+      this.msgData.title = row.name;
+      this.msgData.data = row.data;
+      // 消息数
+      this.msgData.group[gid].num = 0;
+      this.getMsgNum();
+      // 切换频道
+      this.getChannel();
+    },
+    /* 发送消息 */
+    sendMsg(){
+      if(!this.msgData.gid) return this.$message.error('请选择组');
+      if(!this.msgData.content) return this.$message.error('请输入消息');
+      // 数据
+      const data = {
+        gid:this.msgData.gid, fid:this.$store.state.uinfo.uid, content:this.msgData.content, img:this.$store.state.uinfo.img, ctime:Inc.getDate()
+      };
+      // 发送
+      this.$store.state.socket.send(JSON.stringify({
+        type:'msg', gid:this.msgData.gid, data:data
+      }));
+      // 系统消息
+      if(this.msgData.gid==1){
+        this.msgData.group['1'].data.push(data);
+      }
+      // 重置内容
+      this.msgData.content = '';
+    },
+
+    /* 创建组 */
+    addGroup(){
+      console.log(123);
+      this.msgGroup.show = true;
+    },
+    subGroup(){
+      console.log('提交组');
+    },
+
+    /* 刷新消息 */
+    reMsgScroll(){
+      setTimeout(()=>{
+        this.msgData.scroll.refresh();
+        let y = this.$refs.msgContent.scrollHeight;
+        let to = y-this.msgData.y;
+        this.msgData.y = y;
+        if(this.msgData.scroll.maxScrollY<0) this.msgData.scroll.scrollBy(0,-to,0);
+      },300);
+    },
+    /* 切换频道 */
+    getChannel(){
+      setTimeout(()=>{
+        if(!this.msgData.scroll){
+          this.msgData.scroll = new BScroll(this.$refs.msgMain,{click:true,pullUpLoad:true});
+          /* 下拉刷新 */
+          this.msgData.scroll.on('touchEnd',(res) =>{
+            if(res.y>30){console.log('下拉');}
+          });
+        }
+        // 重置高度
+        this.msgData.scroll.refresh();
+        // 滚动底部
+        let y = this.$refs.msgContent.scrollHeight;
+        this.msgData.scroll.scrollBy(0,-y,0);
+        // 保存位置
+        this.msgData.y = y;
+      },300);
+    },
+    /* 消息类型 */
+    getMsgType(num){
+      const type = ['消息','转诊'];
+      return type[num];
+    }
 
   }
 }

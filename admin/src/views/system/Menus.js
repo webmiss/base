@@ -59,7 +59,7 @@ export default {
     loadData(){
       const loading = this.$loading({text: '分页数据'});
       this.$ajax.post(
-        this.$config.apiUrl+'SysMenus/list',
+        this.$config.apiUrl+'Sysmenus/list',
         'token='+this.$storage.getItem('token')
       ).then((res)=>{
         loading.close();
@@ -97,7 +97,7 @@ export default {
       this.addData.show=false;
       const loading = this.$loading({text: '正在添加'});
       this.$ajax.post(
-        this.$config.apiUrl+'SysMenus/add',
+        this.$config.apiUrl+'Sysmenus/add',
         'token='+this.$storage.getItem('token')+'&data='+JSON.stringify(this.addData.form)
       ).then((res)=>{
         loading.close();
@@ -144,7 +144,7 @@ export default {
       this.editData.show=false;
       const loading = this.$loading({text: '正在更新'});
       this.$ajax.post(
-        this.$config.apiUrl+'SysMenus/edit',
+        this.$config.apiUrl+'Sysmenus/edit',
         'token='+this.$storage.getItem('token')+'&id='+this.editData.form.id+'&data='+JSON.stringify(this.editData.form)
       ).then((res)=>{
         loading.close();
@@ -165,7 +165,7 @@ export default {
       // 提交
       const loading = this.$loading({text: '正在删除'});
       this.$ajax.post(
-        this.$config.apiUrl+'SysMenus/del',
+        this.$config.apiUrl+'Sysmenus/del',
         'token='+this.$storage.getItem('token')+'&data='+JSON.stringify(this.delData.id)
       ).then((res)=>{
         loading.close();
@@ -183,7 +183,7 @@ export default {
     /* 全部菜单 */
     allAction(){
       this.$ajax.post(
-        this.$config.apiUrl+'UserMain/getActionAll',
+        this.$config.apiUrl+'Usermain/getActionAll',
         'token='+this.$storage.getItem('token')
       ).then((res)=>{
         let d = res.data;
@@ -204,7 +204,7 @@ export default {
     },
     /* 获取分类 */
     getClass(type,callback){
-      this.$ajax.post(this.$config.apiUrl+'SysMenus/getClass/'+type,'token='+this.$storage.getItem('token')).then(callback);
+      this.$ajax.post(this.$config.apiUrl+'Sysmenus/getClass/'+type,'token='+this.$storage.getItem('token')).then(callback);
     },
 
   }

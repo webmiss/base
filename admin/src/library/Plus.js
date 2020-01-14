@@ -42,9 +42,9 @@ export default {
     if(Env.msgRead==0) return;
     // 百度Token
     axios.post(Env.apiUrl+'index/baiduToken').then((res)=>{
-      const msgAudio = document.getElementById('msg');
-      let text = Env.msgContent=='title'?title:content;
-      msgAudio.src = '//tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
+      const msgAudio = new Audio();
+      const text = Env.msgContent=='title'?title:content;
+      msgAudio.src = 'https://tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
       setTimeout(()=>{
         try{
           if(plus.os.name=='iOS'){
@@ -165,7 +165,7 @@ export default {
       let camera = plus.camera.getCamera();
       camera.captureImage(function(url){
         plus.io.resolveLocalFileSystemURL(url, function (entry) {
-          callback(url,entry);
+          entry.file((file)=>{ callback(file); });
         },(e)=>{
           console.log("读取拍照失败");
         });

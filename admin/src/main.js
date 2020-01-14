@@ -3,7 +3,6 @@ import router from './router'
 import store from './store'
 
 import Config from './config'
-import Fun from './function'
 import axios from 'axios'
 import QRCode from 'qrcode'
 import ElementUI from 'element-ui'

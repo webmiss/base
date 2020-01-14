@@ -11,8 +11,8 @@ class Upload{
   // 上传处理
   static function file($path){
     $upName = 'up';
-    $type = ['jpg','jpeg','png','gif','mov','mp4','wav','mp3'];
-    $ext = substr(strrchr($_FILES[$upName]['name'],'.'),1);
+		$type = ['jpg','png','gif','mov','mp4','wav','mp3'];
+		$ext = substr(strrchr($_FILES[$upName]['name'],'.'),1);
     $file = date('YmdHis').rand(1000,9999).'.'.$ext;
     if(in_array($ext,$type)){
       // 创建目录
@@ -36,7 +36,7 @@ class Upload{
     // 创建目录
     if (!file_exists($path)) mkdir($path,0777,true);
     // 文件名
-    $ext = 'png';
+    $ext = 'jpg';
     $file = $prefix.date('YmdHis').rand(1000,9999).'.'.$ext;
     // 保存文件
     if(file_put_contents($path.$file,base64_decode($base64))){

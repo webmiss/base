@@ -1,14 +1,14 @@
 <template>
   <div>
-
+    <!-- 搜索 -->
+    <el-row class="tree_search">
+      <el-input v-model="getSelect" placeholder="搜索菜单名称"></el-input>
+    </el-row>
     <!-- 功能菜单 -->
     <Action url="SysMenus" @action="openAction"></Action>
     <!-- 内容 -->
     <el-row class="body">
       <div class="body_tree">
-        <el-row style="max-width: 240px;">
-          <el-input v-model="getSelect" placeholder="搜索菜单名称"></el-input>
-        </el-row>
         <div class="flex tree_node_title">
           <div>菜单名称</div>
           <div class="flex">
@@ -114,6 +114,7 @@
 <style scoped>
 .body{overflow-x: auto;}
 .body_tree{min-width: 800px;}
+.tree_search{position: absolute; z-index: 99; right: 15px; margin-top: 15px;}
 </style>
 
 <script src="./Menus.js"></script>

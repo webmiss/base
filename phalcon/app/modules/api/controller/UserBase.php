@@ -14,10 +14,9 @@ class UserBase extends Base{
   function initialize(){
     // Token验证
     $token = trim($this->request->get('token'));
-    if(strlen($token)<64) return self::error(1003);
     $res = self::verToken($token);
-    if($res['code']!=0) return self::error(1001);
-    self::$token = self::getToken($token);
+    if(!$res) return self::error(1001);
+    self::$token = $res;
   }
 
 }

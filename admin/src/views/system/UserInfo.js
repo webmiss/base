@@ -16,7 +16,7 @@ export default {
     loadData(){
       const loading = this.$loading({text: '分页数据'});
       this.$ajax.post(
-        this.$config.apiUrl+'UserInfo/list',
+        this.$config.apiUrl+'Userinfo/list',
         'token='+this.$storage.getItem('token')
       ).then((res)=>{
         loading.close();
@@ -34,7 +34,7 @@ export default {
       const loading = this.$loading({text: '提交数据'});
       const data = JSON.stringify(this.form);
       this.$ajax.post(
-        this.$config.apiUrl+'UserInfo/edit',
+        this.$config.apiUrl+'Userinfo/edit',
         'token='+this.$storage.getItem('token')+'&data='+data
       ).then((res)=>{
         loading.close();
@@ -58,7 +58,7 @@ export default {
       Plus.readerCompress(fileObj,perm,(base64)=>{
         const loading = this.$loading({text: '提交数据'});
         this.$ajax.post(
-          this.$config.apiUrl+'UserInfo/upImage',
+          this.$config.apiUrl+'Userinfo/upImage',
           'token='+this.$storage.getItem('token')+'&base64='+base64
         ).then((res)=>{
           loading.close();

@@ -57,14 +57,14 @@ export default {
       clearInterval(this.msgInterval);
       this.msgInterval = setInterval(()=>{
         // this.start();
-        window.location.reload();
+        // window.location.reload();
       },10000);
     }
   },
 
   /* 已读消息 */
   closeMsg(id){
-    Vue.prototype.$ajax.post(Vue.prototype.$config.apiUrl+'UserMain/msgNewState','token='+Vue.prototype.$storage.getItem('token')+'&id='+id).then((res)=>{
+    Vue.prototype.$ajax.post(Vue.prototype.$config.apiUrl+'Usermain/msgNewState','token='+Vue.prototype.$storage.getItem('token')+'&id='+id).then((res)=>{
       // 刷新消息数
       Vue.prototype.$obj.socket.send(JSON.stringify({type:'newMsg'}));
     });

@@ -1,18 +1,22 @@
 <?php
 return [
-  'title'=>'WebMIS',
-  'version'=>'0.0.1',
-  'key'=>md5('demo.webmis'),
+  'title'=>'基础系统',
+  'version'=>'1.0.0',
+  'key'=>'95ad3c345b46af1b7104568155af36f8',
   'token_time'=>7*24*3600,
   'login_num'=>50,
   'login_num_time'=>12*3600,
+  /* 数据中心 */
+  'centre_url'=>'https://data.webmis.vip/api/',
+  'centre_id'=>'base@webmis.vip',
+  'centre_secret'=>'00fb626bbabfdd903231acf6639cddfb',
   /* 数据库 */
   'database' => [
     'adapter'=>'Mysql',
-    'host'=>'localhost',
+    'host'=>'39.108.152.251',
     'username'=>'webmis',
     'password'=>'webmis',
-    'dbname'=>'mvc_vue',
+    'dbname'=>'base',
     'charset'=>'utf8',
   ],
   /* 缓存 */
@@ -31,7 +35,7 @@ return [
   /* Socket */
   'socket_ip'=> '0.0.0.0',
   'socket_port'=> 9010,
-  'socket_client'=>'ws://39.108.152.251:9010',
+  'socket_client'=>'ws://127.0.0.1:9010',
   /* 百度AI */
   'baidu_appKey'=>'fFu2i5oNALIrRQ1KAhAvV5v5',
   'baidu_appSecret'=>'AQsHFNfgugbGErIdu7Dwxap6Pvreiu0z',

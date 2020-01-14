@@ -32,7 +32,7 @@
 </template>
 
 <style scoped>
-.upload{display: inline-block; width: 80px; height: 80px;}
+.upload{display: inline-block; width: 80px; height: 80px; border: #F2F2F2 1px solid;}
 </style>
 
 <script src="./Config.js"></script>

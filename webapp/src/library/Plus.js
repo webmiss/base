@@ -165,7 +165,7 @@ export default {
       let camera = plus.camera.getCamera();
       camera.captureImage(function(url){
         plus.io.resolveLocalFileSystemURL(url, function (entry) {
-          callback(url,entry);
+          entry.file((file)=>{ callback(file); });
         },(e)=>{
           console.log("读取拍照失败");
         });

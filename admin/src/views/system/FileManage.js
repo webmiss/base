@@ -24,7 +24,7 @@ export default {
     /* 加载数据 */
     loadData(){
       this.$ajax.post(
-        this.$config.apiUrl+'SysFileManage/list',
+        this.$config.apiUrl+'Filemanage/list',
         'token='+this.$storage.getItem('token')+'&path='+this.path
       ).then((res)=>{
         const d = res.data;
@@ -133,7 +133,7 @@ export default {
     upFile(data){
       this.loaded = '10%';
       this.$ajax.post(
-        this.$config.apiUrl+'SysFileManage/upFile', data,
+        this.$config.apiUrl+'Filemanage/upFile', data,
         {onUploadProgress:(event)=>{
           // 上传进度
           let complete = (event.loaded/event.total*100 | 0);
@@ -186,7 +186,7 @@ export default {
       // 提交
       const loading = this.$loading({text: '正在提交'});
       this.$ajax.post(
-        this.$config.apiUrl+'SysFileManage/'+action,
+        this.$config.apiUrl+'Filemanage/'+action,
         'token='+this.$storage.getItem('token')+parameter,
         type
       ).then((res)=>{

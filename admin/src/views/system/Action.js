@@ -70,7 +70,7 @@ export default {
     loadData(){
       const loading = this.$loading({text: '分页数据'});
       this.$ajax.post(
-        this.$config.apiUrl+'SysMenusAction/list',
+        this.$config.apiUrl+'Sysmenusaction/list',
         'token='+this.$storage.getItem('token')+'&page='+this.pageData.page+'&limit='+this.pageData.limit+'&data='+JSON.stringify(this.seaData.form)
       ).then((res)=>{
         loading.close();
@@ -97,7 +97,7 @@ export default {
       // 提交
       const loading = this.$loading({text: '正在添加'});
       this.$ajax.post(
-        this.$config.apiUrl+'SysMenusAction/add',
+        this.$config.apiUrl+'Sysmenusaction/add',
         'token='+this.$storage.getItem('token')+'&data='+JSON.stringify(this.addData.form)
       ).then((res)=>{
         loading.close();
@@ -118,7 +118,7 @@ export default {
       // 提交
       const loading = this.$loading({text: '正在更新'});
       this.$ajax.post(
-        this.$config.apiUrl+'SysMenusAction/edit',
+        this.$config.apiUrl+'Sysmenusaction/edit',
         'token='+this.$storage.getItem('token')+'&id='+this.editData.form.id+'&data='+JSON.stringify(this.editData.form)
       ).then((res)=>{
         loading.close();
@@ -139,7 +139,7 @@ export default {
       // 提交
       const loading = this.$loading({text: '正在删除'});
       this.$ajax.post(
-        this.$config.apiUrl+'SysMenusAction/del',
+        this.$config.apiUrl+'Sysmenusaction/del',
         'token='+this.$storage.getItem('token')+'&data='+this.delData.id
       ).then((res)=>{
         loading.close();
