@@ -8,7 +8,7 @@
 					<div class="flex top_logo">
 						<h1>W</h1><h2>EBMIS</h2>
 					</div>
-					<ul class="top_nav flex">
+					<ul class="top_nav flex_left">
 						<li><router-link to="/" :class="$route.path=='/'?'an':''">首页</router-link></li>
 						<li><router-link to="/doc" :class="$route.path=='/doc'?'an':''">文档</router-link></li>
 					</ul>
@@ -57,12 +57,12 @@ input:focus, textarea:focus{box-shadow: 0 0 6px rgba(153, 153, 153, 0.7);}
 .top_logo h2{padding: 0 5px; color: #6FB737; font-weight: 300;}
 .top_logo:hover h1{background-color: #FF6600; color: #FFF; transform: rotate(360deg);}
 
-.top_nav{overflow: hidden;}
+.top_nav{overflow: hidden; width: calc(100% - 140px);}
 .top_nav li{padding: 0 25px;}
 .top_nav a{color: #999;}
 .top_nav .an{color: #6FB737;}
 
-.top_right{position: absolute; right: 0; background-color: #24292E; color: #666;}
+.top_right{position: absolute; right: 0; top: 0; background-color: #24292E; color: #666;}
 .top_right a{padding: 0 8px; margin: 0 8px;}
 .top_right .el-icon-menu{font-size: 20px; line-height: 60px;}
 
@@ -109,6 +109,7 @@ input:focus, textarea:focus{box-shadow: 0 0 6px rgba(153, 153, 153, 0.7);}
 }
 @media screen and ( max-width: 420px ) {
 	.top_logo h2{display: none;}
+	.top_nav{width: calc(100% - 50px);}
 }
 @media screen and ( max-width: 360px ) {
 	.top_right .github{display: none;}
