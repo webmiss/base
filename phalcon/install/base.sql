@@ -15,6 +15,12 @@ CREATE TABLE `sys_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统配置';
 
+INSERT INTO `sys_config` (`id`, `title`, `name`, `val`, `utime`) VALUES
+(1,	'LOGO',	'logo',	'upload/admin/logo201911202231073347.png',	NULL),
+(2,	'系统名称',	'title',	'基础系统',	NULL),
+(3,	'网站域名',	'http',	'webmis.vip',	NULL),
+(4,	'版权信息',	'copy',	'2020 WebMIS MIT license',	NULL),
+(5,	'登录背景',	'login_bg',	'upload/admin/bg201911202224218524.png',	NULL);
 
 DROP TABLE IF EXISTS `sys_menus`;
 CREATE TABLE `sys_menus` (
@@ -56,6 +62,16 @@ CREATE TABLE `sys_menus_action` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='动作菜单';
 
+INSERT INTO `sys_menus_action` (`id`, `name`, `action`, `perm`, `ico`) VALUES
+(1,	'全部',	'list',	'1',	'el-icon-refresh'),
+(2,	'搜索',	'sea',	'2',	'el-icon-search'),
+(3,	'添加',	'add',	'4',	'el-icon-plus'),
+(4,	'编辑',	'edit',	'8',	'el-icon-edit'),
+(5,	'删除',	'del',	'16',	'el-icon-delete'),
+(6,	'打印',	'print',	'32',	'el-icon-printer'),
+(7,	'导出',	'exp',	'64',	'el-icon-d-arrow-right'),
+(8,	'导入',	'imp',	'128',	'el-icon-d-arrow-left'),
+(9,	'图表',	'chart',	'256',	'el-icon-picture');
 
 DROP TABLE IF EXISTS `user_perm`;
 CREATE TABLE `user_perm` (
@@ -69,6 +85,8 @@ CREATE TABLE `user_perm` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限表';
 
+INSERT INTO `user_perm` (`id`, `uid`, `utime`, `perm`, `role`, `state_admin`, `state_app`) VALUES
+(1,	1,	NULL,	'1:0 2:0 3:1 4:19 5:31 6:31 7:0 8:1 9:23 10:31 11:1 12:1 13:1',	'0',	'1',	'1');
 
 DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role` (
@@ -79,5 +97,7 @@ CREATE TABLE `user_role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色权限';
 
+INSERT INTO `user_role` (`id`, `role`, `utime`, `perm`) VALUES
+(1,	'普通用户',	NULL,	'1:0 3:1 4:19 11:1 12:1');
 
--- 2020-01-14 07:48:10
+-- 2020-01-15 04:24:17

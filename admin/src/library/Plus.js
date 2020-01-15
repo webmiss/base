@@ -25,7 +25,7 @@ export default {
   },
 
   /* 本地消息 */
-  notify(title,content,callback){
+  notify(title,content,callback,isRead){
     /* 浏览器 */
     if(Env.msgBrowser && window.Notification && Notification.permission !== "denied") {
       Notification.requestPermission(function(status) {
@@ -39,7 +39,9 @@ export default {
       Vue.prototype.$msgNotify({title:title, content:content, delay:10000, onClick:callback});
     },Env.msgRead);
     /* 是否阅读 */
-    if(Env.msgRead==0) return;
+    isRead = isRead || false;
+    console.log(isRead);
+    if(!isRead) return;
     // 百度Token
     axios.post(Env.apiUrl+'index/baiduToken').then((res)=>{
       const msgAudio = new Audio();

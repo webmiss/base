@@ -20,12 +20,7 @@ class UserMainController extends UserBase{
 
   /* 数据中心Token */
   function centreTokenAction(){
-    // 获取Token
-		$token = $this->redis->get('centre_token');
-		if(!$token){
-			$token = Centre::getToken();
-			$this->redis->setex('centre_token',1.9*3600,$token);
-		}
+    $token = Centre::getToken();
     return self::getJSON(['code'=>0,'token'=>$token,'uid'=>self::$token->uid]);
   }
 

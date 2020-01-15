@@ -20,15 +20,14 @@ export default {
       login: {uname:'',passwd:'',subText:'登录',dis:false},
       // 左侧菜单
       menus: [],
-      // 新消息
-      msgNew: 0,
-      msgInterval: null,
+      // 配置
+      config:{show:false, title:'系统配置', is_msg_audio:true,},
       // 扫码
       scan:{show:false},
       scanData:{show:false,active:'one',title:'今日患者医嘱( '+Inc.getDay(0)+' )',uid:'',pid:'',info:'',data:{}},
       scanTimeout:null,
-      // 会诊、转诊
-      msgData:{show:false,scroll:null,y:0,title:'会诊/转诊',content:'',gid:'',data:[],group:[]},
+      // 消息系统
+      msgData:{show:false,scroll:null,y:0,title:'消息系统',content:'',gid:'',data:[],group:[]},
       msgGroup:{show:false,class:[],add:{uid:'',title:''}},
     }
   },
@@ -111,6 +110,9 @@ export default {
           // 用户信息
           this.$store.state.uinfo = d.uinfo;
           this.$storage.setItem('uinfo',JSON.stringify(d.uinfo));
+          // 系统配置
+          this.config.is_msg_audio = d.uinfo.is_msg_audio=='1'?true:false;
+          this.config.is_group = d.uinfo.is_group=='1'?true:false;
           // 获取菜单
           this.getMenus();
           /* 消息推送 */
@@ -161,7 +163,7 @@ export default {
               // 提示
               Plus.notify(msg.data.title,msg.data.content,(obj)=>{
                 obj.close();
-              });
+              },this.config.is_msg_audio);
             }
           }
           // 追加消息
@@ -329,6 +331,26 @@ export default {
           if (complete >= 100) this.update.msg = '下载完成，安装并重启';
         });
       }
+    },
+
+    /* 系统配置 */
+    openConfig(){
+      this.config.show = true;
+    },
+    subConfig(key){
+      let data = {};
+      data[key] = this.config[key]?'1':'0';
+      // 提交
+      const loading = this.$loading({text: '更改状态'});
+      this.$ajax.post(
+        this.$config.apiUrl+'Userinfo/edit',
+        'token='+this.$storage.getItem('token')+'&data='+JSON.stringify(data)
+      ).then((res)=>{
+        loading.close();
+        const d = res.data;
+        this.$store.state.uinfo[key] = this.config[key];
+        return d.code==0?this.$message.success(d.msg):this.$message.error(d.msg);
+      });
     },
 
     /* 消息 */

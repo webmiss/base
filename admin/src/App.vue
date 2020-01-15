@@ -80,7 +80,7 @@
           <!-- 登录信息 -->
           <div class="uinfo">
             <b>{{$storage.getItem('uname') || '空'}}</b>&nbsp;&nbsp;>
-            <el-button type="text">设置</el-button>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <el-button type="text" @click="openConfig()">设置</el-button>&nbsp;&nbsp;|&nbsp;&nbsp;
             <span class="logout" @click="logout()">退出</span>
           </div>
         </el-header>
@@ -92,6 +92,15 @@
       </el-container>
     </el-container>
     <!-- 主要框架 End -->
+
+    <!-- 系统配置 -->
+    <el-dialog :title="config.title" :visible.sync="config.show" center width="360px">
+      <el-form label-width="120px">
+        <el-form-item label="消息朗读">
+          <el-switch v-model="config.is_msg_audio" @change="subConfig('is_msg_audio')"></el-switch>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
 
     <!-- 右侧菜单 -->
     <ul v-show="isLogin" class="right_menus">
