@@ -1,14 +1,15 @@
 ## LetsEncrypt免费证书
 ``` bash
+
 # Epel源
 yum install epel-release
-# 证书工具
-yum install certbot python2-certbot-nginx
-# pyOpenSSL错误、urllib3错误
-pip install --upgrade --force-reinstall 'requests==2.6.0'
-pip install --upgrade urllib3
-# 自动安装证书(不能使用中文)
-certbot --nginx
+
+# python3包管理(pip)
+yum install python3-pip
+
+# Nginx插件
+pip3 install certbot-nginx
+
 ```
 
 ## Nginx配置
@@ -31,6 +32,8 @@ server {
 
     #SSL
     ssl on;
+    ssl_session_cache shared:SSL:1m;
+    ssl_session_timeout  10m;
     ssl_certificate /etc/letsencrypt/live/webmis.vip/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/webmis.vip/privkey.pem;
 
@@ -39,16 +42,18 @@ server {
     location / {
     }
 
-    # deny access to .htaccess files, if Apache's document root
-    # concurs with nginx's one
-    #
-    location ~ /\.ht {
-        deny  all;
+    error_page 404 /404.html;
+    location = /40x.html {
     }
+
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+    }
+
 }
 ```
 
-## 自动生成
+## 自动生成(不能使用中文)
 ``` bash
 certbot --nginx
 ```
@@ -77,4 +82,8 @@ certbot renew --dry-run
 
 # 禁止输出信息
 certbot renew --quiet
+
+# pyOpenSSL错误、urllib3错误
+pip install --upgrade --force-reinstall 'requests==2.6.0'
+pip install --upgrade urllib3
 ```
