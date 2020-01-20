@@ -14,7 +14,9 @@ pip3 install certbot-nginx
 
 ## Nginx配置
 ``` nginx
-# Nginx
+upstream websocket {
+    server 127.0.0.1:9010;
+}
 server {
     listen 80;
     server_name webmis.vip www.webmis.vip;
@@ -31,25 +33,34 @@ server {
     index index.html;
 
     #SSL
-    ssl on;
-    ssl_session_cache shared:SSL:1m;
-    ssl_session_timeout  10m;
-    ssl_certificate /etc/letsencrypt/live/webmis.vip/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/webmis.vip/privkey.pem;
+    #ssl on;
+    #ssl_session_cache shared:SSL:1m;
+    #ssl_certificate /etc/letsencrypt/live/webmis.vip/fullchain.pem;
+    #ssl_certificate_key /etc/letsencrypt/live/webmis.vip/privkey.pem;
+    #include /etc/letsencrypt/options-ssl-nginx.conf;
+    #ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
     charset utf-8;
 
     location / {
     }
 
+    # Socket Wss
+    location /wss {
+        proxy_pass http://websocket;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header Connection "keep-alive";
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
     error_page 404 /404.html;
     location = /40x.html {
     }
-
     error_page 500 502 503 504 /50x.html;
     location = /50x.html {
     }
-
 }
 ```
 
