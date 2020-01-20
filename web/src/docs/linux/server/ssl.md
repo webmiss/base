@@ -68,6 +68,7 @@ server {
 ``` bash
 certbot --nginx
 ```
+- https://www.ssllabs.com/ssltest/analyze.html?d=webmis.vip
 
 ## 手动生成证书
 ``` bash

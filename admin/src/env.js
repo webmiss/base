@@ -5,7 +5,7 @@
 // const socket = 'ws://127.0.0.1:9010';
 
 /* 基础系统 */
-const baseUrl = 'https://data.webmis.vip/';
+const baseUrl = 'https://api.webmis.vip/';
 const title = '基础系统';
 const socket = 'wss://webmis.vip/wss';
 
