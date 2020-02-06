@@ -51,7 +51,12 @@ group = webmis
 ;listen = /run/php-fpm/php-fpm.sock
 listen = 127.0.0.1:9000
 ```
-重启PHP
+#### PHP-FPM7.4
+``` bash
+vi /usr/lib/systemd/system/php-fpm.service
+```
+ProtectHome=false
+#### 重启PHP
 ``` bash
 systemctl start php-fpm
 ```
