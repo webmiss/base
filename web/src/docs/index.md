@@ -82,7 +82,7 @@ flutter run
 docs > src > config.js 添加接口
 ```bash
 # 进入目录
-cd docs
+cd api
 # 安装依赖
 yarn install
 # 运行
