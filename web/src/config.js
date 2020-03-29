@@ -68,8 +68,8 @@ const install = (Vue)=>{
         {title: 'Vue创建项目',content: require('./docs/mvc/node/vue.md'), menus:[]},
       ]},
       {title: 'Hybrid App', menus:[
-        {title: 'Flutter',content: require('./docs/mvc/app/flutter.md'), menus:[]},
-        {title: 'Android',content: require('./docs/mvc/app/android.md'), menus:[]},
+        {title: 'Flutter项目',content: require('./docs/mvc/app/flutter.md'), menus:[]},
+        {title: 'Android环境',content: require('./docs/mvc/app/android.md'), menus:[]},
       ]},
       {title: 'C/C++', menus:[
         {title: 'VSCode',content: require('./docs/mvc/cpp/vscode.md'), menus:[]},
