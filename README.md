@@ -67,11 +67,11 @@ yarn serve
 cd wechat
 ```
 
-## 六、Flutter原生APP
+## 六、Flutter
 图片裁切、图片压缩、请求相应、高德地图、本地硬盘等
 ```bash
 # 进入目录
-cd app
+cd flutter
 # 安装依赖
 flutter pub get
 # 运行
@@ -82,7 +82,7 @@ flutter run
 docs > src > config.js 添加接口
 ```bash
 # 进入目录
-cd docs
+cd api
 # 安装依赖
 yarn install
 # 运行
