@@ -2,41 +2,57 @@ import { VantComponent } from '../common/component';
 VantComponent({
     relation: {
         name: 'tabs',
-        type: 'ancestor'
+        type: 'ancestor',
+        current: 'tab',
     },
     props: {
-        dot: Boolean,
-        info: null,
-        title: String,
-        disabled: Boolean,
-        titleStyle: String,
+        dot: {
+            type: Boolean,
+            observer: 'update'
+        },
+        info: {
+            type: null,
+            observer: 'update'
+        },
+        title: {
+            type: String,
+            observer: 'update'
+        },
+        disabled: {
+            type: Boolean,
+            observer: 'update'
+        },
+        titleStyle: {
+            type: String,
+            observer: 'update'
+        },
         name: {
             type: [Number, String],
             value: '',
-            observer: 'setComputedName'
         }
     },
     data: {
-        width: null,
-        inited: false,
-        active: false,
-        animated: false
-    },
-    watch: {
-        title: 'update',
-        disabled: 'update',
-        dot: 'update',
-        info: 'update',
-        titleStyle: 'update'
+        active: false
     },
     methods: {
-        setComputedName() {
-            this.computedName = this.data.name || this.index;
+        getComputedName() {
+            if (this.data.name !== '') {
+                return this.data.name;
+            }
+            return this.index;
+        },
+        updateRender(active, parent) {
+            const { data: parentData } = parent;
+            this.inited = this.inited || active;
+            this.setData({
+                active,
+                shouldRender: this.inited || !parentData.lazyRender,
+                shouldShow: active || parentData.animated
+            });
         },
         update() {
-            const parent = this.getRelationNodes('../tabs/index')[0];
-            if (parent) {
-                parent.updateTabs();
+            if (this.parent) {
+                this.parent.updateTabs();
             }
         }
     }

@@ -33,9 +33,13 @@ function getMonthEndDay(year, month) {
 const defaultFormatter = (_, value) => value;
 VantComponent({
     classes: ['active-class', 'toolbar-class', 'column-class'],
-    props: Object.assign(Object.assign({}, pickerProps), { value: null, filter: null, type: {
+    props: Object.assign(Object.assign({}, pickerProps), { value: {
+            type: null,
+            observer: 'updateValue'
+        }, filter: null, type: {
             type: String,
-            value: 'datetime'
+            value: 'datetime',
+            observer: 'updateValue'
         }, showToolbar: {
             type: Boolean,
             value: true
@@ -44,36 +48,32 @@ VantComponent({
             value: defaultFormatter
         }, minDate: {
             type: Number,
-            value: new Date(currentYear - 10, 0, 1).getTime()
+            value: new Date(currentYear - 10, 0, 1).getTime(),
+            observer: 'updateValue'
         }, maxDate: {
             type: Number,
-            value: new Date(currentYear + 10, 11, 31).getTime()
+            value: new Date(currentYear + 10, 11, 31).getTime(),
+            observer: 'updateValue'
         }, minHour: {
             type: Number,
-            value: 0
+            value: 0,
+            observer: 'updateValue'
         }, maxHour: {
             type: Number,
-            value: 23
+            value: 23,
+            observer: 'updateValue'
         }, minMinute: {
             type: Number,
-            value: 0
+            value: 0,
+            observer: 'updateValue'
         }, maxMinute: {
             type: Number,
-            value: 59
+            value: 59,
+            observer: 'updateValue'
         } }),
     data: {
         innerValue: Date.now(),
         columns: []
-    },
-    watch: {
-        value: 'updateValue',
-        type: 'updateValue',
-        minDate: 'updateValue',
-        maxDate: 'updateValue',
-        minHour: 'updateValue',
-        maxHour: 'updateValue',
-        minMinute: 'updateValue',
-        maxMinute: 'updateValue'
     },
     methods: {
         updateValue() {
@@ -233,7 +233,7 @@ VantComponent({
             const picker = this.getPicker();
             if (data.type === 'time') {
                 const indexes = picker.getIndexes();
-                value = `${indexes[0] + data.minHour}:${indexes[1] + data.minMinute}`;
+                value = `${+data.columns[0].values[indexes[0]]}:${+data.columns[1].values[indexes[1]]}`;
             }
             else {
                 const values = picker.getValues();

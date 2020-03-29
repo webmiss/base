@@ -3,8 +3,10 @@ import Plus from '@/library/Plus'
 import Socket from '@/library/Socket'
 
 import Vue from 'vue';
-import { Button } from 'vant';
-Vue.use(Button);
+import { Button,Toast } from 'vant';
+import 'vant/lib/button/style'
+import 'vant/lib/toast/style'
+Vue.use(Button).use(Toast);
 
 export default {
   watch:{
@@ -66,7 +68,7 @@ export default {
               if(this.$obj.scan) this.$obj.scan.close();
             }else{
               if(backcount>0) plus.runtime.quit();
-              this.$createToast({txt:'再按一次退出应用!'}).show();
+              Toast('再按一次退出应用!');
               backcount++;
               setTimeout(()=>{backcount=0;},2000);
             }
@@ -129,7 +131,7 @@ export default {
             plus.runtime.install(d.filename, {force:true},()=>{
               plus.runtime.restart();
             },(e)=>{
-              this.$createToast({txt:'安装失败'}).show();
+              Toast('安装失败!');
             });
           }else{
             this.update.down = true;

@@ -74,7 +74,7 @@ export default {
               if(this.$obj.scan) this.$obj.scan.close();
             }else{
               if(backcount>0) plus.runtime.quit();
-              this.$createToast({txt:'再按一次退出应用!'}).show();
+              this.$message.error('再按一次退出应用!');
               backcount++;
               setTimeout(()=>{backcount=0;},2000);
             }
@@ -314,7 +314,7 @@ export default {
             plus.runtime.install(d.filename, {force:true},()=>{
               plus.runtime.restart();
             },(e)=>{
-              this.$createToast({txt:'安装失败'}).show();
+              this.$message.error('安装失败!');
             });
           }else{
             this.update.down = true;

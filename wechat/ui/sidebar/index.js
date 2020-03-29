@@ -3,39 +3,37 @@ VantComponent({
     relation: {
         name: 'sidebar-item',
         type: 'descendant',
-        linked(target) {
-            this.items.push(target);
-            this.setActive(this.data.active);
+        current: 'sidebar',
+        linked() {
+            this.setActive(this.data.activeKey);
         },
-        unlinked(target) {
-            this.items = this.items.filter(item => item !== target);
-            this.setActive(this.data.active);
+        unlinked() {
+            this.setActive(this.data.activeKey);
         }
     },
     props: {
-        active: {
+        activeKey: {
             type: Number,
             value: 0,
             observer: 'setActive'
         }
     },
     beforeCreate() {
-        this.items = [];
         this.currentActive = -1;
     },
     methods: {
-        setActive(active) {
-            const { items, currentActive } = this;
-            if (!items.length) {
+        setActive(activeKey) {
+            const { children, currentActive } = this;
+            if (!children.length) {
                 return Promise.resolve();
             }
-            this.currentActive = active;
+            this.currentActive = activeKey;
             const stack = [];
-            if (currentActive !== active && items[currentActive]) {
-                stack.push(items[currentActive].setActive(false));
+            if (currentActive !== activeKey && children[currentActive]) {
+                stack.push(children[currentActive].setActive(false));
             }
-            if (items[active]) {
-                stack.push(items[active].setActive(true));
+            if (children[activeKey]) {
+                stack.push(children[activeKey].setActive(true));
             }
             return Promise.all(stack);
         }

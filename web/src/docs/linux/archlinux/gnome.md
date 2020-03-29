@@ -36,11 +36,19 @@ reboot
 # 终端( gnome-terminal )
 ```
 
-## 三、安装输入法
+## 三、输入法
 ``` bash
-pacman -S ibus ibus-sunpinyin
+# 安装
+pacman -S ibus ibus-libpinyin
+# 随Gnome启动
+vi ~/.profile
 ```
-注:然后到“系统设置->区域和语言->输入源”,添加 汉语(SunPinyin) 后注销并重新登录!
+- export GTK_IM_MODULE=ibus
+- export XMODIFIERS=@im=ibus
+- export QT_IM_MODULE=ibus
+- ibus-daemon -d -x
+
+系统设置 > 区域和语言 > 输入源, 添加“汉语(智能拼音)”后注销并重新登录!
 
 ## 四、美化桌面
 ``` bash

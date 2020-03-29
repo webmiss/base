@@ -1,17 +1,20 @@
 import { VantComponent } from '../common/component';
-import { addUnit } from '../common/utils';
 VantComponent({
     field: true,
     classes: ['icon-class'],
     props: {
-        value: Number,
+        value: {
+            type: Number,
+            observer(value) {
+                if (value !== this.data.innerValue) {
+                    this.setData({ innerValue: value });
+                }
+            }
+        },
         readonly: Boolean,
         disabled: Boolean,
         allowHalf: Boolean,
-        size: {
-            type: null,
-            observer: 'setSizeWithUnit'
-        },
+        size: null,
         icon: {
             type: String,
             value: 'star'
@@ -34,12 +37,12 @@ VantComponent({
         },
         count: {
             type: Number,
-            value: 5
+            value: 5,
+            observer(value) {
+                this.setData({ innerCountArray: Array.from({ length: value }) });
+            },
         },
-        gutter: {
-            type: null,
-            observer: 'setGutterWithUnit'
-        },
+        gutter: null,
         touchable: {
             type: Boolean,
             value: true
@@ -47,27 +50,9 @@ VantComponent({
     },
     data: {
         innerValue: 0,
-        gutterWithUnit: undefined,
-        sizeWithUnit: '20px'
-    },
-    watch: {
-        value(value) {
-            if (value !== this.data.innerValue) {
-                this.setData({ innerValue: value });
-            }
-        }
+        innerCountArray: Array.from({ length: 5 }),
     },
     methods: {
-        setSizeWithUnit(val) {
-            this.setData({
-                sizeWithUnit: addUnit(val)
-            });
-        },
-        setGutterWithUnit(val) {
-            this.setData({
-                gutterWithUnit: addUnit(val)
-            });
-        },
         onSelect(event) {
             const { data } = this;
             const { score } = event.currentTarget.dataset;

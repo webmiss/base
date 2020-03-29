@@ -67,8 +67,9 @@ const install = (Vue)=>{
       {title: 'NodeJS', menus:[
         {title: 'Vue创建项目',content: require('./docs/mvc/node/vue.md'), menus:[]},
       ]},
-      {title: 'APP', menus:[
-        {title: 'Vue创建项目',content: require('./docs/mvc/app/flutter.md'), menus:[]},
+      {title: 'Hybrid App', menus:[
+        {title: 'Flutter',content: require('./docs/mvc/app/flutter.md'), menus:[]},
+        {title: 'Android',content: require('./docs/mvc/app/android.md'), menus:[]},
       ]},
       {title: 'C/C++', menus:[
         {title: 'VSCode',content: require('./docs/mvc/cpp/vscode.md'), menus:[]},
@@ -81,9 +82,7 @@ const install = (Vue)=>{
       {title: 'Java', menus:[
         {title: '环境搭配',content: require('./docs/mvc/java/install.md'), menus:[]},
         {title: 'SpringBoot',content: require('./docs/mvc/java/springboot.md'), menus:[]},
-      ]},
-      {title: 'Flutter', menus:[
-        {title: '环境搭配',content: require('./docs/mvc/app/flutter.md'), menus:[]},
+        
       ]},
     ]},
     // Linux文档
@@ -121,7 +120,6 @@ const install = (Vue)=>{
         {title: '桌面和常用软件',content: require('./docs/linux/archlinux/gnome.md'), menus:[]},
         {title: 'Nginx+PHP+Mariadb',content: require('./docs/linux/archlinux/nginx.md'), menus:[]},
         {title: 'Sublime3+Gnome3中文输入',content: require('./docs/linux/archlinux/sublime.md'), menus:[]},
-        {title: 'Cordova安装配置',content: require('./docs/linux/archlinux/cordova.md'), menus:[]},
       ]},
     ]},
   ];

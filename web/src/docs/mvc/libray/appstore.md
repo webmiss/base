@@ -18,3 +18,6 @@ https://appstoreconnect.apple.com/
 
 ### 提交IPA包
 xcode > Product > Archive
+
+### 上传软件
+Transporter

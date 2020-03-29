@@ -1,12 +1,11 @@
 import { link } from '../mixins/link';
 import { VantComponent } from '../common/component';
+import { addUnit } from '../common/utils';
 VantComponent({
     relation: {
         name: 'grid',
         type: 'ancestor',
-        linked(parent) {
-            this.parent = parent;
-        }
+        current: 'grid-item',
     },
     mixins: [link],
     props: {
@@ -15,6 +14,9 @@ VantComponent({
         info: null,
         text: String,
         useSlot: Boolean
+    },
+    data: {
+        viewStyle: '',
     },
     mounted() {
         this.updateStyle();
@@ -33,14 +35,25 @@ VantComponent({
                 styleWrapper.push(`padding-top: ${width}`);
             }
             if (gutter) {
-                styleWrapper.push(`padding-right: ${gutter}px`);
+                const gutterValue = addUnit(gutter);
+                styleWrapper.push(`padding-right: ${gutterValue}`);
                 const index = children.indexOf(this);
                 if (index >= columnNum) {
-                    styleWrapper.push(`margin-top: ${gutter}px`);
+                    styleWrapper.push(`margin-top: ${gutterValue}`);
                 }
             }
+            let contentStyle = '';
+            if (square && gutter) {
+                const gutterValue = addUnit(gutter);
+                contentStyle = `
+          right: ${gutterValue};
+          bottom: ${gutterValue};
+          height: auto;
+        `;
+            }
             this.setData({
-                style: styleWrapper.join('; '),
+                viewStyle: styleWrapper.join('; '),
+                contentStyle,
                 center,
                 border,
                 square,

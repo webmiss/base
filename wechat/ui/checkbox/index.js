@@ -1,5 +1,4 @@
 import { VantComponent } from '../common/component';
-import { addUnit } from '../common/utils';
 function emit(target, value) {
     target.$emit('input', value);
     target.$emit('change', value);
@@ -9,12 +8,7 @@ VantComponent({
     relation: {
         name: 'checkbox-group',
         type: 'ancestor',
-        linked(target) {
-            this.parent = target;
-        },
-        unlinked() {
-            this.parent = null;
-        }
+        current: 'checkbox',
     },
     classes: ['icon-class', 'label-class'],
     props: {
@@ -30,11 +24,11 @@ VantComponent({
         },
         iconSize: {
             type: null,
-            observer: 'setSizeWithUnit'
+            value: 20
         }
     },
     data: {
-        sizeWithUnit: '20px'
+        parentDisabled: false
     },
     methods: {
         emitChange(value) {
@@ -46,14 +40,14 @@ VantComponent({
             }
         },
         toggle() {
-            const { disabled, value } = this.data;
-            if (!disabled) {
+            const { parentDisabled, disabled, value } = this.data;
+            if (!disabled && !parentDisabled) {
                 this.emitChange(!value);
             }
         },
         onClickLabel() {
-            const { labelDisabled, disabled, value } = this.data;
-            if (!disabled && !labelDisabled) {
+            const { labelDisabled, parentDisabled, disabled, value } = this.data;
+            if (!disabled && !labelDisabled && !parentDisabled) {
                 this.emitChange(!value);
             }
         },
@@ -77,11 +71,6 @@ VantComponent({
                     emit(parent, parentValue);
                 }
             }
-        },
-        setSizeWithUnit(size) {
-            this.set({
-                sizeWithUnit: addUnit(size)
-            });
-        },
+        }
     }
 });
