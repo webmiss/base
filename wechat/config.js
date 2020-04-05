@@ -1,6 +1,8 @@
 
 // const baseUrl = 'http://localhost:8083/';
 const baseUrl = 'https://api.webmis.vip/';
+const socket = 'wss://webmis.vip/wss';
+
 const httpType = 'https://';
 export default {
   name: 'WebMIS',
@@ -13,8 +15,7 @@ export default {
   // 地图
   amapKey: '12d2caec68d29ea17f3f578d29607d44',
   // Socket
-  socketServer: 'wss://webmis.vip/wss',
-  msgRead: 3000,
-  msgNew: 60*1000,
-  msgContent: 'title',
+  socketServer: socket,
+  msgRead: 300,
+  msgContent: 'content',
 }

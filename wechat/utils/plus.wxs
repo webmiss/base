@@ -1,0 +1,21 @@
+module.exports = {
+  /* 截取字符串 */
+  substring: function(val,start,end){
+    return val.substring(start,end);
+  },
+  /* 保留小数 */
+  toFixed:function(val,num){
+    return val.toFixed(num);
+  },
+  /* 格式化价格 */
+  formatPrice:function(num){
+    var num=(parseInt(num) || 0).toString();
+    var result='';
+    while(num.length>3){
+      result=','+num.slice(-3)+result;
+      num=num.slice(0,num.length-3);
+    }
+    if(num) result=num+result;
+    return result;
+  },
+}

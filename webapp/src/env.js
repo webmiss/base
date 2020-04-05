@@ -1,13 +1,15 @@
 /* 配置文件 */
 // const baseUrl = 'http://localhost:8083/';
 const baseUrl = 'https://api.webmis.vip/';
+const socket = 'wss://webmis.vip/wss';
+
 export default {
   title: 'WebMIS',
   version: 'v1.0.0',
   baseUrl: baseUrl,
   apiUrl: baseUrl+'api/',
   themeColor: '#6FB737',
-  copy: 'Copyright © WebMIS.VIP 2019',
+  copy: 'Copyright © WebMIS.VIP 2020',
   // 状态栏
   statusBar:{height:'0px',color: '#333', bgColor:'#FFF'},
   // 更新
@@ -17,9 +19,11 @@ export default {
   // 地图
   amapKey: 'd956f0c3e15489a1b5bf291e5d133c8a',
   // Socket
-  socketServer: 'wss://webmis.vip/wss',
-  msgRead: 1000,
-  msgNew: 5*60*1000,
-  msgContent: 'title',
+  socketServer: socket,
+  msgRead: 300,
+  msgContent: 'content',
   msgBrowser: false,
+  // 小程序( 0-正式版,1-测试版,2-体验版 )
+  wx_type: 0,
+  wx_id: 'gh_a6ddccd2bb08',
 }

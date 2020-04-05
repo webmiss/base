@@ -37,16 +37,33 @@ body{font-size: 14px; color: #333;
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
 }
+img{vertical-align: top;}
+i{font-style: normal;}
+/* 公共 */
 .html{height: 100%;}
+.Link{color: #6FB737;}
 .loading{line-height: 100px; color: #999; background-color: #F2F2F2; text-align: center;}
+.redNum{position: absolute; padding: 0 5px; margin-top: -5px; line-height: 16px; color: #FFF; font-size: 12px; font-weight: normal; border-radius: 10px; background-color: #FF6600;}
+.bgImg{background-size: cover; background-position: center; background-repeat: no-repeat;}
+.bgTu{width: 100%; height: 100%; border-radius: 50%;}
+.bgLogo{background-image: url(./assets/icon/camera.svg); background-size: 60%;}
+.bgImage{background-image: url(./assets/icon/img.svg); background-size: 60%;}
+.divCenter{position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto;}
+.ctCenter{position: absolute; margin: 0 auto; left: 0; right: 0;}
+.null{text-align: center; color: #999; line-height: 100px;}
+.null::before{content: '暂无数据！';}
 
-/* UI */
-body .van-grid-item__content::after,body .van-hairline--top::after{border-color: #FFF;}
+/* 箭头 */
+.arrow_left{width: 0px; height: 0px; border: 10px solid; border-color:transparent #FFF transparent transparent;}
+.arrow_right{width: 0px; height: 0px; border: 10px solid; border-color:transparent transparent transparent #FFF;}
+.arrow_up{width: 0px; height: 0px; border: 10px solid; border-color:transparent transparent #FFF transparent;}
+.arrow_down{width: 0px; height: 0px; border: 10px solid; border-color:#FFF transparent transparent transparent;}
+
 
 /* 切换动画 */
-.view{position: fixed; width:100%; height: 100%; transition: all .4s ease; background: url('assets/logo.png') no-repeat center 80px #F2F2F2; background-size: 48px auto;}
-.slide-left-enter,.slide-right-leave-active{transform: translate3d(100%,0,0); z-index: 99;}
-.slide-right-enter,.slide-left-leave-active{transform: translate3d(-40%,0,0);}
+.view{position: fixed; z-index: 0; width:100%; height: 100%; transition: all .4s cubic-bezier(0.25,0.5,0,1); background-color: #F2F2F2;}
+.slide-left-enter,.slide-right-leave-active{z-index: 1; transform: translate(100%,0);}
+.slide-right-enter,.slide-left-leave-active{z-index: -1; transform: translate(-30%,0);}
 
 /* 更新 */
 .update_body{position: absolute; z-index: 999; width: 100%; height: 100%}
@@ -62,15 +79,24 @@ body .van-grid-item__content::after,body .van-hairline--top::after{border-color:
 
 /* 布局 */
 .flex{display: flex; justify-content: space-between; flex-wrap: wrap;}
+.flex.center{align-items: center;}
 .flex_left{display: flex; justify-content: flex-start; flex-wrap: wrap;}
 .flex_right{display: flex; justify-content: flex-end; flex-wrap: wrap;}
-.flex_center{display: flex; justify-content: center;}
+.flex_center{display: flex; align-items: center; justify-content: center; height: 100%;}
+.flex_nowrap{display: flex; justify-content: space-around; flex-direction: row; white-space:nowrap;}
+.flex_in{display: flex; justify-content: center; align-items:center;}
 .nowrap{overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
 .nowrap_text{overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;}
+.nowrap_three{overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;}
 
 /* 底部导航 */
 .nav_tabbar span{font-size: 12px;}
 .nav_body{height: calc(100% - 50px);}
+
+/* 搜索 */
+.Search{margin: 0 auto;}
+.Search .input{height: 40px; line-height: 40px; font-size: 14px; padding: 0 10px; border-radius: 20px; background-color: #F2F2F2; color: #999;}
+.Search .input span{padding-left: 10px;}
 
 /*
 * ICO-字体图标
@@ -95,6 +121,15 @@ body .van-grid-item__content::after,body .van-hairline--top::after{border-color:
 .icon_shop:before{content: "\e901"; font-size: 16px;}
 .icon_cart:before{content: "\e902"; font-size: 20px;}
 .icon_me:before{content: "\e903"; font-size: 18px;}
+
+/* UI */
+body .van-grid-item__content::after,body .van-hairline--top::after{border-color: #FFF;}
+.van-overlay{z-index: 1000;}
+.van-popup{overflow-y: initial;}
+.van-popup--bottom.van-popup--round{border-radius: 10px 10px 0 0; max-height: calc(100% - 80px);}
+body .van-tab--active{color: #6FB737;}
+body .van-tabs__line{background-color: #6FB737;}
+body .van-dialog__header{font-size: 18px;}
 </style>
 
 <script src="./App.js"></script>

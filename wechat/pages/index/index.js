@@ -1,11 +1,18 @@
+import store from '../../store'
+import create from '../../utils/create'
 import Config from '../../config'
 import Inc from '../../utils/Inc'
+
 import Dialog from '../../ui/dialog/dialog'
 
 const app = getApp();
 
-Page({
+create(store,{
   data:{
+    /* 状态 */
+    isLogin:false,
+    uInfo:null,
+    socket:null,
     // 主题颜色
     themeColor: Config.themeColor,
     // 导航
@@ -32,8 +39,59 @@ Page({
       'https://goss.veer.com/creative/vcg/veer/800water/veer-162551332.jpg',
     ]
   },
-  onLoad(){
-    
+  onShareAppMessage(res){
+    // 分享
+    const row = res.target.dataset.row;
+    return {title:row.title,path:row.url,imageUrl:row.img};
+  },
+  onLoad(event){
+    /* 扫码 */
+    const url = event.q;
+		if (url) {
+			let type = Inc.getQueryString(url, 't');
+			if (type == 'order'){
+				let order_sn = Inc.getQueryString(url, 'sn');
+				wx.navigateTo({
+					url: '/pages/order/actdef?order_sn=' + order_sn,
+				})
+			}
+    }
+    /* 定位 */
+    this.setData({['geolocation.district']:Inc.storage.getItem('city')});
+    Inc.getLocation((res)=>{
+      this.setData({geolocation:res});
+      Inc.storage.setItem('city',res.district);
+    },(e)=>{
+      setTimeout(()=>{
+        Inc.getLocation((res)=>{
+          this.setData({geolocation:res});
+          Inc.storage.setItem('city',res.district);
+        });
+      },8000);
+    });
+    /* 登录状态 */
+    const token = Inc.storage.getItem('token');
+    if(token){
+      Inc.post(Config.apiUrl+'user/token',{token:token,type:'info'},(res)=>{
+        const d = res.data;
+        if(d.code==0){
+          this.store.data.isLogin = true;
+          this.store.data.uInfo = d.userinfo;
+          this.store.data.uAccount = d.account;
+          this.store.data.uRank = d.ranking;
+          this.store.data.uOrder = d.order;
+          this.update();
+        }else{
+          Inc.storage.setItem('token','');
+        }
+      });
+    }else{
+      Inc.storage.setItem('token','');
+    }
+    /* 消息推送 */
+    this.socketStart();
+    /* 加载数据 */
+    this.indexLoad();
   },
 
   /* 切换导航 */
@@ -154,6 +212,126 @@ Page({
   /* 打开地图 */
   getMap(){
     wx.navigateTo({url: '/pages/map/map'});
+  },
+
+  /* 打开链接 */
+  openUrl(event){
+    const url = event.currentTarget.dataset.url;
+    const login = event.currentTarget.dataset.login;
+    if(login && !this.data.isLogin) return wx.navigateTo({url: '/pages/user/login'});
+    else return wx.navigateTo({url:url});
+  },
+
+
+  /* Socket */
+  socketStart(){
+    // 重启Socket
+    clearInterval(this.msgInterval);
+    this.msgInterval = setInterval(()=>{
+      if(this.data.isLogin && (!this.data.socket || this.data.socket.readyState!=1)) this.socketStart();
+    },3000);
+    // Token
+    const token = Inc.storage.getItem('token');
+    if(!token) return false;
+    // 数据中心-Token
+    Inc.post(Config.apiUrl+'Usermain/centreToken',{token:token},(res)=>{
+      if(res.data.code==0) this.socket(res.data.token,res.data.uid);
+    });
+  },
+  socket(token,uid){
+    this.store.data.socket = wx.connectSocket({url:Config.socketServer+'?token='+token+'&uid='+uid});
+    this.update();
+    /* 链接 */
+    wx.onSocketOpen(()=>{
+      console.log('消息系统');
+      // 心跳包
+      clearInterval(this.heartbeat);
+      this.heartbeat = setInterval(()=>{
+        try{
+          wx.sendSocketMessage({data:JSON.stringify({type:''})});
+        }catch(e){
+          this.closeMsg();
+        }
+      },10000);
+      // 获取消息组
+      setTimeout(()=>{
+        wx.sendSocketMessage({data:JSON.stringify({type:'group',uid:this.store.data.uInfo.uid})});
+      },1000);
+    });
+    /* 关闭 */
+    wx.onSocketClose(()=>{
+      console.log('消息关闭');
+      this.closeMsg();
+    });
+    /* 接收 */
+    wx.onSocketMessage((e)=>{
+      const msg = JSON.parse(e.data);
+      // 消息组
+      if(msg.code==0 && msg.type=='group'){
+        // 重置
+        this.store.data.uMsg.group = [];
+        this.update();
+        // 赋值
+        this.store.data.uMsg.group = msg.data;
+        this.update();
+        // 消息数
+        this.getMsgNum();
+      }else if(msg.code==0 && msg.type=='msg'){
+        // 声音提示
+        if(msg.gid!='1' && msg.fid!=this.data.uInfo.uid){
+          // 是否声音
+          let voice = Inc.storage.getItem('voice');
+          voice = voice!='1'?false:true;
+          Inc.notify(msg.data.title,msg.data.content,voice);
+        }
+        // 追加消息
+        let fid = msg.uid==this.data.uInfo.uid?msg.fid:msg.uid;
+        if(this.data.uMsg.group[''+fid]){
+          this.store.data.uMsg.group[''+fid].msg.push(msg.data);
+          this.update();
+          // 刷新滑动
+          if(this.store.data.uMsg.id){
+            const num = this.store.data.uMsg.msg.length;
+            this.store.data.uMsg.id = 'item'+num;
+            this.update();
+            // 标记已读
+            Inc.post(
+              Config.apiUrl+'msg/state',
+              {token:Inc.storage.getItem('token'),id:msg.data.id,state:1},
+            (res)=>{
+              const d = res.data;
+            });
+          }else{
+            // 记录数量
+            this.store.data.uMsg.group[''+fid].num++;
+            this.store.data.uMsg.num++;
+            this.update();
+          }
+        }else{
+          setTimeout(()=>{
+            wx.sendSocketMessage({data:JSON.stringify({type:'group',uid:this.store.data.uInfo.uid})});
+          },1000);
+        }
+      }
+    });
+  },
+  /* 消息数 */
+  getMsgNum(){
+    const data = this.data.uMsg.group;
+    let num = 0;
+    for(let i in data) num += data[i].num;
+    this.store.data.uMsg.num = num;
+    this.update();
+  },
+  /* 关闭 */
+  closeMsg(){
+    if(this.store.data.socket){
+      wx.closeSocket();
+      this.store.data.socket = null;
+      this.store.data.uMsg.group = [];
+      this.store.data.uMsg.num = '';
+      this.update();
+    }
   },
 
 });

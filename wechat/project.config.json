@@ -18,11 +18,14 @@
 			"ignore": [],
 			"disablePlugins": [],
 			"outputPath": ""
-		}
+		},
+		"bundle": true,
+		"showShadowRootInWxmlPanel": true,
+		"scopeDataCheck": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.9.0",
-	"appid": "wxfad101ea992a8f4f",
+	"libVersion": "2.10.3",
+	"appid": "wx859a486c158abb8e",
 	"projectname": "wechat",
 	"debugOptions": {
 		"hidedInDevtools": []

@@ -24,8 +24,67 @@ export default {
     return immersed;
   },
 
+  /* 分享 */
+  share(parm){
+    try{
+      // 朋友圈、我的好友
+      const scene = parm.scene?'WXSceneSession':'WXSceneTimeline';
+      // 数据
+      let share = {};
+      if(parm.id=='weixin'){
+        // 小程序
+        if(parm.type=='wx' && scene=='WXSceneSession'){
+          share = {
+            type: 'miniProgram',
+            title: parm.title,
+            content: parm.content,
+            thumbs: parm.img,
+            miniProgram:{
+              id: Env.wx_id,
+              path: parm.wx || 'pages/index/index',
+              type: Env.wx_type,
+              webUrl: parm.url
+            },
+            extra:{scene:scene}
+          };
+        }else{
+          // 网页
+          share = {
+            type:'web',
+            title:parm.title,
+            content:parm.content,
+            thumbs:parm.img,
+            href:parm.url,
+            extra:{scene:scene}
+          };
+        }
+      }else if(parm.id=='qq'){
+        share = {type:'text',title:parm.title,content:parm.content,thumbs:parm.img,href:parm.url};
+      }else if(parm.id=='sinaweibo'){
+        share = {type:'web',content:parm.content,href:parm.url};
+      }
+      // 提交
+      let service = null;
+      plus.share.getServices((s)=>{
+        // 服务
+        for(let i in s) if(s[i].id == parm.id) service = s[i];
+        // 发送
+        service.send(share,()=>{
+          Vue.prototype.$msgNotify({title:'分享',content:'分享成功！'});
+        },(e)=>{
+          Vue.prototype.$msgNotify({title:'分享',content:'分享失败！'});
+          console.log(JSON.stringify(e));
+        });
+      },(e)=>{
+        Vue.prototype.$msgNotify({title:'分享',content:'分享错误！'});
+      });
+    }catch(e){
+      Vue.prototype.$msgNotify({title:'提示',content:'请在APP内使用！'});
+    }
+  },
+
   /* 本地消息 */
-  notify(title,content,callback){
+  notify(title,content,callback,read){
     /* 浏览器 */
     if(Env.msgBrowser && window.Notification && Notification.permission !== "denied") {
       Notification.requestPermission(function(status) {
@@ -39,12 +98,15 @@ export default {
       Vue.prototype.$msgNotify({title:title, content:content, delay:6000, onClick:callback});
     },Env.msgRead);
     /* 是否阅读 */
-    if(Env.msgRead==0) return;
+    read = read || false;
+    if(!read) return;
     // 百度Token
     axios.post(Env.apiUrl+'index/baiduToken').then((res)=>{
-      const msgAudio = document.getElementById('msg');
-      let text = Env.msgContent=='title'?title:content;
-      msgAudio.src = '//tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
+      const msgAudio = new Audio();
+      let text = title+' '+content;
+      if(Env.msgContent=='title') text = title;
+      else if(Env.msgContent=='content') text = content;
+      msgAudio.src = Env.httpType+'tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
       setTimeout(()=>{
         try{
           if(plus.os.name=='iOS'){
@@ -60,6 +122,8 @@ export default {
             let utterance = AVSpeechUtterance.speechUtteranceWithString(text);
             utterance.setVoice(voice);
             speech.speakUtterance(utterance);
+          }else if(plus.os.name=='Android'){
+            msgAudio.play();
           }else{
             msgAudio.play();
           }
@@ -92,15 +156,14 @@ export default {
             // 提交
             plus.payment.request(channel,d.data,callback,fail);
           }else{
-            console.log(d.msg);
+            Vue.prototype.$msgNotify({title:'支付',content:d.msg});
           }
         });
       },(e)=>{
-        console.log('支付通道: '+e.message);
+        Vue.prototype.$msgNotify({title:'支付',content:'支付通道: '+e.message});
       });
-        
     }catch(e){
-      console.log('H5方式: '+pay_type);
+      Vue.prototype.$msgNotify({title:'提示',content:'请在APP内使用！'});
     }
   },
 
@@ -110,7 +173,7 @@ export default {
       plus.geolocation.getCurrentPosition((res)=>{
         let data = {};
         data.province = res.address.province; 
-        data.city = res.address.city;
+        data.city = res.address.district || res.address.city;
         data.latitude = res.coords.latitude;
         data.longitude = res.coords.longitude;
         // 保存本地
@@ -126,7 +189,7 @@ export default {
           geolocation.getCityInfo((status, result)=>{
             let data = {};
             data.province = result.province;
-            data.city = result.city;
+            data.city = result.city || result.province;
             // 经纬度
             geolocation.getCurrentPosition((status, result)=>{
               if(result && result.position){
@@ -159,6 +222,21 @@ export default {
     },500);
   },
 
+  /* 打开地图 */
+  openMap(dst,src,address){
+    try{
+      dst = new plus.maps.Point(dst[0],dst[1]);
+      src = new plus.maps.Point(src[0],src[1]);
+      if(plus.os.name=='iOS'){
+        plus.maps.openSysMap(dst,address,src);
+      }else if(plus.os.name=='Android'){
+        plus.maps.openSysMap(src,address,dst);
+      }
+    }catch(e){
+      Vue.prototype.$msgNotify({title:'提示',content:'请在APP内使用！'});
+    }
+  },
+
   /* 拍照 */
   camera(callback,fail){
     try{
@@ -167,7 +245,7 @@ export default {
         plus.io.resolveLocalFileSystemURL(url, function (entry) {
           entry.file((file)=>{ callback(file); });
         },(e)=>{
-          console.log("读取拍照失败");
+          Vue.prototype.$msgNotify({title:'拍照',content:'读取照片失败！'});
         });
       },fail);
     }catch(e){
@@ -202,7 +280,7 @@ export default {
               },300);
             });
           },(e)=>{
-            console.log('读取文件: '+e.message);
+            Vue.prototype.$msgNotify({title:'相册',content:'读取文件错误：'+e.message});
           });
         }
       },fail,{filter:"image",multiple: multiple});
@@ -328,10 +406,12 @@ export default {
         plus.io.resolveLocalFileSystemURL(url, function (entry) {
           callback(url,entry);
         },(e)=>{
-          console.log("读取录像失败");
+          Vue.prototype.$msgNotify({title:'录像',content:'读取录像错误：'+e.message});
         });
       },fail);
-    }catch(e){console.log('录像');}
+    }catch(e){
+      Vue.prototype.$msgNotify({title:'提示',content:'请在APP内使用！'});
+    }
   },
 
   /* 音频 */
@@ -341,10 +421,12 @@ export default {
         plus.io.resolveLocalFileSystemURL(url, function (entry) {
           callback(url,entry);
         },function (e) {
-          console.log("读取音频失败");
+          Vue.prototype.$msgNotify({title:'录音',content:'读取音频错误：'+e.message});
         });
       },fail);
-    }catch(e){console.log('录音');}
+    }catch(e){
+      Vue.prototype.$msgNotify({title:'提示',content:'请在APP内使用！'});
+    }
   },
 
   /* 上传文件 */
@@ -360,7 +442,9 @@ export default {
       }
       task.addEventListener( "statechanged",progress,false);
       task.start();
-    }catch(e){console.log('上传文件');}
+    }catch(e){
+      Vue.prototype.$msgNotify({title:'提示',content:'请在APP内使用！'});
+    }
   },
 
   /* 系统缓存 */
@@ -369,9 +453,11 @@ export default {
       plus.io.resolveLocalFileSystemURL('_doc/', function(entry) {
         return entry.removeRecursively();
       },(e)=>{
-        console.log('清理缓存失败');
+        Vue.prototype.$msgNotify({title:'缓存',content:'清理缓存失败！'});
       });
-    }catch(e){console.log('清理缓存');}
+    }catch(e){
+      Vue.prototype.$msgNotify({title:'提示',content:'请在APP内使用！'});
+    }
   },
 
 }

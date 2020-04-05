@@ -44,13 +44,33 @@ export default {
     return y+'-'+m+'-'+d+' '+h+':'+i+':'+s;
   },
 
+  /* 格式化价格 */
+  formatPrice(price){
+    return (parseInt(price).toString()).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
+  },
+
+  /* 隐藏手机号码 */
+  formatTel(tel){
+    const reg = /^(\d{3})\d{4}(\d{4})$/;
+    return tel.replace(reg, '$1****$2');
+  },
+
+  /* Url-参数 */
+  getQueryString(url, name){
+		const qrForm = decodeURIComponent(url);
+    const reg = new RegExp('(^|&|/?)' + name + '=([^&|/?]*)(&|/?|$)', 'i');
+		const res = qrForm.substr(1).match(reg)
+    return res?res[2]:'';
+  },
+
   /* 本地消息 */
-  notify(title,content){
+  notify(title,content,read){
     setTimeout(()=>{
       Notify({type: 'success', message: content});
     },Config.msgRead);
     // 是否阅读
-    if(Config.msgRead==0) return;
+    read = read || false;
+    if(!read) return;
     // 百度Token
     this.post(Config.apiUrl+'index/baiduToken',{},(res)=>{
       let msgAudio = wx.getBackgroundAudioManager();
@@ -61,17 +81,44 @@ export default {
     });
   },
 
-  /* 高德定位 */
+  /* 定位-微信 */
   getLocation(callback,fail){
+    const self = this;
+    // 经纬度
+    wx.getLocation({
+      type: 'wgs84',
+      success (res) {
+        self.getCity(callback,fail,res.longitude,res.latitude,'gps');
+      }
+    });
+  },
+  /* 高德-城市信息 */
+  getCity(callback,fail,longitude,latitude,coordsys){
+    const self = this;
+    const location = longitude&&latitude?longitude+','+latitude:'';
     Map.getRegeo({
+      location: location,
       success(res){
-        callback({
-          latitude: res[0].latitude,
-          longitude: res[0].longitude,
-          province: res[0].regeocodeData.addressComponent.province,
-          city: res[0].regeocodeData.addressComponent.city,
-          district: res[0].regeocodeData.addressComponent.district,
-          address: res[0].name
+        longitude = longitude || res[0].longitude;
+        latitude = latitude || res[0].latitude;
+        coordsys = coordsys || 'autonavi';
+        // 坐标转换
+        self.get(
+          'https://restapi.amap.com/v3/assistant/coordinate/convert',
+          {locations:longitude+','+latitude,coordsys:coordsys,key:Config.amapWeb},
+        (m)=>{
+          const d = m.data;
+          if(d.status=='1' && d.info=='ok'){
+            const arr = d.locations.split(',');
+            callback({
+              longitude: arr[0],
+              latitude: arr[1],
+              province: res[0].regeocodeData.addressComponent.province,
+              city: res[0].regeocodeData.addressComponent.city,
+              district: res[0].regeocodeData.addressComponent.district,
+              address: res[0].name
+            });
+          }
         });
       },
       fail: fail,
@@ -144,25 +191,29 @@ export default {
   },
 
   /* Get请求 */
-  get(url,data,callback,fail){
+  get(url,data,callback){
     wx.request({
       url: url,
       data: data,
       header: {'content-type':'application/x-www-form-urlencoded'},
       success: callback,
-      fail: fail,
+      fail: function(e){
+        wx.showToast({title:'请检测网络',icon:'none'});
+      },
     });
   },
 
   /* Post请求 */
-  post(url,data,callback,fail){
+  post(url,data,callback){
     wx.request({
       url: url,
       data: data,
       method: 'POST',
       header: {'content-type':'application/x-www-form-urlencoded'},
       success: callback,
-      fail: fail,
+      fail: function(e){
+        wx.showToast({title:'请检测网络',icon:'none'});
+      },
     });
   },
 
