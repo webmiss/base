@@ -1,7 +1,7 @@
 import store from '../../store'
-import create from '../../utils/create'
-import Config from '../../config'
-import Inc from '../../utils/Inc'
+import create from '../../libray/create'
+import Env from '../../env'
+import Inc from '../../libray/Inc'
 
 import Dialog from '../../ui/dialog/dialog'
 
@@ -14,7 +14,7 @@ create(store,{
     uInfo:null,
     socket:null,
     // 主题颜色
-    themeColor: Config.themeColor,
+    themeColor: Env.themeColor,
     // 导航
     navHeight: app.globalData.nav.height,
     navColor: 0,
@@ -72,7 +72,7 @@ create(store,{
     /* 登录状态 */
     const token = Inc.storage.getItem('token');
     if(token){
-      Inc.post(Config.apiUrl+'user/token',{token:token,type:'info'},(res)=>{
+      Inc.post(Env.apiUrl+'user/token',{token:token,type:'info'},(res)=>{
         const d = res.data;
         if(d.code==0){
           this.store.data.isLogin = true;
@@ -139,7 +139,7 @@ create(store,{
   /* 请求 */
   getPost(){
     wx.showLoading({title:'POST请求'});
-    Inc.post(Config.baseUrl+'xxx',{},(res)=>{
+    Inc.post(Env.baseUrl+'xxx',{},(res)=>{
       wx.hideLoading();
       Dialog.alert({title: 'POST请求',message: JSON.stringify(res.data)});
     });
@@ -179,7 +179,7 @@ create(store,{
 
   /* 二维码 */
   getQRcode(){
-    Inc.qrCode('QRcodeCanvas',{size:this.data.qrCodeSize,text:'https://webmis.vip',logo:'../../images/logo.png'},(url)=>{
+    Inc.qrCode('QRcodeCanvas',{size:this.data.qrCodeSize,text:'https://webmis.vip',logo:'../../imgs/logo.png'},(url)=>{
       console.log(url);
       wx.previewImage({urls: [url]});
     });
@@ -192,7 +192,7 @@ create(store,{
       success (res) {
         if(res.code){
           // 支付参数
-          Inc.get(Config.apiUrl+'index/wechatPay',{type:'JSAPI',code:res.code},(res)=>{
+          Inc.get(Env.apiUrl+'index/wechatPay',{type:'JSAPI',code:res.code},(res)=>{
             wx.hideLoading();
             let d = res.data;
             if(d.code==0){
@@ -234,12 +234,12 @@ create(store,{
     const token = Inc.storage.getItem('token');
     if(!token) return false;
     // 数据中心-Token
-    Inc.post(Config.apiUrl+'Usermain/centreToken',{token:token},(res)=>{
+    Inc.post(Env.apiUrl+'Usermain/centreToken',{token:token},(res)=>{
       if(res.data.code==0) this.socket(res.data.token,res.data.uid);
     });
   },
   socket(token,uid){
-    this.store.data.socket = wx.connectSocket({url:Config.socketServer+'?token='+token+'&uid='+uid});
+    this.store.data.socket = wx.connectSocket({url:Env.socketServer+'?token='+token+'&uid='+uid});
     this.update();
     /* 链接 */
     wx.onSocketOpen(()=>{
@@ -296,7 +296,7 @@ create(store,{
             this.update();
             // 标记已读
             Inc.post(
-              Config.apiUrl+'msg/state',
+              Env.apiUrl+'msg/state',
               {token:Inc.storage.getItem('token'),id:msg.data.id,state:1},
             (res)=>{
               const d = res.data;

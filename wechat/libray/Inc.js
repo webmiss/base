@@ -1,9 +1,9 @@
-import Config from '../config'
+import Env from '../env'
 import QRCode from './weapp-qrcode'
 import amap from './amap-wx'
 import Notify from '../ui/notify/notify'
 
-const Map = new amap.AMapWX({ key: Config.amapKey});
+const Map = new amap.AMapWX({ key: Env.amapKey});
 
 export default {
 
@@ -67,17 +67,17 @@ export default {
   notify(title,content,read){
     setTimeout(()=>{
       Notify({type: 'success', message: content});
-    },Config.msgRead);
+    },Env.msgRead);
     // 是否阅读
     read = read || false;
     if(!read) return;
     // 百度Token
-    this.post(Config.apiUrl+'index/baiduToken',{},(res)=>{
+    this.post(Env.apiUrl+'index/baiduToken',{},(res)=>{
       let msgAudio = wx.getBackgroundAudioManager();
         msgAudio.title = title;
-        let text = Config.msgContent=='title'?title:content;
-        msgAudio.src = Config.httpType+'tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
-        setTimeout(()=>{ msgAudio.play(); },Config.msgRead);
+        let text = Env.msgContent=='title'?title:content;
+        msgAudio.src = Env.httpType+'tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
+        setTimeout(()=>{ msgAudio.play(); },Env.msgRead);
     });
   },
 
@@ -105,7 +105,7 @@ export default {
         // 坐标转换
         self.get(
           'https://restapi.amap.com/v3/assistant/coordinate/convert',
-          {locations:longitude+','+latitude,coordsys:coordsys,key:Config.amapWeb},
+          {locations:longitude+','+latitude,coordsys:coordsys,key:Env.amapWeb},
         (m)=>{
           const d = m.data;
           if(d.status=='1' && d.info=='ok'){

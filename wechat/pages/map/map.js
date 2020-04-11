@@ -1,12 +1,12 @@
-import Config from '../../config'
-import Inc from '../../utils/Inc'
+import Env from '../../env'
+import Inc from '../../libray/Inc'
 
 const app = getApp();
 
 Page({
   data: {
     // 主题颜色
-    themeColor: Config.themeColor,
+    themeColor: Env.themeColor,
     // 导航
     navHeight: app.globalData.nav.height,
     // 地图
