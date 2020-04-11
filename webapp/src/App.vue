@@ -21,7 +21,8 @@
     <!-- 页面 -->
     <transition :name="transitionName">
       <keep-alive :max="keepAlive">
-        <router-view class="view"></router-view>
+        <router-view class="view" v-if="$route.meta.keepAlive"></router-view>
+        <router-view class="view" v-if="!$route.meta.keepAlive" :key="'time'+new Date().getTime()"></router-view>
       </keep-alive>
     </transition>
     <!-- 页面 End -->
@@ -61,7 +62,7 @@ i{font-style: normal;}
 
 
 /* 切换动画 */
-.view{position: fixed; z-index: 0; width:100%; height: 100%; transition: all .4s cubic-bezier(0.25,0.5,0,1); background-color: #F2F2F2;}
+.view{position: fixed; z-index: 0; width:100%; height: 100%; transition: all .6s cubic-bezier(0.075, 0.82, 0.165, 1); background-color: #F2F2F2;}
 .slide-left-enter,.slide-right-leave-active{z-index: 1; transform: translate(100%,0);}
 .slide-right-enter,.slide-left-leave-active{z-index: -1; transform: translate(-30%,0);}
 

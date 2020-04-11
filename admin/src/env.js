@@ -1,12 +1,12 @@
 
 /* 本地 */
-// const baseUrl = 'http://localhost:8086/';
 // const title = '基础系统(本地)';
+// const baseUrl = 'http://localhost:8086/';
 // const socket = 'ws://127.0.0.1:9010';
 
 /* 基础系统 */
-const baseUrl = 'https://api.webmis.vip/';
 const title = '基础系统';
+const baseUrl = 'https://api.webmis.vip/';
 const socket = 'wss://webmis.vip/wss';
 
 /* 配置信息 */
@@ -31,6 +31,6 @@ export default {
   socketServer: socket,
   msgRead: 1000,
   msgNew: 5*60*1000,
-  msgContent: 'title',
+  msgContent: 'content',
   msgBrowser: false,
 }

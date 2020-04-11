@@ -11,16 +11,15 @@ export default {
   watch:{
     $route(to,from){
       // 页面切换
-      const isBack = this.$router.isBack;
+      this.transitionName = this.$router.isBack?'slide-right':'slide-left';
       this.$router.isBack = false;
-      this.transitionName = isBack?'slide-right':'slide-left';
     }
   },
   data(){
     return {
       keepAlive: 10,
       // 切换动画
-      transitionName: 'slide-left',
+      transitionName: '',
       // 更新APP
       update: {show:false, os:'', down:false, loading:'0%', msg:'检测更新', file:'', total:0},
       upDateColor: Env.upDateColor,
@@ -52,12 +51,12 @@ export default {
     setTimeout(()=>{
       Plus.geoLocation((res)=>{
         this.$store.state.geolocation = res;
-        this.$storage.setItem('city',res.city);
+        this.$storage.setItem('city',res.district);
       },(e)=>{
         setTimeout(()=>{
           Plus.geoLocation((res)=>{
             this.$store.state.geolocation = res;
-            this.$storage.setItem('city',res.city);
+            this.$storage.setItem('city',res.district);
           },(e)=>{});
         },8000);
       });
@@ -101,6 +100,7 @@ export default {
         // window.history.pushState('forward', null, '#');
         // window.history.forward(1);
         // window.addEventListener("popstate", (e)=>{
+        //   console.log(1);
         //   this.$router.goBack(-1);
         // });
       }

@@ -3,6 +3,7 @@
     <!-- Header -->
     <div slot="left"><span class="icons icon_left" @click="$router.goBack(-1)"></span></div>
     <div slot="title">地图</div>
+    <div slot="right" @click="$router.push('/demo/index')">Demo</div>
     <!-- Content -->
     <div slot="body" class="html">
       <el-amap :center="mapData.center" :zoom="mapData.zoom">

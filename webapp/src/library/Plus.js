@@ -171,11 +171,13 @@ export default {
   geoLocation(callback,fail){
     try{
       plus.geolocation.getCurrentPosition((res)=>{
-        let data = {};
-        data.province = res.address.province; 
-        data.city = res.address.district || res.address.city;
-        data.latitude = res.coords.latitude;
-        data.longitude = res.coords.longitude;
+        let data = {
+          province: res.address.province,
+          city: res.address.city,
+          district: res.address.district,
+          longitude: res.coords.longitude,
+          latitude: res.coords.latitude,
+        };
         // 保存本地
         window.localStorage.setItem('GeoLocation',JSON.stringify(data));
         callback(data);
@@ -183,26 +185,25 @@ export default {
     }catch(e){
       // 获取定位
       setTimeout(()=>{
-        AMap.service(['AMap.Geolocation'], ()=>{
+        AMap.service('AMap.Geolocation',()=>{
+          // 经纬度
           const geolocation = new AMap.Geolocation({enableHighAccuracy: false,timeout: 5000});
-          // 城市信息
-          geolocation.getCityInfo((status, result)=>{
-            let data = {};
-            data.province = result.province;
-            data.city = result.city || result.province;
-            // 经纬度
-            geolocation.getCurrentPosition((status, result)=>{
-              if(result && result.position){
-                data.latitude = result.position.lat;
-                data.longitude = result.position.lng;
-                // 保存本地
-                window.localStorage.setItem('GeoLocation',JSON.stringify(data));
-                callback(data);
-              }else fail(status);
-            });
+          geolocation.getCurrentPosition((status, res)=>{
+            if(res && res.position){
+              let data = {
+                province: res.addressComponent.province,
+                city: res.addressComponent.city,
+                district: res.addressComponent.district,
+                longitude: res.position.lng,
+                latitude: res.position.lat,
+              };
+              // 保存本地
+              window.localStorage.setItem('GeoLocation',JSON.stringify(data));
+              callback(data);
+            }
           });
         });
-      },500);
+      },300);
     }
   },
 

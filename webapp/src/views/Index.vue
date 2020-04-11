@@ -7,7 +7,7 @@
     <!-- 首页 -->
     <page-view v-show="tabBar.active==0" :immersed="true" :bgColor="'rgba(111,183,55,'+navColor+')'" color="#FFF">
       <!-- Header -->
-      <div slot="left">昆明市</div>
+      <div slot="left">{{ $store.state.geolocation.district || $storage.getItem('city') }}</div>
       <div slot="right">
         <span class="icons icon_scan" style="color: #FFF;" @click="$router.push('/scan')"></span>
       </div>
