@@ -3,7 +3,7 @@ import create from '../../libray/create'
 import Env from '../../env'
 import Inc from '../../libray/Inc'
 
-import Dialog from '../../ui/dialog/dialog'
+import Dialog from '../../assets/ui/dialog/dialog'
 
 const app = getApp();
 
