@@ -90,12 +90,13 @@
     <!-- 我的 End -->
     
     <!-- 底部导航 -->
-    <van-tabbar class="nav_tabbar" v-model="tabBar.active" :active-color="$config.themeColor" @change="navTab">
+    <!-- <van-tabbar class="nav_tabbar" v-model="tabBar.active" :active-color="$config.themeColor" @change="navTab">
       <van-tabbar-item v-for="(val,key) in tabBar.list" :key="key" :info="val.info">
         <span>{{val.title}}</span>
         <div slot="icon" slot-scope="props" :class="val.ico" :style="{color: props.active?$config.themeColor:''}"></div>
       </van-tabbar-item>
-    </van-tabbar>
+    </van-tabbar> -->
+    <wm-tabbar></wm-tabbar>
     <!-- 底部导航 End -->
   </div>
 </template>

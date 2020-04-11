@@ -1,4 +1,4 @@
-import modal from './notify.vue'
+import modal from './index'
 
 /* 消息插件 */
 let notify={};

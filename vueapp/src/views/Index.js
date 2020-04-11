@@ -1,11 +1,15 @@
 import Vue from 'vue'
-import PageView from '@/components/page-view'
 import Inc from '@/library/Inc'
 import Plus from '@/library/Plus'
 // Scroll
 import BScroll from '@better-scroll/core'
 import Pullup from '@better-scroll/pull-up'
 BScroll.use(Pullup);
+/* 组件 */
+import PageView from '@/components/page-view'
+import Tabbar1 from '@/components/tabbar'
+Vue.component('page-view',PageView);
+Vue.component('wm-tabbar',Tabbar1);
 // UI
 import { Toast,Dialog,ActionSheet } from 'vant'
 import 'vant/lib/toast/style'
@@ -31,7 +35,6 @@ Vue.use(Grid).use(GridItem);
 Vue.use(ImagePreview);
 
 export default {
-  components: {PageView},
   data(){
     return {
       navColor: 0,

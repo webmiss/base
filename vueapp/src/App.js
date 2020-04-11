@@ -96,13 +96,7 @@ export default {
           if(Env.update) this.isUpdate();
         });
       }catch(e){
-        // 浏览器后退
-        // window.history.pushState('forward', null, '#');
-        // window.history.forward(1);
-        // window.addEventListener("popstate", (e)=>{
-        //   console.log(1);
-        //   this.$router.goBack(-1);
-        // });
+        // 浏览器
       }
     },
 

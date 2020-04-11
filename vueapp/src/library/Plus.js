@@ -3,7 +3,7 @@ import Env from '@/env'
 import VueAMap from 'vue-amap';
 import axios from 'axios'
 
-import Notify from '../components/notify/notify';
+import Notify from '../components/notify/index.js';
 Vue.use(Notify);
 
 // 初始化地图
