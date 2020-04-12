@@ -19,15 +19,7 @@ create(store,{
     navHeight: app.globalData.nav.height,
     navColor: 0,
     // 底部导航
-    tabBar: {
-      active: 0,
-      list: [
-        {title: '首页', ico: 'icons icon_home', info: ''},
-        {title: '商城', ico: 'icons icon_shop', info: ''},
-        {title: '购物车', ico: 'icons icon_cart', info: 2},
-        {title: '我的', ico: 'icons icon_me', info: ''},
-      ],
-    },
+    tabBar: { active: 0, },
     // 图片裁切
     imgData: {width: 100, height: 100},
     // 二维码

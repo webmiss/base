@@ -7,9 +7,9 @@ import Pullup from '@better-scroll/pull-up'
 BScroll.use(Pullup);
 /* 组件 */
 import PageView from '@/components/page-view'
-import Tabbar1 from '@/components/tabbar'
+import Tabbar from '@/components/tabbar'
 Vue.component('page-view',PageView);
-Vue.component('wm-tabbar',Tabbar1);
+Vue.component('wm-tabbar',Tabbar);
 // UI
 import { Toast,Dialog,ActionSheet } from 'vant'
 import 'vant/lib/toast/style'
@@ -17,14 +17,9 @@ import 'vant/lib/dialog/style'
 import 'vant/lib/action-sheet/style'
 Vue.use(Toast).use(Dialog).use(Dialog).use(ActionSheet);
 
-import { Tabbar,TabbarItem,PullRefresh,Swipe,SwipeItem } from 'vant'
-import 'vant/lib/tabbar/style'
-import 'vant/lib/tabbar-item/style'
-import 'vant/lib/pull-refresh/style'
+import { Swipe,SwipeItem } from 'vant'
 import 'vant/lib/swipe/style'
 import 'vant/lib/swipe-item/style'
-Vue.use(Tabbar).use(TabbarItem);
-Vue.use(PullRefresh);
 Vue.use(Swipe).use(SwipeItem);
 
 import { Grid,GridItem,ImagePreview } from 'vant'
@@ -39,20 +34,11 @@ export default {
     return {
       navColor: 0,
       // 底部导航
-      tabBar: {
-        active: 0,
-        list: [
-          {title: '首页', ico: 'icons icon_home', info: ''},
-          {title: '商城', ico: 'icons icon_shop', info: ''},
-          {title: '购物车', ico: 'icons icon_cart', info: 2},
-          {title: '我的', ico: 'icons icon_me', info: ''},
-        ],
-      },
+      tabBar: {active: 0,},
       // 首页、商城、购物车、我的
-      indexData:{scroll: null,isLoading: false},
-      shopData:{scroll: null,isLoading: false},
-      cartData:{scroll: null,isLoading: false},
-      meData:{scroll: null,isLoading: false},
+      indexData:{scroll: null,},
+      msgData:{scroll: null,},
+      meData:{scroll: null,},
       // 轮播图片
       imgUrls: [
         'https://goss.veer.com/creative/vcg/veer/800water/veer-150270653.jpg',
@@ -93,7 +79,6 @@ export default {
 
   },
   activated(){
-    console.log('更新数据');
   },
   methods:{
 
@@ -101,18 +86,12 @@ export default {
     navTab(index){
       // 滑动效果
       if(index==1){
-        if(!this.shopData.scroll){
+        if(!this.msgData.scroll){
           setTimeout(()=>{
-            this.shopData.scroll = new BScroll(this.$refs.shop,{click:true});
+            this.msgData.scroll = new BScroll(this.$refs.shop,{click:true});
           },300);
         }
       }else if(index==2){
-        if(!this.cartData.scroll){
-          setTimeout(()=>{
-            this.cartData.scroll = new BScroll(this.$refs.cart,{click:true});
-          },300);
-        }
-      }else if(index==3){
         if(!this.meData.scroll){
           setTimeout(()=>{
             this.meData.scroll = new BScroll(this.$refs.me,{click:true});

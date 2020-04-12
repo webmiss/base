@@ -5,6 +5,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    // 浅色:light、深色:dark
+    mode: 'light',
     // 用户信息
     isLogin: false,
     uInfo: {},

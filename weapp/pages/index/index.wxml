@@ -67,30 +67,19 @@
 </page-view>
 <!-- 首页 End -->
 
-<!-- 商城 -->
+<!-- 消息 -->
 <page-view hidden="{{tabBar.active==1?false:true}}">
-  <text slot="title">商城</text>
+  <text slot="title">消息</text>
   <scroll-view slot="body" class="nav_body" scroll-y="true">
     <view class="test">
       <view>内容</view><view>1</view><view>2</view><view>3</view><view>4</view><view>5</view><view>6</view><view>7</view><view>8</view><view>9</view>
     </view>
   </scroll-view>
 </page-view>
-<!-- 商城 End -->
-
-<!-- 购物车 -->
-<page-view hidden="{{tabBar.active==2?false:true}}">
-  <text slot="title">购物车</text>
-  <scroll-view slot="body" class="nav_body" scroll-y="true">
-    <view class="test">
-      <view>内容</view><view>1</view><view>2</view><view>3</view><view>4</view><view>5</view><view>6</view><view>7</view><view>8</view><view>9</view>
-    </view>
-  </scroll-view>
-</page-view>
-<!-- 购物车 End -->
+<!-- 消息 End -->
 
 <!-- 我的 -->
-<page-view hidden="{{tabBar.active==3?false:true}}">
+<page-view hidden="{{tabBar.active==2?false:true}}">
   <text slot="title">我的</text>
   <scroll-view slot="body" class="nav_body" scroll-y="true">
     <view class="test">
@@ -101,12 +90,4 @@
 <!-- 我的 End -->
 
 <!-- 底部导航 -->
-<view>
-  <van-tabbar class="nav_tabbar" active="{{ tabBar.active }}" active-color="{{themeColor}}" bind:change="navTab">
-    <van-tabbar-item wx:for="{{tabBar.list}}" wx:key="index" info="{{item.info}}">
-      <icon slot="icon" class="{{item.ico}}" />
-      <icon slot="icon-active" class="{{item.ico}}" style="color: {{themeColor}};"/>
-      <text>{{item.title}}</text>
-    </van-tabbar-item>
-  </van-tabbar>
-</view>
+<wm-tabbar active="{{ tabBar.active }}" bind:change="navTab"></wm-tabbar>

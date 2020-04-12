@@ -76,6 +76,11 @@ export default {
         plus.navigator.setStatusBarStyle('dark');
         plus.navigator.setStatusBarBackground(Env.themeColor);
         Env.statusBar.height = Plus.getStatusBarHeight()+'px';
+        // 模式
+        clearInterval(this.modeInterval);
+        this.modeInterval = setInterval(()=>{
+          this.$store.state.mode = plus.navigator.getUiStyle();
+        },1000);
         // Android返回键
         let backcount = 0;
         let webview = plus.webview.currentWebview();
@@ -92,9 +97,9 @@ export default {
               setTimeout(()=>{backcount=0;},2000);
             }
           });
-          // 更新
-          if(Env.update) this.isUpdate();
         });
+        // 更新
+        if(Env.update) this.isUpdate();
       }catch(e){
         // 浏览器
       }

@@ -1,0 +1,14 @@
+<view class="tabar_body">
+  <view class="tabar_item {{active==0?'tabar_item_active':''}}" bind:tap="navClick" data-n="0">
+    <i class="icons icon_home"></i>
+    <view class="name">首页</view>
+  </view>
+  <view class="tabar_item {{active==1?'tabar_item_active':''}}" bind:tap="navClick" data-n="1">
+    <i class="icons icon_msg"></i><span class="redNum">12</span>
+    <view class="name">消息</view>
+  </view>
+  <view class="tabar_item {{active==2?'tabar_item_active':''}}" bind:tap="navClick" data-n="2">
+    <i class="icons icon_me"></i>
+    <view class="name">我的</view>
+  </view>
+</view>

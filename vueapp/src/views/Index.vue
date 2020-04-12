@@ -14,7 +14,7 @@
       <!-- Content -->
       <div slot="body" class="nav_body">
         <div class="html" ref="index">
-          <van-pull-refresh v-model="indexData.isLoading" @refresh="indexRefresh">
+          <div>
             <!-- 轮播 -->
             <van-swipe class="swiper_image" :autoplay="3000" indicator-color="white">
               <van-swipe-item v-for="(val,key) in imgUrls" :key="key" :style="{backgroundImage:'url('+val+')'}"></van-swipe-item>
@@ -35,15 +35,15 @@
               <div><span class="icons icon_logo" style="font-size: 32px;"></span></div>
               <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div>
             </div>
-          </van-pull-refresh>
+          </div>
         </div>
       </div>
     </page-view>
     <!-- 首页 End -->
 
-    <!-- 商城 -->
+    <!-- 消息 -->
     <page-view v-show="tabBar.active==1">
-      <div slot="title">商城</div>
+      <div slot="title">消息</div>
       <div slot="body" class="nav_body">
         <!-- 滑动 -->
         <div class="html" ref="shop">
@@ -55,26 +55,10 @@
         <!-- 滑动 End -->
       </div>
     </page-view>
-    <!-- 商城 End -->
-
-    <!-- 购物车 -->
-    <page-view v-show="tabBar.active==2">
-      <div slot="title">购物车</div>
-      <div slot="body" class="nav_body">
-        <!-- 滑动 -->
-        <div class="html" ref="cart">
-          <!-- 测试 -->
-          <div class="test">
-            <div>内容</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div>
-          </div>
-        </div>
-        <!-- 滑动 End -->
-      </div>
-    </page-view>
-    <!-- 购物车 End -->
+    <!-- 消息 End -->
 
     <!-- 我的 -->
-    <page-view v-show="tabBar.active==3">
+    <page-view v-show="tabBar.active==2">
       <div slot="title">我的</div>
       <div slot="body" class="nav_body">
         <!-- 滑动 -->
@@ -90,13 +74,7 @@
     <!-- 我的 End -->
     
     <!-- 底部导航 -->
-    <!-- <van-tabbar class="nav_tabbar" v-model="tabBar.active" :active-color="$config.themeColor" @change="navTab">
-      <van-tabbar-item v-for="(val,key) in tabBar.list" :key="key" :info="val.info">
-        <span>{{val.title}}</span>
-        <div slot="icon" slot-scope="props" :class="val.ico" :style="{color: props.active?$config.themeColor:''}"></div>
-      </van-tabbar-item>
-    </van-tabbar> -->
-    <wm-tabbar></wm-tabbar>
+    <wm-tabbar v-model="tabBar.active" @change="navTab"></wm-tabbar>
     <!-- 底部导航 End -->
   </div>
 </template>
