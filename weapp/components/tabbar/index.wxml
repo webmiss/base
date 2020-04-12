@@ -4,7 +4,7 @@
     <view class="name">首页</view>
   </view>
   <view class="tabar_item {{active==1?'tabar_item_active':''}}" bind:tap="navClick" data-n="1">
-    <i class="icons icon_msg"></i><span class="redNum">12</span>
+    <i class="icons icon_msg"></i><span class="redNum">2</span>
     <view class="name">消息</view>
   </view>
   <view class="tabar_item {{active==2?'tabar_item_active':''}}" bind:tap="navClick" data-n="2">

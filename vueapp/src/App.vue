@@ -44,7 +44,7 @@ i{font-style: normal;}
 .html{height: 100%;}
 .Link{color: #6FB737;}
 .loading{line-height: 100px; color: #999; background-color: #F2F2F2; text-align: center;}
-.redNum{position: absolute; padding: 0 3px; margin-top: -5px; line-height: 16px; color: #FFF; font-size: 10px; font-weight: normal; border-radius: 10px; background-color: #FF0000;}
+.redNum{position: absolute; padding: 0 5px; margin-top: -5px; line-height: 16px; color: #FFF; font-size: 12px; font-weight: normal; border-radius: 10px; background-color: #FF0000;}
 .bgImg{background-size: cover; background-position: center; background-repeat: no-repeat;}
 .bgTu{width: 100%; height: 100%; border-radius: 50%;}
 .bgLogo{background-image: url(./assets/icon/camera.svg); background-size: 60%;}

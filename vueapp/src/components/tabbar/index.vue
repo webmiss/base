@@ -5,7 +5,7 @@
       <div class="name">首页</div>
     </div>
     <div class="tabar_item" :class="active==1?'tabar_item_active':''" @click="navClick(1)">
-      <i class="icons icon_msg"></i><span class="redNum">12</span>
+      <i class="icons icon_msg"></i><span class="redNum">2</span>
       <div class="name">消息</div>
     </div>
     <div class="tabar_item" :class="active==2?'tabar_item_active':''" @click="navClick(2)">
