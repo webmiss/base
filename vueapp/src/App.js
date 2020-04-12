@@ -27,6 +27,9 @@ export default {
       msgInterval: null,
     }
   },
+  computed:{
+    mode(){ return this.$store.state.mode; },
+  },
   mounted(){
     // 初始化
     setTimeout(()=>{this.init()},1000);

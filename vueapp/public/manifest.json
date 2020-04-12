@@ -1,6 +1,6 @@
 {
     "@platforms" : [ "android", "iPhone", "iPad" ],
-    "id" : "H5B3D0B2B", /*应用的标识*/
+    "id" : "H55791EA1", /*应用的标识*/
     "name" : "APP框架", /*应用名称，程序桌面图标名称*/
     "version" : {
         "name" : "1.0.0", /*应用版本名称*/
@@ -114,7 +114,8 @@
                 "p12" : "", /*iOS应用打包个人证书，打包配置文件关联的个人证书*/
                 "devices" : "universal", /*iOS应用支持的设备类型，可取值iphone/ipad/universal*/
                 "frameworks" : [], /*调用Native.js调用原生Objective-c API需要引用的FrameWork，如需调用GameCenter，则添加"GameKit.framework"*/
-                "UIBackgroundModes" : "audio"
+                "UIBackgroundModes" : "audio",
+                "UIUserInterfaceStyle" : "Automatic"
             },
             "google" : {
                 "packagename" : "top.zkxzh.app", /*Android应用包名，如io.dcloud.HelloH5*/

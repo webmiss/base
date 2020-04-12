@@ -2,7 +2,11 @@
 .swiper_image{width: 100%; height: 55vmin;}
 .swiper_image .van-swipe-item{height: 100%; background-size: 100% auto; background-repeat: no-repeat; background-position: center center;}
 /* 功能 */
-.tools{background-color: #FFF; margin-top: -1px;}
+.tools{background-color: #FFF;}
+.tools li{width: 25%; padding: 16px 0; text-align: center;}
+.tools .van-icon{font-size: 28px;}
+.tools_dark{background-color: #3D3D3D; color: #FFF;}
 /* 测试 */
 .test{margin: 1px 0;}
 .test div{margin: 1px 0; line-height: 120px; background-color: #FFF; text-align: center;}
+.test_dark div{background-color: #3D3D3D; color: #FFF;}

@@ -22,12 +22,9 @@ import 'vant/lib/swipe/style'
 import 'vant/lib/swipe-item/style'
 Vue.use(Swipe).use(SwipeItem);
 
-import { Grid,GridItem,ImagePreview } from 'vant'
-import 'vant/lib/grid/style'
-import 'vant/lib/grid-item/style'
+import { Icon,ImagePreview } from 'vant'
 import 'vant/lib/image-preview/style'
-Vue.use(Grid).use(GridItem);
-Vue.use(ImagePreview);
+Vue.use(Icon).use(ImagePreview);
 
 export default {
   data(){
@@ -52,7 +49,14 @@ export default {
       },
     }
   },
+  computed:{
+    mode(){ return this.$store.state.mode; },
+  },
   mounted(){
+
+    // setTimeout(()=>{
+    //   this.$store.state.mode='dark';
+    // },3000);
 
     /* 首页滑动 */
     this.indexData.scroll = new BScroll(this.$refs.index,{click:true,pullUpLoad:true});

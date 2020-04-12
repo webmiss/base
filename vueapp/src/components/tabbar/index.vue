@@ -26,7 +26,7 @@
 
 .tabar_body .redNum{margin: -20px 0 0 18px;}
 
-.tabar_body_dark{background-color: #000;}
+.tabar_body_dark{background-color: #282828;}
 </style>
 
 <script>
@@ -44,14 +44,9 @@ export default {
     }
   },
   computed:{
-    mode(){
-      return this.$store.state.mode;
-    },
+    mode(){ return this.$store.state.mode; },
   },
   mounted(){
-    setTimeout(()=>{
-      this.$store.state.mode='dark';
-    },3000);
   },
   methods:{
 
