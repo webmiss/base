@@ -11,7 +11,7 @@ export default {
   themeColor: '#6FB737',
   copy: 'Copyright © WebMIS.VIP 2020',
   // 状态栏
-  statusBar:{height:'0px',color: '#333', bgColor:'#FFF'},
+  statusBar:{height:34, color: '#333', bgColor:'#FFF'},
   // 更新
   update: false,
   upDateColor: {bg:'',logoBg:'#FFF',loading:'#FFF',loaded:'#666',copy:'#333'},

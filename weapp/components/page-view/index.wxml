@@ -1,5 +1,5 @@
-<view class="page_view_html" hidden="{{hidden}}">
-  <view wx:if="{{header}}" class="page_view_header" style="height: {{height}}px; line-height: {{height}}px; padding-top: {{custom.top}}px; padding-bottom: {{custom.top-statusBar}}px;  background-color: {{bgColor}}; color: {{color}};">
+<view class="page_view_html">
+  <view class="page_view_header" style="height: {{height}}px; line-height: {{height}}px; padding-top: {{custom.top}}px; padding-bottom: {{custom.top-statusBar}}px;  background-color: {{bgColor}}; color: {{color}};">
     <!-- Left -->
     <view class="page_view_left" style="height: {{height}}px; line-height: {{height}}px;">
       <slot name="left"></slot>

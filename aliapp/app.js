@@ -1,11 +1,25 @@
 App({
-  onLaunch(options) {
-    // 第一次打开
-    // options.query == {number:1}
-    console.info('App onLaunch');
+  /* 公共数据 */
+  globalData:{
+    // 系统信息
+    statusBarHeight: 0,
+    titleBarHeight: 0,
+    screenWidth: 0,
+    screenHeight: 0,
   },
-  onShow(options) {
-    // 从后台被 scheme 重新打开
-    // options.query == {number:1}
+  onLaunch() {
+    my.getSystemInfo({
+      success: (res)=>{
+        console.log(res);
+        this.globalData.statusBarHeight = res.statusBarHeight;
+        this.globalData.titleBarHeight = res.titleBarHeight;
+        this.globalData.screenWidth = res.screenWidth;
+        this.globalData.screenHeight = res.screenHeight;
+      },
+    });
+  },
+  onHide(){
+  },
+  onShow(){
   },
 });

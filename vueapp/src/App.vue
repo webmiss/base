@@ -60,7 +60,6 @@ i{font-style: normal;}
 .arrow_up{width: 0px; height: 0px; border: 10px solid; border-color:transparent transparent #FFF transparent;}
 .arrow_down{width: 0px; height: 0px; border: 10px solid; border-color:#FFF transparent transparent transparent;}
 
-
 /* 切换动画 */
 .view{position: fixed; z-index: 0; width:100%; height: 100%; transition: all .6s cubic-bezier(0.075, 0.82, 0.165, 1); background-color: #F2F2F2;}
 .view_dark{background-color: #000;}
@@ -90,6 +89,9 @@ i{font-style: normal;}
 .nowrap{overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
 .nowrap_text{overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;}
 .nowrap_three{overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;}
+
+/* 底部导航 */
+.nav_body{height: calc(100% - 50px);}
 
 /* Html */
 .htmlBody{margin: 1px 0; padding: 15px; background-color: #FFF;}

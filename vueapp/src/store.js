@@ -8,7 +8,7 @@ export default new Vuex.Store({
     // 模式: light、dark
     mode: 'light',
     // 状态栏
-    statusBar: {height:0},
+    statusBarHeight: 0,
     // 用户信息
     isLogin: false,
     uInfo: {},

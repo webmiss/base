@@ -1,14 +1,14 @@
 <template>
   <div class="page_view_html">
     <!-- header -->
-    <div class="page_view_header" :style="{backgroundColor: bgColor, color: color, paddingTop: $store.state.statusBar.height+'px'}">
-      <div class="page_view_header_body">
+    <div class="page_view_header" :style="{backgroundColor: bgColor, color: color, paddingTop: $store.state.statusBarHeight+'px'}">
+      <div class="page_view_header_body" :style="{height: height+'px', lineHeight:height+'px'}">
         <!-- Left -->
-        <div class="page_view_left">
+        <div class="page_view_left" :style="{height: height+'px', lineHeight:height+'px'}">
           <slot name="left"></slot>
         </div>
         <!-- Right -->
-        <div class="page_view_right">
+        <div class="page_view_right" :style="{height: height+'px', lineHeight:height+'px'}">
           <slot name="right"></slot>
         </div>
         <!-- Title -->
@@ -18,7 +18,7 @@
       </div>
     </div>
      <!-- Body -->
-    <div v-if="!immersed" :style="{paddingTop:'calc(44px + '+$store.state.statusBar.height+'px)',height:'calc(100% - 44px - '+$store.state.statusBar.height+'px)'}">
+    <div v-if="!immersed" :style="{paddingTop:height+10+$store.state.statusBarHeight+'px',height:'calc(100% - '+(height+10+$store.state.statusBarHeight)+'px)'}">
       <slot name="body"></slot>
     </div>
     <div v-else class="page_view_body"><slot name="body"></slot></div>
@@ -29,7 +29,6 @@
 .page_view_html{width: 100%; height: 100%;}
 .page_view_header{position: fixed; z-index: 999; width: 100%;}
 .page_view_header_body{padding: 5px 10px;}
-.page_view_header_body,.page_view_left,.page_view_right{overflow: hidden; height: 34px; line-height: 34px;}
 .page_view_title{height: 100%; font-size: 16px; text-align: center;}
 .page_view_left{position: absolute; left: 10px; z-index: 99;}
 .page_view_right{position: absolute; right: 10px; z-index: 99;}
@@ -50,6 +49,7 @@ export default {
   },
   data(){
     return {
+      height: Env.statusBar.height,
     }
   },
   mounted(){
