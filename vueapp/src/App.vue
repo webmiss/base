@@ -91,9 +91,11 @@ i{font-style: normal;}
 .nowrap_text{overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;}
 .nowrap_three{overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;}
 
-/* 底部导航 */
-.nav_tabbar span{font-size: 12px;}
-.nav_body{height: calc(100% - 50px);}
+/* Html */
+.htmlBody{margin: 1px 0; padding: 15px; background-color: #FFF;}
+.htmlOther{padding: 10px 0; font-size: 14p; color: #999;}
+.htmlCt{overflow: hidden; font-size: 16px; line-height: 28px;}
+.htmlCt img{width: 100%; height: auto; padding: 10px 0;}
 
 /* 搜索 */
 .Search{margin: 0 auto;}

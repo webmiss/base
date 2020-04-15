@@ -5,8 +5,10 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    // 浅色:light、深色:dark
+    // 模式: light、dark
     mode: 'light',
+    // 状态栏
+    statusBar: {height:0},
     // 用户信息
     isLogin: false,
     uInfo: {},

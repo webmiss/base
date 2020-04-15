@@ -179,7 +179,7 @@ export default {
           latitude: res.coords.latitude,
         };
         // 保存本地
-        window.localStorage.setItem('GeoLocation',JSON.stringify(data));
+        window.localStorage.setItem('geoLocation',JSON.stringify(data));
         callback(data);
       },fail);
     }catch(e){
@@ -198,7 +198,7 @@ export default {
                 latitude: res.position.lat,
               };
               // 保存本地
-              window.localStorage.setItem('GeoLocation',JSON.stringify(data));
+              window.localStorage.setItem('geoLocation',JSON.stringify(data));
               callback(data);
             }
           });
@@ -211,7 +211,7 @@ export default {
   getAddress(name,callback,fail){
     setTimeout(()=>{
       AMap.service(['AMap.PlaceSearch'], ()=>{
-        let location = window.localStorage.getItem('GeoLocation');
+        let location = window.localStorage.getItem('geoLocation');
         location = location?JSON.parse(location):{city:'昆明市'};
         const place = new AMap.PlaceSearch({city:location.city});
         place.search(name,(status, result)=>{

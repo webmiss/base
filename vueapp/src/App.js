@@ -78,7 +78,7 @@ export default {
         // 状态栏
         plus.navigator.setStatusBarStyle('dark');
         plus.navigator.setStatusBarBackground(Env.themeColor);
-        Env.statusBar.height = Plus.getStatusBarHeight()+'px';
+        this.$store.state.statusBar.height = plus.navigator.getStatusbarHeight();
         // 模式
         clearInterval(this.modeInterval);
         this.modeInterval = setInterval(()=>{

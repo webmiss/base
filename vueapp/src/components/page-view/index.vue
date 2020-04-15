@@ -1,7 +1,7 @@
 <template>
   <div class="page_view_html">
     <!-- header -->
-    <div class="page_view_header" :style="{backgroundColor: bgColor, color: color, paddingTop: statusBar.height}">
+    <div class="page_view_header" :style="{backgroundColor: bgColor, color: color, paddingTop: $store.state.statusBar.height+'px'}">
       <div class="page_view_header_body">
         <!-- Left -->
         <div class="page_view_left">
@@ -18,7 +18,7 @@
       </div>
     </div>
      <!-- Body -->
-    <div v-if="!immersed" :style="{paddingTop:'calc(44px + '+statusBar.height+')',height:'calc(100% - 44px - '+statusBar.height+')'}">
+    <div v-if="!immersed" :style="{paddingTop:'calc(44px + '+$store.state.statusBar.height+'px)',height:'calc(100% - 44px - '+$store.state.statusBar.height+'px)'}">
       <slot name="body"></slot>
     </div>
     <div v-else class="page_view_body"><slot name="body"></slot></div>
@@ -50,7 +50,6 @@ export default {
   },
   data(){
     return {
-      statusBar: Env.statusBar,
     }
   },
   mounted(){

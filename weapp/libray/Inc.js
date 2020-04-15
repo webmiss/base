@@ -3,7 +3,7 @@ import QRCode from './weapp-qrcode'
 import amap from './amap-wx'
 import Notify from '../assets/ui/notify/notify'
 
-const Map = new amap.AMapWX({ key: Env.amapKey});
+const Map = new amap.AMapWX({ key: Config.amapKey});
 
 export default {
 
@@ -55,29 +55,36 @@ export default {
     return tel.replace(reg, '$1****$2');
   },
 
-  /* Url-参数 */
+  /* Url参数 */
   getQueryString(url, name){
-		const qrForm = decodeURIComponent(url);
+    const qrForm = decodeURIComponent(url);
     const reg = new RegExp('(^|&|/?)' + name + '=([^&|/?]*)(&|/?|$)', 'i');
-		const res = qrForm.substr(1).match(reg)
+    const res = qrForm.substr(1).match(reg)
     return res?res[2]:'';
+  },
+
+  /* Html转换 */
+  getHtml(html){
+    return html.replace(/<img/gi, '<img class="all img"')
+    .replace(/<ul/gi, '<ul class="all ul"')
+    .replace(/<ul/gi, '<p class="all p"');
   },
 
   /* 本地消息 */
   notify(title,content,read){
     setTimeout(()=>{
       Notify({type: 'success', message: content});
-    },Env.msgRead);
+    },Config.msgRead);
     // 是否阅读
     read = read || false;
     if(!read) return;
     // 百度Token
-    this.post(Env.apiUrl+'index/baiduToken',{},(res)=>{
+    this.post(Config.apiUrl+'index/baiduToken',{},(res)=>{
       let msgAudio = wx.getBackgroundAudioManager();
         msgAudio.title = title;
-        let text = Env.msgContent=='title'?title:content;
-        msgAudio.src = Env.httpType+'tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
-        setTimeout(()=>{ msgAudio.play(); },Env.msgRead);
+        let text = Config.msgContent=='title'?title:content;
+        msgAudio.src = Config.httpType+'tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
+        setTimeout(()=>{ msgAudio.play(); },Config.msgRead);
     });
   },
 
@@ -92,6 +99,23 @@ export default {
       }
     });
   },
+  /* 搞德-坐标转换 */
+  getCoordinate(longitude,latitude,coordsys,callback){
+    this.get(
+      'https://restapi.amap.com/v3/assistant/coordinate/convert',
+      {locations: longitude+','+latitude, coordsys:coordsys, key:Config.amapWeb},
+    (res)=>{
+      const d = res.data;
+      let longitude = '';
+      let latitude = '';
+      if(d.status=='1' && d.info=='ok'){
+        const arr = d.locations.split(',');
+        longitude = arr[0];
+        latitude = arr[1];
+      }
+      callback({ longitude: longitude, latitude: latitude });
+    });
+  },
   /* 高德-城市信息 */
   getCity(callback,fail,longitude,latitude,coordsys){
     const self = this;
@@ -103,22 +127,17 @@ export default {
         latitude = latitude || res[0].latitude;
         coordsys = coordsys || 'autonavi';
         // 坐标转换
-        self.get(
-          'https://restapi.amap.com/v3/assistant/coordinate/convert',
-          {locations:longitude+','+latitude,coordsys:coordsys,key:Env.amapWeb},
-        (m)=>{
-          const d = m.data;
-          if(d.status=='1' && d.info=='ok'){
-            const arr = d.locations.split(',');
-            callback({
-              longitude: arr[0],
-              latitude: arr[1],
-              province: res[0].regeocodeData.addressComponent.province,
-              city: res[0].regeocodeData.addressComponent.city,
-              district: res[0].regeocodeData.addressComponent.district,
-              address: res[0].name
-            });
-          }
+        self.getCoordinate(longitude,latitude,coordsys,(m)=>{
+          let data = {
+            longitude: m.longitude,
+            latitude: m.latitude,
+            province: res[0].regeocodeData.addressComponent.province,
+            city: res[0].regeocodeData.addressComponent.city,
+            district: res[0].regeocodeData.addressComponent.district,
+            address: res[0].name
+          };
+          self.storage.setItem('geolocation',data);
+          callback(data);
         });
       },
       fail: fail,
@@ -320,5 +339,18 @@ export default {
       return size+' B';
     }
   },
+  /* 拨打电话 */
+  callPhone(phoneNumber) {
+    wx.makePhoneCall({
+      phoneNumber: phoneNumber,
+      success: function() {
+        console.log("拨打电话成功！")
+      },
+      fail: function() {
+        console.log("拨打电话失败！")
+      }
+    })
+    
+  }
 
 }
