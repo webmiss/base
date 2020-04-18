@@ -18,6 +18,8 @@ App({
         this.globalData.screenHeight = res.screenHeight;
       },
     });
+    // 隐藏收藏
+    my.hideAllFavoriteMenu();
   },
   onHide(){
   },

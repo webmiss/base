@@ -1,6 +1,7 @@
 Page({
   data:{
-    test: 'Test',
+    // 底部导航
+    tabBar: {active:0,},
   },
   onLoad(query){
   },
@@ -13,8 +14,7 @@ Page({
     };
   },
   /* 返回 */
-  goBack(){
-    console.log('back');
-    this.setData({test:'Back'});
+  navTab(n){
+    console.log(n);
   },
 });

@@ -15,11 +15,11 @@ create(store,{
     socket:null,
     // 主题颜色
     themeColor: Env.themeColor,
+    // 底部导航
+    tabBar: {active:0,},
     // 导航
     navHeight: app.globalData.titleBarHeight,
     navColor: 0,
-    // 底部导航
-    tabBar: { active: 0, },
     // 图片裁切
     imgData: {width: 100, height: 100},
     // 二维码

@@ -1,15 +1,15 @@
+import Env from '../../env'
+
 Component({
-  options: {
-    multipleSlots: true,
-    addGlobalClass: true,
-  },
-  properties: {
-    active: {type: Number, value: 0},
-  },
-  attached(){
+  mixins: [],
+  props: {
+    active: 0,
+    onChange: null,
   },
   data: {
   },
+  /* 初始化 */
+  didMount(){},
   methods: {
 
     /* 切换菜单 */
@@ -17,8 +17,8 @@ Component({
       const n = e.currentTarget.dataset.n;
       this.setData({active:n});
       // 返回值
-      this.triggerEvent('change',n);
+      this.props.onChange(n);
     },
 
-  }
-})
+  },
+});

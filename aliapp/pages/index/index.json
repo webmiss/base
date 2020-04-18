@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "page-view": "/components/page-view/index"
+    "page-view": "/components/page-view/index",
+    "wm-tabbar": "/components/tabbar/index"
   }
 }

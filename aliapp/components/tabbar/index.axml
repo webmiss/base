@@ -1,13 +1,13 @@
 <view class="tabar_body">
-  <view class="tabar_item {{active==0?'tabar_item_active':''}}" bind:tap="navClick" data-n="0">
+  <view class="tabar_item {{active==0?'tabar_item_active':''}}" onTap="navClick" data-n="0">
     <text class="icons icon_home"></text>
     <view class="name">首页</view>
   </view>
-  <view class="tabar_item {{active==1?'tabar_item_active':''}}" bind:tap="navClick" data-n="1">
+  <view class="tabar_item {{active==1?'tabar_item_active':''}}" onTap="navClick" data-n="1">
     <text class="icons icon_msg"></text><text class="redNum">2</text>
     <view class="name">消息</view>
   </view>
-  <view class="tabar_item {{active==2?'tabar_item_active':''}}" bind:tap="navClick" data-n="2">
+  <view class="tabar_item {{active==2?'tabar_item_active':''}}" onTap="navClick" data-n="2">
     <text class="icons icon_me"></text>
     <view class="name">我的</view>
   </view>
