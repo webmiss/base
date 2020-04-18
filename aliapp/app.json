@@ -3,6 +3,9 @@
     "pages/index/index"
   ],
   "window": {
-    "defaultTitle": "WebMIS"
+    "transparentTitle": "always",
+    "titlePenetrate": "YES",
+    "allowsBounceVertical": "NO",
+    "defaultTitle": ""
   }
 }

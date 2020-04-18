@@ -16,7 +16,7 @@ create(store,{
     // 主题颜色
     themeColor: Env.themeColor,
     // 导航
-    navHeight: app.globalData.nav.height,
+    navHeight: app.globalData.titleBarHeight,
     navColor: 0,
     // 底部导航
     tabBar: { active: 0, },
@@ -87,8 +87,8 @@ create(store,{
   },
 
   /* 切换导航 */
-  navTab(event){
-    this.setData({['tabBar.active']:event.detail});
+  navTab(e){
+    this.setData({['tabBar.active']:e.detail});
   },
 
   /* 首页滑动 */

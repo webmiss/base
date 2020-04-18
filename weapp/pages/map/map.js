@@ -8,7 +8,7 @@ Page({
     // 主题颜色
     themeColor: Env.themeColor,
     // 导航
-    navHeight: app.globalData.nav.height,
+    navHeight: app.globalData.titleBarHeight,
     // 地图
     map:{},
     markers: [],

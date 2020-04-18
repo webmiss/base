@@ -12,7 +12,6 @@ App({
     // 状态栏信息
     wx.getSystemInfo({
       success: (res)=>{
-        console.log(res);
         this.globalData.statusBarHeight = res.statusBarHeight;
         this.globalData.screenWidth = res.screenWidth;
         this.globalData.screenHeight = res.screenHeight;

@@ -1,7 +1,7 @@
 <template>
   <page-view>
     <!-- Header -->
-    <div slot="left"><span class="icons icon_left" @click="$router.goBack(-1)"></span></div>
+    <div slot="left"><span class="back icons icon_left" @click="$router.goBack(-1)"></span></div>
     <div slot="title">地图</div>
     <div slot="right" @click="$router.push('/demo/index')">Demo</div>
     <!-- Content -->

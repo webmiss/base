@@ -2,7 +2,7 @@
 <v-touch v-on:swiperight="$router.goBack(-1)">
   <!-- Demo -->
   <page-view>
-    <div slot="left"><i class="icons icon_left" @click="$router.goBack(-1)"></i></div>
+    <div slot="left"><i class="back icons icon_left" @click="$router.goBack(-1)"></i></div>
     <div slot="title">Demo</div>
     <div slot="body" class="html">
       <!-- 滑动 -->

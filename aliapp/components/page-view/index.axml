@@ -14,8 +14,8 @@
     </view>
   </view>
   <!-- Body -->
-  <view wx:if="{{!immersed}}" class="page_view_body" style="padding-top: {{height+statusBar}}px; height: calc(100% - {{height+statusBar}}px);">
+  <view a:if="{{!immersed}}" class="page_view_body" style="padding-top: {{height+statusBar}}px; height: calc(100% - {{height+statusBar}}px);">
     <slot name="body"></slot>
   </view>
-  <view wx:else class="page_view_body"><slot name="body"></slot></view>
+  <view a:else class="page_view_body"><slot name="body"></slot></view>
 </view>

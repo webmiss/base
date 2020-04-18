@@ -43,6 +43,7 @@ i{font-style: normal;}
 /* 公共 */
 .html{height: 100%;}
 .Link{color: #6FB737;}
+.back{display: inline-block; width: 32px; text-align: center;}
 .loading{line-height: 100px; color: #999; background-color: #F2F2F2; text-align: center;}
 .redNum{position: absolute; padding: 0 5px; margin-top: -5px; line-height: 16px; color: #FFF; font-size: 12px; font-weight: normal; border-radius: 10px; background-color: #FF0000;}
 .bgImg{background-size: cover; background-position: center; background-repeat: no-repeat;}

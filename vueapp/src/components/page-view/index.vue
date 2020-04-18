@@ -1,24 +1,22 @@
 <template>
   <div class="page_view_html">
     <!-- header -->
-    <div class="page_view_header" :style="{backgroundColor: bgColor, color: color, paddingTop: $store.state.statusBarHeight+'px'}">
-      <div class="page_view_header_body" :style="{height: height+'px', lineHeight:height+'px'}">
-        <!-- Left -->
-        <div class="page_view_left" :style="{height: height+'px', lineHeight:height+'px'}">
-          <slot name="left"></slot>
-        </div>
-        <!-- Right -->
-        <div class="page_view_right" :style="{height: height+'px', lineHeight:height+'px'}">
-          <slot name="right"></slot>
-        </div>
-        <!-- Title -->
-        <div class="page_view_title">
-          <slot name="title"></slot>
-        </div>
+    <div class="page_view_header" :style="{height:(height-16)+'px', lineHeight:(height-16)+'px', paddingTop:($store.state.statusBarHeight+8)+'px', paddingBottom:'8px', backgroundColor:bgColor, color:color}">
+      <!-- Left -->
+      <div class="page_view_left flex center">
+        <slot name="left"></slot>
+      </div>
+      <!-- Right -->
+      <div class="page_view_right flex center">
+        <slot name="right"></slot>
+      </div>
+      <!-- Title -->
+      <div class="page_view_title">
+        <slot name="title"></slot>
       </div>
     </div>
      <!-- Body -->
-    <div v-if="!immersed" :style="{paddingTop:height+10+$store.state.statusBarHeight+'px',height:'calc(100% - '+(height+10+$store.state.statusBarHeight)+'px)'}">
+    <div v-if="!immersed" :style="{paddingTop:(height+$store.state.statusBarHeight)+'px',height:'calc(100% - '+(height+$store.state.statusBarHeight)+'px)'}">
       <slot name="body"></slot>
     </div>
     <div v-else class="page_view_body"><slot name="body"></slot></div>
@@ -28,13 +26,9 @@
 <style scoped>
 .page_view_html{width: 100%; height: 100%;}
 .page_view_header{position: fixed; z-index: 999; width: 100%;}
-.page_view_header_body{padding: 5px 10px;}
 .page_view_title{height: 100%; font-size: 16px; text-align: center;}
-.page_view_left{position: absolute; left: 10px; z-index: 99;}
-.page_view_right{position: absolute; right: 10px; z-index: 99;}
-.page_view_left .icons,.page_view_right .icons{display: inline-block; width: 34px; height: 34px; line-height: 34px; text-align: center;}
-.page_view_left .icons{margin-right: 5px;}
-.page_view_right .icons{margin-left: 5px;}
+.page_view_left{position: absolute; left: 10px; font-size: 14px;}
+.page_view_right{position: absolute; right: 10px;}
 .page_view_body{height: 100%;}
 </style>
 

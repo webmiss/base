@@ -1,3 +1,5 @@
 {
-  
+  "usingComponents": {
+    "page-view": "/components/page-view/index"
+  }
 }

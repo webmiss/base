@@ -1,4 +1,22 @@
-
-<view>
-  this is a blank page
-</view>
+<page-view immersed="{{true}}" bgColor="rgba(111,183,55,{{1}})" color="#FFF">
+  <view slot="left">
+    <text class="back icons icon_left" onTap="goBack"></text>
+  </view>
+  <view slot="body" style="padding: 15px;">
+    <view>内容</view>
+    <view>内容</view>
+    <view>内容</view>
+    <view>内容</view>
+    <view>内容</view>
+    <view>内容</view>
+    <view>内容</view>
+    <view>内容</view>
+    <view>内容</view>
+    <view>内容</view>
+    <view>内容</view>
+    <view>内容</view>
+    <view>内容</view>
+    <view>{{test}}</view>
+    <view onTap="goBack">点击我1</view>
+  </view>
+</page-view>

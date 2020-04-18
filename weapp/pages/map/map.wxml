@@ -1,6 +1,6 @@
 <page-view>
   <view slot="left">
-    <icon class="icons icon_left" bindtap="goBack" />
+    <text class="back icons icon_left" bind:tap="goBack"></text>
   </view>
   <text slot="title">地图</text>
   <view slot="body" class="html">
