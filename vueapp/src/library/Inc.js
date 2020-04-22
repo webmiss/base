@@ -61,6 +61,15 @@ export default {
     return tel.replace(reg, '$1****$2');
   },
 
+  /* 获取Html图片地址 */
+  getimgsrc(htmlstr){
+    const reg = /<img.+?src=('|")?([^'"]+)('|")?(?:\s+|>)/gim;
+    let imgs = [];
+    let tem = null;
+    while (tem=reg.exec(htmlstr)) imgs.push(tem[2]);
+    return imgs;
+  },
+
   /* 时间大小 */
   timeSize(t){
     const now = new Date().getTime();

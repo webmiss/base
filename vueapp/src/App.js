@@ -119,7 +119,9 @@ export default {
         if(d.code!=0) return false;
         // 是否更新
         plus.runtime.getProperty(plus.runtime.appid,(app)=>{
-          if(d.version == app.version) return false;
+          // 比较
+          if(!Plus.versionDiff(app.version,d.version)) return false;
+          // 更新
           this.update.show = true;
           this.update.down = true;
           this.update.msg = '新版本: '+d.version+'&nbsp;&nbsp;大小: '+(d.size/1024/1024).toFixed(2)+'MB';

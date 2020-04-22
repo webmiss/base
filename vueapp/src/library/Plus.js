@@ -16,12 +16,14 @@ export default {
     document.addEventListener('plusready',callback,false);
   },
 
-  /* 状态栏高度 */
-  getStatusBarHeight(){
-    let immersed = 0;
-    const ms=(/Html5Plus\/.+\s\(.*(Immersed\/(\d+\.?\d*).*)\)/gi).exec(navigator.userAgent);
-    if(ms&&ms.length>=3) immersed=parseFloat(ms[2]);
-    return immersed;
+  /* 版本比较 */
+  versionDiff(v1,v2){
+    const arr1 = v1.split('.');
+    const arr2 = v2.split('.');
+    if(parseInt(arr1[0])<parseInt(arr2[0])) return true;
+    else if(parseInt(arr1[1])<parseInt(arr2[1])) return true;
+    else if(parseInt(arr1[2])<parseInt(arr2[2])) return true;
+    else return false;
   },
 
   /* 分享 */
