@@ -1,10 +1,10 @@
 {
     "@platforms" : [ "android", "iPhone", "iPad" ],
-    "id" : "H55791EA1", /*应用的标识*/
-    "name" : "APP框架", /*应用名称，程序桌面图标名称*/
+    "id" : "H543F9908", /*应用的标识*/
+    "name" : "WebMIS", /*应用名称，程序桌面图标名称*/
     "version" : {
         "name" : "1.0.0", /*应用版本名称*/
-        "code" : ""
+        "code" : 20200422
     },
     "description" : "基础框架", /*应用描述信息*/
     "icons" : {
@@ -31,9 +31,6 @@
         },
         "Console" : {
             "description" : "跟踪调试输出日志"
-        },
-        "Contacts" : {
-            "description" : "访问系统联系人信息"
         },
         "Device" : {
             "description" : "访问设备信息"
@@ -80,6 +77,9 @@
         "Barcode" : {
             "description" : "管理二维码扫描插件"
         },
+        "Maps" : {
+            "description" : "管理地图插件"
+        },
         "Webview" : {
             "description" : "窗口管理"
         },
@@ -92,61 +92,67 @@
         "NativeObj" : {
             "description" : "原生对象"
         },
-        "Payment" : {}
+        "Payment" : {},
+        "Speech" : {}
     },
     "plus" : {
         "statusbar" : {
-            "immersed" : true
+            "immersed" : true /*沉浸式*/
         },
         "splashscreen" : {
             "autoclose" : true, /*是否自动关闭程序启动界面，true表示应用加载应用入口页面后自动关闭；false则需调plus.navigator.closeSplashscreen()关闭*/
-            "waiting" : true,
-            "delay" : "2000" /*是否在程序启动界面显示等待雪花，true表示显示，false表示不显示。*/
+            "waiting" : true, /*是否在程序启动界面显示等待雪花，true表示显示，false表示不显示。*/
+            "delay" : 1000
         },
         "popGesture" : "close", /*设置应用默认侧滑返回关闭Webview窗口，"none"为无侧滑返回功能，"hide"为侧滑隐藏Webview窗口。参考http://ask.dcloud.net.cn/article/102*/
         "runmode" : "normal", /*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/
         "signature" : "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==", /*可选，保留给应用签名，暂不使用*/
         "distribute" : {
             "apple" : {
-                "appid" : "top.zkxzh.app", /*iOS应用标识，苹果开发网站申请的appid，如io.dcloud.HelloH5*/
+                "appid" : "vip.webmis.demo", /*iOS应用标识，苹果开发网站申请的appid，如io.dcloud.HelloH5*/
                 "mobileprovision" : "", /*iOS应用打包配置文件*/
                 "password" : "", /*iOS应用打包个人证书导入密码*/
                 "p12" : "", /*iOS应用打包个人证书，打包配置文件关联的个人证书*/
                 "devices" : "universal", /*iOS应用支持的设备类型，可取值iphone/ipad/universal*/
                 "frameworks" : [], /*调用Native.js调用原生Objective-c API需要引用的FrameWork，如需调用GameCenter，则添加"GameKit.framework"*/
-                "UIUserInterfaceStyle" : "Automatic"
+                "UIUserInterfaceStyle" : "Automatic", /*深色模式*/
+                "privacyDescription" : {
+                    "NSPhotoLibraryUsageDescription" : "用于会员上传头像",
+                    "NSCameraUsageDescription" : "用于会员拍照上传头像",
+                    "NSLocationWhenInUseUsageDescription" : "获取定位，换取会员所在城市区域，便于提供附近的便捷服务",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "获取定位，换取会员所在城市区域，便于提供附近的便捷服务"
+                }
             },
             "google" : {
-                "packagename" : "top.zkxzh.app", /*Android应用包名，如io.dcloud.HelloH5*/
+                "packagename" : "", /*Android应用包名，如io.dcloud.HelloH5*/
                 "keystore" : "", /*Android应用打包使用的密钥库文件*/
                 "password" : "", /*Android应用打包使用密钥库中证书的密码*/
                 "aliasname" : "", /*Android应用打包使用密钥库中证书的别名*/
-                "targetSdkVersion" : 28,
                 "permissions" : [
+                    "<uses-feature android:name=\"android.hardware.camera\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
+                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
                     "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+                    "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+                    "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
                     "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
                     "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
-                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
-                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
-                    "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
-                    "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
-                    "<uses-permission android:name=\"android.permission.INTERNET\"/>",
-                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
-                    "<uses-feature android:name=\"android.hardware.camera\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
+                    "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
+                    "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
-                    "<uses-permission android:name=\"android.permission.RECEIVE_USER_PRESENT\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ],
-                "minSdkVersion" : 22
+                "minSdkVersion" : 22,
+                "targetSdkVersion" : 28
             },
             /*使用Native.js调用原生安卓API需要使用到的系统权限*/
             "orientation" : [ "portrait-primary" ], /*应用支持的方向，portrait-primary：竖屏正方向；portrait-secondary：竖屏反方向；landscape-primary：横屏正方向；landscape-secondary：横屏反方向*/
@@ -165,14 +171,14 @@
                         "settings-normal" : "", /*iPhone4设置页面程序图标，分辨率：29x29*/
                         "settings-retina" : "", /*iPhone4S/5/6设置页面程序图标，分辨率：58x58*/
                         "settings-retina8" : "", /*iPhone6Plus设置页面程序图标，分辨率：87x87*/
-                        "app@2x" : "",
-                        "app@3x" : "",
-                        "notification@2x" : "",
-                        "notification@3x" : "",
-                        "settings@2x" : "",
-                        "settings@3x" : "",
-                        "spotlight@2x" : "",
-                        "spotlight@3x" : ""
+                        "app@2x" : "unpackage/res/icons/120x120.png",
+                        "app@3x" : "unpackage/res/icons/180x180.png",
+                        "notification@2x" : "unpackage/res/icons/40x40.png",
+                        "notification@3x" : "unpackage/res/icons/60x60.png",
+                        "settings@2x" : "unpackage/res/icons/58x58.png",
+                        "settings@3x" : "unpackage/res/icons/87x87.png",
+                        "spotlight@2x" : "unpackage/res/icons/80x80.png",
+                        "spotlight@3x" : "unpackage/res/icons/120x120.png"
                     },
                     "ipad" : {
                         "normal" : "", /*iPad普通屏幕程序图标，分辨率：72x72*/
@@ -185,25 +191,25 @@
                         "spotlight-retina7" : "", /*iPad iOS7高分屏Spotlight搜索程序图标，分辨率：80x80*/
                         "settings-normal" : "", /*iPad设置页面程序图标，分辨率：29x29*/
                         "settings-retina" : "", /*iPad高分屏设置页面程序图标，分辨率：58x58*/
-                        "app" : "",
-                        "app@2x" : "",
-                        "notification" : "",
-                        "notification@2x" : "",
-                        "proapp@2x" : "",
-                        "settings" : "",
-                        "settings@2x" : "",
-                        "spotlight" : "",
-                        "spotlight@2x" : ""
+                        "app" : "unpackage/res/icons/76x76.png",
+                        "app@2x" : "unpackage/res/icons/152x152.png",
+                        "notification" : "unpackage/res/icons/20x20.png",
+                        "notification@2x" : "unpackage/res/icons/40x40.png",
+                        "proapp@2x" : "unpackage/res/icons/167x167.png",
+                        "settings" : "unpackage/res/icons/29x29.png",
+                        "settings@2x" : "unpackage/res/icons/58x58.png",
+                        "spotlight" : "unpackage/res/icons/40x40.png",
+                        "spotlight@2x" : "unpackage/res/icons/80x80.png"
                     },
-                    "appstore" : ""
+                    "appstore" : "unpackage/res/icons/1024x1024.png"
                 },
                 "android" : {
-                    "mdpi" : "res/icons/48x48.png", /*普通屏程序图标，分辨率：48x48*/
-                    "ldpi" : "res/icons/48x48.png", /*大屏程序图标，分辨率：48x48*/
-                    "hdpi" : "", /*高分屏程序图标，分辨率：72x72*/
-                    "xhdpi" : "", /*720P高分屏程序图标，分辨率：96x96*/
-                    "xxhdpi" : "", /*1080P 高分屏程序图标，分辨率：144x144*/
-                    "xxxhdpi" : ""
+                    "mdpi" : "", /*普通屏程序图标，分辨率：48x48*/
+                    "ldpi" : "", /*大屏程序图标，分辨率：48x48*/
+                    "hdpi" : "unpackage/res/icons/72x72.png", /*高分屏程序图标，分辨率：72x72*/
+                    "xhdpi" : "unpackage/res/icons/96x96.png", /*720P高分屏程序图标，分辨率：96x96*/
+                    "xxhdpi" : "unpackage/res/icons/144x144.png", /*1080P 高分屏程序图标，分辨率：144x144*/
+                    "xxxhdpi" : "unpackage/res/icons/192x192.png"
                 }
             },
             "splashscreen" : {
@@ -214,10 +220,7 @@
                         "retina40" : "", /*4.0 英寸设备(iPhone5/iPhone5s)启动图片，分辨率：640x1136*/
                         "retina47" : "", /*4.7 英寸设备(iPhone6)启动图片，分辨率：750x1334*/
                         "retina55" : "", /*5.5 英寸设备(iPhone6 Plus)启动图片，分辨率：1242x2208*/
-                        "retina55l" : "", /*5.5 英寸设备(iPhone6 Plus)横屏启动图片，分辨率：2208x1242*/
-                        "iphonex" : "",
-                        "portrait-896h@2x" : "",
-                        "portrait-896h@3x" : ""
+                        "retina55l" : "" /*5.5 英寸设备(iPhone6 Plus)横屏启动图片，分辨率：2208x1242*/
                     },
                     "ipad" : {
                         "portrait" : "", /*iPad竖屏启动图片，分辨率：768x1004*/
@@ -227,10 +230,7 @@
                         "portrait7" : "", /*iPad iOS7竖屏启动图片，分辨率：768x1024*/
                         "portrait-retina7" : "", /*iPad iOS7高分屏竖屏图片，分辨率：1536x2048*/
                         "landscape7" : "", /*iPad iOS7横屏启动图片，分辨率：1024x768*/
-                        "landscape-retina7" : "", /*iPad iOS7高分屏横屏启动图片，分辨率：2048x1536*/
-                        "portrait-1112h@2x" : "",
-                        "portrait-1194h@2" : "",
-                        "portrait-1366h@2x" : ""
+                        "landscape-retina7" : "" /*iPad iOS7高分屏横屏启动图片，分辨率：2048x1536*/
                     }
                 },
                 "android" : {
@@ -242,18 +242,14 @@
                 }
             },
             "plugins" : {
-                "oauth" : {},
-                "share" : {},
-                "payment" : {
-                    "alipay" : {
-                        "description" : "阿里支付",
-                        "scheme" : ""
-                    }
+                "speech" : {
+                    "ifly" : {}
                 },
-                "maps" : {},
-                "speech" : {}
+                "payment" : {
+                    "alipay" : {}
+                }
             }
         }
     },
-    "fullscreen" : false
+    "screenOrientation" : [ "portrait-primary" ]
 }
