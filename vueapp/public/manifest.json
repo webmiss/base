@@ -124,7 +124,7 @@
                 }
             },
             "google" : {
-                "packagename" : "", /*Android应用包名，如io.dcloud.HelloH5*/
+                "packagename" : "vip.webmis.demo", /*Android应用包名，如io.dcloud.HelloH5*/
                 "keystore" : "", /*Android应用打包使用的密钥库文件*/
                 "password" : "", /*Android应用打包使用密钥库中证书的密码*/
                 "aliasname" : "", /*Android应用打包使用密钥库中证书的别名*/
@@ -161,84 +161,90 @@
                     "prerendered" : true, /*应用图标是否已经高亮处理，在iOS6及以下设备上有效*/
                     "auto" : "", /*应用图标，分辨率：512x512，用于自动生成各种尺寸程序图标*/
                     "iphone" : {
-                        "normal" : "", /*iPhone3/3GS程序图标，分辨率：57x57*/
-                        "retina" : "", /*iPhone4程序图标，分辨率：114x114*/
-                        "retina7" : "", /*iPhone4S/5/6程序图标，分辨率：120x120*/
-                        "retina8" : "", /*iPhone6 Plus程序图标，分辨率：180x180*/
-                        "spotlight-normal" : "", /*iPhone3/3GS Spotlight搜索程序图标，分辨率：29x29*/
-                        "spotlight-retina" : "", /*iPhone4 Spotlight搜索程序图标，分辨率：58x58*/
-                        "spotlight-retina7" : "", /*iPhone4S/5/6 Spotlight搜索程序图标，分辨率：80x80*/
-                        "settings-normal" : "", /*iPhone4设置页面程序图标，分辨率：29x29*/
-                        "settings-retina" : "", /*iPhone4S/5/6设置页面程序图标，分辨率：58x58*/
-                        "settings-retina8" : "", /*iPhone6Plus设置页面程序图标，分辨率：87x87*/
-                        "app@2x" : "unpackage/res/icons/120x120.png",
-                        "app@3x" : "unpackage/res/icons/180x180.png",
-                        "notification@2x" : "unpackage/res/icons/40x40.png",
-                        "notification@3x" : "unpackage/res/icons/60x60.png",
-                        "settings@2x" : "unpackage/res/icons/58x58.png",
-                        "settings@3x" : "unpackage/res/icons/87x87.png",
-                        "spotlight@2x" : "unpackage/res/icons/80x80.png",
-                        "spotlight@3x" : "unpackage/res/icons/120x120.png"
+                        "normal" : "res/icons/58x58.png", /*iPhone3/3GS程序图标，分辨率：57x57*/
+                        "retina" : "res/icons/120x120.png", /*iPhone4程序图标，分辨率：114x114*/
+                        "retina7" : "res/icons/120x120.png", /*iPhone4S/5/6程序图标，分辨率：120x120*/
+                        "retina8" : "res/icons/180x180.png", /*iPhone6 Plus程序图标，分辨率：180x180*/
+                        "spotlight-normal" : "res/icons/29x29.png", /*iPhone3/3GS Spotlight搜索程序图标，分辨率：29x29*/
+                        "spotlight-retina" : "res/icons/58x58.png", /*iPhone4 Spotlight搜索程序图标，分辨率：58x58*/
+                        "spotlight-retina7" : "res/icons/80x80.png", /*iPhone4S/5/6 Spotlight搜索程序图标，分辨率：80x80*/
+                        "settings-normal" : "res/icons/29x29.png", /*iPhone4设置页面程序图标，分辨率：29x29*/
+                        "settings-retina" : "res/icons/58x58.png", /*iPhone4S/5/6设置页面程序图标，分辨率：58x58*/
+                        "settings-retina8" : "res/icons/87x87.png", /*iPhone6Plus设置页面程序图标，分辨率：87x87*/
+                        "app@2x" : "res/icons/120x120.png",
+                        "app@3x" : "res/icons/180x180.png",
+                        "notification@2x" : "res/icons/40x40.png",
+                        "notification@3x" : "res/icons/60x60.png",
+                        "settings@2x" : "res/icons/58x58.png",
+                        "settings@3x" : "res/icons/87x87.png",
+                        "spotlight@2x" : "res/icons/80x80.png",
+                        "spotlight@3x" : "res/icons/120x120.png"
                     },
                     "ipad" : {
-                        "normal" : "", /*iPad普通屏幕程序图标，分辨率：72x72*/
-                        "retina" : "", /*iPad高分屏程序图标，分辨率：144x144*/
-                        "normal7" : "", /*iPad iOS7程序图标，分辨率：76x76*/
-                        "retina7" : "", /*iPad iOS7高分屏程序图标，分辨率：152x152*/
-                        "spotlight-normal" : "", /*iPad Spotlight搜索程序图标，分辨率：50x50*/
-                        "spotlight-retina" : "", /*iPad高分屏Spotlight搜索程序图标，分辨率：100x100*/
-                        "spotlight-normal7" : "", /*iPad iOS7 Spotlight搜索程序图标，分辨率：40x40*/
-                        "spotlight-retina7" : "", /*iPad iOS7高分屏Spotlight搜索程序图标，分辨率：80x80*/
-                        "settings-normal" : "", /*iPad设置页面程序图标，分辨率：29x29*/
-                        "settings-retina" : "", /*iPad高分屏设置页面程序图标，分辨率：58x58*/
-                        "app" : "unpackage/res/icons/76x76.png",
-                        "app@2x" : "unpackage/res/icons/152x152.png",
-                        "notification" : "unpackage/res/icons/20x20.png",
-                        "notification@2x" : "unpackage/res/icons/40x40.png",
-                        "proapp@2x" : "unpackage/res/icons/167x167.png",
-                        "settings" : "unpackage/res/icons/29x29.png",
-                        "settings@2x" : "unpackage/res/icons/58x58.png",
-                        "spotlight" : "unpackage/res/icons/40x40.png",
-                        "spotlight@2x" : "unpackage/res/icons/80x80.png"
+                        "normal" : "res/icons/72x72.png", /*iPad普通屏幕程序图标，分辨率：72x72*/
+                        "retina" : "res/icons/144x144.png", /*iPad高分屏程序图标，分辨率：144x144*/
+                        "normal7" : "res/icons/76x76.png", /*iPad iOS7程序图标，分辨率：76x76*/
+                        "retina7" : "res/icons/152x152.png", /*iPad iOS7高分屏程序图标，分辨率：152x152*/
+                        "spotlight-normal" : "res/icons/58x58.png", /*iPad Spotlight搜索程序图标，分辨率：50x50*/
+                        "spotlight-retina" : "res/icons/96x96.png", /*iPad高分屏Spotlight搜索程序图标，分辨率：100x100*/
+                        "spotlight-normal7" : "res/icons/40x40.png", /*iPad iOS7 Spotlight搜索程序图标，分辨率：40x40*/
+                        "spotlight-retina7" : "res/icons/80x80.png", /*iPad iOS7高分屏Spotlight搜索程序图标，分辨率：80x80*/
+                        "settings-normal" : "res/icons/29x29.png", /*iPad设置页面程序图标，分辨率：29x29*/
+                        "settings-retina" : "res/icons/58x58.png", /*iPad高分屏设置页面程序图标，分辨率：58x58*/
+                        "app" : "res/icons/76x76.png",
+                        "app@2x" : "res/icons/152x152.png",
+                        "notification" : "res/icons/20x20.png",
+                        "notification@2x" : "res/icons/40x40.png",
+                        "proapp@2x" : "res/icons/167x167.png",
+                        "settings" : "res/icons/29x29.png",
+                        "settings@2x" : "res/icons/58x58.png",
+                        "spotlight" : "res/icons/40x40.png",
+                        "spotlight@2x" : "res/icons/80x80.png"
                     },
-                    "appstore" : "unpackage/res/icons/1024x1024.png"
+                    "appstore" : "res/icons/1024x1024.png"
                 },
                 "android" : {
-                    "mdpi" : "", /*普通屏程序图标，分辨率：48x48*/
-                    "ldpi" : "", /*大屏程序图标，分辨率：48x48*/
-                    "hdpi" : "unpackage/res/icons/72x72.png", /*高分屏程序图标，分辨率：72x72*/
-                    "xhdpi" : "unpackage/res/icons/96x96.png", /*720P高分屏程序图标，分辨率：96x96*/
-                    "xxhdpi" : "unpackage/res/icons/144x144.png", /*1080P 高分屏程序图标，分辨率：144x144*/
-                    "xxxhdpi" : "unpackage/res/icons/192x192.png"
+                    "mdpi" : "res/icons/40x40.png", /*普通屏程序图标，分辨率：48x48*/
+                    "ldpi" : "res/icons/40x40.png", /*大屏程序图标，分辨率：48x48*/
+                    "hdpi" : "res/icons/72x72.png", /*高分屏程序图标，分辨率：72x72*/
+                    "xhdpi" : "res/icons/96x96.png", /*720P高分屏程序图标，分辨率：96x96*/
+                    "xxhdpi" : "res/icons/144x144.png", /*1080P 高分屏程序图标，分辨率：144x144*/
+                    "xxxhdpi" : "res/icons/192x192.png"
                 }
             },
             "splashscreen" : {
                 "ios" : {
                     "iphone" : {
                         "default" : "", /*iPhone3启动图片选，分辨率：320x480*/
-                        "retina35" : "", /*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
-                        "retina40" : "", /*4.0 英寸设备(iPhone5/iPhone5s)启动图片，分辨率：640x1136*/
-                        "retina47" : "", /*4.7 英寸设备(iPhone6)启动图片，分辨率：750x1334*/
-                        "retina55" : "", /*5.5 英寸设备(iPhone6 Plus)启动图片，分辨率：1242x2208*/
-                        "retina55l" : "" /*5.5 英寸设备(iPhone6 Plus)横屏启动图片，分辨率：2208x1242*/
+                        "retina35" : "res/screen/iphone(640x960).png", /*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
+                        "retina40" : "res/screen/iphone(640x1136).png", /*4.0 英寸设备(iPhone5/iPhone5s)启动图片，分辨率：640x1136*/
+                        "retina47" : "res/screen/iphone(750x1334).png", /*4.7 英寸设备(iPhone6)启动图片，分辨率：750x1334*/
+                        "retina55" : "res/screen/iphone(1242x2208).png", /*5.5 英寸设备(iPhone6 Plus)启动图片，分辨率：1242x2208*/
+                        "retina55l" : "", /*5.5 英寸设备(iPhone6 Plus)横屏启动图片，分辨率：2208x1242*/
+                        "portrait-896h@3x" : "res/screen/iphone(1242x2688).png",
+                        "portrait-896h@2x" : "res/screen/iphone(828x1792).png",
+                        "iphonex" : "res/screen/iphone(1125x2436).png"
                     },
                     "ipad" : {
                         "portrait" : "", /*iPad竖屏启动图片，分辨率：768x1004*/
                         "portrait-retina" : "", /*iPad高分屏竖屏图片，分辨率：1536x2008*/
                         "landscape" : "", /*iPad横屏启动图片，分辨率：1024x748*/
                         "landscape-retina" : "", /*iPad高分屏横屏启动图片，分辨率：2048x1496*/
-                        "portrait7" : "", /*iPad iOS7竖屏启动图片，分辨率：768x1024*/
-                        "portrait-retina7" : "", /*iPad iOS7高分屏竖屏图片，分辨率：1536x2048*/
+                        "portrait7" : "res/screen/ipad(768x1024).png", /*iPad iOS7竖屏启动图片，分辨率：768x1024*/
+                        "portrait-retina7" : "res/screen/ipad(1536x2048).png", /*iPad iOS7高分屏竖屏图片，分辨率：1536x2048*/
                         "landscape7" : "", /*iPad iOS7横屏启动图片，分辨率：1024x768*/
-                        "landscape-retina7" : "" /*iPad iOS7高分屏横屏启动图片，分辨率：2048x1536*/
+                        "landscape-retina7" : "", /*iPad iOS7高分屏横屏启动图片，分辨率：2048x1536*/
+                        "portrait-1366h@2x" : "res/screen/ipad(2048x2732).png",
+                        "portrait-1194h@2" : "res/screen/ipad(1668x2388).png",
+                        "portrait-1112h@2x" : "res/screen/ipad(1668x2224).png"
                     }
                 },
                 "android" : {
                     "mdpi" : "", /*普通屏启动图片，分辨率：240x282*/
                     "ldpi" : "", /*大屏启动图片，分辨率：320x442*/
-                    "hdpi" : "", /*高分屏启动图片，分辨率：480x762*/
-                    "xhdpi" : "", /*720P高分屏启动图片，分辨率：720x1242*/
-                    "xxhdpi" : "" /*1080P高分屏启动图片，分辨率：1080x1882*/
+                    "hdpi" : "res/screen/android(480x762).png", /*高分屏启动图片，分辨率：480x762*/
+                    "xhdpi" : "res/screen/android(720x1242).png", /*720P高分屏启动图片，分辨率：720x1242*/
+                    "xxhdpi" : "res/screen/android(1080x1882).png" /*1080P高分屏启动图片，分辨率：1080x1882*/
                 }
             },
             "plugins" : {
