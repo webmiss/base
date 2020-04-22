@@ -109,7 +109,7 @@
         "signature" : "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==", /*可选，保留给应用签名，暂不使用*/
         "distribute" : {
             "apple" : {
-                "appid" : "vip.webmis.demo", /*iOS应用标识，苹果开发网站申请的appid，如io.dcloud.HelloH5*/
+                "appid" : "vip.webmis.app", /*iOS应用标识，苹果开发网站申请的appid，如io.dcloud.HelloH5*/
                 "mobileprovision" : "", /*iOS应用打包配置文件*/
                 "password" : "", /*iOS应用打包个人证书导入密码*/
                 "p12" : "", /*iOS应用打包个人证书，打包配置文件关联的个人证书*/
@@ -124,7 +124,7 @@
                 }
             },
             "google" : {
-                "packagename" : "vip.webmis.demo", /*Android应用包名，如io.dcloud.HelloH5*/
+                "packagename" : "vip.webmis.app", /*Android应用包名，如io.dcloud.HelloH5*/
                 "keystore" : "", /*Android应用打包使用的密钥库文件*/
                 "password" : "", /*Android应用打包使用密钥库中证书的密码*/
                 "aliasname" : "", /*Android应用打包使用密钥库中证书的别名*/
