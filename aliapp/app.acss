@@ -16,8 +16,11 @@ input{text-align: left;}
 .bgImage{background-image: url(https://api.cainiaochefu.com/assets/icon/img.svg); background-size: 60%;}
 .divCenter{position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto;}
 .ctCenter{position: absolute; margin: 0 auto; left: 0; right: 0;}
+.verticalCenter{position: absolute; z-index: 10; top: 50%; left: 0; right: 0; margin: 0 auto; transform: translate3d(0,-50%,0);}
 .null{text-align: center; color: #999; line-height: 100px;}
 .null::before{content: '暂无数据！';}
+.bLine{text-align: center; color: #999; line-height: 50px;}
+.bLine::before{content: '我是有底线的';}
 .noDisplay{display: none;}
 
 /* 箭头 */

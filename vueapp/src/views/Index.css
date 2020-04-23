@@ -1,12 +1,18 @@
-/* 轮播图片 */
-.swiper_image{width: 100%; height: 55vmin;}
-.swiper_image .van-swipe-item{height: 100%; background-size: 100% auto; background-repeat: no-repeat; background-position: center center;}
-/* 功能 */
-.tools{background-color: #FFF;}
-.tools li{width: 25%; padding: 16px 0; text-align: center;}
-.tools .van-icon{font-size: 28px;}
-.tools_dark{background-color: #3D3D3D; color: #FFF;}
-/* 测试 */
-.test{margin: 1px 0;}
-.test div{margin: 1px 0; line-height: 120px; background-color: #FFF; text-align: center;}
-.test_dark div{background-color: #3D3D3D; color: #FFF;}
+/* 首页 */
+.in_html .in_body{height: 100%; background-image: linear-gradient( #FFF 70%, #F2F2F2 100%);}
+.in_html .in_ct{width: 320px;}
+.in_html .logo{height: 62px; background-size: auto 100%; background-image: url(../assets/icon/logo.svg);}
+.in_html .logo_text{line-height: 24px; font-size: 20px; text-align: center;}
+.in_html .logo_bg{height: 120px; background-size: 100% auto; background-image: url(../assets/icon/bg.svg);}
+.in_tools{overflow: hidden; margin-top: 15px;}
+.in_tools li{float: left; width: 25%; padding: 10px 0; text-align: center; box-shadow: 1px 1px 0 #F2F2F2;}
+.in_tools .ico{height: 30px; line-height: 30px;}
+.in_tools .ico .icons{font-size: 24px;}
+.in_tools .name{font-size: 12px;}
+/* 首页-深色 */
+.in_html_dark .icon_scan{color: #FFF;}
+.in_html_dark .logo_text{color: #999;}
+.in_html_dark .in_body{background-image: linear-gradient( #323436 70%, #242628 100%);}
+.in_tools_dark li{box-shadow: 1px 1px 0 #000;}
+.in_tools_dark .ico .icons{color: #F2F2F2;}
+.in_tools_dark .name{color: #F2F2F2;}

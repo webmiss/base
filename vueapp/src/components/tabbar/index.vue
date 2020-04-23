@@ -26,7 +26,7 @@
 
 .tabar_body .redNum{margin: -20px 0 0 18px;}
 
-.tabar_body_dark{background-color: #282828;}
+.tabar_body_dark{background-color: #323436;}
 </style>
 
 <script>

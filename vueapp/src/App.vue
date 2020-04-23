@@ -52,8 +52,12 @@ i{font-style: normal;}
 .bgImage{background-image: url(./assets/icon/img.svg); background-size: 60%;}
 .divCenter{position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto;}
 .ctCenter{position: absolute; margin: 0 auto; left: 0; right: 0;}
+.verticalCenter{position: absolute; z-index: 10; top: 50%; left: 0; right: 0; margin: 0 auto; transform: translate3d(0,-50%,0);}
 .null{text-align: center; color: #999; line-height: 100px;}
 .null::before{content: '暂无数据！';}
+.bLine{text-align: center; color: #999; line-height: 50px;}
+.bLine::before{content: '我是有底线的';}
+.noDisplay{display: none;}
 
 /* 箭头 */
 .arrow_left{width: 0px; height: 0px; border: 10px solid; border-color:transparent #FFF transparent transparent;}
@@ -63,7 +67,7 @@ i{font-style: normal;}
 
 /* 切换动画 */
 .view{position: fixed; z-index: 0; width:100%; height: 100%; transition: all .6s cubic-bezier(0.075, 0.82, 0.165, 1); background-color: #F2F2F2;}
-.view_dark{background-color: #000;}
+.view_dark{background-color: #242628;}
 .slide-left-enter,.slide-right-leave-active{z-index: 1; transform: translate(100%,0);}
 .slide-right-enter,.slide-left-leave-active{z-index: -1; transform: translate(-30%,0);}
 

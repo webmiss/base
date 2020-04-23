@@ -54,9 +54,9 @@ export default {
   },
   mounted(){
 
-    // setTimeout(()=>{
-    //   this.$store.state.mode='dark';
-    // },3000);
+    setTimeout(()=>{
+      // this.$store.state.mode='dark';
+    },3000);
 
     /* 首页滑动 */
     this.indexData.scroll = new BScroll(this.$refs.index,{click:true,pullUpLoad:true});
