@@ -80,10 +80,9 @@ export default {
         plus.navigator.setStatusBarBackground(Env.themeColor);
         this.$store.state.statusBarHeight = plus.navigator.getStatusbarHeight();
         // 模式
-        clearInterval(this.modeInterval);
-        this.modeInterval = setInterval(()=>{
+        document.addEventListener("uistylechange",()=>{
           this.$store.state.mode = plus.navigator.getUiStyle();
-        },1000);
+         }, false);
         // Android返回键
         let backcount = 0;
         let webview = plus.webview.currentWebview();
