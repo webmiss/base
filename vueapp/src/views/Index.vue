@@ -2,7 +2,7 @@
   <div>
 
     <!-- 首页 -->
-    <page-view class="in_html" :class="mode=='dark'?'in_html_dark':''" v-show="tabBar.active==0" :immersed="true" :bgColor="'rgba('+(mode=='dark'?'40,40,40':'111,183,55')+','+navColor+')'" :color="mode=='dark'?'#FFF':'#333'">
+    <page-view class="in_html" :class="mode=='dark'?'in_html_dark':''" v-show="tabBar.active==0" :immersed="true" :color="mode=='dark'?'#FFF':'#333'">
       <!-- Header -->
       <div slot="left">{{ $store.state.geolocation.district || $storage.getItem('city') }}</div>
       <div slot="right">
@@ -60,7 +60,7 @@
     <!-- 首页 End -->
 
     <!-- 消息 -->
-    <page-view v-show="tabBar.active==1" :bgColor="mode=='dark'?'#282828':'#FFF'" :color="mode=='dark'?'#FFF':'#282828'">
+    <page-view v-show="tabBar.active==1" :bgColor="mode=='dark'?'#323436':'#FFF'" :color="mode=='dark'?'#FFF':'#333'">
       <div slot="title">消息</div>
       <div slot="body" class="nav_body">
         <!-- 滑动 -->
@@ -76,15 +76,43 @@
     <!-- 消息 End -->
 
     <!-- 我的 -->
-    <page-view v-show="tabBar.active==2" :bgColor="mode=='dark'?'#343434':'#FFF'" :color="mode=='dark'?'#FFF':'#282828'">
-      <div slot="title">我的</div>
-      <div slot="body" class="nav_body">
+    <page-view class="in_me" v-show="tabBar.active==2" :immersed="true" :bgColor="'rgba('+(mode=='dark'?'40,40,40':'111,183,55')+','+navColor+')'" :color="mode=='dark'?'#FFF':'#282828'">
+      <div slot="right">
+        <span class="icons icon_config"></span>
+      </div>
+      <div slot="body" class="nav_body" ref="me">
         <!-- 滑动 -->
-        <div class="html" ref="me">
-          <!-- 测试 -->
-          <div class="test" :class="mode=='dark'?'test_dark':''">
-            <div>内容</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div>
+        <div>
+          <!-- 头像 -->
+          <div class="in_me_info" :class="mode=='dark'?'in_me_info_dark':''">
+            <div class="tu">
+              <div class="img"><i class="icons icon_camera"></i></div>
+            </div>
+            <div class="name">用户昵称</div>
           </div>
+          <!-- 账户 -->
+          <div class="in_me_account mTop1 flex" :class="mode=='dark'?'in_me_account_dark':''">
+            <div class="ct">
+              <div class="name">钱包(元)</div>
+              <div class="val c1">0.00</div>
+            </div>
+            <div class="ct">
+              <div class="name">积分(个)</div>
+              <div class="val c2">0</div>
+            </div>
+            <div class="ct">
+              <div class="name">优惠券(张)</div>
+              <div class="val c3">0</div>
+            </div>
+          </div>
+          <!-- 订单管理 -->
+          <div class="Menu mTop10 flex" :class="mode=='dark'?'Menu_dark':''">
+            <div class="h2">订单管理</div>
+            <div class="more flex">
+              <span>更多</span><i class="icons icon_right"></i>
+            </div>
+          </div>
+          <div class="in_me_order mTop1" :class="mode=='dark'?'in_me_order_dark':''">暂无数据</div>
         </div>
         <!-- 滑动 End -->
       </div>

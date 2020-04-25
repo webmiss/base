@@ -12,7 +12,6 @@ App({
     // 状态栏信息
     my.getSystemInfo({
       success: (res)=>{
-        console.log(res);
         this.globalData.statusBarHeight = res.statusBarHeight;
         this.globalData.titleBarHeight = res.titleBarHeight;
         this.globalData.screenWidth = res.screenWidth;

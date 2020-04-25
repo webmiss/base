@@ -54,32 +54,9 @@ export default {
   },
   mounted(){
 
-    setTimeout(()=>{
-      // this.$store.state.mode='dark';
-    },3000);
-
-    /* 首页滑动 */
-    this.indexData.scroll = new BScroll(this.$refs.index,{click:true,pullUpLoad:true});
-    this.indexData.scroll.on('scroll',(res) =>{
-      let top = -res.y;
-      let n = 0;
-      if(top<10) n=0;
-      else if(top>200) n=1;
-      else n = top/100/2;
-      this.navColor = n;
-    });
-    /* 首页-下拉刷新、上拉加载 */
-    this.indexData.scroll.on('touchEnd',(res) =>{
-      if(res.y>30){
-        console.log('下拉');
-        setTimeout(()=>{
-          this.indexData.isLoading = false;
-          this.indexData.scroll.refresh();
-        },1000);
-      }else if(res.y<(this.indexData.scroll.maxScrollY - 30)){
-        console.log('加载');
-      }
-    });
+    // setTimeout(()=>{
+    //   this.$store.state.mode='dark';
+    // },3000);
 
   },
   activated(){
@@ -88,27 +65,39 @@ export default {
 
     /* 切换导航 */
     navTab(index){
-      // 滑动效果
-      if(index==1){
-        if(!this.msgData.scroll){
-          setTimeout(()=>{
-            this.msgData.scroll = new BScroll(this.$refs.shop,{click:true});
-          },300);
-        }
+      if(index==0){
+      }else if(index==1){
       }else if(index==2){
-        if(!this.meData.scroll){
-          setTimeout(()=>{
-            this.meData.scroll = new BScroll(this.$refs.me,{click:true});
-          },300);
-        }
+        this.meLoad();
       }
     },
 
-    /* 首页下拉动画 */
-    indexRefresh(){
+    /* 我的 */
+    meLoad(){
+      this.meScroll();
+    },
+    meScroll(){
       setTimeout(()=>{
-        this.indexData.isLoading = false;
-      },3000);
+        /* 滑动 */
+        if(this.meData.scroll) this.meData.scroll.refresh();
+        else this.meData.scroll = new BScroll(this.$refs.me,{click:true,pullUpLoad:true});
+        this.meData.scroll.on('scroll',(res) =>{
+          let top = -res.y;
+          let n = 0;
+          if(top<10) n=0;
+          else if(top>200) n=1;
+          else n = top/100/2;
+          this.navColor = n;
+        });
+        /* 首页-下拉刷新、上拉加载 */
+        this.meData.scroll.on('touchEnd',(res) =>{
+          if(res.y>30){
+            console.log('下拉');
+          }else if(res.y<(this.meData.scroll.maxScrollY - 30)){
+            console.log('加载');
+          }
+        });
+      },300);
     },
 
     /* 定位 */
