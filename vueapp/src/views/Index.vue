@@ -76,7 +76,7 @@
     <!-- 消息 End -->
 
     <!-- 我的 -->
-    <page-view class="in_me" v-show="tabBar.active==2" :immersed="true" :bgColor="'rgba('+(mode=='dark'?'40,40,40':'111,183,55')+','+navColor+')'" :color="mode=='dark'?'#FFF':'#282828'">
+    <page-view class="in_me" v-show="tabBar.active==2" :immersed="true" :bgColor="'rgba('+(mode=='dark'?'40,40,40':'111,183,55')+','+navColor+')'" :color="mode=='dark'?'#FFF':'#242628'">
       <div slot="right">
         <span class="icons icon_config"></span>
       </div>
