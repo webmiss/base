@@ -13,8 +13,6 @@ create(store,{
     isLogin:false,
     uInfo:null,
     socket:null,
-    // 主题颜色
-    themeColor: Env.themeColor,
     // 底部导航
     tabBar: {active:0,},
     // 导航

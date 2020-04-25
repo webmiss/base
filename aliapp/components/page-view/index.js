@@ -13,6 +13,7 @@ Component({
   data: {
     statusBar: 0,
     height: 0,
+    screenHeight: 0,
   },
   /* 初始化 */
   didMount(){
@@ -20,6 +21,7 @@ Component({
       this.setData({
         statusBar: app.globalData.statusBarHeight,
         height: app.globalData.titleBarHeight,
+        screenHeight: app.globalData.screenHeight,
       });
     },300);
   },

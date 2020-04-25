@@ -1,25 +1,78 @@
-<page-view immersed="{{true}}" bgColor="rgba(111,183,55,{{1}})" color="#FFF">
+<!-- 首页 -->
+<page-view hidden="{{tabBar.active==0?false:true}}">
   <view slot="left">
-    <text class="back icons icon_left" onTap="goBack"></text>
+    <text>昆明市</text>
   </view>
-  <view slot="body" class="nav_body">
-    <view>内容</view>
-    <view>内容</view>
-    <view>内容</view>
-    <view>内容</view>
-    <view>内容</view>
-    <view>内容</view>
-    <view>内容</view>
-    <view>内容</view>
-    <view>内容</view>
-    <view>内容</view>
-    <view>内容</view>
-    <view>内容</view>
-    <view>内容</view>
-    <view>{{test}}</view>
-    <view onTap="goBack">点击我1</view>
+  <view slot="body" class="in_html nav_body">
+    <view class="in_body">
+      <view class="verticalCenter in_ct">
+        <!-- Logo -->
+        <view class="logo">
+          <image src="../../assets/icon/logo.svg" />
+        </view>
+        <view class="logo_text">webmis.vip</view>
+        <view class="logo_bg">
+          <image src="../../assets/icon/bg.svg" />
+        </view>
+        <!-- 功能 -->
+        <view class="in_tools">
+          <view class="li" bind:tap="getCity">
+            <view class="ico"><text class="icons icon_menu"></text></view>
+            <view class="name">定位</view>
+          </view>
+          <view class="li" bind:tap="getAddress">
+            <view class="ico"><text class="icons icon_menu"></text></view>
+            <view class="name">附近地址</view>
+          </view>
+          <view class="li" bind:tap="getPost">
+            <view class="ico"><text class="icons icon_menu"></text></view>
+            <view class="name">网络</view>
+          </view>
+          <view class="li" bind:tap="getStorage">
+            <view class="ico"><text class="icons icon_menu"></text></view>
+            <view class="name">本地存储</view>
+          </view>
+          <view class="li" bind:tap="compressImage">
+            <view class="ico"><text class="icons icon_menu"></text></view>
+            <view class="name">图片裁切</view>
+          </view>
+          <view class="li" bind:tap="getQRcode">
+            <view class="ico"><text class="icons icon_menu"></text></view>
+            <view class="name">二维码</view>
+          </view>
+          <view class="li" bind:tap="getPay">
+            <view class="ico"><text class="icons icon_menu"></text></view>
+            <view class="name">支付</view>
+          </view>
+          <view class="li" bind:tap="getMap">
+            <view class="ico"><text class="icons icon_menu"></text></view>
+            <view class="name">地图</view>
+          </view>
+        </view>
+        <!-- 功能 End -->
+      </view>
+    </view>
   </view>
 </page-view>
+<!-- 首页 End -->
+
+<!-- 消息 -->
+<page-view hidden="{{tabBar.active==1?false:true}}">
+  <text slot="title">消息</text>
+  <view slot="body">
+    内容
+  </view>
+</page-view>
+<!-- 消息 End -->
+
+<!-- 我的 -->
+<page-view hidden="{{tabBar.active==2?false:true}}">
+  <text slot="title">我的</text>
+  <view slot="body" class="nav_body">
+    内容
+  </view>
+</page-view>
+<!-- 我的 End -->
 
 <!-- 底部导航 -->
 <wm-tabbar active="{{ tabBar.active }}" onChange="navTab"></wm-tabbar>

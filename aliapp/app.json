@@ -3,9 +3,10 @@
     "pages/index/index"
   ],
   "window": {
+    "allowsBounceVertical": "NO",
     "transparentTitle": "always",
     "titlePenetrate": "YES",
-    "allowsBounceVertical": "NO",
+    "titleBarColor": "#FFF",
     "defaultTitle": ""
   }
 }

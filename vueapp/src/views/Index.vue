@@ -12,9 +12,13 @@
       <div slot="body" class="nav_body">
         <div class="in_body" :class="mode=='dark'?'in_body_dark':''">
           <div class="verticalCenter in_ct">
-            <div class="bgImg logo"></div>
+            <div class="logo">
+              <img src="../assets/icon/logo.svg" />
+            </div>
             <div class="logo_text">webmis.vip</div>
-            <div class="bgImg logo_bg"></div>
+            <div class="logo_bg">
+              <img src="../assets/icon/bg.svg" />
+            </div>
             <ul class="in_tools" :class="mode=='dark'?'in_tools_dark':''">
               <li @click="getCity()">
                 <div class="ico"><span class="icons icon_menu"></span></div>
