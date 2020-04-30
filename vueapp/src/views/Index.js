@@ -78,6 +78,13 @@ export default {
       }
     },
 
+    /* 打开路由 */
+    openUrl(url,login){
+      login = login || false;
+      if(login && !this.$store.state.isLogin) return this.$router.push('/user/login');
+      else return this.$router.push(url);
+    },
+
     /* 我的 */
     meLoad(){
       this.meScroll();

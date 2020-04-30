@@ -1,9 +1,8 @@
 <template>
 <v-touch v-on:swiperight="back()">
-  <!-- Demo -->
   <page-view>
     <div slot="left"><i class="back icons icon_left" @click="back()"></i></div>
-    <div slot="title">Demo</div>
+    <div slot="title">登录</div>
     <div slot="body" class="html">
       <!-- 滑动 -->
       <div class="html" ref="index">
@@ -15,13 +14,11 @@
       <!-- 滑动 End -->
     </div>
   </page-view>
-  <!-- Demo End -->
 </v-touch>
 </template>
 
 <style scoped>
-.test{margin: 1px 0;}
-.test div{margin: 1px 0; line-height: 120px; background-color: #FFF; text-align: center;}
+
 </style>
 
-<script src="./Index.js"></script>
+<script src="./Login.js"></script>

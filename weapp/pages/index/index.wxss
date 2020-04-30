@@ -15,7 +15,7 @@
 /* 我的 */
 .in_me_info{height: 200px; padding-top: 100px; background-color: #FFF;}
 .in_me_info .tu{width: 120px; height: 120px; border: #6FB737 2px solid; margin: 0 auto; border-radius: 50%;}
-.in_me_info .tu .img{height: 100%; line-height: 120px; text-align: center;}
+.in_me_info .tu .img{height: 100%; line-height: 120px; text-align: center; background-color: #F2F2F2; border-radius: 50%;}
 .in_me_info .tu .icons{font-size: 64px; color: #DADCDF;}
 .in_me_info .name{line-height: 60px; text-align: center; font-size: 18px; font-weight: bold; color: #6FB737;}
 

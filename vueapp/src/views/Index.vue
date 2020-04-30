@@ -104,7 +104,7 @@
         <div>
           <!-- 头像 -->
           <div class="in_me_info" :class="mode=='dark'?'in_me_info_dark':''">
-            <div class="tu">
+            <div class="tu" @click="openUrl('/user/config/index',true)">
               <div class="img"><i class="icons icon_camera"></i></div>
             </div>
             <div class="name">用户昵称</div>
