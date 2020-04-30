@@ -283,12 +283,11 @@ export default {
     },
     /* 关闭 */
     closeMsg(){
-      if(this.$store.state.socket){
-        this.$store.state.socket.close();
-        this.$store.state.socket = null;
-        this.$store.state.uMsg.group = [];
-        this.$store.state.uMsg.num = '';
-      }
+      if(!this.$store.state.socket) return;
+      this.$store.state.socket.close();
+      this.$store.state.socket = null;
+      this.$store.state.uMsg.group = [];
+      this.$store.state.uMsg.num = '';
     },
 
   }

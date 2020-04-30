@@ -62,13 +62,32 @@
     <!-- 消息 -->
     <page-view v-show="tabBar.active==1" :bgColor="mode=='dark'?'#323436':'#FFF'" :color="mode=='dark'?'#FFF':'#333'">
       <div slot="title">消息</div>
-      <div slot="body" class="nav_body">
+      <div slot="body" class="nav_body" ref="msg">
         <!-- 滑动 -->
-        <div class="html" ref="shop">
-          <!-- 测试 -->
-          <div class="test" :class="mode=='dark'?'test_dark':''">
-            <div>内容</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div>
+        <div>
+          <div v-if="Object.keys($store.state.uMsg.group).length>0">
+            <van-swipe-cell class="in_msg_body" v-for="(val,key) in $store.state.uMsg.group" :key="key">
+              <div class="in_msg_ct flex" @click="openMsg(val.gid,val.fid)">
+                <div class="img bgImg bgTu bgLogo">
+                  <span class="redNum" v-if="val.num>0">{{val.num}}</span>
+                  <div class="bgImg bgTu" v-if="key!=1" :style="{backgroundImage: 'url('+val.img+')'}"></div>
+                  <div class="bgImg bgTu service" v-else></div>
+                </div>
+                <div class="info">
+                  <div class="title flex">
+                    <h2>{{key!=1?val.name:'服务提醒'}}</h2>
+                    <span>{{val.msg[val.msg.length-1].ctime.substr(11,5)}}</span>
+                  </div>
+                  <div class="msg nowrap">{{val.msg[val.msg.length-1].content}}</div>
+                </div>
+              </div>
+              <template slot="right">
+                <van-button type="primary" text="标记未读" class="an1" @click="stateMsg(val.fid)" />
+                <van-button type="danger" text="删除" @click="delMsg(val.fid)" />
+              </template>
+            </van-swipe-cell>
           </div>
+          <div class="null" v-else></div>
         </div>
         <!-- 滑动 End -->
       </div>
@@ -121,7 +140,7 @@
     
     <!-- 底部导航 -->
     <wm-tabbar v-model="tabBar.active" @change="navTab"></wm-tabbar>
-    <!-- 底部导航 End -->
+
   </div>
 </template>
 

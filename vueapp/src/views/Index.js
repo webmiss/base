@@ -5,26 +5,32 @@ import Plus from '@/library/Plus'
 import BScroll from '@better-scroll/core'
 import Pullup from '@better-scroll/pull-up'
 BScroll.use(Pullup);
+
 /* 组件 */
 import PageView from '@/components/page-view'
 import Tabbar from '@/components/tabbar'
 Vue.component('page-view',PageView);
 Vue.component('wm-tabbar',Tabbar);
+
 // UI
-import { Toast,Dialog,ActionSheet } from 'vant'
-import 'vant/lib/toast/style'
-import 'vant/lib/dialog/style'
-import 'vant/lib/action-sheet/style'
-Vue.use(Toast).use(Dialog).use(Dialog).use(ActionSheet);
+import { SwipeCell } from 'vant';
+import 'vant/lib/swipe-cell/style'
+Vue.use(SwipeCell);
 
-import { Swipe,SwipeItem } from 'vant'
-import 'vant/lib/swipe/style'
-import 'vant/lib/swipe-item/style'
-Vue.use(Swipe).use(SwipeItem);
+// import { Toast,Dialog,ActionSheet } from 'vant'
+// import 'vant/lib/toast/style'
+// import 'vant/lib/dialog/style'
+// import 'vant/lib/action-sheet/style'
+// Vue.use(Toast).use(Dialog).use(Dialog).use(ActionSheet);
 
-import { Icon,ImagePreview } from 'vant'
-import 'vant/lib/image-preview/style'
-Vue.use(Icon).use(ImagePreview);
+// import { Swipe,SwipeItem } from 'vant'
+// import 'vant/lib/swipe/style'
+// import 'vant/lib/swipe-item/style'
+// Vue.use(Swipe).use(SwipeItem);
+
+// import { Icon,ImagePreview } from 'vant'
+// import 'vant/lib/image-preview/style'
+// Vue.use(Icon).use(ImagePreview);
 
 export default {
   data(){
