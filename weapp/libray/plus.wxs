@@ -3,9 +3,16 @@ module.exports = {
   substring: function(val,start,end){
     return val.substring(start,end);
   },
-  /* 保留小数 */
+  /* 保留小数-四舍五入 */
   toFixed:function(val,num){
     return val.toFixed(num);
+  },
+  /* 保留小数-不四舍五入 */
+  toFixedNo:function(val,num){
+    var n = '';
+    for(var i=0; i<num; i++) n+='0';
+    n = parseInt('1'+n);
+    return Math.floor(val*n)/n;
   },
   /* 格式化价格 */
   formatPrice:function(num){

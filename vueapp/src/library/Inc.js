@@ -50,6 +50,14 @@ export default {
     return res;
   },
 
+  /* 保留小数-不四舍五入 */
+  toFixedNo(val,num){
+    let n = '';
+    for(let i=0; i<num; i++) n+='0';
+    n = parseInt('1'+n);
+    return Math.floor(val*n)/n;
+  },
+
   /* 格式化价格 */
   formatPrice(price){
     return (parseInt(price).toString()).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
