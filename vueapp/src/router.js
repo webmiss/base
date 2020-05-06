@@ -12,8 +12,6 @@ VueRouter.prototype.goBack = function(num){
 const routes = [
   {path:'/', name:'index', meta:{keepAlive:true}, component:resolve=>require(['./views/Index.vue'],resolve)},
   {path:'/user/login', name:'userLogin', meta:{keepAlive:false}, component:resolve=>require(['./views/user/Login.vue'],resolve)},
-  // 会员
-  {path:'/demo/index', name:'demoIndex', meta:{keepAlive:false}, component:resolve=>require(['./views/demo/Index.vue'],resolve)},
   // Tools
   {path:'/map', name:'map', meta:{keepAlive:false}, component:resolve=>require(['./views/tools/Map.vue'],resolve)},
   {path:'/scan', name:'scan', meta:{keepAlive:false}, component:resolve=>require(['./views/tools/Scan.vue'],resolve)},

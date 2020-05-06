@@ -7,7 +7,7 @@
     <view class="in_body">
       <view class="verticalCenter in_ct">
         <!-- Logo -->
-        <view class="logo">
+        <view class="logo" onTap="openUrl" data-url="/pages/demo/demo">
           <image src="../../assets/icon/logo.svg" />
         </view>
         <view class="logo_text">webmis.vip</view>
@@ -73,7 +73,7 @@
   <scroll-view slot="body" class="nav_body" scroll-y="{{true}}">
     <!-- 头像 -->
     <view class="in_me_info">
-      <view class="tu">
+      <view class="tu" onTap="openUrl" data-url="/pages/user/config/index" data-login="{{true}}">
         <view class="img"><text class="icons icon_camera"></text></view>
       </view>
       <view class="name">用户昵称</view>

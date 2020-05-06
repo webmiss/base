@@ -7,6 +7,71 @@ const Map = new amap.AMapWX({ key: Env.amapKey});
 
 export default {
 
+  /* 配置信息 */
+  config: Env,
+
+  /* Get请求 */
+  get(url,data,callback){
+    const str = url.substr(0,4);
+    url = str=='http'?url:this.config.apiUrl+url;
+    wx.request({
+      url: url,
+      data: data,
+      header: {'content-type':'application/x-www-form-urlencoded'},
+      success: callback,
+      fail: function(e){
+        wx.showToast({title:'请检测网络',icon:'none'});
+      },
+    });
+  },
+
+  /* Post请求 */
+  post(url,data,callback){
+    const str = url.substr(0,4);
+    url = str=='http'?url:this.config.apiUrl+url;
+    wx.request({
+      url: url,
+      data: data,
+      method: 'POST',
+      header: {'content-type':'application/x-www-form-urlencoded'},
+      success: callback,
+      fail: function(e){
+        wx.showToast({title:'请检测网络',icon:'none'});
+      },
+    });
+  },
+
+  /* 本地消息 */
+  notify(title,content,read){
+    setTimeout(()=>{
+      Notify({type: 'success', message: content});
+    },Env.msgRead);
+    // 是否阅读
+    read = read || false;
+    if(!read) return;
+    // 百度Token
+    this.post(Env.apiUrl+'index/baiduToken',{},(res)=>{
+      let msgAudio = wx.getBackgroundAudioManager();
+        msgAudio.title = title;
+        let text = Env.msgContent=='title'?title:content;
+        msgAudio.src = Env.httpType+'tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
+        setTimeout(()=>{ msgAudio.play(); },Env.msgRead);
+    });
+  },
+
+  /* 本地硬盘 */
+  storage: {
+    setItem(key,data){
+      return wx.setStorage({key:key,data:data});
+    },
+    getItem(key){
+      return wx.getStorageSync(key);
+    },
+    clear(){
+      return wx.clearStorageSync();
+    },
+  },
+
   /* 去数组重复 */
   unique(arr){
     let data = [];
@@ -68,24 +133,6 @@ export default {
     return html.replace(/<img/gi, '<img class="all img"')
     .replace(/<ul/gi, '<ul class="all ul"')
     .replace(/<ul/gi, '<p class="all p"');
-  },
-
-  /* 本地消息 */
-  notify(title,content,read){
-    setTimeout(()=>{
-      Notify({type: 'success', message: content});
-    },Env.msgRead);
-    // 是否阅读
-    read = read || false;
-    if(!read) return;
-    // 百度Token
-    this.post(Env.apiUrl+'index/baiduToken',{},(res)=>{
-      let msgAudio = wx.getBackgroundAudioManager();
-        msgAudio.title = title;
-        let text = Env.msgContent=='title'?title:content;
-        msgAudio.src = Env.httpType+'tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
-        setTimeout(()=>{ msgAudio.play(); },Env.msgRead);
-    });
   },
 
   /* 定位-微信 */
@@ -207,46 +254,6 @@ export default {
         });
       }
     });
-  },
-
-  /* Get请求 */
-  get(url,data,callback){
-    wx.request({
-      url: url,
-      data: data,
-      header: {'content-type':'application/x-www-form-urlencoded'},
-      success: callback,
-      fail: function(e){
-        wx.showToast({title:'请检测网络',icon:'none'});
-      },
-    });
-  },
-
-  /* Post请求 */
-  post(url,data,callback){
-    wx.request({
-      url: url,
-      data: data,
-      method: 'POST',
-      header: {'content-type':'application/x-www-form-urlencoded'},
-      success: callback,
-      fail: function(e){
-        wx.showToast({title:'请检测网络',icon:'none'});
-      },
-    });
-  },
-
-  /* 本地硬盘 */
-  storage: {
-    setItem(key,data){
-      return wx.setStorage({key:key,data:data});
-    },
-    getItem(key){
-      return wx.getStorageSync(key);
-    },
-    clear(){
-      return wx.clearStorageSync();
-    },
   },
 
   /* 转Base64 */

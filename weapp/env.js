@@ -1,15 +1,17 @@
 
+/* 测试 */
 // const baseUrl = 'http://localhost:8083/';
+// const socket = 'wss://127.0.0.1:9002/';
+
+/* 正式 */
 const baseUrl = 'https://api.webmis.vip/';
 const socket = 'wss://webmis.vip/wss';
 
-const httpType = 'https://';
 export default {
   name: 'WebMIS',
   baseUrl: baseUrl,
   apiUrl: baseUrl+'api/',
-  themeColor: '#6FB737',
-  httpType: httpType,
+  httpType: 'https://',
   // 状态栏
   statusBar:{color: '#333', bgColor:'#FFF'},
   // 地图

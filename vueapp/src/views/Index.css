@@ -2,8 +2,8 @@
 .in_html .in_body{height: 100%; background-image: linear-gradient( #FFF 70%, #F2F2F2 100%);}
 .in_html .in_ct{width: 320px;}
 .in_html .logo{width: 100px; margin: 0 auto;}
-.in_html .logo image{width: 100%; height: 62px;}
-.in_html .logo_text{line-height: 24px; font-size: 20px; text-align: center;}
+.in_html .logo img{width: 100%; height: 62px;}
+.in_html .logo_text{line-height: 24px; font-size: 18px; text-align: center;}
 .in_html .logo_bg{padding: 20px 0;}
 .in_html .logo_bg img{width: 100%; height: 86px;}
 .in_tools{overflow: hidden; margin-top: 15px;}

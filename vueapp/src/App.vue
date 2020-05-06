@@ -32,6 +32,7 @@
 
 <style>
 *{margin: 0; padding: 0;}
+body{font-family:Microsoft YaHei,SimHei,helvetica,arial,verdana,tahoma,sans-serif; font-size:14px;}
 html,body,#app{height: 100%;}
 body{font-size: 14px; color: #333;
   padding-bottom: env(safe-area-inset-bottom);
@@ -40,10 +41,12 @@ body{font-size: 14px; color: #333;
 }
 img{vertical-align: top;}
 i{font-style: normal;}
+
 /* 公共 */
 .html{height: 100%;}
 .Link{color: #6FB737;}
 .back{display: inline-block; width: 32px; text-align: center;}
+.back.icons{color: rgba(88,88,88,1);}
 .loading{line-height: 100px; color: #999; background-color: #F2F2F2; text-align: center;}
 .redNum{position: absolute; padding: 0 5px; margin-top: -5px; line-height: 16px; color: #FFF; font-size: 12px; font-weight: normal; border-radius: 10px; background-color: #FF0000;}
 .bgImg{background-size: cover; background-position: center; background-repeat: no-repeat;}
@@ -60,6 +63,14 @@ i{font-style: normal;}
 .noDisplay{display: none;}
 .mTop1{margin-top: 1px;}
 .mTop10{margin-top: 10px;}
+/* 公共-深色 */
+.back_dark.icons{color: #FFF;}
+
+/* 表单 */
+.Input,.Button{border: none; background: none; font-size: 16px;}
+.Input{width: calc(100% - 20px); padding: 10px; height: 32px; line-height: 32px; color: #333;}
+.Button{width: 100%; height: 48px; line-height: 48px; text-align: center; margin: 0 auto; border-radius: 24px; color: #FFF; background-color: #6FB737;}
+.Input_dark{color: #FFF;}
 
 /* 箭头 */
 .arrow_left{width: 0px; height: 0px; border: 10px solid; border-color:transparent #FFF transparent transparent;}
@@ -132,7 +143,7 @@ i{font-style: normal;}
     font-weight: normal;
     font-style: normal;
 }
-.icons{font-family: 'icomoon' !important; font-size: 16px; color: #666;}
+.icons{font-family: 'icomoon' !important; font-size: 16px;}
 .icon_img:before{content: "\e900";}
 .icon_camera:before{content: "\e901";}
 .icon_up:before{content: "\e902";}

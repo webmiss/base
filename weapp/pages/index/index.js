@@ -1,6 +1,5 @@
 import store from '../../store'
 import create from '../../libray/create'
-import Env from '../../env'
 import Inc from '../../libray/Inc'
 
 import Dialog from '../../assets/ui/dialog/dialog'
@@ -82,6 +81,14 @@ create(store,{
     this.socketStart();
     /* 加载数据 */
     this.indexLoad();
+  },
+
+  /* 打开链接 */
+  openUrl(event){
+    const url = event.currentTarget.dataset.url;
+    const login = event.currentTarget.dataset.login;
+    if(login && !this.data.isLogin) return wx.navigateTo({url: '/pages/user/login'});
+    else return wx.navigateTo({url:url});
   },
 
   /* 切换导航 */
@@ -203,15 +210,6 @@ create(store,{
   getMap(){
     wx.navigateTo({url: '/pages/map/map'});
   },
-
-  /* 打开链接 */
-  openUrl(event){
-    const url = event.currentTarget.dataset.url;
-    const login = event.currentTarget.dataset.login;
-    if(login && !this.data.isLogin) return wx.navigateTo({url: '/pages/user/login'});
-    else return wx.navigateTo({url:url});
-  },
-
 
   /* Socket */
   socketStart(){

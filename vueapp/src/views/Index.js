@@ -59,11 +59,9 @@ export default {
     mode(){ return this.$store.state.mode; },
   },
   mounted(){
-
     // setTimeout(()=>{
     //   this.$store.state.mode='dark';
     // },3000);
-
   },
   activated(){
   },

@@ -2,7 +2,7 @@
   <div>
 
     <!-- 首页 -->
-    <page-view class="in_html" :class="mode=='dark'?'in_html_dark':''" v-show="tabBar.active==0" :immersed="true" :color="mode=='dark'?'#FFF':'#333'">
+    <page-view v-show="tabBar.active==0" class="in_html" :class="mode=='dark'?'in_html_dark':''" :immersed="true" :color="mode=='dark'?'#FFF':'#333'" :bgColor="'rgba(255,255,255,0)'">
       <!-- Header -->
       <div slot="left">{{ $store.state.geolocation.district || $storage.getItem('city') }}</div>
       <div slot="right">
