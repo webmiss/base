@@ -1,10 +1,9 @@
-
 /* 测试 */
-// const baseUrl = 'http://localhost:8083/';
+const baseUrl = 'http://localhost:8086/';
 // const socket = 'wss://127.0.0.1:9002/';
 
 /* 正式 */
-const baseUrl = 'https://api.webmis.vip/';
+// const baseUrl = 'https://api.webmis.vip/';
 const socket = 'wss://webmis.vip/wss';
 
 export default {
@@ -12,6 +11,10 @@ export default {
   baseUrl: baseUrl,
   apiUrl: baseUrl+'api/',
   httpType: 'https://',
+  // 请求
+  request:{
+    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+  },
   // 状态栏
   statusBar:{color: '#333', bgColor:'#FFF'},
   // 地图

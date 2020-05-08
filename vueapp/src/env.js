@@ -1,20 +1,40 @@
-/* 配置文件 */
-// const baseUrl = 'http://localhost:8083/';
-const baseUrl = 'https://api.webmis.vip/';
+/* 测试 */
+const title = 'WebMIS(本地)';
+const baseUrl = 'http://localhost:8086/';
+// const socket = 'wss://127.0.0.1:9002/';
+const dev = true;
+
+/* 正式 */
+// const title = 'WebMIS';
+// const baseUrl = 'https://api.webmis.vip/';
 const socket = 'wss://webmis.vip/wss';
+// const dev = false;
 
 export default {
-  title: 'WebMIS',
-  version: 'v1.0.0',
+  dev: dev,
+  title: title,
+  version: '1.0.0',
   baseUrl: baseUrl,
   apiUrl: baseUrl+'api/',
-  themeColor: '#6FB737',
   copy: 'Copyright © WebMIS.VIP 2020',
+  // 请求
+  request:{
+    headers: {"Content-Type":"multipart/form-data"},
+  },
   // 状态栏
   statusBar:{height:50, color: '#333', bgColor:'#FFF'},
   // 更新
-  update: false,
-  upDateColor: {bg:'',logoBg:'#FFF',loading:'#FFF',loaded:'#666',copy:'#333'},
+  update: true,
+  upDateColor: {
+    bg: '#6FB737',
+    logoBg: '#FFF',
+    loading: '#FFF',
+    loaded: '#666',
+    copy: '#333',
+    butColor: '#666',
+    butBg: '#FFF',
+    butText: '下载并安装'
+  },
   upIosUrl: 'itms-apps://itunes.apple.com/cn/app/tao-bao-sui-shi-sui-xiang/id387682726?mt=8',
   // 地图
   amapKey: 'd956f0c3e15489a1b5bf291e5d133c8a',

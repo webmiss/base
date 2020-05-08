@@ -7,8 +7,20 @@ const Map = new amap.AMapWX({ key: Env.amapKey});
 
 export default {
 
-  /* 配置信息 */
+  /* 配置 */
   config: Env,
+
+  /* 返回 */
+  back(num){ wx.navigateBack({data:num}); },
+
+  /* 加载 */
+  loading(){
+    const load = wx.showLoading({title:''});
+    return { clear:wx.hideLoading };
+  },
+
+  /* 提示 */
+  toast(text){ return wx.showToast({title:text,icon:'none'}); },
 
   /* Get请求 */
   get(url,data,callback){
@@ -17,9 +29,9 @@ export default {
     wx.request({
       url: url,
       data: data,
-      header: {'content-type':'application/x-www-form-urlencoded'},
+      header: Env.request.headers,
       success: callback,
-      fail: function(e){
+      fail(e){
         wx.showToast({title:'请检测网络',icon:'none'});
       },
     });
@@ -33,12 +45,19 @@ export default {
       url: url,
       data: data,
       method: 'POST',
-      header: {'content-type':'application/x-www-form-urlencoded'},
+      header: Env.request.headers,
       success: callback,
-      fail: function(e){
+      fail(e){
         wx.showToast({title:'请检测网络',icon:'none'});
       },
     });
+  },
+
+  /* 本地硬盘 */
+  storage: {
+    setItem(key,data){ return wx.setStorage({key:key,data:data}); },
+    getItem(key){ return wx.getStorageSync(key); },
+    clear(){ return wx.clearStorageSync(); },
   },
 
   /* 本地消息 */
@@ -57,19 +76,6 @@ export default {
         msgAudio.src = Env.httpType+'tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
         setTimeout(()=>{ msgAudio.play(); },Env.msgRead);
     });
-  },
-
-  /* 本地硬盘 */
-  storage: {
-    setItem(key,data){
-      return wx.setStorage({key:key,data:data});
-    },
-    getItem(key){
-      return wx.getStorageSync(key);
-    },
-    clear(){
-      return wx.clearStorageSync();
-    },
   },
 
   /* 去数组重复 */
@@ -356,8 +362,38 @@ export default {
       fail: function() {
         console.log("拨打电话失败！")
       }
-    })
-    
-  }
+    });
+  },
+
+  /* 正则验证 */
+  reg(name,val){
+    let isRight=false;
+    let msg='';
+    const reg = {
+      uname: /^[a-zA-Z][a-zA-Z0-9\_\@\-\*\&]{4,15}$/,
+      tel: /^[1]\d{10}$/,
+      email: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/,
+      vcode: /^\d{4}$/,
+      passwd: /^[a-zA-Z0-9|_|@|-|*|&]{6,16}$/,
+    }
+    switch(name){
+      case 'uname':
+        isRight = reg.uname.test(val);
+        msg = !isRight?'用户名英文开头5~16位！':''; break;
+      case 'tel':
+        isRight = reg.tel.test(val);
+        msg = !isRight?'手机号码错误！':''; break;
+      case 'email':
+        isRight = reg.email.test(val);
+        msg = !isRight?'邮箱帐号错误！':''; break;
+      case 'vcode':
+        isRight = reg.vcode.test(val);
+        msg = !isRight?'验证码4位！':''; break;
+      case 'passwd':
+        isRight = reg.passwd.test(val);
+        msg = !isRight?'密码为6~16位字符！':''; break;
+    }
+    return isRight?true:msg;
+  },
 
 }

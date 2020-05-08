@@ -1,6 +1,63 @@
+import Vue from 'vue'
 import Env from '@/env'
+import axios from 'axios'
+import QRCode from 'qrcode'
+/* UI */
+import { Toast } from 'vant';
+import 'vant/lib/toast/style'
+Vue.use(Toast);
 
 export default {
+
+  /* 配置 */
+  config: Env,
+
+  /* 返回 */
+  back(num,self){ self.$router.goBack(-num); },
+
+  /* 加载 */
+  loading(){
+    const load = Toast.loading({ message:'', duration:0 });
+    return { clear:load.clear };
+  },
+
+  /* 提示 */
+  toast(text){ return Toast(text); },
+
+  /* Get请求 */
+  get(url,data,callback){
+    const str = url.substr(0,4);
+    url = str=='http'?url:this.config.apiUrl+url;
+    // 方式
+    axios.get(
+      url,{params:data},this.config.request
+    ).then(callback).catch((e)=>{
+      Toast('请检测网络');
+    });
+  },
+
+  /* Post请求 */
+  post(url,data,callback,progress){
+    const str = url.substr(0,4);
+    url = str=='http'?url:this.config.apiUrl+url;
+    // 表单
+    let param = new FormData();
+    for(let i in data) param.append(i,data[i]);
+    // 方式
+    this.config.request.onUploadProgress = progress;
+    axios.post(
+      url,param,this.config.request
+    ).then(callback).catch((e)=>{
+      Toast('请检测网络');
+    });
+  },
+
+  /* 本地硬盘 */
+  storage: {
+    setItem(key,data){ return window.localStorage.setItem(key,data); },
+    getItem(key){ return window.localStorage.getItem(key); },
+    clear(){ return window.localStorage.clear(); },
+  },
 
   /* 去数组重复 */
   unique(arr){
@@ -118,6 +175,56 @@ export default {
       time = tmp_t2
     }
     return time;
+  },
+
+  /* 正则验证 */
+  reg(name,val){
+    let isRight=false;
+    let msg='';
+    const reg = {
+      uname: /^[a-zA-Z][a-zA-Z0-9\_\@\-\*\&]{4,15}$/,
+      tel: /^[1]\d{10}$/,
+      email: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/,
+      vcode: /^\d{4}$/,
+      passwd: /^[a-zA-Z0-9|_|@|-|*|&]{6,16}$/,
+    }
+    switch(name){
+      case 'uname':
+        isRight = reg.uname.test(val);
+        msg = !isRight?'用户名英文开头5~16位！':''; break;
+      case 'tel':
+        isRight = reg.tel.test(val);
+        msg = !isRight?'手机号码错误！':''; break;
+      case 'email':
+        isRight = reg.email.test(val);
+        msg = !isRight?'邮箱帐号错误！':''; break;
+      case 'vcode':
+        isRight = reg.vcode.test(val);
+        msg = !isRight?'验证码4位！':''; break;
+      case 'passwd':
+        isRight = reg.passwd.test(val);
+        msg = !isRight?'密码为6~16位字符！':''; break;
+    }
+    return isRight?true:msg;
+  },
+
+  /* 编辑器 */
+  tinymce(){
+    return {
+      language:'zh_CN',
+      language_url : '/tinymce/zh_CN.js',
+      skin_url: '/tinymce/skins/ui/oxide',
+      height: 550,
+      menubar: true,
+      branding: false,
+      toolbar: 'undo redo | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | table image media preview | removeformat | help',
+      toolbar_items_size: 'small',
+      plugins: [
+        'advlist autolink lists link image charmap print preview anchor textcolor',
+        'searchreplace visualblocks code fullscreen',
+        'insertdatetime media table paste code help wordcount'
+      ]
+    }
   },
 
 }

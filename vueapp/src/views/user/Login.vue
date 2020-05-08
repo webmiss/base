@@ -15,16 +15,16 @@
         <div class="login_list" :class="mode=='dark'?'login_list_dark':''">
           <div class="item">
             <span class="icons icon_tel"></span>
-            <input type="tel" class="Input" :class="mode=='dark'?'Input_dark':''" placeholder="请输入手机号码" />
+            <input class="Input" v-model="fromData.tel" type="tel" maxlength="11" :class="mode=='dark'?'Input_dark':''" placeholder="请输入手机号码" />
           </div>
           <div class="item">
             <span class="icons icon_passwd"></span>
-            <input type="password" class="Input" :class="mode=='dark'?'Input_dark':''" placeholder="密码" />
+            <input class="Input" v-model="fromData.passwd" type="password" maxlength="16" :class="mode=='dark'?'Input_dark':''" placeholder="密码" />
           </div>
         </div>
         <!-- 按钮 -->
         <div class="login_an">
-          <button class="Button">登 录</button>
+          <button class="Button" @click="login()">{{ subInfo.text }}</button>
         </div>
         <!-- 其他 -->
         <div class="login_link flex" :class="mode=='dark'?'login_link_dark':''">

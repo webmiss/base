@@ -2,12 +2,14 @@
 return [
   'title'=>'基础系统',
   'version'=>'1.0.0',
+  'imgUrl'=>'https://api.webmis.vip/',
   'key'=>'95ad3c345b46af1b7104568155af36f8',
   'token_time'=>7*24*3600,
   'login_num'=>50,
   'login_num_time'=>12*3600,
   /* 数据中心 */
-  'centre_url'=>'https://data.webmis.vip/api/',
+  // 'centre_url'=>'https://data.webmis.vip/api/',
+  'centre_url'=>'http://localhost:8085/api/',
   'centre_id'=>'base@webmis.vip',
   'centre_secret'=>'00fb626bbabfdd903231acf6639cddfb',
   /* 数据库 */

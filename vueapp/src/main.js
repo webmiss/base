@@ -1,20 +1,15 @@
 import Vue from 'vue'
 import router from './router'
 import store from './store'
-import axios from 'axios'
-import QRCode from 'qrcode'
-
-import Config from './config'
 import App from './App.vue'
 
 // 配置
-Vue.config.productionTip = false;
-Vue.use(Config);
+import Env from '@/env'
+document.title = Env.title;
+Vue.config.productionTip = Env.dev;
 
 // 全局注册
-Vue.prototype.$ajax = axios;
-Vue.prototype.$storage = window.localStorage;
-Vue.prototype.$qrcode = QRCode;
+Vue.prototype.$config = Env;
 
 new Vue({
   router,

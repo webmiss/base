@@ -29,8 +29,7 @@ class Centre{
   static function login($uname,$passwd){
     $config = require APP_PATH.'/config/env.php';
     $res = file_get_contents($config['centre_url'].'user/login?token='.self::getToken().'&uname='.$uname.'&passwd='.$passwd);
-    $data = json_decode($res);
-    return $data->code==0?$data->info:$data->msg;
+    return json_decode($res);
   }
 
   /* 用户注册 */

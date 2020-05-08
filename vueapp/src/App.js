@@ -1,11 +1,6 @@
 import Env from '@/env'
+import Inc from '@/library/Inc'
 import Plus from '@/library/Plus'
-
-import Vue from 'vue';
-import { Button,Toast } from 'vant';
-import 'vant/lib/button/style'
-import 'vant/lib/toast/style'
-Vue.use(Button).use(Toast);
 
 export default {
   watch:{
@@ -22,7 +17,7 @@ export default {
       transitionName: '',
       // 更新APP
       update: {show:false, os:'', down:false, loading:'0%', msg:'检测更新', file:'', total:0},
-      upDateColor: Env.upDateColor,
+      upDateColor: Inc.config.upDateColor,
       // 新消息
       msgInterval: null,
     }
@@ -34,7 +29,7 @@ export default {
     // 初始化
     setTimeout(()=>{this.init()},1000);
     // 登录状态
-    const token = this.$storage.getItem('token');
+    const token = Inc.storage.getItem('token');
     if(token){
       this.$ajax.post(
         this.$config.apiUrl+'user/token','token='+token+'&type=info'
@@ -44,22 +39,22 @@ export default {
           this.$store.state.isLogin = true;
           this.$store.state.uInfo = d.userinfo;
         }else{
-          this.$storage.setItem('token','');
+          Inc.storage.setItem('token','');
         }
       });
     }else{
-      this.$storage.setItem('token','');
+      Inc.storage.setItem('token','');
     }
     // 定位-5秒刷新
     setTimeout(()=>{
       Plus.geoLocation((res)=>{
         this.$store.state.geolocation = res;
-        this.$storage.setItem('city',res.district);
+        Inc.storage.setItem('city',res.district);
       },(e)=>{
         setTimeout(()=>{
           Plus.geoLocation((res)=>{
             this.$store.state.geolocation = res;
-            this.$storage.setItem('city',res.district);
+            Inc.storage.setItem('city',res.district);
           },(e)=>{});
         },8000);
       });
@@ -94,7 +89,7 @@ export default {
               if(this.$obj.scan) this.$obj.scan.close();
             }else{
               if(backcount>0) plus.runtime.quit();
-              Toast('再按一次退出应用!');
+              Inc.toast('再按一次退出应用!');
               backcount++;
               setTimeout(()=>{backcount=0;},2000);
             }
@@ -154,7 +149,7 @@ export default {
             plus.runtime.install(d.filename, {force:true},()=>{
               plus.runtime.restart();
             },(e)=>{
-              Toast('安装失败!');
+              Inc.toast('安装失败!');
             });
           }else{
             this.update.down = true;
@@ -181,7 +176,7 @@ export default {
         if(this.$store.state.isLogin && (!this.$store.state.socket || this.$store.state.socket.readyState!=1)) this.socketStart();
       },3000);
       // Token
-      const token = this.$storage.getItem('token');
+      const token = Inc.storage.getItem('token');
       if(!token) return false;
       // 数据中心-Token
       this.$ajax.post(
@@ -227,7 +222,7 @@ export default {
           // 声音提示
           if(msg.gid!='1' && msg.fid!=this.$store.state.uInfo.uid){
             // 是否声音
-            let voice = window.localStorage.getItem('voice');
+            let voice = Inc.storage.getItem('voice');
             voice = voice!='1'?false:true;
             Plus.notify(msg.data.title,msg.data.content,(obj)=>{
               obj.close();
@@ -251,7 +246,7 @@ export default {
               },300);
               // 标记已读
               this.$ajax.post(this.$config.apiUrl+'msg/state',
-                'token='+this.$storage.getItem('token')+'&id='+msg.data.id+'&state=1'
+                'token='+Inc.storage.getItem('token')+'&id='+msg.data.id+'&state=1'
               ).then((res)=>{
                 const d = res.data;
               });

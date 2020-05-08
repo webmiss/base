@@ -140,8 +140,8 @@ export default {
 
     /* 本地存储 */
     getStorage(){
-      this.$storage.setItem('test','测试存储数据');
-      let test = this.$storage.getItem('test');
+      Inc.storage.setItem('test','测试存储数据');
+      let test = Inc.storage.getItem('test');
       Dialog.alert({title: '本地存储',message: test});
     },
 

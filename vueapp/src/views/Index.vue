@@ -4,7 +4,7 @@
     <!-- 首页 -->
     <page-view v-show="tabBar.active==0" class="in_html" :class="mode=='dark'?'in_html_dark':''" :immersed="true" :color="mode=='dark'?'#FFF':'#333'" :bgColor="'rgba(255,255,255,0)'">
       <!-- Header -->
-      <div slot="left">{{ $store.state.geolocation.district || $storage.getItem('city') }}</div>
+      <div slot="left">{{ $store.state.geolocation.district || '获取定位' }}</div>
       <div slot="right">
         <span class="icons icon_scan" @click="$router.push('/scan')"></span>
       </div>

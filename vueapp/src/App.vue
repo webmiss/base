@@ -5,13 +5,13 @@
     <audio id="msg" style="display: none"></audio>
     
     <!-- 更新APP -->
-    <div v-if="update.show" class="update_body" :style="{backgroundColor: upDateColor.bg || $config.themeColor}">
-      <div class="update_ct">
+    <div v-if="update.show" class="update_body" :style="{backgroundColor: upDateColor.bg}">
+      <div class="update_ct verticalCenter">
         <div class="logo" :style="{backgroundColor: upDateColor.logoBg}"><div></div></div>
         <div class="loading" :style="{backgroundImage: 'linear-gradient(to right, '+upDateColor.loading+', '+upDateColor.loading+' '+update.loading+', '+upDateColor.loaded+' '+update.loading+', '+upDateColor.loaded+' 100%)'}"></div>
         <div class="load_msg" v-html="update.msg">正在加载应用</div>
         <div class="load_button">
-          <van-button round size="small" v-if="update.down" @click="updateDown()" :style="{color: $config.themeColor}">下载并安装</van-button>
+          <button class="Button" v-if="update.down" @click="updateDown()" :style="{color:upDateColor.butColor,backgroundColor:upDateColor.butBg,}">{{upDateColor.butText}}</button>
         </div>
       </div>
       <div class="update_logo" :style="{color:upDateColor.copy}"><h1>{{$config.title}}</h1><h2>{{$config.copy}}</h2></div>
@@ -31,10 +31,17 @@
 </template>
 
 <style>
+
+/* 表单缩放问题 */
+@media only screen and (min-device-width : 320px) and (max-device-width : 1024px) { select:focus, textarea:focus, input:focus { font-size: 16px !important; } }
+
+/* 初始化 */
 *{margin: 0; padding: 0;}
-body{font-family:Microsoft YaHei,SimHei,helvetica,arial,verdana,tahoma,sans-serif; font-size:14px;}
 html,body,#app{height: 100%;}
-body{font-size: 14px; color: #333;
+body{
+  font-family:Microsoft YaHei,SimHei,helvetica,arial,verdana,tahoma,sans-serif;
+  font-size: 14px;
+  color: #333;
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
@@ -51,8 +58,6 @@ i{font-style: normal;}
 .redNum{position: absolute; padding: 0 5px; margin-top: -5px; line-height: 16px; color: #FFF; font-size: 12px; font-weight: normal; border-radius: 10px; background-color: #FF0000;}
 .bgImg{background-size: cover; background-position: center; background-repeat: no-repeat;}
 .bgTu{width: 100%; height: 100%; border-radius: 50%;}
-.bgCamera{background-image: url(./assets/icon/camera.svg); background-size: 60%;}
-.bgImage{background-image: url(./assets/icon/img.svg); background-size: 60%;}
 .divCenter{position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto;}
 .ctCenter{position: absolute; margin: 0 auto; left: 0; right: 0;}
 .verticalCenter{position: absolute; z-index: 10; top: 50%; left: 0; right: 0; margin: 0 auto; transform: translate3d(0,-50%,0);}
@@ -66,18 +71,6 @@ i{font-style: normal;}
 /* 公共-深色 */
 .back_dark.icons{color: #FFF;}
 
-/* 表单 */
-.Input,.Button{border: none; background: none; font-size: 16px;}
-.Input{width: calc(100% - 20px); padding: 10px; height: 32px; line-height: 32px; color: #333;}
-.Button{width: 100%; height: 48px; line-height: 48px; text-align: center; margin: 0 auto; border-radius: 24px; color: #FFF; background-color: #6FB737;}
-.Input_dark{color: #FFF;}
-
-/* 箭头 */
-.arrow_left{width: 0px; height: 0px; border: 10px solid; border-color:transparent #FFF transparent transparent;}
-.arrow_right{width: 0px; height: 0px; border: 10px solid; border-color:transparent transparent transparent #FFF;}
-.arrow_up{width: 0px; height: 0px; border: 10px solid; border-color:transparent transparent #FFF transparent;}
-.arrow_down{width: 0px; height: 0px; border: 10px solid; border-color:#FFF transparent transparent transparent;}
-
 /* 切换动画 */
 .view{position: fixed; z-index: 0; width:100%; height: 100%; transition: all .6s cubic-bezier(0.075, 0.82, 0.165, 1); background-color: #F2F2F2;}
 .view_dark{background-color: #242628;}
@@ -89,12 +82,13 @@ i{font-style: normal;}
 .update_logo{position: fixed; width: 100%; left: 0; bottom: 15px; line-height: 20px; text-align: center; padding: 10px 0;}
 .update_logo h1{font-size: 16px;}
 .update_logo h2{font-size: 10px; font-weight: normal;}
-.update_ct{position: absolute; width: 220px; height: 220px; margin: auto; left: 0; right: 0; top: 0; bottom: 0;}
+.update_ct{width: 220px;}
 .update_ct .logo{width: 120px; height: 120px; margin: 0px auto 20px; border-radius: 50%;}
 .update_ct .logo div{height: 100%; background: url('./assets/logo.svg') no-repeat center; background-size: 65%;}
 .update_ct .loading{height: 5px; border-radius: 5px;}
 .update_ct .load_msg{color: #FFF; text-align: center; padding: 8px 0; font-size: 14px;}
-.update_ct .load_button{text-align: center;}
+.update_ct .load_button{text-align: center; padding-top: 16px;}
+.update_ct .load_button button{width: auto; height: 36px; line-height: 36px; padding: 0 20px; font-size: 14px;}
 
 /* 布局 */
 .flex{display: flex; justify-content: space-between; flex-wrap: wrap;}
@@ -107,6 +101,18 @@ i{font-style: normal;}
 .nowrap{overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
 .nowrap_text{overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;}
 .nowrap_three{overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;}
+
+/* 箭头 */
+.arrow_left{width: 0px; height: 0px; border: 10px solid; border-color:transparent #FFF transparent transparent;}
+.arrow_right{width: 0px; height: 0px; border: 10px solid; border-color:transparent transparent transparent #FFF;}
+.arrow_up{width: 0px; height: 0px; border: 10px solid; border-color:transparent transparent #FFF transparent;}
+.arrow_down{width: 0px; height: 0px; border: 10px solid; border-color:#FFF transparent transparent transparent;}
+
+/* 表单 */
+.Input,.Button{border: none; background: none; font-size: 16px;}
+.Input{width: calc(100% - 20px); padding: 10px; height: 32px; line-height: 32px; color: #333;}
+.Button{width: 100%; height: 48px; line-height: 48px; text-align: center; margin: 0 auto; border-radius: 24px; color: #FFF; background-color: #6FB737;}
+.Input_dark{color: #FFF;}
 
 /* 底部导航 */
 .nav_body{height: calc(100% - 50px);}

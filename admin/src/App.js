@@ -13,6 +13,7 @@ export default {
       isLogin: false, // 是否登录
       isCollapse: false,  // 收缩菜单
       defaultMenu: '',  // 默认菜单
+      storage: Inc.storage,
       // 更新APP
       update: {show:false,os:'',down:false,loading:'0%',msg:'检测更新',file:'',total:0},
       upDateColor: Env.upDateColor,
@@ -44,8 +45,8 @@ export default {
       }
     }
     // 默认菜单
-    this.isCollapse = this.$storage.getItem('isCollapse')=='true'?true:false;
-    this.defaultMenu = this.$storage.getItem('defaultMenu')?this.$storage.getItem('defaultMenu'):'3';
+    this.isCollapse = Inc.storage.getItem('isCollapse')=='true'?true:false;
+    this.defaultMenu = Inc.storage.getItem('defaultMenu')?Inc.storage.getItem('defaultMenu'):'3';
     // 系统信息
     this.getConfig();
     // 登录验证
@@ -89,9 +90,7 @@ export default {
 
     /* 系统信息 */
     getConfig(){
-      this.$ajax.post(
-        this.$config.apiUrl+'index/getConfig'
-      ).then((res)=>{
+      Inc.post('index/getConfig',{},(res)=>{
         const d = res.data;
         if(d.code==0) this.$store.state.system = d.list;
       });
@@ -99,7 +98,7 @@ export default {
 
     /* 登录检测 */
     loginVerify(){
-      const token = this.$storage.getItem('token');
+      const token = Inc.storage.getItem('token');
       if(!token) return false;
       this.isLogin = true;
       this.token((res)=>{
@@ -109,7 +108,7 @@ export default {
         }else{
           // 用户信息
           this.$store.state.uinfo = d.uinfo;
-          this.$storage.setItem('uinfo',JSON.stringify(d.uinfo));
+          Inc.storage.setItem('uinfo',JSON.stringify(d.uinfo));
           // 系统配置
           this.config.is_msg_audio = d.uinfo.is_msg_audio=='1'?true:false;
           this.config.is_group = d.uinfo.is_group=='1'?true:false;
@@ -123,9 +122,7 @@ export default {
 
     /* Socket */
     socketStart(){
-      this.$ajax.post(
-        this.$config.apiUrl+'Usermain/centreToken','token='+this.$storage.getItem('token')
-      ).then((res)=>{
+      Inc.post('Usermain/centreToken',{token:Inc.storage.getItem('token')},(res)=>{
         if(res.data.code==0) this.socket(res.data.token,res.data.uid);
       });
     },
@@ -186,9 +183,7 @@ export default {
 
     /* 获取菜单 */
     getMenus(){
-      this.$ajax.post(
-        this.$config.apiUrl+'Usermain/getMenus','token='+this.$storage.getItem('token')
-      ).then((res)=>{
+      Inc.post('Usermain/getMenus',{token:Inc.storage.getItem('token')},(res)=>{
         let d = res.data;
         if(d.code==0) this.menus = d.menus;
       });
@@ -197,17 +192,17 @@ export default {
     /* 跳转地址 */
     openUrl(ico,url,index,name,reload){
       // 保存-当前位置
-      this.$storage.setItem('MenuName',name);
-      this.$storage.setItem('defaultMenu',index);
+      Inc.storage.setItem('MenuName',name);
+      Inc.storage.setItem('defaultMenu',index);
       // 保存-快捷方式
       if(index!='3'){
-        let menus = JSON.parse(this.$storage.getItem('Menus') || '[]');
+        let menus = JSON.parse(Inc.storage.getItem('Menus') || '[]');
         let data = {ico:ico,url:url,index:index,name:name};
         const n = menus.findIndex((item)=>JSON.stringify(item)==JSON.stringify(data));
         if(n>=0) menus.splice(n,1);
         menus.push({ico:ico,url:url,index:index,name:name});
         // 保存
-        this.$storage.setItem('Menus',JSON.stringify(menus));
+        Inc.storage.setItem('Menus',JSON.stringify(menus));
       }
       // 跳转
       this.$router.push(url);
@@ -217,23 +212,16 @@ export default {
 
     /* 登录 */
     loginSub(){
+      // 验证
       let uname = this.login.uname;
       let passwd = this.login.passwd;
-      // 是否合法
-      if(!uname || !passwd){
-        return false;
-      }else if(this.$reg('uname',uname)!=true && this.$reg('tel',uname)!=true && this.$reg('email',uname)!=true){
-        return this.$message.error('请输入帐号/手机/邮箱！');
-      }else if(this.$reg('passwd',passwd)!=true){
-        return this.$message.error(this.$reg('passwd',passwd));
-      }
+      let reg_passwd = Inc.reg('passwd',passwd);
+      if(Inc.reg('uname',uname)!==true && Inc.reg('email',uname)!==true && Inc.reg('tel',uname)!==true) return Inc.toast('请输入帐号/手机/邮箱');
+      else if(reg_passwd!==true) return Inc.toast(reg_passwd);
       // 提交
       this.login.subText = '正在登录';
       this.login.dis = true;
-      this.$ajax.post(
-        this.$config.apiUrl+'user/login',
-        'uname='+uname+'&passwd='+passwd
-      ).then((res)=>{
+      Inc.post('user/login',{uname:uname,passwd:passwd},(res)=>{
         this.login.subText = '登录';
         this.login.dis = false;
         const d = res.data;
@@ -241,8 +229,8 @@ export default {
           this.$message.error(d.msg);
         }else{
           this.isLogin = true;
-          this.$storage.setItem('token',d.token);
-          this.$storage.setItem('uname',uname);
+          Inc.storage.setItem('token',d.token);
+          Inc.storage.setItem('uname',uname);
           // 刷新
           this.loginVerify();
         }
@@ -252,30 +240,25 @@ export default {
     /* 退出 */
     logout(){
       this.isLogin = false;
-      this.$storage.setItem('token','');
-      this.$storage.setItem('uinfo','');
+      Inc.storage.setItem('token','');
+      Inc.storage.setItem('uinfo','');
     },
 
     /* Token验证 */
     token(callback){
-      this.$ajax.post(
-        this.$config.apiUrl+'user/token','token='+this.$storage.getItem('token')
-      ).then(callback);
+      Inc.post('user/token',{token:Inc.storage.getItem('token')},callback);
     },
 
     /* 收缩菜单 */
     hideMenus(){
       this.isCollapse = !this.isCollapse;
-      this.$storage.setItem('isCollapse',this.isCollapse);
+      Inc.storage.setItem('isCollapse',this.isCollapse);
     },
 
     /* 检测更新 */
     isUpdate(){
       this.update.os = plus.os.name;
-      this.$ajax.post(
-        this.$config.apiUrl+'index/appUpdate',
-        'os='+this.update.os
-      ).then((res)=>{
+      Inc.post('index/appUpdate',{os:this.update.os},(res)=>{
         let d = res.data;
         if(d.code!=0) return false;
         // 是否更新
@@ -342,10 +325,9 @@ export default {
       data[key] = this.config[key]?'1':'0';
       // 提交
       const loading = this.$loading({text: '更改状态'});
-      this.$ajax.post(
-        this.$config.apiUrl+'Userinfo/edit',
-        'token='+this.$storage.getItem('token')+'&data='+JSON.stringify(data)
-      ).then((res)=>{
+      Inc.post('Userinfo/edit',
+        {token:Inc.storage.getItem('token'),data:JSON.stringify(data)},
+      (res)=>{
         loading.close();
         const d = res.data;
         this.$store.state.uinfo[key] = this.config[key];

@@ -1,10 +1,10 @@
+import Inc from '@/library/Inc'
 import G2 from '@antv/g2'
 
 export default {
   data(){
     return {
       menus: {},  // 快捷方式
-      system: {}, // 系统信息
       msg:[],     // 我的消息
       total: {},  // 数据统计
       ratio: {s1:{},s2:{},s3:{}},  // 效益报告
@@ -16,7 +16,6 @@ export default {
   },
   mounted(){
     this.getMenus();  // 快捷方式
-    this.getConfig(); // 系统信息
     this.loadData();  // 加载数据
     this.getChart();  // 图表统计
   },
@@ -24,7 +23,7 @@ export default {
 
     /* 加载数据 */
     loadData(){
-      this.$ajax.post(this.$config.apiUrl+'Desktop/index','token='+this.$storage.getItem('token')).then((res)=>{
+      Inc.post('Desktop/index',{token:Inc.storage.getItem('token')},(res)=>{
         let d = res.data;
         if(d.code==0){
           // 消息
@@ -43,23 +42,23 @@ export default {
 
     /* 快捷方式 */
     getMenus(){
-      let menus = JSON.parse(this.$storage.getItem('Menus') || '[]');
+      let menus = JSON.parse(Inc.storage.getItem('Menus') || '[]');
       this.menus = menus.reverse();
     },
     /* 跳转地址 */
     openUrl(ico,url,index,name,reload){
       // 保存-当前位置
-      this.$storage.setItem('MenuName',name);
-      this.$storage.setItem('defaultMenu',index);
+      Inc.storage.setItem('MenuName',name);
+      Inc.storage.setItem('defaultMenu',index);
       // 保存-快捷方式
       if(index!='3'){
-        let menus = JSON.parse(this.$storage.getItem('Menus') || '[]');
+        let menus = JSON.parse(Inc.storage.getItem('Menus') || '[]');
         let data = {ico:ico,url:url,index:index,name:name};
         const n = menus.findIndex((item)=>JSON.stringify(item)==JSON.stringify(data));
         if(n>=0) menus.splice(n,1);
         menus.push({ico:ico,url:url,index:index,name:name});
         // 保存
-        this.$storage.setItem('Menus',JSON.stringify(menus));
+        Inc.storage.setItem('Menus',JSON.stringify(menus));
       }
       // 跳转
       this.$router.push(url);
@@ -108,16 +107,6 @@ export default {
       }
       this.RoomChart.source(data).tooltip({showTitle: false});
       this.RoomChart.render();
-    },
-
-    /* 系统信息 */
-    getConfig(){
-      this.$ajax.post(
-        this.$config.apiUrl+'index/getConfig'
-      ).then((res)=>{
-        const d = res.data;
-        if(d.code==0) this.system = d.list;
-      });
     },
 
   }

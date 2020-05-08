@@ -15,16 +15,16 @@
       <view class="login_list">
         <view class="item">
           <text class="icons icon_tel"></text>
-          <input type="tel" class="Input" placeholder="请输入手机号码" />
+          <input class="Input" value="{{fromData.tel}}" bind:input="setVal" data-name="tel" type="tel" maxlength="11" placeholder="请输入手机号码" />
         </view>
         <view class="item">
           <text class="icons icon_passwd"></text>
-          <input type="text" password class="Input" placeholder="密码" />
+          <input class="Input" value="{{fromData.passwd}}" bind:input="setVal" data-name="passwd" type="text" maxlength="16" password placeholder="密码" />
         </view>
       </view>
       <!-- 按钮 -->
       <view class="login_an">
-        <button class="Button">登 录</button>
+        <button class="Button" bind:tap="login">{{ subInfo.text }}</button>
       </view>
       <!-- 其他 -->
       <view class="login_link flex">
