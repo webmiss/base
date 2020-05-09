@@ -27,7 +27,7 @@ export default {
 
     /* 返回 */
     back(){
-      Inc.back(1,this);
+      Inc.back(1);
     },
 
     /* 登录 */
@@ -56,8 +56,11 @@ export default {
           Inc.storage.setItem('token',d.token);
           // 返回
           Inc.toast('登录成功');
-          Inc.back(1,this);
+          Inc.back(1);
         }else Inc.toast(d.msg);
+      },(e)=>{
+        load.clear();
+        Inc.toast('网络加载失败!');
       });
     }
 

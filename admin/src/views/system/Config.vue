@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 内容 -->
-    <el-row class="body mtop">
+    <el-row class="body mTop10">
       <el-form :model="form" :label-width="LabelWidth">
         <el-form-item label="LOGO">
           <label for="logo" class="upload bgimg radius" v-if="!form.logo"></label>

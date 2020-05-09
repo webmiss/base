@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 内容 -->
-    <el-row class="body mtop">
+    <el-row class="body mTop10">
       <el-form :model="form" :label-width="LabelWidth">
         <el-form-item label="当前密码">
           <el-input type="password" show-password v-model="form.passwd" placeholder="登录密码" maxlength="32" style="max-width: 320px;"></el-input>

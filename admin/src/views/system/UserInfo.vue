@@ -1,11 +1,11 @@
 <template>
   <div>
     <!-- 内容 -->
-    <el-row class="body mtop">
+    <el-row class="body mTop10">
       <el-form :model="form" :label-width="LabelWidth">
         <el-form-item label="头像">
-          <label for="logo" class="upload bgimg radius" v-if="!form.img"></label>
-          <label for="logo" class="upload bgimg radius bgcover" v-else :style="{backgroundImage:'url('+form.img+')'}"></label>
+          <label for="logo" class="upload bgImg bgTu" v-if="!form.img"></label>
+          <label for="logo" class="upload bgImg bgTu" v-else :style="{backgroundImage:'url('+form.img+')'}"></label>
           <input type="file" id="logo" @change="upImage($event,'img')" class="hide">
         </el-form-item>
         <el-form-item label="昵称">

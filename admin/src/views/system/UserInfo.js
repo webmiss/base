@@ -1,3 +1,4 @@
+import Inc from '@/library/Inc'
 import Plus from '@/library/Plus'
 
 export default {
@@ -14,37 +15,34 @@ export default {
 
     /* 加载数据 */
     loadData(){
-      const loading = this.$loading({text: '分页数据'});
-      this.$ajax.post(
-        this.$config.apiUrl+'Userinfo/list',
-        'token='+this.$storage.getItem('token')
-      ).then((res)=>{
-        loading.close();
+      const load = Inc.loading();
+      Inc.post('Userinfo/list',{token:Inc.storage.getItem('token')},(res)=>{
+        load.clear();
         const d = res.data;
-        if(d.code!=0){
-          this.$message.error(d.msg);
-        }else{
+        if(d.code==0){
           this.form = d.list;
+        }else{
+          return Inc.toast(d.msg,'error');
         }
+      },(e)=>{
+        load.clear();
+        Inc.toast('网络加载失败!');
       });
     },
 
     /* 提交表单 */
     onSubmit(){
-      const loading = this.$loading({text: '提交数据'});
       const data = JSON.stringify(this.form);
-      this.$ajax.post(
-        this.$config.apiUrl+'Userinfo/edit',
-        'token='+this.$storage.getItem('token')+'&data='+data
-      ).then((res)=>{
-        loading.close();
+      const load = Inc.loading();
+      Inc.post('Userinfo/edit',{token:Inc.storage.getItem('token'),data:data},(res)=>{
+        load.clear();
         const d = res.data;
         if(d.code==0){
           // 刷新
           this.$store.state.uinfo = JSON.parse(data);
-          return this.$message.success(d.msg);
+          return Inc.toast(d.msg,'success');
         }else{
-          return this.$message.error(d.msg);
+          return Inc.toast(d.msg,'error');
         }
       });
     },
@@ -56,19 +54,16 @@ export default {
       let perm = {width:200,height:200};
       // 压缩
       Plus.readerCompress(fileObj,perm,(base64)=>{
-        const loading = this.$loading({text: '提交数据'});
-        this.$ajax.post(
-          this.$config.apiUrl+'Userinfo/upImage',
-          'token='+this.$storage.getItem('token')+'&base64='+base64
-        ).then((res)=>{
-          loading.close();
+        const load = Inc.loading();
+        Inc.post('Userinfo/upImage',{token:Inc.storage.getItem('token'),base64:base64},(res)=>{
+          load.clear();
           const d = res.data;
-          if(d.code == 0){
-            this.$message.success(d.msg);
+          if(d.code==0){
             this.form.img = d.img;
             this.$store.state.uinfo.img = d.img;
+            return Inc.toast(d.msg,'success');
           }else{
-            this.$message.error(d.msg);
+            return Inc.toast(d.msg,'error');
           }
         });
       });

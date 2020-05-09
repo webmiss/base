@@ -23,22 +23,20 @@ export default {
   toast(text){ return wx.showToast({title:text,icon:'none'}); },
 
   /* Get请求 */
-  get(url,data,callback){
+  get(url,data,success,fail){
     const str = url.substr(0,4);
     url = str=='http'?url:this.config.apiUrl+url;
     wx.request({
       url: url,
       data: data,
       header: Env.request.headers,
-      success: callback,
-      fail(e){
-        wx.showToast({title:'请检测网络',icon:'none'});
-      },
+      success: success,
+      fail: fail,
     });
   },
 
   /* Post请求 */
-  post(url,data,callback){
+  post(url,data,success){
     const str = url.substr(0,4);
     url = str=='http'?url:this.config.apiUrl+url;
     wx.request({
@@ -46,10 +44,8 @@ export default {
       data: data,
       method: 'POST',
       header: Env.request.headers,
-      success: callback,
-      fail(e){
-        wx.showToast({title:'请检测网络',icon:'none'});
-      },
+      success: success,
+      fail: fail,
     });
   },
 

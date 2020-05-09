@@ -50,19 +50,24 @@ class Base extends Controller{
   protected function verToken($token){
     // 解密
     $data = Safety::decode($token,$this->config->key);
-    if(!isset($data->login) || $data->ltime<time()) return self::error(1002);
+    $tmp_token = $this->redis->get('Token_'.$data->uid);
+    if($token!=$tmp_token) return self::error(1002);
+    // 续期
+    $this->redis->setex('Token_'.$data->uid,$this->config->token_time,$token);
     // 结果
     return $data;
   }
   
   /* Token-加密 */
   protected function setToken($uid,$data){
-    return Safety::encode([
+    $token = Safety::encode([
       'uid'=>$uid,
+      'ltime'=>date('YmdHis'),
       'data'=>$data,
-      'login'=>true,
-      'ltime'=>time()+$this->config->token_time,
     ],$this->config->key);
+    // 缓存
+    $this->redis->setex('Token_'.$uid,$this->config->token_time,$token);
+    return $token;
   }
   
 }

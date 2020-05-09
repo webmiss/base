@@ -6,7 +6,7 @@
 	<div id="action">
 		<textarea id="data" style="width: calc(100% - 12px);" rows="3" placeholder="请输入聊天内容！"></textarea>
 		<div class="tcenter" style="padding: 10px 0;">
-			<label>发送<button id="send" class="noDisplay"></button></label>
+			<label>发送<button id="send" class="hide"></button></label>
 		</div>
 	</div>
 </div>

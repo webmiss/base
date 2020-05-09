@@ -26,14 +26,17 @@ class Safety{
 	static function encode($data,$key){
 		$text = is_array($data)?json_encode($data):$data;
 		$crypt = new Crypt();
-		return $crypt->encryptBase64($text, $key);
+		$token = $crypt->encryptBase64($text, $key);
+		$token = str_replace('+','_',$token);
+		return $token;
 	}
 
 	/* 解密 */
 	static function decode($token,$key){
-		$token = str_replace(' ','+',$token);
+		$token = str_replace('_','+',$token);
 		$crypt = new Crypt();
-		return json_decode($crypt->decryptBase64($token, $key));
+		$data = json_decode($crypt->decryptBase64($token, $key));
+		return $data;
 	}
 
 }

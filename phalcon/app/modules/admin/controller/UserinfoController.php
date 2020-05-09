@@ -8,8 +8,8 @@ class UserInfoController extends UserBase {
 
   /* 列表 */
   function listAction(){
-    $uinfo = Centre::uinfo(self::$token->uid);
-		return self::getJSON(['code'=>0,'list'=>$uinfo]);
+    $uInfo = Centre::uinfo(self::$token->uid);
+		return self::getJSON(['code'=>0,'list'=>$uInfo->info]);
   }
 
   /* 编辑 */

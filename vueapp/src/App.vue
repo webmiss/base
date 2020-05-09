@@ -65,7 +65,7 @@ i{font-style: normal;}
 .null::before{content: '暂无数据！';}
 .bLine{text-align: center; color: #999; line-height: 50px;}
 .bLine::before{content: '我是有底线的';}
-.noDisplay{display: none;}
+.hide{display: none;}
 .mTop1{margin-top: 1px;}
 .mTop10{margin-top: 10px;}
 /* 公共-深色 */

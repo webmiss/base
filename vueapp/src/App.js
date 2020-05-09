@@ -26,39 +26,14 @@ export default {
     mode(){ return this.$store.state.mode; },
   },
   mounted(){
+    // Vue对象
+    Inc.vue = this;
     // 初始化
     setTimeout(()=>{this.init()},1000);
     // 登录状态
-    const token = Inc.storage.getItem('token');
-    if(token){
-      this.$ajax.post(
-        this.$config.apiUrl+'user/token','token='+token+'&type=info'
-      ).then((res)=>{
-        const d = res.data;
-        if(d.code==0){
-          this.$store.state.isLogin = true;
-          this.$store.state.uInfo = d.userinfo;
-        }else{
-          Inc.storage.setItem('token','');
-        }
-      });
-    }else{
-      Inc.storage.setItem('token','');
-    }
-    // 定位-5秒刷新
-    setTimeout(()=>{
-      Plus.geoLocation((res)=>{
-        this.$store.state.geolocation = res;
-        Inc.storage.setItem('city',res.district);
-      },(e)=>{
-        setTimeout(()=>{
-          Plus.geoLocation((res)=>{
-            this.$store.state.geolocation = res;
-            Inc.storage.setItem('city',res.district);
-          },(e)=>{});
-        },8000);
-      });
-    },3000);
+    this.loginState();
+    // 获取定位
+    this.geoLocation();
     // 消息推送
     this.socketStart();
   },
@@ -166,6 +141,43 @@ export default {
           if (complete >= 100) this.update.msg = '下载完成，安装并重启';
         });
       }
+    },
+
+    /* 登录状态 */
+    loginState(){
+      const token = Inc.storage.getItem('token');
+      if(token){
+        this.$ajax.post(
+          this.$config.apiUrl+'user/token','token='+token+'&type=info'
+        ).then((res)=>{
+          const d = res.data;
+          if(d.code==0){
+            this.$store.state.isLogin = true;
+            this.$store.state.uInfo = d.userinfo;
+          }else{
+            Inc.storage.setItem('token','');
+          }
+        });
+      }else{
+        Inc.storage.setItem('token','');
+      }
+    },
+
+    /* 获取定位 */
+    geoLocation(){
+      setTimeout(()=>{
+        Plus.geoLocation((res)=>{
+          this.$store.state.geolocation = res;
+          Inc.storage.setItem('city',res.district);
+        },(e)=>{
+          setTimeout(()=>{
+            Plus.geoLocation((res)=>{
+              this.$store.state.geolocation = res;
+              Inc.storage.setItem('city',res.district);
+            },(e)=>{});
+          },8000);
+        });
+      },3000);
     },
 
     /* Socket */

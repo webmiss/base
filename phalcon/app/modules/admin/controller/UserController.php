@@ -21,11 +21,12 @@ class UserController extends Base{
     }
     // 用户数据
     $uInfo = Centre::login($uname,$passwd);
-    if(!is_object($uInfo)) return self::getJSON(['code'=>4011,'msg'=>$uInfo]);
+    if($uInfo->code!=0) return self::getJSON(['code'=>4000,'msg'=>$uInfo->msg]);
+    $uInfo = $uInfo->info;
     $uInfo->uname = $uname;
     // 登录权限
     $uData = UserPerm::findFirst(['uid='.$uInfo->uid,'columns'=>'state_admin']);
-    if(!$uData) return self::getJSON(['code'=>4010]);
+    if(!$uData) return self::getJSON(['code'=>4010,'msg'=>'没有权限']);
     // 是否禁用
     if($uData->state_admin!='1') return self::getJSON(['code'=>4012]);
     unset($uData->state_admin);
@@ -43,8 +44,13 @@ class UserController extends Base{
     $token = trim($this->request->get('token'));
     $res = self::verToken($token);
     if($res){
+      // 接口
       $uInfo = Centre::uinfo($res->uid);
+      if($uInfo->code!=0) return self::getJSON(['code'=>4000,'msg'=>$uInfo->msg]);
+      // 数据
+      $uInfo = $uInfo->info;
       $uInfo->uid = $res->uid;
+      $uInfo->uname = $res->data->uname;
       if(!is_object($uInfo)) return self::getJSON(['code'=>4011,'msg'=>$uInfo]);
       return self::getJSON(['code'=>0,'uinfo'=>$uInfo]);
     }else{

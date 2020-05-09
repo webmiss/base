@@ -1,12 +1,11 @@
-import Vue from 'vue'
 import Env from '@/env'
 import axios from 'axios'
 import QRCode from 'qrcode'
 
-// import { Message } from 'element-ui'
-// Vue.use(Message);
-
 export default {
+
+  /* Vue */
+  vue: null,
 
   /* 配置 */
   config: Env,
@@ -16,30 +15,28 @@ export default {
 
   /* 加载 */
   loading(){
-    const load = Toast.loading({ message:'', duration:0 });
-    return { clear:load.clear };
+    const load = this.vue.$loading({text:'',background:'rgba(0, 0, 0, 0.7)'});
+    return { clear:()=>{ load.close(); } };
   },
 
   /* 提示: success、warning、error */
   toast(text,type){
     type = type || '';
-    return Vue.prototype.$message({message:text,type:type,showClose:true});
+    return this.vue.$message({message:text,type:type,showClose:true});
   },
 
   /* Get请求 */
-  get(url,data,callback){
+  get(url,data,success,fail){
     const str = url.substr(0,4);
     url = str=='http'?url:this.config.apiUrl+url;
     // 方式
     axios.get(
       url,{params:data},this.config.request
-    ).then(callback).catch((e)=>{
-      Toast('请检测网络');
-    });
+    ).then(success).catch(fail);
   },
 
   /* Post请求 */
-  post(url,data,callback,progress){
+  post(url,data,success,fail,progress){
     const str = url.substr(0,4);
     url = str=='http'?url:this.config.apiUrl+url;
     // 表单
@@ -49,9 +46,7 @@ export default {
     this.config.request.onUploadProgress = progress;
     axios.post(
       url,param,this.config.request
-    ).then(callback).catch((e)=>{
-      Toast('请检测网络');
-    });
+    ).then(success).catch(fail);
   },
 
   /* 本地硬盘 */

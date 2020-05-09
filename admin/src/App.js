@@ -18,7 +18,7 @@ export default {
       update: {show:false,os:'',down:false,loading:'0%',msg:'检测更新',file:'',total:0},
       upDateColor: Env.upDateColor,
       // 登录数据
-      login: {uname:'',passwd:'',subText:'登录',dis:false},
+      login: {uname:'',passwd:'',subText:'登 录',dis:false},
       // 左侧菜单
       menus: [],
       // 配置
@@ -33,17 +33,10 @@ export default {
     }
   },
   mounted(){
+    // Vue对象
+    Inc.vue = this;
     // 初始化
     setTimeout(()=>{this.init();},3000);
-    // 播放声音
-    document.body.onclick = ()=>{
-      let el = document.getElementById('msgAudio');
-      if(!el){
-        let audio = document.createElement('audio');
-        audio.setAttribute('id','msgAudio');
-        document.body.appendChild(audio);
-      }
-    }
     // 默认菜单
     this.isCollapse = Inc.storage.getItem('isCollapse')=='true'?true:false;
     this.defaultMenu = Inc.storage.getItem('defaultMenu')?Inc.storage.getItem('defaultMenu'):'3';
@@ -221,8 +214,10 @@ export default {
       // 提交
       this.login.subText = '正在登录';
       this.login.dis = true;
+      const load = Inc.loading();
       Inc.post('user/login',{uname:uname,passwd:passwd},(res)=>{
-        this.login.subText = '登录';
+        load.clear();
+        this.login.subText = '登 录';
         this.login.dis = false;
         const d = res.data;
         if(d.code!=0){
@@ -230,10 +225,12 @@ export default {
         }else{
           this.isLogin = true;
           Inc.storage.setItem('token',d.token);
-          Inc.storage.setItem('uname',uname);
           // 刷新
           this.loginVerify();
         }
+      },(e)=>{
+        load.clear();
+        Inc.toast('网络加载失败!');
       });
     },
 

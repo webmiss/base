@@ -60,8 +60,7 @@ class Centre{
   static function uinfo($uid){
     $config = require APP_PATH.'/config/env.php';
     $res = file_get_contents($config['centre_url'].'user/info?token='.self::getToken().'&uid='.$uid);
-    $data = json_decode($res);
-    return $data->code==0?$data->info:$data->msg;
+    return json_decode($res);
   }
 
   /* 用户信息-头像 */
