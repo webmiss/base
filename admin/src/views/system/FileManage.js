@@ -1,3 +1,4 @@
+import Inc from '@/library/Inc'
 import Action from '@/components/Action'
 
 export default {
@@ -23,10 +24,11 @@ export default {
 
     /* 加载数据 */
     loadData(){
-      this.$ajax.post(
-        this.$config.apiUrl+'Filemanage/list',
-        'token='+this.$storage.getItem('token')+'&path='+this.path
-      ).then((res)=>{
+      const load = Inc.loading();
+      Inc.post('Filemanage/list',
+        {token:Inc.storage.getItem('token'),path:this.path},
+      (res)=>{
+        load.clear();
         const d = res.data;
         if(d.code==0) this.lists = d.data;
       });
@@ -143,9 +145,9 @@ export default {
       ).then((res)=>{
         const d = res.data;
         if(d.code!==0){
-          if(d.msg) this.$message.error(d.msg);
+          if(d.msg) Inc.toast(d.msg,'error');
         }else{
-          if(d.msg) this.$message.success(d.msg);
+          if(d.msg) Inc.toast(d.msg,'success');
           // 刷新数据
           this.loadData();
         }
@@ -182,27 +184,23 @@ export default {
     },
 
     /* 提交数据 */
-    subAjax(action,parameter,callback,type){
-      // 提交
-      const loading = this.$loading({text: '正在提交'});
-      this.$ajax.post(
-        this.$config.apiUrl+'Filemanage/'+action,
-        'token='+this.$storage.getItem('token')+parameter,
-        type
-      ).then((res)=>{
-        loading.close();
+    subAjax(action,parameter,callback,progress){
+      parameter.token = Inc.storage.getItem('token');
+      const load = Inc.loading();
+      Inc.post('Filemanage/'+action,parameter,(res)=>{
+        load.clear();
         const d = res.data;
         // 回调
         if(callback) callback(d);
         // 结果
         if(d.code!==0){
-          if(d.msg) this.$message.error(d.msg);
+          if(d.msg) Inc.toast(d.msg,'error');
         }else{
-          if(d.msg) this.$message.success(d.msg);
+          if(d.msg) Inc.toast(d.msg,'success');
           // 刷新数据
           this.loadData();
         }
-      });
+      },(e)=>{},progress);
     },
 
     /* 获取选中 */

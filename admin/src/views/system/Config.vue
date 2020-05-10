@@ -4,8 +4,8 @@
     <el-row class="body mTop10">
       <el-form :model="form" :label-width="LabelWidth">
         <el-form-item label="LOGO">
-          <label for="logo" class="upload bgimg radius" v-if="!form.logo"></label>
-          <label for="logo" class="upload bgimg radius bgcover" v-else :style="{backgroundImage:'url('+$config.baseUrl+form.logo+')'}"></label>
+          <label for="logo" class="upload bgImg bgTu" v-if="!form.logo"></label>
+          <label for="logo" class="upload bgImg bgTu" v-else :style="{backgroundImage:'url('+form.logo+')'}"></label>
           <input type="file" id="logo" @change="upImage($event,'logo')" class="hide">
         </el-form-item>
         <el-form-item label="系统名称">
@@ -18,8 +18,8 @@
           <el-input v-model="form.copy" placeholder="请输入版权信息" style="max-width: 320px;"></el-input>
         </el-form-item>
         <el-form-item label="登录背景">
-          <label for="login_bg" class="upload bgimg" v-if="!form.login_bg"></label>
-          <label for="login_bg" class="upload bgimg bgcover" v-else :style="{backgroundImage:'url('+$config.baseUrl+form.login_bg+')'}"></label>
+          <label for="login_bg" class="upload bgImg" v-if="!form.login_bg"></label>
+          <label for="login_bg" class="upload bgImg" v-else :style="{backgroundImage:'url('+form.login_bg+')'}"></label>
           <input type="file" id="login_bg" @change="upImage($event,'bg')" class="hide">
         </el-form-item>
         <el-form-item>

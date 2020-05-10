@@ -1,3 +1,4 @@
+import Inc from '@/library/Inc'
 import Plus from '@/library/Plus'
 
 export default {
@@ -14,15 +15,12 @@ export default {
 
     /* 加载数据 */
     loadData(){
-      const loading = this.$loading({text: '分页数据'});
-      this.$ajax.post(
-        this.$config.apiUrl+'Sysconfig/list',
-        'token='+this.$storage.getItem('token')
-      ).then((res)=>{
-        loading.close();
+      const load = Inc.loading();
+      Inc.post('Sysconfig/list',{token:Inc.storage.getItem('token')},(res)=>{
+        load.clear();
         const d = res.data;
         if(d.code!=0){
-          this.$message.error(d.msg);
+          Inc.toast(d.msg,'error');
         }else{
           this.form = d.list;
         }
@@ -31,22 +29,19 @@ export default {
 
     /* 提交表单 */
     onSubmit(){
-      const loading = this.$loading({text: '提交数据'});
       const data = JSON.stringify(this.form);
-      this.$ajax.post(
-        this.$config.apiUrl+'Sysconfig/edit',
-        'token='+this.$storage.getItem('token')+'&data='+data
-      ).then((res)=>{
-        loading.close();
+      const load = Inc.loading();
+      Inc.post('Sysconfig/edit',{token:Inc.storage.getItem('token'),data:data},(res)=>{
+        load.clear();
         const d = res.data;
         if(d.code==0){
           // 刷新
           const tmp = JSON.parse(data);
           this.$store.state.system.title = tmp.title;
           this.$store.state.system.copy = tmp.copy;
-          return this.$message.success(d.msg);
+          return Inc.toast(d.msg,'success');
         }else{
-          return this.$message.error(d.msg);
+          return Inc.toast(d.msg,'error');
         }
       });
     },
@@ -65,15 +60,14 @@ export default {
       }
       // 压缩
       Plus.readerCompress(fileObj,perm,(base64)=>{
-        const loading = this.$loading({text: '提交数据'});
-        this.$ajax.post(
-          this.$config.apiUrl+'Sysconfig/upImage',
-          'token='+this.$storage.getItem('token')+'&type='+type+'&base64='+base64
-        ).then((res)=>{
-          loading.close();
+        const load = Inc.loading();
+        Inc.post('Sysconfig/upImage',
+          {token:Inc.storage.getItem('token'),type:type,base64:base64},
+        (res)=>{
+          load.clear();
           const d = res.data;
           if(d.code == 0){
-            this.$message.success(d.msg);
+            Inc.toast(d.msg,'success');
             if(type=='logo'){
               this.form.logo = d.img;
               this.$store.state.system.logo = d.img;
@@ -82,7 +76,7 @@ export default {
               this.$store.state.system.login_bg = d.img;
             }
           }else{
-            this.$message.error(d.msg);
+            Inc.toast(d.msg,'error');
           }
         });
       });

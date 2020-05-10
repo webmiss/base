@@ -1,4 +1,6 @@
+import Inc from '@/library/Inc'
 import Action from '@/components/Action'
+
 export default {
   components: {Action},
   data(){
@@ -42,7 +44,7 @@ export default {
         this.editData.show=true;
         for(let i in data) this.editData.form[i] = this.selectData[0][i] || '';
       }else{
-        this.$message.error('请选择数据！');
+        Inc.toast('请选择数据!');
       }
     },
 
@@ -67,21 +69,20 @@ export default {
           for(let i=0; i<data.length; i++) id += data[i].id+',';
           this.delData.id = id;
         }
-        else this.$message.error('请选择数据！');
+        else Inc.toast('请选择数据!');
       }
     },
 
     /* 加载数据 */
     loadData(){
-      const loading = this.$loading({text: '分页数据'});
-      this.$ajax.post(
-        this.$config.apiUrl+'Sysrole/list',
-        'token='+this.$storage.getItem('token')+'&page='+this.pageData.page+'&limit='+this.pageData.limit+'&data='+JSON.stringify(this.seaData.form)
-      ).then((res)=>{
-        loading.close();
+      const load = Inc.loading();
+      Inc.post('Sysrole/list',
+        {token:Inc.storage.getItem('token'),page:this.pageData.page,limit:this.pageData.limit,data:JSON.stringify(this.seaData.form)},
+      (res)=>{
+        load.clear();
         const d = res.data;
         if(d.code!=0){
-          this.$message.error(d.msg);
+          Inc.toast(d.msg,'error');
         }else{
           this.pageData.list = d.list;
           this.pageData.total = d.total;
@@ -100,17 +101,16 @@ export default {
     subAdd(){
       this.addData.show=false;
       // 提交
-      const loading = this.$loading({text: '正在添加'});
-      this.$ajax.post(
-        this.$config.apiUrl+'Sysrole/add',
-        'token='+this.$storage.getItem('token')+'&data='+JSON.stringify(this.addData.form)
-      ).then((res)=>{
-        loading.close();
-        let d = res.data;
+      const load = Inc.loading();
+      Inc.post('Sysrole/add',
+        {token:Inn.storage.getItem('token'),data:JSON.stringify(this.addData.form)},
+      (res)=>{
+        load.clear();
+        const d = res.data;
         if(d.code!==0){
-          this.$message.error(d.msg);
+          Inc.toast(d.msg,'error');
         }else{
-          this.$message.success(d.msg);
+          Inc.toast(d.msg,'success');
           // 刷新数据
           this.loadData();
         }
@@ -121,17 +121,16 @@ export default {
     subEdit(){
       this.editData.show=false;
       // 提交
-      const loading = this.$loading({text: '正在更新'});
-      this.$ajax.post(
-        this.$config.apiUrl+'Sysrole/edit',
-        'token='+this.$storage.getItem('token')+'&id='+this.editData.form.id+'&data='+JSON.stringify(this.editData.form)
-      ).then((res)=>{
-        loading.close();
+      const load = Inc.loading();
+      Inc.post('Sysrole/edit',
+        {token:Inc.storage.getItem('token'),id:this.editData.form.id,data:JSON.stringify(this.editData.form)},
+      (res)=>{
+        load.clear();
         let d = res.data;
         if(d.code!==0){
-          this.$message.error(d.msg);
+          Inc.toast(d.msg,'error');
         }else{
-          this.$message.success(d.msg);
+          Inc.toast(d.msg,'success');
           // 刷新数据
           this.loadData();
         }
@@ -142,17 +141,14 @@ export default {
     subDel(){
       this.delData.show=false;
       // 提交
-      const loading = this.$loading({text: '正在删除'});
-      this.$ajax.post(
-        this.$config.apiUrl+'Sysrole/del',
-        'token='+this.$storage.getItem('token')+'&data='+this.delData.id
-      ).then((res)=>{
-        loading.close();
+      const load = Inc.loading();
+      Inc.post('Sysrole/del',{token:Inc.storage.getItem('token'),data:this.delData.id},(res)=>{
+        load.clear();
         let d = res.data;
         if(d.code!==0){
-          this.$message.error(d.msg);
+          Inc.toast(d.msg,'error');
         }else{
-          this.$message.success(d.msg);
+          Inc.toast(d.msg,'success');
           // 刷新数据
           this.loadData();
         }
@@ -161,13 +157,10 @@ export default {
 
     /* 全部菜单 */
     allAction(){
-      this.$ajax.post(
-        this.$config.apiUrl+'Usermain/getActionAll',
-        'token='+this.$storage.getItem('token')
-      ).then((res)=>{
+      Inc.post('Usermain/getActionAll',{token:Inc.storage.getItem('token')},(res)=>{
         let d = res.data;
         if(d.code!==0){
-          this.$message.error(d.msg);
+          Inc.toast(d.msg,'error');
         }else{
           this.aMenus = d.aMenus;
         }
@@ -178,15 +171,12 @@ export default {
     eidtPerm(id,perm){
       this.permData.show=true;
       this.permData.id = id;
-      const loading = this.$loading({text: '更改状态'});
-      this.$ajax.post(
-        this.$config.apiUrl+'Sysrole/allMenus',
-        'token='+this.$storage.getItem('token')
-      ).then((res)=>{
+      const load = Inc.loading();
+      Inc.post('Sysrole/allMenus',{token:Inc.storage.getItem('token')},(res)=>{
         const d = res.data;
-        loading.close();
+        load.clear();
         if(d.code!==0){
-          this.$message.error(d.msg);
+          Inc.toast(d.msg,'error');
         }else{
           this.permData.form = d.menus;
           if(!perm) return;
@@ -227,17 +217,16 @@ export default {
       for(let k in permArr) perm += k+':'+permArr[k]+' ';
       // 提交
       this.permData.show=false;
-      const loading = this.$loading({text: '编辑'});
-      this.$ajax.post(
-        this.$config.apiUrl+'Sysrole/perm',
-        'token='+this.$storage.getItem('token')+'&id='+this.permData.id+'&perm='+perm
-      ).then((res)=>{
-        loading.close();
+      const load = Inc.loading();
+      Inc.post('Sysrole/perm',
+        {token:Inc.storage.getItem('token'),id:this.permData.id,perm:perm},
+      (res)=>{
+        load.clear();
         const d = res.data;
         if(d.code!==0){
-          this.$message.error(d.msg);
+          Inc.toast(d.msg,'error');
         }else{
-          this.$message.success(d.msg);
+          Inc.toast(d.msg,'success');
           // 刷新数据
           this.loadData();
         }

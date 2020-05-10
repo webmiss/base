@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import Inc from '@/library/Inc'
 export default {
   name:'Action',
   props: ['url'],
@@ -22,10 +23,7 @@ export default {
 
     /* 动作菜单 */
     getAction(url){
-      this.$ajax.post(
-        this.$config.apiUrl+'Usermain/getMenusAction',
-        'token='+this.$storage.getItem('token')+'&url='+url
-      ).then((res)=>{
+      Inc.post('Usermain/getMenusAction',{token:Inc.storage.getItem('token'),url:url},(res)=>{
         const d = res.data;
         if(d.code==0) this.actions = d.menuAction;
       });

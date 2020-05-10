@@ -325,7 +325,7 @@ i{font-style: normal;}
 .app_menus .el-submenu__title{height: 46px; line-height: 46px; color: #CCC;}
 .app_menus .el-submenu__title:hover{background-color: #30333A;}
 .app_menus .el-submenu__title .fa{font-size: 21px; margin-right: 10px; color: #666;}
-.app_menus .el-submenu__title .ico_mask{width: 24px; height: 24px; display: inline-block; margin-right: 8px;}
+.app_menus .el-submenu__title .icons{width: 24px; height: 24px; line-height: 24px; display: inline-block; margin-right: 8px;}
 .app_menus .el-submenu .el-menu-item{height: 36px; line-height: 36px; color: #FFF;}
 .app_menus ul{background-color: #20222A;}
 .app_menus .el-menu-item:hover{background-color: #30333A; color: #6FB737;}
@@ -337,6 +337,14 @@ i{font-style: normal;}
 .app_top{padding: 5px 20px; line-height: 50px; background-color: #FFF; border-bottom: #F2F2F2 1px solid;}
 .app_top .uinfo{color: #666;}
 .app_top .uinfo .logout{cursor: pointer; color: #FF6600;}
+
+/* 动作菜单 */
+.action{padding: 15px 15px 0; overflow-x: auto;}
+.action .el-button-group{min-width: 640px;}
+
+/* 内容 */
+.body{padding: 15px; background-color: #FFF;}
+.page{padding: 0 20px 20px; text-align: center; background-color: #FFF;}
 
 /*
 * ICO-字体图标
@@ -386,6 +394,12 @@ body .el-input-group__prepend{padding: 0 10px;}
 /* 单选 */
 .el-radio{margin-right: 20px;}
 .el-radio__inner{border: #999 1px solid;}
+/* Tree */
+.el-tree-node__content{height: 32px;}
+.tree_node{flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 8px;}
+.tree_node_title{padding: 8px 10px; font-weight: bold;}
+.tree_node_title dd{padding: 0 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
+.tree_node_width dd{padding: 0 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
 
 /* 编辑器 */
 body .tox-silver-sink{z-index: 3000;}
@@ -441,12 +455,7 @@ body .tox-silver-sink{z-index: 3000;}
 /* .el-loading-mask{background-color: rgba(0,0,0,0.3);} */
 
 
-/* Tree */
-/* .el-tree-node__content{height: 32px;}
-.tree_node{flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 8px;}
-.tree_node_title{padding: 8px 10px; font-weight: bold;}
-.tree_node_title dd{padding: 0 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
-.tree_node_width dd{padding: 0 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;} */
+
 /* Tabs */
 /* .form .el-tabs__header{position: fixed; z-index: 10; width: calc(100% - 30px); margin-top: -20px; background-color: #FFF;}
 .form .el-tabs__content{padding-top: 30px;} */
@@ -500,9 +509,7 @@ body .tox-silver-sink{z-index: 3000;}
 
 
 
-/* 动作菜单 */
-/* .action{padding: 15px 15px 0; overflow-x: auto;}
-.action .el-button-group{min-width: 640px;} */
+
 
 /* 内容 */
 /* .body{padding: 15px; background-color: #FFF;}

@@ -32,16 +32,16 @@ export default {
         this.$config.apiUrl+'Userpasswd/edit',
         'token='+this.$storage.getItem('token')+'&passwd='+passwd+'&passwd1='+passwd1
       ).then((res)=>{
-        loading.close();
+        load.clear();
         const d = res.data;
         if(d.code==0){
-          this.$message.success(d.msg);
+          Inc.toast(d.msg,'success');
           this.$storage.setItem('token','');
           this.$storage.setItem('uinfo','');
           // 刷新
           window.location.reload();
         }else{
-          return this.$message.error(d.msg);
+          return Inc.toast(d.msg,'error');
         }
       });
     },

@@ -52,7 +52,7 @@ export default {
           for(let i=0; i<data.length; i++) id += data[i].id+',';
           this.delData.id = id;
         }
-        else this.$message.error('请选择数据！');
+        else Inc.toast('请选择数据!');
       }
     },
 

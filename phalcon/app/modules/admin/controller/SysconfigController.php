@@ -14,7 +14,8 @@ class SysConfigController extends UserBase {
     $config = SysConfig::find(['','columns'=>'name,title,val'])->toArray();
 		$data = [];
 		foreach($config as $val){
-			$data[$val['name']] = $val['val'];
+      $data[$val['name']] = $val['val'];
+      if($val['name']=='logo' || $val['name']=='login_bg') $data[$val['name']] = $this->config->imgUrl.$val['val'];
 		}
 		return self::getJSON(['code'=>0,'list'=>$data]);
   }

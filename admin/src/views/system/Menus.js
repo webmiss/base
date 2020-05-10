@@ -1,3 +1,4 @@
+import Inc from '@/library/Inc'
 import Action from '@/components/Action'
 export default {
   components: {Action},
@@ -51,21 +52,18 @@ export default {
         if(key.length>0){
           this.delData.show=true;
           this.delData.id = key;
-        }else this.$message.error('请选择数据！');
+        }else Inc.toast('请选择数据!');
       }
     },
 
     /* 加载数据 */
     loadData(){
-      const loading = this.$loading({text: '分页数据'});
-      this.$ajax.post(
-        this.$config.apiUrl+'Sysmenus/list',
-        'token='+this.$storage.getItem('token')
-      ).then((res)=>{
-        loading.close();
+      const load = Inc.loading();
+      Inc.post('Sysmenus/list',{token:Inc.storage.getItem('token')},(res)=>{
+        load.clear();
         const d = res.data;
         if(d.code!=0){
-          this.$message.error(d.msg);
+          Inc.toast(d.msg,'error');
         }else{
           this.listData.list = d.list;
         }
@@ -95,17 +93,16 @@ export default {
       this.addData.form.perm = perm;
       // 提交
       this.addData.show=false;
-      const loading = this.$loading({text: '正在添加'});
-      this.$ajax.post(
-        this.$config.apiUrl+'Sysmenus/add',
-        'token='+this.$storage.getItem('token')+'&data='+JSON.stringify(this.addData.form)
-      ).then((res)=>{
-        loading.close();
+      const load = Inc.loading();
+      Inc.post('Sysmenus/add',
+        {token:Inc.storage.getItem('token'),data:JSON.stringify(this.addData.form)},
+      (res)=>{
+        load.clear();
         let d = res.data;
         if(d.code!==0){
-          this.$message.error(d.msg);
+          Inc.toast(d.msg,'error');
         }else{
-          this.$message.success(d.msg);
+          Inc.toast(d.msg,'success');
           // 刷新数据
           this.loadData();
         }
@@ -142,17 +139,16 @@ export default {
       this.editData.form.perm = perm;
       // 提交
       this.editData.show=false;
-      const loading = this.$loading({text: '正在更新'});
-      this.$ajax.post(
-        this.$config.apiUrl+'Sysmenus/edit',
-        'token='+this.$storage.getItem('token')+'&id='+this.editData.form.id+'&data='+JSON.stringify(this.editData.form)
-      ).then((res)=>{
-        loading.close();
+      const load = Inc.loading();
+      this.$ajax.post('Sysmenus/edit',
+        {token:Inc.storage.getItem('token'),id:this.editData.form.id,data:JSON.stringify(this.editData.form)},
+      (res)=>{
+        load.clear();
         let d = res.data;
         if(d.code!==0){
-          this.$message.error(d.msg);
+          Inc.toast(d.msg,'error');
         }else{
-          this.$message.success(d.msg);
+          Inc.toast(d.msg,'success');
           // 刷新数据
           this.loadData();
         }
@@ -163,17 +159,16 @@ export default {
     subDel(){
       this.delData.show=false;
       // 提交
-      const loading = this.$loading({text: '正在删除'});
-      this.$ajax.post(
-        this.$config.apiUrl+'Sysmenus/del',
-        'token='+this.$storage.getItem('token')+'&data='+JSON.stringify(this.delData.id)
-      ).then((res)=>{
-        loading.close();
+      const load = Inc.loading();
+      this.$ajax.post('Sysmenus/del',
+        {token:Inc.storage.getItem('token'),data:JSON.stringify(this.delData.id)},
+      (res)=>{
+        load.clear();
         let d = res.data;
         if(d.code!==0){
-          this.$message.error(d.msg);
+          Inc.toast(d.msg,'error');
         }else{
-          this.$message.success(d.msg);
+          Inc.toast(d.msg,'success');
           // 刷新数据
           this.loadData();
         }
@@ -182,13 +177,10 @@ export default {
 
     /* 全部菜单 */
     allAction(){
-      this.$ajax.post(
-        this.$config.apiUrl+'Usermain/getActionAll',
-        'token='+this.$storage.getItem('token')
-      ).then((res)=>{
+      Inc.post('Usermain/getActionAll',{token:Inc.storage.getItem('token')},(res)=>{
         let d = res.data;
         if(d.code!==0){
-          this.$message.error(d.msg);
+          Inc.toast(d.msg,'error');
         }else{
           this.aMenus = d.aMenus;
           for(let k in d.aMenus){
@@ -204,7 +196,7 @@ export default {
     },
     /* 获取分类 */
     getClass(type,callback){
-      this.$ajax.post(this.$config.apiUrl+'Sysmenus/getClass/'+type,'token='+this.$storage.getItem('token')).then(callback);
+      Inc.post('Sysmenus/getClass/'+type,{token:Inc.storage.getItem('token')},callback);
     },
 
   }

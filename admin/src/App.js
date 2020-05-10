@@ -221,7 +221,7 @@ export default {
         this.login.dis = false;
         const d = res.data;
         if(d.code!=0){
-          this.$message.error(d.msg);
+          Inc.toast(d.msg,'error');
         }else{
           this.isLogin = true;
           Inc.storage.setItem('token',d.token);
@@ -321,14 +321,14 @@ export default {
       let data = {};
       data[key] = this.config[key]?'1':'0';
       // 提交
-      const loading = this.$loading({text: '更改状态'});
+      const load = Inc.loading();
       Inc.post('Userinfo/edit',
         {token:Inc.storage.getItem('token'),data:JSON.stringify(data)},
       (res)=>{
-        loading.close();
+        load.clear();
         const d = res.data;
         this.$store.state.uinfo[key] = this.config[key];
-        return d.code==0?this.$message.success(d.msg):this.$message.error(d.msg);
+        return d.code==0?this.$message.success(d.msg):Inc.toast(d.msg,'error');
       });
     },
 
