@@ -9,7 +9,7 @@ class UserController extends Base{
 
   /* 登录 */
   function loginAction(){
-    // 数据
+    // 参数
     $tel = trim($this->request->get('tel', 'string'));
     $passwd = $this->request->get('passwd', 'string');
     // 验证
@@ -27,6 +27,26 @@ class UserController extends Base{
         'tel'=>$tel,
       ]),
     ]);
+  }
+
+  /* Token-验证 */
+  function tokenAction(){
+    // 参数
+    $token = trim($this->request->get('token','string'));
+    $isUinfo = trim($this->request->get('uinfo','int'));
+    // 验证
+    if(!$token) return self::getJSON(['code'=>4000]);
+    // Token
+    $res = self::verToken($token);
+    if(!$res) return self::getJSON(['code'=>4001,'msg'=>'Token验证失败!']);
+    // 用户信息
+    $uinfo = [];
+    if($isUinfo){
+      $res = Centre::uinfo($res->uid);
+      $uinfo = $res->code==0?$res->info:(Object)[];
+    }
+    // 结果
+    return self::getJSON(['code'=>0,'userinfo'=>$uinfo]);
   }
 
 }

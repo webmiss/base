@@ -107,7 +107,8 @@
             <div class="tu" @click="openUrl('/user/config/index',true)">
               <div class="img"><i class="icons icon_camera"></i></div>
             </div>
-            <div class="name">用户昵称</div>
+            <div class="name" v-if="$store.state.isLogin">{{ $store.state.uInfo.nickname || '用户昵称' }}</div>
+            <div class="name" v-else>请登录</div>
           </div>
           <!-- 账户 -->
           <div class="in_me_account mTop1 flex" :class="mode=='dark'?'in_me_account_dark':''">

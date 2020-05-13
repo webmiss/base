@@ -2,17 +2,15 @@
 const title = '基础系统(本地)';
 const baseUrl = 'http://localhost:8086/';
 // const socket = 'wss://127.0.0.1:9002/';
-const dev = true;
 
 /* 正式 */
 // const title = '基础系统';
 // const baseUrl = 'https://api.webmis.vip/';
 const socket = 'wss://webmis.vip/wss';
-// const dev = false;
 
 /* 配置信息 */
 export default {
-  dev: dev,
+  dev: false,
   title: title,
   version: '1.0.0',
   baseUrl: baseUrl,

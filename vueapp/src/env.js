@@ -1,17 +1,15 @@
 /* 测试 */
 const title = 'WebMIS(本地)';
 const baseUrl = 'http://localhost:8086/';
-// const socket = 'wss://127.0.0.1:9002/';
-const dev = true;
+const socket = 'wss://127.0.0.1:9002/';
 
 /* 正式 */
 // const title = 'WebMIS';
 // const baseUrl = 'https://api.webmis.vip/';
-const socket = 'wss://webmis.vip/wss';
-// const dev = false;
+// const socket = 'wss://webmis.vip/wss';
 
 export default {
-  dev: dev,
+  dev: false,
   title: title,
   version: '1.0.0',
   baseUrl: baseUrl,

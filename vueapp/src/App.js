@@ -147,14 +147,14 @@ export default {
     loginState(){
       const token = Inc.storage.getItem('token');
       if(token){
-        this.$ajax.post(
-          this.$config.apiUrl+'user/token','token='+token+'&type=info'
-        ).then((res)=>{
+        Inc.post('user/token',{token:token,uinfo:1},(res)=>{
           const d = res.data;
           if(d.code==0){
             this.$store.state.isLogin = true;
             this.$store.state.uInfo = d.userinfo;
           }else{
+            this.$store.state.isLogin = false;
+            this.$store.state.uInfo = {};
             Inc.storage.setItem('token','');
           }
         });
@@ -190,12 +190,9 @@ export default {
       // Token
       const token = Inc.storage.getItem('token');
       if(!token) return false;
-      // 数据中心-Token
-      this.$ajax.post(
-        this.$config.apiUrl+'Usermain/centreToken','token='+token
-      ).then((res)=>{
-        if(res.data.code==0) this.socket(res.data.token,res.data.uid);
-      });
+      // 开启
+      console.log(this.$store.state.uInfo);
+      // this.socket(token,res.data.uid);
     },
     socket(token,uid){
       this.$store.state.socket = new WebSocket(Env.socketServer+'?token='+token+'&uid='+uid);
