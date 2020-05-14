@@ -36,10 +36,10 @@ return [
     'baseUri'=>'',
   ],
   /* Socket */
-  'socket_name'=> 'BaseSocket',
-  'socket_ip'=> '0.0.0.0',
-  'socket_port'=> 9010,
-  'socket_client'=>'ws://127.0.0.1:9010',
+  'socket_suid'=> '1',  // 系统消息UID
+  'socket_name'=> 'BaseSocket', // 缓存名称
+  'socket_ip'=> '0.0.0.0',  // IP地址
+  'socket_port'=> 9010, // 端口
   /* 百度AI */
   'baidu_appKey'=>'fFu2i5oNALIrRQ1KAhAvV5v5',
   'baidu_appSecret'=>'AQsHFNfgugbGErIdu7Dwxap6Pvreiu0z',

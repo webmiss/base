@@ -58,11 +58,8 @@ class IndexController extends Base{
 
 	/* Socket客户端 */
 	function socketAction(){
-		$data = '123';
-		$client = new \Swoole\Coroutine\Http\Client('127.0.0.1', $this->config->socket_port, true);
-		print_r($client);
-		$ret = $client->upgrade("/");
-
+		
+		
 		// $client = new \Swoole\Coroutine\Http\Client('127.0.0.1',$this->config->socket_port,true);
     // $ret = $client->upgrade("/");
     // $client->push('123');

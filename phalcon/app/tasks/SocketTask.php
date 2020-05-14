@@ -10,14 +10,14 @@ class SocketTask extends Base{
 
   /* 属性 */
   static private $msg_limit = 100;  // 消息总条数
-  static private $system_uid = '';  // 消息总条数
+  static private $suid = '';        // 系统消息ID
   static private $uid = '';         // 用户ID
   static private $name_fd = '';     // 缓存:SocketFD
   static private $name_uid = '';    // 缓存:用户ID
 
   /* 构造函数 */
   function initialize(){
-    self::$system_uid = '1';
+    self::$suid = $this->config->socket_suid;
     self::$name_fd = $this->config->socket_name.'Fd';
     self::$name_uid = $this->config->socket_name.'Uid';
   }
@@ -25,24 +25,22 @@ class SocketTask extends Base{
   /* 客户端 */
   function sendAction($data=[]){
     $data = ['type'=>'msg','data'=>[
-      'id'=>date('YmdHis').rand(1000,9999),
       'uid'=>'202005131808010001',
       'fid'=>'1',
-      'ctime'=>date('YmdHis'),
       'title'=>'测试',
       'content'=>'内容',
     ]];
     // 是否数组
     if(!is_array($data)) exit('必须数组!');
     // 系统Token
-    $token = self::setToken(self::$system_uid,[]);
+    $token = self::setToken(self::$suid,[]);
     $data['key'] = $this->config->key;
     // 链接
     $client = new Client('127.0.0.1',$this->config->socket_port);
     // 协程
     go(function () use ($client,$token,$data) {
       $res = $client->upgrade('/?token='.$token);
-      if($res) $client->push(json_encode($data));
+      if($res) return $client->push(json_encode($data));
     });
   }
 
@@ -154,18 +152,33 @@ class SocketTask extends Base{
     elseif($data->type=='msg'){
       // 验证系统消息
       $key = isset($data->key)?$data->key:'';
-      if($data->data->fid==self::$system_uid && $key=$this->config->key){
+      if($data->data->fid==self::$suid && $key!=$this->config->key){
         $data->code = 500;
         $data->msg = '非法消息!';
         return $server->push($frame->fd, json_encode($data));
       }
-      print_r($data);
-      
+      // 消息-保存
+      $model = new UserMsg();
+      $model->id = date('YmdHis').rand(1000,9999);
+      $model->type = '0';
+      $model->uid = $data->data->uid;
+      $model->fid = $data->data->fid;
+      $model->title = $data->data->title;
+      $model->content = $data->data->content;
+      $model->ctime = date('Y-m-d H:i:s');
+      $model->save();
+      // 消息-结果
+      $msg = (Object)[];
+      $msg->code = 0;
+      $msg->type = 'msg';
+      $msg->data = (Object)$model->toArray();
+      unset($msg->data->is_new);
+      unset($msg->data->is_del);
       // 推送消息
-      // $fd = $this->redis->hGet('SocketUid',$model->uid);
-      // if(!empty($fd)) $server->push($fd, json_encode($msg));
-      // $fd = $this->redis->hGet('SocketUid',$model->fid);
-      // if(!empty($fd)) $server->push($fd, json_encode($msg));
+      $fd = $this->redis->hGet(self::$name_uid,$model->uid);
+      if($server->isEstablished($fd)) $server->push($fd, json_encode($msg));
+      $fd = $this->redis->hGet(self::$name_uid,$model->fid);
+      if($server->isEstablished($fd)) $server->push($fd, json_encode($msg));
     }
   }
 
