@@ -43,7 +43,7 @@ class UserController extends Base{
     $uinfo = [];
     if($isUinfo){
       $res = Centre::uinfo($res->uid);
-      $uinfo = $res->code==0?$res->info:(Object)[];
+      $uinfo = $res->code==0?$res->info:'';
     }
     // 结果
     return self::getJSON(['code'=>0,'userinfo'=>$uinfo]);

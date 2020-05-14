@@ -2,11 +2,12 @@
 return [
   'title'=>'基础系统',
   'version'=>'1.0.0',
-  'imgUrl'=>'https://api.webmis.vip/',
+  /* 加密 */
   'key'=>'95ad3c345b46af1b7104568155af36f8',
+  'token_name'=>'Token_',
   'token_time'=>7*24*3600,
-  'login_num'=>50,
-  'login_num_time'=>12*3600,
+  /* 本地资源 */
+  'imgUrl'=>'https://api.webmis.vip/',
   /* 数据中心 */
   // 'centre_url'=>'https://data.webmis.vip/api/',
   'centre_url'=>'http://localhost:8085/api/',
@@ -35,6 +36,7 @@ return [
     'baseUri'=>'',
   ],
   /* Socket */
+  'socket_name'=> 'BaseSocket',
   'socket_ip'=> '0.0.0.0',
   'socket_port'=> 9010,
   'socket_client'=>'ws://127.0.0.1:9010',

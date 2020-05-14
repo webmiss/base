@@ -105,7 +105,8 @@
           <!-- 头像 -->
           <div class="in_me_info" :class="mode=='dark'?'in_me_info_dark':''">
             <div class="tu" @click="openUrl('/user/config/index',true)">
-              <div class="img"><i class="icons icon_camera"></i></div>
+              <div class="img bgImg" v-if="$store.state.uInfo.img" :style="{backgroundImage:'url('+$store.state.uInfo.img+')'}"></div>
+              <div class="img" v-else><i class="icons icon_camera"></i></div>
             </div>
             <div class="name" v-if="$store.state.isLogin">{{ $store.state.uInfo.nickname || '用户昵称' }}</div>
             <div class="name" v-else>请登录</div>

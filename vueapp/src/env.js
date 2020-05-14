@@ -1,7 +1,7 @@
 /* 测试 */
 const title = 'WebMIS(本地)';
 const baseUrl = 'http://localhost:8086/';
-const socket = 'wss://127.0.0.1:9002/';
+const socket = 'ws://127.0.0.1:9010/';
 
 /* 正式 */
 // const title = 'WebMIS';

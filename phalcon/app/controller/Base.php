@@ -50,10 +50,10 @@ class Base extends Controller{
   protected function verToken($token){
     // 解密
     $data = Safety::decode($token,$this->config->key);
-    $tmp_token = $this->redis->get('Token_'.$data->uid);
+    $tmp_token = $this->redis->get($this->config->token_name.$data->uid);
     if($token!=$tmp_token) return self::error(1002);
     // 续期
-    $this->redis->setex('Token_'.$data->uid,$this->config->token_time,$token);
+    $this->redis->setex($this->config->token_name.$data->uid,$this->config->token_time,$token);
     // 结果
     return $data;
   }
@@ -66,7 +66,7 @@ class Base extends Controller{
       'data'=>$data,
     ],$this->config->key);
     // 缓存
-    $this->redis->setex('Token_'.$uid,$this->config->token_time,$token);
+    $this->redis->setex($this->config->token_name.$uid,$this->config->token_time,$token);
     return $token;
   }
   

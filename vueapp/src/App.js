@@ -1,6 +1,7 @@
 import Env from '@/env'
 import Inc from '@/library/Inc'
 import Plus from '@/library/Plus'
+import Socket from '@/library/Socket'
 
 export default {
   watch:{
@@ -35,7 +36,7 @@ export default {
     // 获取定位
     this.geoLocation();
     // 消息推送
-    this.socketStart();
+    Socket.start();
   },
   methods:{
 
@@ -191,11 +192,10 @@ export default {
       const token = Inc.storage.getItem('token');
       if(!token) return false;
       // 开启
-      console.log(this.$store.state.uInfo);
-      // this.socket(token,res.data.uid);
+      this.socket(token);
     },
-    socket(token,uid){
-      this.$store.state.socket = new WebSocket(Env.socketServer+'?token='+token+'&uid='+uid);
+    socket(token){
+      this.$store.state.socket = new WebSocket(Env.socketServer+'?token='+token);
       /* 链接 */
       this.$store.state.socket.onopen = ()=>{
         console.log('消息系统');
