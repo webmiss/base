@@ -1,7 +1,7 @@
 <!-- 首页 -->
 <page-view hidden="{{tabBar.active==0?false:true}}">
   <view slot="left">
-    <text>昆明市</text>
+    <text>{{ geolocation.district || '获取定位' }}</text>
   </view>
   <view slot="body" class="in_html nav_body">
     <view class="in_body">
@@ -74,9 +74,11 @@
     <!-- 头像 -->
     <view class="in_me_info">
       <view class="tu" onTap="openUrl" data-url="/pages/user/config/index" data-login="{{true}}">
-        <view class="img"><text class="icons icon_camera"></text></view>
+        <view class="img bgImg" a:if="{{uInfo.img}}" style="background-image: url({{uInfo.img}});"></view>
+        <view class="img" a:else><text class="icons icon_camera"></text></view>
       </view>
-      <view class="name">用户昵称</view>
+      <view class="name" a:if="{{isLogin}}">{{ uInfo.nickname || '设置昵称' }}</view>
+      <view class="name" a:else>请登录</view>
     </view>
     <!-- 账户 -->
     <view class="in_me_account mTop1 flex">

@@ -5,7 +5,7 @@ import QRCode from 'qrcode'
 export default {
 
   /* Vue */
-  vue: null,
+  self: null,
 
   /* 配置 */
   config: Env,
@@ -15,14 +15,14 @@ export default {
 
   /* 加载 */
   loading(){
-    const load = this.vue.$loading({text:'',background:'rgba(0, 0, 0, 0.7)'});
+    const load = this.self.$loading({text:'',background:'rgba(0, 0, 0, 0.7)'});
     return { clear:()=>{ load.close(); } };
   },
 
   /* 提示: success、warning、error */
   toast(text,type){
     type = type || '';
-    return this.vue.$message({message:text,type:type,showClose:true});
+    return this.self.$message({message:text,type:type,showClose:true});
   },
 
   /* Get请求 */

@@ -82,8 +82,8 @@
                 </div>
               </div>
               <template slot="right">
-                <van-button type="primary" text="标记未读" class="an1" @click="stateMsg(val.fid)" />
-                <van-button type="danger" text="删除" @click="delMsg(val.fid)" />
+                <!-- <button type="primary" text="标记未读" class="an1" @click="stateMsg(val.fid)" />
+                <button type="danger" text="删除" @click="delMsg(val.fid)" /> -->
               </template>
             </van-swipe-cell>
           </div>
@@ -108,7 +108,7 @@
               <div class="img bgImg" v-if="$store.state.uInfo.img" :style="{backgroundImage:'url('+$store.state.uInfo.img+')'}"></div>
               <div class="img" v-else><i class="icons icon_camera"></i></div>
             </div>
-            <div class="name" v-if="$store.state.isLogin">{{ $store.state.uInfo.nickname || '用户昵称' }}</div>
+            <div class="name" v-if="$store.state.isLogin">{{ $store.state.uInfo.nickname || '设置昵称' }}</div>
             <div class="name" v-else>请登录</div>
           </div>
           <!-- 账户 -->

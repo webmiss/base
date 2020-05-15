@@ -5,20 +5,14 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    // 模式: light、dark
-    mode: 'light',
-    // 状态栏
-    statusBarHeight: 0,
-    // 用户信息
-    isLogin: false,
-    uInfo: {},
-    // 定位
-    geolocation:{},
-    // Socket
-    socket: null,
-    // 消息数
-    uMsg: {scroll:null, group:[],num:''},
-    // APP信息
-    app:{width: window.innerWidth, height: window.innerHeight},
+    mode: 'light',  // 模式: light、dark
+    statusBarHeight: 0, // 状态栏
+    isLogin: false, // 登录状态
+    uInfo: {}, // 用户信息
+    geolocation:{}, // 定位
+    socket: null, // Socket
+    uMsg: {scroll:null, group:[],num:''}, // 消息
+    uNotify: {},  // 通知
+    scan: null, // 摄像头
   }
 });

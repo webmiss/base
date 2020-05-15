@@ -1,16 +1,25 @@
 import store from '../../store'
 import create from '../../libray/create'
 import Inc from '../../libray/Inc'
+import Start from '../../libray/Start'
+
+// const app = getApp();
 
 create(store,{
   data:{
-    isLogin: null,
-    uInfo: null,
-    uMsg: null,
+    /* 状态 */
+    isLogin:false,
+    uInfo:null,
+    socket:null,
+    geolocation: null,
     // 底部导航
     tabBar: {active:0,},
   },
   onLoad(e){
+    // 项目
+    Inc.self = this;
+    /* 初始化 */
+    Start.init();
   },
   /* 分享 */
   onShareAppMessage(){

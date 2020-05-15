@@ -1,10 +1,9 @@
 import store from '../../store'
 import create from '../../libray/create'
 import Inc from '../../libray/Inc'
+import Start from '../../libray/Start'
 
-import Dialog from '../../assets/ui/dialog/dialog'
-
-const app = getApp();
+// const app = getApp();
 
 create(store,{
   data:{
@@ -12,10 +11,10 @@ create(store,{
     isLogin:false,
     uInfo:null,
     socket:null,
+    geolocation: null,
     // 底部导航
     tabBar: {active:0,},
     // 导航
-    navHeight: app.globalData.titleBarHeight,
     navColor: 0,
     // 图片裁切
     imgData: {width: 100, height: 100},
@@ -33,54 +32,23 @@ create(store,{
     const row = res.target.dataset.row;
     return {title:row.title,path:row.url,imageUrl:row.img};
   },
-  onLoad(event){
-    /* 扫码 */
-    const url = event.q;
-		if (url) {
-			let type = Inc.getQueryString(url, 't');
-			if (type == 'order'){
-				let order_sn = Inc.getQueryString(url, 'sn');
-				wx.navigateTo({
-					url: '/pages/order/actdef?order_sn=' + order_sn,
-				})
-			}
-    }
-    /* 定位 */
-    this.setData({['geolocation.district']:Inc.storage.getItem('city')});
-    Inc.getLocation((res)=>{
-      this.setData({geolocation:res});
-      Inc.storage.setItem('city',res.district);
-    },(e)=>{
-      setTimeout(()=>{
-        Inc.getLocation((res)=>{
-          this.setData({geolocation:res});
-          Inc.storage.setItem('city',res.district);
-        });
-      },8000);
-    });
-    /* 登录状态 */
-    const token = Inc.storage.getItem('token');
-    if(token){
-      Inc.post(Env.apiUrl+'user/token',{token:token,type:'info'},(res)=>{
-        const d = res.data;
-        if(d.code==0){
-          this.store.data.isLogin = true;
-          this.store.data.uInfo = d.userinfo;
-          this.store.data.uAccount = d.account;
-          this.store.data.uRank = d.ranking;
-          this.store.data.uOrder = d.order;
-          this.update();
-        }else{
-          Inc.storage.setItem('token','');
-        }
-      });
-    }else{
-      Inc.storage.setItem('token','');
-    }
-    /* 消息推送 */
-    this.socketStart();
-    /* 加载数据 */
-    this.indexLoad();
+  onShow(){
+  },
+  onLoad(e){
+    // 项目
+    Inc.self = this;
+    // 获取参数
+    setTimeout(()=>{
+      /* 初始化 */
+      Start.init();
+      /* 扫码 */
+      const url = e.q;
+      if (url) {
+        let type = Inc.getQueryString(url,'name');
+      }
+      /* 加载数据 */
+      this.indexLoad();
+    },1000);
   },
 
   /* 打开链接 */

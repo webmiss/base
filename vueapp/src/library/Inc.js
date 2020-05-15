@@ -9,15 +9,15 @@ Vue.use(Toast);
 
 export default {
 
-  /* Vue */
-  vue: null,
+  /* 项目 */
+  self: null,
   
   /* 配置 */
   config: Env,
 
   /* 返回 */
   back(num){
-    this.vue.$router.goBack(-num);
+    this.self.$router.goBack(-num);
   },
 
   /* 加载 */
@@ -226,6 +226,16 @@ export default {
         'insertdatetime media table paste code help wordcount'
       ]
     }
+  },
+
+  /* Base64 */
+  encode(str){
+    let encode = encodeURI(str);
+    return btoa(encode);
+  },
+  decode(base64){
+    let decode = atob(base64);
+    return decodeURI(decode);
   },
 
 }

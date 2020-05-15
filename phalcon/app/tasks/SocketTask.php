@@ -75,7 +75,9 @@ class SocketTask extends Base{
       $uid = $this->redis->hGet(self::$name_fd,$fd);
       if($uid){
         $this->redis->hDel(self::$name_fd,$fd);
-        $this->redis->hDel(self::$name_uid,$uid);
+        if($this->redis->hGet(self::$name_uid,$uid)){
+          $this->redis->hDel(self::$name_uid,$uid);
+        }
       }
     });
     /* 监听消息 */
@@ -97,6 +99,8 @@ class SocketTask extends Base{
       // 是否用户
       if(empty(self::$uid)) return false;
       // 100条分组
+      echo 'is_del NOT LIKE "%\"'.self::$uid.'\"%" AND (fid='.self::$uid.' OR uid='.self::$uid.')';
+      echo "\n";
       $all = UserMsg::find([
         'is_del NOT LIKE "%\"'.self::$uid.'\"%" AND (fid='.self::$uid.' OR uid='.self::$uid.')',
         'order'=>'ctime DESC',

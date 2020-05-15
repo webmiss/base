@@ -34,7 +34,7 @@ export default {
   },
   mounted(){
     // Vue对象
-    Inc.vue = this;
+    Inc.self = this;
     // 初始化
     setTimeout(()=>{this.init();},3000);
     // 默认菜单

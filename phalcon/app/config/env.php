@@ -60,4 +60,8 @@ return [
   'alipay_version'=>'1.0',
   'alipay_rsaPrivateKey'=>'',
   'alipay_rsaPublicKey'=>'',
+  // 证书文件
+  'alipay_appCertSn'=>'../app/library/ali/appCertPublicKey.crt',
+  'alipay_publicCertSn'=>'../app/library/ali/alipayCertPublicKey.crt',
+  'alipay_rootCertSn'=>'../app/library/ali/alipayRootCert.crt',
 ];

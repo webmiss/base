@@ -11,9 +11,9 @@ VueAMap.initAMapApiLoader({key: Env.amapKey, plugin: ['AMap.Geolocation','PlaceS
 
 export default {
 
-  /* Plus加载完成 */
-  isPlus(callback){
-    document.addEventListener('plusready',callback,false);
+  /* plus */
+  isPlus(){
+    try{ return plus?true:false; }catch(e){ return false; }
   },
 
   /* 版本比较 */

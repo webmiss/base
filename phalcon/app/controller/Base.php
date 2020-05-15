@@ -51,7 +51,7 @@ class Base extends Controller{
     // 解密
     $data = Safety::decode($token,$this->config->key);
     $tmp_token = $this->redis->get($this->config->token_name.$data->uid);
-    if($token!=$tmp_token) return self::error(1002);
+    if(empty($token) || $token!=$tmp_token) return false;
     // 续期
     $this->redis->setex($this->config->token_name.$data->uid,$this->config->token_time,$token);
     // 结果

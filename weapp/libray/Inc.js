@@ -7,6 +7,9 @@ const Map = new amap.AMapWX({ key: Env.amapKey});
 
 export default {
 
+  /* 项目 */
+  self: null,
+
   /* 配置 */
   config: Env,
 
@@ -36,7 +39,7 @@ export default {
   },
 
   /* Post请求 */
-  post(url,data,success){
+  post(url,data,success,fail){
     const str = url.substr(0,4);
     url = str=='http'?url:this.config.apiUrl+url;
     wx.request({
@@ -137,7 +140,7 @@ export default {
     .replace(/<ul/gi, '<p class="all p"');
   },
 
-  /* 定位-微信 */
+  /* 定位 */
   getLocation(callback,fail){
     const self = this;
     // 经纬度
@@ -146,23 +149,6 @@ export default {
       success (res) {
         self.getCity(callback,fail,res.longitude,res.latitude,'gps');
       }
-    });
-  },
-  /* 搞德-坐标转换 */
-  getCoordinate(longitude,latitude,coordsys,callback){
-    this.get(
-      'https://restapi.amap.com/v3/assistant/coordinate/convert',
-      {locations: longitude+','+latitude, coordsys:coordsys, key:Env.amapWeb},
-    (res)=>{
-      const d = res.data;
-      let longitude = '';
-      let latitude = '';
-      if(d.status=='1' && d.info=='ok'){
-        const arr = d.locations.split(',');
-        longitude = arr[0];
-        latitude = arr[1];
-      }
-      callback({ longitude: longitude, latitude: latitude });
     });
   },
   /* 高德-城市信息 */
@@ -192,6 +178,23 @@ export default {
       fail: fail,
     });
   },
+  /* 搞德-坐标转换 */
+  getCoordinate(longitude,latitude,coordsys,callback){
+    this.get(
+      'https://restapi.amap.com/v3/assistant/coordinate/convert',
+      {locations: longitude+','+latitude, coordsys:coordsys, key:Env.amapWeb},
+    (res)=>{
+      const d = res.data;
+      let longitude = '';
+      let latitude = '';
+      if(d.status=='1' && d.info=='ok'){
+        const arr = d.locations.split(',');
+        longitude = arr[0];
+        latitude = arr[1];
+      }
+      callback({ longitude: longitude, latitude: latitude });
+    });
+  },
   /* 手机第三方地图 */
   openMap(parm){
     const latitude = parm.latitude || 0;
@@ -199,17 +202,6 @@ export default {
     const name = parm.name || '';
     const scale = parm.scale || 16;
     wx.openLocation({latitude: latitude, longitude: longitude, name: name, scale: scale});
-  },
-
-  /* 获取地名信息 */
-  getAddress(name,callback,fail){
-    Map.getInputtips({
-      keywords: name,
-      success(res){
-        callback(res.tips);
-      },
-      fail: fail,
-    });
   },
 
   /* 照片和相机 */
@@ -348,17 +340,10 @@ export default {
       return size+' B';
     }
   },
+
   /* 拨打电话 */
-  callPhone(phoneNumber) {
-    wx.makePhoneCall({
-      phoneNumber: phoneNumber,
-      success: function() {
-        console.log("拨打电话成功！")
-      },
-      fail: function() {
-        console.log("拨打电话失败！")
-      }
-    });
+  tel(tel) {
+    wx.makePhoneCall({ phoneNumber: tel, fail(){} });
   },
 
   /* 正则验证 */
@@ -390,6 +375,98 @@ export default {
         msg = !isRight?'密码为6~16位字符！':''; break;
     }
     return isRight?true:msg;
+  },
+
+  /* Base64 */
+  _keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+  encode(str){
+    let output = '';
+    let chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+    let i = 0;
+    str = this._utf8_encode(str);
+    while (i < str.length) {
+      chr1 = str.charCodeAt(i++);
+      chr2 = str.charCodeAt(i++);
+      chr3 = str.charCodeAt(i++);
+      enc1 = chr1 >> 2;
+      enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+      enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+      enc4 = chr3 & 63;
+      if(isNaN(chr2)){
+        enc3 = enc4 = 64;
+      }else if(isNaN(chr3)) {
+        enc4 = 64;
+      }
+      output = output +
+        this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
+        this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+      }
+      return output;
+  },
+  decode(base64){
+    let output = '';
+    let chr1, chr2, chr3;
+    let enc1, enc2, enc3, enc4;
+    let i = 0;
+    base64 = base64.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+    while (i < base64.length) {
+      enc1 = this._keyStr.indexOf(base64.charAt(i++));
+      enc2 = this._keyStr.indexOf(base64.charAt(i++));
+      enc3 = this._keyStr.indexOf(base64.charAt(i++));
+      enc4 = this._keyStr.indexOf(base64.charAt(i++));
+      chr1 = (enc1 << 2) | (enc2 >> 4);
+      chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+      chr3 = ((enc3 & 3) << 6) | enc4;
+      output = output + String.fromCharCode(chr1);
+      if (enc3 != 64) {
+        output = output + String.fromCharCode(chr2);
+      }
+      if (enc4 != 64) {
+        output = output + String.fromCharCode(chr3);
+      }
+    }
+    output = this._utf8_decode(output);
+    return output;
+  },
+  _utf8_encode(string){
+    string = string.replace(/\r\n/g, "\n");
+    let utftext = '';
+    for(var n = 0; n < string.length; n++){
+      let c = string.charCodeAt(n);
+      if(c < 128){
+        utftext += String.fromCharCode(c);
+      }else if((c > 127) && (c < 2048)){
+        utftext += String.fromCharCode((c >> 6) | 192);
+        utftext += String.fromCharCode((c & 63) | 128);
+      }else{
+        utftext += String.fromCharCode((c >> 12) | 224);
+        utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+        utftext += String.fromCharCode((c & 63) | 128);
+      }
+    }
+    return utftext;
+  },
+  _utf8_decode(utftext){
+    let string = "";
+    let i = 0;
+    let c=0, c1=0, c2=0;
+    while (i < utftext.length) {
+      c = utftext.charCodeAt(i);
+      if (c < 128) {
+        string += String.fromCharCode(c);
+        i++;
+      } else if ((c > 191) && (c < 224)) {
+        c2 = utftext.charCodeAt(i + 1);
+        string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+        i += 2;
+      } else {
+        c2 = utftext.charCodeAt(i + 1);
+        c3 = utftext.charCodeAt(i + 2);
+        string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+        i += 3;
+      }
+    }
+    return string;
   },
 
 }

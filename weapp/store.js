@@ -1,13 +1,10 @@
 export default {
   data: {
-    // 用户信息
-    isLogin: false,
-    uInfo: {},
-    // 定位
-    geolocation:{},
-    // Socket
-    socket: null,
-    // 消息数
-    uMsg: {scroll:null, group:[],num:'',id:'',name:'',msg:[],content:''},
+    isLogin: false, // 登录状态
+    uInfo: {},  // 用户信息
+    geolocation:{}, // 定位信息
+    socket: null, // Socket
+    uMsg: {scroll:null, group:[],num:'',id:'',name:'',msg:[],content:''},  // 消息
+    uNotify: {},  // 通知
   }
 }

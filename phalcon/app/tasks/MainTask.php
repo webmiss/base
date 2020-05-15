@@ -1,5 +1,6 @@
 <?php
 
+use app\controller\Base;
 use app\model\User;
 
 class MainTask extends Base{
