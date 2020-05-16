@@ -1,6 +1,7 @@
 import Start from '@/library/Start'
 import Inc from '@/library/Inc'
 import Plus from '@/library/Plus'
+import Socket from '@/library/Socket'
 // Scroll
 import BScroll from '@better-scroll/core'
 import Pullup from '@better-scroll/pull-up'
@@ -137,6 +138,8 @@ export default {
       this.$store.state.isLogin = false;
       this.$store.state.uInfo = {};
       Inc.storage.setItem('token','');
+      // 关闭Socket
+      Socket._closeMsg();
     },
 
     /* 收缩菜单 */

@@ -101,11 +101,13 @@ class SocketTask extends Base{
       // 100条分组
       echo 'is_del NOT LIKE "%\"'.self::$uid.'\"%" AND (fid='.self::$uid.' OR uid='.self::$uid.')';
       echo "\n";
-      $all = UserMsg::find([
-        'is_del NOT LIKE "%\"'.self::$uid.'\"%" AND (fid='.self::$uid.' OR uid='.self::$uid.')',
-        'order'=>'ctime DESC',
-        'limit'=>self::$msg_limit
-      ]);
+      try{
+        $all = UserMsg::find([
+          'is_del NOT LIKE "%\"'.self::$uid.'\"%" AND (fid='.self::$uid.' OR uid='.self::$uid.')',
+          'order'=>'ctime DESC',
+          'limit'=>self::$msg_limit
+        ]);
+      }catch(Exception $e){ $all = null; }
       $all = $all?$all->toArray():[];
       // 分组
       $tmpData = [];
