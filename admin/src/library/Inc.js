@@ -224,4 +224,14 @@ export default {
     }
   },
 
+  /* Base64 */
+  encode(str){
+    let encode = encodeURI(str);
+    return btoa(encode);
+  },
+  decode(base64){
+    let decode = atob(base64);
+    return decodeURI(decode);
+  },
+
 }

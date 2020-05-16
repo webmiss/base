@@ -1,4 +1,13 @@
 <?php
+
+/* 测试 */
+$img_url = 'http://localhost:8086/';
+$centre_url = 'http://localhost:8085/api/';
+
+/* 正式 */
+// $img_url = 'https://api.webmis.vip/';
+// $centre_url = 'https://data.webmis.vip/api/';
+
 return [
   'title'=>'基础系统',
   'version'=>'1.0.0',
@@ -7,10 +16,9 @@ return [
   'token_name'=>'Token_',
   'token_time'=>7*24*3600,
   /* 本地资源 */
-  'imgUrl'=>'https://api.webmis.vip/',
+  'img_url'=>$img_url,
   /* 数据中心 */
-  // 'centre_url'=>'https://data.webmis.vip/api/',
-  'centre_url'=>'http://localhost:8085/api/',
+  'centre_url'=>$centre_url,
   'centre_id'=>'base@webmis.vip',
   'centre_secret'=>'00fb626bbabfdd903231acf6639cddfb',
   /* 数据库 */

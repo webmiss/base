@@ -19,11 +19,13 @@ export default {
 
   /* 链接 */
   socket(token){
-    Inc.self.store.data.socket = wx.connectSocket({url:Inc.config.socketServer+'?token='+token});
-    Inc.self.update();
+    wx.connectSocket({url:Inc.config.socketServer+'?token='+token});
     /* 链接 */
     wx.onSocketOpen(()=>{
+      // 成功
       console.log('Socket开启');
+      Inc.self.store.data.socket = true;
+      Inc.self.update();
       // 心跳包
       clearInterval(this.heartbeat);
       this.heartbeat = setInterval(()=>{

@@ -46,7 +46,7 @@ class UserController extends Base{
       $uinfo = $res->code==0?$res->info:'';
     }
     // 结果
-    return self::getJSON(['code'=>0,'userinfo'=>$uinfo]);
+    return self::getJSON(['code'=>0,'uinfo'=>$uinfo]);
   }
 
 }

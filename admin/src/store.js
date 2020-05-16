@@ -5,10 +5,15 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    statusBar:{height:'0px'}, // 状态栏
+    mode: 'light',  // 模式: light、dark
+    statusBarHeight: 0, // 状态栏
+    isLogin: false, // 登录状态
+    uInfo: {}, // 用户信息
     system: {}, // 系统信息
-    uInfo: {},  // 用户信息
-    socket: null, // 即时通信
-    msgNum: 0,  // 消息数
+    menus: [],  // 用户菜单
+    socket: null, // Socket
+    uMsg: {scroll:null, group:[],num:''}, // 消息
+    uNotify: {},  // 通知
+    scan: null, // 摄像头
   }
 });

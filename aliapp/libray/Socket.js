@@ -8,7 +8,7 @@ export default {
     // 重启Socket
     clearInterval(this.msgInterval);
     this.msgInterval = setInterval(()=>{
-      if(Inc.self.store.data.isLogin && (!Inc.self.store.data.socket || Inc.self.store.data.socket.readyState!=1)) this.start();
+      if(Inc.self.store.data.isLogin && !Inc.self.store.data.socket) this.start();
     },3000);
     // Token
     let token = Inc.storage.getItem('token');
@@ -19,11 +19,13 @@ export default {
 
   /* 链接 */
   socket(token){
-    Inc.self.store.data.socket = my.connectSocket({url:Inc.config.socketServer+'?token='+token});
-    Inc.self.update();
     /* 链接 */
+    my.connectSocket({url:Inc.config.socketServer+'?token='+token});
     my.onSocketOpen(()=>{
+      // 成功
       console.log('Socket开启');
+      Inc.self.store.data.socket = true;
+      Inc.self.update();
       // 心跳包
       clearInterval(this.heartbeat);
       this.heartbeat = setInterval(()=>{

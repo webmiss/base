@@ -22,7 +22,7 @@ export default {
         const d = res.data;
         if(d.code==0){
           Inc.self.store.data.isLogin = true;
-          Inc.self.store.data.uInfo = d.userinfo;
+          Inc.self.store.data.uInfo = d.uinfo;
           Inc.self.update();
         }else{
           Inc.self.store.data.isLogin = false;

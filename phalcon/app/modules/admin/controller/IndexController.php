@@ -38,7 +38,7 @@ class IndexController extends Base{
 		foreach($config as $val){
 			if(in_array($val['name'],$arr)){
 				$data[$val['name']] = $val['val'];
-				if($val['name']=='logo' || $val['name']=='login_bg') $data[$val['name']] = $this->config->imgUrl.$val['val'];
+				if($val['name']=='logo' || $val['name']=='login_bg') $data[$val['name']] = $this->config->img_url.$val['val'];
 			}
 		}
 		return self::getJSON(['code'=>0,'list'=>$data]);

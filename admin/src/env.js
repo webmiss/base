@@ -1,21 +1,19 @@
 /* 测试 */
 const title = '基础系统(本地)';
 const baseUrl = 'http://localhost:8086/';
-// const socket = 'wss://127.0.0.1:9002/';
+const socket = 'ws://127.0.0.1:9010/';
 
 /* 正式 */
 // const title = '基础系统';
 // const baseUrl = 'https://api.webmis.vip/';
-const socket = 'wss://webmis.vip/wss';
+// const socket = 'wss://webmis.vip/wss';
 
-/* 配置信息 */
 export default {
   dev: false,
   title: title,
   version: '1.0.0',
   baseUrl: baseUrl,
   apiUrl: baseUrl+'admin/',
-  themeColor: '#6FB737',
   copy: 'Copyright © WebMIS.vip 2020',
   // 请求
   request:{
@@ -42,8 +40,7 @@ export default {
   baiduOcr: 'https://aip.baidubce.com/rest/2.0/ocr/v1/',
   // Socket
   socketServer: socket,
-  msgRead: 1000,
-  msgNew: 5*60*1000,
+  msgRead: 300,
   msgContent: 'content',
   msgBrowser: false,
 }

@@ -16,7 +16,7 @@
     <!-- 更新APP End -->
 
     <!-- 登录 -->
-    <el-container v-show="!isLogin" class="login_body bgImg bgcover" v-if="$store.state.system.login_bg" :style="{backgroundImage:'url('+$store.state.system.login_bg+')'}">
+    <el-container v-show="!$store.state.isLogin" class="login_body bgImg bgcover" v-if="$store.state.system.login_bg" :style="{backgroundImage:'url('+$store.state.system.login_bg+')'}">
       <div class="login_ct verticalCenter">
         <div class="logo flex_center">
           <div class="bgImg bgTu" v-if="!$store.state.system.logo"></div>
@@ -43,18 +43,18 @@
     <!-- 登录 End -->
 
     <!-- 主要框架 -->
-    <el-container  v-show="isLogin" class="app_body">
+    <el-container v-if="$store.state.isLogin" class="app_body">
       <!-- 导航菜单 -->
-      <el-aside class="app_menus" :style="{width: isCollapse?'64px':'200px',paddingTop:$store.state.statusBar.height}">
+      <el-aside class="app_menus" :style="{width: isCollapse?'64px':'200px',paddingTop:$store.state.statusBarHeight}">
         <!-- 头像 -->
-        <div class="app_img" @click="openUrl('ico_mask ico_userinfo','UserInfo','11','基本资料',true)">
-          <div class="bgImg" v-if="$store.state.uinfo.img" :style="{backgroundImage:'url('+$store.state.uinfo.img+')'}"></div>
+        <div class="app_img" @click="hideMenus()">
+          <div class="bgImg" v-if="$store.state.uInfo.img" :style="{backgroundImage:'url('+$store.state.uInfo.img+')'}"></div>
           <div class="bgImg" v-else></div>
-          <p class="nowrap">{{$store.state.uinfo.nickname || '昵称'}}({{$store.state.uinfo.name || '姓名'}})</p>
+          <p class="nowrap">{{$store.state.uInfo.nickname || '昵称'}}({{$store.state.uInfo.name || '姓名'}})</p>
         </div>
         <!-- 菜单 -->
         <el-menu :default-active="defaultMenu" :collapse="isCollapse" unique-opened>
-          <el-submenu v-for="(val1,key1) in menus" :key="key1" :index="''+val1.id">
+          <el-submenu v-for="(val1,key1) in $store.state.menus" :key="key1" :index="''+val1.id">
             <template slot="title">
               <i :class="val1.ico"></i><span>{{val1.title}}</span>
             </template>
@@ -71,16 +71,15 @@
         <div class="app_version nowrap">版本：{{$config.version}}</div>
       </el-aside>
       <!-- 导航菜单 End -->
-      <el-container :style="{paddingTop:$store.state.statusBar.height}">
+      <el-container :style="{paddingTop:$store.state.statusBarHeight}">
         <!-- 头部信息 -->
         <el-header class="app_top flex">
-          <el-tooltip class="logo" effect="dark" content="点击”收缩/展开“左侧菜单" placement="bottom-start">
-            <a @click="hideMenus()"><i class="el-icon-menu"></i> {{ storage.getItem('MenuName') || $store.state.system.title}}</a>
-          </el-tooltip>
+          <div class="name">{{ storage.getItem('MenuName') || $store.state.system.title}} <i class="el-icon-arrow-right"></i></div>
           <!-- 登录信息 -->
           <div class="uinfo">
-            <b>{{ $store.state.uinfo.uname }}</b>&nbsp;&nbsp;>
-            <el-button type="text" @click="openConfig()">设置</el-button>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <b>{{ $store.state.uInfo.uname }}</b>&nbsp;&nbsp;
+            <el-button type="text" @click="openConfig()">设置</el-button>
+            <span class="split">|</span>
             <span class="logout" @click="logout()">退出</span>
           </div>
         </el-header>
@@ -100,118 +99,6 @@
           <el-switch v-model="config.is_msg_audio" @change="subConfig('is_msg_audio')"></el-switch>
         </el-form-item>
       </el-form>
-    </el-dialog>
-
-    <!-- 右侧菜单 -->
-    <ul v-show="isLogin" class="right_menus">
-      <li @click="openMsg()" title="消息" :style="{backgroundColor: $config.themeColor}">
-        <el-badge v-if="$store.state.msgNum>0" :value="$store.state.msgNum"></el-badge>
-        <i class="ico_mask ico_wechat"></i>
-      </li>
-    </ul>
-
-    <!-- 会诊/转诊 -->
-    <el-dialog class="msg_body" :visible.sync="msgData.show" center width="640px">
-      <div slot="title" class="msg_title flex">
-        <div>
-          <el-popover v-if="msgData.gid!=1 && msgData.gid!=''" trigger="hover" placement="bottom-start">
-            <ul class="msg_title_tool">
-              <li class="flex"><span>群设置</span><i class="el-icon-setting"></i></li>
-              <li class="flex"><span>退出该群</span><i class="el-icon-delete"></i></li>
-            </ul>
-            <div slot="reference">
-              <span>{{msgData.title}}<i class="el-icon-caret-bottom"></i></span>
-            </div>
-          </el-popover>
-          <span v-else>{{msgData.title}}</span>
-        </div>
-      </div>
-      <!-- 搜索 -->
-      <div class="msg_sea">
-        <el-input class="sea" placeholder="搜索" size="small">
-          <el-button slot="append" icon="el-icon-plus" size="small" title="创建组" @click="addGroup()"></el-button>
-        </el-input>
-      </div>
-      <el-container>
-        <!-- 用户组 -->
-        <el-aside width="210px" class="msg_left">
-          <ul class="msg_group">
-            <li class="flex" v-for="(val,key) in msgData.group" :key="key" @click="getMsg(key,val)">
-              <div class="img" v-if="key==1" :style="{backgroundImage: 'url('+($config.baseUrl+$store.state.system.logo)+')'}">
-                <el-badge v-if="val.num>0" :value="val.num"></el-badge>
-              </div>
-              <div class="img" v-else :style="{backgroundImage: 'url('+(val.data.length>0?val.data[val.data.length-1].img:'')+')'}">
-                <el-badge v-if="val.num>0" :value="val.num"></el-badge>
-              </div>
-              <div class="ct">
-                <div class="title flex">
-                  <h2 class="nowrap">{{val.name}}</h2>
-                  <span>{{val.data.length>0?val.data[val.data.length-1].ctime.substr(11,5):''}}</span>
-                </div>
-                <div class="text nowrap" v-if="val.data.length>0">[{{getMsgType(val.data[val.data.length-1].type)}}]{{val.data[val.data.length-1].content}}</div>
-                <div class="text nowrap" v-else>暂无消息</div>
-              </div>
-            </li>
-          </ul>
-        </el-aside>
-        <div class="msg_right">
-          <!-- 消息内容 -->
-          <div class="msg_html" ref="msgMain">
-            <div class="msg_ct" ref="msgContent">
-              <template v-if="msgData.data.length>0">
-                <div v-for="(v,k) in msgData.data" :key="k">
-                  <div class="msg_ct_time">{{v.ctime}}</div>
-                  <div class="flex_left" v-if="v.fid!=$store.state.uinfo.uid">
-                    <!-- 头像 -->
-                    <div class="head flex">
-                      <i :style="{backgroundImage: 'url('+(v.gid==1?$config.baseUrl+$store.state.system.logo:v.img)+')'}"></i>
-                      <div class="arrow_left"></div>
-                    </div>
-                    <!-- 消息内容 -->
-                    <div class="msgCt" v-html="v.content"></div>
-                  </div>
-                  <div class="flex_right" v-else>
-                    <!-- 消息内容 -->
-                    <div class="msgCt mebg" v-html="v.content"></div>
-                    <!-- 头像 -->
-                    <div class="head flex">
-                      <div class="arrow_right"></div>
-                      <i :style="{backgroundImage: 'url('+v.img+')'}"></i>
-                    </div>
-                  </div>
-                </div>
-              </template>
-              <div class="null" v-else></div>
-            </div>
-          </div>
-          <!-- 消息内容 End -->
-          <div class="msg_send">
-            <div class="msg_tool flex">
-              <ul class="msg_tool_ico flex">
-                <li class="ico_mask ico_patient" title="患者"></li>
-              </ul>
-              <el-button size="small" @click="sendMsg()">发送</el-button>
-            </div>
-            <div class="msg_seng_ct">
-              <el-input type="textarea" placeholder="请输入内容" v-model="msgData.content" ref="msgSend"></el-input>
-            </div>
-          </div>
-        </div>
-      </el-container>
-    </el-dialog>
-    <!-- 创建组 -->
-    <el-dialog :visible.sync="msgGroup.show" center width="420px">
-      <el-form :model="msgGroup.add" label-width="80px">
-        <el-form-item label="组名称">
-          <el-input v-model="msgGroup.add.title" maxlength="16" placeholder="聊天组名称"></el-input>
-        </el-form-item>
-        <el-form-item label="选择成员">
-          <!-- <el-cascader v-model="msgGroup.add.uid" :options="msgGroup.class" :props="{multiple: true}" change-on-select filterable clearable expand-trigger="hover" style="width: 100%;max-width: 360px;"></el-cascader> -->
-        </el-form-item>
-      </el-form>
-      <div slot="footer">
-        <el-button type="primary" @click="subGroup()">创建</el-button>
-      </div>
     </el-dialog>
 
   </div>
@@ -258,6 +145,7 @@ i{font-style: normal;}
 .hide{display: none;}
 .mTop1{margin-top: 1px;}
 .mTop10{margin-top: 10px;}
+.split{padding: 0 10px; color: #DADCDF;}
 
 /* 更新 */
 .update_body{position: absolute; z-index: 999; width: 100%; height: 100%}
@@ -335,6 +223,7 @@ i{font-style: normal;}
 
 /* 用户头部 */
 .app_top{padding: 5px 20px; line-height: 50px; background-color: #FFF; border-bottom: #F2F2F2 1px solid;}
+.app_top .name{color: #999;}
 .app_top .uinfo{color: #666;}
 .app_top .uinfo .logout{cursor: pointer; color: #FF6600;}
 

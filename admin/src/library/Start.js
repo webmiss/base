@@ -44,10 +44,13 @@ export default {
 
     /* 登录验证 */
     this.tokenState();
-    /* 获取定位 */
-    this.geoLocation();
     /* 消息推送 */
     Socket.start();
+    /* 系统信息 */
+    this.getConfig();
+    /* 获取菜单 */
+    const token = Inc.storage.getItem('token');
+    if(token) this.getMenus();
   },
 
   /* 登录验证 */
@@ -70,21 +73,20 @@ export default {
     }
   },
 
-  /* 获取定位 */
-  geoLocation(){
-    setTimeout(()=>{
-      Plus.geoLocation((res)=>{
-        Inc.self.$store.state.geolocation = res;
-        Inc.storage.setItem('city',res.district);
-      },(e)=>{
-        setTimeout(()=>{
-          Plus.geoLocation((res)=>{
-            Inc.self.$store.state.geolocation = res;
-            Inc.storage.setItem('city',res.district);
-          },(e)=>{});
-        },8000);
-      });
-    },3000);
+  /* 系统信息 */
+  getConfig(){
+    Inc.post('index/getConfig',{},(res)=>{
+      const d = res.data;
+      if(d.code==0) Inc.self.$store.state.system = d.list;
+    });
+  },
+
+  /* 用户菜单 */
+  getMenus(){
+    Inc.post('Usermain/getMenus',{token:Inc.storage.getItem('token')},(res)=>{
+      let d = res.data;
+      if(d.code==0) Inc.self.$store.state.menus = d.menus;
+    });
   },
 
 }
