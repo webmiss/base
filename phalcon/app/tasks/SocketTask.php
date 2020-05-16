@@ -107,7 +107,9 @@ class SocketTask extends Base{
           'order'=>'ctime DESC',
           'limit'=>self::$msg_limit
         ]);
-      }catch(Exception $e){ $all = null; }
+      }catch(\PDOException $e){
+        $this->db->connect();
+      }
       $all = $all?$all->toArray():[];
       // 分组
       $tmpData = [];
