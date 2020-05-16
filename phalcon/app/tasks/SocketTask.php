@@ -166,15 +166,19 @@ class SocketTask extends Base{
         return $server->push($frame->fd, json_encode($data));
       }
       // 消息-保存
-      $model = new UserMsg();
-      $model->id = date('YmdHis').rand(1000,9999);
-      $model->type = '0';
-      $model->uid = $data->data->uid;
-      $model->fid = $data->data->fid;
-      $model->title = $data->data->title;
-      $model->content = $data->data->content;
-      $model->ctime = date('Y-m-d H:i:s');
-      $model->save();
+      try{
+        $model = new UserMsg();
+        $model->id = date('YmdHis').rand(1000,9999);
+        $model->type = '0';
+        $model->uid = $data->data->uid;
+        $model->fid = $data->data->fid;
+        $model->title = $data->data->title;
+        $model->content = $data->data->content;
+        $model->ctime = date('Y-m-d H:i:s');
+        $model->save();
+      }catch(\PDOException $e){
+        $this->db->connect();
+      }
       // 消息-结果
       $msg = (Object)[];
       $msg->code = 0;
