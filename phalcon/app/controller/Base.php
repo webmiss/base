@@ -46,13 +46,20 @@ class Base extends Controller{
     return SysConfig::findFirst('name="'.$name.'"');
   }
 
+  /* 自动编号ID-18位 */
+  protected function getId(){
+    list($msec, $sec) = explode(' ', microtime());
+    return date('YmdHis').substr($msec,2,4);
+  }
+
   /* Token-验证 */
   protected function verToken($token){
     // 解密
     $data = Safety::decode($token,$this->config->key);
+    if(!$data) return '';
+    // 续期
     $tmp_token = $this->redis->get($this->config->token_name.$data->uid);
     if(empty($token) || $token!=$tmp_token) return false;
-    // 续期
     $this->redis->setex($this->config->token_name.$data->uid,$this->config->token_time,$token);
     // 结果
     return $data;

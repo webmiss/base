@@ -61,7 +61,7 @@ export default {
       else if(d.code==0 && d.type=='msg'){
         // 阅读
         const voice = Inc.storage.getItem('voice');
-        console.log(voice);
+        // console.log(voice);
         // 追加
         const fid = d.data.uid==Inc.self.store.data.uInfo.uid?d.data.fid:d.data.uid;
         if(Inc.self.store.data.uMsg.group[''+fid]){

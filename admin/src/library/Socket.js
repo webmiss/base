@@ -59,7 +59,7 @@ export default {
       else if(d.code==0 && d.type=='msg'){
         // 阅读
         const voice = Inc.storage.getItem('voice');
-        console.log(voice);
+        // console.log(voice);
         // Plus.notify(d.data.title,d.data.content,(obj)=>{
         //   obj.close();
         // },voice?true:false);

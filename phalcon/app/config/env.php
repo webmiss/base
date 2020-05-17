@@ -44,7 +44,7 @@ return [
     'baseUri'=>'',
   ],
   /* Socket */
-  'socket_suid'=> '1',  // 系统消息UID
+  'socket_suid'=> '0',  // 系统消息UID
   'socket_name'=> 'BaseSocket', // 缓存名称
   'socket_ip'=> '0.0.0.0',  // IP地址
   'socket_port'=> 9010, // 端口
