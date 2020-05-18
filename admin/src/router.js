@@ -12,6 +12,7 @@ const routes = [
   {path:'/SysConfig', name:'SysConfig', component:resolve=>require(['./views/system/Config.vue'],resolve)},
   {path:'/SysMenus', name:'SysMenus', component:resolve=>require(['./views/system/Menus.vue'],resolve)},
   {path:'/SysMenusAction', name:'SysMenusAction', component:resolve=>require(['./views/system/Action.vue'],resolve)},
+  {path:'/SysUser', name:'SysUser', component:resolve=>require(['./views/system/User.vue'],resolve)},
   {path:'/SysRole', name:'SysRole', component:resolve=>require(['./views/system/Role.vue'],resolve)},
   {path:'/SysFileManage', name:'SysFileManage', component:resolve=>require(['./views/system/FileManage.vue'],resolve)},
   // 业务

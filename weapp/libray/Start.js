@@ -32,6 +32,8 @@ export default {
         }
       });
     }else{
+      Inc.self.store.data.isLogin = false;
+      Inc.self.update();
       Inc.storage.setItem('token','');
     }
   },

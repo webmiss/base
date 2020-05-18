@@ -11,13 +11,15 @@ export default {
       // 分页
       pageData:{list:[], total:0, page:1, limit:15},
       // 搜索、添加、编辑、删除、权限
-      seaData:{show:false,form:{role:''}},
-      addData:{show:false,form:{role:''}},
-      editData:{show:false,form:{role:''}},
+      seaData:{show:false,form:{uid:''}},
+      addData:{show:false,form:{tel:'',passwd:''}},
+      editData:{show:false,form:{tel:'',passwd:''}},
       delData:{show:false,id:''},
-      permData:{show:false,id:'',default:[''],form:[]},
+      permData:{show:false,active:'one',uid:'',default:[''],form:[],role:''},
       // 全部动作菜单
       aMenus:[],
+      // 分类
+      userRole:[],
     }
   },
   mounted(){
@@ -76,7 +78,7 @@ export default {
     /* 加载数据 */
     loadData(){
       const load = Inc.loading();
-      Inc.post('Sysrole/list',
+      Inc.post('Sysuser/list',
         {token:Inc.storage.getItem('token'),page:this.pageData.page,limit:this.pageData.limit,data:JSON.stringify(this.seaData.form)},
       (res)=>{
         load.clear();
@@ -88,6 +90,8 @@ export default {
           this.pageData.total = d.total;
         }
       });
+      // 获取分类
+      this.setClass();
     },
 
     /* 搜索 */
@@ -100,10 +104,12 @@ export default {
     /* 添加 */
     subAdd(){
       this.addData.show=false;
+      // 数据
+      let data = JSON.stringify(this.addData.form);
       // 提交
       const load = Inc.loading();
-      Inc.post('Sysrole/add',
-        {token:Inc.storage.getItem('token'),data:JSON.stringify(this.addData.form)},
+      Inc.post('Sysuser/add',
+        {token:Inc.storage.getItem('token'),data:data},
       (res)=>{
         load.clear();
         const d = res.data;
@@ -122,7 +128,7 @@ export default {
       this.editData.show=false;
       // 提交
       const load = Inc.loading();
-      Inc.post('Sysrole/edit',
+      Inc.post('Sysuser/edit',
         {token:Inc.storage.getItem('token'),id:this.editData.form.id,data:JSON.stringify(this.editData.form)},
       (res)=>{
         load.clear();
@@ -142,9 +148,9 @@ export default {
       this.delData.show=false;
       // 提交
       const load = Inc.loading();
-      Inc.post('Sysrole/del',{token:Inc.storage.getItem('token'),data:this.delData.id},(res)=>{
+      Inc.post('Sysuser/del',{token:Inc.storage.getItem('token'),data:this.delData.id},(res)=>{
         load.clear();
-        let d = res.data;
+        const d = res.data;
         if(d.code!==0){
           Inc.toast(d.msg,'error');
         }else{
@@ -153,6 +159,31 @@ export default {
           this.loadData();
         }
       });
+    },
+
+    /* 状态 */
+    setState(type,row){
+      const state = row['state_'+type]?1:0;
+      // 提交
+      const load = Inc.loading();
+      Inc.post('Sysuser/state/'+type,{token:Inc.storage.getItem('token'),uid:row.uid,state:state},(res)=>{
+        load.clear();
+        const d = res.data;
+        if(d.code!==0){
+          Inc.toast(d.msg,'error');
+        }else{
+          Inc.toast(d.msg,'success');
+        }
+      });
+    },
+
+    /* 刷新分类 */
+    setClass(){
+      this.getClass('userRole',(res)=>{this.userRole = res.data.list;});
+    },
+    /* 获取分类 */
+    getClass(type,callback){
+      Inc.post('Sysuser/getClass/'+type,{token:Inc.storage.getItem('token')},callback);
     },
 
     /* 全部菜单 */
@@ -168,28 +199,32 @@ export default {
     },
 
     /* 编辑权限 */
-    eidtPerm(id,perm){
-      this.permData.id = id;
+    eidtPerm(uid,perm,role){
+      // 参数
+      this.permData.uid = uid;
+      this.permData.role = role || '';
+      // 请求
       const load = Inc.loading();
-      Inc.post('Sysrole/allMenus',{token:Inc.storage.getItem('token')},(res)=>{
-        const d = res.data;
+      Inc.post('Sysuser/allMenus',{token:Inc.storage.getItem('token')},(res)=>{
         load.clear();
+        const d = res.data;
         if(d.code!==0){
-          Inc.toast(d.msg,'error');
+          this.$message.error(d.msg);
         }else{
           this.permData.show=true;
           this.permData.form = d.menus;
-          if(!perm) return;
           // 拆分权限
           let permArr=[],defArr=[];
-          let a1 = perm.split(' ');
-          let a2=[];
-          for(let x=0; x<a1.length; x++){
-            a2 = a1[x].split(':');
-            perm = parseInt(a2[1]);
-            // 权限表
-            for(let k in this.aMenus){
-              if(perm&parseInt(this.aMenus[k].perm)) permArr.push(a2[0]+':'+this.aMenus[k].perm);
+          if(perm){
+            let a1 = perm.split(' ');
+            let a2=[];
+            for(let x=0; x<a1.length; x++){
+              a2 = a1[x].split(':');
+              perm = parseInt(a2[1]);
+              // 权限表
+              for(let k in this.aMenus){
+                if(perm&parseInt(this.aMenus[k].perm)) permArr.push(a2[0]+':'+this.aMenus[k].perm);
+              }
             }
           }
           // 匹配
@@ -220,15 +255,15 @@ export default {
       // 提交
       this.permData.show=false;
       const load = Inc.loading();
-      Inc.post('Sysrole/perm',
-        {token:Inc.storage.getItem('token'),id:this.permData.id,perm:perm},
+      Inc.post('Sysuser/perm',
+        {token:Inc.storage.getItem('token'),uid:this.permData.uid,perm:perm,role:this.permData.role},
       (res)=>{
         load.clear();
         const d = res.data;
         if(d.code!==0){
-          Inc.toast(d.msg,'error');
+          this.$message.error(d.msg);
         }else{
-          Inc.toast(d.msg,'success');
+          this.$message.success(d.msg);
           // 刷新数据
           this.loadData();
         }

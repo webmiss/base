@@ -36,8 +36,7 @@ class Centre{
   static function register($tel,$passwd){
     $config = require APP_PATH.'/config/env.php';
     $res = file_get_contents($config['centre_url'].'user/register?token='.self::getToken().'&type=tel&val='.$tel.'&passwd='.$passwd);
-    $data = json_decode($res);
-    return $data->code==0?$data->uid:$data->msg;
+    return json_decode($res);
   }
 
   /* 修改密码 */

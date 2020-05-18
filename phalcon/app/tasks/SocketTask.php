@@ -173,10 +173,8 @@ class SocketTask extends TaskBase{
   private function saveMsg(){
     while($data=self::redis()->blPop($this->config->socket_name.'MsgList',3)){
       $data = json_decode($data[1],true);
-      echo $sql = self::getSql(['type'=>'add','table'=>'user_msg','data'=>$data]);
-      echo "\n";
-      $res = self::db()->execute($sql);
-      var_dump($res);
+      $sql = self::getSql(['type'=>'add','table'=>'user_msg','data'=>$data]);
+      self::db()->execute($sql);
     }
   }
 

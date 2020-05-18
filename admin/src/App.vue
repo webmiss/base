@@ -16,7 +16,7 @@
     <!-- 更新APP End -->
 
     <!-- 登录 -->
-    <el-container v-show="!$store.state.isLogin" class="login_body bgImg bgcover" v-if="$store.state.system.login_bg" :style="{backgroundImage:'url('+$store.state.system.login_bg+')'}">
+    <el-container v-show="$store.state.isLogin===false" class="login_body bgImg bgcover" v-if="$store.state.system.login_bg" :style="{backgroundImage:'url('+$store.state.system.login_bg+')'}">
       <div class="login_ct verticalCenter">
         <div class="logo flex_center">
           <div class="bgImg bgTu" v-if="!$store.state.system.logo"></div>
@@ -43,7 +43,7 @@
     <!-- 登录 End -->
 
     <!-- 主要框架 -->
-    <el-container v-if="$store.state.isLogin" class="app_body">
+    <el-container  v-show="$store.state.isLogin===true" class="app_body">
       <!-- 导航菜单 -->
       <el-aside class="app_menus" :style="{width: isCollapse?'64px':'200px',paddingTop:$store.state.statusBarHeight}">
         <!-- 头像 -->
@@ -235,6 +235,9 @@ i{font-style: normal;}
 .body{padding: 15px; background-color: #FFF;}
 .page{padding: 0 20px 20px; text-align: center; background-color: #FFF;}
 
+.select_left{float: left;}
+.select_right{float: right; color: #8492a6; font-size: 12px}
+
 /*
 * ICO-字体图标
 * 图标生成: https://icomoon.io/app/#/select
@@ -324,8 +327,7 @@ body .tox-silver-sink{z-index: 3000;}
 .imgs i{font-size: 32px;}
 .imgs .del{position: absolute; font-size: 24px; color: #FF6600; margin-left: calc(33% - 43px); margin-top: -10px;}
 
-.select_left{float: left;}
-.select_right{float: right; color: #8492a6; font-size: 12px} */
+
 
 
 

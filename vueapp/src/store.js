@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state: {
     mode: 'light',  // 模式: light、dark
     statusBarHeight: 0, // 状态栏
-    isLogin: false, // 登录状态
+    isLogin: '', // 登录状态
     uInfo: {}, // 用户信息
     geolocation:{}, // 定位
     socket: null, // Socket

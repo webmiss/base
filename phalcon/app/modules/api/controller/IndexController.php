@@ -58,7 +58,7 @@ class IndexController extends Base{
 
 	/* Socket客户端 */
 	function socketAction(){
-		// echo $this->config->cli;
+		// 系统消息
 		$msg = ['type'=>'msg','data'=>[
       'uid'=>'202005131808010001',
       'fid'=>'1',

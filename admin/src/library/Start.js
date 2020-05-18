@@ -69,6 +69,7 @@ export default {
         }
       });
     }else{
+      Inc.self.$store.state.isLogin = false;
       Inc.storage.setItem('token','');
     }
   },
