@@ -58,19 +58,15 @@ class IndexController extends Base{
 
 	/* Socket客户端 */
 	function socketAction(){
-		
-		
-		// $client = new \Swoole\Coroutine\Http\Client('127.0.0.1',$this->config->socket_port,true);
-    // $ret = $client->upgrade("/");
-    // $client->push('123');
-    // print_r($ret);
-		// $fd = $this->redis->hGet('SocketUid',1);
-		// Socket::send([
-		// 	'type'=>'system',
-		// 	'title'=>'系统消息1',
-		// 	'content'=>'系统发送消息',
-		// 	// 'fd'=>$fd
-		// ]);
+		// echo $this->config->cli;
+		$msg = ['type'=>'msg','data'=>[
+      'uid'=>'202005131808010001',
+      'fid'=>'1',
+      'title'=>'测试',
+      'content'=>'内容',
+    ]];
+		Socket::send($msg);
+		Socket::sendCli($msg);
 	}
 
 	/* 支付宝 */

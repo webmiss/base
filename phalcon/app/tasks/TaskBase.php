@@ -50,6 +50,9 @@ class TaskBase extends Base{
       $sql = rtrim($sql,',');
       // SQL
       $sql = 'UPDATE `'.$param['table'].'` SET '.$sql.' WHERE '.$param['where'];
+    }elseif($param['type']=='del'){
+      $sql = 'DELETE FROM `'.$param['table'].'`';
+      $sql .= isset($param['where'])?' WHERE '.$param['where']:'';
     }
     return $sql;
   }

@@ -2,35 +2,28 @@
 
 use \Swoole\WebSocket\Server as WebSocket;
 use \Swoole\Coroutine\Http\Client;
-
-use app\model\UserMsg;
+use app\library\Centre;
 
 class SocketTask extends TaskBase{
 
   /* 属性 */
   static private $msg_limit = 100;  // 消息总条数
-  static private $suid = '';        // 系统消息ID
+  static private $suid = '0';        // 系统消息ID
   static private $uid = '';         // 用户ID
   static private $name_fd = '';     // 缓存:SocketFD
   static private $name_uid = '';    // 缓存:用户ID
 
   /* 构造函数 */
   function initialize(){
-    self::$suid = $this->config->socket_suid;
     self::$name_fd = $this->config->socket_name.'Fd';
     self::$name_uid = $this->config->socket_name.'Uid';
   }
 
   /* 客户端 */
-  function sendAction($data=[]){
-    $data = ['type'=>'msg','data'=>[
-      'uid'=>'202005131808010001',
-      'fid'=>'1',
-      'title'=>'测试',
-      'content'=>'内容',
-    ]];
-    // 是否数组
-    if(!is_array($data)) exit('必须数组!');
+  function sendAction($data=''){
+    // 参数
+    $data = json_decode($data);
+    if(empty($data)) exit('必须数组!');
     // 系统Token
     $token = $this->config->key;
     // 链接
@@ -38,7 +31,6 @@ class SocketTask extends TaskBase{
     // 协程
     go(function () use ($client,$token,$data) {
       $res = $client->upgrade('/?token='.$token);
-      print_r($res);
       if($res) return $client->push(json_encode($data));
     });
   }
@@ -60,8 +52,7 @@ class SocketTask extends TaskBase{
       $res = self::verToken($token);
       if(isset($res->uid) || $token==$this->config->key){
         // 用户ID
-        echo self::$uid = isset($res->uid)?$res->uid:self::$suid;
-        echo "\n";
+        self::$uid = isset($res->uid)?$res->uid:self::$suid;
         // 记录FD
         self::redis()->hSet(self::$name_fd,$request->fd,self::$uid);
         self::redis()->hSet(self::$name_uid,self::$uid,$request->fd);
@@ -89,14 +80,6 @@ class SocketTask extends TaskBase{
 
   /* 消息路由 */
   private function getRouter($server,$frame){
-    // 链接数据库
-    // $db = self::redis()->get($this->config->socket_name.'DB');
-    // if(!$db){
-    //   $db = $this->db->connect()===true?'1':'';
-    //   self::redis()->setex($this->config->socket_name.'DB',10*60,$db);
-    //   echo "Redis\n";
-    // }
-    // var_dump($db);
     // 参数
     $data = json_decode($frame->data);
     // 格式错误
@@ -107,19 +90,9 @@ class SocketTask extends TaskBase{
       // 是否用户
       if(empty(self::$uid)) return false;
       // 100条分组
-      echo 'is_del NOT LIKE "%\"'.self::$uid.'\"%" AND (fid='.self::$uid.' OR uid='.self::$uid.')';
-      echo "\n";
       $all = self::db()->fetchAll(
         'SELECT * FROM user_msg WHERE is_del NOT LIKE "%\"'.self::$uid.'\"%" AND (fid='.self::$uid.' OR uid='.self::$uid.') LIMIT 0,'.self::$msg_limit
       );
-      echo '条数: '.count($all);
-      echo "\n";
-      // $all = UserMsg::find([
-      //   'is_del NOT LIKE "%\"'.self::$uid.'\"%" AND (fid='.self::$uid.' OR uid='.self::$uid.')',
-      //   'order'=>'ctime DESC',
-      //   'limit'=>self::$msg_limit
-      // ]);
-      // $all = $all?$all->toArray():[];
       // 分组
       $tmpData = [];
       $num = [];
@@ -178,8 +151,6 @@ class SocketTask extends TaskBase{
       $msg->content = $data->data->content;
       $msg->ctime = date('Y-m-d H:i:s');
       // 列队
-      echo 'Redis: '.$this->config->socket_name.'MsgList';
-      echo "\n";
       self::redis()->rPush($this->config->socket_name.'MsgList',json_encode($msg));
       // 消息-结果
       $res = (Object)[];
@@ -189,15 +160,10 @@ class SocketTask extends TaskBase{
       $res->data = $msg;
       // 推送消息
       $fd = self::redis()->hGet(self::$name_uid,$msg->uid);
-      echo 'U-FD: '.$fd;
-      echo "\n";
       if($server->isEstablished($fd)) $server->push($fd, json_encode($res));
       $fd = self::redis()->hGet(self::$name_uid,$msg->fid);
-      echo 'F-FD: '.$fd;
-      echo "\n";
       if($server->isEstablished($fd)) $server->push($fd, json_encode($res));
       // 保存
-      sleep(1);
       self::saveMsg();
     }
 
@@ -207,9 +173,6 @@ class SocketTask extends TaskBase{
   private function saveMsg(){
     while($data=self::redis()->blPop($this->config->socket_name.'MsgList',3)){
       $data = json_decode($data[1],true);
-      // $model = new UserMsg();
-      // foreach($data as $key=>$val) $model->$key=$val;
-      // $model->save();
       echo $sql = self::getSql(['type'=>'add','table'=>'user_msg','data'=>$data]);
       echo "\n";
       $res = self::db()->execute($sql);
@@ -219,21 +182,21 @@ class SocketTask extends TaskBase{
 
   /* 用户头像 */
   private function getImg($uid){
-    $img = self::redis()->get('userImg'.$uid);
+    $img = self::redis()->get($this->config->socket_name.'uImg'.$uid);
 		if(!$img){
-      // $data = UserInfo::findFirst(['uid='.$uid,'columns'=>'img']);
-      // $img = $data&&$data->img?$this->config->baseUrl.$data->img:'';
-			// self::redis()->setex('userImg'.$uid,10*60,$img);
+      $res = Centre::uinfo($uid);
+      $img = $res->code==0?$res->info->img:'';
+      self::redis()->setex($this->config->socket_name.'uImg'.$uid,10*60,$img);
     }
     return $img;
   }
   /* 用户昵称 */
   private function getName($uid){
-    $name = self::redis()->get('userName'.$uid);
+    $name = self::redis()->get($this->config->socket_name.'uName'.$uid);
 		if(!$name){
-      // $data = UserInfo::findFirst(['uid='.$uid,'columns'=>'nickname']);
-      // $name = $data&&$data->nickname?$data->nickname:'用户昵称';
-			// self::redis()->setex('userName'.$uid,10*60,$name);
+      $res = Centre::uinfo($uid);
+      $name = $res->code==0?$res->info->nickname:'';
+      self::redis()->setex($this->config->socket_name.'uName'.$uid,10*60,$name);
     }
     return $name;
   }

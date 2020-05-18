@@ -15,6 +15,8 @@ return [
   'key'=>'95ad3c345b46af1b7104568155af36f8',
   'token_name'=>'Token_',
   'token_time'=>7*24*3600,
+  /* 命令行 */
+  'cli'=>'php '.__DIR__.'/../cli.php ',
   /* 本地资源 */
   'img_url'=>$img_url,
   /* 数据中心 */
@@ -44,7 +46,6 @@ return [
     'baseUri'=>'',
   ],
   /* Socket */
-  'socket_suid'=> '0',  // 系统消息UID
   'socket_name'=> 'BaseSocket', // 缓存名称
   'socket_ip'=> '0.0.0.0',  // IP地址
   'socket_port'=> 9010, // 端口
