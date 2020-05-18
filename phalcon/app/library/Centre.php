@@ -48,11 +48,10 @@ class Centre{
   }
 
   /* 修改账号 */
-  static function changeUname($uid,$tel){
+  static function changeUname($uid,$tel,$passwd=''){
     $config = require APP_PATH.'/config/env.php';
-    $res = file_get_contents($config['centre_url'].'user/changeUname?token='.self::getToken().'&type=tel&val='.$tel.'&uid='.$uid);
-    $data = json_decode($res);
-    return $data->code==0?$data->uid:$data->msg;
+    $res = file_get_contents($config['centre_url'].'user/changeUname?token='.self::getToken().'&type=tel&val='.$tel.'&uid='.$uid.'&passwd='.$passwd);
+    return json_decode($res);
   }
 
   /* 用户信息-查询 */

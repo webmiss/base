@@ -68,7 +68,7 @@ export default {
           // 获取ID
           let data = this.selectData;
           let id = '';
-          for(let i=0; i<data.length; i++) id += data[i].id+',';
+          for(let i=0; i<data.length; i++) id += data[i].uid+',';
           this.delData.id = id;
         }
         else Inc.toast('请选择数据!');
@@ -111,7 +111,6 @@ export default {
       Inc.post('Sysuser/add',
         {token:Inc.storage.getItem('token'),data:data},
       (res)=>{
-        load.clear();
         const d = res.data;
         if(d.code!==0){
           Inc.toast(d.msg,'error');
@@ -126,12 +125,14 @@ export default {
     /* 编辑 */
     subEdit(){
       this.editData.show=false;
+      // 数据
+      let uid = this.editData.form.uid;
+      let data = JSON.stringify(this.editData.form);
       // 提交
       const load = Inc.loading();
       Inc.post('Sysuser/edit',
-        {token:Inc.storage.getItem('token'),id:this.editData.form.id,data:JSON.stringify(this.editData.form)},
+        {token:Inc.storage.getItem('token'),uid:uid,data:data},
       (res)=>{
-        load.clear();
         let d = res.data;
         if(d.code!==0){
           Inc.toast(d.msg,'error');
@@ -149,7 +150,6 @@ export default {
       // 提交
       const load = Inc.loading();
       Inc.post('Sysuser/del',{token:Inc.storage.getItem('token'),data:this.delData.id},(res)=>{
-        load.clear();
         const d = res.data;
         if(d.code!==0){
           Inc.toast(d.msg,'error');

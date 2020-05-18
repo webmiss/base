@@ -71,6 +71,35 @@ class SysUserController extends UserBase {
     }
   }
 
+  /* 编辑 */
+  function editAction(){
+    self::getJSON();
+    $data = $this->request->get('data');
+    if(!$data || empty($data)) return self::getJSON(['code'=>4000]);
+    $data = json_decode($data);
+    // 验证
+    $res = Safety::isRight('tel',$data->tel);
+    if($res!==true) return self::getJSON(['code'=>4000,'msg'=>$res]);
+    // 是否存在
+    $model = UserPerm::findFirst(['uid=:uid:','bind'=>['uid'=>$data->uid]]);
+    if(!$model) return self::getJSON(['code'=>0,'msg'=>'用户不存在!']);
+    // 修改账户、密码
+    $res = Centre::changeUname($data->uid,$data->tel,$data->passwd);
+    // 结果
+    return $res->code==0?self::getJSON(['code'=>0]):self::error(4022);
+  }
+
+  /* 删除 */
+  function delAction(){
+    $data = $this->request->get('data','string');
+    if(empty($data)) return self::getJSON(['code'=>4000]);
+    // 数据处理
+    $id = trim($data,',');
+    // 执行
+    $model = UserPerm::find(['uid in('.$id.')']);
+    return $model->delete()?self::getJSON(['code'=>0]):self::error(4023);
+  }
+
   /* 状态 */
   function stateAction($type){
     $uid = $this->request->get('uid','int');
@@ -95,7 +124,6 @@ class SysUserController extends UserBase {
 
   /* 获取全部菜单 */
   function allMenusAction(){
-    self::getJSON();
     // 全部菜单
     $all = SysMenu::find(['','columns'=>'id,fid,title,perm','order'=>'sort DESC,id'])->toArray();
     foreach($all as $val){
