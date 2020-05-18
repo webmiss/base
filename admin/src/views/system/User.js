@@ -61,7 +61,7 @@ export default {
       }else if(type=='add'){
         this.addData.show=true;
       }else if(type=='edit'){
-        this.getEdit({id:'',role:''});
+        this.getEdit({uid:'',tel:'',passwd:''});
       }else if(type=='del'){
         if(this.selectData.length>0){
           this.delData.show=true;

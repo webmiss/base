@@ -14,12 +14,12 @@ export default {
     let token = Inc.storage.getItem('token');
     if(!token) return false;
     // 开启
-    this.socket(token);
+    if(Inc.config.socket.start) this.socket(token);
   },
 
   /* 链接 */
   socket(token){
-    wx.connectSocket({url:Inc.config.socketServer+'?token='+token});
+    wx.connectSocket({url:Inc.config.socket.server+'?token='+token});
     /* 链接 */
     wx.onSocketOpen(()=>{
       // 成功

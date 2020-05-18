@@ -15,12 +15,12 @@ export default {
     const token = Inc.storage.getItem('token');
     if(!token) return false;
     // 开启
-    this.socket(token);
+    if(Inc.config.socket.start) this.socket(token);
   },
 
   /* 链接 */
   socket(token){
-    Inc.self.$store.state.socket = new WebSocket(Inc.config.socketServer+'?token='+token);
+    Inc.self.$store.state.socket = new WebSocket(Inc.config.socket.server+'?token='+token);
     /* 链接 */
     Inc.self.$store.state.socket.onopen = ()=>{
       console.log('Socket开启');

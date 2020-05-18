@@ -16,7 +16,7 @@ export default {
       storage: Inc.storage,
       // 更新APP
       update: {show:false,os:'',down:false,loading:'0%',msg:'检测更新',file:'',total:0},
-      upDateColor: Inc.config.upDateColor,
+      upDateColor: Inc.config.update,
       // 登录数据
       login: {uname:'',passwd:'',subText:'登 录',dis:false},
       // 左侧菜单
@@ -31,7 +31,7 @@ export default {
     /* 初始化 */
     setTimeout(()=>{
       Start.init(); // 启动
-      if(Inc.config.update) this.isUpdate();  // 是否检测更新
+      if(Inc.config.update.start) this.isUpdate();  // 是否检测更新
     },1000);
     // 默认菜单
     this.isCollapse = Inc.storage.getItem('isCollapse')=='true'?true:false;

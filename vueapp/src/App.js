@@ -17,7 +17,7 @@ export default {
       transitionName: '',
       // 更新APP
       update: {show:false, os:'', down:false, loading:'0%', msg:'检测更新', file:'', total:0},
-      upDateColor: Inc.config.upDateColor,
+      upDateColor: Inc.config.update,
       // 新消息
       msgInterval: null,
     }
@@ -31,7 +31,7 @@ export default {
     /* 初始化 */
     setTimeout(()=>{
       Start.init(); // 启动
-      if(Inc.config.update) this.isUpdate();  // 是否检测更新
+      if(Inc.config.update.start) this.isUpdate();  // 是否检测更新
     },1000);
   },
   methods:{

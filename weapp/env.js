@@ -20,7 +20,11 @@ export default {
   // 地图
   amapKey: '12d2caec68d29ea17f3f578d29607d44',
   // Socket
-  socketServer: socket,
+  socket: {
+    start: false,
+    server: socket,
+  },
+  // 消息阅读
   msgRead: 300,
   msgContent: 'content',
 }

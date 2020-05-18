@@ -22,8 +22,8 @@ export default {
   // 状态栏
   statusBar:{height:'0px',color: '#333', bgColor:'#FFF'},
   // 更新
-  update: true,
-  upDateColor: {
+  update: {
+    start: true,
     bg: '#6FB737',
     logoBg: '#FFF',
     loading: '#FFF',
@@ -39,7 +39,11 @@ export default {
   // 百度AI
   baiduOcr: 'https://aip.baidubce.com/rest/2.0/ocr/v1/',
   // Socket
-  socketServer: socket,
+  socket: {
+    start: false,
+    server: socket,
+  },
+  // 消息阅读
   msgRead: 300,
   msgContent: 'content',
   msgBrowser: false,

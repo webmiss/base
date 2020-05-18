@@ -14,13 +14,13 @@ export default {
     let token = Inc.storage.getItem('token');
     if(!token) return false;
     // 开启
-    this.socket(token);
+    if(Inc.config.socket.start) this.socket(token);
   },
 
   /* 链接 */
   socket(token){
     /* 链接 */
-    my.connectSocket({url:Inc.config.socketServer+'?token='+token});
+    my.connectSocket({url:Inc.config.socket.server+'?token='+token});
     my.onSocketOpen(()=>{
       // 成功
       console.log('Socket开启');

@@ -22,8 +22,8 @@ export default {
   // 状态栏
   statusBar:{height:50, color: '#333', bgColor:'#FFF'},
   // 更新
-  update: true,
-  upDateColor: {
+  update: {
+    start: true,
     bg: '#6FB737',
     logoBg: '#FFF',
     loading: '#FFF',
@@ -37,7 +37,11 @@ export default {
   // 地图
   amapKey: 'd956f0c3e15489a1b5bf291e5d133c8a',
   // Socket
-  socketServer: socket,
+  socket: {
+    start: false,
+    server: socket,
+  },
+  // 消息阅读
   msgRead: 300,
   msgContent: 'content',
   msgBrowser: false,
