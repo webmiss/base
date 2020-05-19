@@ -132,7 +132,7 @@ export default {
     /* 请求 */
     getPost(){
       Toast.loading({message: 'POST请求',forbidClick: true});
-      this.$ajax.post(this.$config.baseUrl+'xxx').then((res)=>{
+      Inc.post(this.$config.baseUrl+'xxx').then((res)=>{
         Toast.clear();
         Dialog.alert({title: 'POST请求',message: JSON.stringify(res.data)});
       });

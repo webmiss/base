@@ -97,7 +97,6 @@ export default {
       Inc.post('Sysmenus/add',
         {token:Inc.storage.getItem('token'),data:JSON.stringify(this.addData.form)},
       (res)=>{
-        load.clear();
         let d = res.data;
         if(d.code!==0){
           Inc.toast(d.msg,'error');
@@ -140,10 +139,9 @@ export default {
       // 提交
       this.editData.show=false;
       const load = Inc.loading();
-      this.$ajax.post('Sysmenus/edit',
+      Inc.post('Sysmenus/edit',
         {token:Inc.storage.getItem('token'),id:this.editData.form.id,data:JSON.stringify(this.editData.form)},
       (res)=>{
-        load.clear();
         let d = res.data;
         if(d.code!==0){
           Inc.toast(d.msg,'error');
@@ -160,7 +158,7 @@ export default {
       this.delData.show=false;
       // 提交
       const load = Inc.loading();
-      this.$ajax.post('Sysmenus/del',
+      Inc.post('Sysmenus/del',
         {token:Inc.storage.getItem('token'),data:JSON.stringify(this.delData.id)},
       (res)=>{
         load.clear();

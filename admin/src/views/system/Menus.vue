@@ -40,7 +40,7 @@
     <!-- 内容 End -->
 
     <!-- 添加 -->
-    <el-dialog title="添加" :visible.sync="addData.show" center width="680px" top="20vh">
+    <el-dialog title="添加" :visible.sync="addData.show" center width="680px" :close-on-click-modal="false">
       <el-form :model="addData.form" :label-width="LabelWidth">
         <el-form-item label="归属">
           <el-cascader v-model="addData.form.fid" :options="fidClass" change-on-select filterable clearable expand-trigger="hover" placeholder="默认顶级菜单" style="width: 100%; max-width: 360px;"></el-cascader>
@@ -70,7 +70,7 @@
     <!-- 添加 End -->
 
      <!-- 编辑 -->
-    <el-dialog title="编辑" :visible.sync="editData.show" center width="680px" top="20vh">
+    <el-dialog title="编辑" :visible.sync="editData.show" center width="680px" :close-on-click-modal="false">
       <el-form :model="editData.form" :label-width="LabelWidth">
         <el-form-item label="归属">
           <el-cascader v-model="editData.form.fid" :options="fidClass" change-on-select filterable clearable expand-trigger="hover" placeholder="默认顶级菜单"></el-cascader>

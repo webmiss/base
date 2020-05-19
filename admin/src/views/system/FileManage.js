@@ -134,7 +134,7 @@ export default {
     /* 异步上传 */
     upFile(data){
       this.loaded = '10%';
-      this.$ajax.post(
+      Inc.post(
         this.$config.apiUrl+'Filemanage/upFile', data,
         {onUploadProgress:(event)=>{
           // 上传进度

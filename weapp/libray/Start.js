@@ -8,6 +8,10 @@ export default {
   init(){
     /* 登录验证 */
     this.tokenState();
+    clearInterval(this.tokenInterval);
+    this.tokenInterval = setInterval(()=>{
+      this.tokenState();
+    },10000);
     /* 获取定位 */
     this.geoLocation();
     /* 消息推送 */

@@ -28,7 +28,7 @@ export default {
       }
       // 提交
       const loading = this.$loading({text: '提交数据'});
-      this.$ajax.post(
+      Inc.post(
         this.$config.apiUrl+'Userpasswd/edit',
         'token='+this.$storage.getItem('token')+'&passwd='+passwd+'&passwd1='+passwd1
       ).then((res)=>{

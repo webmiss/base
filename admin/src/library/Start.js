@@ -44,6 +44,10 @@ export default {
 
     /* 登录验证 */
     this.tokenState();
+    clearInterval(this.tokenInterval);
+    this.tokenInterval = setInterval(()=>{
+      this.tokenState();
+    },10000);
     /* 消息推送 */
     Socket.start();
     /* 系统信息 */
