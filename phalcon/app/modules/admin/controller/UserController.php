@@ -41,18 +41,21 @@ class UserController extends Base{
   
   /* 验证Token */
   function tokenAction(){
-    $token = trim($this->request->get('token'));
+    $token = $this->request->get('token');
+    $uinfo = $this->request->get('uinfo');
     $res = self::verToken($token);
     if($res){
-      // 接口
-      $uInfo = Centre::uinfo($res->uid);
-      if($uInfo->code!=0) return self::getJSON(['code'=>4000,'msg'=>$uInfo->msg]);
+      $time = $this->redis->ttl($this->config->token_name.$res->uid);
+      if(!$uinfo) return self::getJSON(['code'=>0,'time'=>$time]);
+      // 用户信息
+      $uinfo = Centre::uinfo($res->uid);
+      if($uinfo->code!=0) return self::getJSON(['code'=>4000,'msg'=>$uinfo->msg]);
       // 数据
-      $uInfo = $uInfo->info;
-      $uInfo->uid = $res->uid;
-      $uInfo->uname = $res->data->uname;
-      if(!is_object($uInfo)) return self::getJSON(['code'=>4011,'msg'=>$uInfo]);
-      return self::getJSON(['code'=>0,'uinfo'=>$uInfo]);
+      $uinfo = $uinfo->info;
+      $uinfo->uid = $res->uid;
+      $uinfo->uname = $res->data->uname;
+      if(!is_object($uinfo)) return self::getJSON(['code'=>4011,'msg'=>$uinfo]);
+      return self::getJSON(['code'=>0,'time'=>$time,'uinfo'=>$uinfo]);
     }else{
       return self::error(1001);
     }

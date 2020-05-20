@@ -55,6 +55,13 @@ class Centre{
   }
 
   /* 用户信息-查询 */
+  static function getID($uname){
+    $config = require APP_PATH.'/config/env.php';
+    $res = file_get_contents($config['centre_url'].'user/getID?token='.self::getToken().'&uname='.$uname);
+    return json_decode($res);
+  }
+
+  /* 用户信息-查询 */
   static function uinfo($uid){
     $config = require APP_PATH.'/config/env.php';
     $res = file_get_contents($config['centre_url'].'user/info?token='.self::getToken().'&uid='.$uid);

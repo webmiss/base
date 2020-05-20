@@ -12,7 +12,7 @@ use app\model\UserRole;
 use app\modules\admin\model\SysMenu;
 use app\modules\admin\model\SysMenuAction;
 
-class SysUserController extends UserBase {
+class SysPermController extends UserBase {
 
   static private $menus=[];
 
@@ -49,26 +49,31 @@ class SysUserController extends UserBase {
   function addAction(){
     $data = $this->request->get('data');
     if(!$data || empty($data)) return self::getJSON(['code'=>4000]);
-    // 验证
     $data = json_decode($data);
-    if(Safety::isRight('tel',$data->tel)!==true) return self::getJSON(['code'=>4000,'msg'=>'手机号码错误!']);
-    // 注册
-    $res = Centre::register($data->tel,$data->passwd);
-    if($res->code==0){
-      // 是否存在
+    // 验证
+    $res = Safety::isRight('tel',$data->tel);
+    if($res!==true) return self::getJSON(['code'=>4000,'msg'=>$res]);
+    $res = Safety::isRight('passwd',$data->passwd);
+    if($res!==true) return self::getJSON(['code'=>4000,'msg'=>$res]);
+    // 是否存在
+    $res = Centre::getID($data->tel);
+    if($res->code!=0) return self::getJSON(['code'=>4000,'msg'=>$res->msg]);
+    // 是否注册
+    if($res->uid){
       $model = UserPerm::findFirst(['uid=:uid:','bind'=>['uid'=>$res->uid]]);
       if($model) return self::getJSON(['code'=>0,'msg'=>'已存在该系统!']);
-      // 配置权限
-      $model = new UserPerm();
-      $model->uid = $res->uid;
-      $model->ctime = date('YmdHis');
-      $model->state_app = '1';
-      $model->role = '1';
-      // 结果
-      return $model->save()?self::getJSON(['code'=>0]):self::error(4022);
     }else{
-      return self::getJSON(['code'=>4001,'msg'=>$res->msg]);
+      // 注册
+      $res = Centre::register($data->tel,$data->passwd);
+      if($res->code!=0) return self::getJSON(['code'=>4001,'msg'=>$res->msg]);
     }
+    // 配置权限
+    $model = new UserPerm();
+    $model->uid = $res->uid;
+    $model->state_app = '1';
+    $model->role = '1';
+    // 结果
+    return $model->save()?self::getJSON(['code'=>0]):self::error(4022);
   }
 
   /* 编辑 */
@@ -192,7 +197,6 @@ class SysUserController extends UserBase {
     if(!$model) return self::getJSON(['code'=>4001,'msg'=>'无效用户!']);
     $model->perm = $perm;
     $model->role = $role;
-    $model->utime = date('YmdHis');
     return $model->save()?self::getJSON(['code'=>0]):self::error(4022);
   }
 

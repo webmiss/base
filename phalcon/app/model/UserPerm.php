@@ -13,13 +13,19 @@ class UserPerm extends BaseModel{
     $this->setSource('user_perm');
   }
 
-  /* 更新时间 */
-  public function setUtime($utime){
-    if(empty($utime)) $utime = null;
-    $this->utime = $utime;
+  /* 创建 */
+  public function beforeCreate(){
+    $this->ctime = date('YmdHis');
   }
-  public function getUtime(){
-    return $this->utime;
+
+  /* 更新 */
+  public function beforeUpdate(){
+    $this->utime = date('YmdHis');
+  }
+
+  /* 删除 */
+  public function beforeDelete(){
+    if($this->uid==1) return self::error('禁止删除超级管理员!');
   }
 
 }

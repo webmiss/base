@@ -43,10 +43,10 @@ export default {
     }
 
     /* 登录验证 */
-    this.tokenState();
+    this.tokenState(1);
     clearInterval(this.tokenInterval);
     this.tokenInterval = setInterval(()=>{
-      this.tokenState();
+      this.tokenState(0);
     },10000);
     /* 获取定位 */
     this.geoLocation();
@@ -55,14 +55,14 @@ export default {
   },
 
   /* 登录验证 */
-  tokenState(){
+  tokenState(uinfo){
     const token = Inc.storage.getItem('token');
     if(token){
-      Inc.post('user/token',{token:token,uinfo:1},(res)=>{
+      Inc.post('user/token',{token:token,uinfo:uinfo},(res)=>{
         const d = res.data;
         if(d.code==0){
           Inc.self.$store.state.isLogin = true;
-          Inc.self.$store.state.uInfo = d.uinfo;
+          if(d.uinfo) Inc.self.$store.state.uInfo = d.uinfo;
         }else{
           Inc.self.$store.state.isLogin = false;
           Inc.self.$store.state.uInfo = {};

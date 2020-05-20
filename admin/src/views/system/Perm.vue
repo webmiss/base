@@ -2,12 +2,12 @@
   <div>
     
     <!-- 功能菜单 -->
-    <Action url="SysUser" @action="openAction"></Action>
+    <Action url="SysPerm" @action="openAction"></Action>
     <!-- 内容 -->
     <el-row class="body">
       <el-table :data="pageData.list" stripe @selection-change="getSelect">
         <el-table-column type="selection" width="45"></el-table-column>
-        <el-table-column prop="uid" label="UID" width="180"></el-table-column>
+        <el-table-column prop="uid" label="UID" width="170"></el-table-column>
         <el-table-column label="账户" width="120">
           <template slot-scope="scope">
            {{ scope.row.tel || scope.row.email || scope.row.uname }} 
@@ -151,4 +151,4 @@
 
 </style>
 
-<script src="./User.js"></script>
+<script src="./Perm.js"></script>

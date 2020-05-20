@@ -33,6 +33,8 @@ export default {
       Start.init(); // 启动
       if(Inc.config.update.start) this.isUpdate();  // 是否检测更新
     },1000);
+    /* 获取菜单 */
+    if(Inc.storage.getItem('token')) this.getMenus();
     // 默认菜单
     this.isCollapse = Inc.storage.getItem('isCollapse')=='true'?true:false;
     this.defaultMenu = Inc.storage.getItem('defaultMenu')?Inc.storage.getItem('defaultMenu'):'3';
@@ -122,11 +124,15 @@ export default {
         const d = res.data;
         if(d.code==0){
           this.$store.state.isLogin = true;
+          Inc.self.$store.state.uInfo = d.uinfo;
           Inc.storage.setItem('token',d.token);
-          // 加载系统
-          Start.init();
+          // 用户菜单
+          this.getMenus();
         }else{
           Inc.toast(d.msg,'error');
+          Inc.self.$store.state.isLogin = false;
+          Inc.self.$store.state.uInfo = {};
+          Inc.storage.setItem('token','');
         }
       },(e)=>{
         load.clear();
@@ -142,6 +148,13 @@ export default {
       Socket._closeMsg();
     },
 
+    /* 用户菜单 */
+    getMenus(){
+      Inc.post('Usermain/getMenus',{token:Inc.storage.getItem('token')},(res)=>{
+        let d = res.data;
+        if(d.code==0) Inc.self.$store.state.menus = d.menus;
+      });
+    },
     /* 收缩菜单 */
     hideMenus(){
       this.isCollapse = !this.isCollapse;

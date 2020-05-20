@@ -78,7 +78,7 @@ export default {
     /* 加载数据 */
     loadData(){
       const load = Inc.loading();
-      Inc.post('Sysuser/list',
+      Inc.post('Sysperm/list',
         {token:Inc.storage.getItem('token'),page:this.pageData.page,limit:this.pageData.limit,data:JSON.stringify(this.seaData.form)},
       (res)=>{
         load.clear();
@@ -108,11 +108,12 @@ export default {
       let data = JSON.stringify(this.addData.form);
       // 提交
       const load = Inc.loading();
-      Inc.post('Sysuser/add',
+      Inc.post('Sysperm/add',
         {token:Inc.storage.getItem('token'),data:data},
       (res)=>{
         const d = res.data;
         if(d.code!==0){
+          load.clear();
           Inc.toast(d.msg,'error');
         }else{
           Inc.toast(d.msg,'success');
@@ -130,11 +131,12 @@ export default {
       let data = JSON.stringify(this.editData.form);
       // 提交
       const load = Inc.loading();
-      Inc.post('Sysuser/edit',
+      Inc.post('Sysperm/edit',
         {token:Inc.storage.getItem('token'),uid:uid,data:data},
       (res)=>{
         let d = res.data;
         if(d.code!==0){
+          load.clear();
           Inc.toast(d.msg,'error');
         }else{
           Inc.toast(d.msg,'success');
@@ -149,9 +151,10 @@ export default {
       this.delData.show=false;
       // 提交
       const load = Inc.loading();
-      Inc.post('Sysuser/del',{token:Inc.storage.getItem('token'),data:this.delData.id},(res)=>{
+      Inc.post('Sysperm/del',{token:Inc.storage.getItem('token'),data:this.delData.id},(res)=>{
         const d = res.data;
         if(d.code!==0){
+          load.clear();
           Inc.toast(d.msg,'error');
         }else{
           Inc.toast(d.msg,'success');
@@ -166,7 +169,7 @@ export default {
       const state = row['state_'+type]?1:0;
       // 提交
       const load = Inc.loading();
-      Inc.post('Sysuser/state/'+type,{token:Inc.storage.getItem('token'),uid:row.uid,state:state},(res)=>{
+      Inc.post('Sysperm/state/'+type,{token:Inc.storage.getItem('token'),uid:row.uid,state:state},(res)=>{
         load.clear();
         const d = res.data;
         if(d.code!==0){
@@ -183,7 +186,7 @@ export default {
     },
     /* 获取分类 */
     getClass(type,callback){
-      Inc.post('Sysuser/getClass/'+type,{token:Inc.storage.getItem('token')},callback);
+      Inc.post('Sysperm/getClass/'+type,{token:Inc.storage.getItem('token')},callback);
     },
 
     /* 全部菜单 */
@@ -205,7 +208,7 @@ export default {
       this.permData.role = role || '';
       // 请求
       const load = Inc.loading();
-      Inc.post('Sysuser/allMenus',{token:Inc.storage.getItem('token')},(res)=>{
+      Inc.post('Sysperm/allMenus',{token:Inc.storage.getItem('token')},(res)=>{
         load.clear();
         const d = res.data;
         if(d.code!==0){
@@ -255,12 +258,12 @@ export default {
       // 提交
       this.permData.show=false;
       const load = Inc.loading();
-      Inc.post('Sysuser/perm',
+      Inc.post('Sysperm/perm',
         {token:Inc.storage.getItem('token'),uid:this.permData.uid,perm:perm,role:this.permData.role},
       (res)=>{
-        load.clear();
         const d = res.data;
         if(d.code!==0){
+          load.clear();
           this.$message.error(d.msg);
         }else{
           this.$message.success(d.msg);
