@@ -6,7 +6,6 @@ use app\library\Inc;
 use app\library\Safety;
 
 use app\model\User;
-use app\model\UserInfo;
 use app\model\UserPerm;
 use app\model\UserRole;
 use app\modules\admin\model\SysMenu;
@@ -211,9 +210,14 @@ class SysPermController extends UserBase {
     $perm = trim($this->request->get('perm','string'));
     $role = $this->request->get('role','int');
     if(empty($uid)) return self::error(4000);
-    // 数据处理
+    // 是否存在
     $model = UserPerm::findFirst(['uid=:uid:','bind'=>['uid'=>$uid]]);
     if(!$model) return self::getJSON(['code'=>4001,'msg'=>'无效用户!']);
+    // 是否管理员
+    if($model->uid=='1' && self::$token->uid!='1'){
+      return self::getJSON(['code'=>4001,'msg'=>'无效用户!']);
+    }
+    // 数据
     $model->perm = $perm;
     $model->role = $role;
     return $model->save()?self::getJSON(['code'=>0]):self::error(4022);
