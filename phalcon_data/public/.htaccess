@@ -1,0 +1,9 @@
+# 编码
+AddDefaultCharset UTF-8
+<IfModule mod_rewrite.c>
+    # 重写
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php?_url=/$1 [QSA,L]
+</IfModule>

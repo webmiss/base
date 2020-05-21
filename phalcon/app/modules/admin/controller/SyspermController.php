@@ -19,7 +19,12 @@ class SysPermController extends UserBase {
   /* 列表 */
   function listAction(){
     // 条件
-    $where = self::getSeaWhere()['where'];
+    $data = self::getSeaWhere()['data'];
+    $where = '';
+    if(isset($data['uname']) && !empty($data['uname'])){
+      $res = Centre::getID($data['uname']);
+      $where = $res->code==0?'uid='.$res->uid:'0';
+    }
     // 分页
     $page = $this->request->get('page','int');
     $limit = $this->request->get('limit','int');
@@ -29,7 +34,7 @@ class SysPermController extends UserBase {
     $list = UserPerm::find([
       $where,
       'columns'=>'*',
-      'order'=>'uid',
+      'order'=>'uid DESC',
       'limit'=>['number'=>$limit,'offset'=>$start]
     ])->toArray();
     // 结果
@@ -62,14 +67,16 @@ class SysPermController extends UserBase {
     if($res->uid){
       $model = UserPerm::findFirst(['uid=:uid:','bind'=>['uid'=>$res->uid]]);
       if($model) return self::getJSON(['code'=>0,'msg'=>'已存在该系统!']);
+      $uid = $res->uid;
     }else{
       // 注册
       $res = Centre::register($data->tel,$data->passwd);
       if($res->code!=0) return self::getJSON(['code'=>4001,'msg'=>$res->msg]);
+      $uid = $res->uid;
     }
     // 配置权限
     $model = new UserPerm();
-    $model->uid = $res->uid;
+    $model->uid = $uid;
     $model->state_app = '1';
     $model->role = '1';
     // 结果
@@ -78,7 +85,6 @@ class SysPermController extends UserBase {
 
   /* 编辑 */
   function editAction(){
-    self::getJSON();
     $data = $this->request->get('data');
     if(!$data || empty($data)) return self::getJSON(['code'=>4000]);
     $data = json_decode($data);
