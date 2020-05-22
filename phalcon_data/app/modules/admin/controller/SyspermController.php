@@ -76,8 +76,8 @@ class SysPermController extends UserBase {
       $user->id = self::getId();
       $user->tel = $data->tel;
       $user->password = md5($data->passwd);
-      $user->save();
-      $uid = $user->uid;
+      if(!$user->save()) return self::getJSON(['code'=>4001,'msg'=>'注册失败!']);
+      $uid = $user->id;
     }
     // 配置权限
     $model = new UserPerm();

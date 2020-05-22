@@ -105,9 +105,9 @@ export default {
       Inc.post('Sysrole/add',
         {token:Inc.storage.getItem('token'),data:JSON.stringify(this.addData.form)},
       (res)=>{
-        load.clear();
         const d = res.data;
         if(d.code!==0){
+          load.clear();
           Inc.toast(d.msg,'error');
         }else{
           Inc.toast(d.msg,'success');
@@ -125,9 +125,9 @@ export default {
       Inc.post('Sysrole/edit',
         {token:Inc.storage.getItem('token'),id:this.editData.form.id,data:JSON.stringify(this.editData.form)},
       (res)=>{
-        load.clear();
         let d = res.data;
         if(d.code!==0){
+          load.clear();
           Inc.toast(d.msg,'error');
         }else{
           Inc.toast(d.msg,'success');
@@ -143,9 +143,9 @@ export default {
       // 提交
       const load = Inc.loading();
       Inc.post('Sysrole/del',{token:Inc.storage.getItem('token'),data:this.delData.id},(res)=>{
-        load.clear();
         let d = res.data;
         if(d.code!==0){
+          load.clear();
           Inc.toast(d.msg,'error');
         }else{
           Inc.toast(d.msg,'success');
@@ -223,9 +223,9 @@ export default {
       Inc.post('Sysrole/perm',
         {token:Inc.storage.getItem('token'),id:this.permData.id,perm:perm},
       (res)=>{
-        load.clear();
         const d = res.data;
         if(d.code!==0){
+          load.clear();
           Inc.toast(d.msg,'error');
         }else{
           Inc.toast(d.msg,'success');

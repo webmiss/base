@@ -1,3 +1,5 @@
+import Inc from '@/library/Inc'
+
 export default {
   data(){
     return {
@@ -15,8 +17,8 @@ export default {
       let passwd1 = this.form.passwd1;
       let passwd2 = this.form.passwd2;
       // 验证
-      let reg_passwd = this.$reg('passwd',passwd);
-      let reg_passwd1 = this.$reg('passwd',passwd1);
+      let reg_passwd = Inc.reg('passwd',passwd);
+      let reg_passwd1 = Inc.reg('passwd',passwd1);
       if(reg_passwd!=true){
         return this.$message.error('原'+reg_passwd);
       }else if(reg_passwd1!=true){
@@ -27,19 +29,22 @@ export default {
         return this.$message.error('不能与原密码相同！');
       }
       // 提交
-      const loading = this.$loading({text: '提交数据'});
-      Inc.post(
-        this.$config.apiUrl+'Userpasswd/edit',
-        'token='+this.$storage.getItem('token')+'&passwd='+passwd+'&passwd1='+passwd1
-      ).then((res)=>{
+      const load = Inc.loading();
+      Inc.post('Userpasswd/edit',{
+        token:Inc.storage.getItem('token'),passwd:passwd,passwd1:passwd1},
+      (res)=>{
         load.clear();
         const d = res.data;
         if(d.code==0){
-          Inc.toast(d.msg,'success');
-          this.$storage.setItem('token','');
-          this.$storage.setItem('uinfo','');
-          // 刷新
-          window.location.reload();
+          // 重置表单
+          this.form.passwd = '';
+          this.form.passwd1 = '';
+          this.form.passwd2 = '';
+          // 退出登录
+          this.$store.state.isLogin = false;
+          this.$store.state.uInfo = {};
+          Inc.storage.setItem('token','');
+          return Inc.toast(d.msg,'success');
         }else{
           return Inc.toast(d.msg,'error');
         }

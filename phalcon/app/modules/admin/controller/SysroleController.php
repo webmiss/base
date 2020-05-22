@@ -40,7 +40,6 @@ class SysRoleController extends UserBase {
       if($key=='id') continue;
       $model->$key = trim($val);
     }
-    self::bug($model->toArray());
     // 执行
     return $model->save()?self::getJSON(['code'=>0]):self::error(4021);
   }

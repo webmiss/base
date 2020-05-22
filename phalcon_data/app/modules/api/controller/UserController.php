@@ -34,7 +34,7 @@ class UserController extends UserBase {
     if(!$uData) return self::getJSON(['code'=>4010]);
     // 是否禁用
     $uData = (Object)$uData[0];
-    $uData->img = $uData->img?$this->config->img_url.$uData->img:$this->config->img_url.'upload/img.png';
+    $uData->img = $uData->img?$this->config->img_url.$uData->img:'';
     if($uData->state!='1') return self::getJSON(['code'=>4011]);
     unset($uData->state);
     // 登录时间
@@ -68,7 +68,7 @@ class UserController extends UserBase {
     $model = User::findFirst([$type.'=:val:','bind'=>['val'=>$val]]);
     if(!$model){
       $model = new User();
-      $model->rtime = date('YmdHis');
+      $model->id = self::getId();
       $model->$type = $val;
       $model->password = md5($passwd);
     }
