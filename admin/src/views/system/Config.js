@@ -47,9 +47,7 @@ export default {
     },
 
     /* 上传图片 */
-    upImage(event,type){
-      const el = event.currentTarget;
-      const fileObj = el.files[0];
+    upImage(type){
       let perm = {};
       // 类型
       if(type=='logo'){
@@ -59,25 +57,27 @@ export default {
         perm.width = 1366;
       }
       // 压缩
-      Plus.readerCompress(fileObj,perm,(base64)=>{
-        const load = Inc.loading();
-        Inc.post('Sysconfig/upImage',
-          {token:Inc.storage.getItem('token'),type:type,base64:base64},
-        (res)=>{
-          load.clear();
-          const d = res.data;
-          if(d.code == 0){
-            Inc.toast(d.msg,'success');
-            if(type=='logo'){
-              this.form.logo = d.img;
-              this.$store.state.system.logo = d.img;
-            }else if(type=='bg'){
-              this.form.login_bg = d.img;
-              this.$store.state.system.login_bg = d.img;
+      Plus.camera((fileObj)=>{
+        Plus.readerCompress(fileObj,perm,(base64)=>{
+          const load = Inc.loading();
+          Inc.post('Sysconfig/upImage',
+            {token:Inc.storage.getItem('token'),type:type,base64:base64},
+          (res)=>{
+            load.clear();
+            const d = res.data;
+            if(d.code == 0){
+              Inc.toast(d.msg,'success');
+              if(type=='logo'){
+                this.form.logo = d.img;
+                this.$store.state.system.logo = d.img;
+              }else if(type=='bg'){
+                this.form.login_bg = d.img;
+                this.$store.state.system.login_bg = d.img;
+              }
+            }else{
+              Inc.toast(d.msg,'error');
             }
-          }else{
-            Inc.toast(d.msg,'error');
-          }
+          });
         });
       });
     },
