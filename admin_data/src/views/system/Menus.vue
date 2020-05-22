@@ -100,7 +100,7 @@
     <!-- 编辑 End -->
 
     <!-- 删除 -->
-    <el-dialog title="删除" :visible.sync="delData.show" center width="320px" top="38vh">
+    <el-dialog title="删除" :visible.sync="delData.show" center width="320px">
       <div>是否删除已选择数据？</div>
       <div slot="footer">
         <el-button type="primary" @click="subDel()">彻底删除</el-button>

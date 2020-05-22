@@ -94,6 +94,8 @@ class SysPermController extends UserBase {
     // 是否存在
     $model = UserPerm::findFirst(['uid=:uid:','bind'=>['uid'=>$data->uid]]);
     if(!$model) return self::getJSON(['code'=>0,'msg'=>'用户不存在!']);
+    // 是否管理员
+    if(self::isAdmin($model->uid)) return self::getJSON(['code'=>4001,'msg'=>'无权修改!']);
     // 修改账户、密码
     $res = Centre::changeUname($data->uid,$data->tel,$data->passwd);
     // 结果
@@ -121,6 +123,8 @@ class SysPermController extends UserBase {
     if(!$model) return self::getJSON(['code'=>4001,'msg'=>'无效用户!']);
     if($type=='admin') $model->state_admin = $state;
     elseif($type=='app') $model->state_app = $state;
+    // 是否管理员
+    if(self::isAdmin($model->uid)) return self::getJSON(['code'=>4001,'msg'=>'无权修改!']);
     // 结果
     return $model->save()?self::getJSON(['code'=>0]):self::error(4022);
   }
@@ -202,13 +206,16 @@ class SysPermController extends UserBase {
     $model = UserPerm::findFirst(['uid=:uid:','bind'=>['uid'=>$uid]]);
     if(!$model) return self::getJSON(['code'=>4001,'msg'=>'无效用户!']);
     // 是否管理员
-    if($model->uid=='1' && self::$token->uid!='1'){
-      return self::getJSON(['code'=>4001,'msg'=>'无效用户!']);
-    }
+    if(self::isAdmin($model->uid)) return self::getJSON(['code'=>4001,'msg'=>'无权修改!']);
     // 数据
     $model->perm = $perm;
     $model->role = $role;
     return $model->save()?self::getJSON(['code'=>0]):self::error(4022);
+  }
+
+  /* 是否管理员 */
+  private function isAdmin($uid){
+    return $uid=='1'&&self::$token->uid!='1'?true:false;
   }
 
 }

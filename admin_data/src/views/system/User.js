@@ -11,21 +11,15 @@ export default {
       // 分页
       pageData:{list:[], total:0, page:1, limit:15},
       // 搜索、添加、编辑、删除、权限
-      seaData:{show:false,form:{uid:''}},
+      seaData:{show:false,form:{uname:''}},
       addData:{show:false,form:{tel:'',passwd:''}},
       editData:{show:false,form:{tel:'',passwd:''}},
       delData:{show:false,id:''},
-      permData:{show:false,active:'one',uid:'',default:[''],form:[],role:''},
-      // 全部动作菜单
-      aMenus:[],
-      // 分类
-      userRole:[],
+      infoData:{show:false,uid:'',form:{}},
     }
   },
   mounted(){
     this.loadData();
-    // 全部动作
-    this.allAction();
   },
   methods:{
 
@@ -90,8 +84,6 @@ export default {
           this.pageData.total = d.total;
         }
       });
-      // 获取分类
-      this.setClass();
     },
 
     /* 搜索 */
@@ -113,6 +105,7 @@ export default {
       (res)=>{
         const d = res.data;
         if(d.code!==0){
+          load.clear();
           Inc.toast(d.msg,'error');
         }else{
           Inc.toast(d.msg,'success');
@@ -135,6 +128,7 @@ export default {
       (res)=>{
         let d = res.data;
         if(d.code!==0){
+          load.clear();
           Inc.toast(d.msg,'error');
         }else{
           Inc.toast(d.msg,'success');
@@ -152,6 +146,7 @@ export default {
       Inc.post('Sysuser/del',{token:Inc.storage.getItem('token'),data:this.delData.id},(res)=>{
         const d = res.data;
         if(d.code!==0){
+          load.clear();
           Inc.toast(d.msg,'error');
         }else{
           Inc.toast(d.msg,'success');
@@ -163,7 +158,7 @@ export default {
 
     /* 状态 */
     setState(type,row){
-      const state = row['state_'+type]?1:0;
+      const state = row['state']?1:0;
       // 提交
       const load = Inc.loading();
       Inc.post('Sysuser/state/'+type,{token:Inc.storage.getItem('token'),uid:row.uid,state:state},(res)=>{
@@ -177,90 +172,30 @@ export default {
       });
     },
 
-    /* 刷新分类 */
-    setClass(){
-      this.getClass('userRole',(res)=>{this.userRole = res.data.list;});
+    /* 用户信息 */
+    eidtInfo(row){
+      this.infoData.show = true;
+      this.infoData.uid = row.uid;
+      this.infoData.form = {
+        nickname:row.nickname,
+        name:row.name,
+        gender:row.gender,
+        birthday:row.birthday,
+        position:row.position,
+      };
     },
-    /* 获取分类 */
-    getClass(type,callback){
-      Inc.post('Sysuser/getClass/'+type,{token:Inc.storage.getItem('token')},callback);
-    },
-
-    /* 全部菜单 */
-    allAction(){
-      Inc.post('Usermain/getActionAll',{token:Inc.storage.getItem('token')},(res)=>{
-        let d = res.data;
-        if(d.code!==0){
-          Inc.toast(d.msg,'error');
-        }else{
-          this.aMenus = d.aMenus;
-        }
-      });
-    },
-
-    /* 编辑权限 */
-    eidtPerm(uid,perm,role){
-      // 参数
-      this.permData.uid = uid;
-      this.permData.role = role || '';
-      // 请求
-      const load = Inc.loading();
-      Inc.post('Sysuser/allMenus',{token:Inc.storage.getItem('token')},(res)=>{
-        load.clear();
-        const d = res.data;
-        if(d.code!==0){
-          this.$message.error(d.msg);
-        }else{
-          this.permData.show=true;
-          this.permData.form = d.menus;
-          // 拆分权限
-          let permArr=[],defArr=[];
-          if(perm){
-            let a1 = perm.split(' ');
-            let a2=[];
-            for(let x=0; x<a1.length; x++){
-              a2 = a1[x].split(':');
-              perm = parseInt(a2[1]);
-              // 权限表
-              for(let k in this.aMenus){
-                if(perm&parseInt(this.aMenus[k].perm)) permArr.push(a2[0]+':'+this.aMenus[k].perm);
-              }
-            }
-          }
-          // 匹配
-          for(let x in permArr) defArr.push(d.id[permArr[x]]);
-          // 勾选默认
-          setTimeout(()=>{
-            this.$refs.perm.setCheckedKeys(defArr);
-          },300);
-        }
-      });
-    },
-    subPerm(){
-      let key = this.$refs.perm.getCheckedKeys();
-      let arr=[],arr1=[],arr2=[];
-      let permArr={};
-      let perm='';
-      for(let s in key){
-        arr = key[s].split(',');
-        // 父级菜单
-        arr1 = arr[0].split('-');
-        for(let x in arr1) permArr[arr1[x]] = 0;
-        // 动作权限
-        arr2 = arr[1].split(':');
-        permArr[arr2[0]] = permArr[arr2[0]]?permArr[arr2[0]]+parseInt(arr2[1]):parseInt(arr2[1]);
-      }
-      // 组合权限
-      for(let k in permArr) perm += k+':'+permArr[k]+' ';
+    subInfo(){
+      this.infoData.show = false;
+      const uid = this.infoData.uid;
+      const data = JSON.stringify(this.infoData.form);
       // 提交
-      this.permData.show=false;
       const load = Inc.loading();
-      Inc.post('Sysuser/perm',
-        {token:Inc.storage.getItem('token'),uid:this.permData.uid,perm:perm,role:this.permData.role},
+      Inc.post('Sysuser/uinfo',
+        {token:Inc.storage.getItem('token'),uid:uid,data:data},
       (res)=>{
-        load.clear();
         const d = res.data;
         if(d.code!==0){
+          load.clear();
           this.$message.error(d.msg);
         }else{
           this.$message.success(d.msg);
@@ -268,7 +203,7 @@ export default {
           this.loadData();
         }
       });
-    },
+    }
 
   }
 }

@@ -38,7 +38,6 @@ class SysPermController extends UserBase {
       b.uname as uname,b.email as email,b.tel as tel,b.state as state,
       b.rtime as rtime,b.ltime as ltime,b.utime as utime,
       c.nickname as nickname,c.position as position,c.name as name,c.gender as gender,c.birthday as birthday,c.img as img
-      
     ');
     $builder->orderBy('a.uid DESC');
     // 数据
@@ -47,7 +46,7 @@ class SysPermController extends UserBase {
     $data = $builder->getQuery()->execute()->toArray();
     // 状态
     foreach ($data as $key => $val) {
-      $data[$key]['age'] = $data['birthday']?Inc::getAge($data['birthday']):'';
+      $data[$key]['age'] = $val['birthday']?Inc::getAge($val['birthday']):'';
       $data[$key]['state_admin'] = $val['state_admin']?true:false;
       $data[$key]['state_app'] = $val['state_app']?true:false;
     }
@@ -100,6 +99,8 @@ class SysPermController extends UserBase {
     // 是否存在
     $model = UserPerm::findFirst(['uid=:uid:','bind'=>['uid'=>$data->uid]]);
     if(!$model) return self::getJSON(['code'=>0,'msg'=>'用户不存在!']);
+    // 是否管理员
+    if(self::isAdmin($model->uid)) return self::getJSON(['code'=>4001,'msg'=>'无权修改!']);
     // 修改账户、密码
     $user = User::findFirst(['id=:uid:','bind'=>['uid'=>$data->uid]]);
     $user->tel = $data->tel;
@@ -133,6 +134,8 @@ class SysPermController extends UserBase {
     if(!$model) return self::getJSON(['code'=>4001,'msg'=>'无效用户!']);
     if($type=='admin') $model->state_admin = $state;
     elseif($type=='app') $model->state_app = $state;
+    // 是否管理员
+    if(self::isAdmin($model->uid)) return self::getJSON(['code'=>4001,'msg'=>'无权修改!']);
     // 结果
     return $model->save()?self::getJSON(['code'=>0]):self::error(4022);
   }
@@ -214,13 +217,16 @@ class SysPermController extends UserBase {
     $model = UserPerm::findFirst(['uid=:uid:','bind'=>['uid'=>$uid]]);
     if(!$model) return self::getJSON(['code'=>4001,'msg'=>'无效用户!']);
     // 是否管理员
-    if($model->uid=='1' && self::$token->uid!='1'){
-      return self::getJSON(['code'=>4001,'msg'=>'无效用户!']);
-    }
+    if(self::isAdmin($model->uid)) return self::getJSON(['code'=>4001,'msg'=>'无权修改!']);
     // 数据
     $model->perm = $perm;
     $model->role = $role;
     return $model->save()?self::getJSON(['code'=>0]):self::error(4022);
+  }
+
+  /* 是否管理员 */
+  private function isAdmin($uid){
+    return $uid=='1'&&self::$token->uid!='1'?true:false;
   }
   
 }

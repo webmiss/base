@@ -46,7 +46,7 @@
     <!-- 内容 End -->
 
     <!-- 新建文件夹 -->
-    <el-dialog title="新建文件夹" :visible.sync="folder.show" center width="480px" top="30vh">
+    <el-dialog title="新建文件夹" :visible.sync="folder.show" center width="480px" :close-on-click-modal="false">
       <el-form :model="folder.form" :label-width="LabelWidth">
         <el-form-item label="名称">
           <el-input v-model="folder.form.name" placeholder="文件夹名称"></el-input>
@@ -59,7 +59,7 @@
     <!-- 新建文件夹 End -->
 
     <!-- 打包 -->
-    <el-dialog title="打包" :visible.sync="zipData.show" center width="480px" top="30vh">
+    <el-dialog title="打包" :visible.sync="zipData.show" center width="480px" :close-on-click-modal="false">
       <el-form :model="zipData.form" :label-width="LabelWidth">
         <el-form-item label="名称">
           <el-input v-model="zipData.form.name" placeholder="压缩名称">
@@ -74,7 +74,7 @@
     <!-- 打包 End -->
 
     <!-- 重命名 -->
-    <el-dialog title="重命名" :visible.sync="renameData.show" center width="480px" top="30vh">
+    <el-dialog title="重命名" :visible.sync="renameData.show" center width="480px" :close-on-click-modal="false">
       <el-form :model="renameData.form" :label-width="LabelWidth">
         <el-form-item label="名称">
           <el-input v-model="renameData.form.name" placeholder="文件夹、文件的名称"></el-input>
@@ -87,7 +87,7 @@
     <!-- 重命名 End -->
 
     <!-- 删除 -->
-    <el-dialog title="删除" :visible.sync="delData.show" center width="320px" top="38vh">
+    <el-dialog title="删除" :visible.sync="delData.show" center width="320px">
       <div>是否删除已选择文件？</div>
       <div slot="footer">
         <el-button type="primary" @click="subDel()">彻底删除</el-button>

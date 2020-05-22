@@ -68,7 +68,7 @@
     <!-- 编辑 End -->
 
     <!-- 删除 -->
-    <el-dialog title="删除" :visible.sync="delData.show" center width="320px" top="38vh">
+    <el-dialog title="删除" :visible.sync="delData.show" center width="320px">
       <div>是否删除已选择数据？</div>
       <div slot="footer">
         <el-button type="primary" @click="subDel()">彻底删除</el-button>
@@ -77,7 +77,7 @@
     <!-- 删除 End -->
 
     <!-- 权限 -->
-    <el-dialog title="编辑权限" :visible.sync="permData.show" center width="480px" top="5vh">
+    <el-dialog title="编辑权限" :visible.sync="permData.show" center width="480px" :close-on-click-modal="false">
       <el-tree ref="perm" :data="permData.form" show-checkbox :default-checked-keys="permData.default" node-key="id"></el-tree>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="subPerm()">更新</el-button>

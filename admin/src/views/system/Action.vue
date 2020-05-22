@@ -21,7 +21,7 @@
     <!-- 内容 End -->
 
     <!-- 搜索 -->
-    <el-dialog title="搜索" :visible.sync="seaData.show" center width="420px" top="30vh">
+    <el-dialog title="搜索" :visible.sync="seaData.show" center width="420px">
       <el-form :model="seaData.form" :label-width="LabelWidth">
         <el-form-item label="名称">
           <el-input v-model="seaData.form.name" placeholder="动作名称"></el-input>
@@ -40,7 +40,7 @@
     <!-- 搜索 End -->
 
     <!-- 添加 -->
-    <el-dialog title="添加" :visible.sync="addData.show" center width="520px" top="26vh">
+    <el-dialog title="添加" :visible.sync="addData.show" center width="520px" :close-on-click-modal="false">
       <el-form :model="addData.form" :label-width="LabelWidth">
         <el-form-item label="名称">
           <el-input v-model="addData.form.name" placeholder="动作名称"></el-input>
@@ -62,7 +62,7 @@
     <!-- 添加 End -->
 
      <!-- 编辑 -->
-    <el-dialog title="编辑" :visible.sync="editData.show" center width="520px" top="26vh">
+    <el-dialog title="编辑" :visible.sync="editData.show" center width="520px" :close-on-click-modal="false">
       <el-form :model="editData.form" :label-width="LabelWidth">
         <el-form-item label="名称">
           <el-input v-model="editData.form.name" placeholder="动作名称"></el-input>
@@ -84,7 +84,7 @@
     <!-- 编辑 End -->
 
     <!-- 删除 -->
-    <el-dialog title="删除" :visible.sync="delData.show" center width="320px" top="38vh">
+    <el-dialog title="删除" :visible.sync="delData.show" center width="320px">
       <div>是否删除已选择数据？</div>
       <div slot="footer">
         <el-button type="primary" @click="subDel()">彻底删除</el-button>

@@ -8,11 +8,6 @@
       <el-table :data="pageData.list" stripe @selection-change="getSelect">
         <el-table-column type="selection" width="45"></el-table-column>
         <el-table-column prop="uid" label="UID" width="170"></el-table-column>
-        <el-table-column label="账号" width="120">
-          <template slot-scope="scope">
-           {{ scope.row.tel || scope.row.email || scope.row.uname }} 
-          </template>
-        </el-table-column>
         <el-table-column label="个人信息" width="160">
           <template slot-scope="scope">
             <el-popover trigger="hover" placement="top">
@@ -21,8 +16,9 @@
               <p>姓名: {{ scope.row.name || '无' }}</p>
               <p>性别: {{ scope.row.gender || '无' }}</p>
               <p>生日: {{ scope.row.birthday || '无' }}</p>
+              <p>年龄: {{ scope.row.age || '' }}岁</p>
               <div slot="reference">
-                <el-tag size="medium">{{ scope.row.name+' ('+scope.row.gender+', '+scope.row.age+'岁)' }}</el-tag>
+                <el-tag size="medium">{{ scope.row.tel || scope.row.email || scope.row.uname }}</el-tag>
               </div>
             </el-popover>
           </template>
@@ -34,7 +30,7 @@
               <p>修改: {{ scope.row.utime || '无' }}</p>
               <p>登录: {{ scope.row.ltime || '无' }}</p>
               <div slot="reference">
-                <el-tag size="medium">{{ scope.row.ltime }}</el-tag>
+                <el-tag size="medium">{{ scope.row.ltime || '无' }}</el-tag>
               </div>
             </el-popover>
           </template>
@@ -83,7 +79,7 @@
     <!-- 搜索 End -->
 
     <!-- 添加 -->
-    <el-dialog title="添加" :visible.sync="addData.show" center width="420px">
+    <el-dialog title="添加" :visible.sync="addData.show" center width="420px" :close-on-click-modal="false">
       <el-form :model="addData.form" :label-width="LabelWidth">
         <el-form-item label="手机">
           <el-input v-model="addData.form.tel" maxlength="11" placeholder="输入手机号码"></el-input>
@@ -99,7 +95,7 @@
     <!-- 添加 End -->
 
      <!-- 编辑 -->
-    <el-dialog title="编辑" :visible.sync="editData.show" center width="420px">
+    <el-dialog title="编辑" :visible.sync="editData.show" center width="420px" :close-on-click-modal="false">
       <el-form :model="editData.form" :label-width="LabelWidth">
         <el-form-item label="手机">
           <el-input v-model="editData.form.tel" maxlength="11" placeholder="输入手机号码"></el-input>
@@ -115,7 +111,7 @@
     <!-- 编辑 End -->
 
     <!-- 删除 -->
-    <el-dialog title="删除" :visible.sync="delData.show" center width="320px" top="38vh">
+    <el-dialog title="删除" :visible.sync="delData.show" center width="320px">
       <div>是否删除已选择数据？</div>
       <div slot="footer">
         <el-button type="primary" @click="subDel()">彻底删除</el-button>
@@ -124,7 +120,7 @@
     <!-- 删除 End -->
 
     <!-- 权限 -->
-    <el-dialog title="编辑权限" :visible.sync="permData.show" center width="480px" top="5vh">
+    <el-dialog title="编辑权限" :visible.sync="permData.show" center width="480px" :close-on-click-modal="false">
       <el-tabs v-model="permData.active">
         <el-tab-pane label="专属权限" name="one">
           <el-tree ref="perm" :data="permData.form" show-checkbox :default-checked-keys="permData.default" node-key="id"></el-tree>
