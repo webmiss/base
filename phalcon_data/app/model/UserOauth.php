@@ -4,7 +4,7 @@ namespace app\model;
 
 class UserOauth extends BaseModel{
 
-  public $id;
+  private $id;
 
   public function initialize(){
     // 数据表

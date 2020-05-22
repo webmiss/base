@@ -6,9 +6,11 @@ use app\model\BaseModel;
 
 class SysMenu extends BaseModel{
 
-  public $id;
+  private $id;
   private $fid;
-  private $title;
+  public $title;
+  public $ctime;
+  public $utime;
 
   public function initialize(){
     // 数据表
@@ -23,17 +25,24 @@ class SysMenu extends BaseModel{
   public function getFid(){
     return $this->fid;
   }
-  
-  /* 名称 */
-  public function setTitle($title){
-    $num = mb_strlen($title,"utf-8");
+
+  /* 保存 */
+  public function beforeSave(){
+    // 名称
+    $num = mb_strlen($this->title,'utf-8');
     if($num<2 || $num>12){
       return self::error('名称为2~12位字符！');
     }
-    $this->title = $title;
   }
-  public function getTitle(){
-    return $this->title;
+
+  /* 创建 */
+  public function beforeCreate(){
+    $this->ctime = date('YmdHis');
+  }
+
+  /* 更新 */
+  public function beforeUpdate(){
+    $this->utime = date('YmdHis');
   }
 
 }

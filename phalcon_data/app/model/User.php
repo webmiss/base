@@ -11,6 +11,8 @@ class User extends BaseModel{
   public $uname;
   public $tel;
   public $email;
+  public $rtime;
+  public $utime;
 
   public function initialize(){
     // 数据表

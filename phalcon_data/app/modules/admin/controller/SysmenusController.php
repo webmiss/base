@@ -45,14 +45,14 @@ class SysMenusController extends UserBase {
   function addAction(){
     $data = $this->request->get('data');
     if(empty($data)) return self::getJSON(['code'=>4000]);
+    $data = json_decode($data);
     // 数据处理
     $model = new SysMenu();
-    $data = json_decode($data);
     foreach($data as $key=>$val){
       if($key=='id') continue;
+      elseif($key=='permArr') continue;
       $model->$key = trim($val);
     }
-    $model->ctime = date('YmdHis');
     // 执行
     return $model->save()?self::getJSON(['code'=>0]):self::error(4021);
   }
@@ -60,17 +60,17 @@ class SysMenusController extends UserBase {
   /* 编辑 */
   function editAction(){
     $id = trim($this->request->getPost('id'));
-    $data = trim($this->request->getPost('data'));
+    $data = $this->request->getPost('data');
     if(empty($id) || empty($data)) return self::getJSON(['code'=>4000]);
+    $data = json_decode($data);
     // 数据处理
     $model = SysMenu::findFirst(['id=:id:','bind'=>['id'=>$id]]);
     if(!$model) return self::getJSON(['code'=>4020]);
-    $data = json_decode($data);
     foreach($data as $key=>$val){
       if($key=='id') continue;
+      elseif($key=='permArr') continue;
       $model->$key = trim($val);
     }
-    $model->utime = date('YmdHis');
     // 执行
     return $model->save()?self::getJSON(['code'=>0]):self::error(4022);
   }

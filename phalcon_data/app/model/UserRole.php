@@ -6,33 +6,32 @@ namespace app\model;
 class UserRole extends BaseModel{
 
   public $id;
-  private $role;
-  private $utime;
+  public $role;
+  public $ctime;
+  public $utime;
 
   public function initialize(){
     // 数据表
     $this->setSource('user_role');
   }
 
-  /* 名称 */
-  public function setRole($role){
-    $num = mb_strlen($role,"utf-8");
+  /* 保存 */
+  public function beforeSave(){
+    // 名称
+    $num = mb_strlen($this->role,'utf-8');
     if($num<2 || $num>6){
       return self::error('名称为2~6位字符！');
     }
-    $this->role = $role;
-  }
-  public function getRole(){
-    return $this->role;
   }
 
-  /* 更新时间 */
-  public function setUtime($utime){
-    if(empty($utime)) $utime = null;
-    $this->utime = $utime;
+  /* 创建 */
+  public function beforeCreate(){
+    $this->ctime = date('YmdHis');
   }
-  public function getUtime(){
-    return $this->utime;
+
+  /* 更新 */
+  public function beforeUpdate(){
+    $this->utime = date('YmdHis');
   }
 
 }

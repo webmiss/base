@@ -1,5 +1,6 @@
 import Inc from '@/library/Inc'
 import Action from '@/components/Action'
+
 export default {
   components: {Action},
   watch: {
@@ -99,6 +100,7 @@ export default {
       (res)=>{
         let d = res.data;
         if(d.code!==0){
+          load.clear();
           Inc.toast(d.msg,'error');
         }else{
           Inc.toast(d.msg,'success');
@@ -144,6 +146,7 @@ export default {
       (res)=>{
         let d = res.data;
         if(d.code!==0){
+          load.clear();
           Inc.toast(d.msg,'error');
         }else{
           Inc.toast(d.msg,'success');
@@ -161,9 +164,9 @@ export default {
       Inc.post('Sysmenus/del',
         {token:Inc.storage.getItem('token'),data:JSON.stringify(this.delData.id)},
       (res)=>{
-        load.clear();
         let d = res.data;
         if(d.code!==0){
+          load.clear();
           Inc.toast(d.msg,'error');
         }else{
           Inc.toast(d.msg,'success');
