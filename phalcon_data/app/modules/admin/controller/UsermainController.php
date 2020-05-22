@@ -11,6 +11,12 @@ class UserMainController extends UserBase{
 
   static private $menus=[];
 
+  /* 百度Token */
+  function baiduTokenAction(){
+    $token = Ai::getToken();
+    return self::getJSON(['code'=>0,'token'=>$token]);
+  }
+
 	/* 获取菜单 */
 	function getMenusAction(){
     // 全部菜单
@@ -61,12 +67,6 @@ class UserMainController extends UserBase{
   function getActionAllAction(){
     $aMenus = SysMenuAction::find(['','columns'=>'name,action,perm']);
     return self::getJSON(['code'=>0,'aMenus'=>$aMenus]);
-  }
-
-  /* 百度Token */
-  function baiduTokenAction(){
-    $token = Ai::getToken();
-    return self::getJSON(['code'=>0,'token'=>$token]);
   }
   
 }

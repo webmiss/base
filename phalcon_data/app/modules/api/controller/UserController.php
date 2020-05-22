@@ -101,7 +101,6 @@ class UserController extends UserBase {
     }
     // 更新
     $model->$type=$val;
-    $model->utime=date('YmdHis');
     return $model->save()===true?self::getJSON(['code'=>0,'uid'=>$uid]):self::error(4022);
   }
 

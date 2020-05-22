@@ -5,7 +5,7 @@ namespace app\model;
 /* 角色 */
 class UserRole extends BaseModel{
 
-  public $id;
+  private $id;
   public $role;
   public $ctime;
   public $utime;
