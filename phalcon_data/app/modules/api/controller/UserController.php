@@ -146,7 +146,7 @@ class UserController extends UserBase {
     $data = $this->request->get('data');
     if(empty($data)) return self::getJSON(['code'=>4000]);
     // 是否合作者
-    $isClient = User::findFirst(['id=:uid: AND cid='.self::$token->uid,'bind'=>['uid'=>$uid]]);
+    $isClient = User::findFirst(['id=:uid:','bind'=>['uid'=>$uid]]);
     if(!$isClient) return self::getJSON(['code'=>4000,'msg'=>'无权修改该用户信息']);
     // 数据
     $data = json_decode($data);
@@ -176,8 +176,8 @@ class UserController extends UserBase {
     }
     // 模型
     $model = User::findFirst([
-      'id=:uid: AND cid=:cid: AND password=:pwd:',
-      'bind'=>['uid'=>$uid,'cid'=>self::$token->uid,'pwd'=>md5($old)]
+      'id=:uid: AND password=:pwd:',
+      'bind'=>['uid'=>$uid,'pwd'=>md5($old)]
     ]);
     if(!$model) return self::getJSON(['code'=>4000,'msg'=>'原密码错误或无权修改！']);
     $model->password = md5($pwd);
@@ -190,7 +190,7 @@ class UserController extends UserBase {
     $data = $this->request->get('data');
     if(empty($data)) return self::getJSON(['code'=>4000]);
     // 是否合作者
-    $isClient = User::findFirst(['id=:uid: AND cid='.self::$token->uid,'bind'=>['uid'=>$uid]]);
+    $isClient = User::findFirst(['id=:uid:','bind'=>['uid'=>$uid]]);
     if(!$isClient) return self::getJSON(['code'=>4000,'msg'=>'无权修改该用户信息']);
     // 上传
     $up = Upload::base64(self::$imgDir,$data);
@@ -205,7 +205,7 @@ class UserController extends UserBase {
     $model->img = self::$imgDir.$up['file'];
     if($model->save()==true){
       if($tmp) @unlink($tmp);
-      return self::getJSON(['code'=>0,'img'=>Inc::BaseUrl().self::$imgDir.$up['file']]);
+      return self::getJSON(['code'=>0,'img'=>$this->config->img_url.self::$imgDir.$up['file']]);
     }else{
       return self::getJSON(['code'=>4030]);
     }

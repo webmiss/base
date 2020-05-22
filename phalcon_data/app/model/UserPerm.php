@@ -6,7 +6,8 @@ namespace app\model;
 class UserPerm extends BaseModel{
 
   public $uid;
-  private $utime;
+  public $ctime;
+  public $utime;
 
   public function initialize(){
     // 数据表

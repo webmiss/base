@@ -39,7 +39,7 @@ export default {
         const d = res.data;
         if(d.code==0){
           // 刷新
-          this.$store.state.uinfo = JSON.parse(data);
+          this.$store.state.uInfo = d.uinfo;
           return Inc.toast(d.msg,'success');
         }else{
           return Inc.toast(d.msg,'error');
@@ -48,23 +48,22 @@ export default {
     },
 
     /* 上传图片 */
-    upImage(event){
-      const el = event.currentTarget;
-      const fileObj = el.files[0];
-      let perm = {width:200,height:200};
-      // 压缩
-      Plus.readerCompress(fileObj,perm,(base64)=>{
-        const load = Inc.loading();
-        Inc.post('Userinfo/upImage',{token:Inc.storage.getItem('token'),base64:base64},(res)=>{
-          load.clear();
-          const d = res.data;
-          if(d.code==0){
-            this.form.img = d.img;
-            this.$store.state.uinfo.img = d.img;
-            return Inc.toast(d.msg,'success');
-          }else{
-            return Inc.toast(d.msg,'error');
-          }
+    upImage(){
+      Plus.camera((fileObj)=>{
+        // 压缩
+        Plus.readerCompress(fileObj,{width:200,height:200},(base64)=>{
+          const load = Inc.loading();
+          Inc.post('Userinfo/upImage',{token:Inc.storage.getItem('token'),base64:base64},(res)=>{
+            load.clear();
+            const d = res.data;
+            if(d.code==0){
+              this.form.img = d.img;
+              this.$store.state.uInfo.img = d.img;
+              return Inc.toast(d.msg,'success');
+            }else{
+              return Inc.toast(d.msg,'error');
+            }
+          });
         });
       });
     },

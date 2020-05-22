@@ -72,15 +72,14 @@ class Centre{
   static function uinfoImg($uid,$base64){
     $config = require APP_PATH.'/config/env.php';
     $data = Inc::curlPost($config['centre_url'].'user/upImg?token='.self::getToken().'&uid='.$uid,['data'=>$base64]);
-    return $data->code==0?$data->img:false;
+    return $data;
   }
 
   /* 用户信息-编辑 */
   static function uinfoEdit($uid,$data){
     $config = require APP_PATH.'/config/env.php';
     $res = file_get_contents($config['centre_url'].'user/infoEdit?token='.self::getToken().'&uid='.$uid.'&data='.$data);
-    $data = json_decode($res);
-    return $data->code==0?true:$data->msg;
+    return json_decode($res);
   }
 
   /* 获取Token */

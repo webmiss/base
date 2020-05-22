@@ -7,6 +7,8 @@ class UserInfo extends BaseModel{
 
   public $uid;
   public $birthday;
+  public $ctime;
+  public $utime;
   
   public function initialize(){
     // 数据表
@@ -17,6 +19,16 @@ class UserInfo extends BaseModel{
   public function beforeSave(){
     // 生日
     if(empty($this->birthday)) $this->birthday = null;
+  }
+
+  /* 创建 */
+  public function beforeCreate(){
+    $this->ctime = date('YmdHis');
+  }
+
+  /* 更新 */
+  public function beforeUpdate(){
+    $this->utime = date('YmdHis');
   }
 
   /* 删除 */

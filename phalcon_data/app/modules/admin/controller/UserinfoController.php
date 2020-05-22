@@ -18,7 +18,7 @@ class UserInfoController extends UserBase {
       'name'=>$data->name?$data->name:'',
       'gender'=>$data->gender?$data->gender:'',
       'birthday'=>$data->birthday?$data->birthday:'',
-      'img'=>$data->img?$data->img:'',
+      'img'=>$data->img?$this->config->img_url.$data->img:'',
     ];
 		return self::getJSON(['code'=>0,'list'=>$list]);
   }
@@ -38,7 +38,9 @@ class UserInfoController extends UserBase {
       if($key=='img') continue;
       $model->$key = trim($val);
     }
-    return $model->save()==true?self::getJSON(['code'=>0]):self::error(4022);
+    $uinfo = $model->toArray();
+    $uinfo['img'] = $uinfo['img']?$this->config->img_url.$uinfo['img']:'';
+    return $model->save()==true?self::getJSON(['code'=>0,'uinfo'=>$uinfo]):self::error(4022);
   }
 
   /* 上传图片 */
@@ -60,7 +62,7 @@ class UserInfoController extends UserBase {
       // 保存
       if($model->save()==true){
         @unlink($img);
-        return self::getJSON(['code'=>0,'img'=>self::$imgDir.$up['file']]);
+        return self::getJSON(['code'=>0,'img'=>$this->config->img_url.self::$imgDir.$up['file']]);
       }else{
         return self::getJSON(['code'=>4030]);
       }

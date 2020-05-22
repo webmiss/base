@@ -4,9 +4,8 @@
     <el-row class="body mTop10">
       <el-form :model="form" :label-width="LabelWidth">
         <el-form-item label="头像">
-          <label for="logo" class="upload bgImg bgTu" v-if="!form.img"></label>
-          <label for="logo" class="upload bgImg bgTu" v-else :style="{backgroundImage:'url('+form.img+')'}"></label>
-          <input type="file" id="logo" @change="upImage($event,'img')" class="hide">
+          <div for="logo" class="upload bgImg bgTu" v-if="!form.img" @click="upImage()"></div>
+          <div for="logo" class="upload bgImg bgTu" v-else :style="{backgroundImage:'url('+form.img+')'}" @click="upImage()"></div>
         </el-form-item>
         <el-form-item label="昵称">
           <el-input v-model="form.nickname" placeholder="用户昵称" maxlength="8" style="max-width: 320px;"></el-input>
