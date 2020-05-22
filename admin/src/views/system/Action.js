@@ -99,9 +99,9 @@ export default {
       Inc.post('Sysmenusaction/add',
         {token:Inc.storage.getItem('token'),data:JSON.stringify(this.addData.form)},
       (res)=>{
-        load.clear();
         let d = res.data;
         if(d.code!==0){
+          load.clear();
           Inc.toast(d.msg,'error');
         }else{
           Inc.toast(d.msg,'success');
@@ -119,9 +119,9 @@ export default {
       Inc.post('Sysmenusaction/edit',
         {token:Inc.storage.getItem('token'),id:this.editData.form.id,data:JSON.stringify(this.editData.form)},
       (res)=>{
-        load.clear();
         let d = res.data;
         if(d.code!==0){
+          load.clear();
           Inc.toast(d.msg,'error');
         }else{
           Inc.toast(d.msg,'success');
@@ -139,9 +139,9 @@ export default {
       Inc.post('Sysmenusaction/del',
         {token:Inc.storage.getItem('token'),data:this.delData.id},
       (res)=>{
-        load.clear();
         let d = res.data;
         if(d.code!==0){
+          load.clear();
           Inc.toast(d.msg,'error');
         }else{
           Inc.toast(d.msg,'success');
