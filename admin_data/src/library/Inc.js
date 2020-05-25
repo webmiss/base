@@ -26,27 +26,30 @@ export default {
   },
 
   /* Get请求 */
-  get(url,data,success,fail){
+  get(url,data,success,fail,config){
     const str = url.substr(0,4);
     url = str=='http'?url:this.config.apiUrl+url;
-    // 方式
-    axios.get(
-      url,{params:data},this.config.request
-    ).then(success).catch(fail);
+    // 配置
+    let cfg = this.config.request;
+    config = config || {};
+    for(let i in cfg) config[i] = cfg[i];
+    // 请求
+    axios.get(url,{params:data},config).then(success).catch(fail);
   },
 
   /* Post请求 */
-  post(url,data,success,fail,progress){
+  post(url,data,success,fail,config){
     const str = url.substr(0,4);
     url = str=='http'?url:this.config.apiUrl+url;
     // 表单
     let param = new FormData();
     for(let i in data) param.append(i,data[i]);
-    // 方式
-    this.config.request.onUploadProgress = progress;
-    axios.post(
-      url,param,this.config.request
-    ).then(success).catch(fail);
+    // 配置
+    let cfg = this.config.request;
+    config = config || {};
+    for(let i in cfg) config[i] = cfg[i];
+    // 请求
+    axios.post(url,param,config).then(success).catch(fail);
   },
 
   /* 本地硬盘 */
