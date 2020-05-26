@@ -1,5 +1,5 @@
 import Inc from '@/library/Inc'
-import Action from '@/components/Action'
+import Action from '@/components/action'
 
 export default {
   components: {Action},

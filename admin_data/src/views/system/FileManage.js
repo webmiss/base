@@ -1,5 +1,5 @@
 import Inc from '@/library/Inc'
-import Action from '@/components/Action'
+import Action from '@/components/action'
 
 export default {
   components: {Action},
@@ -119,7 +119,21 @@ export default {
     /* 打开文件 */
     openFile(file){
       const ext = this.getType(file);
-      if(ext) this.downFile(file);
+      // 是否图片
+      if(this.isImg(ext)){
+        const all = this.lists.files;
+        let imgs = [];
+        let index = 0;
+        for(let i in all){
+          if(this.isImg(all[i].ext)){
+            if(file==all[i].name) index=imgs.length;
+            imgs.push(this.url+this.lists.path+all[i].name);
+          }
+        }
+        console.log(index,imgs);
+      }else{
+        this.downFile(file);
+      }
     },
 
     /* 上传 */
