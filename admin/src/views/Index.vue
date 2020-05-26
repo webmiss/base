@@ -11,8 +11,8 @@
             <div class="null" v-if="menus.length==0"></div>
             <ul v-else class="in_menus">
               <li v-for="(val,key) in menus" :key="key">
-                <a @click="openUrl(val.ico,val.url,val.index,val.name,true)">
-                  <div><i :class="val.ico?val.ico:'ico_mask ico_other'"></i></div><p class="nowrap">{{val.name}}</p>
+                <a @click="openUrl(val.ico,val.url,val.index,val.name)">
+                  <div><i class="icons" :class="val.ico?val.ico:'icon_more'"></i></div><p class="nowrap">{{val.name}}</p>
                 </a>
               </li>
             </ul>
@@ -112,7 +112,7 @@
 .in_menus a{display: block;}
 .in_menus div{padding: 10px 0; background-color: #F8F8F8; font-size: 20px;}
 .in_menus p{line-height: 30px; color: #666; font-size: 12px;}
-.in_menus .ico_mask{width: 36px; height: 36px; display: inline-block; background-color: #6FB737;}
+.in_menus .icons{width: 36px; height: 36px; line-height: 36px; font-size: 32px; display: inline-block;}
 
 /* 数据统计 */
 .in_total{width: calc(50% - 30px); padding: 10px; margin: 5px 0; background-color: #F8F8F8; text-align: center;}

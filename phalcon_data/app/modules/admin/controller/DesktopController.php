@@ -2,6 +2,8 @@
 
 namespace app\modules\admin\controller;
 
+use app\model\UserMsg;
+
 /* 控制台 */
 class DeskTopController extends UserBase{
 
@@ -9,8 +11,11 @@ class DeskTopController extends UserBase{
   function indexAction(){
 
     // 我的消息
-    $msg = [];
-    if(!is_array($msg)) return self::getJSON(['code'=>4011,'msg'=>$msg]);
+    $msg = UserMsg::find([
+      'uid=:uid:',
+      'bind'=>['uid'=>self::$token->uid],
+      'order'=>'ctime DESC',
+    ])->toArray();
 
     // 统计
     $total = ['user'=>10, 'order'=>582, 'amount'=>3479.05, 'volume'=>85,];

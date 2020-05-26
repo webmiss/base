@@ -11,8 +11,6 @@ export default {
   name: 'APP',
   data(){
     return {
-      isCollapse: false,  // 收缩菜单
-      defaultMenu: '',  // 默认菜单
       storage: Inc.storage,
       // 更新APP
       update: {show:false,os:'',down:false,loading:'0%',msg:'检测更新',file:'',total:0},
@@ -36,8 +34,8 @@ export default {
     /* 获取菜单 */
     if(Inc.storage.getItem('token')) this.getMenus();
     // 默认菜单
-    this.isCollapse = Inc.storage.getItem('isCollapse')=='true'?true:false;
-    this.defaultMenu = Inc.storage.getItem('defaultMenu')?Inc.storage.getItem('defaultMenu'):'3';
+    this.$store.state.collapseMenu = Inc.storage.getItem('isCollapse')=='true'?true:false;
+    this.$store.state.defaultMenu = Inc.storage.getItem('defaultMenu')?Inc.storage.getItem('defaultMenu'):'3';
   },
   methods:{
 
@@ -159,12 +157,14 @@ export default {
     hideMenus(){
       this.isCollapse = !this.isCollapse;
       Inc.storage.setItem('isCollapse',this.isCollapse);
+      this.$store.state.collapseMenu = this.isCollapse;
     },
     /* 跳转地址 */
-    openUrl(ico,url,index,name,reload){
+    openUrl(ico,url,index,name){
       // 保存-当前位置
       Inc.storage.setItem('MenuName',name);
       Inc.storage.setItem('defaultMenu',index);
+      this.$store.state.defaultMenu = index;
       // 保存-快捷方式
       if(index!='3'){
         let menus = JSON.parse(Inc.storage.getItem('Menus') || '[]');
@@ -177,8 +177,6 @@ export default {
       }
       // 跳转
       this.$router.push(url);
-      // 刷新
-      if(reload) setTimeout(()=>{window.location.reload();},300);
     },
 
     /* 系统配置 */

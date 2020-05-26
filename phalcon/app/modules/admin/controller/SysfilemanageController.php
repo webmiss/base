@@ -65,11 +65,16 @@ class SysFileManageController extends UserBase{
   /* 下载 */
   function downFileAction(){
     $path = $this->request->get('path','string');
-    $file = $this->request->get('file','string');
-    if(empty($path) || empty($file)) return self::getJSON(['code'=>4000]);
+    $fileName = $this->request->get('file','string');
+    if(empty($path) || empty($fileName)) return self::getJSON(['code'=>4000]);
     // 文件流
     self::getJSON();
-    return readfile(self::$userRoot.$path.$file);
+    $size = filesize(self::$userRoot.$path.$fileName);
+    header('Content-type: application/octet-stream');
+    header('Accept-Ranges: bytes');
+    header ('Accept-Length: '.$size);
+    header ('Content-Disposition: attachment; filename='.$fileName);
+    return readfile(self::$userRoot.$path.$fileName);
   }
 
   /* 删除文件 */

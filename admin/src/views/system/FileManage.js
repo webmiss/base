@@ -7,10 +7,11 @@ export default {
     return {
       LabelWidth:'80px',
       // 路径
+      url: '',
       path: '/',
       loaded: '0%',
       // 列表、新建、打包、重命名、删除
-      lists: {folder:[],files:[]},
+      lists: {url:'',folder:[],files:[]},
       folder: {show: false, form:{name:''}},
       zipData: {show: false, form:{name:'',files:[]}},
       renameData: {show: false, form:{rename:'',name:''}},
@@ -25,13 +26,23 @@ export default {
     /* 加载数据 */
     loadData(){
       const load = Inc.loading();
-      Inc.post('Filemanage/list',
+      Inc.post('Sysfilemanage/list',
         {token:Inc.storage.getItem('token'),path:this.path},
       (res)=>{
         load.clear();
         const d = res.data;
-        if(d.code==0) this.lists = d.data;
+        if(d.code==0){
+          this.url = d.url;
+          this.lists = d.data;
+        }
       });
+    },
+
+    /* 是否图片 */
+    isImg(ext){
+      const arr = ['png','jpg','jpeg','gif','svg'];
+      const index = arr.indexOf(ext);
+      return index>=0?true:false;
     },
 
     /* 打开文件夹 */
@@ -66,7 +77,7 @@ export default {
       if(this.isExist(name)) return;
       // 提交
       this.folder.show = false;
-      this.subAjax('mkDir','&path='+this.path+'&name='+name);
+      this.subAjax('mkDir',{path:this.path,name:name});
     },
 
     /* 打包 */
@@ -83,7 +94,7 @@ export default {
       if(!name || this.isExist(name+'.zip')) return;
       // 提交
       this.zipData.show = false;
-      this.subAjax('zipFile','&path='+this.path+'&name='+name+'&files='+files);
+      this.subAjax('zipFile',{path:this.path,name:name,files:files});
     },
 
     /* 重命名 */
@@ -102,7 +113,7 @@ export default {
       if(this.isExist(name)) return;
       // 提交
       this.renameData.show = false;
-      this.subAjax('reName','&path='+this.path+'&rename='+rename+'&name='+name);
+      this.subAjax('reName',{path:this.path,rename:rename,name:name});
     },
 
     /* 打开文件 */
@@ -120,30 +131,22 @@ export default {
       document.body.appendChild(fileObj);
       fileObj.click();
       fileObj.onchange = ()=>{
-        // 文件
+        // 多选
         for(let i=0; i<fileObj.files.length; i++){
-          let form = new FormData();
-          form.append('token', this.$storage.getItem('token'));
-          form.append('path', this.path);
-          form.append('up', fileObj.files[i]);
           // 单个上传
-          this.upFile(form);
+          this.upFile({
+            token:Inc.storage.getItem('token'),
+            path:this.path,
+            up:fileObj.files[i],
+          });
         }
       }
     },
     /* 异步上传 */
     upFile(data){
       this.loaded = '10%';
-      Inc.post(
-        this.$config.apiUrl+'Filemanage/upFile', data,
-        {onUploadProgress:(event)=>{
-          // 上传进度
-          let complete = (event.loaded/event.total*100 | 0);
-          if(complete<100) this.loaded = complete+'%';
-          else this.loaded = '0%';
-        }}
-      ).then((res)=>{
-        const d = res.data;
+      this.subAjax('upFile',data,(res)=>{
+        const d = res;
         if(d.code!==0){
           if(d.msg) Inc.toast(d.msg,'error');
         }else{
@@ -151,12 +154,17 @@ export default {
           // 刷新数据
           this.loadData();
         }
-      });
+      },{onUploadProgress:(event)=>{
+        // 上传进度
+        let complete = (event.loaded/event.total*100 | 0);
+        if(complete<100) this.loaded = complete+'%';
+        else this.loaded = '0%';
+      }});
     },
 
     /* 下载 */
     downFile(file){
-      this.subAjax('downFile','&path='+this.path+'&file='+file,(data)=>{
+      this.subAjax('downFile',{path:this.path,file:file},(data)=>{
         const blob = new Blob([data]);
         const a = document.createElement('a');
         const href = window.URL.createObjectURL(blob);
@@ -166,7 +174,7 @@ export default {
         a.click();
         document.body.removeChild(a);
         window.URL.revokeObjectURL(href);
-      },{responseType: 'blob'});
+      },{responseType:'blob'});
     },
 
     /* 删除文件 */
@@ -180,27 +188,27 @@ export default {
       const data = JSON.stringify(this.delData.data);
       // 提交
       this.delData.show = false;
-      this.subAjax('rmFile','&path='+this.path+'&data='+data);
+      this.subAjax('rmFile',{path:this.path,data:data});
     },
 
     /* 提交数据 */
-    subAjax(action,parameter,callback,progress){
+    subAjax(action,parameter,callback,config){
       parameter.token = Inc.storage.getItem('token');
       const load = Inc.loading();
-      Inc.post('Filemanage/'+action,parameter,(res)=>{
-        load.clear();
+      Inc.post('Sysfilemanage/'+action,parameter,(res)=>{
         const d = res.data;
         // 回调
         if(callback) callback(d);
         // 结果
         if(d.code!==0){
+          load.clear();
           if(d.msg) Inc.toast(d.msg,'error');
         }else{
           if(d.msg) Inc.toast(d.msg,'success');
           // 刷新数据
           this.loadData();
         }
-      },(e)=>{},progress);
+      },(e)=>{},config);
     },
 
     /* 获取选中 */

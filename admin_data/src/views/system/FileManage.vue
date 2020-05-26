@@ -15,7 +15,12 @@
       <!-- 文件信息 -->
       <el-row class="file_path">
         <span class="path">
-          <span @click="backDir()" v-html="path=='/'?'返回上级':'<a>返回上级</a>'"></span>|<span><a @click="loadData()">刷新</a></span>|<span>{{ path }}</span>
+          <span v-if="path=='/'">根目录</span>
+          <span v-else @click="backDir()"><a>返回上级</a></span>
+          <span class="split">|</span>
+          <span><a @click="loadData()">刷新</a></span>
+          <span class="split">|</span>
+          <span>{{ path }}</span>
         </span>
         <span class="info">文件夹( {{ lists.dirNum }} ) 文件( {{ lists.fileNum }} ) 大小( {{ lists.size }} )</span>
       </el-row>
@@ -105,6 +110,7 @@
 
 <style scoped>
 .file_path{padding: 10px 0;}
+.file_path .path{color: #999;}
 .file_path .path span{padding: 5px 10px;}
 .file_path .info{position: absolute; right: 0px; color: #999; background-color: #FFF; font-size: 12px;}
 .file_load{width: 100%; height: 6px; line-height: 6px; font-size: 12px; background-color: #F2F4F6; border-radius: 3px;}
