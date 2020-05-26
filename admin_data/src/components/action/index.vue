@@ -9,14 +9,17 @@
 <script>
 import Inc from '@/library/Inc'
 export default {
-  name:'Action',
-  props: ['url'],
+  name:'ImageView',
+  props: {
+    url:{type: String, default: ''},
+  },
   data(){
     return {
       actions:[],
     }
   },
   mounted(){
+    if(!this.url) return Inc.toast('验证菜单不能为空!');
     this.getAction(this.url);
   },
   methods:{

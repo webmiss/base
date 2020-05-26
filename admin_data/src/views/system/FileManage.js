@@ -1,8 +1,9 @@
 import Inc from '@/library/Inc'
 import Action from '@/components/action'
+import ImgView from '@/components/img-view'
 
 export default {
-  components: {Action},
+  components: {Action,ImgView},
   data(){
     return {
       LabelWidth:'80px',
@@ -16,6 +17,8 @@ export default {
       zipData: {show: false, form:{name:'',files:[]}},
       renameData: {show: false, form:{rename:'',name:''}},
       delData: {show: false, data:[]},
+      // 图片预览
+      imgView:{show: false, imgs:[], index: 0},
     }
   },
   mounted(){
@@ -121,6 +124,7 @@ export default {
       const ext = this.getType(file);
       // 是否图片
       if(this.isImg(ext)){
+        // 全部图片
         const all = this.lists.files;
         let imgs = [];
         let index = 0;
@@ -130,7 +134,9 @@ export default {
             imgs.push(this.url+this.lists.path+all[i].name);
           }
         }
-        console.log(index,imgs);
+        // 图片预览
+        this.imgView.show = true;
+        this.$refs.imgShow.open(imgs,index);
       }else{
         this.downFile(file);
       }
