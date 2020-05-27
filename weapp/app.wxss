@@ -15,7 +15,7 @@ input{text-align: left;}
 .bgTu{width: 100%; height: 100%; border-radius: 50%;}
 .divCenter{position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto;}
 .ctCenter{position: absolute; margin: 0 auto; left: 0; right: 0;}
-.verticalCenter{position: absolute; z-index: 10; top: 50%; left: 0; right: 0; margin: 0 auto; transform: translate3d(0,-50%,0);}
+.verticalCenter{position: absolute; z-index: 10; left: 50%; top: 50%; transform: translate3d(-50%,-50%,0);}
 .null{text-align: center; color: #999; line-height: 100px;}
 .null::before{content: '暂无数据！';}
 .bLine{text-align: center; color: #999; line-height: 50px;}

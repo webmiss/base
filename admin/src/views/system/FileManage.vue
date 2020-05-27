@@ -105,6 +105,9 @@
     </el-dialog>
     <!-- 删除 End -->
 
+    <!-- 图片预览 -->
+    <img-view v-model="imgView.show" ref="imgShow"></img-view>
+
   </div>
 </template>
 

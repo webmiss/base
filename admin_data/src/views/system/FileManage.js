@@ -131,14 +131,23 @@ export default {
         for(let i in all){
           if(this.isImg(all[i].ext)){
             if(file==all[i].name) index=imgs.length;
-            imgs.push(this.url+this.lists.path+all[i].name);
+            imgs.push({
+              path: this.url+this.lists.path,
+              name: all[i].name,
+              size: all[i].size,
+            });
           }
         }
         // 图片预览
         this.imgView.show = true;
         this.$refs.imgShow.open(imgs,index);
       }else{
-        this.downFile(file);
+        Inc.confirm({title:'文件下载',content:'文件名: '+file,confirmText:'立即下载'},()=>{
+          Inc.toast('开始下载');
+          this.downFile(file);
+        },()=>{
+          Inc.toast('已取消');
+        });
       }
     },
 

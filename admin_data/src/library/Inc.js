@@ -25,6 +25,16 @@ export default {
     return this.self.$message({message:text,type:type,showClose:true});
   },
 
+  /* 弹框 */
+  confirm(param,success,fail){
+    this.self.$confirm(param.content,param.title,{
+      confirmButtonText: param.confirmText || '确定',
+      cancelButtonText: param.cancelText || '取消',
+      type: param.type || '',
+      center: true
+    }).then(success).catch(fail);
+  },
+
   /* Get请求 */
   get(url,data,success,fail,config){
     const str = url.substr(0,4);

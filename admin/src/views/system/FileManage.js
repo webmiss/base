@@ -1,8 +1,9 @@
 import Inc from '@/library/Inc'
 import Action from '@/components/action'
+import ImgView from '@/components/img-view'
 
 export default {
-  components: {Action},
+  components: {Action,ImgView},
   data(){
     return {
       LabelWidth:'80px',
@@ -16,6 +17,8 @@ export default {
       zipData: {show: false, form:{name:'',files:[]}},
       renameData: {show: false, form:{rename:'',name:''}},
       delData: {show: false, data:[]},
+      // 图片预览
+      imgView:{show: false, imgs:[], index: 0},
     }
   },
   mounted(){
@@ -119,7 +122,33 @@ export default {
     /* 打开文件 */
     openFile(file){
       const ext = this.getType(file);
-      if(ext) this.downFile(file);
+      // 是否图片
+      if(this.isImg(ext)){
+        // 全部图片
+        const all = this.lists.files;
+        let imgs = [];
+        let index = 0;
+        for(let i in all){
+          if(this.isImg(all[i].ext)){
+            if(file==all[i].name) index=imgs.length;
+            imgs.push({
+              path: this.url+this.lists.path,
+              name: all[i].name,
+              size: all[i].size,
+            });
+          }
+        }
+        // 图片预览
+        this.imgView.show = true;
+        this.$refs.imgShow.open(imgs,index);
+      }else{
+        Inc.confirm({title:'文件下载',content:'文件名: '+file,confirmText:'立即下载'},()=>{
+          Inc.toast('开始下载');
+          this.downFile(file);
+        },()=>{
+          Inc.toast('已取消');
+        });
+      }
     },
 
     /* 上传 */
