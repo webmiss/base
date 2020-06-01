@@ -101,6 +101,17 @@
       </el-form>
     </el-dialog>
 
+    <!-- 右侧菜单 -->
+    <ul class="right_menu">
+      <li @click="openMsg()"><i class="icons icon_msg"></i><span class="redNum">0</span></li>
+    </ul>
+
+    <!-- 消息 -->
+    <popup v-model="msg.show">
+      <div>12323</div>
+    </popup>
+    <!-- 消息 End -->
+
   </div>
 </template>
 
@@ -111,7 +122,7 @@
 
 /* 初始化 */
 *{margin: 0; padding: 0;}
-html,body,#app{height: 100%;}
+html,body,#app{height: 100%; overflow: hidden;}
 a{cursor: pointer; color: #6FB737; text-decoration: none;}
 a:hover{color: #FF6600;}
 body{
@@ -230,10 +241,17 @@ i{font-style: normal;}
 .action{padding: 15px 15px 0; overflow-x: auto;}
 .action .el-button-group{min-width: 640px;}
 
+/* 右侧菜单 */
+.right_menu{position: absolute; z-index: 999; right: 20px; bottom: 20px;}
+.right_menu li{width: 48px; height: 48px; line-height: 60px; text-align: center;}
+.right_menu .icons{font-size: 32px; color: #6FB737;}
+.right_menu .redNum{margin: 5px 0 0 -10px;}
+
 /* 内容 */
 .body{padding: 15px; background-color: #FFF;}
 .page{padding: 0 20px 20px; text-align: center; background-color: #FFF;}
 
+/* 表单 */
 .select_left{float: left;}
 .select_right{float: right; color: #8492a6; font-size: 12px}
 

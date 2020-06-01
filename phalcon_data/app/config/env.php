@@ -7,8 +7,10 @@ $img_url = 'http://localhost:8085/';
 // $img_url = 'https://api.webmis.vip/';
 
 return [
-  'title'=>'WebMIS',
-  'version'=>'0.0.1',
+  'version'=>'1.0.0',
+  'title'=>'WebMIS开放平台',
+  'Keywords'=>'WebMIS,开放平台',
+  'description'=>'WebMIS',
   /* 加密 */
   'key'=>'a06f77041c729548d34f06d26dda5120',
   'token_name'=>'DataToken_',

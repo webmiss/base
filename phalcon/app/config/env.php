@@ -9,8 +9,10 @@ $centre_url = 'http://localhost:8085/api/';
 // $centre_url = 'https://data.webmis.vip/api/';
 
 return [
-  'title'=>'基础系统',
   'version'=>'1.0.0',
+  'title'=>'基础系统',
+  'Keywords'=>'WebMIS,基础系统',
+  'description'=>'基础系统',
   /* 加密 */
   'key'=>'95ad3c345b46af1b7104568155af36f8',
   'token_name'=>'Token_',

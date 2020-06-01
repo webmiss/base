@@ -7,8 +7,11 @@ import BScroll from '@better-scroll/core'
 import Pullup from '@better-scroll/pull-up'
 BScroll.use(Pullup);
 
+import Popup from '@/components/popup'
+
 export default {
   name: 'APP',
+  components: {Popup},
   data(){
     return {
       storage: Inc.storage,
@@ -21,6 +24,8 @@ export default {
       menus: [],
       // 配置
       config:{show:false, title:'系统配置', is_msg_audio:true,},
+      // 消息
+      msg:{show:false},
     }
   },
   mounted(){
@@ -196,6 +201,11 @@ export default {
         this.$store.state.uinfo[key] = this.config[key];
         return d.code==0?Inc.toast(d.msg,'success'):Inc.toast(d.msg,'error');
       });
+    },
+
+    /* 消息-显示 */
+    openMsg(){
+      this.msg.show = true;
     },
 
   }

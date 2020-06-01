@@ -1,0 +1,20 @@
+/* 公共 */
+*{margin: 0; padding: 0;}
+html,body,#app{height: 100%;}
+a{cursor: pointer; color: #6FB737; text-decoration: none;}
+a:hover{color: #FF6600;}
+ul{list-style: none;}
+img{vertical-align: top;}
+i{font-style: normal;}
+
+/* 响应式布局 */
+@media screen and ( max-width: 1024px ) {
+}
+@media screen and ( max-width: 768px ) {
+}
+@media screen and ( max-width: 640px ) {
+}
+@media screen and ( max-width: 375px ) {
+}
+@media screen and ( max-width: 320px ) {
+}
