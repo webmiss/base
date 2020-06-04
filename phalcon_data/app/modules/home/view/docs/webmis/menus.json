@@ -1,0 +1,19 @@
+{
+	"title":"WebMIS文档",
+	"menus":{
+		"install":{"title":"安装","menus":{
+			"index":{"title":"环境搭配","url":""},
+			"config":{"title":"配置文件","url":""}
+		}},
+		"plugin":{"title":"第三方插件","menus":{
+			"tinymce":{"title":"Html在线编辑器","url":""},
+			"uploader":{"title":"多文件上传","url":""},
+			"qrcode":{"title":"二维码生成","url":""}
+		}},
+		"extend":{"title":"JavaScript","menus":{
+			"ajax":{"title":"AJAX","url":""},
+			"closure":{"title":"闭包","url":""},
+			"square":{"title":"俄罗斯方块","url":""}
+		}}
+	}
+}

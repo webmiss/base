@@ -17,17 +17,15 @@
 		<div class="top_body">
 			<div class="body top">
 				<!-- Logo -->
-				<a href="" class="bgImg top_logo"></a>
+				<a href="/" class="bgImg top_logo"></a>
 				<!-- 菜单 -->
 				<ul class="top_nav">
-					<li><a href="" class="an">首页</a></li>
-					<li><a href="">WebMIS文档</a></li>
-					<li><a href="">案例</a></li>
-					<li><a href="">技术参考</a></li>
+					<li><a href="/"<?php echo $this->dispatcher->getActionName()=='index'?' class="an"':'';?>>首页</a></li>
+					<li><a href="/docs/webmis"<?php echo $this->dispatcher->getActionName()=='webmis'?' class="an"':'';?>>WebMIS</a></li>
+					<li><a href="linux"<?php echo $this->dispatcher->getActionName()=='linux'?' class="an"':'';?>>Linux</a></li>
 				</ul>
 				<div class="top_right flex">
-					<a class="github" href="https://github.com/webmiss/base">Github</a>
-					<a class="el-icon-menu" @click="$store.state.showMenu=!$store.state.showMenu" title="菜单"></a>
+					<a class="login">登录</a>|<a class="register">注册</a>
 				</div>
 			</div>
 		</div>
