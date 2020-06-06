@@ -1,5 +1,5 @@
 package-lock.json
 yarn.lock
 node_modules
-# src/env.js
+src/env.js
 # dist
