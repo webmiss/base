@@ -8,7 +8,7 @@ export default {
       selectData:[],
       // 分页
       pageData:{list:[], total:0, page:1, limit:15},
-      // 搜索、添加、编辑、删除、评估
+      // 搜索、添加、编辑、删除
       seaData:{show:false,form:{}},
       addData:{show:false,active:'one',form:{}},
       editData:{show:false,active:'one',form:{}},

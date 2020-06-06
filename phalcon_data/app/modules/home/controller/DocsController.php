@@ -40,7 +40,7 @@ class DocsController extends BaseController{
 		$this->view->setVar('ctitle',$menus['title']);
     // $title = $menus['menus'][$m1]['title'];
     $title = isset($menus['menus'][$m1])?$menus['menus'][$m1]['title']:$menus['title'];
-    $title = isset($menus['menus'][$m1]['menus'][$m2])?$menus['menus'][$m1]['menus'][$m2]['title']:$title;
+    $title = isset($menus['menus'][$m1]['menus'][$m2])?$title.'-'.$menus['menus'][$m1]['menus'][$m2]['title']:$title;
     // SEO
     $this->view->setVar('WebTitle',$title);
     // 文件

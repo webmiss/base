@@ -2,12 +2,13 @@
 	"title":"WebMIS文档",
 	"menus":{
 		"install":{"title":"安装","menus":{
-			"index":{"title":"环境搭配","url":""}
+			"index":{"title":"环境搭配-CentOS8","url":""}
 		}},
-		"base":{"title":"基础框架","menus":{
+		"admin":{"title":"管理后台(Admin)","menus":{
+			"list":{"title":"目录结构","url":""},
 			"config":{"title":"配置文件","url":""}
 		}},
-		"admin":{"title":"后台管理","menus":{
+		"admindata":{"title":"数据中心(admin_data)","menus":{
 			"config":{"title":"配置文件","url":""}
 		}},
 		"vueapp":{"title":"混合型APP","menus":{

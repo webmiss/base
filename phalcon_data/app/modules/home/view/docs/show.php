@@ -24,7 +24,7 @@ use app\library\Parsedown;
         <span onclick="printJS('Print', 'html')">打印/下载</span>
       </div>
       <div id="Print" class="markdown-body doc_html">
-        <h1 class="doc_title"><?php echo $WebTitle; ?></h1>
+        <h1><?php echo $WebTitle; ?></h1>
 <?php
 if(is_file($File)){
 	$MD = new Parsedown();
@@ -32,11 +32,12 @@ if(is_file($File)){
 }else{echo '暂无内容！';}
 ?>
 <style>
-.doc_title{font-size: 28px; line-height: 64px; text-align: center;}
-.doc_html{overflow: hidden; padding: 16px; line-height: 32px;}
-.doc_html h2{padding: 10px 0;}
-.doc_html ul{list-style: initial;}
-.doc_html p{padding: 10px 0;}
+.doc_html{overflow: hidden; padding: 16px 16px 48px; line-height: 32px; font-size: 16px;}
+.doc_html h1,.doc_html h3,.doc_html p{padding: 8px 0;}
+.doc_html h1{font-size: 28px; text-align: center;}
+.doc_html h2{padding: 24px 0 8px;}
+.doc_html ul{list-style: initial; list-style-position: inside;}
+.doc_html ul li{padding-left: 16px;}
 .doc_html pre{overflow: hidden; height: auto; padding: 16px;}
 </style>
       </div>

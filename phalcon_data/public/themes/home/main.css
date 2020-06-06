@@ -108,7 +108,7 @@ i{font-style: normal;}
 .doc_left .an{background-color: #FFF; color: #6FB737;}
 .doc_left .an:hover{color: #6FB737;}
 
-.doc_right{margin-left: 280px; background-color: #FFF;}
+.doc_right{margin-left: 240px; background-color: #FFF;}
 .doc_right .print{padding: 8px 16px; line-height: 40px; text-align: right;}
 .doc_right .print span{cursor: pointer; color: #666; padding: 8px 16px;}
 

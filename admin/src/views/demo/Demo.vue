@@ -2,7 +2,7 @@
   <div>
     
     <!-- 功能菜单 -->
-    <Action url="Test" @action="openAction"></Action>
+    <Action url="Demo" @action="openAction"></Action>
     <!-- 内容 -->
     <el-row class="body">
       暂无数据！
@@ -14,4 +14,4 @@
 <style scoped>
 </style>
 
-<script src="./Test.js"></script>
+<script src="./Demo.js"></script>
