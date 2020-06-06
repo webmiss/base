@@ -2,16 +2,8 @@
 	"title":"WebMIS文档",
 	"menus":{
 		"install":{"title":"安装","menus":{
-			"index":{"title":"环境搭配-CentOS8","url":""}
-		}},
-		"config":{"title":"配置文件","menus":{
-			"phalcon":{"title":"phalcon/app/config/env.php","url":""},
-			"phalcon_data":{"title":"phalcon_data/app/config/env.php","url":""},
-			"admin":{"title":"admin/src/env.js","url":""},
-			"admin_data":{"title":"admin_data/src/env.js","url":""},
-			"vueapp":{"title":"vueapp/src/env.js","url":""},
-			"weapp":{"title":"weapp/env.js","url":""},
-			"aliapp":{"title":"aliapp/env.js","url":""}
+			"index":{"title":"环境搭配","url":""},
+			"config":{"title":"配置文件","url":""}
 		}},
 		"phalcon":{"title":"数据框架(phalcon)","menus":{
 			"list":{"title":"目录结构","url":""}
