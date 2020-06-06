@@ -1,8 +1,11 @@
+<?php
+use app\library\Parsedown;
+?>
 <div class="html_body doc_body">
   <div class="body">
     <!-- Left -->
     <div class="doc_left">
-      <h1><?php echo $ctitle;?></h1>
+      <h1><?php echo $ctitle; ?></h1>
       <div class="doc_left_ct">
 <?php foreach($Meuns['menus'] as $k1=>$v1){?>
 			  <h2><?php echo isset($v1['url'])?'<a href="/'.$this->dispatcher->getControllerName().'/'.$this->dispatcher->getActionName().'/'.$k1.'"'.($Url==$k1?' class="an"':'').'>'.$v1['title'].'</a>':$v1['title'];?></h2>
@@ -17,13 +20,38 @@
     </div>
     <!-- Content -->
     <div class="doc_right">
-      <div class="tright">
-        <a href=""  id="PrintClick">打印/下载</a>
+      <div class="print">
+        <span onclick="printJS('Print', 'html')">打印/下载</span>
       </div>
-      <div class="markdown-body doc_html" style="font-size: 14px;">
-<?php echo $File; ?>
+      <div id="Print" class="markdown-body doc_html">
+        <h1 class="doc_title"><?php echo $WebTitle; ?></h1>
+<?php
+if(is_file($File)){
+	$MD = new Parsedown();
+	echo $MD->text(file_get_contents($File));
+}else{echo '暂无内容！';}
+?>
+<style>
+.doc_title{font-size: 28px; line-height: 64px; text-align: center;}
+.doc_html{overflow: hidden; padding: 16px; line-height: 32px;}
+.doc_html h2{padding: 10px 0;}
+.doc_html ul{list-style: initial;}
+.doc_html p{padding: 10px 0;}
+.doc_html pre{overflow: hidden; height: auto; padding: 16px;}
+</style>
       </div>
     </div>
     <!-- Content -->
   </div>
 </div>
+<!-- 代码高亮 -->
+<script src="/themes/home/prism/prism.js"></script>
+<link rel="stylesheet" type="text/css" href="/themes/home/prism/prism.css" />
+<!-- 打印 -->
+<script src="/themes/home/js/print.min.js"></script>
+<script>
+function printClick(){
+  let dom = document.getElementById('Print');
+  Print(dom);
+}
+</script>

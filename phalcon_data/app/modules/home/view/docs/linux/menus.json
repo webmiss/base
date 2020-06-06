@@ -1,15 +1,8 @@
 {
 	"title":"Linux文档",
 	"menus":{
-		"index":{"title":"安装","url":"","menus":[]},
-		"fonts":{"title":"字体图标","url":"","menus":[]},
-		"inside":{"title":"插件","menus":{
-			"inc":{"title":"自动加载CSS和JS文件( INC )","url":""},
-			"win":{"title":"弹出式窗口( win )","url":""},
-			"menus":{"title":"联动菜单","url":""},
-			"checkbox":{"title":"全选、全不选","url":""},
-			"getid":{"title":"获取Checkbox的ID值","url":""},
-			"oddcolor":{"title":"隔行变色","url":""}
+		"shell":{"title":"Shell","menus":{
+			"index":{"title":"基础语法","url":""}
 		}}
 	}
 }

@@ -38,10 +38,9 @@ class DocsController extends BaseController{
     $this->view->setVar('Url',$url);
     // 标题
 		$this->view->setVar('ctitle',$menus['title']);
-		$title = $menus['title'].' - '.$menus['menus'][$m1]['title'];
-		if(isset($menus['menus'][$m1]['menus'][$m2])){
-			$title = $menus['title'].' - '.$menus['menus'][$m1]['menus'][$m2]['title'];
-		}
+    // $title = $menus['menus'][$m1]['title'];
+    $title = isset($menus['menus'][$m1])?$menus['menus'][$m1]['title']:$menus['title'];
+    $title = isset($menus['menus'][$m1]['menus'][$m2])?$menus['menus'][$m1]['menus'][$m2]['title']:$title;
     // SEO
     $this->view->setVar('WebTitle',$title);
     // 文件

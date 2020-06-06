@@ -2,18 +2,26 @@
 	"title":"WebMIS文档",
 	"menus":{
 		"install":{"title":"安装","menus":{
-			"index":{"title":"环境搭配","url":""},
+			"index":{"title":"环境搭配","url":""}
+		}},
+		"base":{"title":"基础框架","menus":{
 			"config":{"title":"配置文件","url":""}
 		}},
-		"plugin":{"title":"第三方插件","menus":{
-			"tinymce":{"title":"Html在线编辑器","url":""},
-			"uploader":{"title":"多文件上传","url":""},
-			"qrcode":{"title":"二维码生成","url":""}
+		"admin":{"title":"后台管理","menus":{
+			"config":{"title":"配置文件","url":""}
 		}},
-		"extend":{"title":"JavaScript","menus":{
-			"ajax":{"title":"AJAX","url":""},
-			"closure":{"title":"闭包","url":""},
-			"square":{"title":"俄罗斯方块","url":""}
+		"vueapp":{"title":"混合型APP","menus":{
+			"config":{"title":"配置文件","url":""}
+		}},
+		"weapp":{"title":"微信小程序","menus":{
+			"config":{"title":"配置文件","url":""}
+		}},
+		"aliapp":{"title":"支付宝小程序","menus":{
+			"config":{"title":"配置文件","url":""}
+		}},
+		"api":{"title":"API接口工具","menus":{
+			"config":{"title":"配置文件","url":""}
 		}}
+		
 	}
 }
