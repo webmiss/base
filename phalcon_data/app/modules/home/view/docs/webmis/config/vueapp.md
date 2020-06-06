@@ -1,9 +1,8 @@
-
 ## 添加文件
-
 ```javascript
+
 /* 正式 */
-const title = '基础框架';
+const title = 'WebMIS';
 const baseUrl = 'https://api.webmis.vip/';
 const socket = 'wss://webmis.vip/wss';
 
@@ -12,8 +11,8 @@ export default {
   title: title, //应用名称
   version: '1.0.0', //应用版本
   baseUrl: baseUrl, //数据地址
-  apiUrl: baseUrl+'admin/', //数据接口地址
-  copy: 'Copyright © WebMIS.vip 2020',  //版权信息
+  apiUrl: baseUrl+'api/', //数据接口地址
+  copy: 'Copyright © WebMIS.VIP 2020',  //版权信息
   /* 请求 */
   request:{
     headers: {
@@ -22,7 +21,7 @@ export default {
   },
   /* 状态栏 */
   statusBar:{
-    height:'0px', //默认高度
+    height:0, //默认高度
     color: '#333',  //字体颜色
     bgColor:'#FFF'  //背景颜色
   },
@@ -52,5 +51,8 @@ export default {
   msgRead: 300, //延迟时间：0(不开启)
   msgContent: 'content',  //阅读：title(标题)、content(内容)
   msgBrowser: false,  //浏览器信息
+  /* 小程序 */
+  wx_type: 0, //正式版(0)、测试版(1)、体验版(2)
+  wx_id: '', // 应用ID
 }
 ```
