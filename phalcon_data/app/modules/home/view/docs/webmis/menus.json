@@ -4,24 +4,29 @@
 		"install":{"title":"安装","menus":{
 			"index":{"title":"环境搭配-CentOS8","url":""}
 		}},
+		"config":{"title":"配置文件","menus":{
+			"phalcon":{"title":"phalcon/app/config/env.php","url":""},
+			"phalcon_data":{"title":"phalcon_data/app/config/env.php","url":""},
+			"admin":{"title":"admin/src/env.js","url":""},
+			"admin_data":{"title":"admin_data/src/env.js","url":""}
+		}},
+		"phalcon":{"title":"数据框架(phalcon)","menus":{
+			"list":{"title":"目录结构","url":""}
+		}},
 		"admin":{"title":"管理后台(Admin)","menus":{
-			"list":{"title":"目录结构","url":""},
-			"config":{"title":"配置文件","url":""}
+			"list":{"title":"目录结构","url":""}
 		}},
-		"admindata":{"title":"数据中心(admin_data)","menus":{
-			"config":{"title":"配置文件","url":""}
-		}},
-		"vueapp":{"title":"混合型APP","menus":{
-			"config":{"title":"配置文件","url":""}
+		"vueapp":{"title":"APP(Vue+HBuilder)","menus":{
+			"config":{"title":"目录结构","url":""}
 		}},
 		"weapp":{"title":"微信小程序","menus":{
-			"config":{"title":"配置文件","url":""}
+			"config":{"title":"目录结构","url":""}
 		}},
 		"aliapp":{"title":"支付宝小程序","menus":{
-			"config":{"title":"配置文件","url":""}
+			"config":{"title":"目录结构","url":""}
 		}},
 		"api":{"title":"API接口工具","menus":{
-			"config":{"title":"配置文件","url":""}
+			"config":{"title":"目录结构","url":""}
 		}}
 		
 	}

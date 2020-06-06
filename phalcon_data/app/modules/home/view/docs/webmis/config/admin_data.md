@@ -1,9 +1,9 @@
 
-## 添加文件( admin/src/env.js && admin_data/src/env.js )
+## 添加文件
 
 ```javascript
 /* 正式 */
-const title = 'WebMIS';
+const title = '数据中心';
 const baseUrl = 'https://api.webmis.vip/';
 const socket = 'wss://webmis.vip/wss';
 

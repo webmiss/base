@@ -32,9 +32,9 @@ if(is_file($File)){
 }else{echo '暂无内容！';}
 ?>
 <style>
-.doc_html{overflow: hidden; padding: 16px 16px 48px; line-height: 32px; font-size: 16px;}
+.doc_html{overflow: hidden; padding: 16px 16px 48px; line-height: 32px; font-size: 14px;}
 .doc_html h1,.doc_html h3,.doc_html p{padding: 8px 0;}
-.doc_html h1{font-size: 28px; text-align: center;}
+.doc_html h1{font-size: 26px; text-align: center;}
 .doc_html h2{padding: 24px 0 8px;}
 .doc_html ul{list-style: initial; list-style-position: inside;}
 .doc_html ul li{padding-left: 16px;}

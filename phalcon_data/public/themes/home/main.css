@@ -97,7 +97,7 @@ i{font-style: normal;}
 .doc_body{height: calc(100% - 58px); background-color: #FFF;}
 .doc_body .body{height: 100%;}
 
-.doc_left{position: fixed; width: 240px; height: 100%; overflow-y: auto; border-right: #EEE 1px solid;}
+.doc_left{position: fixed; width: 240px; height: calc(100% - 58px); overflow-y: auto; border-right: #EEE 1px solid;}
 .doc_left_ct{padding: 8px 16px;}
 .doc_left h1{line-height: 80px; font-size: 21px; text-align: center; border-bottom: #EEE 1px solid;}
 .doc_left h2{line-height: 40px; font-size: 16px; font-weight: bold;}
