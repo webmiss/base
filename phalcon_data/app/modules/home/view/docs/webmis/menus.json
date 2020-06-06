@@ -5,22 +5,22 @@
 			"index":{"title":"环境搭配","url":""},
 			"config":{"title":"配置文件","url":""}
 		}},
-		"phalcon":{"title":"数据框架(phalcon)","menus":{
+		"phalcon":{"title":"API数据框架","menus":{
 			"list":{"title":"目录结构","url":""}
 		}},
-		"admin":{"title":"管理后台(Admin)","menus":{
+		"api":{"title":"API接口工具","menus":{
+			"config":{"title":"目录结构","url":""}
+		}},
+		"admin":{"title":"管理后台","menus":{
 			"list":{"title":"目录结构","url":""}
 		}},
-		"vueapp":{"title":"APP(Vue+HBuilder)","menus":{
+		"vueapp":{"title":"混合型APP","menus":{
 			"config":{"title":"目录结构","url":""}
 		}},
 		"weapp":{"title":"微信小程序","menus":{
 			"config":{"title":"目录结构","url":""}
 		}},
 		"aliapp":{"title":"支付宝小程序","menus":{
-			"config":{"title":"目录结构","url":""}
-		}},
-		"api":{"title":"API接口工具","menus":{
 			"config":{"title":"目录结构","url":""}
 		}}
 		

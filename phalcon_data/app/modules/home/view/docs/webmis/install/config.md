@@ -298,7 +298,7 @@ export default {
   msgContent: 'content',  //阅读：title(标题)、content(内容)
 }
 ```
-## 支付宝小程序( weapp/env.js )
+## 支付宝小程序( aliapp/env.js )
 ```javascript
 
 /* 正式 */
