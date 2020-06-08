@@ -18,13 +18,10 @@
 			"list":{"title":"目录结构","url":""}
 		}},
 		"vueapp":{"title":"混合型APP","menus":{
-			"config":{"title":"目录结构","url":""}
 		}},
 		"weapp":{"title":"微信小程序","menus":{
-			"config":{"title":"目录结构","url":""}
 		}},
 		"aliapp":{"title":"支付宝小程序","menus":{
-			"config":{"title":"目录结构","url":""}
 		}}
 		
 	}

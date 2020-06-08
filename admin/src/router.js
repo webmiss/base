@@ -16,7 +16,7 @@ const routes = [
   {path:'/SysMenusAction', name:'SysMenusAction', component:resolve=>require(['./views/system/Action.vue'],resolve)},
   {path:'/SysFileManage', name:'SysFileManage', component:resolve=>require(['./views/system/FileManage.vue'],resolve)},
   // 业务
-  {path:'/Test', name:'Test', component:resolve=>require(['./views/Test.vue'],resolve)},
+  {path:'/Demo', name:'Demo', component:resolve=>require(['./views/demo/Demo.vue'],resolve)},
 ];
 
 /* 点击相同路由报错问题 */
