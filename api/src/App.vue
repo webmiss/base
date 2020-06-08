@@ -104,6 +104,7 @@ export default {
       Inc.storage.setItem('defaultMenu',index);
       // 保存-参数
       Inc.storage.setItem('Request',JSON.stringify(data));
+      this.$store.state.request = data;
       // 跳转
       this.$router.push(url?url:'/Request/'+name);
     },

@@ -7,13 +7,13 @@ const menus = [
   ]},
   {title:'APP',menus:[
     {title:'测试',menus:[
-      // 案例1
-      {title:'案例1',menus:[],name:'Test1',data:{
-        api: 'test1', method: 'post',
+      // 案例
+      {title:'案例',menus:[],name:'Test',data:{
+        api: 'test', method: 'post',
         parameter: [
-          {key:'token',val:'',text:'Token（必填）'},
+          {key:'token',val:token,text:'Token（必填）'},
           {key:'id',val:1,text:'ID（必填）'},
-          {key:'name',val:'张三1',text:'姓名'},
+          {key:'name',val:'张三',text:'姓名'},
         ],
         remark:{list:{id: '用户ID',name: '姓名',}},
       }},

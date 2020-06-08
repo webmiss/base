@@ -44,17 +44,18 @@ export default {
       response: '', //结果
     }
   },
-  created(){
-    this.getData();
-  },
   watch: {
     "$route": "getData"
+  },
+  created(){
+    this.getData();
   },
   methods:{
 
     /* 数据 */
     getData(){
-      let data = JSON.parse(Inc.storage.getItem('Request'));
+      let data = this.$store.state.request;
+      data = data?data:JSON.parse(Inc.storage.getItem('Request'));
       this.api = Inc.config.apiUrl+data.api;
       this.method = data.method;
       this.parameter = data.parameter;
