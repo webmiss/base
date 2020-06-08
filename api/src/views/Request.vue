@@ -31,20 +31,17 @@
 </template>
 
 <script>
+import Inc from '@/library/Inc'
 export default {
   data(){
     return {
       LabelWidth: '100px',
-      // 请求地址
-      api: '',
-      // 方式
-      method: '',
-      // 参数
-      parameter: [],
-      // 说明
-      remark: {},
-      // 结果
-      response: '',
+      url: Inc.config.apiUrl, //接口
+      api: '',  //地址
+      method: '', //方式
+      parameter: [],  //参数
+      remark: {}, //说明
+      response: '', //结果
     }
   },
   created(){
@@ -57,8 +54,8 @@ export default {
 
     /* 数据 */
     getData(){
-      let data = JSON.parse(this.$storage.getItem('Request'));
-      this.api = data.api;
+      let data = JSON.parse(Inc.storage.getItem('Request'));
+      this.api = Inc.config.apiUrl+data.api;
       this.method = data.method;
       this.parameter = data.parameter;
       this.remark = data.remark;
@@ -68,24 +65,22 @@ export default {
     onSubmit(){
       // 参数
       let param = this.parameter;
-      let data={},url='';
+      let data={};
       for(let i in param){
         data[param[i].key] = param[i].val;
-        url += param[i].key+'='+param[i].val+'&'
       }
-      url = url.slice(0,-1);
       // 请求
       this.response = '正在请求...';
       if(this.method=='get'){
-        this.$ajax.get(this.api,{params:data}).then(res=>this.response=res.data).catch(err=>this.response=err);
+        Inc.get(this.api,data,res=>this.response=res.data,err=>this.response=err);
       }else if(this.method=='post'){
-        this.$ajax.post(this.api,url).then(res=>this.response=res.data).catch(err=>this.response=err);
+        Inc.post(this.api,data,res=>this.response=res.data,err=>this.response=err);
       }else if(this.method=='put'){
-        this.$ajax.put(this.api,url).then(res=>this.response=res.data).catch(err=>this.response=err);
+        Inc.put(this.api,data,res=>this.response=res.data,err=>this.response=err);
       }else if(this.method=='delete'){
-        this.$ajax.delete(this.api,{params:data}).then(res=>this.response=res.data).catch(err=>this.response=err);
+        Inc.delete(this.api,data,res=>this.response=res.data,err=>this.response=err);
       }else if(this.method=='request'){
-        this.$ajax.request(this.api,{params:data}).then(res=>this.response=res.data).catch(err=>this.response=err);
+        Inc.request(this.api,data,res=>this.response=res.data,err=>this.response=err);
       }
     },
 

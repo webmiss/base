@@ -3,8 +3,12 @@ use app\library\Parsedown;
 ?>
 <div class="html_body doc_body">
   <div class="body">
+    <!-- 菜单 -->
+    <div class="doc_left_menu" onclick="showMenus()"><i class="icons icon_menus"></i></div>
     <!-- Left -->
-    <div class="doc_left">
+    <div id="LeftMenusBG" class="doc_left_bg" onclick="showMenus()"></div>
+    <aside id="LeftMenus" class="doc_left">
+      <div>
       <h1><?php echo $ctitle; ?></h1>
       <div class="doc_left_ct">
 <?php foreach($Meuns['menus'] as $k1=>$v1){?>
@@ -17,7 +21,8 @@ use app\library\Parsedown;
 			  </ul>
 <?php }}?>
       </div>
-    </div>
+      </div>
+    </aside>
     <!-- Content -->
     <div class="doc_right">
       <div class="print">
@@ -45,14 +50,30 @@ if(is_file($File)){
     <!-- Content -->
   </div>
 </div>
+<!-- 滑块 -->
+<script src="https://cdn.jsdelivr.net/npm/better-scroll"></script>
 <!-- 代码高亮 -->
 <script src="/themes/home/prism/prism.js"></script>
 <link rel="stylesheet" type="text/css" href="/themes/home/prism/prism.css" />
 <!-- 打印 -->
 <script src="/themes/home/js/print.min.js"></script>
 <script>
-function printClick(){
-  let dom = document.getElementById('Print');
-  Print(dom);
+
+/* 加载完成 LeftMenus */
+let scroll = null;
+window.onload = function(){
+  /* 左侧菜单-滑动 */
+  let wrapper = document.querySelector('#LeftMenus');
+  scroll = new BScroll(wrapper);
 }
+  
+/* 左侧菜单-显示/隐藏 */
+function showMenus(){
+  let menus = document.getElementById('LeftMenus');
+  let bg = document.getElementById('LeftMenusBG');
+  menus.style.display = menus.style.display=='block'?'':'block';
+  bg.style.display = bg.style.display=='block'?'':'block';
+  if(scroll) scroll.refresh();
+}
+
 </script>

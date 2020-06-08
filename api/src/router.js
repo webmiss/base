@@ -14,7 +14,5 @@ export default new Router({
   routes: [
     {path:'/', name:'index', component:()=>import('./views/Index.vue')},
     {path:'/Request/:name', name:'Request', component:resolve=>require(['./views/Request.vue'],resolve)},
-    // Demo
-    {path:'/Demo', name:'Test', component:resolve=>require(['./views/demo/Demo.vue'],resolve)},
   ]
 })

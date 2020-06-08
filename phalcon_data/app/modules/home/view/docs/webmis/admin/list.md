@@ -25,7 +25,7 @@ admin
     App.vue //入口Vue
     env.js  //配置文件
     main.js //Vue加载
-    router.js //路由配置
+    router.js //路由
     store.js  //全局状态
     tinymce.js  //编辑器配置
     .gitignore  //Git配置

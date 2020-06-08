@@ -97,8 +97,12 @@ i{font-style: normal;}
 .doc_body{height: calc(100% - 58px); background-color: #FFF;}
 .doc_body .body{height: 100%;}
 
-.doc_left{position: fixed; width: 240px; height: calc(100% - 58px); overflow-y: auto; border-right: #EEE 1px solid;}
+.doc_left{position: fixed; overflow: hidden; width: 240px; height: calc(100% - 58px); border-right: #EEE 1px solid; background-color: #FFF;}
 .doc_left_ct{padding: 8px 16px;}
+.doc_left_bg{display: none; position: fixed; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);}
+.doc_left_menu{position: fixed; z-index: 99; padding: 8px; display: none;}
+.doc_left_menu:hover{color: #FF6600;}
+.doc_left_menu .icons{cursor: pointer; font-size: 20px;}
 .doc_left h1{line-height: 80px; font-size: 21px; text-align: center; border-bottom: #EEE 1px solid;}
 .doc_left h2{line-height: 40px; font-size: 16px; font-weight: bold;}
 .doc_left ul{display: block; font-size: 14px;}
@@ -117,6 +121,10 @@ i{font-style: normal;}
 }
 @media screen and ( max-width: 768px ) {
 .index_bg{mask-size: auto 90%; -webkit-mask-size: auto 90%;}
+/* 文档 */
+.doc_left_menu{display: block;}
+.doc_left{display: none;}
+.doc_right{margin-left: 0;}
 }
 @media screen and ( max-width: 640px ) {
 .index_qr li{margin: 0 16px;}

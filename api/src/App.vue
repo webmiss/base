@@ -6,9 +6,9 @@
       <el-container class="app_ct">
         <!-- 菜单 -->
         <el-aside class="app_menus" width="210px">
-          <h2 class="app_title">{{$config.name}}</h2>
+          <h2 class="app_title">{{config.title}}</h2>
           <el-menu :default-active="defaultMenu" unique-opened>
-            <el-submenu v-for="(val1,key1) in $menus" :key="key1" :index="''+key1">
+            <el-submenu v-for="(val1,key1) in menus" :key="key1" :index="''+key1">
               <template slot="title"><span>{{val1.title}}</span></template>
               <div v-for="(val2,key2) in val1.menus" :key="key2">
                 <el-menu-item v-if="val2.menus.length==0" :index="key1+'-'+key2" @click="openUrl(val2.url,key1+'-'+key2,val2.name,val2.data)">{{val2.title}}</el-menu-item>
@@ -19,9 +19,7 @@
               </div>
             </el-submenu>
           </el-menu>
-          <el-row class="app_copy">
-            系统版本：{{$config.version}}
-          </el-row>
+          <el-row class="app_copy">{{config.copy}}</el-row>
         </el-aside>
         <!-- 页面 -->
         <el-main class="app_main"><router-view /></el-main>
@@ -66,7 +64,7 @@ ul{list-style: none;}
 .app_ct{height: 100%;}
 .app_menus{background-color: #20222A; color: #CCC;}
 .app_right{overflow: hidden; width: calc(100% - 201px);}
-.app_copy{line-height: 36px; border-top: #000 1px solid; font-size: 12px; color: #CCC; text-align: center;}
+.app_copy{line-height: 36px; border-top: #000 1px solid; font-size: 12px; color: #666; text-align: center;}
 
 .res_title{line-height: 50px; font-size: 14px; color: #666;}
 .res_ct{padding: 0 10px; max-width: 800px; line-height: 24px; border-radius: 5px; background-color: #F2F2F2; border: #DADCDF 1px solid;}
@@ -84,24 +82,28 @@ ul{list-style: none;}
 </style>
 
 <script>
+import Menus from '@/Menus'
+import Inc from '@/library/Inc'
 export default {
   data(){
     return {
       defaultMenu: '',  // 默认菜单
+      config: Inc.config,
+      menus: Menus,
     }
   },
   mounted(){
     // 默认菜单
-    this.defaultMenu = this.$storage.getItem('defaultMenu')?this.$storage.getItem('defaultMenu'):'0-0';
+    this.defaultMenu = Inc.storage.getItem('defaultMenu')?Inc.storage.getItem('defaultMenu'):'0-0';
   },
   methods:{
 
     /* 跳转地址 */
     openUrl(url,index,name,data){
       // 保存-当前位置
-      this.$storage.setItem('defaultMenu',index);
+      Inc.storage.setItem('defaultMenu',index);
       // 保存-参数
-      this.$storage.setItem('Request',JSON.stringify(data));
+      Inc.storage.setItem('Request',JSON.stringify(data));
       // 跳转
       this.$router.push(url?url:'/Request/'+name);
     },

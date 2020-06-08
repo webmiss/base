@@ -1,21 +1,19 @@
 import Vue from 'vue'
 import router from './router'
 
-import Config from './config'
-import axios from 'axios'
+// 主题（element-ui/lib/theme-chalk/index.css）
 import ElementUI from 'element-ui'
-
-// 主题
 import './assets/theme/index.css'
 import App from './App.vue'
 
-// 全局组件
-Vue.prototype.$ajax = axios;
-Vue.prototype.$storage = window.localStorage;
 // 配置
-Vue.use(Config)
+import Env from '@/env'
+document.title = Env.title;
+Vue.config.productionTip = Env.dev;
+
+// 全局注册
+Vue.prototype.$config = Env;
 Vue.use(ElementUI);
-Vue.config.productionTip = false
 
 new Vue({
   router,

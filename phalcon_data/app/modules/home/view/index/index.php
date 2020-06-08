@@ -14,7 +14,7 @@
           API工具
         </div>
         <div class="index_an">
-          <a class="an1" href="/docs/webmis">文档</a>
+          <a class="an1" href="/docs/webmis/install/index">文档</a>
           <a class="an2" href="https://github.com/webmiss/base">GitHub</a>
         </div>
         <div class="index_key">>>>>>>>> Demo <<<<<<<<</div>
