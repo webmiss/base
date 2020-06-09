@@ -3,7 +3,7 @@
     <div class="body">
       <!-- 项目 -->
       <div class="ctCenter verticalCenter index_ct">
-        <h1>WebMIS基础框架</h1>
+        <h1>WebMIS数据中心</h1>
         <div class="index_key">
           Phalcon<span>/</span>
           Vue<span>/</span>

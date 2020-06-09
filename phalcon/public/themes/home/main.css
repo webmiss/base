@@ -60,14 +60,50 @@ i{font-style: normal;}
 .icons{font-family: 'icomoon' !important; font-size: 16px;}
 .icon_menus:before{content: "\e900";}
 
+/* 头部 */
+.top_body{position: fixed; z-index: 99; width: 100%; padding: 8px 0; background-color: #24292E;}
+.top{position: relative; padding: 0 16px;  height: 40px; line-height: 40px;}
+.top_logo{float: left; width: 40px; height: 100%; background-color: #FFF; border-radius: 50%; background-image: url('img/logo.svg'); background-size: 75%; transition: All 0.4s ease-in-out;}
+.top_logo:hover{transform: rotate(360deg);}
+.top_nav{float: left; overflow: hidden;}
+.top_nav li{float: left; padding: 0 24px;}
+.top_nav a{color: #999; font-size: 16px;}
+.top_nav .an{color: #6FB737;}
+.top_right{position: absolute; right: 16px; top: 0; height: 40px; color: #999;}
+.top_right a{display: inline-block; padding: 0 8px; font-size: 14px;}
+.top_right .login{color: #999;}
+.top_right .register{color: #FF6600;}
+
+/* 内容 */
+.html_body{padding-top: 56px;}
+
+/* 首页 */
+.index_body{height: 100%; background-color: #24292E;}
+.index_bg{height: 100%; mask-image: url(img/bg.svg); -webkit-mask-image: url(img/bg.svg); background-color: #000;}
+.index_ct{color: #FFF; text-align: center; padding: 16px;}
+.index_ct h1{font-size: 32px; line-height: 60px; font-weight: normal;}
+.index_key{line-height: 30px; font-size: 16px; color: #999;}
+.index_key span{padding: 0 8px;}
+.index_an{padding: 24px 0;}
+.index_an a{display: inline-block; margin: 8px; width: 160px; line-height: 48px; color: #FFF; font-size: 16px; border-radius: 3px;}
+.index_an .an1{background-color: #379;}
+.index_an .an2{background-color: #595;}
+.index_qr{overflow: hidden; padding: 8px 0;}
+.index_qr li{margin: 0 24px;}
+.index_qr div{width: 72px; height: 72px; padding: 5px; background-color: #F2F4F6; border-radius: 3px;}
+.index_qr p{line-height: 30px; font-size: 12px; color: #999;}
+
 /* 响应式布局 */
 @media screen and ( max-width: 1024px ) {
 }
 @media screen and ( max-width: 768px ) {
+.index_bg{mask-size: auto 90%; -webkit-mask-size: auto 90%;}
 }
 @media screen and ( max-width: 640px ) {
+.index_qr li{margin: 0 16px;}
 }
 @media screen and ( max-width: 375px ) {
+.index_qr li{margin: 0 8px;}
 }
 @media screen and ( max-width: 320px ) {
 }

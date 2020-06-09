@@ -1,8 +1,0 @@
-{
-	"title":"Linux文档",
-	"menus":{
-		"shell":{"title":"Shell","menus":{
-			"index":{"title":"基础语法","url":""}
-		}}
-	}
-}
