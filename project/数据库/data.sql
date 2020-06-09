@@ -17,11 +17,11 @@ CREATE TABLE `sys_config` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统配置';
 
 INSERT INTO `sys_config` (`id`, `title`, `name`, `val`, `ctime`, `utime`) VALUES
-(1,	'LOGO',	'logo',	'upload/admin/logo202005221540122906.png',	NULL,	NULL),
+(1,	'LOGO',	'logo',	'',	NULL,	NULL),
 (2,	'系统名称',	'title',	'数据中心',	NULL,	'2020-05-22 17:44:08'),
 (3,	'网站域名',	'http',	'webmis.vip',	NULL,	'2020-05-22 17:44:08'),
 (4,	'版权信息',	'copy',	'2020 webmis.vip MIT license',	NULL,	'2020-05-22 17:44:08'),
-(5,	'登录背景',	'login_bg',	'upload/admin/bg202005221540246780.png',	NULL,	NULL);
+(5,	'登录背景',	'login_bg',	'',	NULL,	NULL);
 
 DROP TABLE IF EXISTS `sys_menus`;
 CREATE TABLE `sys_menus` (
@@ -107,9 +107,7 @@ CREATE TABLE `user_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息';
 
 INSERT INTO `user_info` (`uid`, `nickname`, `position`, `name`, `gender`, `birthday`, `img`, `ctime`, `utime`) VALUES
-(1,	'WebMIS',	'系统开发',	'杨文春',	'男',	'1984-12-17',	'upload/user/img/202005221420401374.png',	NULL,	'2020-05-22 14:25:06'),
-(202005221454499568,	'WebMIS',	'程序员',	'杨',	'男',	'1984-12-17',	'upload/user/img/202005221505096651.png',	'2020-05-22 14:56:09',	'2020-05-22 15:06:09'),
-(202005221512161484,	'',	'',	'',	'',	NULL,	'',	'2020-05-22 15:12:17',	NULL);
+(1,	'WebMIS',	'系统开发',	'管理员',	'男',	'1984-12-17',	'',	NULL,	'2020-05-22 14:25:06');
 
 DROP TABLE IF EXISTS `user_msg`;
 CREATE TABLE `user_msg` (

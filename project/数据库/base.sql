@@ -17,11 +17,11 @@ CREATE TABLE `sys_config` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统配置';
 
 INSERT INTO `sys_config` (`id`, `title`, `name`, `val`, `ctime`, `utime`) VALUES
-(1,	'LOGO',	'logo',	'upload/admin/logo202005221544223582.jpg',	NULL,	NULL),
+(1,	'LOGO',	'logo',	'',	NULL,	NULL),
 (2,	'系统名称',	'title',	'基础系统',	NULL,	'2020-05-22 17:43:50'),
 (3,	'网站域名',	'http',	'webmis.vip',	NULL,	'2020-05-22 17:43:50'),
 (4,	'版权信息',	'copy',	'2020 WebMIS MIT license',	NULL,	'2020-05-22 17:43:50'),
-(5,	'登录背景',	'login_bg',	'upload/admin/bg202005221544263469.jpg',	NULL,	NULL);
+(5,	'登录背景',	'login_bg',	'',	NULL,	NULL);
 
 DROP TABLE IF EXISTS `sys_menus`;
 CREATE TABLE `sys_menus` (
