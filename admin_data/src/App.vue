@@ -16,11 +16,10 @@
     <!-- 更新APP End -->
 
     <!-- 登录 -->
-    <el-container v-show="$store.state.isLogin===false" class="login_body bgImg bgcover" v-if="$store.state.system.login_bg" :style="{backgroundImage:'url('+$store.state.system.login_bg+')'}">
+    <el-container v-show="!$store.state.isLogin" class="login_body bgImg bgcover" :style="{backgroundImage:'url('+($store.state.system.login_bg?$store.state.system.login_bg:require('./assets/bg.jpg'))+')'}">
       <div class="login_ct verticalCenter">
         <div class="logo flex_center">
-          <div class="bgImg bgTu" v-if="!$store.state.system.logo"></div>
-          <div class="bgImg bgTu" v-else :style="{backgroundImage:'url('+$store.state.system.logo+')'}"></div>
+          <div class="bgImg bgTu" :style="{backgroundImage:'url('+($store.state.system.logo?$store.state.system.logo:require('./assets/logo.svg'))+')'}"></div>
           <h1 class="nowrap">{{$store.state.system.title}}</h1>
         </div>
         <h2>会员登录</h2>
@@ -43,7 +42,7 @@
     <!-- 登录 End -->
 
     <!-- 主要框架 -->
-    <el-container  v-show="$store.state.isLogin===true" class="app_body">
+    <el-container  v-show="$store.state.isLogin" class="app_body">
       <!-- 导航菜单 -->
       <el-aside class="app_menus" :style="{width: $store.state.collapseMenu?'64px':'200px',paddingTop:$store.state.statusBarHeight}">
         <!-- 头像 -->
@@ -190,7 +189,7 @@ i{font-style: normal;}
 .login_ct h2{line-height: 50px; text-align: center; font-size: 16px; color: #666;}
 .login_ct .item{padding: 5px 0; margin: 8px 0;}
 .login_ct .logo{position: absolute; width: 100%; height: 40px; line-height: 40px; padding: 10px 0; margin: -70px 0 0 -50px;}
-.login_ct .logo div{width: 40px; height: 40px;}
+.login_ct .logo div{width: 40px; height: 40px; background-color: #FFF; background-size: 75%;}
 .login_ct .logo h1{font-size: 18px; padding-left: 10px; color: #FFF; text-shadow: 0 0 3px rgba(0,0,0,0.3);}
 .login_ct .copy{position: absolute; margin: 40px 0 0 -50px; width: 100%; font-size: 12px; text-align: center;}
 .login_ct .icons{font-size: 24px;}

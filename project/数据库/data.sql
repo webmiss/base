@@ -90,8 +90,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户帐号';
 
 INSERT INTO `user` (`id`, `uname`, `tel`, `email`, `password`, `rtime`, `ltime`, `utime`, `state`) VALUES
-(1,	'admin',	'',	'',	'8d37796cd6857b5b2d6721b2d25829ee',	'2018-12-15 00:00:00',	'2020-05-25 14:09:01',	'2020-05-25 14:09:01',	'1'),
-(202005221512161484,	'',	'15087738003',	'',	'8d37796cd6857b5b2d6721b2d25829ee',	'2020-05-22 15:12:16',	'2020-05-22 15:13:16',	'2020-05-22 15:13:16',	'1');
+(1,	'admin',	'',	'',	'e10adc3949ba59abbe56e057f20f883e',	'2018-12-15 00:00:00',	'2020-06-09 09:53:19',	'2020-06-09 09:53:19',	'1');
 
 DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE `user_info` (
@@ -170,4 +169,4 @@ CREATE TABLE `user_role` (
 INSERT INTO `user_role` (`id`, `role`, `ctime`, `utime`, `perm`) VALUES
 (1,	'普通用户',	NULL,	NULL,	'1:0 3:1 11:1 12:1');
 
--- 2020-05-26 04:28:29
+-- 2020-06-09 01:54:55

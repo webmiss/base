@@ -105,8 +105,7 @@ CREATE TABLE `user_perm` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限表';
 
 INSERT INTO `user_perm` (`uid`, `ctime`, `utime`, `perm`, `role`, `state_admin`, `state_app`) VALUES
-(1,	NULL,	'2020-05-22 18:05:48',	'1:0 2:0 3:1 4:1 5:31 6:31 7:0 8:1 9:21 10:31 11:1 12:1 13:1',	'',	'1',	'0'),
-(202005221512161484,	'2020-05-22 15:12:16',	'2020-05-22 15:12:31',	NULL,	'1',	'1',	'1');
+(1,	NULL,	'2020-05-22 18:05:48',	'1:0 2:0 3:1 4:1 5:31 6:31 7:0 8:1 9:21 10:31 11:1 12:1 13:1',	'',	'1',	'0');
 
 DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role` (
@@ -120,4 +119,4 @@ CREATE TABLE `user_role` (
 INSERT INTO `user_role` (`id`, `role`, `utime`, `perm`) VALUES
 (1,	'普通用户',	NULL,	'1:0 3:1 11:1 12:1');
 
--- 2020-05-26 04:28:51
+-- 2020-06-09 01:54:33

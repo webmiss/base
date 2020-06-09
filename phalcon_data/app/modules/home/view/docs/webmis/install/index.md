@@ -27,3 +27,5 @@ yarn install
 # 运行
 yarn serve
 ```
+
+管理员账号: admin 密码:123456
