@@ -16,7 +16,7 @@
     <!-- 更新APP End -->
 
     <!-- 登录 -->
-    <el-container v-show="!$store.state.isLogin" class="login_body bgImg bgcover" :style="{backgroundImage:'url('+($store.state.system.login_bg?$store.state.system.login_bg:require('./assets/bg.jpg'))+')'}">
+    <el-container v-show="$store.state.isLogin===false" class="login_body bgImg bgcover" :style="{backgroundImage:'url('+($store.state.system.login_bg?$store.state.system.login_bg:require('./assets/bg.jpg'))+')'}">
       <div class="login_ct verticalCenter">
         <div class="logo flex_center">
           <div class="bgImg bgTu" :style="{backgroundImage:'url('+($store.state.system.logo?$store.state.system.logo:require('./assets/logo.svg'))+')'}"></div>
@@ -42,13 +42,13 @@
     <!-- 登录 End -->
 
     <!-- 主要框架 -->
-    <el-container  v-show="$store.state.isLogin" class="app_body">
+    <el-container  v-show="$store.state.isLogin===true" class="app_body">
       <!-- 导航菜单 -->
       <el-aside class="app_menus" :style="{width: $store.state.collapseMenu?'64px':'200px',paddingTop:$store.state.statusBarHeight}">
         <!-- 头像 -->
         <div class="app_img" @click="hideMenus()">
           <div class="bgImg" v-if="$store.state.uInfo.img" :style="{backgroundImage:'url('+$store.state.uInfo.img+')'}"></div>
-          <div class="bgImg" v-else></div>
+          <div class="bgImg tu" v-else></div>
           <p class="nowrap">{{$store.state.uInfo.nickname || '昵称'}}({{$store.state.uInfo.name || '姓名'}})</p>
         </div>
         <!-- 菜单 -->
@@ -101,7 +101,7 @@
     </el-dialog>
 
     <!-- 右侧菜单 -->
-    <ul class="right_menu" v-if="$store.state.isLogin">
+    <ul class="right_menu" v-if="$store.state.isLogin===true">
       <li @click="openMsg()"><i class="icons icon_msg"></i><span class="redNum">0</span></li>
     </ul>
 
@@ -213,7 +213,8 @@ i{font-style: normal;}
 /* 头像 */
 .app_menus{background-color: #20222A; color: #CCC;}
 .app_img{cursor: pointer; padding: 20px 0; min-width: 64px;}
-.app_img div{margin: 0 auto; width: 40%; padding-bottom: 40%; height: 0; border-radius: 50%; background-color: #F2F2F2;}
+.app_img div{margin: 0 auto; width: 40%; padding-bottom: 40%; height: 0; text-align: center; border-radius: 50%; background-color: #F2F2F2;}
+.app_img .tu{background-image: url(./assets/logo.svg); background-size: 60%;}
 .app_img p{text-align: center; padding: 10px 5px 0; color: #6FB737; font-size: 14px;}
 .app_img:hover p{color: #ff6600;}
 

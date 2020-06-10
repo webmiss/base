@@ -38,9 +38,14 @@ export default {
     },1000);
     /* 获取菜单 */
     if(Inc.storage.getItem('token')) this.getMenus();
-    // 默认菜单
+    /* 默认菜单 */
     this.$store.state.collapseMenu = Inc.storage.getItem('isCollapse')=='true'?true:false;
     this.$store.state.defaultMenu = Inc.storage.getItem('defaultMenu')?Inc.storage.getItem('defaultMenu'):'3';
+    /* 回车登录 */
+    document.onkeydown = function(event){
+      let e = event || window.event || arguments.callee.caller.arguments[0];
+      if(e && e.keyCode==13 && !Inc.self.$store.state.isLogin) Inc.self.loginSub();
+    }
   },
   methods:{
 
