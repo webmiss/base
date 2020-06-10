@@ -33,7 +33,6 @@ export default {
     },
   },
   mounted(){
-    console.log(this.show);
   },
   methods:{
 
