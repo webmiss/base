@@ -4,7 +4,9 @@
     <el-row class="body mTop10">
       <el-form :model="form" :label-width="LabelWidth">
         <el-form-item label="头像">
-          <div for="logo" class="upload bgImg bgTu" v-if="!form.img" @click="upImage()"></div>
+          <div for="logo" class="upload bgImg bgTu tu" v-if="!form.img" @click="upImage()">
+            <i class="icons icon_img"></i>
+          </div>
           <div for="logo" class="upload bgImg bgTu" v-else :style="{backgroundImage:'url('+form.img+')'}" @click="upImage()"></div>
         </el-form-item>
         <el-form-item label="昵称">
@@ -35,7 +37,9 @@
 </template>
 
 <style scoped>
-.upload{display: inline-block; width: 80px; height: 80px; border: #F2F2F2 1px solid;}
+.upload{display: inline-block; width: 80px; height: 80px; line-height: 80px; text-align: center; border: #F2F2F2 1px solid;}
+.upload.tu{background-color: #F2F2F2;}
+.upload.tu .icons{font-size: 40px; color: #999;}
 </style>
 
 <script src="./UserInfo.js"></script>

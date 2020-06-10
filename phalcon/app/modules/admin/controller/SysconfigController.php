@@ -16,7 +16,7 @@ class SysConfigController extends UserBase {
 		foreach($config as $val){
       $data[$val['name']] = $val['val'];
       if($val['name']=='logo' || $val['name']=='login_bg'){
-        $data[$val['name']] = $this->config->img_url.$val['val'];
+        $data[$val['name']] = $val['val']?$this->config->img_url.$val['val']:'';
       }
 		}
 		return self::getJSON(['code'=>0,'list'=>$data]);
