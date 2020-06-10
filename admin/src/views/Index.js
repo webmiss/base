@@ -13,8 +13,15 @@ export default {
     }
   },
   mounted(){
-    this.getMenus();  // 快捷方式
-    this.loadData();  // 加载数据
+    // 快捷方式
+    this.getMenus();
+    // 加载数据
+    this.loadData();
+    // 10刷新数据
+    clearInterval(this.indexInterval);
+    this.indexInterval = setInterval(()=>{
+      if(this.$route.path=='/') this.loadData();
+    },10000);
   },
   methods:{
 
@@ -34,7 +41,7 @@ export default {
             this.chartOne(d.day);
             this.chartTwo(d.gender);
             this.chartThree(d.room);
-          },500);
+          },1000);
         }
       });
     },
