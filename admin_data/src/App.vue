@@ -192,7 +192,7 @@ i{font-style: normal;}
 .login_ct .logo div{width: 40px; height: 40px; background-color: #FFF; background-size: 75%;}
 .login_ct .logo h1{font-size: 18px; padding-left: 10px; color: #FFF; text-shadow: 0 0 3px rgba(0,0,0,0.3);}
 .login_ct .copy{position: absolute; margin: 40px 0 0 -50px; width: 100%; font-size: 12px; text-align: center;}
-.login_ct .icons{font-size: 24px;}
+.login_ct .icons{font-size: 18px;}
 
 /* 主要框架 */
 .app_body{height: 100%;}
