@@ -12,7 +12,7 @@ class Upload{
   static function file($param=[]){
     // 参数
     $param = array_merge([
-      'upName'=>'up/',  //上传名称
+      'upName'=>'up',  //上传名称
       'path'=>'upload/',  //上传目录
       'filename'=>'', //文件名
       'type'=>['jpg','jpeg','png','gif','mov','mp4','wav','mp3'], //允许格式
