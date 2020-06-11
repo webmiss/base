@@ -192,8 +192,8 @@ class UserController extends UserBase {
     $isClient = User::findFirst(['id=:uid:','bind'=>['uid'=>$uid]]);
     if(!$isClient) return self::getJSON(['code'=>4000,'msg'=>'无权修改该用户信息']);
     // 上传
-    $up = Upload::base64(self::$imgDir,$data);
-    if ($up['status']==false) return self::getJSON(['code'=>4030]);
+    $res = Upload::base64(['path'=>self::$imgDir,'base64'=>$data]);
+    if(!is_array($res)) return self::getJSON(['code'=>4030,'msg'=>$res]);
     $model = UserInfo::findFirst(['uid=:uid:','bind'=>['uid'=>$uid]]);
     if(!$model){
       $model = new UserInfo();
@@ -201,10 +201,10 @@ class UserController extends UserBase {
     }
     // 保存头像
     $tmp = isset($model->img)?$model->img:'';
-    $model->img = self::$imgDir.$up['file'];
+    $model->img = self::$imgDir.$res['filename'];
     if($model->save()==true){
       if($tmp) @unlink($tmp);
-      return self::getJSON(['code'=>0,'img'=>$this->config->img_url.self::$imgDir.$up['file']]);
+      return self::getJSON(['code'=>0,'img'=>$this->config->img_url.self::$imgDir.$res['filename']]);
     }else{
       return self::getJSON(['code'=>4030]);
     }

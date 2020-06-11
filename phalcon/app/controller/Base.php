@@ -11,7 +11,7 @@ use app\model\SysConfig;
 class Base extends Controller{
     
   /* 返回JSON */
-  protected function getJSON($data=''){
+  static protected function getJSON($data=''){
     header('Access-Control-Allow-Origin:*');
     header('Access-Control-Allow-Methods:*');
     header('Access-Control-Allow-Headers:Origin, X-Requested-With, Content-Type, Accept');
@@ -19,7 +19,7 @@ class Base extends Controller{
     if(isset($data['code']) && !isset($data['msg'])){
       $data['msg'] = Code::get($data['code'].'');
     }
-    return $this->response->setJsonContent($data);
+    return json_encode($data);
   }
 
   /* 异常错误 */
@@ -29,7 +29,7 @@ class Base extends Controller{
   }
 
   /* 调试信息 */
-  protected function bug($data=''){
+  static protected function bug($data=''){
     self::getJSON();print_r($data);die;
   }
 
@@ -47,7 +47,7 @@ class Base extends Controller{
   }
 
   /* 自动编号ID-18位 */
-  protected function getId(){
+  static protected function getId(){
     list($msec, $sec) = explode(' ', microtime());
     return date('YmdHis').substr($msec,2,4);
   }

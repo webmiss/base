@@ -237,7 +237,15 @@ export default {
     }
   },
 
-  /* Base64 */
+  /* Base64-类型 */
+  getBaseType(ext){
+    let type='';
+    if(ext=='jpg' || ext=='jpeg') type='data:image/jpeg;base64,';
+    else if(ext=='png') type='data:image/png;base64,';
+    else if(ext=='gif') type='data:image/gif;base64,';
+    return type;
+  },
+  /* Base64-加密解密 */
   encode(str){
     let encode = encodeURI(str);
     return btoa(encode);

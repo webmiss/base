@@ -75,16 +75,20 @@ class IndexController extends Base{
 	function qrcodeAction(){
 		$base64 = $this->request->get('base64');
 		// 上传
-		$dir = 'upload/';
-		$up = Upload::base64($dir,$base64);
-		$file = $dir.$up['file'];
-		// 处理
-		$url = shell_exec('zbarimg -q '.$file);
-		$url = ltrim($url,'QR-Code:');
-		$url = rtrim($url,"\n");
-		// 删除缓存
-		unlink($file);
-		return self::getJSON(['code'=>0,'url'=>$url]);
+		$dir = 'upload/tmp/';
+		$res = Upload::base64(['path'=>$dir,'base64'=>$base64]);
+		if(is_array($res)){
+			$file = $dir.$res['filename'];
+			// 处理
+			$url = shell_exec('zbarimg -q '.$file);
+			$url = ltrim($url,'QR-Code:');
+			$url = rtrim($url,"\n");
+			// 删除缓存
+			unlink($file);
+			return self::getJSON(['code'=>0,'url'=>$url]);
+		}else{
+			return self::getJSON(['code'=>4030,'msg'=>$res]);
+		}
 	}
 
 }
