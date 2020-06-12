@@ -48,10 +48,6 @@ class Images{
 			// 填充图片
 			imagefttext($image, 16, rand(10,30), $x, $y, $fontcolor, $fonts, $fontContent);
 		}
-		// 保存Session
-		$session = new SessionAdapter();
-		$session->start();
-    $session->set('V_CODE',strtolower($code));
     // 保存Redis
     $redis = new \Redis();
     $redis->connect('127.0.0.1',6379);

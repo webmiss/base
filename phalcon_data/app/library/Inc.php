@@ -8,30 +8,38 @@ namespace app\library;
 
 class Inc{
 
-	/* URL */
+	/* 获取URL */
 	static function BaseUrl($url=''){
 		$base_url = $_SERVER['SERVER_PORT']=='443'?'https://':'http://';
 		$base_url .= $_SERVER['HTTP_HOST'].'/'.$url;
 		return $base_url;
 	}
 
-	/* Key */
+	/* 加密-字符串 */
 	static function getKey($str){
-		return md5($str.'e33e907621123d2bf01b7f580f316ade');
+		$config = require APP_PATH.'/config/env.php';
+		return md5($str.$config['key']);
 	}
-	static function getKeyArr($parameter=''){
-		ksort($parameter);
-		reset($parameter);
-		$parameter['sign'] = 'e33e907621123d2bf01b7f580f316ade';
-		return md5(http_build_query($parameter));
+	/* 加密-数组 */
+	static function getKeyArr($param=''){
+		$config = require APP_PATH.'/config/env.php';
+		ksort($param);
+		reset($param);
+		$param['sign'] = $config['key'];
+		return md5(http_build_query($param));
 	}
 
 	/* Post */
-	static function curlPost($url='',$data=[],$type=''){
-		$data = $type=='json'?json_encode($data,JSON_UNESCAPED_UNICODE):$data;
+	static function curlPost($url='', $data=[], $type='', $header=[]){
+		// 方式
+		if($type=='json'){
+			$header[] = 'Content-Type: application/json; charset=utf-8';
+			$data = json_encode($data,JSON_UNESCAPED_UNICODE);
+		}
+		// Curl
 		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_HTTPHEADER,$header);
 		curl_setopt($curl, CURLOPT_URL, $url);
-		if($type=='json') curl_setopt($curl, CURLOPT_HTTPHEADER,['Content-Type: application/json; charset=utf-8']);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($curl, CURLOPT_POST, 1);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -43,34 +51,34 @@ class Inc{
 	}
 
 	/* 关键字高亮 */
-	static function keyHH($str='', $phrase, $tag_open = '<span style="color:#FF6600">', $tag_close = '</span>'){
-		if ($str == ''){return FALSE;}
-		if ($phrase != ''){return preg_replace('/('.preg_quote($phrase, '/').')/i', $tag_open."\\1".$tag_close, $str);}
+	static function keyHH($str='', $phrase='', $tag_open='<span style="color:#FF6600">', $tag_close='</span>'){
+		if ($str=='') return FALSE;
+		if ($phrase!='') return preg_replace('/('.preg_quote($phrase, '/').')/i', $tag_open."\\1".$tag_close, $str);
 		return $str;
 	}
 
-	/* 截取中文字符串 */
-	static function sysSubStr($String,$Length,$Append = false){
-		if(strlen($String) <= $Length ){
-			return $String;
+	/* 字符串截取 */
+	static function subStr($str='', $len=0, $append='...'){
+		if(strlen($str) <= $len ){
+			return $str;
 		}else{
 			$I = 0;
-			while ($I < $Length){
-				$StringTMP = substr($String,$I,1);
-				if( ord($StringTMP) >=224 ){
-					$StringTMP = substr($String,$I,3);
+			while ($I < $len){
+				$strTmp = substr($str,$I,1);
+				if( ord($strTmp) >=224 ){
+					$strTmp = substr($str,$I,3);
 					$I = $I + 3;
-				}elseif( ord($StringTMP) >=192 ){
-					$StringTMP = substr($String,$I,2);
+				}elseif( ord($strTmp) >=192 ){
+					$strTmp = substr($str,$I,2);
 					$I = $I + 2;
 				}else{
 					$I = $I + 1;
 				}
-				$StringLast[] = $StringTMP;
+				$strLast[] = $strTmp;
 			}
-			$StringLast = implode("",$StringLast);
-			if($Append){$StringLast .= "...";}
-			return $StringLast;
+			$strLast = implode('',$strLast);
+			if($append) $strLast.=$append;
+			return $strLast;
 		}
 	}
 
@@ -82,24 +90,6 @@ class Inc{
 		$age=$ty-$y;
 		if($tm>$m || $tm==$m&&$td>$d) $age+=1;
 		return $age;
-	}
-
-	/* 时间统计 */
-	static function getTime($time=0){
-		$time = $time<0?-$time:$time;
-		$d = 24*60*60;
-		$h = 60*60;
-		$m = 60;
-		if($time>=$d){
-			$data = round($time/$d,1).'天';
-		}elseif($time>=$h){
-			$data = round($time/$h,1).'小时';
-		}elseif($time>=60){
-			$data = round($time/$m,0).'分钟';
-		}else{
-			$data = $time.'秒';
-		}
-		return $data;
 	}
 
 }
