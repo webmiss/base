@@ -43,7 +43,7 @@ class Base extends Controller{
 
   /* 获取系统配置 */
   protected function getConfig($name){
-    return SysConfig::findFirst('name="'.$name.'"');
+    return SysConfig::findFirst('name="'.$name.'"')->toArray();
   }
 
   /* 自动编号ID-18位 */
