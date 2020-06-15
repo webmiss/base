@@ -10,21 +10,6 @@ use app\library\Inc;
 
 class Centre{
 
-  /* 消息-列表 */
-  static function listMsg($uid,$page,$limit){
-    $config = require APP_PATH.'/config/env.php';
-    $res = file_get_contents($config['centre_url'].'msg/list?token='.self::getToken().'&uid='.$uid.'&page='.$page.'&limit='.$limit);
-    $data = json_decode($res);
-    return $data->code==0?$data->list:$data->msg;
-  }
-
-  /* 消息-发送 */
-  static function sendMsg($uid,$title,$content){
-    $config = require APP_PATH.'/config/env.php';
-    $data = Inc::curlPost($config['centre_url'].'msg/sendMsg?token='.self::getToken(),['uid'=>$uid,'title'=>$title,'content'=>$content]);
-    return $data->code==0?$data->info:$data->msg;
-  }
-
   /* 用户登录 */
   static function login($uname,$passwd){
     $config = require APP_PATH.'/config/env.php';
@@ -54,7 +39,7 @@ class Centre{
     return json_decode($res);
   }
 
-  /* 用户信息-查询 */
+  /* 用户信息-ID */
   static function getID($uname){
     $config = require APP_PATH.'/config/env.php';
     $res = file_get_contents($config['centre_url'].'user/getID?token='.self::getToken().'&uname='.$uname);

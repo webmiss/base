@@ -90,7 +90,7 @@ class Alipay{
     return implode(',', $string);
   }
 
-  /* 签名 */
+  /* 签名-获取 */
   static function getSign($data){
     $config = require APP_PATH.'/config/env.php';
     $param = self::parameter($data);
@@ -106,7 +106,7 @@ class Alipay{
     }
   }
 
-  /* 验证 */
+  /* 签名-验证 */
   static function getVerify($data){
     $config = require APP_PATH.'/config/env.php';
     $param = self::parameter($data);
@@ -123,7 +123,7 @@ class Alipay{
   }
 
   /* 参数处理 */
-  private static function parameter($data){
+  static private function parameter($data){
     $tmpData = [];
     // 去前后空格
     foreach($data as $key=>$val){

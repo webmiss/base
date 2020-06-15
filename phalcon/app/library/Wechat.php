@@ -29,47 +29,6 @@ class Wechat{
     echo $res->errcode==0?'success':false;
   }
 
-  /* 获取OpenID */
-  static function getOpenid($code){
-    $config = require APP_PATH.'/config/env.php';
-    $res = file_get_contents(self::$api_url.'sns/jscode2session?appid='.$config['wechat_AppID'].'&secret='.$config['wechat_AppSecret'].'&js_code='.$code.'&grant_type=authorization_code');
-    $res = json_decode($res);
-    return isset($res->openid)?$res->openid:'';
-  }
-  
-  /* AccessToken */
-  static function getAccessToken(){
-    $config = require APP_PATH.'/config/env.php';
-    $res = file_get_contents(self::$api_url.'cgi-bin/token?grant_type=client_credential&appid='.$config['wechat_AppID'].'&secret='.$config['wechat_AppSecret']);
-    $res = json_decode($res);
-    return isset($res->access_token)?$res->access_token:'';
-  }
-
-  /* 小程序-支付参数 */
-  static function getWappPay($prepay_id){
-    $config = require APP_PATH.'/config/env.php';
-    $data['appId'] = $config['wechat_AppID'];
-    $data['timeStamp'] = (String)time();
-    $data['nonceStr'] = md5(date('YmdHis'));
-    $data['package'] = 'prepay_id='.$prepay_id;
-    $data['signType'] = 'MD5';
-    $data['paySign'] = self::getSign($data);
-    return $data;
-  }
-
-  /* APP-支付参数 */
-  static function getAppPay($prepay_id){
-    $config = require APP_PATH.'/config/env.php';
-    $data['appid'] = $config['wechat_AppID'];
-    $data['partnerid'] = $config['wechat_MchID'];
-    $data['prepayid'] = $prepay_id;
-    $data['package'] = 'Sign=WXPay';
-    $data['noncestr'] = md5(date('YmdHis'));
-    $data['timestamp'] = (String)time();
-    $data['sign'] = self::getSign($data);
-    return $data;
-  }
-
   /* 统一下单 */
   static function getUnifiedOrder($data=[]){
     $config = require APP_PATH.'/config/env.php';
@@ -89,6 +48,31 @@ class Wechat{
     return isset($res->prepay_id)?$res->prepay_id:$res;
   }
 
+  /* 支付参数-小程序 */
+  static function getWappPay($prepay_id){
+    $config = require APP_PATH.'/config/env.php';
+    $data['appId'] = $config['wechat_AppID'];
+    $data['timeStamp'] = (String)time();
+    $data['nonceStr'] = md5(date('YmdHis'));
+    $data['package'] = 'prepay_id='.$prepay_id;
+    $data['signType'] = 'MD5';
+    $data['paySign'] = self::getSign($data);
+    return $data;
+  }
+
+  /* 支付参数-APP */
+  static function getAppPay($prepay_id){
+    $config = require APP_PATH.'/config/env.php';
+    $data['appid'] = $config['wechat_AppID'];
+    $data['partnerid'] = $config['wechat_MchID'];
+    $data['prepayid'] = $prepay_id;
+    $data['package'] = 'Sign=WXPay';
+    $data['noncestr'] = md5(date('YmdHis'));
+    $data['timestamp'] = (String)time();
+    $data['sign'] = self::getSign($data);
+    return $data;
+  }
+
   /* 回调数据 */
   static function getNotify(){
     $data = file_get_contents('php://input');
@@ -96,6 +80,27 @@ class Wechat{
     $tmpArr = (array)$data;
     unset($tmpArr['sign']);
     return $data->return_code=='SUCCESS'&&$data->result_code=='SUCCESS'&&$data->sign==Wechat::getSign($tmpArr)?$data:false;
+  }
+
+  /* XML转数组 */
+  static function xml2array($xml){
+    return json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)));
+  }
+
+  /* AccessToken */
+  static function getAccessToken(){
+    $config = require APP_PATH.'/config/env.php';
+    $res = file_get_contents(self::$api_url.'cgi-bin/token?grant_type=client_credential&appid='.$config['wechat_AppID'].'&secret='.$config['wechat_AppSecret']);
+    $res = json_decode($res);
+    return isset($res->access_token)?$res->access_token:'';
+  }
+
+  /* 获取OpenID */
+  static function getOpenid($code){
+    $config = require APP_PATH.'/config/env.php';
+    $res = file_get_contents(self::$api_url.'sns/jscode2session?appid='.$config['wechat_AppID'].'&secret='.$config['wechat_AppSecret'].'&js_code='.$code.'&grant_type=authorization_code');
+    $res = json_decode($res);
+    return isset($res->openid)?$res->openid:'';
   }
 
   /* 签名 */
@@ -106,11 +111,6 @@ class Wechat{
     foreach($data as $key=>$val) $str .= $key.'='.$val.'&';
     $str .= 'key='.$config['wechat_Key'];
     return strtoupper(md5($str));
-  }
-
-  /* XML转数组 */
-  static function xml2array($xml){
-    return json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)));
   }
 
 }

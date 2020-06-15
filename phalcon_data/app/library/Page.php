@@ -10,7 +10,7 @@ use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class Page{
 	/* Page */
-	static public function get($config=array()){
+	static public function get($config=[]){
 		if(isset($config['data'])){
 			$controller = isset($config['controller'])?$config['controller']:'';
 			$limit = isset($config['limit'])?$config['limit']:15;
@@ -50,6 +50,6 @@ class Page{
 		unset($like['page']);
 		foreach($like as $key=>$val){if($val==''){unset($like[$key]);}else{$getUrl .= '&'.$key.'='.$val;}}
 		unset($like['search']);
-		return array('getUrl'=>$getUrl,'data'=>$like,'search'=>'?search&page='.$page.$getUrl);
+		return ['getUrl'=>$getUrl,'data'=>$like,'search'=>'?search&page='.$page.$getUrl];
 	}
 }

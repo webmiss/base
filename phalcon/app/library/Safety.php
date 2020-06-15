@@ -23,7 +23,7 @@ class Safety{
 	}
 
 	/* 加密 */
-	static function encode($data,$key){
+	static function encode($data=[],$key=''){
 		$text = is_array($data)?json_encode($data):$data;
 		$crypt = new Crypt();
 		$token = $crypt->encryptBase64($text, $key);
@@ -32,7 +32,7 @@ class Safety{
 	}
 
 	/* 解密 */
-	static function decode($token,$key){
+	static function decode($token='',$key=''){
 		$token = str_replace('_','+',$token);
 		$crypt = new Crypt();
 		$data = json_decode($crypt->decryptBase64($token, $key));

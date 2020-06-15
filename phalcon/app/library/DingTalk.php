@@ -1,22 +1,14 @@
 <?php
 
-namespace app\library\ali;
+namespace app\library;
 
 use app\library\Inc;
 
 /* 钉钉 */
 class DingTalk{
-  // 参数
-  static private $appKey = 'dingcwfrompcotsxjsh3';
-  static private $appSecret = 'TZ6jVefg7S3Us_mJEFY8nqKP5vFMH_zsEFAIdrJJXgYTqBc-j88mHfxKfUnRbI1Z';
-  static private $url = 'https://oapi.dingtalk.com/';
 
-  /* 获取签名 */
-  static function getToken(){
-    $res = file_get_contents(self::$url.'gettoken?appkey='.self::$appKey.'&appsecret='.self::$appSecret);
-    $data = json_decode($res);
-    return isset($data->access_token)?$data->access_token:'';
-  }
+  // 参数
+  static private $url = 'https://oapi.dingtalk.com/';
 
   /* 出勤 */
   static function attendance($type='',$data=''){
@@ -25,7 +17,8 @@ class DingTalk{
     }
     return $res;
   }
-  /* 打开结果 */
+
+  /* 打卡结果 */
   static function getCheck($from,$to,$id){
     $limit = 25;
     $num = ceil(count($id)/$limit);
@@ -79,6 +72,24 @@ class DingTalk{
       $res = json_decode($res);
     }
     return $res;
-	}
+  }
+  
+  /* 考勤组 */
+  static function groups($type='',$data){
+    if($type=='list'){
+      $res = Inc::curlPost(self::$url.'topapi/attendance/group/minimalism/list?access_token='.self::getToken(),['op_user_id'=>$data]);
+    }elseif($type=='update'){
+      $res = Inc::curlPost(self::$url.'topapi/attendance/group/member/update?access_token='.self::getToken(),$data,'json');
+    }
+    return $res;
+  }
+
+  /* 获取Token */
+  static function getToken(){
+    $config = require APP_PATH.'/config/env.php';
+    $res = file_get_contents(self::$url.'gettoken?appkey='.$config['ding_appKey'].'&appsecret='.$config['ding_appSecret']);
+    $data = json_decode($res);
+    return isset($data->access_token)?$data->access_token:'';
+  }
   
 }

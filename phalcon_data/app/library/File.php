@@ -9,7 +9,6 @@ namespace app\library;
 class File{
 
 	static public $file_root = '.';
-	static private $file_list = [];
 	static private $zipObj = null;
 	
 	/* Lists */
@@ -70,29 +69,19 @@ class File{
 	static function mkDir($path) {
 		$dir = self::$file_root.$path;
 		if(!is_dir($dir)){
-			return mkdir($dir,0777,true)==true?true:false;
+			return mkdir($dir,0777,true)===true?true:false;
 		}else{return false;}
 	}
-	/* AddFile */
-	static function addFile($file,$data=''){
-		$file = self::$file_root.$file;
-		if(!is_file($file)){
-			return file_put_contents($file,$data)==true?true:false;
-		}else{return false;}
-	}
-	/* EditFile */
-	static function editFile($file,$data=''){
-		$file = self::$file_root.$file;
-		if(is_file($file)){
-			return file_put_contents($file,$data)==true?true:false;
-		}else{return false;}
+	/* saveFile */
+	static function saveFile($file,$content=''){
+		return file_put_contents($file,$content)===true?true:false;
 	}
 
 	/* Rename */
 	static function reName($rename,$name) {
 		$ff = self::$file_root.$rename;
 		$f = self::$file_root.$name;
-		return rename($ff,$f)==true?true:false;
+		return rename($ff,$f)===true?true:false;
 	}
 
 	/* All Files */
@@ -132,17 +121,16 @@ class File{
 	/* Upload */
 	static function upload($path,$upName){
 		$file = str_replace(' ','_',$_FILES[$upName]['name']);
-		return move_uploaded_file($_FILES[$upName]['tmp_name'],self::$file_root.$path.$file);
+		return move_uploaded_file($_FILES[$upName]['tmp_name'],self::$file_root.$path.$file)===true?true:false;
 	}
 	
 	/* Download */
-	static function down($f){
-		$fileinfo = pathinfo($f);
+	static function down($file){
+		$fileinfo = pathinfo($file);
 		header('Content-type: application/x-'.$fileinfo['extension']);
 		header('Content-Disposition: attachment; filename='.$fileinfo['basename']);
-		header('Content-Length: '.filesize($f));
-		readfile($f);
-		exit();
+		header('Content-Length: '.filesize($file));
+		return readfile($file);
 	}
 
 	/* Delete folder and file */
@@ -177,9 +165,9 @@ class File{
 		$perm = octdec($perm);
 		$data = false;
 		if(!is_dir($ff)) {
-			$data = chmod($ff,$perm)==true?true:false;
+			$data = chmod($ff,$perm)===true?true:false;
 		}else {
-			$data = self::editDirPerm($ff,$perm)==true?true:false;
+			$data = self::editDirPerm($ff,$perm)===true?true:false;
 		}
 		return $data;
 	}
@@ -190,14 +178,14 @@ class File{
 			if($file == "." || $file == ".."){continue;}
 			$fullpath = $dir . "/" . $file;
 			if(!is_dir($fullpath)){
-				$data = chmod($fullpath,$perm)==true?true:false;
+				$data = chmod($fullpath,$perm)===true?true:false;
 			}else{
-				$data = self::editDirPerm($fullpath,$perm)==true?true:false;
+				$data = self::editDirPerm($fullpath,$perm)===true?true:false;
 			}
 			if($data==false){break;}
 		}
 		closedir($d);
-		return chmod($dir,$perm)==true&&$data?true:false;
+		return chmod($dir,$perm)===true&&$data?true:false;
 	}
 
 	/* Folder Size */
@@ -216,21 +204,21 @@ class File{
 		return $size;
 	}
 	/* File Size */
-	static function size($f='') {
-		return filesize($f);
+	static function size($file='') {
+		return filesize($file);
 	}
 
 	/* File Perm */
-	static function perm($f='') {
-		return substr(sprintf('%o', fileperms($f)), -4);
+	static function perm($file='') {
+		return substr(sprintf('%o', fileperms($file)), -4);
 	}
 	/* Ctime */
-	static function getctime($f='') {
-		return date("Y-m-d H:i:s",filectime($f));
+	static function getctime($file='') {
+		return date("Y-m-d H:i:s",filectime($file));
 	}
 	/* Mtime */
-	static function getmtime($f='') {
-		return date("Y-m-d H:i:s",filemtime($f));
+	static function getmtime($file='') {
+		return date("Y-m-d H:i:s",filemtime($file));
 	}
 	/* Format Byte */
 	static function formatBytes($bytes){

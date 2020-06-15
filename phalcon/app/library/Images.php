@@ -12,7 +12,7 @@ use Phalcon\Session\Adapter\Files as SessionAdapter;
 class Images{
 
 	/*
-	* 验证码类
+	* 验证码
 	* @param1 int width  - 宽度
 	* @param2 int height - 高度
 	* @param3 string fonts  - 字体路径
@@ -61,14 +61,14 @@ class Images{
 
 
 	/*
-	* 缩略图类
+	* 缩略图
 	* @param1 string src  - 原图路径
 	* @param3 int width  - 字体路径
 	* @param2 int height - 高度
 	*/
 	static function getThumb($src,$width=120,$height=75){
 		// 图片是否存在
-		if(!is_file($src)){die('原图不存在: '.$src);}
+		if(!is_file($src)) return '原图不存在: '.$src;
 
 		// 获取能够使用的后缀
 		$ext = self::getFunctionName($src);
@@ -109,15 +109,13 @@ class Images{
 			// 保存图片
 			$save = 'image'.$ext;
 			$save($dst_img,$path.'/'.$thumb_name);
-
-			return $thumb_name;
-		}else{
-			die('缩略图采样失败！');
-		}
+			// 返回
+			return ['filename'=>$thumb_name];
+		}else{ return '缩略图采样失败！'; }
 	}
 
 	/*
-	* 图片水印类
+	* 图片水印
 	* @param1 string src  - 原图路径
 	* @param2 string path - 保存路径
 	* @param3 int width  - 字体路径
@@ -125,9 +123,9 @@ class Images{
 	*/
 	static function getWater($src,$water='upload/water.png',$position='center',$opacity=70){
 		// 图片是否存在
-		if(!is_file($src)){die('原图不存在: '.$src);}
+		if(!is_file($src)) return '原图不存在: '.$src;
 		// 图片是否存在
-		if(!is_file($water)){die('水印不存在: '.$water);}
+		if(!is_file($water)) return '水印不存在: '.$water;
 
 		// 获取能够使用的后缀
 		$s_ext = self::getFunctionName($src);
@@ -176,15 +174,15 @@ class Images{
 			// 保存图片
 			$save = 'image'.$s_ext;
 			$save($s_img,$path.'/'.$water_name);
-
-			return $water_name;
+			// 返回
+			return ['filename'=>$water_name];
 		}else{
-			die('水印图采样失败！');
+			return '水印图采样失败!';
 		}
 	}
 
 	// 获取文件后缀名
-	private static function getFunctionName($file){
+	static private function getFunctionName($file){
 		// 常用后缀
 		$func = array(
 			'gif' => 'gif',

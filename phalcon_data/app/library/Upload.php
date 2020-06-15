@@ -64,9 +64,9 @@ class Upload{
   }
 
   /* 获取Html图片 */
-  static function getHtmlImg($content){
+  static function getHtmlImg($html){
     $pattern="/<img.*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>/";
-    preg_match_all($pattern,htmlspecialchars_decode($content),$match);
+    preg_match_all($pattern,htmlspecialchars_decode($html),$match);
     $imgs = [];
     foreach($match[1] as $val){
       $imgs[] = basename($val);
@@ -75,7 +75,7 @@ class Upload{
   }
 
   /* 清理图片 */
-  static function clearImg($dir,$imgs){
+  static function clearImg($dir='',$imgs=[]){
     $all = scandir($dir);
     foreach($all as $val){
       if($val=='.' || $val=='..') continue;
@@ -84,7 +84,7 @@ class Upload{
   }
 
   /* 删除目录 */
-  static function delDir($dir){
+  static function delDir($dir=''){
     array_map('unlink', glob($dir.'*'));
     rmdir($dir);
   }

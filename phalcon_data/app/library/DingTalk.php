@@ -1,6 +1,6 @@
 <?php
 
-namespace app\library\ali;
+namespace app\library;
 
 use app\library\Inc;
 
@@ -17,7 +17,8 @@ class DingTalk{
     }
     return $res;
   }
-  /* 打开结果 */
+
+  /* 打卡结果 */
   static function getCheck($from,$to,$id){
     $limit = 25;
     $num = ceil(count($id)/$limit);
@@ -83,7 +84,7 @@ class DingTalk{
     return $res;
   }
 
-  /* 获取签名 */
+  /* 获取Token */
   static function getToken(){
     $config = require APP_PATH.'/config/env.php';
     $res = file_get_contents(self::$url.'gettoken?appkey='.$config['ding_appKey'].'&appsecret='.$config['ding_appSecret']);
