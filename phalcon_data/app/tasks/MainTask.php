@@ -1,11 +1,9 @@
 <?php
 
-use app\model\User;
+use app\controller\Base;
 
 class MainTask extends Base{
   function mainAction(){
-    $data = User::findFirst();
-    print_r($data->toArray());
-
+    echo 'Cil Main';
   }
 }
