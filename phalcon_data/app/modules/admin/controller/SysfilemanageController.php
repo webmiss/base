@@ -3,6 +3,7 @@
 namespace app\modules\admin\controller;
 
 use app\library\File;
+use app\library\Down;
 
 class SysFileManageController extends UserBase{
 
@@ -69,12 +70,7 @@ class SysFileManageController extends UserBase{
     if(empty($path) || empty($fileName)) return self::getJSON(['code'=>4000]);
     // 文件流
     self::getJSON();
-    $size = filesize(self::$userRoot.$path.$fileName);
-    header('Content-type: application/octet-stream');
-    header('Accept-Ranges: bytes');
-    header ('Accept-Length: '.$size);
-    header ('Content-Disposition: attachment; filename='.$fileName);
-    return readfile(self::$userRoot.$path.$fileName);
+    return Down::file(self::$userRoot.$path,$fileName);
   }
 
   /* 删除文件 */

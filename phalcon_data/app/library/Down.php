@@ -22,7 +22,7 @@ class Down{
   }
 
   /* 下载文件 */
-  static function down($path='',$filename=''){
+  static function file($path='',$filename=''){
     $file = $path.$filename;
     header('Content-type: application/octet-stream');
     header('Accept-Ranges: bytes');
