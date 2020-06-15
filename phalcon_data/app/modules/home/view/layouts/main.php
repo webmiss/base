@@ -11,6 +11,9 @@
 	<meta name="keywords" content="<?php echo $Keywords;?>" />
 	<meta  name="description"  content="<?php echo $Description;?>"/>
 	<link rel="stylesheet" type="text/css" href="/themes/home/main.css" />
+	<!-- VUE -->
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script type="text/javascript" src="/themes/home/main.js"></script>
 </head>
 <body>
 	<div id="app">
@@ -31,8 +34,6 @@
 		</div>
 		<?php echo $this->getContent(); ?>
 	</div>
-<!-- VUE -->
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <!-- 动态JS -->
 <?php if(isset($LoadJS)){foreach($LoadJS as $val){;?>
 <script type="text/javascript" src="<?php echo $val;?>"></script>
