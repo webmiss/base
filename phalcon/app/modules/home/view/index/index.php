@@ -20,16 +20,16 @@
         <div class="index_key">>>>>>>>> Demo <<<<<<<<</div>
         <ul class="index_qr flex_center">
           <li>
-            <div class="qrcode"></div>
+            <div><img src="https://webmis.vip/index/qrcode/app" /></div>
             <p>APP下载</p>
           </li>
           <li>
-            <div class="qrcode"></div>
-            <p>微信小程序</p>
+          <div><img src="https://webmis.vip/index/qrcode/wapp" /></div>
+            <p>小程序</p>
           </li>
           <li>
-            <div class="qrcode"></div>
-            <p>支付宝小程序</p>
+            <div><img src="https://webmis.vip/index/qrcode/wap" /></div>
+            <p>公众号</p>
           </li>
         </ul>
       </div>

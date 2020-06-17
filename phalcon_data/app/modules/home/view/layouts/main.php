@@ -12,23 +12,21 @@
 	<meta  name="description"  content="<?php echo $Description;?>"/>
 	<link rel="stylesheet" type="text/css" href="/themes/home/main.css" />
 	<!-- VUE -->
-	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-	<script type="text/javascript" src="/themes/home/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script type="module" src="/themes/home/main.js"></script>
 </head>
 <body>
 	<div id="app">
 		<div class="top_body">
 			<div class="body top">
 				<!-- Logo -->
-				<a href="/" class="bgImg top_logo"></a>
+				<h1 class="bgImg top_logo" title="WebMIS"></h1>
 				<!-- 菜单 -->
 				<ul class="top_nav">
 					<li><a href="/"<?php echo $this->dispatcher->getActionName()=='index'?' class="an"':'';?>>首页</a></li>
-					<li><a href="https://webmis.vip/docs/webmis/install/index"<?php echo $this->dispatcher->getActionName()=='webmis'?' class="an"':'';?>>WebMIS</a></li>
-					<li><a href="https://webmis.vip/docs/linux/shell/index"<?php echo $this->dispatcher->getActionName()=='linux'?' class="an"':'';?>>Linux</a></li>
 				</ul>
 				<div class="top_right flex">
-					<a class="login">登录</a>|<a class="register">注册</a>
+					<a class="login" @click="showMsg('正在开发!')">登录</a>|<a class="register" @click="showMsg('正在开发!')">注册</a>
 				</div>
 			</div>
 		</div>
