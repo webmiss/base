@@ -8,7 +8,8 @@ namespace app\modules\home\controller;
 class IndexController extends BaseController{
 
 	public function indexAction(){
-		$this->view->setVar('LoadJS',[]);
+		$this->view->setVar('LoadJS',['/themes/home/js/index.js']);
+		$this->view->setVar('LoadCSS',['/themes/home/css/index.css']);
     return self::display('index/index');
 	}
 
