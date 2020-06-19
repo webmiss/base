@@ -1,30 +1,30 @@
 <template>
-  <div v-if="show" ref="ImgBG" class="imgview_bg" :style="{backgroundColor: 'rgba(0,0,0,'+opacity+')'}">
-    <!-- 加载 -->
-    <div class="imgview_load" v-if="loading"><i class="el-icon-loading"></i></div>
-    <!-- 图片 -->
-    <img id="img" class="imgview_img verticalCenter" :src="info.src" />
-    <!-- 上一页 -->
-    <div class="imgview_left" @click="page(-1)">
-      <i class="el-icon-arrow-left" v-if="index!=0"></i>
-    </div>
-    <!-- 下一页 -->
-    <div class="imgview_right" @click="page(1)">
-      <i class="el-icon-arrow-right" v-if="(index+1)!=imgs.length"></i>
-    </div>
-    <!-- 信息 -->
-    <div class="imgview_info">
-      <span class="nowrap">
-        <span>名称: {{info.name}}</span>
-        <span>大小: {{info.size}}</span>
-        <span>页码: {{index+1}}/{{imgs.length}}</span>
-      </span>
-    </div>
-    <!-- 关闭 -->
-    <div class="imgview_close" @click="close()"><i class="el-icon-close"></i></div>
-    <!-- 全屏 -->
-    <div class="imgview_full" @click="Fullscreen()"><i class="el-icon-rank"></i></div>
+<div v-if="show" ref="ImgBG" class="imgview_bg" :style="{backgroundColor: 'rgba(0,0,0,'+opacity+')'}">
+  <!-- 加载 -->
+  <div class="imgview_load" v-if="loading"><i class="icons icon_loading"></i></div>
+  <!-- 图片 -->
+  <div class="imgview_img"><img id="img" :src="info.src" /></div>
+  <!-- 上一页 -->
+  <div class="imgview_left" @click="page(-1)">
+    <i class="icons icon_left" v-if="index!=0"></i>
   </div>
+  <!-- 下一页 -->
+  <div class="imgview_right" @click="page(1)">
+    <i class="icons icon_right" v-if="(index+1)!=imgs.length"></i>
+  </div>
+  <!-- 信息 -->
+  <div class="imgview_info">
+    <span class="nowrap">
+      <span>名称: {{info.name}}</span>
+      <span v-if="info.size">大小: {{info.size}}</span>
+      <span>页码: {{index+1}}/{{imgs.length}}</span>
+    </span>
+  </div>
+  <!-- 关闭 -->
+  <div class="imgview_close" @click="close()"><i class="icons icon_close"></i></div>
+  <!-- 全屏 -->
+  <div class="imgview_full" @click="Fullscreen()"><i class="icons icon_full"></i></div>
+</div>
 </template>
 
 <script>
@@ -40,13 +40,19 @@ export default {
   },
   data(){
     return {
-      loading: false,
+      loading: true,
       index: 0,
       imgs: [],
       info:{src:'',name:'',size:''},
     }
   },
   mounted(){
+    /* ESC */
+    const self = this;
+    document.onkeydown = function(event){
+      let e = event || window.event || arguments.callee.caller.arguments[0];
+      if(e && e.keyCode==27) self.close();
+    }
   },
   methods:{
 
@@ -83,9 +89,9 @@ export default {
     setImg(index){
       const self = this;
       this.index = index || 0;
-      this.info.src = this.imgs[this.index].path+this.imgs[this.index].name;
+      this.info.src = this.imgs[this.index].src;
       this.info.name = this.imgs[this.index].name;
-      this.info.size = this.imgs[this.index].size;
+      this.info.size = this.imgs[this.index].size || '';
       // 动画
       let obj = document.getElementById('img');
       if(obj){

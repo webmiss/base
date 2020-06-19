@@ -1,4 +1,4 @@
-<template>
+const template = `
 <div v-if="show" ref="ImgBG" class="imgview_bg" :style="{backgroundColor: 'rgba(0,0,0,'+opacity+')'}">
   <!-- 加载 -->
   <div class="imgview_load" v-if="loading"><i class="icons icon_loading"></i></div>
@@ -25,10 +25,9 @@
   <!-- 全屏 -->
   <div class="imgview_full" @click="Fullscreen()"><i class="icons icon_full"></i></div>
 </div>
-</template>
-
-<script>
+`;
 export default {
+  template: template,
   name:'ImageView',
   model: {
     prop: "show",
@@ -162,4 +161,3 @@ export default {
 
   }
 }
-</script>

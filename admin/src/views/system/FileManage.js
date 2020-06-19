@@ -132,7 +132,7 @@ export default {
           if(this.isImg(all[i].ext)){
             if(file==all[i].name) index=imgs.length;
             imgs.push({
-              path: this.url+this.lists.path,
+              src: this.url+this.lists.path+all[i].name,
               name: all[i].name,
               size: all[i].size,
             });
