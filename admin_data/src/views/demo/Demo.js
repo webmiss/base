@@ -15,24 +15,10 @@ export default {
       delData:{show:false,id:''},
     }
   },
-  mounted(){
-    this.loadData();
-  },
-  methods:{
-
-    /* 分页 */
-    page(val){
-      this.pageData.page = val;
-      this.loadData();
-    },
-
-    /* 获取选择数据 */
-    getSelect(val) {
-      this.selectData = val;
-    },
-
-    /* 菜单动作 */
-    openAction(type){
+  computed:{
+    /* 动作菜单-点击 */
+    actionType(){
+      let type = this.$store.state.action.type;
       if(type=='list'){
         this.seaData.form = {};
         this.pageData.page = 1;
@@ -54,6 +40,24 @@ export default {
         }
         else Inc.toast('请选择数据!');
       }
+      return type;
+    },
+  },
+  mounted(){
+    // 加载数据
+    this.loadData();
+  },
+  methods:{
+
+    /* 分页 */
+    page(val){
+      this.pageData.page = val;
+      this.loadData();
+    },
+
+    /* 获取选择数据 */
+    getSelect(val) {
+      this.selectData = val;
     },
 
     /* 加载数据 */

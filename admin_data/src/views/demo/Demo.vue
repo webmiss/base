@@ -1,6 +1,7 @@
 <template>
   <div>
-    
+    <!-- 功能菜单 -->
+    <el-input class="hide" v-model="actionType"></el-input>
     <!-- 功能菜单 -->
     <Action url="Demo" @action="openAction"></Action>
     <!-- 内容 -->

@@ -2,19 +2,19 @@ import Start from '@/library/Start'
 import Inc from '@/library/Inc'
 import Plus from '@/library/Plus'
 import Socket from '@/library/Socket'
-// Scroll
-import BScroll from '@better-scroll/core'
-import Pullup from '@better-scroll/pull-up'
-BScroll.use(Pullup);
-
+import Action from '@/components/action'
+// 弹出层
 import Popup from '@/components/popup'
 
 export default {
   name: 'APP',
-  components: {Popup},
+  components: {Action,Popup},
   data(){
     return {
       storage: Inc.storage,
+      // 滑动
+      menusScroll: null,
+      actionScroll: null,
       // 更新APP
       update: {show:false,os:'',down:false,loading:'0%',msg:'检测更新',file:'',total:0},
       upDateColor: Inc.config.update,
@@ -158,9 +158,30 @@ export default {
 
     /* 用户菜单 */
     getMenus(){
+      // 滑动-菜单
+      let menu = this.$refs.LeftMenus;
+      if(menu){
+        this.menusScroll = new BScroll(menu,{
+          scrollY:true,
+          click:true,probeType:2,mouseWheel:true,
+          scrollbar:{fade:true,interactive:false},
+        });
+      }
+      // 滑动-动作
+      let action = this.$refs.TopAction;
+      if(action){
+        this.actionScroll = new BScroll(action,{
+          scrollX:true,
+          click:true,probeType:2,mouseWheel:true,
+          scrollbar:{fade:true,interactive:false},
+        });
+      }
+      // 请求
       Inc.post('Usermain/getMenus',{token:Inc.storage.getItem('token')},(res)=>{
         let d = res.data;
-        if(d.code==0) Inc.self.$store.state.menus = d.menus;
+        if(d.code==0){
+          Inc.self.$store.state.menus = d.menus;
+        }
       });
     },
     /* 收缩菜单 */

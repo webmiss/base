@@ -42,53 +42,59 @@
     <!-- 登录 End -->
 
     <!-- 主要框架 -->
-    <el-container  v-show="$store.state.isLogin===true" class="app_body">
+    <div class="app_body" v-show="$store.state.isLogin===true">
       <!-- 导航菜单 -->
-      <el-aside class="app_menus" :style="{width: $store.state.collapseMenu?'64px':'200px',paddingTop:$store.state.statusBarHeight}">
-        <!-- 头像 -->
-        <div class="app_img" @click="hideMenus()">
-          <div class="bgImg" v-if="$store.state.uInfo.img" :style="{backgroundImage:'url('+$store.state.uInfo.img+')'}"></div>
-          <div class="bgImg tu" v-else></div>
-          <p class="nowrap">{{$store.state.uInfo.nickname || '昵称'}}({{$store.state.uInfo.name || '姓名'}})</p>
-        </div>
-        <!-- 菜单 -->
-        <el-menu :default-active="$store.state.defaultMenu" :collapse="$store.state.collapseMenu" unique-opened>
-          <el-submenu v-for="(val1,key1) in $store.state.menus" :key="key1" :index="''+val1.id">
-            <template slot="title">
-              <i class="icons" :class="val1.ico"></i><span>{{val1.title}}</span>
-            </template>
-            <div v-for="(val2,key2) in val1.menus" :key="key2">
-              <el-menu-item v-if="val2.menus.length==0" :index="''+val2.id" @click="openUrl(val2.ico,val2.url,''+val2.id,val2.title)">{{val2.title}}</el-menu-item>
-              <el-submenu v-else :index="''+val2.id">
-                <template slot="title"><span>{{val2.title}}</span></template>
-                <el-menu-item v-for="(val3,key3) in val2.menus" :key="key3" :index="''+val3.id" @click="openUrl(val3.ico,val3.url,''+val3.id,val3.title)">{{val3.title}}</el-menu-item>
-              </el-submenu>
-            </div>
-          </el-submenu>
-        </el-menu>
-        <!-- 版本 -->
-        <div class="app_version nowrap">版本：{{$config.version}}</div>
-      </el-aside>
-      <!-- 导航菜单 End -->
-      <el-container :style="{paddingTop:$store.state.statusBarHeight}">
-        <!-- 头部信息 -->
-        <el-header class="app_top flex">
-          <div class="name">{{ storage.getItem('MenuName') || $store.state.system.title}} <i class="el-icon-arrow-right"></i></div>
-          <!-- 登录信息 -->
-          <div class="uinfo">
-            <b>{{ $store.state.uInfo.uname }}</b>&nbsp;&nbsp;
-            <el-button type="text" @click="openConfig()">设置</el-button>
-            <span class="split">|</span>
+      <div class="app_menus" ref="LeftMenus" :style="{width: $store.state.collapseMenu?'64px':'200px',paddingTop:$store.state.statusBarHeight}">
+        <div>
+          <!-- 头像 -->
+          <div class="app_img">
+            <div class="bgImg" @click="hideMenus()" v-if="$store.state.uInfo.img" :style="{backgroundImage:'url('+$store.state.uInfo.img+')'}"></div>
+            <div class="bgImg tu" @click="hideMenus()" v-else></div>
+            <div class="info nowrap">{{$store.state.uInfo.nickname || '昵称'}}({{$store.state.uInfo.name || '姓名'}})</div>
+          </div>
+          <!-- 菜单 -->
+          <el-menu :default-active="$store.state.defaultMenu" :collapse="$store.state.collapseMenu" unique-opened>
+            <el-submenu v-for="(val1,key1) in $store.state.menus" :key="key1" :index="''+val1.id">
+              <template slot="title">
+                <i class="icons" :class="val1.ico"></i><span>{{val1.title}}</span>
+              </template>
+              <div v-for="(val2,key2) in val1.menus" :key="key2">
+                <el-menu-item v-if="val2.menus.length==0" :index="''+val2.id" @click="openUrl(val2.ico,val2.url,''+val2.id,val2.title)">{{val2.title}}</el-menu-item>
+                <el-submenu v-else :index="''+val2.id">
+                  <template slot="title"><span>{{val2.title}}</span></template>
+                  <el-menu-item v-for="(val3,key3) in val2.menus" :key="key3" :index="''+val3.id" @click="openUrl(val3.ico,val3.url,''+val3.id,val3.title)">{{val3.title}}</el-menu-item>
+                </el-submenu>
+              </div>
+            </el-submenu>
+          </el-menu>
+          <!-- 用户信息 -->
+          <div class="app_user nowrap">
+            <span class="config" @click="openConfig()">设置</span>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
             <span class="logout" @click="logout()">退出</span>
           </div>
-        </el-header>
+        </div>
+      </div>
+      <!-- 导航菜单 End -->
+      <!-- 中间内容 -->
+      <div class="app_ct" :style="{marginLeft:$store.state.collapseMenu?'65px':'201px',paddingTop:$store.state.statusBarHeight}">
+        <!-- 头部信息 -->
+        <div class="app_top">
+          <div ref="TopAction">
+            <div class="app_action" :style="{minWidth:$store.state.action.width}">
+              <Action v-if="$store.state.action.url" :url="$store.state.action.url" :menus="$store.state.action.menus"></Action>
+              <div class="name" v-else>{{ storage.getItem('MenuName') || $store.state.system.title}} <i class="el-icon-arrow-right"></i></div>
+            </div>
+          </div>
+        </div>
         <!-- 中间部分 -->
-        <el-main class="app_main">
-          <router-view/>
+        <div class="app_main">
+          <router-view />
           <div class="app_copy">所属：{{$store.state.system.title}}&nbsp;&nbsp;&copy; {{$store.state.system.copy}}&nbsp;&nbsp;版本：{{$config.version}}</div>
-        </el-main>
-      </el-container>
-    </el-container>
+        </div>
+      </div>
+      <!-- 中间内容 End -->
+    </div>
     <!-- 主要框架 End -->
 
     <!-- 系统配置 -->
@@ -104,6 +110,11 @@
     <ul class="right_menu" v-if="$store.state.isLogin===true">
       <li @click="openMsg()"><i class="icons icon_msg"></i><span class="redNum">0</span></li>
     </ul>
+
+    <!-- 消息 -->
+    <popup v-model="msg.show">
+      <div>消息</div>
+    </popup>
     
   </div>
 </template>
@@ -205,16 +216,19 @@ i{font-style: normal;}
 
 /* 主要框架 */
 .app_body{height: 100%;}
-.app_main{background-color: #FFF; padding: 0;}
+.app_main{background-color: #FFF; padding: 60px 0 0;}
 .app_copy{line-height: 50px; font-size: 12px; color: #CCC; text-align: center;}
 
 /* 头像 */
-.app_menus{background-color: #20222A; color: #CCC;}
-.app_img{cursor: pointer; padding: 20px 0; min-width: 64px;}
-.app_img div{margin: 0 auto; width: 40%; padding-bottom: 40%; height: 0; text-align: center; border-radius: 50%; background-color: #F2F2F2;}
+.app_menus{position: fixed; z-index: 999; overflow: hidden; height: 100%; background-color: #20222A; color: #CCC;}
+.app_img{padding: 20px 0; min-width: 64px; border-bottom: #000 1px solid;}
+.app_img .tu{cursor: pointer; margin: 0 auto; width: 40%; padding-bottom: 40%; height: 0; text-align: center; border-radius: 50%; background-color: #F2F2F2;}
 .app_img .tu{background-image: url(./assets/logo.svg); background-size: 60%;}
-.app_img p{text-align: center; padding: 10px 5px 0; color: #6FB737; font-size: 14px;}
-.app_img:hover p{color: #ff6600;}
+.app_img .info{text-align: center; padding: 10px 5px 0; color: #6FB737; font-size: 14px;}
+.app_user{padding: 16px 5px; text-align: center; color: #666; border-top: #000 1px solid;}
+.app_user span{cursor: pointer;}
+.app_user .config:hover{color: #6FB737;}
+.app_user .logout{color: #FF6600;}
 
 /* 菜单 */
 .app_menus .el-menu{border: none;}
@@ -227,20 +241,17 @@ i{font-style: normal;}
 .app_menus .el-menu-item:hover{background-color: #30333A; color: #6FB737;}
 .app_menus .el-menu-item:hover i{color: #FFF;}
 .app_menus .el-menu-item.is-active{background-color: #6FB737; color: #FFF;}
-.app_version{min-width: 54px; padding: 0 5px; line-height: 30px; margin-top: 20px; text-align: center; color: #555; font-size: 12px; border-top: #000 1px solid;}
 
 /* 用户头部 */
-.app_top{padding: 5px 20px; line-height: 50px; background-color: #FFF; border-bottom: #F2F2F2 1px solid;}
-.app_top .name{color: #999;}
-.app_top .uinfo{color: #666;}
-.app_top .uinfo .logout{cursor: pointer; color: #FF6600;}
+.app_ct{position: relative;}
+.app_top{position: absolute; z-index: 999; overflow: hidden; width: calc(100% - 40px); padding: 5px 20px; height: 50px; line-height: 50px; border-bottom: #F2F2F2 1px solid; background-color: #FFF;}
+.app_action{min-width: auto; overflow: hidden; height: 50px;}
 
 /* 动作菜单 */
-.action{padding: 15px 15px 0; overflow-x: auto;}
-.action .el-button-group{min-width: 640px;}
+.action{display: inline-block; overflow: hidden;}
 
 /* 右侧菜单 */
-.right_menu{position: absolute; z-index: 999; right: 20px; bottom: 20px;}
+.right_menu{position: fixed; z-index: 999; right: 20px; bottom: 20px;}
 .right_menu li{width: 48px; height: 48px; line-height: 60px; text-align: center;}
 .right_menu .icons{font-size: 32px; color: #6FB737;}
 .right_menu .redNum{margin: 5px 0 0 -10px;}

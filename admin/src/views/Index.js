@@ -13,6 +13,9 @@ export default {
     }
   },
   mounted(){
+    // 动作菜单-配置
+    this.$store.state.action.url = '';
+    this.$store.state.action.menus = '';
     // 快捷方式
     this.getMenus();
     // 加载数据
@@ -38,6 +41,7 @@ export default {
           this.msg = d.msg;
           // 图表统计
           setTimeout(()=>{
+            if(this.$route.path!='/') return false;
             this.chartOne(d.day);
             this.chartTwo(d.gender);
             this.chartThree(d.room);
