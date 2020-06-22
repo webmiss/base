@@ -33,8 +33,9 @@ export default {
     /* 动画 */
     showBG(show){
       setTimeout(()=>{
-        let bg = this.$refs.PopupBG;
-        let body = this.$refs.PopupBody;
+        let bg = this.$refs.PopupBG || '';
+        let body = this.$refs.PopupBody || '';
+        if(!bg || !body) return false;
         if(show){
           bg.style.opacity = 1;
           body.style.opacity = 1;

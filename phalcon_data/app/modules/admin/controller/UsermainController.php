@@ -46,7 +46,7 @@ class UserMainController extends UserBase{
     $mid = SysMenu::findFirst(['url=:url:','bind'=>['url'=>$url],'columns'=>'id']);
     return self::getJSON([
       'code'=>0,
-      'menuAction'=>self::actionMenus(self::$perm[$mid->id]),
+      'menuAction'=>isset($mid->id)?self::actionMenus(self::$perm[$mid->id]):[],
     ]);
   }
   // 动作菜单
