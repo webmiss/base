@@ -140,7 +140,7 @@ export default {
           Inc.self.$store.state.isLogin = false;
           Inc.self.$store.state.uInfo = {};
           Inc.storage.setItem('token','');
-          Inc.toast(d.msg,'error');
+          Inc.toast(d.msg);
         }
       },(e)=>{
         load.clear();
@@ -225,7 +225,7 @@ export default {
         load.clear();
         const d = res.data;
         this.$store.state.uinfo[key] = this.config[key];
-        return d.code==0?Inc.toast(d.msg,'success'):Inc.toast(d.msg,'error');
+        return d.code==0?Inc.toast(d.msg):Inc.toast(d.msg);
       });
     },
 

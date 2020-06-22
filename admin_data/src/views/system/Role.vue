@@ -1,8 +1,7 @@
 <template>
   <div>
-    
     <!-- 功能菜单 -->
-    <Action url="SysRole" @action="openAction"></Action>
+    <el-input class="hide" v-model="actionType"></el-input>
     <!-- 内容 -->
     <el-row class="body">
       <el-table :data="pageData.list" stripe @selection-change="getSelect">
@@ -42,7 +41,7 @@
     <!-- 搜索 End -->
 
     <!-- 添加 -->
-    <el-dialog title="添加" :visible.sync="addData.show" center width="420px">
+    <el-dialog title="添加" :visible.sync="addData.show" center width="420px" :close-on-click-modal="false">
       <el-form :model="addData.form" :label-width="LabelWidth">
         <el-form-item label="名称">
           <el-input v-model="addData.form.role" placeholder="角色名称"></el-input>
@@ -55,7 +54,7 @@
     <!-- 添加 End -->
 
      <!-- 编辑 -->
-    <el-dialog title="编辑" :visible.sync="editData.show" center width="420px">
+    <el-dialog title="编辑" :visible.sync="editData.show" center width="420px" :close-on-click-modal="false">
       <el-form :model="editData.form" :label-width="LabelWidth">
         <el-form-item label="名称">
           <el-input v-model="editData.form.role" placeholder="角色名称"></el-input>

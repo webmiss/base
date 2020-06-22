@@ -1,14 +1,15 @@
 <template>
   <div>
-    <!-- 搜索 -->
-    <el-row class="tree_search">
-      <el-input v-model="getSelect" placeholder="搜索菜单名称"></el-input>
-    </el-row>
     <!-- 功能菜单 -->
-    <Action url="SysMenus" @action="openAction"></Action>
+    <el-input class="hide" v-model="actionType"></el-input>
     <!-- 内容 -->
     <el-row class="body">
       <div class="body_tree">
+         <!-- 搜索 -->
+        <el-row class="tree_search">
+          <el-input v-model="getSelect" placeholder="搜索菜单名称"></el-input>
+        </el-row>
+        <!-- 标题 -->
         <div class="flex tree_node_title">
           <div>菜单名称</div>
           <div class="flex">
@@ -20,6 +21,7 @@
             <dd style="width: 90px;">更新日期</dd>
           </div>
         </div>
+        <!-- 内容 -->
         <el-tree ref="tree" :data="listData.list" show-checkbox node-key="id" :filter-node-method="subSea">
           <span class="tree_node" slot-scope="{ node, data }">
             <span>{{ node.label }}</span>
@@ -69,7 +71,7 @@
     </el-dialog>
     <!-- 添加 End -->
 
-     <!-- 编辑 -->
+    <!-- 编辑 -->
     <el-dialog title="编辑" :visible.sync="editData.show" center width="680px" :close-on-click-modal="false">
       <el-form :model="editData.form" :label-width="LabelWidth">
         <el-form-item label="归属">
@@ -111,10 +113,12 @@
   </div>
 </template>
 
+<style>
+.tree_search input{background-color: #F2F4F6;}
+</style>
 <style scoped>
 .body{overflow-x: auto;}
 .body_tree{min-width: 800px;}
-.tree_search{position: absolute; z-index: 99; right: 15px; margin-top: 15px;}
 </style>
 
 <script src="./Menus.js"></script>

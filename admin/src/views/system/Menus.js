@@ -2,12 +2,6 @@ import Inc from '@/library/Inc'
 import Action from '@/components/action'
 export default {
   components: {Action},
-  watch: {
-    /* 获取选择数据 */
-    getSelect(val) {
-      this.$refs.tree.filter(val);
-    },
-  },
   data(){
     return {
       LabelWidth:'80px',
@@ -28,21 +22,16 @@ export default {
       fidClass:[],
     }
   },
-  mounted(){
-    this.loadData();
-    // 全部动作
-    this.allAction();
-  },
-  methods:{
-
-    /* 获取编辑数据 */
-    getEdit(data){
-      this.editData.show=true;
-      for(let i in data) this.editData.form[i] = this.selectData[i] || '';
+  watch: {
+    getSelect(val) {
+      this.$refs.tree.filter(val);
     },
-
-    /* 菜单动作 */
-    openAction(type){
+  },
+  computed:{
+    /* 动作菜单 */
+    actionType(){
+      this.$store.state.action.url = 'SysMenus';
+      let type = this.$store.state.action.type;
       if(type=='list'){
         this.loadData();
       }else if(type=='add'){
@@ -55,6 +44,12 @@ export default {
         }else Inc.toast('请选择数据!');
       }
     },
+  },
+  mounted(){
+    this.loadData();  //加载数据
+    this.allAction(); //全部动作
+  },
+  methods:{
 
     /* 加载数据 */
     loadData(){
@@ -63,7 +58,7 @@ export default {
         load.clear();
         const d = res.data;
         if(d.code!=0){
-          Inc.toast(d.msg,'error');
+          return Inc.toast(d.msg);
         }else{
           this.listData.list = d.list;
         }
@@ -98,14 +93,9 @@ export default {
         {token:Inc.storage.getItem('token'),data:JSON.stringify(this.addData.form)},
       (res)=>{
         let d = res.data;
-        if(d.code!==0){
-          load.clear();
-          Inc.toast(d.msg,'error');
-        }else{
-          Inc.toast(d.msg,'success');
-          // 刷新数据
-          this.loadData();
-        }
+        if(d.code!==0) load.clear();
+        else this.loadData();
+        return Inc.toast(d.msg);
       });
     },
 
@@ -124,6 +114,11 @@ export default {
         }
       }
       this.editData.form.permArr = permArr;
+    },
+    /* 编辑-获取数据 */
+    getEdit(data){
+      this.editData.show=true;
+      for(let i in data) this.editData.form[i] = this.selectData[i] || '';
     },
     subEdit(){
       let fid = this.editData.form.fid;
@@ -144,14 +139,9 @@ export default {
         {token:Inc.storage.getItem('token'),id:this.editData.form.id,data:JSON.stringify(this.editData.form)},
       (res)=>{
         let d = res.data;
-        if(d.code!==0){
-          load.clear();
-          Inc.toast(d.msg,'error');
-        }else{
-          Inc.toast(d.msg,'success');
-          // 刷新数据
-          this.loadData();
-        }
+        if(d.code!==0) load.clear();
+        else this.loadData();
+        return Inc.toast(d.msg);
       });
     },
 
@@ -164,14 +154,9 @@ export default {
         {token:Inc.storage.getItem('token'),data:JSON.stringify(this.delData.id)},
       (res)=>{
         let d = res.data;
-        if(d.code!==0){
-          load.clear();
-          Inc.toast(d.msg,'error');
-        }else{
-          Inc.toast(d.msg,'success');
-          // 刷新数据
-          this.loadData();
-        }
+        if(d.code!==0) load.clear();
+        else this.loadData();
+        return Inc.toast(d.msg);
       });
     },
 

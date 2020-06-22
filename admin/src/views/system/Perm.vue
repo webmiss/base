@@ -1,8 +1,7 @@
 <template>
   <div>
-    
     <!-- 功能菜单 -->
-    <Action url="SysPerm" @action="openAction"></Action>
+    <el-input class="hide" v-model="actionType"></el-input>
     <!-- 内容 -->
     <el-row class="body">
       <el-table :data="pageData.list" stripe @selection-change="getSelect">

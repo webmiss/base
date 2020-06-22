@@ -16,7 +16,40 @@ export default {
       delData:{show:false,id:''},
     }
   },
+  computed:{
+    /* 动作菜单-点击 */
+    actionType(){
+      let type = this.$store.state.action.type;
+      if(type=='list'){
+        this.seaData.form = {name:'',action:'',ico:''};
+        this.pageData.page = 1;
+        this.loadData();
+      }else if(type=='sea'){
+        this.seaData.show=true;
+      }else if(type=='add'){
+        this.addData.show=true;
+      }else if(type=='edit'){
+        if(this.selectData.length>0){
+          this.getEdit({id:'',name:'',action:'',perm:'',ico:''});
+        }else return Inc.toast('请选择数据!');
+      }else if(type=='del'){
+        if(this.selectData.length>0){
+          this.delData.show=true;
+          // 获取ID
+          let data = this.selectData;
+          let id = '';
+          for(let i=0; i<data.length; i++) id += data[i].id+',';
+          this.delData.id = id;
+        }else return Inc.toast('请选择数据!');
+      }
+      return type;
+    },
+  },
   mounted(){
+    // 动作菜单-配置
+    this.$store.state.action.url = 'SysMenusAction';
+    this.$store.state.action.menus = '';
+    // 加载数据
     this.loadData();
   },
   methods:{
@@ -32,41 +65,6 @@ export default {
       this.selectData = val;
     },
 
-    /* 获取编辑数据 */
-    getEdit(data){
-      if(this.selectData.length>0){
-        this.editData.show=true;
-        for(let i in data) this.editData.form[i] = this.selectData[0][i] || '';
-      }else{
-        Inc.toast('请选择数据!');
-      }
-    },
-
-    /* 菜单动作 */
-    openAction(type){
-      if(type=='list'){
-        this.seaData.form = {name:'',action:'',ico:''};
-        this.pageData.page = 1;
-        this.loadData();
-      }else if(type=='sea'){
-        this.seaData.show=true;
-      }else if(type=='add'){
-        this.addData.show=true;
-      }else if(type=='edit'){
-        this.getEdit({id:'',name:'',action:'',perm:'',ico:''});
-      }else if(type=='del'){
-        if(this.selectData.length>0){
-          this.delData.show=true;
-          // 获取ID
-          let data = this.selectData;
-          let id = '';
-          for(let i=0; i<data.length; i++) id += data[i].id+',';
-          this.delData.id = id;
-        }
-        else Inc.toast('请选择数据!');
-      }
-    },
-
     /* 加载数据 */
     loadData(){
       const load = Inc.loading();
@@ -76,7 +74,7 @@ export default {
         load.clear();
         const d = res.data;
         if(d.code!=0){
-          Inc.toast(d.msg,'error');
+          return Inc.toast(d.msg);
         }else{
           this.pageData.list = d.list;
           this.pageData.total = d.total;
@@ -100,18 +98,17 @@ export default {
         {token:Inc.storage.getItem('token'),data:JSON.stringify(this.addData.form)},
       (res)=>{
         let d = res.data;
-        if(d.code!==0){
-          load.clear();
-          Inc.toast(d.msg,'error');
-        }else{
-          Inc.toast(d.msg,'success');
-          // 刷新数据
-          this.loadData();
-        }
+        if(d.code!==0) load.clear();
+        else this.loadData();
+        return Inc.toast(d.msg);
       });
     },
 
-    /* 编辑 */
+    /* 编辑-获取数据 */
+    getEdit(data){
+      this.editData.show=true;
+      for(let i in data) this.editData.form[i] = this.selectData[0][i] || '';
+    },
     subEdit(){
       this.editData.show=false;
       // 提交
@@ -120,14 +117,9 @@ export default {
         {token:Inc.storage.getItem('token'),id:this.editData.form.id,data:JSON.stringify(this.editData.form)},
       (res)=>{
         let d = res.data;
-        if(d.code!==0){
-          load.clear();
-          Inc.toast(d.msg,'error');
-        }else{
-          Inc.toast(d.msg,'success');
-          // 刷新数据
-          this.loadData();
-        }
+        if(d.code!==0) load.clear();
+        else this.loadData();
+        return Inc.toast(d.msg);
       });
     },
 
@@ -140,14 +132,9 @@ export default {
         {token:Inc.storage.getItem('token'),data:this.delData.id},
       (res)=>{
         let d = res.data;
-        if(d.code!==0){
-          load.clear();
-          Inc.toast(d.msg,'error');
-        }else{
-          Inc.toast(d.msg,'success');
-          // 刷新数据
-          this.loadData();
-        }
+        if(d.code!==0) load.clear();
+        else this.loadData();
+        return Inc.toast(d.msg);
       });
     },
 

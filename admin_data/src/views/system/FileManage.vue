@@ -1,15 +1,7 @@
 <template>
   <div>
     <!-- 功能菜单 -->
-    <el-row class="action">
-    <el-button-group>
-      <el-button icon="el-icon-folder-add" @click="mkDir()">新建文件夹</el-button>
-      <el-button icon="el-icon-document-add" @click="selectFile()">上传</el-button>
-      <el-button icon="el-icon-bottom" @click="zipFile()">打包</el-button>
-      <el-button icon="el-icon-edit-outline" @click="reName()">重命名</el-button>
-      <el-button icon="el-icon-delete" @click="rmFile()">删除</el-button>
-    </el-button-group>
-  </el-row>
+    <el-input class="hide" v-model="actionType"></el-input>
     <!-- 内容 -->
     <el-row class="body">
       <!-- 文件信息 -->
@@ -17,8 +9,6 @@
         <span class="path">
           <span v-if="path=='/'">根目录</span>
           <span v-else @click="backDir()"><a>返回上级</a></span>
-          <span class="split">|</span>
-          <span><a @click="loadData()">刷新</a></span>
           <span class="split">|</span>
           <span>{{ path }}</span>
         </span>

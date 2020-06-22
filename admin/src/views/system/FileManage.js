@@ -21,7 +21,30 @@ export default {
       imgView:{show: false, imgs:[], index: 0},
     }
   },
+  computed:{
+    /* 动作菜单-点击 */
+    actionType(){
+      let type = this.$store.state.action.type;
+      if(type=='list') this.loadData();
+      else if(type=='mkdir') this.mkDir();
+      else if(type=='upload') this.selectFile();
+      else if(type=='zip') this.zipFile();
+      else if(type=='rename') this.reName();
+      else if(type=='remove') this.rmFile();
+      return type;
+    },
+  },
   mounted(){
+    // 动作菜单-配置
+    this.$store.state.action.url = 'SysFileManage';
+    this.$store.state.action.menus = [
+      {name:'新建文件夹',action:'mkdir',ico:'el-icon-folder-add'},
+      {name:'上传',action:'upload',ico:'el-icon-document-add'},
+      {name:'打包',action:'zip',ico:'el-icon-bottom'},
+      {name:'重命名',action:'rename',ico:'el-icon-edit-outline'},
+      {name:'删除',action:'remove',ico:'el-icon-delete'},
+    ];
+    // 加载数据
     this.loadData();
   },
   methods:{
@@ -111,7 +134,7 @@ export default {
     subRename(){
       const rename = this.renameData.form.rename;
       const name = this.renameData.form.name;
-      if(!name) return this.$message.error('名称不能为空');
+      if(!name) return Inc.toast('名称不能为空');
       // 是否存在
       if(this.isExist(name)) return;
       // 提交
@@ -250,8 +273,7 @@ export default {
       // 文件
       for(let i in files) if(files[i].check) name.push(files[i].name);
       if(name.length<1){
-        this.$message.error('请选择内容')
-        return false;
+        return Inc.toast('请选择内容');
       }else{
         return name;
       }
@@ -262,14 +284,14 @@ export default {
       const folder = this.lists.folder;
       const files = this.lists.files;
       // 是否为空
-      if(!name){ this.$message.error('请填写名称'); return true; };
+      if(!name) return Inc.toast('请填写名称');
       // 文件夹
       for(let i in folder){
-        if(folder[i].name==name){ this.$message.error('已存在文件夹'); return true; };
+        if(folder[i].name==name) return Inc.toast('已存在文件夹');
       }
       // 文件夹
       for(let i in files){
-        if(files[i].name==name){ this.$message.error('已存在文件'); return true; };
+        if(files[i].name==name) return Inc.toast('已存在文件');
       }
       return false;
     },

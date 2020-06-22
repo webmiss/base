@@ -9,6 +9,10 @@ export default {
     }
   },
   mounted(){
+    // 动作菜单-配置
+    this.$store.state.action.url = '';
+    this.$store.state.action.menus = '';
+    // 加载数据
     this.loadData();
   },
   methods:{
@@ -19,14 +23,8 @@ export default {
       Inc.post('Userinfo/list',{token:Inc.storage.getItem('token')},(res)=>{
         load.clear();
         const d = res.data;
-        if(d.code==0){
-          this.form = d.list;
-        }else{
-          return Inc.toast(d.msg,'error');
-        }
-      },(e)=>{
-        load.clear();
-        Inc.toast('网络加载失败!');
+        if(d.code!=0) return Inc.toast(d.msg);
+        else this.form = d.list;
       });
     },
 
@@ -37,13 +35,8 @@ export default {
       Inc.post('Userinfo/edit',{token:Inc.storage.getItem('token'),data:data},(res)=>{
         load.clear();
         const d = res.data;
-        if(d.code==0){
-          // 刷新
-          this.$store.state.uInfo = d.uinfo;
-          return Inc.toast(d.msg,'success');
-        }else{
-          return Inc.toast(d.msg,'error');
-        }
+        if(d.code==0) this.$store.state.uInfo = d.uinfo;
+        return Inc.toast(d.msg);
       });
     },
 
@@ -59,10 +52,8 @@ export default {
             if(d.code==0){
               this.form.img = d.img;
               this.$store.state.uInfo.img = d.img;
-              return Inc.toast(d.msg,'success');
-            }else{
-              return Inc.toast(d.msg,'error');
             }
+            return Inc.toast(d.msg);
           });
         });
       });

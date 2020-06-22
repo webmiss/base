@@ -9,6 +9,10 @@ export default {
     }
   },
   mounted(){
+    // 动作菜单-配置
+    this.$store.state.action.url = '';
+    this.$store.state.action.menus = '';
+    // 加载数据
     this.loadData();
   },
   methods:{
@@ -20,7 +24,7 @@ export default {
         load.clear();
         const d = res.data;
         if(d.code!=0){
-          Inc.toast(d.msg,'error');
+          return Inc.toast(d.msg);
         }else{
           this.form = d.list;
         }
@@ -39,10 +43,8 @@ export default {
           const tmp = JSON.parse(data);
           this.$store.state.system.title = tmp.title;
           this.$store.state.system.copy = tmp.copy;
-          return Inc.toast(d.msg,'success');
-        }else{
-          return Inc.toast(d.msg,'error');
         }
+        return Inc.toast(d.msg);
       });
     },
 
@@ -66,7 +68,6 @@ export default {
             load.clear();
             const d = res.data;
             if(d.code == 0){
-              Inc.toast(d.msg,'success');
               if(type=='logo'){
                 this.form.logo = d.img;
                 this.$store.state.system.logo = d.img;
@@ -74,9 +75,8 @@ export default {
                 this.form.login_bg = d.img;
                 this.$store.state.system.login_bg = d.img;
               }
-            }else{
-              Inc.toast(d.msg,'error');
             }
+            return Inc.toast(d.msg);
           });
         });
       });

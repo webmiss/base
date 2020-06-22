@@ -8,6 +8,9 @@ export default {
     }
   },
   mounted(){
+    // 动作菜单-配置
+    this.$store.state.action.url = '';
+    this.$store.state.action.menus = '';
   },
   methods:{
 
@@ -20,18 +23,17 @@ export default {
       let reg_passwd = Inc.reg('passwd',passwd);
       let reg_passwd1 = Inc.reg('passwd',passwd1);
       if(reg_passwd!=true){
-        return this.$message.error('原'+reg_passwd);
+        return Inc.toast('原'+reg_passwd);
       }else if(reg_passwd1!=true){
-        return this.$message.error('新'+reg_passwd1);
+        return Inc.toast('新'+reg_passwd1);
       }else if(passwd1!=passwd2){
-        return this.$message.error('两次密码不一致！');
+        return Inc.toast('两次密码不一致！');
       }else if(passwd==passwd1){
-        return this.$message.error('不能与原密码相同！');
+        return Inc.toast('不能与原密码相同！');
       }
       // 提交
       const load = Inc.loading();
-      Inc.post('Userpasswd/edit',{
-        token:Inc.storage.getItem('token'),passwd:passwd,passwd1:passwd1},
+      Inc.post('Userpasswd/edit',{token:Inc.storage.getItem('token'),passwd:passwd,passwd1:passwd1},
       (res)=>{
         load.clear();
         const d = res.data;
@@ -44,10 +46,8 @@ export default {
           this.$store.state.isLogin = false;
           this.$store.state.uInfo = {};
           Inc.storage.setItem('token','');
-          return Inc.toast(d.msg,'success');
-        }else{
-          return Inc.toast(d.msg,'error');
         }
+        return Inc.toast(d.msg);
       });
     },
 
