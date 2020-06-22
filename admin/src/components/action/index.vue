@@ -1,6 +1,6 @@
 <template>
-  <el-row v-if="actions.length" class="action">
-    <el-button-group>
+  <el-row v-if="actions.length" class="action" :style="{minWidth:width}">
+    <el-button-group ref="Action">
       <el-button v-for="val in actions" :key="val.name" :icon="val.ico" @click="openAction(val.action)">{{val.name}}</el-button>
     </el-button-group>
   </el-row>
@@ -11,15 +11,21 @@ import Inc from '@/library/Inc'
 export default {
   name:'ImageView',
   props: {
-    url:{type: String, default: ''},
+    url: {type: String, default: ''},
+    menus: '',
   },
   data(){
     return {
+      width: '1200px',
       actions:[],
     }
   },
+  watch:{
+    url(val){
+      this.getAction(this.url);
+    },
+  },
   mounted(){
-    if(!this.url) return Inc.toast('验证菜单不能为空!');
     this.getAction(this.url);
   },
   methods:{
@@ -28,13 +34,27 @@ export default {
     getAction(url){
       Inc.post('Usermain/getMenusAction',{token:Inc.storage.getItem('token'),url:url},(res)=>{
         const d = res.data;
-        if(d.code==0) this.actions = d.menuAction;
+        if(d.code==0){
+          this.actions = d.menuAction;
+          // 追加
+          if(this.menus) for(let i in this.menus) this.actions.push(this.menus[i]);
+          // 重置宽度
+          setTimeout(()=>{
+            let test = this.$refs.Action.$el;
+            this.width = (test.offsetWidth+1)+'px';
+            this.$store.state.action.width = this.width;
+          },3000);
+        }
       });
     },
 
     /* 触发事件 */
-    openAction(action){
-      this.$emit('action',action);
+    openAction(type){
+      this.$store.state.action.type = type;
+      // 重置
+      setTimeout(()=>{
+        this.$store.state.action.type = '';
+      },1000);
     }
 
   }
