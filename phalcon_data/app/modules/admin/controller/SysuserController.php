@@ -39,7 +39,7 @@ class SysUserController extends UserBase {
     $data = $builder->getQuery()->execute()->toArray();
     // 状态
     foreach ($data as $key => $val) {
-      $data[$key]['age'] = $data['birthday']?Inc::getAge($data['birthday']):'';
+      $data[$key]['age'] = $val['birthday']?Inc::getAge($val['birthday']):'';
       $data[$key]['state'] = $val['state']?true:false;
     }
     return self::getJSON(['code'=>0,'list'=>$data,'total'=>$total]);
