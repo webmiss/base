@@ -6,19 +6,75 @@ export default {
 
   /* Vue */
   self: null,
-
   /* 配置 */
   config: Env,
 
+  /* 版本比较 */
+  versionDiff(v1,v2){
+    const arr1 = v1.split('.');
+    const arr2 = v2.split('.');
+    if(parseInt(arr1[0])<parseInt(arr2[0])) return true;
+    else if(parseInt(arr1[1])<parseInt(arr2[1])) return true;
+    else if(parseInt(arr1[2])<parseInt(arr2[2])) return true;
+    else return false;
+  },
+
+  /* 保留小数-不四舍五入 */
+  toFixedNo(val,num){
+    let n = '';
+    for(let i=0; i<num; i++) n+='0';
+    n = parseInt('1'+n);
+    return Math.floor(val*n)/n;
+  },
+
+  /* 格式化价格 */
+  formatPrice(price){
+    return (parseInt(price).toString()).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
+  },
+
+  /* 隐藏手机号码 */
+  formatTel(tel){
+    const reg = /^(\d{3})\d{4}(\d{4})$/;
+    return tel.replace(reg, '$1****$2');
+  },
+
+  /* 去数组重复 */
+  unique(arr){
+    let data = [];
+    for(let i=0,l=arr.length; i<l; i++) {
+      for(var j=i+1; j<l; j++) if (arr[i] === arr[j]) j = ++i;
+      data.push(arr[i]);
+    }
+    return data;
+  },
+
+  /* 获取Html图片地址 */
+  getimgsrc(htmlstr){
+    const reg = /<img.+?src=('|")?([^'"]+)('|")?(?:\s+|>)/gim;
+    let imgs = [];
+    let tem = null;
+    while (tem=reg.exec(htmlstr)) imgs.push(tem[2]);
+    return imgs;
+  },
+
+  /* 坐标转角度 */
+  getAngle(x,y){
+    let l = Math.sqrt(x*x + y*y);
+    let a = Math.acos(x/l);
+    let res = parseInt(a*180/Math.PI);
+    if(x==0 && y==0) return 0;
+    else if(x>=0 && y>=0) return -res;
+    else if(x<0 && y>=0) return -res;
+    return res;
+  },
+
   /* 返回 */
   back(num,self){ self.$router.goBack(-num); },
-
   /* 加载 */
   loading(){
     const load = this.self.$loading({text:'',background:'rgba(0, 0, 0, 0.7)'});
     return { clear:()=>{ load.close(); } };
   },
-
   /* 提示 */
   toast(text){
     // 创建对象
@@ -37,7 +93,6 @@ export default {
       document.body.removeChild(obj);
     },3000);
   },
-
   /* 弹框 */
   confirm(param,success,fail){
     this.self.$confirm(param.content,param.title,{
@@ -59,7 +114,6 @@ export default {
     // 请求
     axios.get(url,{params:data},config).then(success).catch(fail);
   },
-
   /* Post请求 */
   post(url,data,success,fail,config){
     const str = url.substr(0,4);
@@ -80,16 +134,6 @@ export default {
     setItem(key,data){ return window.localStorage.setItem(key,data); },
     getItem(key){ return window.localStorage.getItem(key); },
     clear(){ return window.localStorage.clear(); },
-  },
-
-  /* 去数组重复 */
-  unique(arr){
-    let data = [];
-    for(let i=0,l=arr.length; i<l; i++) {
-      for(var j=i+1; j<l; j++) if (arr[i] === arr[j]) j = ++i;
-      data.push(arr[i]);
-    }
-    return data;
   },
 
   /* 获取日期 */
@@ -118,53 +162,12 @@ export default {
     const s = time.getSeconds()<10?'0'+time.getSeconds():time.getSeconds();
     return y+'-'+m+'-'+d+' '+h+':'+i+':'+s;
   },
-
-  /* 坐标转角度 */
-  getAngle(x,y){
-    let l = Math.sqrt(x*x + y*y);
-    let a = Math.acos(x/l);
-    let res = parseInt(a*180/Math.PI);
-    if(x==0 && y==0) return 0;
-    else if(x>=0 && y>=0) return -res;
-    else if(x<0 && y>=0) return -res;
-    return res;
-  },
-
-  /* 保留小数-不四舍五入 */
-  toFixedNo(val,num){
-    let n = '';
-    for(let i=0; i<num; i++) n+='0';
-    n = parseInt('1'+n);
-    return Math.floor(val*n)/n;
-  },
-
-  /* 格式化价格 */
-  formatPrice(price){
-    return (parseInt(price).toString()).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
-  },
-
-  /* 隐藏手机号码 */
-  formatTel(tel){
-    const reg = /^(\d{3})\d{4}(\d{4})$/;
-    return tel.replace(reg, '$1****$2');
-  },
-
-  /* 获取Html图片地址 */
-  getimgsrc(htmlstr){
-    const reg = /<img.+?src=('|")?([^'"]+)('|")?(?:\s+|>)/gim;
-    let imgs = [];
-    let tem = null;
-    while (tem=reg.exec(htmlstr)) imgs.push(tem[2]);
-    return imgs;
-  },
-
   /* 时间大小 */
   timeSize(t){
     const now = new Date().getTime();
     const last = new Date(t).getTime();
     return now-last;
   },
-
   /* 时间转换 */
   formatTime(t){
     let time = t;

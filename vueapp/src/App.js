@@ -46,7 +46,7 @@ export default {
         // 是否更新
         plus.runtime.getProperty(plus.runtime.appid,(app)=>{
           // 比较
-          if(!Plus.versionDiff(app.version,d.version)) return false;
+          if(!Inc.versionDiff(app.version,d.version)) return false;
           // 更新
           this.update.show = true;
           this.update.down = true;

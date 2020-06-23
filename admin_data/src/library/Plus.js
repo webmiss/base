@@ -1,23 +1,18 @@
-import Vue from 'vue';
 import Inc from '@/library/Inc'
 import VueAMap from 'vue-amap';
 
-// 初始化地图
-VueAMap.initAMapApiLoader({key: Inc.config.amapKey, plugin: ['AMap.Geolocation','PlaceSearch'], v: '1.4.15'});
+/* 高德地图-初始化 */
+VueAMap.initAMapApiLoader({
+  key: Inc.config.amapKey,
+  plugin: ['AMap.Geolocation','PlaceSearch'],
+  v: '1.4.15'
+});
 
 export default {
 
   /* plus */
   isPlus(){
     try{ return plus?true:false; }catch(e){ return false; }
-  },
-
-  /* 状态栏高度 */
-  getStatusBarHeight(){
-    let immersed = 0;
-    const ms=(/Html5Plus\/.+\s\(.*(Immersed\/(\d+\.?\d*).*)\)/gi).exec(navigator.userAgent);
-    if(ms&&ms.length>=3) immersed=parseFloat(ms[2]);
-    return immersed;
   },
 
   /* 本地消息 */
@@ -67,41 +62,7 @@ export default {
     });
   },
 
-  /* 支付 */
-  pay(pay_type,url,data,callback,fail){
-    // 请求参数
-    let parmStr = '';
-    for(let i in data) parmStr += i+'='+data[i]+'&';
-    try{
-      // APP支付
-      if(pay_type=='alipay') parmStr += 'type=app';
-      else if(pay_type=='wxpay') parmStr += 'type=APP';
-      // 支付频道
-      plus.payment.getChannels((channels)=>{
-        let channel = null;
-        for(let i in channels){
-          if(channels[i].id==pay_type) channel=channels[i];
-        }
-        // 支付参数
-        axios.post(url,parmStr).then((res)=>{
-          const d = res.data;
-          if(d.code==0){
-            // 提交
-            plus.payment.request(channel,d.data,callback,fail);
-          }else{
-            console.log(d.msg);
-          }
-        });
-      },(e)=>{
-        console.log('支付通道: '+e.message);
-      });
-        
-    }catch(e){
-      console.log('H5方式: '+pay_type);
-    }
-  },
-
-  /* 定位 */
+  /* 获取定位 */
   geoLocation(callback,fail){
     try{
       plus.geolocation.getCurrentPosition((res)=>{
@@ -111,7 +72,7 @@ export default {
         data.latitude = res.coords.latitude;
         data.longitude = res.coords.longitude;
         // 保存本地
-        window.localStorage.setItem('GeoLocation',JSON.stringify(data));
+        Inc.storage.setItem.setItem('GeoLocation',JSON.stringify(data));
         callback(data);
       },fail);
     }catch(e){
@@ -130,7 +91,7 @@ export default {
                 data.latitude = result.position.lat;
                 data.longitude = result.position.lng;
                 // 保存本地
-                window.localStorage.setItem('GeoLocation',JSON.stringify(data));
+                Inc.storage.setItem.setItem('GeoLocation',JSON.stringify(data));
                 callback(data);
               }else fail(status);
             });
@@ -139,12 +100,11 @@ export default {
       },500);
     }
   },
-
-  /* 获取地名信息 */
+  /* 获取地名 */
   getAddress(name,callback,fail){
     setTimeout(()=>{
       AMap.service(['AMap.PlaceSearch'], ()=>{
-        let location = window.localStorage.getItem('GeoLocation');
+        let location = Inc.storage.setItem.getItem('GeoLocation');
         location = location?JSON.parse(location):{city:'昆明市'};
         const place = new AMap.PlaceSearch({city:location.city});
         place.search(name,(status, result)=>{
@@ -156,6 +116,91 @@ export default {
     },500);
   },
 
+  /* 支付 */
+  pay(pay_type,url,data,callback,fail){
+    try{
+      // APP支付
+      if(pay_type=='alipay') data['type']='app';
+      else if(pay_type=='wxpay') data['type']='APP';
+      // 支付频道
+      plus.payment.getChannels((channels)=>{
+        let channel = null;
+        for(let i in channels){
+          if(channels[i].id==pay_type) channel=channels[i];
+        }
+        // 支付参数
+        Inc.post(url,data,(res)=>{
+          const d = res.data;
+          if(d.code!=0) return Inc.toast(d.msg);
+          // 唤起支付
+          plus.payment.request(channel,d.data,callback,fail);
+        });
+      },(e)=>{
+        return Inc.toast('支付通道:'+e.message);
+      });
+    }catch(e){
+      return Inc.toast('H5方式:'+pay_type);
+    }
+  },
+
+  /* 分享 */
+  share(parm){
+    try{
+      // 朋友圈、我的好友
+      const scene = parm.scene?'WXSceneSession':'WXSceneTimeline';
+      // 数据
+      let share = {};
+      if(parm.id=='weixin'){
+        // 小程序
+        if(parm.type=='wx' && scene=='WXSceneSession'){
+          share = {
+            type: 'miniProgram',
+            title: parm.title,
+            content: parm.content,
+            thumbs: parm.img,
+            miniProgram:{
+              id: Inc.config.wx_id,
+              path: parm.wx || 'pages/index/index',
+              type: Inc.config.wx_type,
+              webUrl: parm.url
+            },
+            extra:{scene:scene}
+          };
+        }else{
+          // 网页
+          share = {
+            type:'web',
+            title:parm.title,
+            content:parm.content,
+            thumbs:parm.img,
+            href:parm.url,
+            extra:{scene:scene}
+          };
+        }
+      }else if(parm.id=='qq'){
+        share = {type:'text',title:parm.title,content:parm.content,thumbs:parm.img,href:parm.url};
+      }else if(parm.id=='sinaweibo'){
+        share = {type:'web',content:parm.content,href:parm.url};
+      }
+      // 提交
+      let service = null;
+      plus.share.getServices((s)=>{
+        // 服务
+        for(let i in s) if(s[i].id == parm.id) service = s[i];
+        // 发送
+        service.send(share,()=>{
+          return Inc.toast('分享成功!');
+        },(e)=>{
+          return Inc.toast('分享失败!');
+        });
+      },(e)=>{
+        return Inc.toast('分享错误!');
+      });
+    }catch(e){
+      return Inc.toast('请在APP内使用!');
+    }
+  },
+
   /* 拍照 */
   camera(callback,fail){
     try{
@@ -164,7 +209,7 @@ export default {
         plus.io.resolveLocalFileSystemURL(url, function (entry) {
           entry.file((file)=>{ callback(file); });
         },(e)=>{
-          console.log("读取拍照失败");
+          return Inc.toast('读取拍照失败!');
         });
       },fail);
     }catch(e){
@@ -199,7 +244,7 @@ export default {
               },300);
             });
           },(e)=>{
-            console.log('读取文件: '+e.message);
+            return Inc.toast('读取文件失败!');
           });
         }
       },fail,{filter:"image",multiple: multiple});
@@ -219,31 +264,62 @@ export default {
     }
   },
 
-  /* 图片压缩 */
-  readerCompress(file,parm,callback){
+  /* 录像 */
+  video(callback,fail){
+    try{
+      let camera = plus.camera.getCamera();
+      camera.startVideoCapture(function(url) {
+        plus.io.resolveLocalFileSystemURL(url, function (entry) {
+          callback(url,entry);
+        },(e)=>{
+          return Inc.toast('读取录像失败!');
+        });
+      },fail);
+    }catch(e){
+      return Inc.toast('请在APP内使用!');
+    }
+  },
+
+  /* 音频 */
+  audio(r,callback,fail){
+    try{
+      r.record({filename: '_doc/audio/'}, function(url) {
+        plus.io.resolveLocalFileSystemURL(url, function (entry) {
+          callback(url,entry);
+        },function (e) {
+          return Inc.toast('读取音频失败!');
+        });
+      },fail);
+    }catch(e){
+      return Inc.toast('请在APP内使用!');
+    }
+  },
+
+  /* 图片压缩(文件对象) */
+  readerCompress(fileObj,parm,callback){
     const _self = this;
     try{
       let ready = new plus.io.FileReader();
-      ready.readAsDataURL(file);
+      ready.readAsDataURL(fileObj);
       ready.onloadend = function(){
         // 格式
         if(!parm.ext){
-          if(file.type=='image/jpeg') parm.ext = 'jpg';
-          else if(file.type=='image/png') parm.ext = 'png';
-          else if(file.type=='image/gif') parm.ext = 'gif';
+          if(fileObj.type=='image/jpeg') parm.ext = 'jpg';
+          else if(fileObj.type=='image/png') parm.ext = 'png';
+          else if(fileObj.type=='image/gif') parm.ext = 'gif';
         }
         // 压缩
         _self.compressImage(this.result,parm,callback);
       }
     }catch(e){
       let ready = new FileReader();
-      ready.readAsDataURL(file);
+      ready.readAsDataURL(fileObj);
       ready.onloadend = function(){
         // 格式
         if(!parm.ext){
-          if(file.type=='image/jpeg') parm.ext = 'jpg';
-          else if(file.type=='image/png') parm.ext = 'png';
-          else if(file.type=='image/gif') parm.ext = 'gif';
+          if(fileObj.type=='image/jpeg') parm.ext = 'jpg';
+          else if(fileObj.type=='image/png') parm.ext = 'png';
+          else if(fileObj.type=='image/gif') parm.ext = 'gif';
         }
         // 压缩
         _self.compressImage(this.result,parm,callback);
@@ -317,58 +393,17 @@ export default {
     }
   },
 
-  /* 录像 */
-  video(callback,fail){
-    try{
-      let camera = plus.camera.getCamera();
-      camera.startVideoCapture(function(url) {
-        plus.io.resolveLocalFileSystemURL(url, function (entry) {
-          callback(url,entry);
-        },(e)=>{
-          console.log("读取录像失败");
-        });
-      },fail);
-    }catch(e){console.log('录像');}
-  },
-
-  /* 音频 */
-  audio(r,callback,fail){
-    try{
-      r.record({filename: '_doc/audio/'}, function(url) {
-        plus.io.resolveLocalFileSystemURL(url, function (entry) {
-          callback(url,entry);
-        },function (e) {
-          console.log("读取音频失败");
-        });
-      },fail);
-    }catch(e){console.log('录音');}
-  },
-
-  /* 上传文件 */
-  uploader(url,data,callback,progress){
-    try{
-      let task = plus.uploader.createUpload(url,{method:"POST"},callback);
-      for(let i=0; i<data.length; i++){
-        if(data[i].type=='file'){
-          task.addFile(data[i].val,{key:data[i].key});
-        }else if(data[i].type=='data'){
-          task.addData(data[i].key, data[i].val);
-        }
-      }
-      task.addEventListener( "statechanged",progress,false);
-      task.start();
-    }catch(e){console.log('上传文件');}
-  },
-
   /* 系统缓存 */
   cacheClear(){
     try{
       plus.io.resolveLocalFileSystemURL('_doc/', function(entry) {
         return entry.removeRecursively();
       },(e)=>{
-        console.log('清理缓存失败');
+        return Inc.toast('清理缓存失败!');
       });
-    }catch(e){console.log('清理缓存');}
+    }catch(e){
+      return Inc.toast('请在APP内使用!');
+    }
   },
 
 }
