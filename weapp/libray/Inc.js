@@ -61,9 +61,9 @@ export default {
 
   /* 本地消息 */
   notify(title,content,read){
-    setTimeout(()=>{
-      Notify({type: 'success', message: content});
-    },Env.msgRead);
+    // 显示消息
+    const text = Env.msgContent=='title'?title:content;
+    this.toast(text);
     // 是否阅读
     read = read || false;
     if(!read) return;
@@ -71,9 +71,8 @@ export default {
     this.post(Env.apiUrl+'index/baiduToken',{},(res)=>{
       let msgAudio = wx.getBackgroundAudioManager();
         msgAudio.title = title;
-        let text = Env.msgContent=='title'?title:content;
         msgAudio.src = Env.httpType+'tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
-        setTimeout(()=>{ msgAudio.play(); },Env.msgRead);
+        msgAudio.play();
     });
   },
 

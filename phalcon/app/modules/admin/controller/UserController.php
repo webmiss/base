@@ -57,7 +57,7 @@ class UserController extends Base{
       if(!is_object($uinfo)) return self::getJSON(['code'=>4011,'msg'=>$uinfo]);
       return self::getJSON(['code'=>0,'time'=>$time,'uinfo'=>$uinfo]);
     }else{
-      return self::error(1001);
+      return self::error(1000);
     }
   }
 

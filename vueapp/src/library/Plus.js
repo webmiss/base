@@ -1,13 +1,9 @@
 import Vue from 'vue';
-import Env from '@/env'
+import Inc from '@/library/Inc'
 import VueAMap from 'vue-amap';
-import axios from 'axios'
-
-import Notify from '../components/notify/index.js';
-Vue.use(Notify);
 
 // 初始化地图
-VueAMap.initAMapApiLoader({key: Env.amapKey, plugin: ['AMap.Geolocation','PlaceSearch'], v: '1.4.15'});
+VueAMap.initAMapApiLoader({key: Inc.config.amapKey, plugin: ['AMap.Geolocation','PlaceSearch'], v: '1.4.15'});
 
 export default {
 
@@ -42,9 +38,9 @@ export default {
             content: parm.content,
             thumbs: parm.img,
             miniProgram:{
-              id: Env.wx_id,
+              id: Inc.config.wx_id,
               path: parm.wx || 'pages/index/index',
-              type: Env.wx_type,
+              type: Inc.config.wx_type,
               webUrl: parm.url
             },
             extra:{scene:scene}
@@ -86,53 +82,49 @@ export default {
   },
 
   /* 本地消息 */
-  notify(title,content,callback,read){
-    /* 浏览器 */
-    if(Env.msgBrowser && window.Notification && Notification.permission !== "denied") {
+  notify(title,content,isRead){
+    // 浏览器
+    if(Inc.config.msgBrowser && window.Notification && Notification.permission !== "denied") {
       Notification.requestPermission(function(status) {
-        setTimeout(()=>{
-          new Notification(title, {body:content }); 
-        },Env.msgRead);
+        new Notification(title, {body:content });
       });
     }
-    /* 系统内部 */
-    setTimeout(()=>{
-      Vue.prototype.$msgNotify({title:title, content:content, delay:6000, onClick:callback});
-    },Env.msgRead);
+    // 显示消息
+    const text = Inc.config.msgContent=='title'?title:content;
+    Inc.toast(text);
     /* 是否阅读 */
-    read = read || false;
-    if(!read) return;
-    // 百度Token
-    axios.post(Env.apiUrl+'index/baiduToken').then((res)=>{
-      const msgAudio = new Audio();
-      let text = title+' '+content;
-      if(Env.msgContent=='title') text = title;
-      else if(Env.msgContent=='content') text = content;
-      msgAudio.src = Env.httpType+'tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='+text+'&tok='+res.data.token;
-      setTimeout(()=>{
-        try{
-          if(plus.os.name=='iOS'){
-            let AVAudioSession = plus.ios.importClass("AVAudioSession"),
-            AVAudioSessionObj = AVAudioSession.sharedInstance();
-            AVAudioSessionObj.setCategoryerror('AVAudioSessionCategoryPlayback', null);
-            AVAudioSessionObj.setActiveerror('YES', null);
-            let AVSpeechSynthesizer = plus.ios.importClass("AVSpeechSynthesizer");
-            let AVSpeechUtterance = plus.ios.importClass("AVSpeechUtterance");
-            let AVSpeechSynthesisVoice = plus.ios.import("AVSpeechSynthesisVoice");
-            let speech = new AVSpeechSynthesizer();
-            let voice = AVSpeechSynthesisVoice.voiceWithLanguage("zh-CN");
-            let utterance = AVSpeechUtterance.speechUtteranceWithString(text);
-            utterance.setVoice(voice);
-            speech.speakUtterance(utterance);
-          }else if(plus.os.name=='Android'){
-            msgAudio.play();
-          }else{
-            msgAudio.play();
-          }
-        }catch(e){
-          msgAudio.play();
+    isRead = isRead || false;
+    if(!isRead) return;
+    // 百度语音
+    const token = Inc.storage.getItem('token') || '';
+    if(!token) return Inc.toast('请先登录!');
+    Inc.post('Usermain/baiduAudio',{token:token,text:text},(res)=>{
+      const d = res.data;
+      if(d.code!=0) return Inc.toast(d.msg);
+      // 音频
+      const audio = new Audio();
+      audio.src = d.url;
+      // 播放
+      try{
+        if(plus.os.name=='iOS'){
+          let AVAudioSession = plus.ios.importClass("AVAudioSession"),
+          AVAudioSessionObj = AVAudioSession.sharedInstance();
+          AVAudioSessionObj.setCategoryerror('AVAudioSessionCategoryPlayback', null);
+          AVAudioSessionObj.setActiveerror('YES', null);
+          let AVSpeechSynthesizer = plus.ios.importClass("AVSpeechSynthesizer");
+          let AVSpeechUtterance = plus.ios.importClass("AVSpeechUtterance");
+          let AVSpeechSynthesisVoice = plus.ios.import("AVSpeechSynthesisVoice");
+          let speech = new AVSpeechSynthesizer();
+          let voice = AVSpeechSynthesisVoice.voiceWithLanguage("zh-CN");
+          let utterance = AVSpeechUtterance.speechUtteranceWithString(text);
+          utterance.setVoice(voice);
+          speech.speakUtterance(utterance);
+        }else{
+          audio.play();
         }
-      },Env.msgRead);
+      }catch(e){
+        audio.play();
+      }
     });
   },
 

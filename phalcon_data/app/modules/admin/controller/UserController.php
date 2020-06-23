@@ -72,7 +72,7 @@ class UserController extends Base{
       $uinfo->img = $uinfo->img?$this->config->img_url.$uinfo->img:'';
       return self::getJSON(['code'=>0,'time'=>$time,'uinfo'=>$uinfo]);
     }else{
-      return self::error(1001);
+      return self::error(1000);
     }
   }
 

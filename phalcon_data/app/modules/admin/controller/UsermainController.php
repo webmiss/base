@@ -1,20 +1,26 @@
 <?php
-
 namespace app\modules\admin\controller;
 
 use app\modules\admin\model\SysMenu;
 use app\modules\admin\model\SysMenuAction;
-
-use app\library\baidu\Ai;
+use app\library\BaiduAi;
 
 class UserMainController extends UserBase{
 
   static private $menus=[];
 
   /* 百度Token */
-  function baiduTokenAction(){
-    $token = Ai::getToken();
-    return self::getJSON(['code'=>0,'token'=>$token]);
+  function baiduAudioAction(){
+    $text = $this->request->get('text');
+    if(empty($text)) return self::getJSON(['code'=>4000]);
+    // Token
+    $token = $this->redis->get('baidu_token');
+    if(!$token){
+      $token = BaiduAi::getToken();
+      $this->redis->setex('baidu_token',1.9*3600,$token);
+    }
+    $url = 'https://tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=1&tex='.$text.'&tok='.$token;
+    return self::getJSON(['code'=>0,'url'=>$url]);
   }
 
 	/* 获取菜单 */

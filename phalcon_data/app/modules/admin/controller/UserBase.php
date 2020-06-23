@@ -25,7 +25,7 @@ class UserBase extends Base{
     // Token验证
     $token = trim($this->request->get('token'));
     $res = self::verToken($token);
-    if(!$res) return self::error(1001);
+    if(!$res) return self::error(1000);
     self::$token = $res;
     // 拆分
     $perm = UserPerm::findFirst(['uid="'.self::$token->uid.'"','columns'=>'perm,role']);
@@ -44,8 +44,8 @@ class UserBase extends Base{
 
   /* 菜单权限 */
   private function isPerm(){
-    $controller = $this->dispatcher->getControllerName();
-    if($controller!='Usermain' && $controller!='Desktop'){
+    $controller = strtolower($this->dispatcher->getControllerName());
+    if($controller!='usermain' && $controller!='desktop'){
       $mid = SysMenu::findFirst(['url="'.$controller.'"','columns'=>'id']);
       if(empty($mid)) return self::error(4001);
       if(!isset(self::$perm[$mid->id])) return self::error(4002);

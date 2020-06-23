@@ -4,8 +4,6 @@ namespace app\modules\api\controller;
 
 use app\controller\Base;
 
-/* token验证 */
-
 class UserBase extends Base{
 
   // 用户信息
@@ -15,7 +13,7 @@ class UserBase extends Base{
     // Token验证
     $token = trim($this->request->get('token'));
     $res = self::verToken($token);
-    if(!$res) return self::error(1001);
+    if(!$res) return self::error(1000);
     self::$token = $res;
   }
 

@@ -31,6 +31,10 @@
 </template>
 
 <style>
+/* 字体图标 */
+@import url('./assets/icon.css');
+/* UI */
+@import url('./assets/ui.css');
 
 /* 表单缩放问题 */
 @media only screen and (min-device-width : 320px) and (max-device-width : 1024px) { select:focus, textarea:focus, input:focus { font-size: 16px !important; } }
