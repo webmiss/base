@@ -6,6 +6,7 @@ Vue.use(VueRouter)
 /* 路由配置 */
 const routes = [
   {path:'/', name:'index', component:()=>import('./views/Index.vue')},
+  {path:'/refresh', name:'Refresh', component:resolve=>require(['./views/Refresh.vue'],resolve)},
   {path:'/UserInfo', name:'UserInfo', component:resolve=>require(['./views/system/UserInfo.vue'],resolve)},
   {path:'/UserPasswd', name:'UserPasswd', component:resolve=>require(['./views/system/UserPasswd.vue'],resolve)},
   // 设置

@@ -33,19 +33,15 @@ export default {
     Inc.self = this;
     /* 初始化 */
     setTimeout(()=>{
-      Start.init(); // 启动
-      if(Inc.config.update.start) this.isUpdate();  // 是否检测更新
-    },1000);
-    /* 获取菜单 */
-    if(Inc.storage.getItem('token')) this.getMenus();
-    /* 默认菜单 */
-    this.$store.state.collapseMenu = Inc.storage.getItem('isCollapse')=='true'?true:false;
-    this.$store.state.defaultMenu = Inc.storage.getItem('defaultMenu')?Inc.storage.getItem('defaultMenu'):'3';
-    /* 回车登录 */
-    document.onkeydown = function(event){
-      let e = event || window.event || arguments.callee.caller.arguments[0];
-      if(e && e.keyCode==13 && !Inc.self.$store.state.isLogin) Inc.self.loginSub();
-    }
+      // 启动服务
+      Start.init();
+      // 检测更新
+      if(Inc.config.update.start) this.isUpdate();
+      // 获取菜单
+      if(Inc.storage.getItem('token')) this.getMenus();
+      // Enter事件
+      this._enter();
+    },600);
   },
   methods:{
 
@@ -136,6 +132,8 @@ export default {
           Inc.storage.setItem('token',d.token);
           // 用户菜单
           this.getMenus();
+          // 刷新路由
+          this.$router.replace({path:'/refresh'});
         }else{
           Inc.self.$store.state.isLogin = false;
           Inc.self.$store.state.uInfo = {};
@@ -154,10 +152,22 @@ export default {
       Inc.storage.setItem('token','');
       // 关闭Socket
       Socket._closeMsg();
+      // Enter事件
+      this._enter();
+    },
+    /* Enter登录 */
+    _enter(){
+      document.onkeydown = function(event){
+        let e = event || window.event || arguments.callee.caller.arguments[0];
+        if(e && e.keyCode==13 && !Inc.self.$store.state.isLogin) Inc.self.loginSub();
+      }
     },
 
     /* 用户菜单 */
     getMenus(){
+      // 默认菜单
+      this.$store.state.collapseMenu = Inc.storage.getItem('isCollapse')=='true'?true:false;
+      this.$store.state.defaultMenu = Inc.storage.getItem('defaultMenu')?Inc.storage.getItem('defaultMenu'):'3';
       // 滑动-菜单
       let menu = this.$refs.LeftMenus;
       if(menu){
