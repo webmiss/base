@@ -63,7 +63,7 @@ export default {
       // 背景动画
       setTimeout(()=>{
         let bg = this.$refs.ImgBG;
-        bg.style.opacity = 1;
+        if(bg) bg.style.opacity = 1;
       },300);
     },
 
@@ -81,7 +81,7 @@ export default {
       },300);
       // 背景动画
       let bg = this.$refs.ImgBG;
-      bg.style.opacity = 0;
+      if(bg) bg.style.opacity = 0;
     },
 
     /* 图片 */
