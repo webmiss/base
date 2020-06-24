@@ -20,7 +20,7 @@
               <img src="../assets/icon/bg.svg" />
             </div>
             <div class="demo">
-              <span  @click="$router.push('/demo')">> Demo <</span>
+              <span  @click="$router.push('/demo')">&gt; Demo &lt;</span>
             </div>
           </div>
         </div>
