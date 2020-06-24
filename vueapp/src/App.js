@@ -3,13 +3,6 @@ import Inc from '@/library/Inc'
 import Plus from '@/library/Plus'
 
 export default {
-  watch:{
-    $route(to,from){
-      // 页面切换
-      this.transitionName = this.$router.isBack?'slide-right':'slide-left';
-      this.$router.isBack = false;
-    }
-  },
   data(){
     return {
       keepAlive: 10,
@@ -22,6 +15,13 @@ export default {
       msgInterval: null,
     }
   },
+  watch:{
+    $route(to,from){
+      // 页面切换
+      this.transitionName = this.$router.isBack?'slide-right':'slide-left';
+      this.$router.isBack = false;
+    }
+  },
   computed:{
     mode(){ return this.$store.state.mode; },
   },
@@ -30,8 +30,10 @@ export default {
     Inc.self = this;
     /* 初始化 */
     setTimeout(()=>{
-      Start.init(); // 启动
-      if(Inc.config.update.start) this.isUpdate();  // 是否检测更新
+      // 启动服务
+      Start.init();
+      // 检测更新
+      if(Inc.config.update.start) this.isUpdate();
     },1000);
   },
   methods:{
