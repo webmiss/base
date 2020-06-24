@@ -64,6 +64,16 @@ export default {
       });
     },
 
+    /* 全选/不选 */
+    selectAll(){
+      // 文件夹
+      const folder = this.lists.folder;
+      for(let i in folder) folder[i].check=!folder[i].check;
+      // 文件
+      const files = this.lists.files;
+      for(let i in files) files[i].check=!files[i].check;
+    },
+
     /* 是否图片 */
     isImg(ext){
       const arr = ['png','jpg','jpeg','gif','svg'];
