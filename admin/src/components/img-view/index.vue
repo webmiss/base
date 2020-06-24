@@ -47,12 +47,6 @@ export default {
     }
   },
   mounted(){
-    /* ESC */
-    const self = this;
-    document.onkeydown = function(event){
-      let e = event || window.event || arguments.callee.caller.arguments[0];
-      if(e && e.keyCode==27) self.close();
-    }
   },
   methods:{
 
@@ -66,6 +60,12 @@ export default {
         let bg = this.$refs.ImgBG;
         if(bg) bg.style.opacity = 1;
       },300);
+      /* ESC */
+      const self = this;
+      document.onkeydown = function(event){
+        let e = event || window.event || arguments.callee.caller.arguments[0];
+        if(e && e.keyCode==27) self.close();
+      }
     },
 
     /* 翻页 */
