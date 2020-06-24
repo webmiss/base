@@ -1,12 +1,8 @@
 import Vue from 'vue'
 /* 组件 */
 import PageView from '@/components/page-view'
-
 /* Scroll */
-import BScroll from '@better-scroll/core'
-import Pullup from '@better-scroll/pull-up'
-BScroll.use(Pullup);
-
+import BScroll from 'better-scroll'
 /* 监听左滑 */
 import VueTouch from 'vue-touch'
 Vue.use(VueTouch, {name: 'v-touch'});
@@ -16,6 +12,7 @@ export default {
   data(){
     return {
       indexData:{scroll:null,},
+      lists:[0,1,2,3,4,5,6,7,8,9],
     }
   },
   computed:{
@@ -25,6 +22,10 @@ export default {
   },
   activated(){
     this.indexScroll();
+    // 追加
+    setTimeout(()=>{
+      for(let i=10;i<=15;i++) this.lists.push(i);
+    },3000);
   },
   methods:{
 

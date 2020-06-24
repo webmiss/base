@@ -3,6 +3,8 @@ import Inc from '@/library/Inc'
 import Plus from '@/library/Plus'
 import Socket from '@/library/Socket'
 import Action from '@/components/action'
+/* Scroll */
+import BScroll from 'better-scroll'
 // 弹出层
 import Popup from '@/components/popup'
 
