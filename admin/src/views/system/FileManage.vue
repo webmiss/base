@@ -15,7 +15,7 @@
         <span class="info">文件夹( {{ lists.dirNum }} ) 文件( {{ lists.fileNum }} ) 大小( {{ lists.size }} )</span>
       </el-row>
       <!-- 上传进度 -->
-      <el-row class="file_load" :style="{backgroundImage: 'linear-gradient(to right, '+$config.themeColor+', '+$config.themeColor+' '+loaded+', #F2F4F6 '+loaded+', #F2F4F6 100%)'}">
+      <el-row class="file_load" :style="{backgroundImage: 'linear-gradient(to right, #6FB737, #6FB737 '+loaded+', #F2F4F6 '+loaded+', #F2F4F6 100%)'}">
         <span class="text" :style="{width:loaded}">{{loaded}}</span>
       </el-row>
       <ul class="file_body" v-if="lists.folder.length!=0 || lists.files.length!=0">
