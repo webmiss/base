@@ -44,8 +44,7 @@ class SysFileManageController extends UserBase{
     $files = json_decode($files,true);
     if(empty($path) || empty($name) || empty($files)) return self::getJSON(['code'=>4000]);
     $file = File::zipAll($path,$files,$name);
-    if($file) echo readfile($file);
-    return self::getJSON(['code'=>0]);
+    return self::getJSON(['code'=>0,'file'=>$file]);
   }
 
   /* 重命名 */

@@ -210,9 +210,9 @@ export default {
       this.subAjax('upFile',data,(res)=>{
         const d = res;
         if(d.code!==0){
-          if(d.msg) Inc.toast(d.msg,'error');
+          if(d.msg) Inc.toast(d.msg);
         }else{
-          if(d.msg) Inc.toast(d.msg,'success');
+          if(d.msg) Inc.toast(d.msg);
           // 刷新数据
           this.loadData();
         }
@@ -264,9 +264,9 @@ export default {
         // 结果
         if(d.code!==0){
           load.clear();
-          if(d.msg) Inc.toast(d.msg,'error');
+          if(d.msg) Inc.toast(d.msg);
         }else{
-          if(d.msg) Inc.toast(d.msg,'success');
+          if(d.msg) Inc.toast(d.msg);
           // 刷新数据
           this.loadData();
         }
