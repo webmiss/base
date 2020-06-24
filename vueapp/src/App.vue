@@ -1,8 +1,5 @@
 <template>
   <div id="app">
-
-    <!-- 声音 -->
-    <audio id="msg" style="display: none"></audio>
     
     <!-- 更新APP -->
     <div v-if="update.show" class="update_body" :style="{backgroundColor: upDateColor.bg}">
@@ -76,7 +73,7 @@ i{font-style: normal;}
 .back_dark.icons{color: #FFF;}
 
 /* 切换动画 */
-.view{position: fixed; z-index: 0; width:100%; height: 100%; transition: all .6s cubic-bezier(0.075, 0.82, 0.165, 1); background-color: #F2F2F2;}
+.view{position: fixed; z-index: 0; width:100%; height: 100%; transition: all .6s cubic-bezier(0.075, 0.82, 0.165, 1); background-color: #FFF;}
 .view_dark{background-color: #242628;}
 .slide-left-enter,.slide-right-leave-active{z-index: 1; transform: translate(100%,0);}
 .slide-right-enter,.slide-left-leave-active{z-index: -1; transform: translate(-30%,0);}

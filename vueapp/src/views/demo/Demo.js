@@ -18,6 +18,9 @@ export default {
       indexData:{scroll:null,},
     }
   },
+  computed:{
+    mode(){ return this.$store.state.mode; },
+  },
   mounted(){
   },
   activated(){

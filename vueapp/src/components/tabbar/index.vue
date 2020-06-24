@@ -4,14 +4,6 @@
       <i class="icons icon_home"></i>
       <div class="name">首页</div>
     </div>
-    <div class="tabar_item" :class="active==1?'tabar_item_active':''" @click="navClick(1)">
-      <i class="icons icon_msg"></i><span class="redNum">2</span>
-      <div class="name">消息</div>
-    </div>
-    <div class="tabar_item" :class="active==2?'tabar_item_active':''" @click="navClick(2)">
-      <i class="icons icon_me"></i>
-      <div class="name">我的</div>
-    </div>
   </div>
 </template>
 
