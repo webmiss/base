@@ -72,7 +72,7 @@ export default {
         data.latitude = res.coords.latitude;
         data.longitude = res.coords.longitude;
         // 保存本地
-        Inc.storage.setItem.setItem('GeoLocation',JSON.stringify(data));
+        Inc.storage.setItem('GeoLocation',JSON.stringify(data));
         callback(data);
       },fail);
     }catch(e){
@@ -91,7 +91,7 @@ export default {
                 data.latitude = result.position.lat;
                 data.longitude = result.position.lng;
                 // 保存本地
-                Inc.storage.setItem.setItem('GeoLocation',JSON.stringify(data));
+                Inc.storage.setItem('GeoLocation',JSON.stringify(data));
                 callback(data);
               }else fail(status);
             });
@@ -104,7 +104,7 @@ export default {
   getAddress(name,callback,fail){
     setTimeout(()=>{
       AMap.service(['AMap.PlaceSearch'], ()=>{
-        let location = Inc.storage.setItem.getItem('GeoLocation');
+        let location = Inc.storage.getItem('GeoLocation');
         location = location?JSON.parse(location):{city:'昆明市'};
         const place = new AMap.PlaceSearch({city:location.city});
         place.search(name,(status, result)=>{
