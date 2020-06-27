@@ -30,7 +30,6 @@ export default {
   computed:{
     /* 动作菜单 */
     actionType(){
-      this.$store.state.action.url = 'SysMenus';
       let type = this.$store.state.action.type;
       if(type=='list'){
         this.loadData();
@@ -46,8 +45,13 @@ export default {
     },
   },
   mounted(){
-    this.loadData();  //加载数据
-    this.allAction(); //全部动作
+    // 动作菜单-配置
+    this.$store.state.action.url = 'SysMenus';
+    this.$store.state.action.menus = '';
+    //加载数据
+    this.loadData();
+    //全部动作
+    this.allAction();
   },
   methods:{
 
