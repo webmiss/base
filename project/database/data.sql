@@ -52,7 +52,7 @@ INSERT INTO `sys_menus` (`id`, `fid`, `title`, `url`, `perm`, `ico`, `ctime`, `u
 (11,	1,	'个人资料',	'UserInfo',	1,	'icon_user_info',	'2019-01-27 11:29:09',	'2020-05-26 10:54:55',	0,	''),
 (12,	1,	'修改密码',	'UserPasswd',	1,	'icon_user_passwd',	'2019-01-27 11:31:10',	'2020-05-26 10:58:26',	0,	''),
 (13,	2,	'用户管理',	'SysUser',	31,	'icon_sys_user',	'2020-05-22 16:02:56',	'2020-05-26 11:00:40',	0,	''),
-(14,	7,	'应用管理',	'WebAPP',	31,	'icon_app',	'2020-05-22 18:10:32',	'2020-05-26 11:00:54',	0,	'');
+(14,	7,	'应用管理',	'Demo',	31,	'icon_app',	'2020-05-22 18:10:32',	'2020-05-26 11:00:54',	0,	'');
 
 DROP TABLE IF EXISTS `sys_menus_action`;
 CREATE TABLE `sys_menus_action` (
