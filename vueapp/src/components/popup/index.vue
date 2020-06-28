@@ -16,6 +16,7 @@ export default {
     show: {type: Boolean, default: false},
     opacity: {type: Number, default: 0.8},
     bgClose: {type: Boolean, default: true},
+    position: {type: String, default: ''},
   },
   data(){
     return {
@@ -27,6 +28,34 @@ export default {
     },
   },
   mounted(){
+    let body = this.$refs.PopupBody || '';
+    // 默认值
+    if(this.position=='left'){
+      body.style.height = '100%';
+      body.style.left = 0;
+      body.style.top = 0;
+      body.style.transform = 'translate(-100%,0)';
+    }else if(this.position=='right'){
+      body.style.height = '100%';
+      body.style.right = 0;
+      body.style.top = 0;
+      body.style.transform = 'translate(100%,0)';
+    }else if(this.position=='top'){
+      body.style.width = '100%';
+      body.style.left = 0;
+      body.style.top = 0;
+      body.style.transform = 'translate(0,-100%)';
+    }else if(this.position=='bottom'){
+      body.style.width = '100%';
+      body.style.left = 0;
+      body.style.bottom = 0;
+      body.style.transform = 'translate(0,100%)';
+    }else{
+      body.style.left = '50%';
+      body.style.top = '30%';
+      body.style.opacity = 0;
+      body.style.transform = 'translate(-50%,-50%)';
+    }
   },
   methods:{
 
@@ -35,19 +64,40 @@ export default {
       setTimeout(()=>{
         let bg = this.$refs.PopupBG || '';
         let body = this.$refs.PopupBody || '';
-        if(!bg || !body) return false;
+        // 显示&隐藏
         if(show){
           bg.style.opacity = 1;
-          body.style.opacity = 1;
-          body.style.top = '50%';
+          // 位置
+          if(this.position=='left'){
+            body.style.transform = 'translate(-1px,0)';
+          }else if(this.position=='right'){
+            body.style.transform = 'translate(0,0)';
+          }else if(this.position=='top'){
+            body.style.transform = 'translate(0,0)';
+          }else if(this.position=='bottom'){
+            body.style.transform = 'translate(0,0)';
+          }else{
+            body.style.opacity = 1;
+            body.style.top = '50%';
+          }
         }else{
           bg.style.opacity = 0;
-          body.style.opacity = 0;
-          body.style.top = '30%'
+          // 位置
+          if(this.position=='left'){
+            body.style.transform = 'translate(-100%,0)';
+          }else if(this.position=='right'){
+            body.style.transform = 'translate(100%,0)';
+          }else if(this.position=='top'){
+            body.style.transform = 'translate(0,-100%)';
+          }else if(this.position=='bottom'){
+            body.style.transform = 'translate(0,100%)';
+          }else{
+            body.style.opacity = 0;
+            body.style.top = '30%'
+          }
         }
-        setTimeout(()=>{
-          this.$emit('show',show);
-        },200);
+        // 当前状态
+        setTimeout(()=>{ this.$emit('show',show); },200);
       },200);
     },
 

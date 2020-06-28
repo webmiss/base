@@ -116,7 +116,7 @@ i{font-style: normal;}
 .Input_dark{color: #FFF;}
 
 /* 底部导航 */
-.nav_body{height: calc(100% - 50px);}
+.nav_body{overflow: hidden; height: calc(100% - 50px);}
 
 /* Html */
 .htmlBody{margin: 1px 0; padding: 15px; background-color: #FFF;}
