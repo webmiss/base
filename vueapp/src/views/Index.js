@@ -26,11 +26,7 @@ export default {
 
     /* 切换导航 */
     navTab(index){
-      if(index==0){
-      }else if(index==1){
-      }else if(index==2){
-        this.meLoad();
-      }
+      console.log(index);
     },
 
     /* 打开路由 */

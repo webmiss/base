@@ -49,15 +49,7 @@ export default {
         Inc.self.store.data.geolocation = res;
         Inc.self.update();
         Inc.storage.setItem('city',res.district);
-      },(e)=>{
-        setTimeout(()=>{
-          Inc.getLocation((res)=>{
-            Inc.self.store.data.geolocation = res;
-            Inc.self.update();
-            Inc.storage.setItem('city',res.district);
-          });
-        },8000);
-      });
+      },(e)=>{ Inc.toast('获取定位失败!'); });
     },3000);
   },
 

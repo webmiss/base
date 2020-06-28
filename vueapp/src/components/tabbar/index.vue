@@ -29,7 +29,7 @@ export default {
     event: 'active',
   },
   props: {
-    active: {type: Number, default: 0},
+    active: {type: Number | String, default: 0},
   },
   data(){
     return {

@@ -81,15 +81,8 @@ export default {
       Plus.geoLocation((res)=>{
         Inc.self.$store.state.geolocation = res;
         Inc.storage.setItem('city',res.district);
-      },(e)=>{
-        setTimeout(()=>{
-          Plus.geoLocation((res)=>{
-            Inc.self.$store.state.geolocation = res;
-            Inc.storage.setItem('city',res.district);
-          },(e)=>{});
-        },8000);
-      });
-    },3000);
+      },(e)=>{ Inc.toast('获取定位失败!'); });
+    },1000);
   },
 
 }
