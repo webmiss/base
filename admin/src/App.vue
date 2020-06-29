@@ -108,7 +108,7 @@
 
     <!-- 右侧菜单 -->
     <ul class="right_menu" v-if="$store.state.isLogin===true">
-      <li @click="openMsg()"><i class="icons icon_msg"></i><span class="redNum">0</span></li>
+      <li @click="openMsg()"><i class="ui ui_msg"></i><span class="redNum">0</span></li>
     </ul>
 
     <!-- 消息 -->

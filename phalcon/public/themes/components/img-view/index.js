@@ -1,16 +1,16 @@
 const template = `
 <div v-if="show" ref="ImgBG" class="imgview_bg" :style="{backgroundColor: 'rgba(0,0,0,'+opacity+')'}">
   <!-- 加载 -->
-  <div class="imgview_load" v-if="loading"><i class="icons icon_loading"></i></div>
+  <div class="imgview_load" v-if="loading"><i class="ui ui_loading"></i></div>
   <!-- 图片 -->
   <div class="imgview_img"><img id="img" :src="info.src" /></div>
   <!-- 上一页 -->
   <div class="imgview_left" @click="page(-1)">
-    <i class="icons icon_left" v-if="index!=0"></i>
+    <i class="ui ui_left" v-if="index!=0"></i>
   </div>
   <!-- 下一页 -->
   <div class="imgview_right" @click="page(1)">
-    <i class="icons icon_right" v-if="(index+1)!=imgs.length"></i>
+    <i class="ui ui_right" v-if="(index+1)!=imgs.length"></i>
   </div>
   <!-- 信息 -->
   <div class="imgview_info">
@@ -21,9 +21,9 @@ const template = `
     </span>
   </div>
   <!-- 关闭 -->
-  <div class="imgview_close" @click="close()"><i class="icons icon_close"></i></div>
+  <div class="imgview_close" @click="close()"><i class="ui ui_close"></i></div>
   <!-- 全屏 -->
-  <div class="imgview_full" @click="Fullscreen()"><i class="icons icon_full"></i></div>
+  <div class="imgview_full" @click="Fullscreen()"><i class="ui ui_full"></i></div>
 </div>
 `;
 export default {

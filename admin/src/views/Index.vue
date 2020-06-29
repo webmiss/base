@@ -12,7 +12,7 @@
             <ul v-else class="in_menus">
               <li v-for="(val,key) in menus" :key="key">
                 <a @click="openUrl(val.ico,val.url,val.index,val.name)">
-                  <div><i class="icons" :class="val.ico?val.ico:'icon_more'"></i></div><p class="nowrap">{{val.name}}</p>
+                  <div><i class="icons" :class="val.ico?val.ico:'ui ui_more'"></i></div><p class="nowrap">{{val.name}}</p>
                 </a>
               </li>
             </ul>

@@ -2,7 +2,7 @@
 <v-touch v-on:swiperight="back()">
   <!-- Demo -->
   <page-view :class="mode=='dark'?'demo_dark':''" :color="mode=='dark'?'#FFF':'#333'" :bgColor="mode=='dark'?'#333':'#FFF'">
-    <div slot="left"><i class="back icons icon_left" @click="back()"></i></div>
+    <div slot="left"><i class="back ui ui_left" @click="back()"></i></div>
     <div slot="title">Demo</div>
     <div slot="body" class="html">
       <!-- 滑动 -->
