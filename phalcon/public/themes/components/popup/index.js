@@ -5,6 +5,7 @@ const template = `
 </div>
 `;
 export default {
+  template: template,
   name:'PopUp',
   model: {
     prop: "show",
@@ -29,25 +30,29 @@ export default {
     let body = this.$refs.PopupBody || '';
     // 默认值
     if(this.position=='left'){
-      body.style.height = '100%';
+      body.style.height = '110%';
       body.style.left = 0;
       body.style.top = 0;
-      body.style.transform = 'translate(-100%,0)';
+      body.style.opacity = 1;
+      body.style.transform = 'translate(-110%,0)';
     }else if(this.position=='right'){
       body.style.height = '100%';
       body.style.right = 0;
       body.style.top = 0;
-      body.style.transform = 'translate(100%,0)';
+      body.style.opacity = 1;
+      body.style.transform = 'translate(110%,0)';
     }else if(this.position=='top'){
       body.style.width = '100%';
       body.style.left = 0;
       body.style.top = 0;
-      body.style.transform = 'translate(0,-100%)';
+      body.style.opacity = 1;
+      body.style.transform = 'translate(0,-110%)';
     }else if(this.position=='bottom'){
       body.style.width = '100%';
       body.style.left = 0;
       body.style.bottom = 0;
-      body.style.transform = 'translate(0,100%)';
+      body.style.opacity = 1;
+      body.style.transform = 'translate(0,110%)';
     }else{
       body.style.left = '50%';
       body.style.top = '30%';
@@ -69,11 +74,11 @@ export default {
           if(this.position=='left'){
             body.style.transform = 'translate(-1px,0)';
           }else if(this.position=='right'){
-            body.style.transform = 'translate(0,0)';
+            body.style.transform = 'translate(1px,0)';
           }else if(this.position=='top'){
-            body.style.transform = 'translate(0,0)';
+            body.style.transform = 'translate(0,-1px)';
           }else if(this.position=='bottom'){
-            body.style.transform = 'translate(0,0)';
+            body.style.transform = 'translate(0,1px)';
           }else{
             body.style.opacity = 1;
             body.style.top = '50%';
@@ -82,21 +87,21 @@ export default {
           bg.style.opacity = 0;
           // 位置
           if(this.position=='left'){
-            body.style.transform = 'translate(-100%,0)';
+            body.style.transform = 'translate(-110%,0)';
           }else if(this.position=='right'){
-            body.style.transform = 'translate(100%,0)';
+            body.style.transform = 'translate(110%,0)';
           }else if(this.position=='top'){
-            body.style.transform = 'translate(0,-100%)';
+            body.style.transform = 'translate(0,-110%)';
           }else if(this.position=='bottom'){
-            body.style.transform = 'translate(0,100%)';
+            body.style.transform = 'translate(0,110%)';
           }else{
             body.style.opacity = 0;
             body.style.top = '30%'
           }
         }
         // 当前状态
-        setTimeout(()=>{ this.$emit('show',show); },200);
-      },200);
+        setTimeout(()=>{ this.$emit('show',show); },300);
+      },300);
     },
 
     /* 点击背景 */
