@@ -1,8 +1,8 @@
 const template = `
-  <div v-show="show">
-    <div ref="PopupBG" class="popup_bg" :style="{backgroundColor:'rgba(0,0,0,'+opacity+')'}" @click="clickBG()"></div>
-    <div ref="PopupBody" class="popup_body" :style="{backgroundColor:bgColor}"><slot></slot></div>
-  </div>
+<div v-show="show">
+  <div ref="PopupBG" class="popup_bg" :style="{backgroundColor:'rgba(0,0,0,'+opacity+')'}" @click="clickBG()"></div>
+  <div ref="PopupBody" class="popup_body" :style="{backgroundColor:bgColor}"><slot></slot></div>
+</div>
 `;
 import Inc from '../../library/Inc.js'
 Inc.requireCss('/themes/components/popup/index.css');
