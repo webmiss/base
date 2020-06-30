@@ -1,9 +1,11 @@
 const template = `
-<div v-show="show">
-  <div ref="PopupBG" class="popup_bg" :style="{backgroundColor:'rgba(0,0,0,'+opacity+')'}" @click="clickBG()"></div>
-  <div ref="PopupBody" class="popup_body"><slot></slot></div>
-</div>
+  <div v-show="show">
+    <div ref="PopupBG" class="popup_bg" :style="{backgroundColor:'rgba(0,0,0,'+opacity+')'}" @click="clickBG()"></div>
+    <div ref="PopupBody" class="popup_body" :style="{backgroundColor:bgColor}"><slot></slot></div>
+  </div>
 `;
+import Inc from '../../library/Inc.js'
+Inc.requireCss('/themes/components/popup/index.css');
 export default {
   template: template,
   name:'PopUp',
@@ -13,9 +15,10 @@ export default {
   },
   props: {
     show: {type: Boolean, default: false},
-    opacity: {type: Number, default: 0.8},
+    opacity: {type: Number, default: 0.7},
     bgClose: {type: Boolean, default: true},
     position: {type: String, default: ''},
+    bgColor: {type: String, default: ''},
   },
   data(){
     return {

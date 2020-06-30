@@ -4,6 +4,7 @@ export default {
   /* Vue */
   self: null,
 
+  /* 轻提示 */
   toast(text){
     // 创建对象
     let obj = document.createElement('div');
@@ -20,6 +21,16 @@ export default {
     setTimeout(()=>{
       document.body.removeChild(obj);
     },3000);
+  },
+
+  /* 加载CSS */
+  requireCss(href){
+    let head = document.getElementsByTagName('head')[0];
+    let link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = href;
+    head.appendChild(link);
   },
 
   /* 保存图片 */
