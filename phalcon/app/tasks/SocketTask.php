@@ -7,11 +7,11 @@ use app\library\Centre;
 class SocketTask extends TaskBase{
 
   /* 属性 */
-  static private $msg_limit = 100;  // 消息总条数
-  static private $suid = '0';        // 系统消息ID
-  static private $uid = '';         // 用户ID
-  static private $name_fd = '';     // 缓存:SocketFD
-  static private $name_uid = '';    // 缓存:用户ID
+  private $msg_limit = 100;  // 消息总条数
+  private $suid = '0';        // 系统消息ID
+  private $uid = '';         // 用户ID
+  private $name_fd = '';     // 缓存:SocketFD
+  private $name_uid = '';    // 缓存:用户ID
 
   /* 构造函数 */
   function initialize(){
