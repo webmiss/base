@@ -1,8 +1,0 @@
-<page-view immersed="{{true}}" bgColor="rgba(111,183,55,0)" color="#FFF">
-  <view slot="left">
-    <text class="back icons icon_left" bind:tap="goBack"></text>
-  </view>
-  <scroll-view slot="body" class="html" scroll-y="{{true}}">
-    内容
-  </scroll-view>
-</page-view>

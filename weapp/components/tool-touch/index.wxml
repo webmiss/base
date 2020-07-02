@@ -1,3 +1,0 @@
-<view class="body" bind:touchstart='touchStart' bind:touchend="touchEnd">
-  <slot name="body"></slot>
-</view>
