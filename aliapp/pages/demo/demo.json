@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "page-view": "/components/page-view/index"
+  },
+  "allowsBounceVertical": "NO",
+  "transparentTitle": "always",
+  "titlePenetrate": "YES",
+  "titleBarColor": "#FFF",
+  "defaultTitle": ""
+}

@@ -1,0 +1,60 @@
+name: webmis
+version: 1.0.0+1
+description: A new Flutter project.
+environment:
+  sdk: ">=2.2.0 <3.0.0"
+
+# 插件
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: ^0.1.2
+  permission_handler: ^4.0.0  #读写授权
+  package_info: ^0.4.0+6  #APP信息
+  ota_update: ^2.0.1 #APP更新
+  http: ^0.12.0+2 #Http请求
+  dio: ^3.0.1 #网络请求
+  url_launcher: ^5.1.3  #打开浏览器
+  path: ^1.6.4  #文件路径
+  path_provider: ^1.3.0 #文件系统
+  shared_preferences: ^0.5.3+4  #本地存储
+  image_picker: ^0.6.1+4  #照片和相机
+  image_cropper: ^1.0.2 #图片裁切
+  flutter_image_compress: ^0.6.3  #图片压缩
+  flutter_swiper : ^1.1.6 #轮播图
+  qr_flutter: ^3.0.1  #生成二维码
+  flutter_qr_reader: ^1.0.2 #扫码二维码
+  loader_search_bar: ^1.0.3+3 #导航栏搜索
+  pull_to_refresh: ^1.5.6 #下拉上拉
+  webview_flutter: ^0.3.14+1  #WebView
+  amap_location: ^0.2.0 #高德定位
+  flutter_spinkit: ^4.0.0 #加载动画
+  flutter_alert: ^0.4.0 #弹框
+  flutter_picker: ^1.0.15 #选择器
+  toast: ^0.1.5  #提示信息
+  flutter_alipay: ^0.1.2  #支付宝
+  fluwx: ^1.1.3  #微信支付
+  web_socket_channel: ^1.1.0  #Socket
+  flutter_local_notifications: ^0.8.4+3 #本地消息
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+# 配置
+flutter:
+  # 图标
+  uses-material-design: true
+  # 字体图标
+  fonts:
+   - family: icomoon
+     fonts:
+       - asset: fonts/icomoon.ttf
+  # 本地资源
+  assets:
+   - favicon.png
+   - images/screen_portrait.jpg
+   - images/screen_landscape.jpg
+  
