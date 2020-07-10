@@ -116,7 +116,7 @@ i{font-style: normal;}
 .Input_dark{color: #FFF;}
 
 /* 底部导航 */
-.nav_body{overflow: hidden; height: calc(100% - 50px);}
+.nav_body{overflow: hidden; height: calc(100% - 48px);}
 
 /* Html */
 .htmlBody{margin: 1px 0; padding: 15px; background-color: #FFF;}
@@ -138,14 +138,6 @@ i{font-style: normal;}
 .Search .input{height: 40px; line-height: 40px; font-size: 14px; padding: 0 10px; border-radius: 20px; background-color: #F2F2F2; color: #999;}
 .Search .input span{padding-left: 10px;}
 
-/* UI */
-body .van-grid-item__content::after,body .van-hairline--top::after{border-color: #FFF;}
-.van-overlay{z-index: 1000;}
-.van-popup{overflow-y: initial;}
-.van-popup--bottom.van-popup--round{border-radius: 10px 10px 0 0; max-height: calc(100% - 80px);}
-body .van-tab--active{color: #6FB737;}
-body .van-tabs__line{background-color: #6FB737;}
-body .van-dialog__header{font-size: 18px;}
 </style>
 
 <script src="./App.js"></script>

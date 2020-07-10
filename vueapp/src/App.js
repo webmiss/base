@@ -28,13 +28,10 @@ export default {
   mounted(){
     /* 项目 */
     Inc.self = this;
-    /* 初始化 */
-    setTimeout(()=>{
-      // 启动服务
-      Start.init();
-      // 检测更新
-      if(Inc.config.update.start) this.isUpdate();
-    },1000);
+    /* 启动服务 */
+    Start.init();
+    /* 检测更新 */
+    if(Inc.config.update.start) this.isUpdate();
   },
   methods:{
 

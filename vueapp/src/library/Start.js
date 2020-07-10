@@ -9,13 +9,15 @@ export default {
   init(){
 
     /* APP设置 */
-    if(Plus.isPlus()){
+    document.addEventListener("plusready",()=>{
       // 竖屏
       plus.screen.lockOrientation("portrait-primary");
       // 状态栏
       plus.navigator.setStatusBarStyle('dark');
-      plus.navigator.setStatusBarBackground(Env.themeColor);
+      plus.navigator.setStatusBarBackground('#FFFFFF');
       Inc.self.$store.state.statusBarHeight = plus.navigator.getStatusbarHeight();
+      // 关闭启动图
+      setTimeout(()=>{ plus.navigator.closeSplashscreen(); },300);
       // 模式
       document.addEventListener("uistylechange",()=>{
         Inc.self.$store.state.mode = plus.navigator.getUiStyle();
@@ -38,9 +40,7 @@ export default {
           }
         });
       });
-    }else{
-      // 浏览器
-    }
+    },false);
 
     /* 登录验证 */
     this.tokenState(1);
