@@ -69,11 +69,18 @@ export default {
   },
 
   /* 返回 */
-  back(num,self){ self.$router.goBack(-num); },
+  back(num){ this.self.$router.goBack(-num); },
   /* 加载 */
   loading(){
-    const load = this.self.$loading({text:'',background:'rgba(0, 0, 0, 0.7)'});
-    return { clear:()=>{ load.close(); } };
+    // 创建对象
+    let obj = document.createElement('div');
+    obj.setAttribute('class','wm-ui_load');
+    obj.innerHTML = '<span><i class="ui ui_loading"></i></span>';
+    // 追加
+    document.body.appendChild(obj);
+    return {
+      clear:()=>{ document.body.removeChild(obj);}
+    };
   },
   /* 提示 */
   toast(text){

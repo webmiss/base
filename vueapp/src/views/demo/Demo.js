@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import Inc from '@/library/Inc'
 /* 组件 */
 import PageView from '@/components/page-view'
 /* Scroll */
@@ -31,7 +32,7 @@ export default {
 
     /* 返回 */
     back(){
-      this.$router.goBack(-1);
+      Inc.back(1);
     },
 
     /* 滑块 */
