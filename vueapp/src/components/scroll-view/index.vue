@@ -262,8 +262,8 @@ export default {
         let nt = Math.abs(time/this.movePage[this.sp]);
         let n = nt>0.24 && nt<2.4?2.4-nt:0;
         // 加速距离
-        let move = parseInt(this.movePage[this.sp]*n*3);
-        this.tmpPage[this.sp] = parseInt(this.tmpPage[this.sp]+move);
+        let move = parseInt(this.movePage[this.sp]*n*2.4*100)/100;
+        this.tmpPage[this.sp] = parseInt((this.tmpPage[this.sp]+move)*100)/100;
         if(this.tmpPage[this.sp]>0){
           move = this.tmpPage[this.sp];
           this.tmpPage[this.sp] = 0;
@@ -277,7 +277,7 @@ export default {
         // 加速时间
         t = parseInt(n*100*8);
         if(t>2400) t=2400;
-        else if(t<500) t=500;
+        else if(t<300) t=300;
         // 加速分段
         let i = 0;
         const x = 10;
@@ -290,7 +290,7 @@ export default {
         this.timeMove = setInterval(()=>{
           i++;
           // 当前位置
-          this.page[this.sp] = parseInt(start+i*this.each);
+          this.page[this.sp] = parseInt((start+i*this.each)*100)/100;
           // 事件
           if(this.scrollX) this.$emit('scroll',{x:this.page[this.sp],y:0});
           else this.$emit('scroll',{x:0,y:this.page[this.sp]});
