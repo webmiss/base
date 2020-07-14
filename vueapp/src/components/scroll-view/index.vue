@@ -46,7 +46,6 @@ export default {
     lowerBg: {type: String, default: ''},
     upperColor: {type: String, default: ''},
     lowerColor: {type: String, default: ''},
-    cubicBezier: {type: String, default: '0.25,0.46,0.45,0.94'},
   },
   data(){
     return {
@@ -60,7 +59,9 @@ export default {
       tmpPage: {x:0,y:0},  //滑动-坐标
       page: {x:0,y:0},  //当前-坐标
       startTime: 0, //开始时间
-      isMove: false, //是否移动
+      cubicBezier: '0.25,0.46,0.45,0.94',
+      isMove: false,  //是否滑动
+      each: 0 //动画分段
     }
   },
   mounted(){
@@ -119,7 +120,6 @@ export default {
     init(){
       /* 容器 */
       let body = this.$refs.body;
-      console.log(body.children[0]);
       // 容器-宽高
       this.body.w = body.offsetWidth;
       this.body.h = body.offsetHeight;
@@ -135,57 +135,83 @@ export default {
 
     /* 开始 */
     start(e){
-      // 重置动画
-      this.obj.style.transition = 'transform 0s';
       let touch = e.touches?e.touches[0]:e;
       // 初始化
       this.init();
       // 开始时间
       this.startTime = e.timeStamp;
       // 开始坐标
+      this.movePage.x = 0;
+      this.movePage.y = 0;
       this.startPage.x = touch.clientX;
       this.startPage.y = touch.clientY;
+      // 重置动画
+      this.obj.style.transition = 'transform 0ms';
+      if(this.isMove){
+        this.isMove = false;
+        clearInterval(this.timeMove);
+        clearTimeout(this.timeEnd);
+        let p = parseInt(this.page[this.sp]+this.each*30);
+        p = p>this.tmpPage[this.sp]?this.tmpPage[this.sp]:p;
+        this.page[this.sp] = p;
+        this.obj.style.transition = 'transform 300ms';
+        this.translate(p);
+        
+      }
     },
 
     /* 移动 */
     move(e){
       if(!this.scroll) return false;
       // 开始
-      this.isMove = true;
       let touch = e.touches?e.touches[0]:e;
       this.movePage.x = touch.clientX-this.startPage.x;
       this.movePage.y = touch.clientY-this.startPage.y;
       // 移动距离
-      this.tmpPage[this.sp] = this.page[this.sp]+this.movePage[this.sp];
+      this.tmpPage[this.sp] = parseInt((this.page[this.sp]+this.movePage[this.sp])*100)/100;
       // 跟随手势
       if(this.scrollX){
-        this.obj.style.transform = 'translate('+this.tmpPage[this.sp]+'px,0)';
-        // 触发-位置
-        this.$emit('scroll',{x:this.tmpPage[this.sp],y:0});
         // 加载-左拉、右拉
         if(this.tmpPage[this.sp]>0){
           let x = this.upper-this.tmpPage[this.sp];
+          // 控制上限
+          if(x<-this.upper) this.tmpPage[this.sp] = this.upper*2;
+          // 透明度
           this.refUpper.style.transform = 'translate(-'+(x>0?x:0)+'px,0)';
           this.refUpper.style.opacity = Math.abs(parseInt(this.tmpPage[this.sp]/this.upper*100)/100);
         }else if(this.tmpPage[this.sp]<this.bodyMax.w){
           let y = this.lower+(this.tmpPage[this.sp]-this.bodyMax.w);
+          // 控制上限
+          if(y<-this.lower) this.tmpPage[this.sp] = this.bodyMax.w-this.lower*2;
+          // 透明度
           this.refLower.style.opacity = Math.abs(parseInt(this.tmpPage[this.sp]/this.lower*100)/100);
           this.refLower.style.transform = 'translate('+(y>0?y:0)+'px,0)';
         }
-      }else{
-        this.obj.style.transform = 'translate(0,'+this.tmpPage[this.sp]+'px)';
+        // 位置
+        this.translate(this.tmpPage[this.sp]);
         // 触发-位置
-        this.$emit('scroll',{x:0,y:this.tmpPage[this.sp]});
+        this.$emit('scroll',{x:this.tmpPage[this.sp],y:0});
+      }else{
         // 加载-下拉、上拉
         if(this.tmpPage[this.sp]>0){
           let y = this.upper-this.tmpPage[this.sp];
+          // 控制上限
+          if(y<-this.upper) this.tmpPage[this.sp] = this.upper*2;
+          // 透明度
           this.refUpper.style.transform = 'translate(0,-'+(y>0?y:0)+'px)';
           this.refUpper.style.opacity = Math.abs(parseInt(this.tmpPage[this.sp]/this.upper*100)/100);
         }else if(this.tmpPage[this.sp]<this.bodyMax.h){
           let y = this.lower+(this.tmpPage[this.sp]-this.bodyMax.h);
+          // 控制上限
+          if(y<-this.lower) this.tmpPage[this.sp] = this.bodyMax.h-this.lower*2;
+          // 透明度
           this.refLower.style.opacity = Math.abs(parseInt(this.tmpPage[this.sp]/this.lower*100)/100);
           this.refLower.style.transform = 'translate(0,'+(y>0?y:0)+'px)';
         }
+        // 位置
+        this.translate(this.tmpPage[this.sp]);
+        // 触发-位置
+        this.$emit('scroll',{x:0,y:this.tmpPage[this.sp]});
       }
     },
 
@@ -196,8 +222,6 @@ export default {
       if(this.movePage.x<-60) this.$emit('swipe','right');
       if(this.movePage.y>60) this.$emit('swipe','down');
       if(this.movePage.y<-60) this.$emit('swipe','up');
-      // 是否移动
-      if(!this.isMove) return false;
       // 反弹
       let t = 0;
       if(this.tmpPage[this.sp]>0){
@@ -215,6 +239,7 @@ export default {
         this.translate(this.tmpPage[this.sp]);
         this.refUpper.style.opacity = 0;
         this._translateUpper(this.upper);
+        this.page[this.sp] = this.tmpPage[this.sp];
       }else if(this.tmpPage[this.sp]<this.bodyMax[this.sp=='x'?'w':'h']){
         // 触发-右拉、上拉
         if(this.tmpPage[this.sp]<=this.bodyMax[this.sp=='x'?'w':'h']-this.lower){
@@ -230,28 +255,57 @@ export default {
         this.translate(this.tmpPage[this.sp]);
         this.refLower.style.opacity = 0;
         this._translateLower(this.lower);
+        this.page[this.sp] = this.tmpPage[this.sp];
       }else{
         // 是否加速
         let time = e.timeStamp-this.startTime;
         let nt = Math.abs(time/this.movePage[this.sp]);
-        let n = nt<2?2-nt:0;
+        let n = nt>0.24 && nt<2.4?2.4-nt:0;
         // 加速距离
-        this.tmpPage[this.sp] = this.tmpPage[this.sp]+this.movePage[this.sp]*n*4;
+        let move = parseInt(this.movePage[this.sp]*n*3);
+        this.tmpPage[this.sp] = parseInt(this.tmpPage[this.sp]+move);
+        if(this.tmpPage[this.sp]>0){
+          move = this.tmpPage[this.sp];
+          this.tmpPage[this.sp] = 0;
+        }else if(this.tmpPage[this.sp]<this.bodyMax[this.sp=='x'?'w':'h']){
+          move = -(this.bodyMax[this.sp=='x'?'w':'h']-this.tmpPage[this.sp]);
+          this.tmpPage[this.sp] = this.bodyMax[this.sp=='x'?'w':'h'];
+        }
+        this.page[this.sp] = this.tmpPage[this.sp];
+        if(n==0) return false;
+        this.isMove = true;
         // 加速时间
-        t = n*100*8;
-        t = t>1200?1200:t;
-        this.obj.style.transitionDuration = t+'ms';
-        this.obj.style.transitionTimingFunction = 'cubic-bezier('+this.cubicBezier+')';
-        // 控制上限
-        // if(this.tmpPage[this.sp]>this.upper) this.tmpPage[this.sp] = this.upper*2;
-        // if(this.tmpPage[this.sp]<this.bodyMax[this.sp=='x'?'w':'h']-this.lower) this.tmpPage[this.sp] = this.bodyMax[this.sp=='x'?'w':'h']-this.lower*2;
-        if(this.tmpPage[this.sp]>0) this.tmpPage[this.sp] = 0;
-        if(this.tmpPage[this.sp]<this.bodyMax[this.sp=='x'?'w':'h']) this.tmpPage[this.sp] = this.bodyMax[this.sp=='x'?'w':'h'];
+        t = parseInt(n*100*8);
+        if(t>2400) t=2400;
+        else if(t<500) t=500;
+        // 加速分段
+        let i = 0;
+        const x = 10;
+        const t0 = parseInt(t/x);
+        const t1 = t0*0.3;
+        const t2 = t0*0.7;
+        const start = this.tmpPage[this.sp]-move;
+        this.each = move/(t/x);
+        clearInterval(this.timeMove);
+        this.timeMove = setInterval(()=>{
+          i++;
+          // 当前位置
+          this.page[this.sp] = parseInt(start+i*this.each);
+          // 事件
+          if(this.scrollX) this.$emit('scroll',{x:this.page[this.sp],y:0});
+          else this.$emit('scroll',{x:0,y:this.page[this.sp]});
+          // 动画
+          if(i<t1) this.cubicBezier = '0.23,1,0.32,1';
+          else if(i>t2) this.cubicBezier = '0.165,0.84,0.44,1';
+          else this.cubicBezier = '0.25,0.46,0.45,0.94';
+        },x);
+        // this.obj.style.transitionDuration = t+'ms';
+        // this.obj.style.transitionTimingFunction = 'cubic-bezier('+this.cubicBezier+')';
         // 位置
+        this.obj.style.transition = 'transform '+t+'ms';
         this.translate(this.tmpPage[this.sp]);
       }
-      // 记录坐标
-      this.page[this.sp] = this.tmpPage[this.sp];
+      /* 结束动画 */
       clearTimeout(this.timeEnd);
       this.timeEnd = setTimeout(()=>{
         // 回弹
@@ -262,13 +316,12 @@ export default {
           this.page[this.sp] = this.bodyMax[this.sp=='x'?'w':'h'];
           this.translate(this.page[this.sp]);
         }
-        // 结束事件
-        if(this.scrollX) this.$emit('scroll',{x:this.tmpPage[this.sp],y:0});
-        else this.$emit('scroll',{x:0,y:this.tmpPage[this.sp]});
+        // 事件
         this.$emit('end',this.res());
+        // 清理定时
+        clearInterval(this.timeMove);
+        this.isMove = false;
       },t);
-      // 重置
-      this.isMove = false;
     },
 
     /* 滚动-位置 */
