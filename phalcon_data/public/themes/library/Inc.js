@@ -8,7 +8,7 @@ export default {
   toast(text){
     // 创建对象
     let obj = document.createElement('div');
-    obj.setAttribute('class','ui_toast');
+    obj.setAttribute('class','wm-ui_toast');
     obj.innerHTML = '<span>'+text+'</span>';
     // 追加
     document.body.appendChild(obj);
