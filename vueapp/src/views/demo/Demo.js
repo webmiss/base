@@ -1,15 +1,10 @@
-import Vue from 'vue'
 import Inc from '@/library/Inc'
 /* 组件 */
 import PageView from '@/components/page-view'
-/* Scroll */
-import BScroll from 'better-scroll'
-/* 监听左滑 */
-import VueTouch from 'vue-touch'
-Vue.use(VueTouch, {name: 'v-touch'});
+import ScrollView from '@/components/scroll-view'
 
 export default {
-  components: {PageView},
+  components: {PageView,ScrollView},
   data(){
     return {
       indexData:{scroll:null,},
@@ -21,26 +16,11 @@ export default {
   },
   mounted(){
   },
-  activated(){
-    this.indexScroll();
-    // 追加
-    setTimeout(()=>{
-      for(let i=10;i<=15;i++) this.lists.push(i);
-    },3000);
-  },
   methods:{
 
     /* 返回 */
-    back(){
-      Inc.back(1);
-    },
-
-    /* 滑块 */
-    indexScroll(){
-      setTimeout(()=>{
-        if(this.indexData.scroll) return this.indexData.scroll.refresh();
-        this.indexData.scroll = new BScroll(this.$refs.index,{click:true,pullUpLoad:true});
-      },300);
+    back(res){
+      if(res=='left') return Inc.back(1);
     },
 
   }

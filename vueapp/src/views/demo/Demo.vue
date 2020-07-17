@@ -1,22 +1,15 @@
 <template>
-<v-touch v-on:swiperight="back()">
-  <!-- Demo -->
   <page-view :class="mode=='dark'?'demo_dark':''" :color="mode=='dark'?'#FFF':'#333'" :bgColor="mode=='dark'?'#333':'#FFF'">
-    <div slot="left"><i class="back ui ui_left" @click="back()"></i></div>
+    <div slot="left"><i class="back ui ui_left" @click="back('left')"></i></div>
     <div slot="title">Demo</div>
-    <div slot="body" class="html">
+    <scroll-view slot="body" class="html" @swipe="back">
       <!-- 滑动 -->
-      <div class="html" ref="index">
-        <!-- 测试 -->
-        <div class="test">
-          <div v-for="(val,key) in lists" :key="key">{{val}}</div>
-        </div>
+      <div class="test">
+        <div v-for="(val,key) in lists" :key="key">{{val}}</div>
       </div>
       <!-- 滑动 End -->
-    </div>
+    </scroll-view>
   </page-view>
-  <!-- Demo End -->
-</v-touch>
 </template>
 
 <style scoped>
