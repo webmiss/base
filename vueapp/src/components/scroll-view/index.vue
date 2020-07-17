@@ -1,5 +1,5 @@
 <template>
-<div class="wm-scroll_html" ref="body" @touchmove.prevent>
+<div class="wm-scroll_html" ref="body" @touchmove.prevent  @click.prevent>
   <!-- 左拉/下拉 -->
   <div ref="upper" v-show="upperLoad" class="wm-scroll_load_body" :style="{backgroundColor:upperBg}">
     <div class="wm-scroll_load">
@@ -59,9 +59,9 @@ export default {
       tmpPage: {x:0,y:0},  //滑动-坐标
       page: {x:0,y:0},  //当前-坐标
       startTime: 0, //开始时间
+      limit: 60,  //最小距离
       cubicBezier: '0.25,0.46,0.45,0.94',
       isMove: false,  //是否滑动
-      each: 0 //动画分段
     }
   },
   mounted(){
@@ -135,6 +135,7 @@ export default {
 
     /* 开始 */
     start(e){
+      if(!this.scroll) return false;
       let touch = e.touches?e.touches[0]:e;
       // 初始化
       this.init();
@@ -146,232 +147,146 @@ export default {
       this.startPage.x = touch.clientX;
       this.startPage.y = touch.clientY;
       // 重置动画
-      this.obj.style.transition = 'transform 0ms';
-      if(this.isMove){
-        this.isMove = false;
-        clearInterval(this.timeMove);
-        clearTimeout(this.timeEnd);
-        let p = parseInt(this.page[this.sp]+this.each*30);
-        p = p>this.tmpPage[this.sp]?this.tmpPage[this.sp]:p;
-        this.page[this.sp] = p;
-        this.obj.style.transition = 'transform 300ms';
-        this.translate(p);
-        
-      }
+      this.isMove = false;
+      window.cancelAnimationFrame(this.animation);
+      clearInterval(this.timeMove);
+      clearTimeout(this.timeEnd);
+      this.translate(this.page[this.sp],600);
     },
 
     /* 移动 */
     move(e){
-      if(!this.scroll) return false;
+      this.isMove = true;
       // 开始
       let touch = e.touches?e.touches[0]:e;
-      this.movePage.x = touch.clientX-this.startPage.x;
-      this.movePage.y = touch.clientY-this.startPage.y;
+      this.movePage.x = parseInt((touch.clientX-this.startPage.x)*100)/100;
+      this.movePage.y = parseInt((touch.clientY-this.startPage.y)*100)/100;
       // 移动距离
       this.tmpPage[this.sp] = parseInt((this.page[this.sp]+this.movePage[this.sp])*100)/100;
-      // 跟随手势
-      if(this.scrollX){
-        // 加载-左拉、右拉
-        if(this.tmpPage[this.sp]>0){
-          let x = this.upper-this.tmpPage[this.sp];
-          // 控制上限
-          if(x<-this.upper) this.tmpPage[this.sp] = this.upper*2;
-          // 透明度
-          this.refUpper.style.transform = 'translate(-'+(x>0?x:0)+'px,0)';
-          this.refUpper.style.opacity = Math.abs(parseInt(this.tmpPage[this.sp]/this.upper*100)/100);
-        }else if(this.tmpPage[this.sp]<this.bodyMax.w){
-          let y = this.lower+(this.tmpPage[this.sp]-this.bodyMax.w);
-          // 控制上限
-          if(y<-this.lower) this.tmpPage[this.sp] = this.bodyMax.w-this.lower*2;
-          // 透明度
-          this.refLower.style.opacity = Math.abs(parseInt(this.tmpPage[this.sp]/this.lower*100)/100);
-          this.refLower.style.transform = 'translate('+(y>0?y:0)+'px,0)';
-        }
-        // 位置
-        this.translate(this.tmpPage[this.sp]);
-        // 触发-位置
-        this.$emit('scroll',{x:this.tmpPage[this.sp],y:0});
+      // 方向
+      if(this.tmpPage[this.sp]>0){
+        // 控制上限
+        let x = this.upper-this.tmpPage[this.sp];
+        if(x<-this.upper) this.tmpPage[this.sp] = this.upper*2;
+        // 加载
+        this._translateUpper(x>0?x:0);
       }else{
-        // 加载-下拉、上拉
-        if(this.tmpPage[this.sp]>0){
-          let y = this.upper-this.tmpPage[this.sp];
-          // 控制上限
-          if(y<-this.upper) this.tmpPage[this.sp] = this.upper*2;
-          // 透明度
-          this.refUpper.style.transform = 'translate(0,-'+(y>0?y:0)+'px)';
-          this.refUpper.style.opacity = Math.abs(parseInt(this.tmpPage[this.sp]/this.upper*100)/100);
-        }else if(this.tmpPage[this.sp]<this.bodyMax.h){
-          let y = this.lower+(this.tmpPage[this.sp]-this.bodyMax.h);
-          // 控制上限
-          if(y<-this.lower) this.tmpPage[this.sp] = this.bodyMax.h-this.lower*2;
-          // 透明度
-          this.refLower.style.opacity = Math.abs(parseInt(this.tmpPage[this.sp]/this.lower*100)/100);
-          this.refLower.style.transform = 'translate(0,'+(y>0?y:0)+'px)';
-        }
-        // 位置
-        this.translate(this.tmpPage[this.sp]);
-        // 触发-位置
-        this.$emit('scroll',{x:0,y:this.tmpPage[this.sp]});
+        // 控制下限
+        let y = this.lower+(this.tmpPage[this.sp]-this.bodyMax[this.sp=='x'?'w':'h']);
+        if(y<-this.lower) this.tmpPage[this.sp] = this.bodyMax[this.sp=='x'?'w':'h']-this.lower*2;
+        // 加载
+        this._translateLower(y>0?y:0);
       }
+      // 位置
+      this.translate(this.tmpPage[this.sp],100);
+      // 事项
+      if(this.scrollX) this.$emit('scroll',{x:this.tmpPage[this.sp],y:0});
+      else this.$emit('scroll',{x:0,y:this.tmpPage[this.sp]});
     },
 
     /* 结束 */
     end(e){
+      if(!this.isMove) return false;
       // 方向
-      if(this.movePage.x>60) this.$emit('swipe','left');
-      if(this.movePage.x<-60) this.$emit('swipe','right');
-      if(this.movePage.y>60) this.$emit('swipe','down');
-      if(this.movePage.y<-60) this.$emit('swipe','up');
-      // 反弹
-      let t = 0;
+      if(this.movePage.x>this.limit) this.$emit('swipe','left');
+      if(this.movePage.x<-this.limit) this.$emit('swipe','right');
+      if(this.movePage.y>this.limit) this.$emit('swipe','down');
+      if(this.movePage.y<-this.limit) this.$emit('swipe','up');
+      // 加速-比例
+      let time = parseInt(e.timeStamp-this.startTime);
+      let n = Math.abs(this.movePage[this.sp]/time);
+      // n = n<0.2?0:n;
+      let move = parseInt(n*100000)/100;
+      let t = parseInt(move*2);
+      // 加速-距离
+      move = this.movePage[this.sp]>0?move:-move;
+      this.tmpPage[this.sp] = parseInt((this.tmpPage[this.sp]+move)*100)/100;
+      // 控制上限、下限
       if(this.tmpPage[this.sp]>0){
         // 触发-左拉、下拉
         if(this.tmpPage[this.sp]>=this.upper){
           if(this.scrollX) this.$emit('left',this.res());
           else this.$emit('down',this.res());
         }
-        // 动画
-        t = 200;
+        // 限制距离
+        t = t-this.tmpPage[this.sp]*2;
+        t = t<=0?300:t;
         this.tmpPage[this.sp] = 0;
-        this.obj.style.transition = 'all '+t+'ms ease-in-out 0ms';
-        this.refUpper.style.transition = 'all '+t+'ms ease-in-out 0ms';
-        // 位置
-        this.translate(this.tmpPage[this.sp]);
-        this.refUpper.style.opacity = 0;
         this._translateUpper(this.upper);
-        this.page[this.sp] = this.tmpPage[this.sp];
       }else if(this.tmpPage[this.sp]<this.bodyMax[this.sp=='x'?'w':'h']){
         // 触发-右拉、上拉
         if(this.tmpPage[this.sp]<=this.bodyMax[this.sp=='x'?'w':'h']-this.lower){
           if(this.scrollX) this.$emit('right',this.res());
           else this.$emit('up',this.res());
         }
-        // 动画
-        t = 200;
+        // 限制距离
+        t = t-(this.bodyMax[this.sp=='x'?'w':'h']-this.tmpPage[this.sp])*2;
+        t = t<=0?300:t;
         this.tmpPage[this.sp] = this.bodyMax[this.sp=='x'?'w':'h'];
-        this.obj.style.transition = 'all '+t+'ms ease-in-out 0ms';
-        this.refLower.style.transition = 'all '+t+'ms ease-in-out 0ms';
-        // 位置
-        this.translate(this.tmpPage[this.sp]);
-        this.refLower.style.opacity = 0;
         this._translateLower(this.lower);
-        this.page[this.sp] = this.tmpPage[this.sp];
-      }else{
-        // 是否加速
-        let time = e.timeStamp-this.startTime;
-        let nt = Math.abs(time/this.movePage[this.sp]);
-        let n = nt>0.24 && nt<2.4?2.4-nt:0;
-        // 加速距离
-        let move = parseInt(this.movePage[this.sp]*n*2.4*100)/100;
-        this.tmpPage[this.sp] = parseInt((this.tmpPage[this.sp]+move)*100)/100;
-        if(this.tmpPage[this.sp]>0){
-          move = this.tmpPage[this.sp];
-          this.tmpPage[this.sp] = 0;
-        }else if(this.tmpPage[this.sp]<this.bodyMax[this.sp=='x'?'w':'h']){
-          move = -(this.bodyMax[this.sp=='x'?'w':'h']-this.tmpPage[this.sp]);
-          this.tmpPage[this.sp] = this.bodyMax[this.sp=='x'?'w':'h'];
-        }
-        this.page[this.sp] = this.tmpPage[this.sp];
-        if(n==0) return false;
-        this.isMove = true;
-        // 加速时间
-        t = parseInt(n*100*8);
-        if(t>2400) t=2400;
-        else if(t<300) t=300;
-        // 加速分段
-        let i = 0;
-        const x = 10;
-        const t0 = parseInt(t/x);
-        const t1 = t0*0.3;
-        const t2 = t0*0.7;
-        const start = this.tmpPage[this.sp]-move;
-        this.each = move/(t/x);
-        clearInterval(this.timeMove);
-        this.timeMove = setInterval(()=>{
-          i++;
-          // 当前位置
-          this.page[this.sp] = parseInt((start+i*this.each)*100)/100;
-          // 事件
-          if(this.scrollX) this.$emit('scroll',{x:this.page[this.sp],y:0});
-          else this.$emit('scroll',{x:0,y:this.page[this.sp]});
-          // 动画
-          if(i<t1) this.cubicBezier = '0.23,1,0.32,1';
-          else if(i>t2) this.cubicBezier = '0.165,0.84,0.44,1';
-          else this.cubicBezier = '0.25,0.46,0.45,0.94';
-        },x);
-        // this.obj.style.transitionDuration = t+'ms';
-        // this.obj.style.transitionTimingFunction = 'cubic-bezier('+this.cubicBezier+')';
-        // 位置
-        this.obj.style.transition = 'transform '+t+'ms';
-        this.translate(this.tmpPage[this.sp]);
       }
-      /* 结束动画 */
-      clearTimeout(this.timeEnd);
-      this.timeEnd = setTimeout(()=>{
-        // 回弹
-        if(this.tmpPage[this.sp]>0){
-          this.page[this.sp] = 0;
-          this.translate(this.page[this.sp]);
-        }else if(this.tmpPage[this.sp]<this.bodyMax[this.sp=='x'?'w':'h']){
-          this.page[this.sp] = this.bodyMax[this.sp=='x'?'w':'h'];
-          this.translate(this.page[this.sp]);
-        }
-        // 事件
-        this.$emit('end',this.res());
-        // 清理定时
-        clearInterval(this.timeMove);
-        this.isMove = false;
-      },t);
+      // 加速-位置
+      this.translate(this.tmpPage[this.sp],t);
+      // 加速-实时
+      this.progress = 1;
+      this.t = t/20;
+      this.animation = window.requestAnimationFrame(this.render);
+    },
+
+    /* 动画时间 */
+    render(){
+      this.progress += 1;
+      // 位置
+      this.page[this.sp] = this.getTranslate();
+      // 事项
+      if(this.scrollX) this.$emit('scroll',{x:this.page[this.sp],y:0});
+      else this.$emit('scroll',{x:0,y:this.page[this.sp]});
+      if(this.progress < this.t){
+        this.animation = window.requestAnimationFrame(this.render);
+      }
     },
 
     /* 滚动-位置 */
-    translate(n){
-      if(this.scrollX){
-        this.obj.style.transform = 'translate('+n+'px,0)';
-      }else{
-        this.obj.style.transform = 'translate(0,'+n+'px)';
+    translate(xy,time){
+      if(this.scrollX) this.obj.style.transform = 'translate('+xy+'px,0)';
+      else this.obj.style.transform = 'translate(0,'+xy+'px)';
+      if(time){
+        this.obj.style.transitionDuration = time+'ms';
+        this.obj.style.transitionTimingFunction = 'cubic-bezier('+this.cubicBezier+')';
       }
     },
-    /* 加载-左/上 */
-    _translateUpper(n){
-      if(this.scrollX){
-        this.refUpper.style.transform = 'translate(-'+n+'px,0)';
-      }else{
-        this.refUpper.style.transform = 'translate(0,-'+n+'px)';
-      }
+    /* 实时位置 */
+    getTranslate(){
+      const xy = this.scrollX?4:5;
+      let v = window.getComputedStyle(this.obj).transform;
+      v = parseInt(parseFloat(v.substring(7).split(',')[xy])*100)/100;
+      return v;
     },
-    /* 加载-右/下 */
-    _translateLower(n){
-      if(this.scrollX){
-        this.refLower.style.transform = 'translate('+n+'px,0)';
-      }else{
-        this.refLower.style.transform = 'translate(0,'+n+'px)';
-      }
-    },
-
     /* 滚动-指定位置 */
-    scrollTo(x,y,time){
+    scrollTo(xy,time){
       // 初始化
       this.init();
       // 参数
-      x = x || 0;
-      y = y || 0;
-      time = time || 300;
-      // 滑动
-      this.obj.style.transitionDuration = time+'ms';
-      this.obj.style.transitionTimingFunction = 'cubic-bezier('+this.cubicBezier+')';
-      if(this.scrollX){
-        x = x=='right'?this.bodyMax['w']:x;
-        this.obj.style.transform = 'translate('+x+'px,0)';
-      }else{
-        y = y=='bottom'?this.bodyMax['h']:y;
-        this.obj.style.transform = 'translate(0,'+y+'px)';
-      }
-      // 记录坐标
-      this.page.x = x;
-      this.page.y = y;
+      xy = xy || 0;
+      if(xy=='max') xy=this.bodyMax[this.sp=='x'?'w':'h'];
+      time = time || 600;
+      // 位置
+      this.translate(xy,time);
+      this.page[this.sp] = xy;
     },
-
+    
+    /* 加载-左/上 */
+    _translateUpper(n){
+      this.refUpper.style.opacity = (100-n/this.upper*100)/100;
+      if(this.scrollX) this.refUpper.style.transform = 'translate(-'+n+'px,0)';
+      else this.refUpper.style.transform = 'translate(0,-'+n+'px)';
+    },
+    /* 加载-右/下 */
+    _translateLower(n){
+      this.refLower.style.opacity = (100-n/this.lower*100)/100;
+      if(this.scrollX) this.refLower.style.transform = 'translate('+n+'px,0)';
+      else this.refLower.style.transform = 'translate(0,'+n+'px)';
+    },
   }
 }
 </script>
