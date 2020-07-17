@@ -151,6 +151,8 @@ export default {
       window.cancelAnimationFrame(this.animation);
       clearInterval(this.timeMove);
       clearTimeout(this.timeEnd);
+      if(this.page[this.sp]>0) this.page[this.sp]=0;
+      else if(this.page[this.sp]<this.bodyMax[this.sp=='x'?'w':'h']) this.page[this.sp]=this.bodyMax[this.sp=='x'?'w':'h'];
       this.translate(this.page[this.sp],600);
     },
 
