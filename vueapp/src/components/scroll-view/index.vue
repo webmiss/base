@@ -156,6 +156,7 @@ export default {
 
     /* 移动 */
     move(e){
+      if(!this.scroll) return false;
       this.isMove = true;
       // 开始
       let touch = e.touches?e.touches[0]:e;
@@ -186,6 +187,7 @@ export default {
 
     /* 结束 */
     end(e){
+      if(!this.scroll) return false;
       if(!this.isMove) return false;
       // 方向
       if(this.movePage.x>this.limit) this.$emit('swipe','left');

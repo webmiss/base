@@ -1,8 +1,8 @@
 <template>
 <scroll-view class="wm-tab_body" :scroll="scroll" :scroll-x="true" :upperLoad="false" :lowerLoad="false">
   <div ref="menu" class="wm-tab_list">
-    <div class="wm-tab_text" v-for="(v,k) in list" :key="k" :class="active==k?'wm-tab_active':''" @click="tabClick(k)">
-      <span>{{v}}</span>
+    <div class="wm-tab_text" v-for="(v,k) in list" :key="k" :class="active==k?'wm-tab_active':''" @click="tabClick(k,v)">
+      <span>{{v.name}}</span>
     </div>
   </div>
   <div ref="line" class="wm-tab_line"></div>
@@ -67,10 +67,10 @@ export default {
   methods:{
 
     /* 切换菜单 */
-    tabClick(n){
-      this.moveLine(n);
-      this.$emit('active',n);
-      this.$emit('change',n);
+    tabClick(k,v){
+      this.moveLine(k);
+      this.$emit('active',k);
+      this.$emit('change',[k,v]);
     },
 
     /* 动画 */
