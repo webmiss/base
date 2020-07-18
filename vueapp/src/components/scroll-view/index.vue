@@ -33,6 +33,7 @@
 export default {
   name: 'ScrollView',
   props: {
+    reset: {type: String, default: ''},
     scroll: {type: Boolean, default: true},
     scrollX: {type: Boolean, default: false},
     scrollY: {type: Boolean, default: true},
@@ -76,32 +77,39 @@ export default {
     if(this.scrollX){
       // 左
       this.refUpper.style.left = 0;
-      this.refUpper.style.width = this.upper+'px';
+      this.refUpper.style.width = `${this.upper}px`;
       this.refUpper.style.height = '100%';
-      this.refUpper.style.transform = 'translate(-'+this.upper+'px,0)';
+      this.refUpper.style.transform = `translate(-${this.upper}px,0)`;
       // 中
       this.obj.style.minWidth = '100%';
       this.obj.style.height = '100%';
       // 右
       this.refLower.style.right = 0;
-      this.refLower.style.width = this.lower+'px';
+      this.refLower.style.width = `${this.lower}px`;
       this.refLower.style.height = '100%';
-      this.refLower.style.transform = 'translate('+this.lower+'px,0)';
+      this.refLower.style.transform = `translate(${this.lower}px,0)`;
     }else{
       // 上
       this.refUpper.style.top = 0;
       this.refUpper.style.width = '100%';
-      this.refUpper.style.height = this.upper+'px';
-      this.refUpper.style.transform = 'translate(0,-'+this.upper+'px)';
+      this.refUpper.style.height = `${this.upper}px`;
+      this.refUpper.style.transform = `translate(0,-${this.upper}px)`;
       // 中
       this.obj.style.minHeight = '100%';
       this.obj.style.width = '100%';
       // 下
       this.refLower.style.bottom = 0;
       this.refLower.style.width = '100%';
-      this.refLower.style.height = this.lower+'px';
-      this.refLower.style.transform = 'translate(0,'+this.lower+'px)';
+      this.refLower.style.height = `${this.lower}px`;
+      this.refLower.style.transform = `translate(0,${this.lower}px)`;
     }
+    /* 监听宽高变化 */
+    const resizeObserver = new ResizeObserver(entries=>{
+      // 初始化
+      this.init();
+      // for(let entry of entries){ console.log(entry.target.offsetHeight) }
+    });
+    resizeObserver.observe(this.obj);
   },
   methods:{
 
@@ -127,9 +135,15 @@ export default {
       if(this.scrollX){
         this.bodyObj.w = this.obj.children[0].offsetWidth;
         this.bodyMax.w = -(this.bodyObj.w-this.body.w);
+        
       }else{
         this.bodyObj.h = this.obj.offsetHeight;
         this.bodyMax.h = -(this.bodyObj.h-this.body.h);
+      }
+      // 重置位置
+      if(this.reset){
+        this.page[this.sp]=this.reset=='min'?0:this.bodyMax[this.sp=='x'?'w':'h'];
+        this.translate(this.page[this.sp],600);
       }
     },
 
@@ -252,11 +266,11 @@ export default {
 
     /* 滚动-位置 */
     translate(xy,time){
-      if(this.scrollX) this.obj.style.transform = 'translate('+xy+'px,0)';
-      else this.obj.style.transform = 'translate(0,'+xy+'px)';
+      if(this.scrollX) this.obj.style.transform = `translate(${xy}px,0)`;
+      else this.obj.style.transform = `translate(0,${xy}px)`;
       if(time){
-        this.obj.style.transitionDuration = time+'ms';
-        this.obj.style.transitionTimingFunction = 'cubic-bezier('+this.cubicBezier+')';
+        this.obj.style.transitionDuration = `${time}ms`;
+        this.obj.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
       }
     },
     /* 实时位置 */
@@ -282,14 +296,14 @@ export default {
     /* 加载-左/上 */
     _translateUpper(n){
       this.refUpper.style.opacity = (100-n/this.upper*100)/100;
-      if(this.scrollX) this.refUpper.style.transform = 'translate(-'+n+'px,0)';
-      else this.refUpper.style.transform = 'translate(0,-'+n+'px)';
+      if(this.scrollX) this.refUpper.style.transform = `translate(-${n}px,0)`;
+      else this.refUpper.style.transform = `translate(0,-${n}px)`;
     },
     /* 加载-右/下 */
     _translateLower(n){
       this.refLower.style.opacity = (100-n/this.lower*100)/100;
-      if(this.scrollX) this.refLower.style.transform = 'translate('+n+'px,0)';
-      else this.refLower.style.transform = 'translate(0,'+n+'px)';
+      if(this.scrollX) this.refLower.style.transform = `translate(${n}px,0)`;
+      else this.refLower.style.transform = `translate(0,${n}px)`;
     },
   }
 }
