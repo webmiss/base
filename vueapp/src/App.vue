@@ -37,7 +37,7 @@
 @media only screen and (min-device-width : 320px) and (max-device-width : 1024px) { select:focus, textarea:focus, input:focus { font-size: 16px !important; } }
 
 /* 初始化 */
-*{margin: 0; padding: 0;}
+*{margin: 0; padding: 0; -webkit-tap-highlight-color: transparent;}
 html,body,#app{height: 100%;}
 body{
   font-family:Microsoft YaHei,SimHei,helvetica,arial,verdana,tahoma,sans-serif;
