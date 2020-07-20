@@ -258,18 +258,13 @@ export default {
       parameter.token = Inc.storage.getItem('token');
       const load = Inc.loading();
       Inc.post('Sysfilemanage/'+action,parameter,(res)=>{
+        load.clear();
         const d = res.data;
         // 回调
         if(callback) callback(d);
         // 结果
-        if(d.code!==0){
-          load.clear();
-          if(d.msg) Inc.toast(d.msg);
-        }else{
-          if(d.msg) Inc.toast(d.msg);
-          // 刷新数据
-          this.loadData();
-        }
+        if(d.msg) Inc.toast(d.msg);
+        if(d.code===0) this.loadData();
       },(e)=>{},config);
     },
 

@@ -103,9 +103,9 @@ export default {
       Inc.post('Sysrole/add',
         {token:Inc.storage.getItem('token'),data:JSON.stringify(this.addData.form)},
       (res)=>{
+        load.clear();
         const d = res.data;
-        if(d.code!==0) load.clear();
-        else this.loadData();
+        if(d.code===0) this.loadData();
         return Inc.toast(d.msg);
       });
     },
@@ -122,9 +122,9 @@ export default {
       Inc.post('Sysrole/edit',
         {token:Inc.storage.getItem('token'),id:this.editData.form.id,data:JSON.stringify(this.editData.form)},
       (res)=>{
+        load.clear();
         let d = res.data;
-        if(d.code!==0) load.clear();
-        else this.loadData();
+        if(d.code===0) this.loadData();
         return Inc.toast(d.msg);
       });
     },
@@ -135,9 +135,9 @@ export default {
       // 提交
       const load = Inc.loading();
       Inc.post('Sysrole/del',{token:Inc.storage.getItem('token'),data:this.delData.id},(res)=>{
+        load.clear();
         let d = res.data;
-        if(d.code!==0) load.clear();
-        else this.loadData();
+        if(d.code===0) this.loadData();
         return Inc.toast(d.msg);
       });
     },
@@ -156,8 +156,8 @@ export default {
       this.permData.id = id;
       const load = Inc.loading();
       Inc.post('Sysrole/allMenus',{token:Inc.storage.getItem('token')},(res)=>{
-        const d = res.data;
         load.clear();
+        const d = res.data;
         if(d.code!==0){
           return Inc.toast(d.msg);
         }else{
@@ -207,9 +207,9 @@ export default {
       Inc.post('Sysrole/perm',
         {token:Inc.storage.getItem('token'),id:this.permData.id,perm:perm},
       (res)=>{
+        load.clear();
         const d = res.data;
-        if(d.code!==0) load.clear();
-        else this.loadData();
+        if(d.code===0) this.loadData();
         return Inc.toast(d.msg);
       });
     },

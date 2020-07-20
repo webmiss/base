@@ -109,9 +109,9 @@ export default {
       Inc.post('Sysperm/add',
         {token:Inc.storage.getItem('token'),data:data},
       (res)=>{
+        load.clear();
         const d = res.data;
-        if(d.code!==0) load.clear();
-        else this.loadData();
+        if(d.code===0) this.loadData();
         return Inc.toast(d.msg);
       });
     },
@@ -131,9 +131,9 @@ export default {
       Inc.post('Sysperm/edit',
         {token:Inc.storage.getItem('token'),uid:uid,data:data},
       (res)=>{
+        load.clear();
         let d = res.data;
-        if(d.code!==0) load.clear();
-        else this.loadData();
+        if(d.code===0) this.loadData();
         return Inc.toast(d.msg);
       });
     },
@@ -144,9 +144,9 @@ export default {
       // 提交
       const load = Inc.loading();
       Inc.post('Sysperm/del',{token:Inc.storage.getItem('token'),data:this.delData.id},(res)=>{
+        load.clear();
         const d = res.data;
-        if(d.code!==0) load.clear();
-        else this.loadData();
+        if(d.code===0) this.loadData();
         return Inc.toast(d.msg);
       });
     },
@@ -244,9 +244,9 @@ export default {
       Inc.post('Sysperm/perm',
         {token:Inc.storage.getItem('token'),uid:this.permData.uid,perm:perm,role:this.permData.role},
       (res)=>{
+        load.clear();
         const d = res.data;
-        if(d.code!==0) load.clear();
-        else this.loadData();
+        if(d.code===0) this.loadData();
         return Inc.toast(d.msg);
       });
     },
