@@ -105,9 +105,12 @@ export default {
     }
     /* 监听宽高变化 */
     const resizeObserver = new ResizeObserver(entries=>{
-      // 初始化
-      this.init();
       // for(let entry of entries){ console.log(entry.target.offsetHeight) }
+      // 重置位置
+      if(this.reset){
+        this.page[this.sp]=this.reset=='min'?0:this.bodyMax[this.sp=='x'?'w':'h'];
+        this.translate(this.page[this.sp],600);
+      }
     });
     resizeObserver.observe(this.obj);
   },
@@ -140,11 +143,7 @@ export default {
         this.bodyObj.h = this.obj.offsetHeight;
         this.bodyMax.h = -(this.bodyObj.h-this.body.h);
       }
-      // 重置位置
-      if(this.reset){
-        this.page[this.sp]=this.reset=='min'?0:this.bodyMax[this.sp=='x'?'w':'h'];
-        this.translate(this.page[this.sp],600);
-      }
+      
     },
 
     /* 开始 */
@@ -214,7 +213,7 @@ export default {
       let time = parseInt(e.timeStamp-this.startTime);
       let n = Math.abs(this.movePage[this.sp]/time);
       n = n<0.4?0:n;
-      let move = parseInt(n*100000)/100;
+      let move = parseInt(n*100*8*100)/100;
       let t = parseInt(move*2);
       // 加速-距离
       move = this.movePage[this.sp]>0?move:-move;

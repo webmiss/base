@@ -100,14 +100,40 @@ export default {
       document.body.removeChild(obj);
     },3000);
   },
-  /* 弹框 */
-  confirm(param,success,fail){
-    this.self.$confirm(param.content,param.title,{
-      confirmButtonText: param.confirmText || '确定',
-      cancelButtonText: param.cancelText || '取消',
-      type: param.type || '',
-      center: true
-    }).then(success).catch(fail);
+  /* 加载Css和JS */
+  load(files,reload){
+    let file = files;
+    let ext = '';
+    let isLoad = false;
+    reload = reload || false;
+    for(let i=0; i<file.length;i++){
+      isLoad = reload?false:this.isInclude(file[i]);
+      ext = file[i].split('.');
+      // JS
+      if(ext[ext.length-1]=='js'){
+        if(!isLoad){
+          let box = document.createElement('script');
+          box.setAttribute('src',file[i]);
+          document.body.appendChild(box);
+        }
+      // CSS
+      }else if(ext[ext.length-1]=='css'){
+        if(!isLoad){
+          let box = document.createElement('link');
+          box.setAttribute('rel','stylesheet');
+          box.setAttribute('href',file[i]);
+          document.body.appendChild(box);
+        }
+      }
+    }
+  },
+  /* 是否加载Css和JS */
+  isInclude(name){
+    var js= /js$/i.test(name);
+    var es=document.getElementsByTagName(js?'script':'link');
+    for(var i=0;i<es.length;i++) 
+    if(es[i][js?'src':'href'].indexOf(name)!=-1)return true;
+    return false;
   },
 
   /* Get请求 */
