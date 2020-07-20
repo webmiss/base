@@ -71,13 +71,19 @@ export default {
   /* 返回 */
   back(num){ this.self.$router.goBack(-num); },
   /* 加载 */
-  loading(){
+  loading(t){
     // 创建对象
     let obj = document.createElement('div');
     obj.setAttribute('class','wm-ui_load');
     obj.innerHTML = '<span><i class="ui ui_loading"></i></span>';
     // 追加
     document.body.appendChild(obj);
+    // 10秒后清除
+    t = t || 10000;
+    setTimeout(()=>{
+      let load = document.getElementsByClassName('wm-ui_load')[0];
+      if(load) document.body.removeChild(load);
+    },t);
     return {
       clear:()=>{ document.body.removeChild(obj);}
     };
