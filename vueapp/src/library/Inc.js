@@ -72,6 +72,9 @@ export default {
   back(num){ this.self.$router.goBack(-num); },
   /* 加载 */
   loading(t){
+    // 清理
+    let load = document.getElementsByClassName('wm-ui_load')[0];
+    if(load) document.body.removeChild(load);
     // 创建对象
     let obj = document.createElement('div');
     obj.setAttribute('class','wm-ui_load');
@@ -80,12 +83,15 @@ export default {
     document.body.appendChild(obj);
     // 10秒后清除
     t = t || 10000;
-    setTimeout(()=>{
-      let load = document.getElementsByClassName('wm-ui_load')[0];
+    this.loadingTime = setTimeout(()=>{
+      load = document.getElementsByClassName('wm-ui_load')[0];
       if(load) document.body.removeChild(load);
     },t);
     return {
-      clear:()=>{ document.body.removeChild(obj);}
+      clear:()=>{
+        document.body.removeChild(obj);
+        clearTimeout(this.loadingTime);
+      }
     };
   },
   /* 提示 */
