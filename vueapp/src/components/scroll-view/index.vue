@@ -212,9 +212,9 @@ export default {
       // 加速-比例
       let time = parseInt(e.timeStamp-this.startTime);
       let n = Math.abs(this.movePage[this.sp]/time);
-      n = n<0.4?0:n;
-      let move = parseInt(n*100*8*100)/100;
-      let t = parseInt(move*2);
+      n = n<0.2?0:n;
+      let move = parseInt(n*100*4*100)/100;
+      let t = parseInt(move*4);
       // 加速-距离
       move = this.movePage[this.sp]>0?move:-move;
       this.tmpPage[this.sp] = parseInt((this.tmpPage[this.sp]+move)*100)/100;
@@ -226,7 +226,7 @@ export default {
           else this.$emit('down',this.res());
         }
         // 限制距离
-        t = t-this.tmpPage[this.sp]*2;
+        t = t-this.tmpPage[this.sp]*4;
         t = t<=0?300:t;
         this.tmpPage[this.sp] = 0;
         this._translateUpper(this.upper);
@@ -237,7 +237,7 @@ export default {
           else this.$emit('up',this.res());
         }
         // 限制距离
-        t = t-(this.bodyMax[this.sp=='x'?'w':'h']-this.tmpPage[this.sp])*2;
+        t = t-(this.bodyMax[this.sp=='x'?'w':'h']-this.tmpPage[this.sp])*4;
         t = t<=0?300:t;
         this.tmpPage[this.sp] = this.bodyMax[this.sp=='x'?'w':'h'];
         this._translateLower(this.lower);
