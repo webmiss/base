@@ -42,29 +42,34 @@ export default {
     }
   },
   mounted(){
-    /* 宽度 */
-    let obj = this.$refs.menu;
-    /* 数量 */
-    let t = this.list.length;
-    let n = t;
-    if(t>this.num){
-      n = this.num;
-      this.scroll = true;
-    }
-    /* 等分宽度 */
-    this.w = 100/n;
-    obj.style.width = t*this.w+'%';
-    for(let i=0; i<t; i++){
-      obj.children[i].style.width = this.w+'%';
-    }
-    /* 底边 */
-    this.objLine = this.$refs.line;
-    this.objLine.style.width = this.w+'%';
-    this.objLine.style.transition = 'transform 300ms';
-    this.objLine.style.transform = 'translate(-100%,0)';
-    this.moveLine(this.active);
+    this.init();
   },
   methods:{
+
+    /* 初始化 */
+    init(){
+      // 对象
+      this.objMenu = this.$refs.menu;
+      /* 数量 */
+      let t = this.list.length;
+      let n = t;
+      if(t>this.num){
+        n = this.num;
+        this.scroll = true;
+      }
+      /* 等分宽度 */
+      this.w = 100/n;
+      this.objMenu.style.width = t*this.w+'%';
+      for(let i=0; i<t; i++){
+        this.objMenu.children[i].style.width = this.w+'%';
+      }
+      /* 底边 */
+      this.objLine = this.$refs.line;
+      this.objLine.style.width = this.w+'%';
+      this.objLine.style.transition = 'transform 300ms';
+      this.objLine.style.transform = 'translate(-100%,0)';
+      this.moveLine(this.active);
+    },
 
     /* 切换菜单 */
     tabClick(k,v){
