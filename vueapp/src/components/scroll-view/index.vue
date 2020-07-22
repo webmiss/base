@@ -1,5 +1,5 @@
 <template>
-<div class="wm-scroll_html" ref="body" @touchmove.prevent  @click.prevent>
+<div class="wm-scroll_html" ref="body" @touchmove.prevent @click.prevent>
   <!-- 左拉/下拉 -->
   <div ref="upper" v-show="upperLoad" class="wm-scroll_load_body" :style="{backgroundColor:upperBg}">
     <div class="wm-scroll_load">
@@ -47,6 +47,7 @@ export default {
     lowerBg: {type: String, default: ''},
     upperColor: {type: String, default: ''},
     lowerColor: {type: String, default: ''},
+    moveMin: {type: Number, default: 30},
   },
   data(){
     return {
@@ -172,12 +173,15 @@ export default {
     /* 移动 */
     move(e){
       if(!this.scroll) return false;
-      this.isMove = true;
       // 开始
       let touch = e.touches?e.touches[0]:e;
       this.movePage.x = parseInt((touch.clientX-this.startPage.x)*100)/100;
       this.movePage.y = parseInt((touch.clientY-this.startPage.y)*100)/100;
+      // 是否移动
+      let move = Math.abs(this.movePage[this.sp]);
+      if(move<this.moveMin) return false;
       // 移动距离
+      this.isMove = true;
       this.tmpPage[this.sp] = parseInt((this.page[this.sp]+this.movePage[this.sp])*100)/100;
       // 方向
       if(this.tmpPage[this.sp]>0){

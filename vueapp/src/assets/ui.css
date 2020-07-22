@@ -45,3 +45,9 @@
 /* 轻提示 */
 .wm-ui_toast{position: fixed; z-index: 9999; opacity: 0; text-align: center; max-width: 300px; top: 0; left: 0; right: 0; margin: auto; line-height: 40px; transition: All 0.4s ease-in-out;}
 .wm-ui_toast span{display: inline-block; padding: 0 16px; font-size: 14px; color: #FFF; border-radius: 5px; background-color: rgba(0,0,0,.9);}
+
+/* Form */
+button{border: none; background: none; padding: 0 24px; line-height: 40px; font-size: 14px; background-color: #FFF; color: #6FB737; border-radius: 4px;}
+button.primary{background-color: #6FB737; color: #FFF;}
+button.info{background-color: #404040; color: #6FB737;}
+button.danger{background-color: #EE0A24; color: #FFF;}

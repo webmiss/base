@@ -1,7 +1,6 @@
 import Env from '../env'
 import QRCode from './weapp-qrcode'
 import amap from './amap-wx'
-import Notify from '../assets/ui/notify/notify'
 
 const Map = new amap.AMapWX({ key: Env.amapKey});
 
