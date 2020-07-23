@@ -1,4 +1,4 @@
-import Inc from '@/library/Inc'
+import {Back} from '@/library/inc'
 /* 组件 */
 import PageView from '@/components/page-view'
 import ScrollView from '@/components/scroll-view'
@@ -20,7 +20,7 @@ export default {
 
     /* 返回 */
     back(res){
-      if(res=='left') return Inc.back(1);
+      if(res=='left') return Back(1,this);
     },
 
   }

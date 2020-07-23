@@ -1,26 +1,28 @@
-import Inc from '@/library/Inc'
-import Plus from '@/library/Plus'
+import {Storage,Post,Back,Toast} from '@/library/inc'
+import {PlusReady,MapGeolocation} from '@/library/plus'
 import Socket from '@/library/Socket'
 
 /* 启动 */
 export default {
 
-  /* 初始化 */
-  init(){
+  self:null,
 
+  /* 初始化 */
+  init(self){
+    this.self = self;
     /* APP设置 */
-    document.addEventListener("plusready",()=>{
+    PlusReady(()=>{
       // 竖屏
       plus.screen.lockOrientation("portrait-primary");
       // 状态栏
       plus.navigator.setStatusBarStyle('dark');
       plus.navigator.setStatusBarBackground('#FFFFFF');
-      Inc.self.$store.state.statusBarHeight = plus.navigator.getStatusbarHeight();
+      this.self.$store.state.statusBarHeight = plus.navigator.getStatusbarHeight();
       // 关闭启动图
       setTimeout(()=>{ plus.navigator.closeSplashscreen(); },300);
       // 模式
       document.addEventListener("uistylechange",()=>{
-        Inc.self.$store.state.mode = plus.navigator.getUiStyle();
+        this.self.$store.state.mode = plus.navigator.getUiStyle();
        }, false);
       // Android返回键
       let backcount = 0;
@@ -29,18 +31,18 @@ export default {
         webview.canBack((e)=>{
           if(e.canBack){
             // 关闭摄像头
-            if(Inc.self.$store.state.scan) Inc.self.$store.state.scan.close();
+            if(this.self.$store.state.scan) this.self.$store.state.scan.close();
             // 返回
-            Inc.back(1);
+            Back(1,this.self);
           }else{
             if(backcount>0) plus.runtime.quit();
-            Inc.toast('再按一次退出应用!');
+            Toast('再按一次退出应用!');
             backcount++;
             setTimeout(()=>{backcount=0;},2000);
           }
         });
       });
-    },false);
+    });
 
     /* 登录验证 */
     this.tokenState(1);
@@ -51,37 +53,37 @@ export default {
     /* 获取定位 */
     this.geoLocation();
     /* 消息推送 */
-    Socket.start();
+    Socket.start(this.self);
   },
 
   /* 登录验证 */
   tokenState(uinfo){
-    const token = Inc.storage.getItem('token');
+    const token = Storage.getItem('token');
     if(token){
-      Inc.post('user/token',{token:token,uinfo:uinfo},(res)=>{
+      Post('user/token',{token:token,uinfo:uinfo},(res)=>{
         const d = res.data;
         if(d.code==0){
-          Inc.self.$store.state.isLogin = true;
-          if(d.uinfo) Inc.self.$store.state.uInfo = d.uinfo;
+          this.self.$store.state.isLogin = true;
+          if(d.uinfo) this.self.$store.state.uInfo = d.uinfo;
         }else{
-          Inc.self.$store.state.isLogin = false;
-          Inc.self.$store.state.uInfo = {};
-          Inc.storage.setItem('token','');
+          this.self.$store.state.isLogin = false;
+          this.self.$store.state.uInfo = {};
+          Storage.setItem('token','');
         }
       });
     }else{
-      Inc.self.$store.state.isLogin = false;
-      Inc.storage.setItem('token','');
+      this.self.$store.state.isLogin = false;
+      Storage.setItem('token','');
     }
   },
 
   /* 获取定位 */
   geoLocation(){
     setTimeout(()=>{
-      Plus.geoLocation((res)=>{
-        Inc.self.$store.state.geolocation = res;
-        Inc.storage.setItem('city',res.district);
-      },(e)=>{ Inc.toast('获取定位失败!'); });
+      MapGeolocation((res)=>{
+        this.self.$store.state.geolocation = res;
+        Storage.setItem('city',res.district);
+      },(e)=>{ Toast('获取定位失败!'); });
     },1000);
   },
 

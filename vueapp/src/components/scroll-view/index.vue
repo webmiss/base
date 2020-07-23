@@ -206,13 +206,14 @@ export default {
 
     /* 结束 */
     end(e){
-      if(!this.scroll) return false;
-      if(!this.isMove) return false;
       // 方向
       if(this.movePage.x>this.limit) this.$emit('swipe','left');
       if(this.movePage.x<-this.limit) this.$emit('swipe','right');
       if(this.movePage.y>this.limit) this.$emit('swipe','down');
       if(this.movePage.y<-this.limit) this.$emit('swipe','up');
+      // 加速
+      if(!this.scroll) return false;
+      if(!this.isMove) return false;
       // 加速-比例
       let time = parseInt(e.timeStamp-this.startTime);
       let n = Math.abs(this.movePage[this.sp]/time);

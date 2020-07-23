@@ -1,6 +1,7 @@
+import Env from '@/env'
 import Start from '@/library/Start'
-import Inc from '@/library/Inc'
-import Plus from '@/library/Plus'
+import {Post,Toast,VersionDiff} from '@/library/inc'
+import PlusReady from '@/library/plus/plus-ready'
 
 export default {
   data(){
@@ -10,7 +11,7 @@ export default {
       transitionName: '',
       // 更新APP
       update: {show:false, os:'', down:false, loading:'0%', msg:'检测更新', file:'', total:0},
-      upDateColor: Inc.config.update,
+      upDateColor: Env.update,
       // 新消息
       msgInterval: null,
     }
@@ -26,26 +27,24 @@ export default {
     mode(){ return this.$store.state.mode; },
   },
   mounted(){
-    /* 项目 */
-    Inc.self = this;
     /* 启动服务 */
-    Start.init();
+    Start.init(this);
     /* 检测更新 */
-    if(Inc.config.update.start) this.isUpdate();
+    if(Env.update.start) this.isUpdate();
   },
   methods:{
 
     /* 检测更新 */
     isUpdate(){
-      document.addEventListener("plusready",()=>{
+      PlusReady(()=>{
         this.update.os = plus.os.name;
-        Inc.post('index/appUpdate',{os:this.update.os},(res)=>{
+        Post('index/appUpdate',{os:this.update.os},(res)=>{
           let d = res.data;
           if(d.code!=0) return false;
           // 是否更新
           plus.runtime.getProperty(plus.runtime.appid,(app)=>{
             // 比较
-            if(!Inc.versionDiff(app.version,d.version)) return false;
+            if(!VersionDiff(app.version,d.version)) return false;
             // 更新
             this.update.show = true;
             this.update.down = true;
@@ -54,7 +53,7 @@ export default {
             this.update.total = d.size;
           });
         });
-      },false);
+      });
     },
 
     /* 下载更新 */
@@ -65,7 +64,7 @@ export default {
       if (this.update.os == 'iOS') {
         // 苹果手机
         this.update.msg = '请在桌面查看安装进度';
-        window.open(Inc.config.upIosUrl);
+        window.open(Env.upIosUrl);
         // 关闭APP
         setTimeout(()=>{
           plus.runtime.quit();
@@ -81,7 +80,7 @@ export default {
             plus.runtime.install(d.filename, {force:true},()=>{
               plus.runtime.restart();
             },(e)=>{
-              Inc.toast('安装失败!');
+              Toast('安装失败!');
             });
           }else{
             this.update.down = true;
