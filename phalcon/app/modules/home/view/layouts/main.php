@@ -11,6 +11,8 @@
   <meta name="keywords" content="<?php echo $Keywords;?>" />
   <meta  name="description"  content="<?php echo $Description;?>"/>
   <link rel="stylesheet" type="text/css" href="/themes/home/main.css" />
+  <!-- Axios -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <!-- VUE -->
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<script type="module" src="/themes/home/main.js"></script>

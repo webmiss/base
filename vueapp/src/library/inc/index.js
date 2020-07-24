@@ -1,26 +1,27 @@
 
-import Decode from './base64-decode'
-import Encode from './base64-encode'
-import ExtType from './base64-ext-type'
-import HtmlImg from './html-img'
-import HtmlLoad from './html-load'
-import PriceFormat from './price-format'
-import PriceToFixed from './price-to-fixed'
-import Reg from './reg'
-import Get from './request-get'
-import Post from './request-post'
-import Storage from './storage'
-import TelFormat from './tel-format'
-import TimeDate from './time-date'
-import TimeDay from './time-day'
-import TimeFormat from './time-format'
-import TimeSize from './time-size'
-import TimeWeek from './time-week'
-import Tinymce from './tinymce'
-import Back from './ui-back'
-import Loading from './ui-loading'
-import Toast from './ui-toast'
-import Unique from './unique'
+import Decode from './base64-decode.js'
+import Encode from './base64-encode.js'
+import ExtType from './base64-ext-type.js'
+import HtmlDownImg from './html-down-img.js'
+import HtmlImg from './html-img.js'
+import HtmlLoad from './html-load.js'
+import PriceFormat from './price-format.js'
+import PriceToFixed from './price-to-fixed.js'
+import Reg from './reg.js'
+import Get from './request-get.js'
+import Post from './request-post.js'
+import Storage from './storage.js'
+import TelFormat from './tel-format.js'
+import TimeDate from './time-date.js'
+import TimeDay from './time-day.js'
+import TimeFormat from './time-format.js'
+import TimeSize from './time-size.js'
+import TimeWeek from './time-week.js'
+import Tinymce from './tinymce.js'
+import Back from './ui-back.js'
+import Loading from './ui-loading.js'
+import Toast from './ui-toast.js'
+import Unique from './unique.js'
 import VersionDiff from './version-diff.js'
 
 /* 全部 */
@@ -28,6 +29,7 @@ export default {
   Decode, //Base64-解密
   Encode, //Base64-加密
   ExtType,  //文件类型
+  HtmlDownImg,  //保存图片
   HtmlImg,  //Html获取图片地址
   HtmlLoad, //加载Css&Js
   PriceFormat,  //格式化价格
@@ -53,6 +55,7 @@ export default {
 export {
   Decode,
   Encode,
+  HtmlDownImg,
   HtmlImg,
   HtmlLoad,
   PriceFormat,

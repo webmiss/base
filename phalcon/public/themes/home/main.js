@@ -1,4 +1,4 @@
-import Inc from '../library/Inc.js'
+import {Toast} from '../library/inc/index.js'
 
 const vm = new Vue({
   el: '#main',
@@ -6,19 +6,15 @@ const vm = new Vue({
     navScroll: null,
   },
   mounted(){
-    /* 当前项目 */
-    Inc.self = this;
     /* 导航菜单-滑动 */
     let nav = this.$refs.TopNav;
-    if(nav){
-      this.navScroll = new BScroll(nav,{click:true,scrollX:true});
-    }
+    if(nav) this.navScroll = new BScroll(nav,{click:true,scrollX:true});
   },
   methods:{
 
     /* 暂不开放 */
     showMsg($msg){
-      Inc.toast($msg);
+      Toast($msg);
     },
 
   },

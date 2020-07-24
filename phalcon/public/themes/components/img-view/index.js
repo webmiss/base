@@ -29,8 +29,8 @@ const template = `
 </div>
 `;
 
-import Inc from '../../library/Inc.js'
-Inc.requireCss('/themes/components/img-view/index.css');
+import {HtmlLoad} from '../../library/inc/index.js'
+HtmlLoad(['/themes/components/img-view/index.css']);
 
 export default {
   name:'ImageView',

@@ -1,4 +1,4 @@
-import Inc from '../../library/Inc.js'
+import {HtmlDownImg} from '../../library/inc/index.js'
 import Popup from '../../components/popup/index.js'
 
 const vm = new Vue({
@@ -8,8 +8,6 @@ const vm = new Vue({
     code:{show:false,img:''},
   },
   mounted(){
-    /* 当前项目 */
-    Inc.self = this;
   },
   methods:{
 
@@ -22,7 +20,7 @@ const vm = new Vue({
     /* 二维码-下载 */
     downCode(){
       const img = this.code.img;
-      Inc.downImg(img);
+      HtmlDownImg(img);
     },
 
   },

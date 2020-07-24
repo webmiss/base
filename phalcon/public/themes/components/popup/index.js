@@ -4,8 +4,8 @@ const template = `
   <div ref="PopupBody" class="popup_body" :style="{backgroundColor:bgColor}"><slot></slot></div>
 </div>
 `;
-import Inc from '../../library/Inc.js'
-Inc.requireCss('/themes/components/popup/index.css');
+import {HtmlLoad} from '../../library/inc/index.js'
+HtmlLoad(['/themes/components/popup/index.css']);
 export default {
   template: template,
   name:'PopUp',
