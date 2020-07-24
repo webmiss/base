@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Inc from '@/library/Inc'
+import {Get} from '@/library/inc'
 export default {
   data(){
     return {
@@ -15,7 +15,7 @@ export default {
   },
   mounted(){
     // 全部状态吗
-    Inc.get('index/allCode',{},(res)=>{
+    Get('index/allCode',{},(res)=>{
       const d = res.data;
       this.code=d.code==0?d.list:{}
     },(err)=>{

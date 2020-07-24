@@ -82,28 +82,29 @@ ul{list-style: none;}
 </style>
 
 <script>
+import Env from '@/env'
 import Menus from '@/Menus'
-import Inc from '@/library/Inc'
+import {Storage} from '@/library/inc'
 export default {
   data(){
     return {
       defaultMenu: '',  // 默认菜单
-      config: Inc.config,
+      config: Env,
       menus: Menus,
     }
   },
   mounted(){
     // 默认菜单
-    this.defaultMenu = Inc.storage.getItem('defaultMenu')?Inc.storage.getItem('defaultMenu'):'0-0';
+    this.defaultMenu = Storage.getItem('defaultMenu')?Storage.getItem('defaultMenu'):'0-0';
   },
   methods:{
 
     /* 跳转地址 */
     openUrl(url,index,name,data){
       // 保存-当前位置
-      Inc.storage.setItem('defaultMenu',index);
+      Storage.setItem('defaultMenu',index);
       // 保存-参数
-      Inc.storage.setItem('Request',JSON.stringify(data));
+      Storage.setItem('Request',JSON.stringify(data));
       this.$store.state.request = data;
       // 跳转
       this.$router.push(url?url:'/Request/'+name);

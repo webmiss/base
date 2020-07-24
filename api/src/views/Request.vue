@@ -31,12 +31,13 @@
 </template>
 
 <script>
-import Inc from '@/library/Inc'
+import Env from '@/env'
+import {Storage,Get,Post,Put,Delete,Request} from '@/library/inc'
 export default {
   data(){
     return {
       LabelWidth: '100px',
-      url: Inc.config.apiUrl, //接口
+      url: Env.apiUrl, //接口
       api: '',  //地址
       method: '', //方式
       parameter: [],  //参数
@@ -55,8 +56,8 @@ export default {
     /* 数据 */
     getData(){
       let data = this.$store.state.request;
-      data = data?data:JSON.parse(Inc.storage.getItem('Request'));
-      this.api = Inc.config.apiUrl+data.api;
+      data = data?data:JSON.parse(Storage.getItem('Request'));
+      this.api = Env.apiUrl+data.api;
       this.method = data.method;
       this.parameter = data.parameter;
       this.remark = data.remark;
@@ -73,15 +74,15 @@ export default {
       // 请求
       this.response = '正在请求...';
       if(this.method=='get'){
-        Inc.get(this.api,data,res=>this.response=res.data,err=>this.response=err);
+        Get(this.api,data,res=>this.response=res.data,err=>this.response=err);
       }else if(this.method=='post'){
-        Inc.post(this.api,data,res=>this.response=res.data,err=>this.response=err);
+        Post(this.api,data,res=>this.response=res.data,err=>this.response=err);
       }else if(this.method=='put'){
-        Inc.put(this.api,data,res=>this.response=res.data,err=>this.response=err);
+        Put(this.api,data,res=>this.response=res.data,err=>this.response=err);
       }else if(this.method=='delete'){
-        Inc.delete(this.api,data,res=>this.response=res.data,err=>this.response=err);
+        Delete(this.api,data,res=>this.response=res.data,err=>this.response=err);
       }else if(this.method=='request'){
-        Inc.request(this.api,data,res=>this.response=res.data,err=>this.response=err);
+        Request(this.api,data,res=>this.response=res.data,err=>this.response=err);
       }
     },
 
