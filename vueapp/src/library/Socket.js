@@ -5,7 +5,7 @@ import {Notify} from '@/library/plus'
 /* Socket */
 export default {
 
-  self:null,
+  self: null,
 
   /* 消息路由 */
   msgRouter(d){
@@ -52,7 +52,7 @@ export default {
     // 重启Socket
     clearInterval(this.msgInterval);
     this.msgInterval = setInterval(()=>{
-      if(this.self.$store.state.isLogin && (!this.self.$store.state.socket || this.self.$store.state.socket.readyState!=1)) this.start();
+      if(this.self.$store.state.isLogin && (!this.self.$store.state.socket || this.self.$store.state.socket.readyState!=1)) this.start(self);
     },3000);
     // Token
     const token = Storage.getItem('token');

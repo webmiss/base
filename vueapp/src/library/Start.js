@@ -5,7 +5,7 @@ import Socket from '@/library/Socket'
 /* 启动 */
 export default {
 
-  self:null,
+  self: null,
 
   /* 初始化 */
   init(self){
