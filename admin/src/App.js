@@ -1,6 +1,7 @@
+import Env from '@/env'
 import Start from '@/library/Start'
-import Inc from '@/library/Inc'
-import Plus from '@/library/Plus'
+import {Loading,Post,Toast,VersionDiff,Storage,Reg} from '@/library/inc'
+import PlusReady from '@/library/plus/plus-ready'
 import Socket from '@/library/Socket'
 import Action from '@/components/action'
 /* Scroll */
@@ -13,13 +14,13 @@ export default {
   components: {Action,Popup},
   data(){
     return {
-      storage: Inc.storage,
+      storage: Storage,
       // 滑动
       menusScroll: null,
       actionScroll: null,
       // 更新APP
       update: {show:false,os:'',down:false,loading:'0%',msg:'检测更新',file:'',total:0},
-      upDateColor: Inc.config.update,
+      upDateColor: Env.update,
       // 登录数据
       login: {uname:'',passwd:'',subText:'登 录',dis:false},
       // 左侧菜单
@@ -31,39 +32,35 @@ export default {
     }
   },
   mounted(){
-    /* 项目 */
-    Inc.self = this;
-    /* 初始化 */
-    setTimeout(()=>{
-      // 启动服务
-      Start.init();
-      // 检测更新
-      if(Inc.config.update.start) this.isUpdate();
-      // 获取菜单
-      if(Inc.storage.getItem('token')) this.getMenus();
-      // Enter事件
-      this._enter();
-    },600);
+    // 启动服务
+    Start.init(this);
+    // 检测更新
+    if(Env.update.start) this.isUpdate();
+    // 获取菜单
+    if(Storage.getItem('token')) this.getMenus();
+    // Enter事件
+    this._enter();
   },
   methods:{
 
     /* 检测更新 */
     isUpdate(){
-      if(!Plus.isPlus()) return false;
-      this.update.os = plus.os.name;
-      Inc.post('index/appUpdate',{os:this.update.os},(res)=>{
-        let d = res.data;
-        if(d.code!=0) return false;
-        // 是否更新
-        plus.runtime.getProperty(plus.runtime.appid,(app)=>{
-          // 比较
-          if(!Inc.versionDiff(app.version,d.version)) return false;
-          // 更新
-          this.update.show = true;
-          this.update.down = true;
-          this.update.msg = '新版本: '+d.version+'&nbsp;&nbsp;大小: '+(d.size/1024/1024).toFixed(2)+'MB';
-          this.update.file = this.$config.baseUrl+d.file;
-          this.update.total = d.size;
+      PlusReady(()=>{
+        this.update.os = plus.os.name;
+        Post('index/appUpdate',{os:this.update.os},(res)=>{
+          let d = res.data;
+          if(d.code!=0) return false;
+          // 是否更新
+          plus.runtime.getProperty(plus.runtime.appid,(app)=>{
+            // 比较
+            if(!VersionDiff(app.version,d.version)) return false;
+            // 更新
+            this.update.show = true;
+            this.update.down = true;
+            this.update.msg = '新版本: '+d.version+'&nbsp;&nbsp;大小: '+(d.size/1024/1024).toFixed(2)+'MB';
+            this.update.file = Env.baseUrl+d.file;
+            this.update.total = d.size;
+          });
         });
       });
     },
@@ -76,7 +73,7 @@ export default {
       if (this.update.os == 'iOS') {
         // 苹果手机
         this.update.msg = '请在桌面查看安装进度';
-        window.open(Inc.config.upIosUrl);
+        window.open(Env.upIosUrl);
         // 关闭APP
         setTimeout(()=>{
           plus.runtime.quit();
@@ -92,7 +89,7 @@ export default {
             plus.runtime.install(d.filename, {force:true},()=>{
               plus.runtime.restart();
             },(e)=>{
-              Inc.toast('安装失败!');
+              Toast('安装失败!');
             });
           }else{
             this.update.down = true;
@@ -116,42 +113,42 @@ export default {
       // 验证
       let uname = this.login.uname;
       let passwd = this.login.passwd;
-      let reg_passwd = Inc.reg('passwd',passwd);
-      if(Inc.reg('uname',uname)!==true && Inc.reg('email',uname)!==true && Inc.reg('tel',uname)!==true) return Inc.toast('请输入帐号/手机/邮箱');
-      else if(reg_passwd!==true) return Inc.toast(reg_passwd);
+      let reg_passwd = Reg('passwd',passwd);
+      if(Reg('uname',uname)!==true && Reg('email',uname)!==true && Reg('tel',uname)!==true) return Toast('请输入帐号/手机/邮箱');
+      else if(reg_passwd!==true) return Toast(reg_passwd);
       // 提交
       this.login.subText = '正在登录';
       this.login.dis = true;
-      const load = Inc.loading();
-      Inc.post('user/login',{uname:uname,passwd:passwd},(res)=>{
+      const load = Loading();
+      Post('user/login',{uname:uname,passwd:passwd},(res)=>{
         load.clear();
         this.login.subText = '登 录';
         this.login.dis = false;
         const d = res.data;
         if(d.code==0){
           this.$store.state.isLogin = true;
-          Inc.self.$store.state.uInfo = d.uinfo;
-          Inc.storage.setItem('token',d.token);
+          this.$store.state.uInfo = d.uinfo;
+          Storage.setItem('token',d.token);
           // 用户菜单
           this.getMenus();
           // 刷新路由
           this.$router.replace({path:'/refresh'});
         }else{
-          Inc.self.$store.state.isLogin = false;
-          Inc.self.$store.state.uInfo = {};
-          Inc.storage.setItem('token','');
-          Inc.toast(d.msg);
+          this.$store.state.isLogin = false;
+          this.$store.state.uInfo = {};
+          Storage.setItem('token','');
+          Toast(d.msg);
         }
       },(e)=>{
         load.clear();
-        Inc.toast('网络加载失败!');
+        Toast('网络加载失败!');
       });
     },
     /* 退出 */
     logout(){
       this.$store.state.isLogin = false;
       this.$store.state.uInfo = {};
-      Inc.storage.setItem('token','');
+      Storage.setItem('token','');
       // 关闭Socket
       Socket._closeMsg();
       // Enter事件
@@ -159,17 +156,17 @@ export default {
     },
     /* Enter登录 */
     _enter(){
-      document.onkeydown = function(event){
+      document.onkeydown = (event)=>{
         let e = event || window.event || arguments.callee.caller.arguments[0];
-        if(e && e.keyCode==13 && !Inc.self.$store.state.isLogin) Inc.self.loginSub();
+        if(e && e.keyCode==13 && !this.$store.state.isLogin) this.loginSub();
       }
     },
 
     /* 用户菜单 */
     getMenus(){
       // 默认菜单
-      this.$store.state.collapseMenu = Inc.storage.getItem('isCollapse')=='true'?true:false;
-      this.$store.state.defaultMenu = Inc.storage.getItem('defaultMenu')?Inc.storage.getItem('defaultMenu'):'3';
+      this.$store.state.collapseMenu = Storage.getItem('isCollapse')=='true'?true:false;
+      this.$store.state.defaultMenu = Storage.getItem('defaultMenu')?Storage.getItem('defaultMenu'):'3';
       // 滑动-菜单
       let menu = this.$refs.LeftMenus;
       if(menu){
@@ -189,34 +186,34 @@ export default {
         });
       }
       // 请求
-      Inc.post('Usermain/getMenus',{token:Inc.storage.getItem('token')},(res)=>{
+      Post('Usermain/getMenus',{token:Storage.getItem('token')},(res)=>{
         let d = res.data;
         if(d.code==0){
-          Inc.self.$store.state.menus = d.menus;
+          this.$store.state.menus = d.menus;
         }
       });
     },
     /* 收缩菜单 */
     hideMenus(){
       this.isCollapse = !this.isCollapse;
-      Inc.storage.setItem('isCollapse',this.isCollapse);
+      Storage.setItem('isCollapse',this.isCollapse);
       this.$store.state.collapseMenu = this.isCollapse;
     },
     /* 跳转地址 */
     openUrl(ico,url,index,name){
       // 保存-当前位置
-      Inc.storage.setItem('MenuName',name);
-      Inc.storage.setItem('defaultMenu',index);
+      Storage.setItem('MenuName',name);
+      Storage.setItem('defaultMenu',index);
       this.$store.state.defaultMenu = index;
       // 保存-快捷方式
       if(index!='3'){
-        let menus = JSON.parse(Inc.storage.getItem('Menus') || '[]');
+        let menus = JSON.parse(Storage.getItem('Menus') || '[]');
         let data = {ico:ico,url:url,index:index,name:name};
         const n = menus.findIndex((item)=>JSON.stringify(item)==JSON.stringify(data));
         if(n>=0) menus.splice(n,1);
         menus.push({ico:ico,url:url,index:index,name:name});
         // 保存
-        Inc.storage.setItem('Menus',JSON.stringify(menus));
+        Storage.setItem('Menus',JSON.stringify(menus));
       }
       // 跳转
       this.$router.push(url);
@@ -230,14 +227,14 @@ export default {
       let data = {};
       data[key] = this.config[key]?'1':'0';
       // 提交
-      const load = Inc.loading();
-      Inc.post('Userinfo/edit',
-        {token:Inc.storage.getItem('token'),data:JSON.stringify(data)},
+      const load = Loading();
+      Post('Userinfo/edit',
+        {token:Storage.getItem('token'),data:JSON.stringify(data)},
       (res)=>{
         load.clear();
         const d = res.data;
         this.$store.state.uinfo[key] = this.config[key];
-        return d.code==0?Inc.toast(d.msg):Inc.toast(d.msg);
+        return d.code==0?Toast(d.msg):Toast(d.msg);
       });
     },
 

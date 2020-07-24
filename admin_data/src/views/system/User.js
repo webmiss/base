@@ -1,4 +1,4 @@
-import Inc from '@/library/Inc'
+import {Loading,Toast,Post,Storage} from '@/library/inc'
 import Action from '@/components/action'
 
 export default {
@@ -33,7 +33,7 @@ export default {
       }else if(type=='edit'){
         if(this.selectData.length>0){
           this.getEdit({uid:'',tel:'',passwd:''});
-        }else return Inc.toast('请选择数据!');
+        }else return Toast('请选择数据!');
       }else if(type=='del'){
         if(this.selectData.length>0){
           this.delData.show=true;
@@ -42,7 +42,7 @@ export default {
           let id = '';
           for(let i=0; i<data.length; i++) id += data[i].uid+',';
           this.delData.id = id;
-        }else return Inc.toast('请选择数据!');
+        }else return Toast('请选择数据!');
       }
       return type;
     },
@@ -69,14 +69,14 @@ export default {
 
     /* 加载数据 */
     loadData(){
-      const load = Inc.loading();
-      Inc.post('Sysuser/list',
-        {token:Inc.storage.getItem('token'),page:this.pageData.page,limit:this.pageData.limit,data:JSON.stringify(this.seaData.form)},
+      const load = Loading();
+      Post('Sysuser/list',
+        {token:Storage.getItem('token'),page:this.pageData.page,limit:this.pageData.limit,data:JSON.stringify(this.seaData.form)},
       (res)=>{
         load.clear();
         const d = res.data;
         if(d.code!=0){
-          return Inc.toast(d.msg);
+          return Toast(d.msg);
         }else{
           this.pageData.list = d.list;
           this.pageData.total = d.total;
@@ -97,14 +97,14 @@ export default {
       // 数据
       let data = JSON.stringify(this.addData.form);
       // 提交
-      const load = Inc.loading();
-      Inc.post('Sysuser/add',
-        {token:Inc.storage.getItem('token'),data:data},
+      const load = Loading();
+      Post('Sysuser/add',
+        {token:Storage.getItem('token'),data:data},
       (res)=>{
         load.clear();
         const d = res.data;
         if(d.code===0) this.loadData();
-        return Inc.toast(d.msg);
+        return Toast(d.msg);
       });
     },
 
@@ -119,14 +119,14 @@ export default {
       let uid = this.editData.form.uid;
       let data = JSON.stringify(this.editData.form);
       // 提交
-      const load = Inc.loading();
-      Inc.post('Sysuser/edit',
-        {token:Inc.storage.getItem('token'),uid:uid,data:data},
+      const load = Loading();
+      Post('Sysuser/edit',
+        {token:Storage.getItem('token'),uid:uid,data:data},
       (res)=>{
         load.clear();
         let d = res.data;
         if(d.code===0) this.loadData();
-        return Inc.toast(d.msg);
+        return Toast(d.msg);
       });
     },
 
@@ -134,12 +134,12 @@ export default {
     subDel(){
       this.delData.show=false;
       // 提交
-      const load = Inc.loading();
-      Inc.post('Sysuser/del',{token:Inc.storage.getItem('token'),data:this.delData.id},(res)=>{
+      const load = Loading();
+      Post('Sysuser/del',{token:Storage.getItem('token'),data:this.delData.id},(res)=>{
         load.clear();
         const d = res.data;
         if(d.code===0) this.loadData();
-        return Inc.toast(d.msg);
+        return Toast(d.msg);
       });
     },
 
@@ -147,11 +147,11 @@ export default {
     setState(type,row){
       const state = row['state']?1:0;
       // 提交
-      const load = Inc.loading();
-      Inc.post('Sysuser/state/'+type,{token:Inc.storage.getItem('token'),uid:row.uid,state:state},(res)=>{
+      const load = Loading();
+      Post('Sysuser/state/'+type,{token:Storage.getItem('token'),uid:row.uid,state:state},(res)=>{
         load.clear();
         const d = res.data;
-        return Inc.toast(d.msg);
+        return Toast(d.msg);
       });
     },
 
@@ -172,14 +172,14 @@ export default {
       const uid = this.infoData.uid;
       const data = JSON.stringify(this.infoData.form);
       // 提交
-      const load = Inc.loading();
-      Inc.post('Sysuser/uinfo',
-        {token:Inc.storage.getItem('token'),uid:uid,data:data},
+      const load = Loading();
+      Post('Sysuser/uinfo',
+        {token:Storage.getItem('token'),uid:uid,data:data},
       (res)=>{
         load.clear();
         const d = res.data;
         if(d.code===0) this.loadData();
-        return Inc.toast(d.msg);
+        return Toast(d.msg);
       });
     }
 

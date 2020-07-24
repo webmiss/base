@@ -1,4 +1,4 @@
-import Inc from '@/library/Inc'
+import {Loading,Toast,Post,Storage} from '@/library/inc'
 import Action from '@/components/action'
 export default {
   components: {Action},
@@ -40,7 +40,7 @@ export default {
         if(key.length>0){
           this.delData.show=true;
           this.delData.id = key;
-        }else Inc.toast('请选择数据!');
+        }else Toast('请选择数据!');
       }
     },
   },
@@ -57,12 +57,12 @@ export default {
 
     /* 加载数据 */
     loadData(){
-      const load = Inc.loading();
-      Inc.post('Sysmenus/list',{token:Inc.storage.getItem('token')},(res)=>{
+      const load = Loading();
+      Post('Sysmenus/list',{token:Storage.getItem('token')},(res)=>{
         load.clear();
         const d = res.data;
         if(d.code!=0){
-          return Inc.toast(d.msg);
+          return Toast(d.msg);
         }else{
           this.listData.list = d.list;
         }
@@ -92,14 +92,14 @@ export default {
       this.addData.form.perm = perm;
       // 提交
       this.addData.show=false;
-      const load = Inc.loading();
-      Inc.post('Sysmenus/add',
-        {token:Inc.storage.getItem('token'),data:JSON.stringify(this.addData.form)},
+      const load = Loading();
+      Post('Sysmenus/add',
+        {token:Storage.getItem('token'),data:JSON.stringify(this.addData.form)},
       (res)=>{
         load.clear();
         let d = res.data;
         if(d.code===0) this.loadData();
-        return Inc.toast(d.msg);
+        return Toast(d.msg);
       });
     },
 
@@ -138,14 +138,14 @@ export default {
       this.editData.form.perm = perm;
       // 提交
       this.editData.show=false;
-      const load = Inc.loading();
-      Inc.post('Sysmenus/edit',
-        {token:Inc.storage.getItem('token'),id:this.editData.form.id,data:JSON.stringify(this.editData.form)},
+      const load = Loading();
+      Post('Sysmenus/edit',
+        {token:Storage.getItem('token'),id:this.editData.form.id,data:JSON.stringify(this.editData.form)},
       (res)=>{
         load.clear();
         let d = res.data;
         if(d.code===0) this.loadData();
-        return Inc.toast(d.msg);
+        return Toast(d.msg);
       });
     },
 
@@ -153,23 +153,23 @@ export default {
     subDel(){
       this.delData.show=false;
       // 提交
-      const load = Inc.loading();
-      Inc.post('Sysmenus/del',
-        {token:Inc.storage.getItem('token'),data:JSON.stringify(this.delData.id)},
+      const load = Loading();
+      Post('Sysmenus/del',
+        {token:Storage.getItem('token'),data:JSON.stringify(this.delData.id)},
       (res)=>{
         load.clear();
         let d = res.data;
         if(d.code===0) this.loadData();
-        return Inc.toast(d.msg);
+        return Toast(d.msg);
       });
     },
 
     /* 全部菜单 */
     allAction(){
-      Inc.post('Usermain/getActionAll',{token:Inc.storage.getItem('token')},(res)=>{
+      Post('Usermain/getActionAll',{token:Storage.getItem('token')},(res)=>{
         let d = res.data;
         if(d.code!==0){
-          Inc.toast(d.msg,'error');
+          Toast(d.msg,'error');
         }else{
           this.aMenus = d.aMenus;
           for(let k in d.aMenus){
@@ -185,7 +185,7 @@ export default {
     },
     /* 获取分类 */
     getClass(type,callback){
-      Inc.post('Sysmenus/getClass/'+type,{token:Inc.storage.getItem('token')},callback);
+      Post('Sysmenus/getClass/'+type,{token:Storage.getItem('token')},callback);
     },
 
   }

@@ -1,4 +1,4 @@
-import Inc from '@/library/Inc'
+import {Loading,Post,Storage,Toast} from '@/library/inc'
 import Action from '@/components/action'
 import ImgView from '@/components/img-view'
 
@@ -51,9 +51,9 @@ export default {
 
     /* 加载数据 */
     loadData(){
-      const load = Inc.loading();
-      Inc.post('Sysfilemanage/list',
-        {token:Inc.storage.getItem('token'),path:this.path},
+      const load = Loading();
+      Post('Sysfilemanage/list',
+        {token:Storage.getItem('token'),path:this.path},
       (res)=>{
         load.clear();
         const d = res.data;
@@ -144,7 +144,7 @@ export default {
     subRename(){
       const rename = this.renameData.form.rename;
       const name = this.renameData.form.name;
-      if(!name) return Inc.toast('名称不能为空');
+      if(!name) return Toast('名称不能为空');
       // 是否存在
       if(this.isExist(name)) return;
       // 提交
@@ -175,11 +175,15 @@ export default {
         this.imgView.show = true;
         this.$refs.imgShow.open(imgs,index);
       }else{
-        Inc.confirm({title:'文件下载',content:'文件名: '+file,confirmText:'立即下载'},()=>{
-          Inc.toast('开始下载');
+        this.$confirm('文件名: '+file,'文件下载',{
+          confirmButtonText: '立即下载',
+          cancelButtonText: '取消',
+          center: true
+        }).then(()=>{
+          Toast('开始下载');
           this.downFile(file);
-        },()=>{
-          Inc.toast('已取消');
+        }).catch(()=>{
+          Toast('已取消');
         });
       }
     },
@@ -197,7 +201,7 @@ export default {
         for(let i=0; i<fileObj.files.length; i++){
           // 单个上传
           this.upFile({
-            token:Inc.storage.getItem('token'),
+            token:Storage.getItem('token'),
             path:this.path,
             up:fileObj.files[i],
           });
@@ -210,9 +214,9 @@ export default {
       this.subAjax('upFile',data,(res)=>{
         const d = res;
         if(d.code!==0){
-          if(d.msg) Inc.toast(d.msg);
+          if(d.msg) Toast(d.msg);
         }else{
-          if(d.msg) Inc.toast(d.msg);
+          if(d.msg) Toast(d.msg);
           // 刷新数据
           this.loadData();
         }
@@ -255,15 +259,15 @@ export default {
 
     /* 提交数据 */
     subAjax(action,parameter,callback,config){
-      parameter.token = Inc.storage.getItem('token');
-      const load = Inc.loading();
-      Inc.post('Sysfilemanage/'+action,parameter,(res)=>{
+      parameter.token = Storage.getItem('token');
+      const load = Loading();
+      Post('Sysfilemanage/'+action,parameter,(res)=>{
         load.clear();
         const d = res.data;
         // 回调
         if(callback) callback(d);
         // 结果
-        if(d.msg) Inc.toast(d.msg);
+        if(d.msg) Toast(d.msg);
         if(d.code===0) this.loadData();
       },(e)=>{},config);
     },
@@ -278,7 +282,7 @@ export default {
       // 文件
       for(let i in files) if(files[i].check) name.push(files[i].name);
       if(name.length<1){
-        return Inc.toast('请选择内容');
+        return Toast('请选择内容');
       }else{
         return name;
       }
@@ -289,14 +293,14 @@ export default {
       const folder = this.lists.folder;
       const files = this.lists.files;
       // 是否为空
-      if(!name) return Inc.toast('请填写名称');
+      if(!name) return Toast('请填写名称');
       // 文件夹
       for(let i in folder){
-        if(folder[i].name==name) return Inc.toast('已存在文件夹');
+        if(folder[i].name==name) return Toast('已存在文件夹');
       }
       // 文件夹
       for(let i in files){
-        if(files[i].name==name) return Inc.toast('已存在文件');
+        if(files[i].name==name) return Toast('已存在文件');
       }
       return false;
     },

@@ -1,4 +1,4 @@
-import Inc from '@/library/Inc'
+import {Loading,Toast,Post,Storage} from '@/library/inc'
 import Action from '@/components/action'
 
 export default {
@@ -35,7 +35,7 @@ export default {
       }else if(type=='edit'){
         if(this.selectData.length>0){
           this.getEdit({id:'',role:''});
-        }else return Inc.toast('请选择数据!');
+        }else return Toast('请选择数据!');
       }else if(type=='del'){
         if(this.selectData.length>0){
           this.delData.show=true;
@@ -44,7 +44,7 @@ export default {
           let id = '';
           for(let i=0; i<data.length; i++) id += data[i].id+',';
           this.delData.id = id;
-        }else return Inc.toast('请选择数据!');
+        }else return Toast('请选择数据!');
       }
       return type;
     },
@@ -73,14 +73,14 @@ export default {
 
     /* 加载数据 */
     loadData(){
-      const load = Inc.loading();
-      Inc.post('Sysrole/list',
-        {token:Inc.storage.getItem('token'),page:this.pageData.page,limit:this.pageData.limit,data:JSON.stringify(this.seaData.form)},
+      const load = Loading();
+      Post('Sysrole/list',
+        {token:Storage.getItem('token'),page:this.pageData.page,limit:this.pageData.limit,data:JSON.stringify(this.seaData.form)},
       (res)=>{
         load.clear();
         const d = res.data;
         if(d.code!=0){
-          return Inc.toast(d.msg);
+          return Toast(d.msg);
         }else{
           this.pageData.list = d.list;
           this.pageData.total = d.total;
@@ -99,14 +99,14 @@ export default {
     subAdd(){
       this.addData.show=false;
       // 提交
-      const load = Inc.loading();
-      Inc.post('Sysrole/add',
-        {token:Inc.storage.getItem('token'),data:JSON.stringify(this.addData.form)},
+      const load = Loading();
+      Post('Sysrole/add',
+        {token:Storage.getItem('token'),data:JSON.stringify(this.addData.form)},
       (res)=>{
         load.clear();
         const d = res.data;
         if(d.code===0) this.loadData();
-        return Inc.toast(d.msg);
+        return Toast(d.msg);
       });
     },
 
@@ -118,14 +118,14 @@ export default {
     subEdit(){
       this.editData.show=false;
       // 提交
-      const load = Inc.loading();
-      Inc.post('Sysrole/edit',
-        {token:Inc.storage.getItem('token'),id:this.editData.form.id,data:JSON.stringify(this.editData.form)},
+      const load = Loading();
+      Post('Sysrole/edit',
+        {token:Storage.getItem('token'),id:this.editData.form.id,data:JSON.stringify(this.editData.form)},
       (res)=>{
         load.clear();
         let d = res.data;
         if(d.code===0) this.loadData();
-        return Inc.toast(d.msg);
+        return Toast(d.msg);
       });
     },
 
@@ -133,20 +133,20 @@ export default {
     subDel(){
       this.delData.show=false;
       // 提交
-      const load = Inc.loading();
-      Inc.post('Sysrole/del',{token:Inc.storage.getItem('token'),data:this.delData.id},(res)=>{
+      const load = Loading();
+      Post('Sysrole/del',{token:Storage.getItem('token'),data:this.delData.id},(res)=>{
         load.clear();
         let d = res.data;
         if(d.code===0) this.loadData();
-        return Inc.toast(d.msg);
+        return Toast(d.msg);
       });
     },
 
     /* 全部菜单 */
     allAction(){
-      Inc.post('Usermain/getActionAll',{token:Inc.storage.getItem('token')},(res)=>{
+      Post('Usermain/getActionAll',{token:Storage.getItem('token')},(res)=>{
         let d = res.data;
-        if(d.code!==0) return Inc.toast(d.msg);
+        if(d.code!==0) return Toast(d.msg);
         else this.aMenus = d.aMenus;
       });
     },
@@ -154,12 +154,12 @@ export default {
     /* 编辑权限 */
     eidtPerm(id,perm){
       this.permData.id = id;
-      const load = Inc.loading();
-      Inc.post('Sysrole/allMenus',{token:Inc.storage.getItem('token')},(res)=>{
+      const load = Loading();
+      Post('Sysrole/allMenus',{token:Storage.getItem('token')},(res)=>{
         load.clear();
         const d = res.data;
         if(d.code!==0){
-          return Inc.toast(d.msg);
+          return Toast(d.msg);
         }else{
           this.permData.show=true;
           this.permData.form = d.menus;
@@ -203,14 +203,14 @@ export default {
       for(let k in permArr) perm += k+':'+permArr[k]+' ';
       // 提交
       this.permData.show=false;
-      const load = Inc.loading();
-      Inc.post('Sysrole/perm',
-        {token:Inc.storage.getItem('token'),id:this.permData.id,perm:perm},
+      const load = Loading();
+      Post('Sysrole/perm',
+        {token:Storage.getItem('token'),id:this.permData.id,perm:perm},
       (res)=>{
         load.clear();
         const d = res.data;
         if(d.code===0) this.loadData();
-        return Inc.toast(d.msg);
+        return Toast(d.msg);
       });
     },
 

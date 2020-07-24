@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Inc from '@/library/Inc'
+import {Post,Storage} from '@/library/inc'
 export default {
   name:'ImageView',
   props: {
@@ -32,7 +32,7 @@ export default {
 
     /* 动作菜单 */
     getAction(url){
-      Inc.post('Usermain/getMenusAction',{token:Inc.storage.getItem('token'),url:url},(res)=>{
+      Post('Usermain/getMenusAction',{token:Storage.getItem('token'),url:url},(res)=>{
         const d = res.data;
         if(d.code==0){
           this.actions = d.menuAction;

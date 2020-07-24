@@ -1,4 +1,4 @@
-import Inc from '@/library/Inc'
+import {Loading,Post,Storage,Toast,Reg} from '@/library/inc'
 
 export default {
   data(){
@@ -20,20 +20,20 @@ export default {
       let passwd1 = this.form.passwd1;
       let passwd2 = this.form.passwd2;
       // 验证
-      let reg_passwd = Inc.reg('passwd',passwd);
-      let reg_passwd1 = Inc.reg('passwd',passwd1);
+      let reg_passwd = Reg('passwd',passwd);
+      let reg_passwd1 = Reg('passwd',passwd1);
       if(reg_passwd!=true){
-        return Inc.toast('原'+reg_passwd);
+        return Toast('原'+reg_passwd);
       }else if(reg_passwd1!=true){
-        return Inc.toast('新'+reg_passwd1);
+        return Toast('新'+reg_passwd1);
       }else if(passwd1!=passwd2){
-        return Inc.toast('两次密码不一致！');
+        return Toast('两次密码不一致！');
       }else if(passwd==passwd1){
-        return Inc.toast('不能与原密码相同！');
+        return Toast('不能与原密码相同！');
       }
       // 提交
-      const load = Inc.loading();
-      Inc.post('Userpasswd/edit',{token:Inc.storage.getItem('token'),passwd:passwd,passwd1:passwd1},
+      const load = Loading();
+      Post('Userpasswd/edit',{token:Storage.getItem('token'),passwd:passwd,passwd1:passwd1},
       (res)=>{
         load.clear();
         const d = res.data;
@@ -45,9 +45,9 @@ export default {
           // 退出登录
           this.$store.state.isLogin = false;
           this.$store.state.uInfo = {};
-          Inc.storage.setItem('token','');
+          Storage.setItem('token','');
         }
-        return Inc.toast(d.msg);
+        return Toast(d.msg);
       });
     },
 

@@ -1,4 +1,4 @@
-import Inc from '@/library/Inc'
+import {Loading,Toast,Post,Storage} from '@/library/inc'
 import Action from '@/components/action'
 export default {
   components: {Action},
@@ -31,7 +31,7 @@ export default {
       }else if(type=='edit'){
         if(this.selectData.length>0){
           this.getEdit({id:'',name:'',action:'',perm:'',ico:''});
-        }else return Inc.toast('请选择数据!');
+        }else return Toast('请选择数据!');
       }else if(type=='del'){
         if(this.selectData.length>0){
           this.delData.show=true;
@@ -40,7 +40,7 @@ export default {
           let id = '';
           for(let i=0; i<data.length; i++) id += data[i].id+',';
           this.delData.id = id;
-        }else return Inc.toast('请选择数据!');
+        }else return Toast('请选择数据!');
       }
       return type;
     },
@@ -67,14 +67,14 @@ export default {
 
     /* 加载数据 */
     loadData(){
-      const load = Inc.loading();
-      Inc.post('Sysmenusaction/list',
-        {token:Inc.storage.getItem('token'),page:this.pageData.page,limit:this.pageData.limit,data:JSON.stringify(this.seaData.form)},
+      const load = Loading();
+      Post('Sysmenusaction/list',
+        {token:Storage.getItem('token'),page:this.pageData.page,limit:this.pageData.limit,data:JSON.stringify(this.seaData.form)},
       (res)=>{
         load.clear();
         const d = res.data;
         if(d.code!=0){
-          return Inc.toast(d.msg);
+          return Toast(d.msg);
         }else{
           this.pageData.list = d.list;
           this.pageData.total = d.total;
@@ -93,14 +93,14 @@ export default {
     subAdd(){
       this.addData.show=false;
       // 提交
-      const load = Inc.loading();
-      Inc.post('Sysmenusaction/add',
-        {token:Inc.storage.getItem('token'),data:JSON.stringify(this.addData.form)},
+      const load = Loading();
+      Post('Sysmenusaction/add',
+        {token:Storage.getItem('token'),data:JSON.stringify(this.addData.form)},
       (res)=>{
         load.clear();
         let d = res.data;
         if(d.code===0) this.loadData();
-        return Inc.toast(d.msg);
+        return Toast(d.msg);
       });
     },
 
@@ -112,14 +112,14 @@ export default {
     subEdit(){
       this.editData.show=false;
       // 提交
-      const load = Inc.loading();
-      Inc.post('Sysmenusaction/edit',
-        {token:Inc.storage.getItem('token'),id:this.editData.form.id,data:JSON.stringify(this.editData.form)},
+      const load = Loading();
+      Post('Sysmenusaction/edit',
+        {token:Storage.getItem('token'),id:this.editData.form.id,data:JSON.stringify(this.editData.form)},
       (res)=>{
         load.clear();
         let d = res.data;
         if(d.code===0) this.loadData();
-        return Inc.toast(d.msg);
+        return Toast(d.msg);
       });
     },
 
@@ -127,14 +127,14 @@ export default {
     subDel(){
       this.delData.show=false;
       // 提交
-      const load = Inc.loading();
-      Inc.post('Sysmenusaction/del',
-        {token:Inc.storage.getItem('token'),data:this.delData.id},
+      const load = Loading();
+      Post('Sysmenusaction/del',
+        {token:Storage.getItem('token'),data:this.delData.id},
       (res)=>{
         load.clear();
         let d = res.data;
         if(d.code===0) this.loadData();
-        return Inc.toast(d.msg);
+        return Toast(d.msg);
       });
     },
 

@@ -1,5 +1,5 @@
-import Inc from '@/library/Inc'
-import Plus from '@/library/Plus'
+import {Loading,Toast,Post,Storage} from '@/library/inc'
+import {Camera,ImgReader} from '@/library/plus'
 
 export default {
   data(){
@@ -19,11 +19,11 @@ export default {
 
     /* 加载数据 */
     loadData(){
-      const load = Inc.loading();
-      Inc.post('Userinfo/list',{token:Inc.storage.getItem('token')},(res)=>{
+      const load = Loading();
+      Post('Userinfo/list',{token:Storage.getItem('token')},(res)=>{
         load.clear();
         const d = res.data;
-        if(d.code!=0) return Inc.toast(d.msg);
+        if(d.code!=0) return Toast(d.msg);
         else this.form = d.list;
       });
     },
@@ -31,29 +31,29 @@ export default {
     /* 提交表单 */
     onSubmit(){
       const data = JSON.stringify(this.form);
-      const load = Inc.loading();
-      Inc.post('Userinfo/edit',{token:Inc.storage.getItem('token'),data:data},(res)=>{
+      const load = Loading();
+      Post('Userinfo/edit',{token:Storage.getItem('token'),data:data},(res)=>{
         load.clear();
         const d = res.data;
         if(d.code==0) this.$store.state.uInfo = d.uinfo;
-        return Inc.toast(d.msg);
+        return Toast(d.msg);
       });
     },
 
     /* 上传图片 */
     upImage(){
-      Plus.camera((fileObj)=>{
+      Camera((fileObj)=>{
         // 压缩
-        Plus.readerCompress(fileObj,{width:200,height:200},(base64)=>{
-          const load = Inc.loading();
-          Inc.post('Userinfo/upImage',{token:Inc.storage.getItem('token'),base64:base64},(res)=>{
+        ImgReader(fileObj,{width:200,height:200},(base64)=>{
+          const load = Loading();
+          Post('Userinfo/upImage',{token:Storage.getItem('token'),base64:base64},(res)=>{
             load.clear();
             const d = res.data;
             if(d.code==0){
               this.form.img = d.img;
               this.$store.state.uInfo.img = d.img;
             }
-            return Inc.toast(d.msg);
+            return Toast(d.msg);
           });
         });
       });

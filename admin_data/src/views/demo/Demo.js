@@ -1,3 +1,4 @@
+import {Toast} from '@/library/inc'
 import Action from '@/components/action'
 export default {
   components: {Action},
@@ -38,7 +39,7 @@ export default {
           for(let i=0; i<data.length; i++) id += data[i].id+',';
           this.delData.id = id;
         }
-        else Inc.toast('请选择数据!');
+        else Toast('请选择数据!');
       }
       return type;
     },

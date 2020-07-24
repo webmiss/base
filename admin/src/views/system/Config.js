@@ -1,5 +1,5 @@
-import Inc from '@/library/Inc'
-import Plus from '@/library/Plus'
+import {Loading,Toast,Post,Storage} from '@/library/inc'
+import {Camera,ImgReader} from '@/library/plus'
 
 export default {
   data(){
@@ -19,12 +19,12 @@ export default {
 
     /* 加载数据 */
     loadData(){
-      const load = Inc.loading();
-      Inc.post('Sysconfig/list',{token:Inc.storage.getItem('token')},(res)=>{
+      const load = Loading();
+      Post('Sysconfig/list',{token:Storage.getItem('token')},(res)=>{
         load.clear();
         const d = res.data;
         if(d.code!=0){
-          return Inc.toast(d.msg);
+          return Toast(d.msg);
         }else{
           this.form = d.list;
         }
@@ -34,8 +34,8 @@ export default {
     /* 提交表单 */
     onSubmit(){
       const data = JSON.stringify(this.form);
-      const load = Inc.loading();
-      Inc.post('Sysconfig/edit',{token:Inc.storage.getItem('token'),data:data},(res)=>{
+      const load = Loading();
+      Post('Sysconfig/edit',{token:Storage.getItem('token'),data:data},(res)=>{
         load.clear();
         const d = res.data;
         if(d.code==0){
@@ -44,7 +44,7 @@ export default {
           this.$store.state.system.title = tmp.title;
           this.$store.state.system.copy = tmp.copy;
         }
-        return Inc.toast(d.msg);
+        return Toast(d.msg);
       });
     },
 
@@ -59,11 +59,11 @@ export default {
         perm.width = 1366;
       }
       // 压缩
-      Plus.camera((fileObj)=>{
-        Plus.readerCompress(fileObj,perm,(base64)=>{
-          const load = Inc.loading();
-          Inc.post('Sysconfig/upImage',
-            {token:Inc.storage.getItem('token'),type:type,base64:base64},
+      Camera((fileObj)=>{
+        ImgReader(fileObj,perm,(base64)=>{
+          const load = Loading();
+          Post('Sysconfig/upImage',
+            {token:Storage.getItem('token'),type:type,base64:base64},
           (res)=>{
             load.clear();
             const d = res.data;
@@ -76,7 +76,7 @@ export default {
                 this.$store.state.system.login_bg = d.img;
               }
             }
-            return Inc.toast(d.msg);
+            return Toast(d.msg);
           });
         });
       });

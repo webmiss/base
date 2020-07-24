@@ -1,4 +1,4 @@
-import Inc from '@/library/Inc'
+import {Post,Storage} from '@/library/inc'
 import G2 from '@antv/g2'
 
 export default {
@@ -30,7 +30,7 @@ export default {
 
     /* 加载数据 */
     loadData(){
-      Inc.post('Desktop/index',{token:Inc.storage.getItem('token')},(res)=>{
+      Post('Desktop/index',{token:Storage.getItem('token')},(res)=>{
         let d = res.data;
         if(d.code==0){
           // 统计
@@ -52,24 +52,24 @@ export default {
 
     /* 快捷方式 */
     getMenus(){
-      let menus = JSON.parse(Inc.storage.getItem('Menus') || '[]');
+      let menus = JSON.parse(Storage.getItem('Menus') || '[]');
       this.menus = menus.reverse();
     },
     /* 跳转地址 */
     openUrl(ico,url,index,name){
       // 保存-当前位置
-      Inc.storage.setItem('MenuName',name);
-      Inc.storage.setItem('defaultMenu',index);
+      Storage.setItem('MenuName',name);
+      Storage.setItem('defaultMenu',index);
       this.$store.state.defaultMenu = index;
       // 保存-快捷方式
       if(index!='3'){
-        let menus = JSON.parse(Inc.storage.getItem('Menus') || '[]');
+        let menus = JSON.parse(Storage.getItem('Menus') || '[]');
         let data = {ico:ico,url:url,index:index,name:name};
         const n = menus.findIndex((item)=>JSON.stringify(item)==JSON.stringify(data));
         if(n>=0) menus.splice(n,1);
         menus.push({ico:ico,url:url,index:index,name:name});
         // 保存
-        Inc.storage.setItem('Menus',JSON.stringify(menus));
+        Storage.setItem('Menus',JSON.stringify(menus));
       }
       // 跳转
       this.$router.push(url);
