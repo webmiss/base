@@ -1,4 +1,4 @@
-import Toast from './ui-toast.js'
+import Toast from '../ui/ui-toast.js'
 
 /* 正则验证 */
 export default (name,val,isMsg)=>{
