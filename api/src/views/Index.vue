@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import {Get} from '@/library/inc'
+import {Get} from '@/library/ui'
 export default {
   data(){
     return {

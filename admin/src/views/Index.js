@@ -1,4 +1,4 @@
-import {Post,Storage} from '@/library/inc'
+import {Post,Storage} from '@/library/ui'
 import G2 from '@antv/g2'
 
 export default {

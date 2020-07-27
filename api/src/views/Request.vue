@@ -32,7 +32,7 @@
 
 <script>
 import Env from '@/env'
-import {Storage,Get,Post,Put,Delete,Request} from '@/library/inc'
+import {Storage,Get,Post,Put,Delete,Request} from '@/library/ui'
 export default {
   data(){
     return {

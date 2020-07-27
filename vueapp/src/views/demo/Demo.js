@@ -1,4 +1,4 @@
-import {Back} from '@/library/inc'
+import {Back} from '@/library/ui'
 /* 组件 */
 import PageView from '@/components/page-view'
 import ScrollView from '@/components/scroll-view'

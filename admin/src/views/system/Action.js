@@ -1,4 +1,4 @@
-import {Loading,Toast,Post,Storage} from '@/library/inc'
+import {Loading,Toast,Post,Storage} from '@/library/ui'
 import Action from '@/components/action'
 export default {
   components: {Action},

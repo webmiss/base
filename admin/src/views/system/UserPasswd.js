@@ -1,4 +1,5 @@
-import {Loading,Post,Storage,Toast,Reg} from '@/library/inc'
+import {Loading,Post,Storage,Toast} from '@/library/ui'
+import {Reg} from '@/library/inc'
 
 export default {
   data(){

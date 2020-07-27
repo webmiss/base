@@ -1,6 +1,6 @@
 import Env from '@/env'
 import VueAMap from 'vue-amap';
-import {Storage} from '@/library/inc'
+import {Storage} from '@/library/ui'
 
 /* 高德地图-初始化 */
 VueAMap.initAMapApiLoader({

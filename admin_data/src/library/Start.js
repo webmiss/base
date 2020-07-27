@@ -1,4 +1,4 @@
-import {Storage,Post,Back,Toast} from '@/library/inc'
+import {Storage,Post,Back,Toast} from '@/library/ui'
 import PlusReady from '@/library/plus/plus-ready'
 import Socket from '@/library/Socket'
 

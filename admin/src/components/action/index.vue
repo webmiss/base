@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import {Post,Storage} from '@/library/inc'
+import {Post,Storage} from '@/library/ui'
 export default {
   name:'ImageView',
   props: {

@@ -1,4 +1,4 @@
-import {Loading,Post,Storage,Toast} from '@/library/inc'
+import {Loading,Post,Storage,Toast} from '@/library/ui'
 import Action from '@/components/action'
 import ImgView from '@/components/img-view'
 

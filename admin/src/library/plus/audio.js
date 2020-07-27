@@ -1,4 +1,4 @@
-import Toast from '@/library/inc/ui-toast'
+import Toast from '@/library/ui/ui-toast'
 
 /* 音频 */
 export default (r,callback,fail)=>{

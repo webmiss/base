@@ -1,4 +1,4 @@
-import {Toast} from '@/library/inc'
+import {Toast} from '@/library/ui'
 import Action from '@/components/action'
 export default {
   components: {Action},

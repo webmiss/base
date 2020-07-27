@@ -1,4 +1,4 @@
-import {Toast} from '../library/inc/index.js'
+import {Toast} from '../library/ui/index.js'
 
 const vm = new Vue({
   el: '#main',

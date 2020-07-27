@@ -1,5 +1,5 @@
-import Toast from '@/library/inc/ui-toast'
-import Post from '@/library/inc/request-post'
+import Toast from '@/library/ui/ui-toast'
+import Post from '@/library/ui/request-post'
 
 /* 本地消息 */
 export default (title,content,isRead)=>{
