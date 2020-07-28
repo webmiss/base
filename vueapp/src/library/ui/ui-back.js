@@ -1,4 +1,4 @@
 /* UI-返回 */
-export default (num,self)=>{
+export default (self,num)=>{
   self.$router.goBack(-num);
 }

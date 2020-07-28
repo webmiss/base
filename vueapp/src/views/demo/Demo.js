@@ -20,7 +20,7 @@ export default {
 
     /* 返回 */
     back(res){
-      if(res=='left') return Back(1,this);
+      if(res=='left') return Back(this,1);
     },
 
   }
