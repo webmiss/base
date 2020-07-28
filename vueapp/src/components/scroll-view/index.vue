@@ -21,7 +21,7 @@
 
 <style scoped>
 .wm-scroll_html{position: relative;}
-.wm-scroll_body{position: absolute;}
+.wm-scroll_body{position: absolute; transform: translate(0,0);}
 
 .wm-scroll_load_body{position: absolute; opacity: 1;}
 @keyframes loading { 0% {transform: rotate(0deg);} 50% {transform: rotate(180deg);} 100% {transform: rotate(360deg);} }
@@ -64,6 +64,8 @@ export default {
       limit: 60,  //最小距离
       cubicBezier: '0.25,0.46,0.45,0.94',
       isMove: false,  //是否滑动
+      isUpper: false, //左拉、下拉
+      isLower: false, //右拉、上拉
     }
   },
   mounted(){
@@ -167,6 +169,7 @@ export default {
       clearTimeout(this.timeEnd);
       if(this.page[this.sp]>0) this.page[this.sp]=0;
       else if(this.page[this.sp]<this.bodyMax[this.sp=='x'?'w':'h']) this.page[this.sp]=this.bodyMax[this.sp=='x'?'w':'h'];
+      else this.page[this.sp] = this.getTranslate();
       this.translate(this.page[this.sp],600);
     },
 
@@ -190,12 +193,16 @@ export default {
         if(x<-this.upper) this.tmpPage[this.sp] = this.upper*2;
         // 加载
         this._translateUpper(x>0?x:0);
+        // 触发-左拉、下拉
+        this.isUpper = this.tmpPage[this.sp]>=this.upper?true:false;
       }else{
         // 控制下限
         let y = this.lower+(this.tmpPage[this.sp]-this.bodyMax[this.sp=='x'?'w':'h']);
         if(y<-this.lower) this.tmpPage[this.sp] = this.bodyMax[this.sp=='x'?'w':'h']-this.lower*2;
         // 加载
         this._translateLower(y>0?y:0);
+        // 触发-左拉、下拉
+        this.isLower = this.tmpPage[this.sp]<=this.bodyMax[this.sp=='x'?'w':'h']-this.lower?true:false;
       }
       // 位置
       this.translate(this.tmpPage[this.sp],100);
@@ -218,31 +225,33 @@ export default {
       let time = parseInt(e.timeStamp-this.startTime);
       let n = Math.abs(this.movePage[this.sp]/time);
       n = n<0.2?0:n;
-      let move = parseInt(n*100*4*100)/100;
-      let t = parseInt(move*4);
+      let move = parseInt(n*100*8*100)/100;
+      let t = parseInt(move*2);
       // 加速-距离
       move = this.movePage[this.sp]>0?move:-move;
       this.tmpPage[this.sp] = parseInt((this.tmpPage[this.sp]+move)*100)/100;
       // 控制上限、下限
       if(this.tmpPage[this.sp]>0){
         // 触发-左拉、下拉
-        if(this.tmpPage[this.sp]>=this.upper){
+        if(this.isUpper){
+          this.isUpper = false;
           if(this.scrollX) this.$emit('left',this.res());
           else this.$emit('down',this.res());
         }
         // 限制距离
-        t = t-this.tmpPage[this.sp]*4;
+        t = t-this.tmpPage[this.sp]*2;
         t = t<=0?300:t;
         this.tmpPage[this.sp] = 0;
         this._translateUpper(this.upper);
       }else if(this.tmpPage[this.sp]<this.bodyMax[this.sp=='x'?'w':'h']){
         // 触发-右拉、上拉
-        if(this.tmpPage[this.sp]<=this.bodyMax[this.sp=='x'?'w':'h']-this.lower){
+        if(this.isLower){
+          this.isLower = false;
           if(this.scrollX) this.$emit('right',this.res());
           else this.$emit('up',this.res());
         }
         // 限制距离
-        t = t-(this.bodyMax[this.sp=='x'?'w':'h']-this.tmpPage[this.sp])*4;
+        t = t-(this.bodyMax[this.sp=='x'?'w':'h']-this.tmpPage[this.sp])*2;
         t = t<=0?300:t;
         this.tmpPage[this.sp] = this.bodyMax[this.sp=='x'?'w':'h'];
         this._translateLower(this.lower);
