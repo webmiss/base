@@ -4,6 +4,7 @@ import Storage from './storage.js'
 import Tinymce from './tinymce.js'
 import Back from './ui-back.js'
 import Loading from './ui-loading.js'
+import NavigateTo from './ui-navigate-to.js'
 import Toast from './ui-toast.js'
 
 /* 全部 */
@@ -14,6 +15,7 @@ export default {
   Tinymce,  //Tinymce配置
   Back, //UI-返回
   Loading,  //UI-加载
+  NavigateTo, //跳转页面
   Toast,  //UI-提示
 };
 /* 局部 */
@@ -24,5 +26,6 @@ export {
   Tinymce,
   Back,
   Loading,
+  NavigateTo,
   Toast,
 }

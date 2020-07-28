@@ -1,12 +1,10 @@
-import Vue from 'vue'
-
+import {NavigateTo} from '@/library/ui'
 /* 组件 */
 import PageView from '@/components/page-view'
 import Tabbar from '@/components/tabbar'
-Vue.component('page-view',PageView);
-Vue.component('wm-tabbar',Tabbar);
 
 export default {
+  components: {Tabbar,PageView},
   data(){
     return {
       // 底部导航
@@ -32,8 +30,9 @@ export default {
     /* 打开路由 */
     openUrl(url,login){
       login = login || false;
-      if(login && !this.$store.state.isLogin) return this.$router.push('/user/login');
-      else return this.$router.push(url);
+      NavigateTo(this,'/demo');
+      if(login && !this.$store.state.isLogin) return NavigateTo(this,'/user/login');
+      else return NavigateTo(this,url);
     },
 
   }
