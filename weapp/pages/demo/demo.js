@@ -1,6 +1,5 @@
 import store from '../../store'
-import create from '../../libray/create'
-import Inc from '../../libray/Inc'
+import create from '../../libray/store/create'
 
 const app = getApp();
 

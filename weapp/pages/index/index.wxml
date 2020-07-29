@@ -1,20 +1,11 @@
-<!-- UI组件 -->
-<van-notify id="van-notify" />
-<van-dialog id="van-dialog" />
-<!-- 图片裁切 -->
-<canvas canvas-id="compressCanvas" style="position: fixed; top: 100%; width: {{imgData.width}}px; height: {{imgData.height}}px;" />
-<!-- 二维码生成 -->
-<canvas canvas-id="QRcodeCanvas" style="position: fixed; top: 100%; width: {{qrCodeSize}}px; height: {{qrCodeSize}}px;" />
-
 <!-- 首页 -->
-<page-view hidden="{{tabBar.active==0?false:true}}">
+<page-view hidden="{{tabBar.active==0?false:true}}" immersed="{{true}}" bgColor="rgba(255,255,255,0)">
   <view slot="left">
     <text>{{ geolocation.district || '获取定位' }}</text>
   </view>
   <view slot="body" class="in_html nav_body">
-    <view class="in_body">
+    <view class="in_body" :class="mode=='dark'?'in_body_dark':''">
       <view class="verticalCenter in_ct">
-        <!-- Logo -->
         <view class="logo">
           <image src="../../assets/icon/logo.svg" />
         </view>
@@ -22,100 +13,14 @@
         <view class="logo_bg">
           <image src="../../assets/icon/bg.svg" />
         </view>
-        <!-- 功能 -->
-        <view class="in_tools">
-          <view class="li" bind:tap="getCity">
-            <view class="ico"><text class="icons icon_menu"></text></view>
-            <view class="name">定位</view>
-          </view>
-          <view class="li" bind:tap="getAddress">
-            <view class="ico"><text class="icons icon_menu"></text></view>
-            <view class="name">附近地址</view>
-          </view>
-          <view class="li" bind:tap="getPost">
-            <view class="ico"><text class="icons icon_menu"></text></view>
-            <view class="name">网络</view>
-          </view>
-          <view class="li" bind:tap="getStorage">
-            <view class="ico"><text class="icons icon_menu"></text></view>
-            <view class="name">本地存储</view>
-          </view>
-          <view class="li" bind:tap="compressImage">
-            <view class="ico"><text class="icons icon_menu"></text></view>
-            <view class="name">图片裁切</view>
-          </view>
-          <view class="li" bind:tap="getQRcode">
-            <view class="ico"><text class="icons icon_menu"></text></view>
-            <view class="name">二维码</view>
-          </view>
-          <view class="li" bind:tap="getPay">
-            <view class="ico"><text class="icons icon_menu"></text></view>
-            <view class="name">支付</view>
-          </view>
-          <view class="li" bind:tap="getMap">
-            <view class="ico"><text class="icons icon_menu"></text></view>
-            <view class="name">地图</view>
-          </view>
+        <view class="demo">
+          <text bind:tap="Demo">[ Demo ]</text>
         </view>
-        <!-- 功能 End -->
       </view>
     </view>
   </view>
 </page-view>
 <!-- 首页 End -->
-
-<!-- 消息 -->
-<page-view hidden="{{tabBar.active==1?false:true}}">
-  <text slot="title">消息</text>
-  <scroll-view slot="body" class="nav_body" scroll-y="true">
-    <view class="test">
-      <view>内容</view><view>1</view><view>2</view><view>3</view><view>4</view><view>5</view><view>6</view><view>7</view><view>8</view><view>9</view>
-    </view>
-  </scroll-view>
-</page-view>
-<!-- 消息 End -->
-
-<!-- 我的 -->
-<page-view hidden="{{tabBar.active==2?false:true}}" immersed="{{true}}" bgColor="rgba(111,183,55,{{navColor}})" color="#FFF">
-  <view slot="left">
-    <text class="icons icon_config"></text>
-  </view>
-  <scroll-view slot="body" class="nav_body" scroll-y="{{true}}">
-    <!-- 头像 -->
-    <view class="in_me_info">
-      <view class="tu" bind:tap="openUrl" data-url="/pages/user/config/index" data-login="{{true}}">
-        <view class="img bgImg" wx:if="{{uInfo.img}}" style="background-image: url({{uInfo.img}});"></view>
-        <view class="img" wx:else><text class="icons icon_camera"></text></view>
-      </view>
-      <view class="name" wx:if="{{isLogin}}">{{ uInfo.nickname || '设置昵称' }}</view>
-      <view class="name" wx:else>请登录</view>
-    </view>
-    <!-- 账户 -->
-    <view class="in_me_account mTop1 flex">
-      <view class="ct">
-        <view class="name">钱包(元)</view>
-        <view class="val c1">0.00</view>
-      </view>
-      <view class="ct">
-        <view class="name">积分(个)</view>
-        <view class="val c2">0</view>
-      </view>
-      <view class="ct">
-        <view class="name">优惠券(张)</view>
-        <view class="val c3">0</view>
-      </view>
-    </view>
-    <!-- 订单管理 -->
-    <view class="Menu mTop10 flex">
-      <view class="h2">订单管理</view>
-      <view class="more flex">
-        <text>更多</text><text class="icons icon_right"></text>
-      </view>
-    </view>
-    <view class="in_me_order mTop1">暂无数据</view>
-  </scroll-view>
-</page-view>
-<!-- 我的 End -->
 
 <!-- 底部导航 -->
 <wm-tabbar active="{{ tabBar.active }}" bind:change="navTab"></wm-tabbar>

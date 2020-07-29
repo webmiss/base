@@ -1,31 +1,75 @@
-import Inc from './Inc'
+import Env from '../env.js'
+import {Storage} from './ui/index'
 
 /* Socket */
 export default {
 
+  self: null,
+
+  /* 消息路由 */
+  msgRouter(d){
+    if(d.type=='group') this.msgGroup(d); //消息组
+    else if(d.type=='msg') this.msg(d); //消息
+    else if(d.type=='notify') this.msgNotify(d); //通知
+  },
+
+  /* 消息组 */
+  msgGroup(d){
+    this.self.store.data.uMsg.group = d.data;
+    // 消息数
+    const data = this.self.store.data.uMsg.group;
+    let num = 0;
+    for(let i in data) num += data[i].num;
+    this.self.store.data.uMsg.num = num;
+    this.self.update();
+  },
+
+  /* 消息 */
+  msg(d){
+    // 阅读
+    const voice = Storage.getItem('voice');
+    Notify(d.data.title,d.data.content,voice?true:false);
+    // 追加
+    const fid = d.data.uid==this.self.store.data.uInfo.uid?d.data.fid:d.data.uid;
+    if(this.self.store.data.uMsg.group[''+fid]){
+      this.self.store.data.uMsg.group[''+fid].msg.push(d.data);
+      // 记录数量
+      this.self.store.data.uMsg.group[''+fid].num++;
+      this.self.store.data.uMsg.num++;
+    }else{
+      this.self.store.data.socket.send(JSON.stringify({type:'group'}));
+    }
+  },
+
+  /* 通知 */
+  msgNotify(d){
+    console.log(d);
+  },
+
   /* 启动 */
-  start(){
+  start(self){
+    this.self = self;
     // 重启Socket
     clearInterval(this.msgInterval);
     this.msgInterval = setInterval(()=>{
-      if(Inc.self.store.data.isLogin && (!Inc.self.store.data.socket || Inc.self.store.data.socket.readyState!=1)) this.start();
+      if(this.self.store.data.isLogin && !this.self.store.data.socket) this.start();
     },3000);
     // Token
-    let token = Inc.storage.getItem('token');
+    let token = Storage.getItem('token');
     if(!token) return false;
     // 开启
-    if(Inc.config.socket.start) this.socket(token);
+    if(Env.socket.start) this.socket(token);
   },
 
   /* 链接 */
   socket(token){
-    wx.connectSocket({url:Inc.config.socket.server+'?token='+token});
+    wx.connectSocket({url:Env.socket.server+'?token='+token});
     /* 链接 */
     wx.onSocketOpen(()=>{
       // 成功
       console.log('Socket开启');
-      Inc.self.store.data.socket = true;
-      Inc.self.update();
+      this.self.store.data.socket = true;
+      this.self.update();
       // 心跳包
       clearInterval(this.heartbeat);
       this.heartbeat = setInterval(()=>{
@@ -48,58 +92,21 @@ export default {
     /* 接收 */
     wx.onSocketMessage((res)=>{
       const d = JSON.parse(res.data);
-      console.log(d);
       // 是否成功
-      if(d.code!=0) return Inc.toast(d.msg);
-      /* 消息组 */
-      if(d.code==0 && d.type=='group'){
-        Inc.self.store.data.uMsg.group = d.data;
-        // 消息数
-        this._getMsgNum();
-      }
-      /* 消息 */
-      else if(d.code==0 && d.type=='msg'){
-        // 阅读
-        const voice = Inc.storage.getItem('voice');
-        console.log(voice);
-        // 追加
-        const fid = d.data.uid==Inc.self.store.data.uInfo.uid?d.data.fid:d.data.uid;
-        if(Inc.self.store.data.uMsg.group[''+fid]){
-          Inc.self.store.data.uMsg.group[''+fid].msg.push(d.data);
-          Inc.self.update();
-          // 记录数量
-          Inc.self.store.data.uMsg.group[''+fid].num++;
-          Inc.self.store.data.uMsg.num++;
-          Inc.self.update();
-        }else{
-          wx.sendSocketMessage({data:JSON.stringify({type:'group'})});
-        }
-      }
-      /* 通知 */
-      else if(d.code==0 && d.type=='notify'){
-        // console.log(d);
-        // console.log(Inc.self.store.data.uNotify);
-      }
+      if(d.code!=0) return Toast(d.msg);
+      // 消息路由
+      this.msgRouter(d);
     });
-  },
-
-  /* 消息数 */
-  _getMsgNum(){
-    const data = Inc.self.store.data.uMsg.group;
-    let num = 0;
-    for(let i in data) num += data[i].num;
-    Inc.self.store.data.uMsg.num = num;
-    Inc.self.update();
   },
 
   /* 关闭 */
   _closeMsg(){
-    if(Inc.self.store.data.socket){
+    if(this.self.store.data.socket){
       wx.closeSocket();
-      Inc.self.store.data.socket = null;
-      Inc.self.store.data.uMsg.group = [];
-      Inc.self.store.data.uMsg.num = '';
-      Inc.self.update();
+      this.self.store.data.socket = null;
+      this.self.store.data.uMsg.group = [];
+      this.self.store.data.uMsg.num = '';
+      this.self.update();
     }
   },
 

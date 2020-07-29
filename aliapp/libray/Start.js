@@ -1,11 +1,15 @@
-import Inc from './Inc'
+import {Post,Storage} from './ui/index'
+import {MapGeolocation} from './plus/index'
 import Socket from './Socket'
 
 /* 启动 */
 export default {
 
+  self: null,
+
   /* 初始化 */
-  init(){
+  init(self){
+    this.self = self;
     /* 登录验证 */
     this.tokenState(1);
     clearInterval(this.tokenInterval);
@@ -15,42 +19,40 @@ export default {
     /* 获取定位 */
     this.geoLocation();
     /* 消息推送 */
-    Socket.start();
+    Socket.start(this.self);
   },
 
   /* 登录验证 */
   tokenState(uinfo){
-    const token = Inc.storage.getItem('token');
+    const token = Storage.getItem('token');
     if(token){
-      Inc.post('user/token',{token:token,uinfo:uinfo},(res)=>{
+      Post('user/token',{token:token,uinfo:uinfo},(res)=>{
         const d = res.data;
         if(d.code==0){
-          Inc.self.store.data.isLogin = true;
-          if(d.uinfo) Inc.self.store.data.uInfo = d.uinfo;
-          Inc.self.update();
+          this.self.store.data.isLogin = true;
+          if(d.uinfo) this.self.store.data.uInfo = d.uinfo;
+          this.self.update();
         }else{
-          Inc.self.store.data.isLogin = false;
-          Inc.self.store.data.uInfo = {};
-          Inc.self.update();
-          Inc.storage.setItem('token','');
+          this.self.store.data.isLogin = false;
+          this.self.store.data.uInfo = {};
+          this.self.update();
+          Storage.setItem('token','');
         }
       });
     }else{
-      Inc.self.store.data.isLogin = false;
-      Inc.self.update();
-      Inc.storage.setItem('token','');
+      this.self.store.data.isLogin = false;
+      this.self.update();
+      Storage.setItem('token','');
     }
   },
 
   /* 获取定位 */
   geoLocation(){
-    setTimeout(()=>{
-      Inc.getLocation((res)=>{
-        Inc.self.store.data.geolocation = res;
-        Inc.self.update();
-        Inc.storage.setItem('city',res.district);
-      },(e)=>{ Inc.toast('获取定位失败!'); });
-    },3000);
+    MapGeolocation((res)=>{
+      this.self.store.data.geolocation = res;
+      this.self.update();
+      Storage.setItem('city',res.district);
+    });
   },
 
 }

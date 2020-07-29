@@ -1,7 +1,8 @@
 import store from '../../store'
-import create from '../../libray/create'
-import Inc from '../../libray/Inc'
+import create from '../../libray/store/create'
 import Start from '../../libray/Start'
+
+import {NavigateTo,Loading} from '../../libray/ui/index'
 
 // const app = getApp();
 
@@ -15,30 +16,45 @@ create(store,{
     // 底部导航
     tabBar: {active:0,},
   },
-  onLoad(e){
-    // 项目
-    Inc.self = this;
-    /* 初始化 */
-    Start.init();
+  onShareAppMessage(res){
+    // 分享
+    const row = res.target.dataset.row;
+    return {title:row.title,path:row.url,imageUrl:row.img};
   },
-  /* 分享 */
-  onShareAppMessage(){
-    return {title: '',desc: '',path: 'pages/index/index',};
+  onShow(){
+  },
+  onLoad(e){
+    
+    /* 初始化 */
+    Start.init(this);
+    /* 扫码 */
+    const url = e.q;
+    if (url) {
+      // let type = Inc.getQueryString(url,'name');
+    }
+    /* 加载数据 */
+    this.indexLoad();
+  },
+
+  /* 切换导航 */
+  navTab(e){
+    this.setData({['tabBar.active']:e.detail});
+  },
+
+  /* 测试 */
+  Demo(){
+    NavigateTo('/pages/demo/demo',{id:123,sn:456});
   },
 
   /* 打开链接 */
   openUrl(event){
     const url = event.currentTarget.dataset.url;
     const login = event.currentTarget.dataset.login;
-    if(login && !this.data.isLogin) return my.navigateTo({url: '/pages/user/login'});
-    else return my.navigateTo({url:url});
+    if(login && !this.data.isLogin) return NavigateTo('/pages/user/login');
+    else return NavigateTo(url);
   },
 
-  /* 切换导航 */
-  navTab(n){
-    this.setData({['tabBar.active']:n});
-  },
-
-
+  /* 加载数据 */
+  indexLoad(){},
 
 });
