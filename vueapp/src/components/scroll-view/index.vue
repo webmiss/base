@@ -214,10 +214,16 @@ export default {
     /* 结束 */
     end(e){
       // 方向
-      if(this.movePage.x>this.limit) this.$emit('swipe','left');
-      if(this.movePage.x<-this.limit) this.$emit('swipe','right');
-      if(this.movePage.y>this.limit) this.$emit('swipe','down');
-      if(this.movePage.y<-this.limit) this.$emit('swipe','up');
+      const ratio = Math.abs(this.movePage.x/this.movePage.y);
+      if(ratio>1 && this.movePage.x>this.limit){
+        this.$emit('swipe','left');
+      }else if(ratio>1 && this.movePage.x<-this.limit){
+        this.$emit('swipe','right');
+      }else if(ratio<1 && this.movePage.y>this.limit){
+        this.$emit('swipe','down');
+      }else if(ratio<1 && this.movePage.y<-this.limit){
+        this.$emit('swipe','up');
+      }
       // 加速
       if(!this.scroll) return false;
       if(!this.isMove) return false;
