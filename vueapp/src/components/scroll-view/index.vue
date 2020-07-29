@@ -306,6 +306,7 @@ export default {
       // 参数
       xy = xy || 0;
       if(xy=='max') xy=this.bodyMax[this.sp=='x'?'w':'h'];
+      else if(xy=='min') xy=0;
       time = time || 600;
       // 位置
       this.translate(xy,time);
