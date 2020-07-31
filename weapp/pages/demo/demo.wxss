@@ -1,0 +1,2 @@
+.test{margin: 1px 0;}
+.test view{margin: 1px 0; line-height: 120px; background-color: #FFF; text-align: center;}

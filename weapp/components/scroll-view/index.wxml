@@ -1,0 +1,18 @@
+<view id="html" class="wm-scroll_html" catchtouchmove="true" style="{{style.html}}">
+  <!-- 左拉/下拉 -->
+  <view id="upper" v-show="upperLoad" class="wm-scroll_load_body" style="{{style.upper}}">
+    <view class="wm-scroll_load">
+      <text class="{{upperIcon}}" style="color:{{upperColor}};"></text>
+    </view>
+  </view>
+  <!-- 滑动内容 -->
+  <view id="body" class="wm-scroll_body" bind:touchstart="start" bind:touchmove="move" bind:touchend="end" style="{{style.body}}">
+    <slot></slot>
+  </view>
+  <!-- 右拉/上拉 -->
+  <view id="lower" v-show="lowerLoad" class="wm-scroll_load_body" style="{{style.lower}}">
+    <view class="wm-scroll_load">
+      <text class="{{lowerIcon}}" style="color:{{lowerColor}};"></text>
+    </view>
+  </view>
+</view>

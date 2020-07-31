@@ -1,7 +1,7 @@
 {
   "usingComponents": {
-    "page-view": "/components/page-view/index"
+    "page-view": "/components/page-view/index",
+    "wm-scroll-view": "/components/scroll-view/index"
   },
-  "navigationStyle": "custom",
-  "enablePullDownRefresh": true
+  "navigationStyle": "custom"
 }
