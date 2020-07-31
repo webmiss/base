@@ -196,7 +196,7 @@ Component({
         this.isLower = this.tmpPage[this.data.sp]<=this.data.bodyMax[this.data.sp=='x'?'w':'h']-this.data.lower?true:false;
       }
       // 位置
-      this.translate(this.tmpPage[this.data.sp],16);
+      this.translate(this.tmpPage[this.data.sp],10);
       // 事项
       if(this.data.scrollX) this.triggerEvent('scroll',{x:this.tmpPage[this.sp],y:0});
       else this.triggerEvent('scroll',{x:0,y:this.tmpPage[this.data.sp]});

@@ -266,7 +266,7 @@ export default {
       this.translate(this.tmpPage[this.sp],t);
       // 加速-实时
       this.progress = 1;
-      this.t = t/20;
+      this.t = t/10;
       this.animation = window.requestAnimationFrame(this.render);
     },
 
