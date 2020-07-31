@@ -1,10 +1,12 @@
 import store from '../../store'
 import create from '../../libray/store/create'
+import {Back} from '../../libray/ui/index'
 
 create(store,{
   data:{
     isLogin: null,
     uInfo: null,
+    lists:[0,1,2,3,4,5,6,7,8,9],
   },
   /* 分享 */
   onShareAppMessage(){
@@ -12,13 +14,13 @@ create(store,{
   },
   /* 加载 */
   onLoad(e){
-    console.log(this.data.uInfo);
-    console.log(Inc.config.name);
+    // 隐藏返回按钮
+    my.setBackButton({color: '#FFFFFF'});
   },
 
   /* 返回 */
-  goBack(){
-    my.navigateBack({data:1});
+  back(e){
+    if(e=='left') Back(1);
   },
 
 });

@@ -1,8 +1,13 @@
-<page-view immersed="{{true}}" bgColor="rgba(111,183,55,0)" color="#FFF">
+<page-view>
   <view slot="left">
-    <text class="back icons icon_left" bind:tap="goBack"></text>
+    <text class="back ui ui_left" noTap="back" data-swipe="left"></text>
   </view>
-  <scroll-view slot="body" class="html" scroll-y="{{true}}">
-    内容
-  </scroll-view>
+  <view slot="title">Demo</view>
+  <!-- 滑动 -->
+  <wm-scroll-view slot="body" class="html" onScroll="scroll" onSwipe="back">
+    <view class="test">
+      <view a:for="{{lists}}" a:key="index">{{item}}</view>
+    </view>
+  </wm-scroll-view>
+  <!-- 滑动 End -->
 </page-view>

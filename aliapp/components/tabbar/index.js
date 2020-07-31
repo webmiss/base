@@ -1,10 +1,8 @@
-import Env from '../../env'
-
 Component({
   mixins: [],
   props: {
     active: 0,
-    onChange: null,
+    onChange: ()=>{},
   },
   data: {
   },

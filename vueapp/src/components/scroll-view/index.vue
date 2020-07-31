@@ -1,5 +1,5 @@
 <template>
-<div class="wm-scroll_html" ref="body" @touchmove.prevent @click.prevent>
+<div class="wm-scroll_html" ref="html" @touchmove.prevent @click.prevent>
   <!-- 左拉/下拉 -->
   <div ref="upper" v-show="upperLoad" class="wm-scroll_load_body" :style="{backgroundColor:upperBg}">
     <div class="wm-scroll_load">
@@ -7,7 +7,7 @@
     </div>
   </div>
   <!-- 滑动内容 -->
-  <div class="wm-scroll_body" ref="scroll" @touchstart="start" @touchmove="move" @touchend="end">
+  <div ref="body" class="wm-scroll_body" @touchstart="start" @touchmove="move" @touchend="end">
     <slot></slot>
   </div>
   <!-- 右拉/上拉 -->
@@ -23,7 +23,7 @@
 .wm-scroll_html{position: relative;}
 .wm-scroll_body{position: absolute; transform: translate(0,0);}
 
-.wm-scroll_load_body{position: absolute; opacity: 1;}
+.wm-scroll_load_body{position: absolute; opacity: 0;}
 @keyframes loading { 0% {transform: rotate(0deg);} 50% {transform: rotate(180deg);} 100% {transform: rotate(360deg);} }
 .wm-scroll_load{position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);}
 .wm-scroll_load i{position: absolute; margin: -12px 0 0 -12px; font-size: 24px; color: #6FB737; animation: loading 2s linear 0s infinite;}
@@ -34,7 +34,7 @@ export default {
   name: 'ScrollView',
   props: {
     reset: {type: String, default: ''},
-    scroll: {type: Boolean, default: true},
+    isScroll: {type: Boolean, default: true},
     scrollX: {type: Boolean, default: false},
     scrollY: {type: Boolean, default: true},
     upper: {type: Number, default: 50},
@@ -52,7 +52,6 @@ export default {
   data(){
     return {
       sp:'', //滑动方向
-      obj: null,  //滑动对象
       body: {w:'',h:''}, //容器-宽高
       bodyObj: {w:'',h:''}, //内容-宽高
       bodyMax: {w:0,h:0},  //最大-宽高
@@ -66,6 +65,9 @@ export default {
       isMove: false,  //是否滑动
       isUpper: false, //左拉、下拉
       isLower: false, //右拉、上拉
+      refBody: {},  //滑动内容
+      refUpper: {}, //左上内容
+      refLower: {}, //左下内容
     }
   },
   mounted(){
@@ -75,7 +77,7 @@ export default {
     this.refUpper = this.$refs.upper;
     this.refLower = this.$refs.lower;
     /* 对象 */
-    this.obj = this.$refs.scroll;
+    this.refBody = this.$refs.body;
     /* 默认值 */
     if(this.scrollX){
       // 左
@@ -84,8 +86,8 @@ export default {
       this.refUpper.style.height = '100%';
       this.refUpper.style.transform = `translate(-${this.upper}px,0)`;
       // 中
-      this.obj.style.minWidth = '100%';
-      this.obj.style.height = '100%';
+      this.refBody.style.minWidth = '100%';
+      this.refBody.style.height = '100%';
       // 右
       this.refLower.style.right = 0;
       this.refLower.style.width = `${this.lower}px`;
@@ -98,8 +100,8 @@ export default {
       this.refUpper.style.height = `${this.upper}px`;
       this.refUpper.style.transform = `translate(0,-${this.upper}px)`;
       // 中
-      this.obj.style.minHeight = '100%';
-      this.obj.style.width = '100%';
+      this.refBody.style.minHeight = '100%';
+      this.refBody.style.width = '100%';
       // 下
       this.refLower.style.bottom = 0;
       this.refLower.style.width = '100%';
@@ -112,10 +114,10 @@ export default {
       // 重置位置
       if(this.reset){
         this.page[this.sp]=this.reset=='min'?0:this.bodyMax[this.sp=='x'?'w':'h'];
-        this.translate(this.page[this.sp],600);
+        this.translate(this.page[this.sp],300);
       }
     });
-    resizeObserver.observe(this.obj);
+    resizeObserver.observe(this.refBody);
   },
   methods:{
 
@@ -133,25 +135,23 @@ export default {
     /* 初始化 */
     init(){
       /* 容器 */
-      let body = this.$refs.body;
+      let body = this.$refs.html;
       // 容器-宽高
       this.body.w = body.offsetWidth;
       this.body.h = body.offsetHeight;
       // 对象-宽高、最大
       if(this.scrollX){
-        this.bodyObj.w = this.obj.children[0].offsetWidth;
+        this.bodyObj.w = this.refBody.children[0].offsetWidth;
         this.bodyMax.w = -(this.bodyObj.w-this.body.w);
-        
       }else{
-        this.bodyObj.h = this.obj.offsetHeight;
+        this.bodyObj.h = this.refBody.offsetHeight;
         this.bodyMax.h = -(this.bodyObj.h-this.body.h);
       }
-      
     },
 
     /* 开始 */
     start(e){
-      if(!this.scroll) return false;
+      if(!this.isScroll) return false;
       let touch = e.touches?e.touches[0]:e;
       // 初始化
       this.init();
@@ -163,19 +163,18 @@ export default {
       this.startPage.x = touch.clientX;
       this.startPage.y = touch.clientY;
       // 重置动画
-      this.isMove = false;
       window.cancelAnimationFrame(this.animation);
-      clearInterval(this.timeMove);
-      clearTimeout(this.timeEnd);
-      if(this.page[this.sp]>0) this.page[this.sp]=0;
-      else if(this.page[this.sp]<this.bodyMax[this.sp=='x'?'w':'h']) this.page[this.sp]=this.bodyMax[this.sp=='x'?'w':'h'];
-      else this.page[this.sp] = this.getTranslate();
-      this.translate(this.page[this.sp],600);
+      this.isMove = false;
+      let move = this.getTranslate();
+      if(this.page[this.sp]>0) move=0;
+      else if(this.page[this.sp]<this.bodyMax[this.sp=='x'?'w':'h']) move=this.bodyMax[this.sp=='x'?'w':'h'];
+      this.translate(move,16);
+      this.page[this.sp] = move;
     },
 
     /* 移动 */
     move(e){
-      if(!this.scroll) return false;
+      if(!this.isScroll) return false;
       // 开始
       let touch = e.touches?e.touches[0]:e;
       this.movePage.x = parseInt((touch.clientX-this.startPage.x)*100)/100;
@@ -205,7 +204,7 @@ export default {
         this.isLower = this.tmpPage[this.sp]<=this.bodyMax[this.sp=='x'?'w':'h']-this.lower?true:false;
       }
       // 位置
-      this.translate(this.tmpPage[this.sp],100);
+      this.translate(this.tmpPage[this.sp],16);
       // 事项
       if(this.scrollX) this.$emit('scroll',{x:this.tmpPage[this.sp],y:0});
       else this.$emit('scroll',{x:0,y:this.tmpPage[this.sp]});
@@ -214,7 +213,7 @@ export default {
     /* 结束 */
     end(e){
       // 方向
-      const ratio = Math.abs(this.movePage.x/this.movePage.y);
+      const ratio = Math.abs(this.movePage.x/this.movePage.y) || 0;
       if(ratio>1 && this.movePage.x>this.limit){
         this.$emit('swipe','left');
       }else if(ratio>1 && this.movePage.x<-this.limit){
@@ -224,13 +223,12 @@ export default {
       }else if(ratio<1 && this.movePage.y<-this.limit){
         this.$emit('swipe','up');
       }
-      // 加速
-      if(!this.scroll) return false;
-      if(!this.isMove) return false;
+      // 加速-是否滑动
+      if(!this.isScroll || !this.isMove) return false;
       // 加速-比例
       let time = parseInt(e.timeStamp-this.startTime);
       let n = Math.abs(this.movePage[this.sp]/time);
-      n = n<0.2?0:n;
+      n = n<0.8?0:n;
       let move = parseInt(n*100*8*100)/100;
       let t = parseInt(move*2);
       // 加速-距离
@@ -265,7 +263,7 @@ export default {
       // 加速-位置
       this.translate(this.tmpPage[this.sp],t);
       // 加速-实时
-      this.progress = 1;
+      this.progress = 0;
       this.t = t/10;
       this.animation = window.requestAnimationFrame(this.render);
     },
@@ -274,10 +272,11 @@ export default {
     render(){
       this.progress += 1;
       // 位置
-      this.page[this.sp] = this.getTranslate();
+      let move = this.getTranslate();
       // 事项
-      if(this.scrollX) this.$emit('scroll',{x:this.page[this.sp],y:0});
-      else this.$emit('scroll',{x:0,y:this.page[this.sp]});
+      if(this.scrollX) this.$emit('scroll',{x:move,y:0});
+      else this.$emit('scroll',{x:0,y:move});
+      // 控制
       if(this.progress < this.t){
         this.animation = window.requestAnimationFrame(this.render);
       }
@@ -285,17 +284,15 @@ export default {
 
     /* 滚动-位置 */
     translate(xy,time){
-      if(this.scrollX) this.obj.style.transform = `translate(${xy}px,0)`;
-      else this.obj.style.transform = `translate(0,${xy}px)`;
-      if(time){
-        this.obj.style.transitionDuration = `${time}ms`;
-        this.obj.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
-      }
+      if(this.scrollX) this.refBody.style.transform = `translate(${xy}px,0)`;
+      else this.refBody.style.transform = `translate(0,${xy}px)`;
+      this.refBody.style.transitionDuration = `${time}ms`;
+      this.refBody.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
     },
     /* 实时位置 */
     getTranslate(){
       const xy = this.scrollX?4:5;
-      let v = window.getComputedStyle(this.obj).transform;
+      let v = window.getComputedStyle(this.refBody).transform;
       v = parseInt(parseFloat(v.substring(7).split(',')[xy])*100)/100;
       return v;
     },

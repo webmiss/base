@@ -23,4 +23,4 @@
 <!-- 首页 End -->
 
 <!-- 底部导航 -->
-<wm-tabbar active="{{ tabBar.active }}" bind:change="navTab"></wm-tabbar>
+<wm-tabbar active="{{ tabBar.active }}" onChange="navTab"></wm-tabbar>
