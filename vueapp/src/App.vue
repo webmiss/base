@@ -104,7 +104,7 @@ i{font-style: normal;}
 .nowrap_three{overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;}
 
 /* 底部导航 */
-.nav_body{overflow: hidden; height: calc(100% - 48px);}
+.nav_body{position: relative; overflow: hidden; height: calc(100% - 48px);}
 
 </style>
 
