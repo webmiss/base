@@ -20,6 +20,7 @@ Component({
     upperColor: {type: String, value: ''},
     lowerColor: {type: String, value: ''},
     moveMin: {type: Number, value: 30},
+    maxWidth: {type: Number, value: 0},
   },
   data: {
     sp:'', //滑动方向
@@ -122,11 +123,9 @@ Component({
         });
         // 对象-宽高、最大
         if(this.data.scrollX){
-          this.getDomInfo('#body',(res)=>{
-            this.setData({
-              ['bodyObj.w']:res.width,
-              ['bodyMax.w']:-(res.width-this.data.body.w),
-            });
+          this.setData({
+            ['bodyObj.w']:this.data.maxWidth,
+            ['bodyMax.w']:-(this.data.maxWidth-this.data.body.w),
           });
         }else{
           this.getDomInfo('#body',(res)=>{
@@ -202,14 +201,14 @@ Component({
     /* 结束 */
     end(e){
       // 方向
-      const ratio = Math.abs(this.movePage.x/this.movePage.y) || 0;
-      if(ratio>1 && this.movePage.x>this.data.limit){
+      const ratio = Math.abs(this.data.movePage.x/this.data.movePage.y) || 0;
+      if(ratio>1 && this.data.movePage.x>this.data.limit){
         this.triggerEvent('swipe','left');
-      }else if(ratio>1 && this.movePage.x<-this.data.limit){
+      }else if(ratio>1 && this.data.movePage.x<-this.data.limit){
         this.triggerEvent('swipe','right');
-      }else if(ratio<1 && this.movePage.y>this.data.limit){
+      }else if(ratio<1 && this.data.movePage.y>this.data.limit){
         this.triggerEvent('swipe','down');
-      }else if(ratio<1 && this.movePage.y<-this.data.limit){
+      }else if(ratio<1 && this.data.movePage.y<-this.data.limit){
         this.triggerEvent('swipe','up');
       }
       // 加速-是否滑动
