@@ -1,4 +1,4 @@
-<view id="html" class="wm-scroll_html" catchtouchmove="true" style="{{style.html}}">
+<view id="html" class="wm-scroll_html" style="{{style.html}}">
   <!-- 左拉/下拉 -->
   <view id="upper" hidden="{{!upperLoad}}" class="wm-scroll_load_body" style="{{style.upper}}">
     <view class="wm-scroll_load">
