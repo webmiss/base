@@ -1,14 +1,14 @@
 <template>
 <div v-show="show">
-  <div ref="PopupBG" class="popup_bg" :style="{backgroundColor:'rgba(0,0,0,'+opacity+')'}" @click="clickBG()"></div>
-  <div ref="PopupBody" class="popup_body" :style="{backgroundColor:bgColor}"><slot></slot></div>
+  <div ref="PopupBG" class="wm-popup_bg" :style="{backgroundColor:'rgba(0,0,0,'+opacity+')'}" @click="clickBG()"></div>
+  <div ref="PopupBody" class="wm-popup_body" :style="{backgroundColor:bgColor}"><slot></slot></div>
 </div>
 </template>
 
 <style scoped>
-.popup_bg,.popup_body{position: fixed; z-index: 1000; transition: all .3s ease;}
-.popup_bg{width: 100%; height: 100%; top: 0; left: 0; opacity: 0;}
-.popup_body{opacity: 0;}
+.wm-popup_bg,.wm-popup_body{position: fixed; z-index: 1000; transition: all .3s ease;}
+.wm-popup_bg{width: 100%; height: 100%; top: 0; left: 0; opacity: 0;}
+.wm-popup_body{opacity: 0;}
 </style>
 
 <script>

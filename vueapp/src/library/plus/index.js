@@ -6,6 +6,7 @@ import ImgReader from './img-reader'
 import MapAddress from './map-address'
 import MapAngle from './map-angle'
 import MapGeolocation from './map-geolocation'
+import MapOpen from './map-open'
 import Notify from './notify'
 import Pay from './pay'
 import Photo from './photo'
@@ -23,6 +24,7 @@ export default {
   MapAddress, //地图-搜索地址
   MapAngle, //地图-坐标转角度
   MapGeolocation, //地图-定位
+  MapOpen, //地图-打开
   Notify, //本地消息
   Pay,  //支付
   Photo,  //照片
@@ -40,6 +42,7 @@ export {
   MapAddress,
   MapAngle,
   MapGeolocation,
+  MapOpen,
   Notify,
   Photo,
   PlusReady,
