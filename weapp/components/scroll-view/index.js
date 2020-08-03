@@ -6,7 +6,7 @@ Component({
   },
   properties: {
     reset: {type: String, value: ''},
-    scroll: {type: Boolean, value: true},
+    isScroll: {type: Boolean, value: true},
     scrollX: {type: Boolean, value: false},
     scrollY: {type: Boolean, value: true},
     upper: {type: Number, value: 50},
@@ -141,7 +141,7 @@ Component({
 
     /* 开始 */
     start(e){
-      if(!this.data.scroll) return false;
+      if(!this.data.isScroll) return false;
       let touch = e.touches?e.touches[0]:e;
       // 初始化
       this.init();
@@ -164,16 +164,13 @@ Component({
 
     /* 移动 */
     move(e){
-      if(!this.data.scroll) return false;
+      if(!this.data.isScroll) return false;
       // 开始
       const touch = e.touches?e.touches[0]:e;
       this.movePage = {
         x: parseInt((touch.clientX-this.startPage.x)*100)/100,
         y: parseInt((touch.clientY-this.startPage.y)*100)/100,
       }
-      // 是否移动
-      const move = Math.abs(this.movePage[this.data.sp]);
-      if(move<this.moveMin) return false;
       // 移动距离
       this.setData({ isMove:true });
       this.tmpPage[this.data.sp] = parseInt((this.data.page[this.data.sp]+this.movePage[this.data.sp])*100)/100;
@@ -196,7 +193,7 @@ Component({
         this.isLower = this.tmpPage[this.data.sp]<=this.data.bodyMax[this.data.sp=='x'?'w':'h']-this.data.lower?true:false;
       }
       // 位置
-      this.translate(this.tmpPage[this.data.sp],10);
+      this.translate(this.tmpPage[this.data.sp],100);
       // 事项
       if(this.data.scrollX) this.triggerEvent('scroll',{x:this.tmpPage[this.sp],y:0});
       else this.triggerEvent('scroll',{x:0,y:this.tmpPage[this.data.sp]});
@@ -216,7 +213,7 @@ Component({
         this.triggerEvent('swipe','up');
       }
       // 加速-是否滑动
-      if(!this.data.scroll || !this.data.isMove) return false;
+      if(!this.data.isScroll || !this.data.isMove) return false;
       // 加速-比例
       let time = parseInt(e.timeStamp-this.startTime);
       let n = Math.abs(this.movePage[this.data.sp]/time);
@@ -256,9 +253,9 @@ Component({
       this.translate(this.tmpPage[this.data.sp],t);
       // 加速-实时
       this.progress = 0;
-      this.t = t/16;
+      this.t = t/10;
       clearInterval(this.timeMove);
-      this.timeMove = setInterval(()=>{ this.render(); },16);
+      this.timeMove = setInterval(()=>{ this.render(); },10);
     },
 
     /* 动画时间 */

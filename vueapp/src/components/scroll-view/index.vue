@@ -179,9 +179,6 @@ export default {
       let touch = e.touches?e.touches[0]:e;
       this.movePage.x = parseInt((touch.clientX-this.startPage.x)*100)/100;
       this.movePage.y = parseInt((touch.clientY-this.startPage.y)*100)/100;
-      // 是否移动
-      let move = Math.abs(this.movePage[this.sp]);
-      if(move<this.moveMin) return false;
       // 移动距离
       this.isMove = true;
       this.tmpPage[this.sp] = parseInt((this.page[this.sp]+this.movePage[this.sp])*100)/100;
@@ -204,7 +201,7 @@ export default {
         this.isLower = this.tmpPage[this.sp]<=this.bodyMax[this.sp=='x'?'w':'h']-this.lower?true:false;
       }
       // 位置
-      this.translate(this.tmpPage[this.sp],16);
+      this.translate(this.tmpPage[this.sp],100);
       // 事项
       if(this.scrollX) this.$emit('scroll',{x:this.tmpPage[this.sp],y:0});
       else this.$emit('scroll',{x:0,y:this.tmpPage[this.sp]});
