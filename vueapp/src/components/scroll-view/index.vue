@@ -20,7 +20,7 @@
 </template>
 
 <style scoped>
-.wm-scroll_html{position: relative;}
+.wm-scroll_html{position: relative; overflow: hidden; width: inherit; height: inherit;}
 .wm-scroll_body{position: absolute; transform: translate(0,0);}
 
 .wm-scroll_load_body{position: absolute; opacity: 0;}
