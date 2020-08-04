@@ -38,7 +38,7 @@ export default {
     let body = this.$refs.PopupBody || '';
     // 默认值
     if(this.position=='left'){
-      body.style.height = '110%';
+      body.style.height = '100%';
       body.style.left = 0;
       body.style.top = 0;
       body.style.opacity = 1;
@@ -75,37 +75,20 @@ export default {
       setTimeout(()=>{
         let bg = this.$refs.PopupBG || '';
         let body = this.$refs.PopupBody || '';
-        // 显示&隐藏
-        if(show){
-          bg.style.opacity = 1;
-          // 位置
-          if(this.position=='left'){
-            body.style.transform = 'translate(-1px,0)';
-          }else if(this.position=='right'){
-            body.style.transform = 'translate(1px,0)';
-          }else if(this.position=='top'){
-            body.style.transform = 'translate(0,-1px)';
-          }else if(this.position=='bottom'){
-            body.style.transform = 'translate(0,1px)';
-          }else{
-            body.style.opacity = 1;
-            body.style.top = '50%';
-          }
+        // 背景
+        bg.style.opacity = show?1:0;
+        // 位置
+        if(this.position=='left'){
+          body.style.transform = show?'translate(-1px,0)':'translate(-110%,0)';
+        }else if(this.position=='right'){
+          body.style.transform = show?'translate(1px,0)':'translate(110%,0)';
+        }else if(this.position=='top'){
+          body.style.transform = show?'translate(0,-1px)':'translate(0,-110%)';
+        }else if(this.position=='bottom'){
+          body.style.transform = show?'translate(0,1px)':'translate(0,110%)';
         }else{
-          bg.style.opacity = 0;
-          // 位置
-          if(this.position=='left'){
-            body.style.transform = 'translate(-110%,0)';
-          }else if(this.position=='right'){
-            body.style.transform = 'translate(110%,0)';
-          }else if(this.position=='top'){
-            body.style.transform = 'translate(0,-110%)';
-          }else if(this.position=='bottom'){
-            body.style.transform = 'translate(0,110%)';
-          }else{
-            body.style.opacity = 0;
-            body.style.top = '30%'
-          }
+          body.style.opacity = show?1:0;
+          body.style.top = show?'50%':'30%';
         }
         // 当前状态
         setTimeout(()=>{ this.$emit('show',show); },300);
@@ -114,7 +97,12 @@ export default {
 
     /* 点击背景 */
     clickBG(){
-      if(this.bgClose) this.showBG(false);
+      if(this.bgClose) this.close();
+    },
+
+    /* 关闭 */
+    close(){
+      this.showBG(false);
     },
 
   }
