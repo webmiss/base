@@ -133,7 +133,7 @@ Component({
           HtmlInfo(this,'#body',(res)=>{
             this.setData({
               ['bodyObj.h']:res[0].height,
-              ['bodyMax.h']:-(res.height-this.data.body.h),
+              ['bodyMax.h']:-(res[0].height-this.data.body.h),
             });
           });
         }
@@ -149,9 +149,9 @@ Component({
       // 开始时间
       this.startTime = e.timeStamp;
       // 开始坐标
-      this.movePage= {x:0,y:0};
+      this.movePage = {x:0,y:0};
       this.tmpPage = {x:0,y:0};
-      this.startPage= {x:touch.clientX,y:touch.clientY};
+      this.startPage = {x:touch.clientX,y:touch.clientY};
       // 重置动画
       clearInterval(this.timeMove);
       this.getTranslate((move)=>{
@@ -203,14 +203,14 @@ Component({
     /* 结束 */
     end(e){
       // 方向
-      const ratio = Math.abs(this.data.movePage.x/this.data.movePage.y) || 0;
-      if(ratio>1 && this.data.movePage.x>this.data.limit){
+      const ratio = Math.abs(this.movePage.x/this.movePage.y) || 0;
+      if(ratio>1 && this.movePage.x>this.data.limit){
         this.triggerEvent('swipe','left');
-      }else if(ratio>1 && this.data.movePage.x<-this.data.limit){
+      }else if(ratio>1 && this.movePage.x<-this.data.limit){
         this.triggerEvent('swipe','right');
-      }else if(ratio<1 && this.data.movePage.y>this.data.limit){
+      }else if(ratio<1 && this.movePage.y>this.data.limit){
         this.triggerEvent('swipe','down');
-      }else if(ratio<1 && this.data.movePage.y<-this.data.limit){
+      }else if(ratio<1 && this.movePage.y<-this.data.limit){
         this.triggerEvent('swipe','up');
       }
       // 加速-是否滑动
