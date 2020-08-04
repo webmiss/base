@@ -1,4 +1,6 @@
 
+import HtmlInfo from '../../libray/inc/html-info'
+
 Component({
   options: {
     multipleSlots: true,
@@ -113,13 +115,13 @@ Component({
     /* 初始化 */
     init(){
       /* 容器 */
-      this.getDomInfo('#html',(res)=>{
+      HtmlInfo(this,'#html',(res)=>{
         // 容器-宽高
         this.setData({
-          ['refHtml.left']:res.left,
-          ['refHtml.top']:res.top,
-          ['body.w']:res.width,
-          ['body.h']:res.height,
+          ['refHtml.left']:res[0].left,
+          ['refHtml.top']:res[0].top,
+          ['body.w']:res[0].width,
+          ['body.h']:res[0].height,
         });
         // 对象-宽高、最大
         if(this.data.scrollX){
@@ -128,9 +130,9 @@ Component({
             ['bodyMax.w']:-(this.data.maxWidth-this.data.body.w),
           });
         }else{
-          this.getDomInfo('#body',(res)=>{
+          HtmlInfo(this,'#body',(res)=>{
             this.setData({
-              ['bodyObj.h']:res.height,
+              ['bodyObj.h']:res[0].height,
               ['bodyMax.h']:-(res.height-this.data.body.h),
             });
           });
@@ -286,8 +288,8 @@ Component({
     /* 实时位置 */
     getTranslate(callback){
       const xy = this.data.scrollX?'left':'top';
-      this.getDomInfo('#body',(res)=>{
-        let v = -parseInt((this.data.refHtml[xy]-res[xy])*100)/100 || 0;
+      HtmlInfo(this,'#body',(res)=>{
+        let v = -parseInt((this.data.refHtml[xy]-res[0][xy])*100)/100 || 0;
         callback(v);
       });
     },
@@ -320,12 +322,6 @@ Component({
       this.setStyle('lower',this.data.refLower);
     },
 
-    /* Dom Info */
-    getDomInfo(dom,callback){
-      wx.createSelectorQuery().in(this).select(dom).boundingClientRect().exec((res)=>{
-        return callback(res[0]);
-      });
-    },
     /* Array to Style */
     setStyle(name,val){
       let str = '';
