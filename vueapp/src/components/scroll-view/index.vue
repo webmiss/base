@@ -279,6 +279,20 @@ export default {
       }
     },
 
+    /* 滚动-指定位置 */
+    scrollTo(xy,time){
+      // 初始化
+      this.init();
+      // 参数
+      xy = xy || 0;
+      if(xy=='max') xy=this.bodyMax[this.sp=='x'?'w':'h'];
+      else if(xy=='min') xy=0;
+      time = time || 600;
+      // 位置
+      this.translate(xy,time);
+      this.page[this.sp] = xy;
+    },
+
     /* 滚动-位置 */
     translate(xy,time){
       if(this.scrollX) this.refBody.style.transform = `translate(${xy}px,0)`;
@@ -292,19 +306,6 @@ export default {
       let v = window.getComputedStyle(this.refBody).transform;
       v = parseInt(parseFloat(v.substring(7).split(',')[xy])*100)/100;
       return v;
-    },
-    /* 滚动-指定位置 */
-    scrollTo(xy,time){
-      // 初始化
-      this.init();
-      // 参数
-      xy = xy || 0;
-      if(xy=='max') xy=this.bodyMax[this.sp=='x'?'w':'h'];
-      else if(xy=='min') xy=0;
-      time = time || 600;
-      // 位置
-      this.translate(xy,time);
-      this.page[this.sp] = xy;
     },
     
     /* 加载-左/上 */
