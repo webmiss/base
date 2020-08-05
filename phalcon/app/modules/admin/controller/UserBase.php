@@ -7,13 +7,10 @@ use app\model\UserPerm;
 use app\model\UserRole;
 use app\modules\admin\model\SysMenu;
 
-use app\model\BaseArea;
-
 class UserBase extends Base{
 
   static protected $token = '';  // 用户信息
   static protected $perm = '';  // 权限值
-  static private $menus=[]; // 菜单
 
 	/* 构造函数 */
   function initialize(){
@@ -72,7 +69,7 @@ class UserBase extends Base{
   }
 
   /* Map条件 */
-  static protected function getMapWhere($data,$like='=',$or='OR'){
+  protected function getMapWhere($data,$like='=',$or='OR'){
     $data = array_filter($data);
     $where = '';
     foreach($data as $key=>$val){
@@ -83,26 +80,6 @@ class UserBase extends Base{
       }
     }
     return rtrim($where,' '.$or.' ');
-  }
-
-  /* 区/室/组 */
-  protected function getArea(){
-    $all = BaseArea::find(['dtime IS NULL','columns'=>'id,fid,name'])->toArray();
-    foreach($all as $val){
-      self::$menus[$val['fid']][] = $val;
-    }
-    // 获取菜单
-    return self::getMenu();
-  }
-  // 递归菜单
-	static private function getMenu($fid=0){
-    $data=[];
-    $M = isset(self::$menus[$fid])?self::$menus[$fid]:[];
-		foreach($M as $val){
-      $val['menus'] = self::getMenu($val['id']);
-			$data[] = $val;
-		}
-		return $data;
   }
   
 }

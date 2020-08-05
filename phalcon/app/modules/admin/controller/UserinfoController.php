@@ -2,21 +2,23 @@
 
 namespace app\modules\admin\controller;
 
-use app\library\Centre;
+use app\library\Upload;
+use app\model\UserInfo;
 
 class UserInfoController extends UserBase {
 
+  static private $imgDir = 'upload/user/img/';
+
   /* 列表 */
   function listAction(){
-    $res = Centre::uinfo(self::$token->uid);
-    $data = $res->info;
+    $data = UserInfo::findFirst(['uid='.self::$token->uid]);
     $list = [
       'position'=>$data->position?$data->position:'',
       'nickname'=>$data->nickname?$data->nickname:'',
       'name'=>$data->name?$data->name:'',
       'gender'=>$data->gender?$data->gender:'',
       'birthday'=>$data->birthday?$data->birthday:'',
-      'img'=>$data->img?$data->img:'',
+      'img'=>$data->img?$this->config->img_url.$data->img:'',
     ];
 		return self::getJSON(['code'=>0,'list'=>$list]);
   }
@@ -25,16 +27,48 @@ class UserInfoController extends UserBase {
   function editAction(){
     $data = $this->request->get('data');
     if(empty($data)) return self::getJSON(['code'=>4000]);
-    $res = Centre::uinfoEdit(self::$token->uid,$data);
-    $uinfo = json_decode($data,true);
-    return $res->code==0?self::getJSON(['code'=>0,'uinfo'=>$uinfo]):self::getJSON(['code'=>4011,'msg'=>$res->msg]);
+    // 模型
+    $data = json_decode($data);
+    $model = UserInfo::findFirst(['uid='.self::$token->uid]);
+    if(!$model){
+      $model = new UserInfo();
+      $model->uid = self::$token->uid;
+    }
+    foreach($data as $key=>$val){
+      if($key=='img') continue;
+      $model->$key = trim($val);
+    }
+    $uinfo = $model->toArray();
+    $uinfo['img'] = $uinfo['img']?$this->config->img_url.$uinfo['img']:'';
+    return $model->save()==true?self::getJSON(['code'=>0,'uinfo'=>$uinfo]):self::error(4022);
   }
 
   /* 上传图片 */
   function upImageAction(){
     $base64 = $this->request->get('base64');
     if(empty($base64)) return self::getJSON(['code'=>4000]);
-    $res = Centre::uinfoImg(self::$token->uid,$base64);
-    return $res->code==0?self::getJSON(['code'=>0,'img'=>$res->img]):self::getJSON(['code'=>4030,'msg'=>$res->msg]);
+    // 上传
+    $res = Upload::base64(['path'=>self::$imgDir,'base64'=>$base64]);
+    // 模型
+    if(is_array($res)){
+      $model = UserInfo::findFirst(['uid='.self::$token->uid]);
+      if(!$model){
+        $model = new UserInfo();
+        $model->uid = self::$token->uid;
+      }
+      $img = isset($model->img)?$model->img:'';
+      // 头像
+      $model->img = self::$imgDir.$res['filename'];
+      // 保存
+      if($model->save()==true){
+        @unlink($img);
+        return self::getJSON(['code'=>0,'img'=>$this->config->img_url.self::$imgDir.$res['filename']]);
+      }else{
+        return self::getJSON(['code'=>4030,'msg'=>'保存数据失败!']);
+      }
+    }else{
+      return self::getJSON(['code'=>4030,'msg'=>$res]);
+    }
   }
+
 }

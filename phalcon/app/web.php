@@ -20,7 +20,7 @@ try {
   $di = new Di();
   /* 注册：配置 */
 	$di->setShared('config', function () {
-		return new phpConfig(APP_PATH.'/config/env.php');
+    return new phpConfig(APP_PATH.'/config/env.php');
   });
   // 自动加载
   require APP_PATH.'/config/loader.php';

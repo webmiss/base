@@ -10,6 +10,7 @@ const routes = [
   {path:'/UserInfo', name:'UserInfo', component:resolve=>require(['./views/system/UserInfo.vue'],resolve)},
   {path:'/UserPasswd', name:'UserPasswd', component:resolve=>require(['./views/system/UserPasswd.vue'],resolve)},
   // 设置
+  {path:'/SysUser', name:'SysUser', component:resolve=>require(['./views/system/User.vue'],resolve)},
   {path:'/SysPerm', name:'SysPerm', component:resolve=>require(['./views/system/Perm.vue'],resolve)},
   {path:'/SysRole', name:'SysRole', component:resolve=>require(['./views/system/Role.vue'],resolve)},
   {path:'/SysConfig', name:'SysConfig', component:resolve=>require(['./views/system/Config.vue'],resolve)},

@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\admin\controller;
 
 use app\modules\admin\model\SysMenu;

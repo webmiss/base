@@ -12,13 +12,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/Textalk/websocket-php/zipball/bfa18bb6bf523680c7803f6b04694fbbf2f67bbf",
             "reference": "bfa18bb6bf523680c7803f6b04694fbbf2f67bbf",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "shasum": ""
         },
         "require-dev": {
             "cboden/ratchet": "0.3.*",

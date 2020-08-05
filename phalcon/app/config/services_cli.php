@@ -42,3 +42,4 @@ $di->set('modelsManager', function() {
 $di->set('modelsMetadata', function() {
   return new Phalcon\Mvc\Model\MetaData\Memory();
 });
+

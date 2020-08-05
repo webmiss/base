@@ -4,11 +4,10 @@ namespace app\modules\admin\controller;
 
 use app\library\Inc;
 use app\library\Safety;
-use app\library\Centre;
 
+use app\model\User;
 use app\model\UserPerm;
 use app\model\UserRole;
-
 use app\modules\admin\model\SysMenu;
 use app\modules\admin\model\SysMenuAction;
 
@@ -22,57 +21,63 @@ class SysPermController extends UserBase {
     $data = self::getSeaWhere()['data'];
     $where = '';
     if(isset($data['uname']) && !empty($data['uname'])){
-      $res = Centre::getID($data['uname']);
-      $where = $res->code==0?'uid='.$res->uid:'0';
+      $where = '(b.uname LIKE "%'.$data['uname'].'%" OR b.tel LIKE "%'.$data['uname'].'%" OR b.email LIKE "%'.$data['uname'].'%")';
     }
     // 分页
     $page = $this->request->get('page','int');
     $limit = $this->request->get('limit','int');
     $start = ($page-1)*$limit;
+    // 查询数据
+    $builder = $this->modelsManager->createBuilder();
+    $builder->addfrom('app\model\UserPerm', 'a');
+    $builder->leftJoin('app\model\User', 'a.uid=b.id', 'b');
+    $builder->leftJoin('app\model\UserInfo', 'a.uid=c.uid', 'c');
+    $builder->where($where);
+    $builder->columns('
+      a.uid as uid,a.perm as perm,a.role as role,a.state_admin as state_admin,a.state_app as state_app,
+      b.uname as uname,b.email as email,b.tel as tel,b.state as state,
+      b.rtime as rtime,b.ltime as ltime,b.utime as utime,
+      c.nickname as nickname,c.position as position,c.name as name,c.gender as gender,c.birthday as birthday,c.img as img
+    ');
+    $builder->orderBy('a.uid DESC');
     // 数据
-    $total = UserPerm::count([$where]);
-    $list = UserPerm::find([
-      $where,
-      'columns'=>'*',
-      'order'=>'uid DESC',
-      'limit'=>['number'=>$limit,'offset'=>$start]
-    ])->toArray();
-    // 结果
-    foreach($list as $key=>$val){
-      $res = Centre::uinfo($val['uid']);
-      $uinfo = $res->code==0?(Array)$res->info:[];
-      $list[$key] = array_merge($val,$uinfo);
-      // 重置
-      $list[$key]['age'] = $uinfo['birthday']?Inc::getAge($uinfo['birthday']):'';
-      $list[$key]['state_admin'] = $val['state_admin']?true:false;
-      $list[$key]['state_app'] = $val['state_app']?true:false;
+    $total = $builder->getQuery()->execute()->count();
+    $builder->limit($limit,$start);
+    $data = $builder->getQuery()->execute()->toArray();
+    // 状态
+    foreach ($data as $key => $val) {
+      $data[$key]['age'] = $val['birthday']?Inc::getAge($val['birthday']):'';
+      $data[$key]['state_admin'] = $val['state_admin']?true:false;
+      $data[$key]['state_app'] = $val['state_app']?true:false;
     }
-    return self::getJSON(['code'=>0,'list'=>$list,'total'=>$total]);
+    return self::getJSON(['code'=>0,'list'=>$data,'total'=>$total]);
   }
 
   /* 添加 */
   function addAction(){
     $data = $this->request->get('data');
-    if(!$data || empty($data)) return self::getJSON(['code'=>4000]);
+    if(empty($data)) return self::getJSON(['code'=>4000]);
     $data = json_decode($data);
     // 验证
-    $res = Safety::isRight('tel',$data->tel);
-    if($res!==true) return self::getJSON(['code'=>4000,'msg'=>$res]);
-    $res = Safety::isRight('passwd',$data->passwd);
-    if($res!==true) return self::getJSON(['code'=>4000,'msg'=>$res]);
+    $msg = Safety::isRight('tel',$data->tel);
+    if($msg!==true) return self::getJSON(['code'=>4000,'msg'=>$msg]);
+    $msg = Safety::isRight('passwd',$data->passwd);
+    if($msg!==true) return self::getJSON(['code'=>4000,'msg'=>$msg]);
     // 是否存在
-    $res = Centre::getID($data->tel);
-    if($res->code!=0) return self::getJSON(['code'=>4000,'msg'=>$res->msg]);
+    $res = User::findFirst(['tel=:tel:','bind'=>['tel'=>$data->tel]]);
     // 是否注册
-    if($res->uid){
-      $model = UserPerm::findFirst(['uid=:uid:','bind'=>['uid'=>$res->uid]]);
+    if($res){
+      $model = UserPerm::findFirst(['uid=:uid:','bind'=>['uid'=>$res->id]]);
       if($model) return self::getJSON(['code'=>0,'msg'=>'已存在该系统!']);
-      $uid = $res->uid;
+      $uid = $res->id;
     }else{
       // 注册
-      $res = Centre::register($data->tel,$data->passwd);
-      if($res->code!=0) return self::getJSON(['code'=>4001,'msg'=>$res->msg]);
-      $uid = $res->uid;
+      $user = new User();
+      $user->id = self::getId();
+      $user->tel = $data->tel;
+      $user->password = md5($data->passwd);
+      if(!$user->save()) return self::getJSON(['code'=>4001,'msg'=>'注册失败!']);
+      $uid = $user->id;
     }
     // 配置权限
     $model = new UserPerm();
@@ -89,17 +94,23 @@ class SysPermController extends UserBase {
     if(!$data || empty($data)) return self::getJSON(['code'=>4000]);
     $data = json_decode($data);
     // 验证
-    $res = Safety::isRight('tel',$data->tel);
-    if($res!==true) return self::getJSON(['code'=>4000,'msg'=>$res]);
+    $msg = Safety::isRight('tel',$data->tel);
+    if($msg!==true) return self::getJSON(['code'=>4000,'msg'=>$msg]);
     // 是否存在
     $model = UserPerm::findFirst(['uid=:uid:','bind'=>['uid'=>$data->uid]]);
     if(!$model) return self::getJSON(['code'=>0,'msg'=>'用户不存在!']);
     // 是否管理员
     if(self::isAdmin($model->uid)) return self::getJSON(['code'=>4001,'msg'=>'无权修改!']);
     // 修改账户、密码
-    $res = Centre::changeUname($data->uid,$data->tel,$data->passwd);
+    $user = User::findFirst(['id=:uid:','bind'=>['uid'=>$data->uid]]);
+    $user->tel = $data->tel;
+    if($data->passwd){
+      $msg = Safety::isRight('passwd',$data->passwd);
+      if($msg!==true) return self::getJSON(['code'=>4000,'msg'=>$msg]);
+      $user->password = md5($data->passwd);
+    }
     // 结果
-    return $res->code==0?self::getJSON(['code'=>0]):self::error(4022);
+    return $user->save()?self::getJSON(['code'=>0]):self::error(4022);
   }
 
   /* 删除 */
@@ -217,5 +228,5 @@ class SysPermController extends UserBase {
   private function isAdmin($uid){
     return $uid=='1'&&self::$token->uid!='1'?true:false;
   }
-
+  
 }
