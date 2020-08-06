@@ -4,7 +4,7 @@ import Start from '@/library/Start'
 import Toast from './library/ui/ui-toast'
 import Post from './library/ui/request-post'
 import VersionDiff from './library/inc/version-diff'
-import PlusReady from '@/library/plus/plus-ready'
+import PlusReady from './library/plus/plus-ready'
 
 export default {
   data(){

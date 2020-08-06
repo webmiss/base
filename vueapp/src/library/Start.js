@@ -1,6 +1,12 @@
-import {Storage,Post,Back,Toast} from '@/library/ui'
-import {PlusReady,MapGeolocation} from '@/library/plus'
-import Socket from '@/library/Socket'
+import Toast from '../library/ui/ui-toast'
+import Storage from '../library/ui/storage'
+import Post from '../library/ui/request-post'
+import Back from '../library/ui/ui-back'
+
+import PlusReady from '../library/plus/plus-ready'
+import MapGeolocation from '../library/plus/map-geolocation'
+
+import Socket from '../library/Socket'
 
 /* 启动 */
 export default {
@@ -33,7 +39,7 @@ export default {
             // 关闭摄像头
             if(this.self.$store.state.scan) this.self.$store.state.scan.close();
             // 返回
-            Back(1,this.self);
+            Back(this.self,1);
           }else{
             if(backcount>0) plus.runtime.quit();
             Toast('再按一次退出应用!');
