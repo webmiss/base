@@ -1,10 +1,10 @@
 import {NavigateTo} from '@/library/ui'
 /* 组件 */
 import PageView from '@/components/page-view'
-import Tabbar from '@/components/tabbar'
+import WmTabbar from '@/components/tabbar'
 
 export default {
-  components: {Tabbar,PageView},
+  components: {WmTabbar,PageView},
   data(){
     return {
       // 底部导航
