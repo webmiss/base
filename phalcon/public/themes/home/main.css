@@ -58,9 +58,9 @@ i{font-style: normal;}
 .top_logo:hover{transform: rotate(360deg);}
 
 .top_nav_body{float: left; width: calc(100% - 180px); margin-left: 8px; overflow: hidden;}
-.top_nav{float: left; width: 400px; overflow: hidden;}
-.top_nav li{float: left; padding: 0 24px;}
-.top_nav a{color: #999; font-size: 16px;}
+.top_nav{display: flex; width: 480px; height: 100%;}
+.top_nav li{width: 80px; display: flex; align-items: center; box-sizing: border-box; flex: 1;}
+.top_nav a{flex: 1; text-align: center; color: #999; font-size: 16px;}
 .top_nav .an{color: #6FB737;}
 
 .top_right{position: absolute; right: 16px; top: 0; height: 40px; color: #999;}
