@@ -1,4 +1,4 @@
-import {HtmlDownImg} from '../../library/inc/index.js'
+import HtmlDownImg from '../../library/inc/html-down-img.js'
 import Popup from '../../components/popup/index.js'
 
 const vm = new Vue({

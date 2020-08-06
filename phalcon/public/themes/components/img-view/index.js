@@ -29,7 +29,7 @@ const template = `
 </div>
 `;
 
-import {HtmlLoad} from '../../library/inc/index.js'
+import HtmlLoad from '../../library/inc/html-load.js'
 HtmlLoad(['/themes/components/img-view/index.css']);
 
 export default {

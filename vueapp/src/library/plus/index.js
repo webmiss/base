@@ -10,6 +10,7 @@ import MapOpen from './map-open'
 import Notify from './notify'
 import Pay from './pay'
 import Photo from './photo'
+import PlusBack from './plus-back'
 import PlusReady from './plus-ready'
 import Share from './share'
 import Video from './video'
@@ -28,6 +29,7 @@ export default {
   Notify, //本地消息
   Pay,  //支付
   Photo,  //照片
+  PlusBack,  //Android返回建
   PlusReady,  //plus是否加载
   Share,  //分享
   Video,  //视频
@@ -45,6 +47,7 @@ export {
   MapOpen,
   Notify,
   Photo,
+  PlusBack,
   PlusReady,
   Share,
   Video,

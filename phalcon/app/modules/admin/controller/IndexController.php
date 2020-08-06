@@ -12,7 +12,7 @@ class IndexController extends Base{
 
   /* 首页 */
   public function indexAction(){
-    return 'Admin';
+    return self::getJSON(['code'=>0,'msg'=>'Admin']);
   }
 
   /* APP更新 */

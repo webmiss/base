@@ -4,7 +4,7 @@ const template = `
   <div ref="PopupBody" class="wm-popup_body" :style="{backgroundColor:bgColor}"><slot></slot></div>
 </div>
 `;
-import {HtmlLoad} from '../../library/inc/index.js'
+import HtmlLoad from '../../library/inc/html-load.js'
 HtmlLoad(['/themes/components/popup/index.css']);
 export default {
   template: template,

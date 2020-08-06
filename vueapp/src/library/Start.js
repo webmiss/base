@@ -4,6 +4,7 @@ import Post from '../library/ui/request-post'
 import Back from '../library/ui/ui-back'
 
 import PlusReady from '../library/plus/plus-ready'
+import PlusBack from '../library/plus/plus-back'
 import MapGeolocation from '../library/plus/map-geolocation'
 
 import Socket from '../library/Socket'
@@ -32,21 +33,18 @@ export default {
        }, false);
       // Android返回键
       let backcount = 0;
-      let webview = plus.webview.currentWebview();
-      plus.key.addEventListener('backbutton', ()=>{
-        webview.canBack((e)=>{
-          if(e.canBack){
-            // 关闭摄像头
-            if(this.self.$store.state.scan) this.self.$store.state.scan.close();
-            // 返回
-            Back(this.self,1);
-          }else{
-            if(backcount>0) plus.runtime.quit();
-            Toast('再按一次退出应用!');
-            backcount++;
-            setTimeout(()=>{backcount=0;},2000);
-          }
-        });
+      PlusBack((e)=>{
+        if(e.canBack){
+          // 关闭摄像头
+          if(this.self.$store.state.scan) this.self.$store.state.scan.close();
+          // 返回
+          Back(this.self,1);
+        }else{
+          if(backcount>0) plus.runtime.quit();
+          Toast('再按一次退出应用!');
+          backcount++;
+          setTimeout(()=>{backcount=0;},2000);
+        }
       });
     });
 

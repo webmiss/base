@@ -8,7 +8,7 @@ class IndexController extends Base{
 
 	/* 首页 */
 	function indexAction(){
-		return self::getJSON(['code'=>0]);
+		return self::getJSON(['code'=>0,'msg'=>'Api']);
 	}
 	
 	/* 错误代码 */
