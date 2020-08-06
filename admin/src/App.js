@@ -1,14 +1,19 @@
 import Env from '@/env'
 import Start from '@/library/Start'
-import {Loading,Post,Toast,Storage} from '@/library/ui'
-import {VersionDiff,Reg} from '@/library/inc'
-import PlusReady from '@/library/plus/plus-ready'
 import Socket from '@/library/Socket'
+
+import Loading from './library/ui/ui-loading'
+import Post from './library/ui/request-post'
+import Toast from './library/ui/ui-toast'
+import Storage from './library/ui/storage'
+import VersionDiff from './library/inc/version-diff'
+import Reg from './library/inc/reg'
+import PlusReady from './library/plus/plus-ready'
+/* 组件 */
+import Popup from '@/components/popup'
 import Action from '@/components/action'
 /* Scroll */
 import BScroll from 'better-scroll'
-// 弹出层
-import Popup from '@/components/popup'
 
 export default {
   name: 'APP',

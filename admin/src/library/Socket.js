@@ -1,6 +1,7 @@
 import Env from '@/env'
-import {Toast,Storage} from '@/library/ui'
-import {Notify} from '@/library/plus'
+import Toast from '../library/ui/ui-toast'
+import Storage from '../library/ui/storage'
+import Notify from '../library/plus/notify'
 
 /* Socket */
 export default {

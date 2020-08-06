@@ -1,4 +1,5 @@
-import {Post,Storage} from '@/library/ui'
+import Post from '../library/ui/request-post'
+import Storage from '../library/ui/storage'
 import G2 from '@antv/g2'
 
 export default {

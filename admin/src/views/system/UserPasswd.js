@@ -1,5 +1,9 @@
-import {Loading,Post,Storage,Toast} from '@/library/ui'
-import {Reg} from '@/library/inc'
+import Toast from '../../library/ui/ui-toast'
+import Loading from '../../library/ui/ui-loading'
+import Post from '../../library/ui/request-post'
+import Storage from '../../library/ui/storage'
+/* Inc */
+import Reg from '../../library/inc/reg'
 
 export default {
   data(){

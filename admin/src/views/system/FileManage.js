@@ -1,4 +1,8 @@
-import {Loading,Post,Storage,Toast} from '@/library/ui'
+import Toast from '../../library/ui/ui-toast'
+import Loading from '../../library/ui/ui-loading'
+import Post from '../../library/ui/request-post'
+import Storage from '../../library/ui/storage'
+/* 组件 */
 import Action from '@/components/action'
 import ImgView from '@/components/img-view'
 

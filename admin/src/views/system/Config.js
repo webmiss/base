@@ -1,4 +1,8 @@
-import {Loading,Toast,Post,Storage} from '@/library/ui'
+import Toast from '../../library/ui/ui-toast'
+import Loading from '../../library/ui/ui-loading'
+import Post from '../../library/ui/request-post'
+import Storage from '../../library/ui/storage'
+/* 组件 */
 import {Camera,ImgReader} from '@/library/plus'
 
 export default {

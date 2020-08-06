@@ -1,5 +1,10 @@
-import {Loading,Toast,Post,Storage} from '@/library/ui'
-import {Camera,ImgReader} from '@/library/plus'
+import Toast from '../../library/ui/ui-toast'
+import Loading from '../../library/ui/ui-loading'
+import Post from '../../library/ui/request-post'
+import Storage from '../../library/ui/storage'
+/* Plus */
+import Camera from '../../library/plus/camera'
+import ImgReader from '../../library/plus/img-reader'
 
 export default {
   data(){

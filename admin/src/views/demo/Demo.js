@@ -1,5 +1,7 @@
-import {Toast} from '@/library/ui'
+import Toast from '../../library/ui/ui-toast'
+/* 组件 */
 import Action from '@/components/action'
+
 export default {
   components: {Action},
   data(){
