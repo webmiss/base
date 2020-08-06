@@ -1,4 +1,4 @@
-import {NavigateTo} from '@/library/ui'
+import NavigateTo from '../library/ui/ui-navigate-to'
 /* 组件 */
 import PageView from '@/components/page-view'
 import WmTabbar from '@/components/tabbar'
