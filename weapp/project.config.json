@@ -34,8 +34,8 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.12.0",
-	"appid": "wx859a486c158abb8e",
-	"projectname": "webmis",
+	"appid": "wx8d4b4de48da2f69c",
+	"projectname": "WebMIS",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},
