@@ -1,0 +1,10 @@
+<view class="wm-tab_html">
+  <wm-scroll-view class="wm-tab_body" isScroll="{{scroll}}" scroll-x="{{true}}" upperLoad="{{false}}" lowerLoad="{{false}}" maxWidth="{{maxWidth}}">
+    <view id="body" class="wm-tab_list" style="width: {{nw}};" bind:touchstart="start">
+      <view style="width: {{w}}%;" wx:for="{{list}}" wx:key="index" class="wm-tab_text {{active==index?'wm-tab_active':''}}" bind:tap="tabClick" data-k="{{index}}" data-v="{{item}}">
+        <text>{{item.name}}</text>
+      </view>
+    </view>
+    <view class="wm-tab_line" style="width: {{w}}%; transform: {{transform}};"></view>
+  </wm-scroll-view>
+</view>

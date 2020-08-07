@@ -1,0 +1,10 @@
+<view id="html" class="wm-swipe_cell">
+  <!-- Body -->
+  <view id="body" class="wm-swipe_cell_body" bind:touchstart="start" catchtouchmove="move" bind:touchend="end" style="{{style.body}}">
+    <slot name="body"></slot>
+  </view>
+  <!-- Right -->
+  <view id="right" class="wm-swipe_cell_right" style="{{style.right}}">
+    <slot name="right"></slot>
+  </view>
+</view>

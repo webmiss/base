@@ -5,7 +5,7 @@ export default {
   },
   /* 获取 */
   getItem(key){
-    return my.getStorageSync(key);
+    return my.getStorageSync({key:key}).data;
   },
   /* 清除 */
   clear(){

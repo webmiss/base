@@ -1,0 +1,4 @@
+<view wx:if="{{show}}">
+  <view id="bg" class="wm-popup_bg" bind:tap="clickBG" style="{{style.bg}}"></view>
+  <view id="body" class="wm-popup_body" style="{{style.body}}"><slot></slot></view>
+</view>

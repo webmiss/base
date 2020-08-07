@@ -6,7 +6,7 @@
     </view>
   </view>
   <!-- 滑动内容 -->
-  <view id="body" class="wm-scroll_body" bind:touchstart="start" bind:touchmove="move" bind:touchend="end" style="{{style.body}}">
+  <view id="body" class="wm-scroll_body" bind:touchstart="start" catchtouchmove="move" bind:touchend="end" style="{{style.body}}">
     <slot id="test"></slot>
   </view>
   <!-- 右拉/上拉 -->

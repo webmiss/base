@@ -15,7 +15,6 @@
 .wm-swipe_cell{user-select: none; position: relative; overflow: hidden; cursor: grab; background-color: #FFF;}
 .wm-swipe_cell_body{overflow: hidden; height: 100%; transform: translate(0,0);}
 .wm-swipe_cell_right{position: absolute; top: 0; right: 0; height: 100%; transform: translate(100%,0);}
-.wm-swipe_cell_right button{height: 100%; line-height: 100%; border-radius: 0;}
 </style>
 
 <script>
@@ -25,8 +24,6 @@ export default {
   data(){
     return {
       sp: 'x',  //移动方向
-      body: null, //内容对象
-      right: null,  //功能对象
       startPage: {x:0,y:0}, //开始-坐标
       movePage: {x:0,y:0},  //移动-坐标
       tmpPage: {x:0,y:0},  //滑动-坐标
@@ -35,6 +32,8 @@ export default {
       max: 0, //最大移动
       time: 300,  //时间
       cubicBezier: '0.25,0.46,0.45,0.94', //动画
+      refBody: '', //内容
+      refRight: '',  //右侧
     }
   },
   mounted(){},
@@ -45,22 +44,21 @@ export default {
       // 重置动画
       this.reset();
       // 开始坐标
-      let touch = e.touches?e.touches[0]:e;
-      this.movePage.x = 0;
-      this.movePage.y = 0;
-      this.startPage.x = touch.clientX;
-      this.startPage.y = touch.clientY;
+      const touch = e.touches?e.touches[0]:e;
+      this.movePage = {x:0,y:0};
+      this.startPage = {x:touch.clientX,y:touch.clientY};
       // 对象
-      this.body = this.$refs.body;
-      this.right = this.$refs.right;
-      this.body.style.transitionDuration = `0ms`;
-      this.right.style.transitionDuration = `0ms`;
-      this.body.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
-      this.right.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
+      this.refBody = this.$refs.body;
+      this.refRight = this.$refs.right;
+      this.refBody.style.transitionDuration = '0ms';
+      this.refRight.style.transitionDuration = '0ms';
+      this.refBody.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
+      this.refRight.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
       // 最大移动
-      this.max = this.right.offsetWidth;
-      // 
-      this.page[this.sp] = this.getTranslate(this.body);
+      this.max = this.refRight.offsetWidth;
+      // 当前位置
+      this.page[this.sp] = this.getTranslate(this.refBody);
+      this.translate(this.page[this.sp],0);
     },
 
     /* 移动 */
@@ -84,18 +82,16 @@ export default {
       else if(this.movePage[this.sp]>0) this.tmpPage[this.sp]=0;
       else return false;
       // 位置
-      this.translate(this.tmpPage[this.sp],this.time);
       this.page[this.sp] = this.tmpPage[this.sp];
+      this.translate(this.tmpPage[this.sp],this.time);
     },
 
     /* 滚动-位置 */
     translate(x,time){
-      this.body.style.transform = `translate(${x}px,0)`;
-      this.right.style.transform = `translate(${this.max+x}px,0)`;
-      if(time){
-        this.body.style.transitionDuration = `${time}ms`;
-        this.right.style.transitionDuration = `${time}ms`;
-      }
+      this.refBody.style.transform = `translate(${x}px,0)`;
+      this.refBody.style.transitionDuration = `${time}ms`;
+      this.refRight.style.transform = `translate(${this.max+x}px,0)`;
+      this.refRight.style.transitionDuration = `${time}ms`;
     },
 
     /* 实时位置 */

@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "wm-scroll-view": "/components/scroll-view/index"
+  }
+}

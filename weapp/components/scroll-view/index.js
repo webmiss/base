@@ -218,7 +218,7 @@ Component({
       // 加速-比例
       let time = parseInt(e.timeStamp-this.startTime);
       let n = Math.abs(this.movePage[this.data.sp]/time);
-      n = n<0.5?0:n;
+      n = n<0.4?0:n;
       let move = parseInt(n*100*8*100)/100;
       let t = parseInt(move*2);
       // 加速-距离
@@ -274,6 +274,20 @@ Component({
       }
     },
 
+    /* 滚动-指定位置 */
+    scrollTo(xy,time){
+      // 初始化
+      this.init();
+      // 参数
+      xy = xy || 0;
+      if(xy=='max') xy=this.data.bodyMax[this.data.sp=='x'?'w':'h'];
+      else if(xy=='min') xy=0;
+      time = time || 600;
+      // 位置
+      this.translate(xy,time);
+      this.setData({ ['page.'+this.data.sp]:xy });
+    },
+
     /* 滚动-位置 */
     translate(xy,time){
       if(this.data.scrollX) this.setData({ ['refBody.transform']:`translate(${xy}px,0)` });
@@ -292,19 +306,6 @@ Component({
         let v = -parseInt((this.data.refHtml[xy]-res[0][xy])*100)/100 || 0;
         callback(v);
       });
-    },
-    /* 滚动-指定位置 */
-    scrollTo(xy,time){
-      // 初始化
-      this.init();
-      // 参数
-      xy = xy || 0;
-      if(xy=='max') xy=this.data.bodyMax[this.data.sp=='x'?'w':'h'];
-      else if(xy=='min') xy=0;
-      time = time || 600;
-      // 位置
-      this.translate(xy,time);
-      this.setData({ ['page.'+this.data.sp]:xy });
     },
 
     /* 加载-左/上 */

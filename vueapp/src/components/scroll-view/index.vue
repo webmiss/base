@@ -225,7 +225,7 @@ export default {
       // 加速-比例
       let time = parseInt(e.timeStamp-this.startTime);
       let n = Math.abs(this.movePage[this.sp]/time);
-      n = n<0.8?0:n;
+      n = n<0.4?0:n;
       let move = parseInt(n*100*8*100)/100;
       let t = parseInt(move*2);
       // 加速-距离

@@ -1,0 +1,3 @@
+.wm-swipe_cell{user-select: none; position: relative; overflow: hidden; cursor: grab; background-color: #FFF;}
+.wm-swipe_cell_body{overflow: hidden; height: 100%; transform: translate(0,0);}
+.wm-swipe_cell_right{position: absolute; top: 0; right: 0; height: 100%; transform: translate(100%,0);}

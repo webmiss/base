@@ -1,6 +1,21 @@
 <view class="tabar_body">
+  <view class="tabar_item {{active==1?'tabar_item_active':''}}" bind:tap="navClick" data-n="1">
+    <text class="icons icon_chart"></text>
+    <view class="name">演示</view>
+  </view>
+  <view class="tabar_item {{active==2?'tabar_item_active':''}}" bind:tap="navClick" data-n="2">
+    <text class="icons icon_code"></text>
+    <view class="name">文档</view>
+  </view>
   <view class="tabar_item {{active==0?'tabar_item_active':''}}" bind:tap="navClick" data-n="0">
-    <text class="icons icon_home"></text>
-    <view class="name">首页</view>
+    <view class="tabar_index"><text class="icons icon_home"></text></view>
+  </view>
+  <view class="tabar_item {{active==3?'tabar_item_active':''}}" bind:tap="navClick" data-n="3">
+    <text class="icons icon_msg"></text>
+    <view class="name">消息</view>
+  </view>
+  <view class="tabar_item {{active==4?'tabar_item_active':''}}" bind:tap="navClick" data-n="4">
+    <text class="icons icon_me"></text>
+    <view class="name">我的</view>
   </view>
 </view>
