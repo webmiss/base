@@ -174,7 +174,7 @@ i{font-style: normal;}
 .update_ct{width: 220px;}
 .update_ct .logo{width: 120px; height: 120px; margin: 0px auto 20px; border-radius: 50%;}
 .update_ct .logo div{height: 100%; background: url('./assets/logo.svg') no-repeat center; background-size: 65%;}
-.update_ct .loading{height: 5px; border-radius: 5px;}
+.update_ct .loading{height: 4px; background: none;}
 .update_ct .load_msg{color: #FFF; text-align: center; padding: 8px 0; font-size: 14px;}
 .update_ct .load_button{text-align: center; padding-top: 16px;}
 .update_ct .load_button button{width: auto; height: 36px; line-height: 36px; padding: 0 20px; font-size: 14px;}
