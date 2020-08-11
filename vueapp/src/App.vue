@@ -6,7 +6,7 @@
       <div class="update_ct verticalCenter">
         <div class="logo" :style="{backgroundColor: upDateColor.logoBg}"><div></div></div>
         <div class="loading" :style="{backgroundImage: 'linear-gradient(to right, '+upDateColor.loading+', '+upDateColor.loading+' '+update.loading+', '+upDateColor.loaded+' '+update.loading+', '+upDateColor.loaded+' 100%)'}"></div>
-        <div class="load_msg" v-html="update.msg">正在加载应用</div>
+        <div class="load_msg" v-html="update.msg" :style="{color:upDateColor.msgColor}">正在加载应用</div>
         <div class="load_button">
           <button class="Button" v-if="update.down" @click="updateDown()" :style="{color:upDateColor.butColor,backgroundColor:upDateColor.butBg,}">{{upDateColor.butText}}</button>
         </div>
