@@ -46,7 +46,7 @@ Component({
       });
     }else if(this.data.position=='top'){
       this.setData({
-        ['refBody.height']:'100%',
+        ['refBody.width']:'100%',
         ['refBody.left']:0,
         ['refBody.top']:0,
         ['refBody.opacity']:1,

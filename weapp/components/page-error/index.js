@@ -24,7 +24,7 @@ Component({
     
     /* 提交 */
     sub(){
-      this.triggerEvent('change',n);
+      this.triggerEvent('change');
     }
     
   }
