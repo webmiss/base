@@ -1,4 +1,4 @@
-<view id="html" class="wm-scroll_html" style="{{style.html}}">
+<view class="wm-scroll_html">
   <!-- 左拉/下拉 -->
   <view id="upper" hidden="{{!upperLoad}}" class="wm-scroll_load_body" style="{{style.upper}}">
     <view class="wm-scroll_load">
@@ -6,9 +6,11 @@
     </view>
   </view>
   <!-- 滑动内容 -->
-  <view id="body" class="wm-scroll_body" bind:touchstart="start" catchtouchmove="move" bind:touchend="end" style="{{style.body}}">
-    <slot id="test"></slot>
-  </view>
+  <scroll-view id="html" class="wm-scroll_view" bind:touchstart="start" catchtouchmove="move" bind:touchend="end" scroll-x="{{scrollX}}" scroll-y="{{scrollY}}" bind:scroll="scroll" style="{{style.body}}">
+    <view id="body" class="wm-scroll_body" bind:touchstart="startBody" bind:touchmove="moveBody" bind:touchend="endBody">
+      <slot></slot>
+    </view>
+  </scroll-view>
   <!-- 右拉/上拉 -->
   <view id="lower" hidden="{{!lowerLoad}}" class="wm-scroll_load_body" style="{{style.lower}}">
     <view class="wm-scroll_load">
