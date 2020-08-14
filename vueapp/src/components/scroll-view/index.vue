@@ -22,7 +22,7 @@
 <style scoped>
 .wm-scroll_html{position: relative; overflow: hidden;}
 /* 内容 */
-.wm-scroll_view{position: absolute; overflow: hidden; width: 100%; height: 100%; transform: translate(0,0);}
+.wm-scroll_view{position: absolute; overflow: hidden; width: 100%; height: 100%; transform: translate(0,0); -webkit-overflow-scrolling: touch;}
 .wm-scroll_body{display: block;}
 .wm-scroll_view::-webkit-scrollbar{display:none}
 /* Loading */
@@ -33,6 +33,7 @@
 </style>
 
 <script>
+import inobounce from 'inobounce'
 export default {
   name: 'ScrollView',
   props: {
@@ -56,7 +57,6 @@ export default {
       html: {w:0,h:0},  //容器
       body: {w:0,h:0,x:0,y:0},  //内容
       limit: 60,  //最小距离
-      cubicBezier: '0.25,0.46,0.45,0.94',
       refUpper: {}, //左上内容
       refLower: {}, //左下内容
       refHtml: {}, //中间内容
@@ -80,7 +80,7 @@ export default {
       this.refUpper.style.height = '100%';
       this.refUpper.style.transform = `translate(-${this.upper}px,0)`;
       // 中
-      this.refHtml.style.overflowX = 'scroll';
+      this.refHtml.style.overflowX = 'auto';
       this.refBody.style.height = 'inherit';
       // 右
       this.refLower.style.right = 0;
@@ -94,7 +94,7 @@ export default {
       this.refUpper.style.height = `${this.upper}px`;
       this.refUpper.style.transform = `translate(0,-${this.upper}px)`;
       // 中
-      this.refHtml.style.overflowY = 'scroll';
+      this.refHtml.style.overflowY = 'auto';
       this.refBody.style.width = 'inherit';
       // 下
       this.refLower.style.bottom = 0;
@@ -148,14 +148,18 @@ export default {
       if(this.body[this.sp]<=0){
         // 控制上限
         let x = this.upper-this.tmpPage[this.sp];
-        if(x<0) this.tmpPage[this.sp] = this.upper;
+        if(x<0){
+          this.tmpPage[this.sp] = this.upper;
+        }
         // 值变化
         if(this.tmpPage[this.sp]!=this.tmpUpper){
+          // 禁止IOS回弹
           this.tmpUpper = this.tmpPage[this.sp];
+          if(this.tmpUpper>1 && !inobounce.isEnabled()) inobounce.enable();
           // 加载
-          this._translateUpper(x>0?x:0,64);
+          this._translateUpper(x>0?x:0,240);
           // 位置
-          this.translate(this.tmpPage[this.sp],64);
+          this.translate(this.tmpPage[this.sp],240);
           // 事件
           if(this.scrollX){
             this.body.x = -this.tmpPage[this.sp];
@@ -173,12 +177,15 @@ export default {
         if(y<0) this.tmpPage[this.sp] = -this.lower;
         // 值变化
         if(this.tmpPage[this.sp]!=this.tmpLower){
+          // 禁止IOS回弹
+          this.tmpUpper = this.tmpPage[this.sp];
+          if(this.tmpUpper<-1 && !inobounce.isEnabled()) inobounce.enable();
           this.tmpLower = this.tmpPage[this.sp];
           // 加载
-          this._translateLower(y>0?y:0,64);
+          this._translateLower(y>0?y:0,240);
           // 位置
           this.isLower = true;
-          this.translate(this.tmpPage[this.sp],64);
+          this.translate(this.tmpPage[this.sp],240);
           // 事件
           if(this.scrollX){
             this.body.x = this.body.w-this.html.w-this.tmpPage[this.sp];
@@ -190,6 +197,9 @@ export default {
             this.$emit('scroll',this.res());
           }
         }
+      }else{
+        this.isLower = false;
+        this.translate(0,400);
       }
     },
 
@@ -197,6 +207,7 @@ export default {
     end(e){
       // 控制上限、下限
       if(this.tmpPage[this.sp]>0){
+        if(inobounce.isEnabled()) inobounce.disable();
         this._translateUpper(this.upper,400);
         this.translate(0,400);
         // 事件
@@ -213,6 +224,7 @@ export default {
         }
       }else if(this.isLower){
         this.isLower = false;
+        if(inobounce.isEnabled()) inobounce.disable();
         this._translateLower(this.lower,400);
         this.translate(0,400);
         // 事件
@@ -227,6 +239,8 @@ export default {
           this.$emit('scroll',this.res());
           this.$emit('up',this.res());
         }
+      }else{
+        this.translate(0,400);
       }
       // 滑动方向
       const ratio = Math.abs(this.movePage.x/this.movePage.y) || 0;
@@ -251,7 +265,7 @@ export default {
     /* 滚动-位置 */
     translate(xy,time){
       this.refHtml.style.transitionDuration = `${time}ms`;
-      this.refHtml.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
+      this.refHtml.style.transitionTimingFunction = 'linear';
       if(this.scrollX) this.refHtml.style.transform = `translate(${xy}px,0)`;
       else this.refHtml.style.transform = `translate(0,${xy}px)`;
     },
@@ -259,12 +273,14 @@ export default {
     /* 加载-左/上 */
     _translateUpper(n,time){
       this.refUpper.style.opacity = (100-n/this.upper*100)/100;
+      this.refUpper.style.transitionTimingFunction = 'linear';
       if(this.scrollX) this.refUpper.style.transform = `translate(-${n}px,0)`;
       else this.refUpper.style.transform = `translate(0,-${n}px)`;
     },
     /* 加载-右/下 */
     _translateLower(n){
       this.refLower.style.opacity = (100-n/this.lower*100)/100;
+      this.refUpper.style.transitionTimingFunction = 'linear';
       if(this.scrollX) this.refLower.style.transform = `translate(${n}px,0)`;
       else this.refLower.style.transform = `translate(0,${n}px)`;
     },
