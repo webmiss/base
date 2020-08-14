@@ -2,9 +2,8 @@
 /* 内容 */
 .wm-scroll_view{position: absolute; width: 100%; height: 100%; transform: translate(0,0);}
 .wm-scroll_body{width: inherit; height: inherit;}
-
+/* Loading */
 .wm-scroll_load_body{position: absolute; z-index: 1; opacity: 0;}
-
 @keyframes loading { 0% {transform: rotate(0deg);} 50% {transform: rotate(180deg);} 100% {transform: rotate(360deg);} }
 .wm-scroll_load{position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);}
 .wm-scroll_load text{position: absolute; margin: -12px 0 0 -12px; font-size: 24px; color: #6FB737; animation: loading 2s linear 0s infinite;}

@@ -7,7 +7,6 @@ Component({
     addGlobalClass: true,
   },
   properties: {
-    reset: {type: String, value: ''},
     isScroll: {type: Boolean, value: true},
     scrollX: {type: Boolean, value: false},
     scrollY: {type: Boolean, value: true},
@@ -21,8 +20,6 @@ Component({
     lowerBg: {type: String, value: ''},
     upperColor: {type: String, value: ''},
     lowerColor: {type: String, value: ''},
-    moveMin: {type: Number, value: 30},
-    maxWidth: {type: Number, value: 0},
   },
   data: {
     sp:'', //滑动方向
@@ -127,11 +124,11 @@ Component({
         if(x<0) this.tmpPage[this.data.sp] = this.data.upper;
         // 值变化
         if(this.tmpPage[this.data.sp]!=this.tmpUpper){
+          this.tmpUpper = this.tmpPage[this.data.sp];
           // 加载
           this._translateUpper(x>0?x:0,64);
           // 位置
           this.translate(this.tmpPage[this.data.sp],64);
-          this.tmpUpper = this.tmpPage[this.data.sp];
           // 事件
           if(this.data.scrollX){
             this.setData({
@@ -153,12 +150,12 @@ Component({
         if(y<0) this.tmpPage[this.data.sp] = -this.data.lower;
         // 值变化
         if(this.tmpPage[this.data.sp]!=this.tmpLower){
+          this.tmpLower = this.tmpPage[this.data.sp];
           // 加载
           this._translateLower(y>0?y:0,64);
           // 位置
           this.isLower = true;
           this.translate(this.tmpPage[this.data.sp],64);
-          this.tmpLower = this.tmpPage[this.data.sp];
           // 事件
           if(this.data.scrollX){
             this.setData({
@@ -186,12 +183,12 @@ Component({
         // 事件
         if(this.data.scrollX){
           this.setData({ ['body.x']:0,['body.y']:0 });
-          this.triggerEvent('left',this.res());
           this.triggerEvent('scroll',this.res());
+          if(this.tmpPage[this.data.sp]>=this.data.upper) this.triggerEvent('left',this.res());
         }else{
           this.setData({ ['body.x']:0,['body.y']:0 });
-          this.triggerEvent('down',this.res());
           this.triggerEvent('scroll',this.res());
+          if(this.tmpPage[this.data.sp]>=this.data.upper) this.triggerEvent('down',this.res());
         }
       }else if(this.isLower){
         this.isLower = false;
@@ -200,20 +197,20 @@ Component({
         // 事件
         if(this.data.scrollX){
           this.setData({ ['body.x']:this.data.body.h-this.data.html.h,['body.y']:0 });
-          this.triggerEvent('right',this.res());
           this.triggerEvent('scroll',this.res());
+          this.triggerEvent('right',this.res());
         }else{
           this.setData({ ['body.x']:0,['body.y']:this.data.body.h-this.data.html.h });
-          this.triggerEvent('up',this.res());
           this.triggerEvent('scroll',this.res());
+          this.triggerEvent('up',this.res());
         }
       }
     },
 
     /* 滑动事件 */
     scroll(e){
-      const x = parseInt(e.detail.scrollLeft);
-      const y = parseInt(e.detail.scrollTop);
+      const x = parseInt(e.detail.scrollLeft*100)/100;
+      const y = parseInt(e.detail.scrollTop*100)/100;
       this.setData({ ['body.x']:x,['body.y']:y });
       this.triggerEvent('scroll',this.res());
     },
