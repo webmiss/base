@@ -26,17 +26,18 @@ Component({
     html: {w:0,h:0},  //容器
     body: {w:0,h:0,x:0,y:0},  //内容
     limit: 60,  //最小距离
-    cubicBezier: '0.25,0.46,0.45,0.94',
     refUpper: {}, //左上内容
     refLower: {}, //左下内容
-    refBody: {}, //中间内容
-    style: {upper:'',lower:'',body:''},  //样式
+    refHtml: {}, //容器内容
+    refBox: {}, //中间内容
+    style: {box:'',upper:'',lower:'',html:''},  //样式
+    cubicBezier: '0.25,0.46,0.45,0.94', //动画
   },
   attached(){
     /* 滑动方向 */
     this.setData({ sp:this.data.scrollX?'x':'y' });
     /* 默认值 */
-    if(this.data.scrollX){
+    if(this.data.sp=='x'){
       // 左
       this.setData({
         ['refUpper.left']:0,
@@ -44,6 +45,11 @@ Component({
         ['refUpper.height']:'100%',
         ['refUpper.transform']:`translate(-${this.data.upper}px,0)`,
         ['refUpper.background-color']: this.data.upperBg,
+      });
+      // 中
+      this.setData({
+        ['refBox.width']:'inherit',
+        ['refBox.height']:'inherit',
       });
       // 右
       this.setData({
@@ -62,6 +68,11 @@ Component({
         ['refUpper.transform']:`translate(0,-${this.data.upper}px)`,
         ['refUpper.background-color']: this.data.upperBg,
       });
+      // 中
+      this.setData({
+        ['refBox.width']:'inherit',
+        ['refBox.height']:'inherit',
+      });
       // 下
       this.setData({
         ['refLower.bottom']:0,
@@ -74,6 +85,7 @@ Component({
     // 更新样式
     this.setStyle('upper',this.data.refUpper);
     this.setStyle('lower',this.data.refLower);
+    this.setStyle('box',this.data.refBox);
   },
   methods: {
 
@@ -91,24 +103,24 @@ Component({
 
     /* 开始 */
     start(e){
-      if(!this.data.isScroll) return false;
       // 开始坐标
       let touch = e.touches?e.touches[0]:e;
       this.movePage = {x:0,y:0};
       this.tmpPage = {x:0,y:0};
       this.startPage = {x:touch.clientX,y:touch.clientY};
+      this.isUpper = false;
+      this.isLower = false;
       // 容器-宽高
       HtmlInfo(this,'#html',(res)=>{
         this.setData({ ['html.w']:parseInt(res[0].width), ['html.h']:parseInt(res[0].height) });
       });
-      // 内容-宽高
-      HtmlInfo(this,'#body',(res)=>{
-        this.setData({ ['body.w']:parseInt(res[0].width), ['body.h']:parseInt(res[0].height) });
-      });
+      // 开启滑动
+      this.scrollEnabled(true);
     },
     
     /* 移动 */
     move(e){
+      if(!this.data.isScroll) return false;
       // 开始
       const touch = e.touches?e.touches[0]:e;
       this.movePage = {
@@ -116,21 +128,23 @@ Component({
         y: parseInt(touch.clientY-this.startPage.y),
       }
       // 移动-距离
-      this.tmpPage[this.data.sp] = parseInt(this.movePage[this.data.sp]*100)/100;
+      this.tmpPage[this.data.sp] = this.movePage[this.data.sp];
       // 移动-方向
       if(this.tmpPage[this.data.sp]>0){
+        this.isUpper = true;
         // 控制上限
         let x = this.data.upper-this.tmpPage[this.data.sp];
         if(x<0) this.tmpPage[this.data.sp] = this.data.upper;
         // 值变化
         if(this.tmpPage[this.data.sp]!=this.tmpUpper){
           this.tmpUpper = this.tmpPage[this.data.sp];
+          this.scrollEnabled(false);
           // 加载
-          this._translateUpper(x>0?x:0,64);
+          this._translateUpper(x>0?x:0,400);
           // 位置
-          this.translate(this.tmpPage[this.data.sp],64);
+          this.translate(this.tmpPage[this.data.sp],400);
           // 事件
-          if(this.data.scrollX){
+          if(this.data.sp=='x'){
             this.setData({
               ['body.x']:-this.tmpPage[this.data.sp],
               ['body.y']:0,
@@ -145,19 +159,20 @@ Component({
           }
         }
       }else{
+        this.isLower = true;
         // 控制上限
         let y = this.data.lower+this.tmpPage[this.data.sp];
         if(y<0) this.tmpPage[this.data.sp] = -this.data.lower;
         // 值变化
         if(this.tmpPage[this.data.sp]!=this.tmpLower){
           this.tmpLower = this.tmpPage[this.data.sp];
+          this.scrollEnabled(false);
           // 加载
-          this._translateLower(y>0?y:0,64);
+          this._translateLower(y>0?y:0,400);
           // 位置
-          this.isLower = true;
-          this.translate(this.tmpPage[this.data.sp],64);
+          this.translate(this.tmpPage[this.data.sp],400);
           // 事件
-          if(this.data.scrollX){
+          if(this.data.sp=='x'){
             this.setData({
               ['body.x']:this.data.body.w-this.data.html.w-this.tmpPage[this.data.sp],
               ['body.y']:0,
@@ -177,30 +192,47 @@ Component({
     /* 结束 */
     end(e){
       // 控制上限、下限
-      if(this.tmpPage[this.data.sp]>0){
+      if(this.isUpper){
+        // 重置
+        this.isUpper = false;
         this._translateUpper(this.data.upper,400);
         this.translate(0,400);
+        this.scrollEnabled(true);
         // 事件
-        if(this.data.scrollX){
-          this.setData({ ['body.x']:0,['body.y']:0 });
+        if(this.data.sp=='x'){
+          this.setData({
+            ['body.x']:0,
+            ['body.y']:0,
+          });
           this.triggerEvent('scroll',this.res());
           if(this.tmpPage[this.data.sp]>=this.data.upper) this.triggerEvent('left',this.res());
         }else{
-          this.setData({ ['body.x']:0,['body.y']:0 });
+          this.setData({
+            ['body.x']:0,
+            ['body.y']:0,
+          });
           this.triggerEvent('scroll',this.res());
           if(this.tmpPage[this.data.sp]>=this.data.upper) this.triggerEvent('down',this.res());
         }
       }else if(this.isLower){
+        // 重置
         this.isLower = false;
         this._translateLower(this.data.lower,400);
         this.translate(0,400);
+        this.scrollEnabled(true);
         // 事件
-        if(this.data.scrollX){
-          this.setData({ ['body.x']:this.data.body.h-this.data.html.h,['body.y']:0 });
+        if(this.data.sp=='x'){
+          this.setData({
+            ['body.x']:this.data.body.h-this.data.html.h,
+            ['body.y']:0,
+          });
           this.triggerEvent('scroll',this.res());
           this.triggerEvent('right',this.res());
         }else{
-          this.setData({ ['body.x']:0,['body.y']:this.data.body.h-this.data.html.h });
+          this.setData({
+            ['body.x']:0,
+            ['body.y']:this.data.body.h-this.data.html.h,
+          });
           this.triggerEvent('scroll',this.res());
           this.triggerEvent('up',this.res());
         }
@@ -209,9 +241,11 @@ Component({
 
     /* 滑动事件 */
     scroll(e){
-      const x = parseInt(e.detail.scrollLeft*100)/100;
-      const y = parseInt(e.detail.scrollTop*100)/100;
-      this.setData({ ['body.x']:x,['body.y']:y });
+      const x = parseInt(e.detail.scrollLeft);
+      const y = parseInt(e.detail.scrollTop);
+      const w = e.detail.scrollWidth;
+      const h = e.detail.scrollHeight;
+      this.setData({ ['body.x']:x,['body.y']:y,['body.w']:w,['body.h']:h });
       this.triggerEvent('scroll',this.res());
     },
 
@@ -242,15 +276,21 @@ Component({
       }
     },
 
+    /* 滑动状态 */
+    scrollEnabled(state){
+      if(this.data.sp=='x') this.setData({ scrollX:state });
+      else this.setData({ scrollY:state });
+    },
+
     /* 滚动-位置 */
     translate(n,time){
       this.setData({
-        ['refBody.transition-duration']:`${time}ms`,
-        ['refBody.transition-timing-function']:`cubic-bezier(${this.data.cubicBezier})`,
+        ['refHtml.transition-duration']:`${time}ms`,
+        ['refHtml.transition-timing-function']:'linear',
       });
-      if(this.data.scrollX) this.setData({ ['refBody.transform']:`translate(${n}px,0)` });
-      else this.setData({ ['refBody.transform']:`translate(0,${n}px)` });
-      this.setStyle('body',this.data.refBody);
+      if(this.data.sp=='x') this.setData({ ['refHtml.transform']:`translate(${n}px,0)` });
+      else this.setData({ ['refHtml.transform']:`translate(0,${n}px)` });
+      this.setStyle('html',this.data.refHtml);
     },
 
     /* 加载-左/上 */
@@ -258,9 +298,9 @@ Component({
       this.setData({
         ['refUpper.opacity']:(100-n/this.data.upper*100)/100,
         ['refUpper.transition-duration']:`${time}ms`,
-        ['refUpper.transition-timing-function']:`cubic-bezier(${this.data.cubicBezier})`,
+        ['refUpper.transition-timing-function']:'linear',
       });
-      if(this.data.scrollX) this.setData({ ['refUpper.transform']:`translate(-${n}px,0)` });
+      if(this.data.sp=='x') this.setData({ ['refUpper.transform']:`translate(-${n}px,0)` });
       else this.setData({ ['refUpper.transform']:`translate(0,-${n}px)` });
       this.setStyle('upper',this.data.refUpper);
     },
@@ -269,9 +309,9 @@ Component({
       this.setData({
         ['refLower.opacity']:(100-n/this.data.lower*100)/100,
         ['refLower.transition-duration']:`${time}ms`,
-        ['refLower.transition-timing-function']:`cubic-bezier(${this.data.cubicBezier})`,
+        ['refLower.transition-timing-function']:'linear',
       });
-      if(this.data.scrollX) this.setData({ ['refLower.transform']:`translate(${n}px,0)` });
+      if(this.data.sp=='x') this.setData({ ['refLower.transform']:`translate(${n}px,0)` });
       else this.setData({ ['refLower.transform']:`translate(0,${n}px)` });
       this.setStyle('lower',this.data.refLower);
     },

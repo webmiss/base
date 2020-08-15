@@ -23,7 +23,6 @@
 .wm-scroll_html{position: relative; overflow: hidden;}
 /* 内容 */
 .wm-scroll_view{position: absolute; overflow: hidden; width: 100%; height: 100%; transform: translate(0,0);}
-.wm-scroll_body{display: block;}
 .wm-scroll_view::-webkit-scrollbar{display:none}
 /* Loading */
 .wm-scroll_load_body{position: absolute; overflow: hidden; z-index: 1; opacity: 0;}
@@ -71,7 +70,7 @@ export default {
     /* 对象 */
     this.refHtml = this.$refs.html;
     /* 默认值 */
-    if(this.scrollX){
+    if(this.sp=='x'){
       // 左
       this.refUpper.style.left = 0;
       this.refUpper.style.width = `${this.upper}px`;
@@ -117,7 +116,6 @@ export default {
 
     /* 开始 */
     start(e){
-      if(!this.isScroll) return false;
       // 开始坐标
       let touch = e.touches?e.touches[0]:e;
       this.movePage = {x:0,y:0};
@@ -137,6 +135,7 @@ export default {
 
     /* 移动 */
     move(e){
+      if(!this.isScroll) return false;
       // 开始
       const touch = e.touches?e.touches[0]:e;
       this.movePage = {
@@ -153,13 +152,13 @@ export default {
         // 值变化
         if(this.tmpPage[this.sp]!=this.tmpUpper){
           this.tmpUpper = this.tmpPage[this.sp];
-          this.scrollEnabled('auto');
+          this.scrollEnabled('hidden');
           // 加载
           this._translateUpper(x>0?x:0,400);
           // 位置
           this.translate(this.tmpPage[this.sp],400);
           // 事件
-          if(this.scrollX){
+          if(this.sp=='x'){
             this.body.x = -this.tmpPage[this.sp];
             this.body.y = 0;
             this.$emit('scroll',this.res());
@@ -177,13 +176,13 @@ export default {
         // 值变化
         if(this.tmpPage[this.sp]!=this.tmpLower){
           this.tmpLower = this.tmpPage[this.sp];
-          this.scrollEnabled('auto');
+          this.scrollEnabled('hidden');
           // 加载
           this._translateLower(y>0?y:0,400);
           // 位置
           this.translate(this.tmpPage[this.sp],400);
           // 事件
-          if(this.scrollX){
+          if(this.sp=='x'){
             this.body.x = this.body.w-this.html.w-this.tmpPage[this.sp];
             this.body.y = 0;
             this.$emit('scroll',this.res());
@@ -206,7 +205,7 @@ export default {
         this.translate(0,400);
         this.scrollEnabled('auto');
         // 事件
-        if(this.scrollX){
+        if(this.sp=='x'){
           this.body.x = 0;
           this.body.y = 0;
           this.$emit('scroll',this.res());
@@ -224,7 +223,7 @@ export default {
         this.translate(0,400);
         this.scrollEnabled('auto');
         // 事件
-        if(this.scrollX){
+        if(this.sp=='x'){
           this.body.x = this.body.w-this.html.w;
           this.body.y = 0;
           this.$emit('scroll',this.res());
@@ -259,7 +258,7 @@ export default {
     /* 滑动状态 */
     scrollEnabled(state){
       state = state || 'auto';
-      if(this.scrollX) this.refHtml.style.overflowX = state;
+      if(this.sp=='x') this.refHtml.style.overflowX = state;
       else this.refHtml.style.overflowY = state;
     },
 
@@ -267,7 +266,7 @@ export default {
     translate(xy,time){
       this.refHtml.style.transitionDuration = `${time}ms`;
       this.refHtml.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
-      if(this.scrollX) this.refHtml.style.transform = `translate(${xy}px,0)`;
+      if(this.sp=='x') this.refHtml.style.transform = `translate(${xy}px,0)`;
       else this.refHtml.style.transform = `translate(0,${xy}px)`;
     },
     
@@ -276,7 +275,7 @@ export default {
       this.refUpper.style.opacity = (100-n/this.upper*100)/100;
       this.refUpper.style.transitionDuration = `${time}ms`;
       this.refUpper.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
-      if(this.scrollX) this.refUpper.style.transform = `translate(-${n}px,0)`;
+      if(this.sp=='x') this.refUpper.style.transform = `translate(-${n}px,0)`;
       else this.refUpper.style.transform = `translate(0,-${n}px)`;
     },
     /* 加载-右/下 */
@@ -284,7 +283,7 @@ export default {
       this.refLower.style.opacity = (100-n/this.lower*100)/100;
       this.refLower.style.transitionDuration = `${time}ms`;
       this.refLower.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
-      if(this.scrollX) this.refLower.style.transform = `translate(${n}px,0)`;
+      if(this.sp=='x') this.refLower.style.transform = `translate(${n}px,0)`;
       else this.refLower.style.transform = `translate(0,${n}px)`;
     },
   }
