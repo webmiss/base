@@ -9,7 +9,7 @@ Component({
     title: {type: String, value: ''},
     text: {type: String, value: ''},
     icon: {type: String, value: 'ui ui_loading'},
-    iconColor: {type: String, value: '#FF6600'},
+    iconColor: {type: String, value: '#CCC'},
     button: {type: Boolean, value: true},
     buttonText: {type: String, value: '刷新'},
     butColor: {type: String, value: '#6FB737'},
