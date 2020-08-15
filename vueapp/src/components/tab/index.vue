@@ -1,22 +1,25 @@
 <template>
 <div class="wm-tab_html">
-  <scroll-view class="wm-tab_body" :isScroll="scroll" :scroll-x="true" :upperLoad="false" :lowerLoad="false">
-    <div class="wm-tab_list" :style="{width:nw}">
-      <div class="wm-tab_text" :style="{width:w+'%'}" v-for="(v,k) in list" :key="k" :class="active==k?'wm-tab_active':''" @click="tabClick(k,v)">
-        <span>{{v.name}}</span>
+  <scroll-view class="wm-tab_scroll" :isScroll="scroll" :scroll-x="true" :scroll-y="false" :upperLoad="false" :lowerLoad="false">
+    <div class="wm-tab_body">
+      <div class="wm-tab_list" :style="{width:nw}">
+        <div class="wm-tab_text" :style="{width:w+'%'}" v-for="(v,k) in list" :key="k" :class="active==k?'wm-tab_active':''" @click="tabClick(k,v)">
+          <span class="text">{{v.name}}</span>
+        </div>
       </div>
+      <div class="wm-tab_line" :style="{width:w+'%', transform:transform}"></div>
     </div>
-    <div class="wm-tab_line" :style="{width:w+'%', transform:transform}"></div>
   </scroll-view>
 </div>
 </template>
 
 <style scoped>
-.wm-tab_html{overflow: hidden;}
-.wm-tab_body{overflow: hidden; width: 100%; height: 100%; box-shadow: 0 1px 0 #F2F2F2; user-select: none;}
+.wm-tab_html{overflow: hidden; user-select: none;}
+.wm-tab_scroll{width: inherit; height: inherit;}
+.wm-tab_body{position: relative; width: 100%; height: 100%; box-shadow: 0 1px 0 #F2F2F2;}
 .wm-tab_list{display: flex; height: 100%;}
 .wm-tab_text{display: flex; flex: 1; align-items: center;}
-.wm-tab_text span{flex: 1; text-align: center;}
+.wm-tab_text .text{flex: 1; text-align: center;}
 .wm-tab_line{position: absolute; transition: transform 300ms; z-index: 10; height: 3px; bottom: 0; border-radius: 3px; width: 50px; background-color: #6FB737;}
 .wm-tab_active{color: #6FB737;}
 </style>

@@ -1,5 +1,3 @@
-import HtmlInfo from '../../libray/inc/html-info'
-
 Component({
   options: {
     multipleSlots: true,
@@ -15,7 +13,6 @@ Component({
     w: 0,
     nw: 0,
     transform: 'translate(-100%,0)',
-    maxWidth: 0,
   },
   attached(){
     this.init();
@@ -50,13 +47,6 @@ Component({
     /* 动画 */
     moveLine(n){
       this.setData({ transform:'translate('+n*100+'%,0)' });
-    },
-
-    /* 开始 */
-    start(){
-      HtmlInfo(this,'#body',(res)=>{
-        this.setData({ maxWidth:res[0].width });
-      });
     },
     
   }
