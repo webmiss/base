@@ -147,7 +147,7 @@ Component({
           // 加载
           this._translateUpper(x>0?x:0,400);
           // 位置
-          this.translate(this.tmpPage[this.data.sp],400);
+          // this.translate(this.tmpPage[this.data.sp],400);
           // 事件
           if(this.data.sp=='x'){
             this.setData({
@@ -175,7 +175,7 @@ Component({
           // 加载
           this._translateLower(y>0?y:0,400);
           // 位置
-          this.translate(this.tmpPage[this.data.sp],400);
+          // this.translate(this.tmpPage[this.data.sp],400);
           // 事件
           if(this.data.sp=='x'){
             this.setData({
@@ -268,6 +268,10 @@ Component({
     /* 滑动状态 */
     scrollEnabled(state){
       this.setData({ disable:!state });
+    },
+    toUpper(){
+      console.log('toUpper');
+      alert(1);
     },
 
     /* 滚动-位置 */
