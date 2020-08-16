@@ -36,6 +36,7 @@ Component({
     refBox: {}, //中间内容
     style: {box:'',upper:'',lower:'',html:''},  //样式
     cubicBezier: '0.25,0.46,0.45,0.94', //动画
+    disable: false,
   },
   didMount(){
     /* 滑动方向 */
@@ -136,13 +137,13 @@ Component({
       // 移动-方向
       if(this.data.body[this.data.sp]<=0 && this.tmpPage[this.data.sp]>0){
         this.isUpper = true;
+        this.scrollEnabled(false);
         // 控制上限
         let x = this.props.upper-this.tmpPage[this.data.sp];
         if(x<0) this.tmpPage[this.data.sp] = this.props.upper;
         // 值变化
         if(this.tmpPage[this.data.sp]!=this.tmpUpper){
           this.tmpUpper = this.tmpPage[this.data.sp];
-          // this.scrollEnabled(false);
           // 加载
           this._translateUpper(x>0?x:0,400);
           // 位置
@@ -164,13 +165,13 @@ Component({
         }
       }else if(this.data.body[this.data.sp]>0 && this.data.body[this.data.sp]>=this.data.body[this.data.sp=='x'?'w':'h']-this.data.html[this.data.sp=='x'?'w':'h'] && this.tmpPage[this.data.sp]<0){
         this.isLower = true;
+        this.scrollEnabled(false);
         // 控制上限
         let y = this.props.lower+this.tmpPage[this.data.sp];
         if(y<0) this.tmpPage[this.data.sp] = -this.props.lower;
         // 值变化
         if(this.tmpPage[this.data.sp]!=this.tmpLower){
           this.tmpLower = this.tmpPage[this.data.sp];
-          // this.scrollEnabled(false);
           // 加载
           this._translateLower(y>0?y:0,400);
           // 位置
@@ -266,8 +267,7 @@ Component({
 
     /* 滑动状态 */
     scrollEnabled(state){
-      if(this.data.sp=='x') this.setData({ scrollX:state });
-      else this.setData({ scrollY:state });
+      this.setData({ disable:!state });
     },
 
     /* 滚动-位置 */

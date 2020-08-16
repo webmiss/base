@@ -6,7 +6,7 @@
     </view>
   </view>
   <!-- 滑动内容 -->
-  <scroll-view id="html" class="wm-scroll_view" onTouchStart="start" catchTouchMove="move" onTouchEnd="end" scroll-x="{{scrollX}}" scroll-y="{{scrollY}}" onScroll="scroll" style="{{style.html}}">
+  <scroll-view id="html" class="wm-scroll_view" onTouchStart="start" catchTouchMove="move" onTouchEnd="end" onScroll="scroll" scroll-x="{{scrollX}}" scroll-y="{{scrollY}}" disable-scroll="{{disable}}" style="{{style.html}}">
     <slot></slot>
   </scroll-view>
   <!-- 右拉/上拉 -->
