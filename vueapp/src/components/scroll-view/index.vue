@@ -146,13 +146,13 @@ export default {
       this.tmpPage[this.sp] = this.movePage[this.sp];
       if(this.body[this.sp]<=0 && this.tmpPage[this.sp]>0){
         this.isUpper = true;
+        this.scrollEnabled('hidden');
         // 控制上限
         let x = this.upper-this.tmpPage[this.sp];
         if(x<0) this.tmpPage[this.sp] = this.upper;
         // 值变化
         if(this.tmpPage[this.sp]!=this.tmpUpper){
           this.tmpUpper = this.tmpPage[this.sp];
-          this.scrollEnabled('hidden');
           // 加载
           this._translateUpper(x>0?x:0,400);
           // 位置
@@ -168,15 +168,15 @@ export default {
             this.$emit('scroll',this.res());
           }
         }
-      }else if(this.body[this.sp]>=this.body[this.sp=='x'?'w':'h']-this.html[this.sp=='x'?'w':'h'] && this.tmpPage[this.sp]<0){
+      }else if(this.body[this.sp]>0 && this.body[this.sp]>=this.body[this.sp=='x'?'w':'h']-this.html[this.sp=='x'?'w':'h'] && this.tmpPage[this.sp]<0){
         this.isLower = true;
+        this.scrollEnabled('hidden');
         // 控制上限
         let y = this.lower+this.tmpPage[this.sp];
         if(y<0) this.tmpPage[this.sp] = -this.lower;
         // 值变化
         if(this.tmpPage[this.sp]!=this.tmpLower){
           this.tmpLower = this.tmpPage[this.sp];
-          this.scrollEnabled('hidden');
           // 加载
           this._translateLower(y>0?y:0,400);
           // 位置

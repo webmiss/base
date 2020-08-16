@@ -1,13 +1,14 @@
 
+import HtmlInfo from '../../libray/inc/html-info'
+
 Component({
   mixins: [],
   props: {
-    reset: '',
     isScroll: true,
     scrollX: false,
     scrollY: true,
-    upper: 50,
-    lower: 50,
+    upper: 64,
+    lower: 64,
     upperLoad: true,
     lowerLoad: true,
     upperIcon: 'ui ui_loading',
@@ -16,7 +17,6 @@ Component({
     lowerBg: '',
     upperColor: '',
     lowerColor: '',
-    moveMin: 30,
     // 事件
     onScroll: ()=>{},
     onSwipe: ()=>{},
@@ -27,30 +27,21 @@ Component({
   },
   data: {
     sp:'', //滑动方向
-    body: {w:'',h:''}, //容器-宽高
-    bodyObj: {w:'',h:''}, //内容-宽高
-    bodyMax: {w:0,h:0},  //最大-宽高
-    startPage: {x:0,y:0}, //开始-坐标
-    movePage: {x:0,y:0},  //移动-坐标
-    tmpPage: {x:0,y:0},  //滑动-坐标
-    page: {x:0,y:0},  //当前-坐标
-    startTime: 0, //开始时间
+    html: {w:0,h:0},  //容器
+    body: {w:0,h:0,x:0,y:0},  //内容
     limit: 60,  //最小距离
-    cubicBezier: '0.25,0.46,0.45,0.94',
-    isMove: false,  //是否滑动
-    isUpper: false, //左拉、下拉
-    isLower: false, //右拉、上拉
-    refHtml: {},  //滑动内容
-    refBody: {},  //滑动内容
     refUpper: {}, //左上内容
     refLower: {}, //左下内容
-    style: {html:'',body:'',upper:'',lower:''},  //样式
+    refHtml: {}, //容器内容
+    refBox: {}, //中间内容
+    style: {box:'',upper:'',lower:'',html:''},  //样式
+    cubicBezier: '0.25,0.46,0.45,0.94', //动画
   },
   didMount(){
     /* 滑动方向 */
     this.setData({ sp:this.props.scrollX?'x':'y' });
     /* 默认值 */
-    if(this.props.scrollX){
+    if(this.data.sp=='x'){
       // 左
       this.setData({
         ['refUpper.left']:0,
@@ -61,8 +52,8 @@ Component({
       });
       // 中
       this.setData({
-        ['refBody.min-width']:'100%',
-        ['refBody.height']:'100%',
+        ['refBox.width']:'inherit',
+        ['refBox.height']:'inherit',
       });
       // 右
       this.setData({
@@ -83,8 +74,8 @@ Component({
       });
       // 中
       this.setData({
-        ['refBody.min-height']:'100%',
-        ['refBody.width']:'100%',
+        ['refBox.width']:'inherit',
+        ['refBox.height']:'inherit',
       });
       // 下
       this.setData({
@@ -98,117 +89,159 @@ Component({
     // 更新样式
     this.setStyle('upper',this.data.refUpper);
     this.setStyle('lower',this.data.refLower);
-    this.setStyle('body',this.data.refBody);
+    this.setStyle('box',this.data.refBox);
   },
   methods: {
 
     /* 返回 */
     res(){
-      const data = {
-        body: this.data.body,
-        client: this.data.bodyMax,
-        page: this.data.page,
-        move: this.movePage,
+      return {
+        x: this.data.body.x,
+        y: this.data.body.y,
+        w: this.data.body.w,
+        h: this.data.body.h,
+        boxW: this.data.html.w,
+        boxH: this.data.html.h,
       }
-      return data;
-    },
-
-    /* 初始化 */
-    init(){
-      /* 容器 */
-      this.getDomInfo('#html',(res)=>{
-        // 容器-宽高
-        this.setData({
-          ['refHtml.left']:res.left,
-          ['refHtml.top']:res.top,
-          ['body.w']:res.width,
-          ['body.h']:res.height,
-        });
-        // 对象-宽高、最大
-        if(this.props.scrollX){
-          this.getDomInfo('#body',(res)=>{
-            this.setData({
-              ['bodyObj.w']:res.width,
-              ['bodyMax.w']:-(res.width-this.data.body.w),
-            });
-          });
-        }else{
-          this.getDomInfo('#body',(res)=>{
-            this.setData({
-              ['bodyObj.h']:res.height,
-              ['bodyMax.h']:-(res.height-this.data.body.h),
-            });
-          });
-        }
-      });
     },
 
     /* 开始 */
     start(e){
-      if(!this.props.isScroll) return false;
-      let touch = e.touches?e.touches[0]:e;
-      // 初始化
-      this.init();
-      // 开始时间
-      this.startTime = e.timeStamp;
       // 开始坐标
-      this.movePage= {x:0,y:0};
+      let touch = e.touches?e.touches[0]:e;
+      this.movePage = {x:0,y:0};
       this.tmpPage = {x:0,y:0};
-      this.startPage= {x:touch.clientX,y:touch.clientY};
-      // 重置动画
-      clearInterval(this.timeMove);
-      this.getTranslate((move)=>{
-        this.setData({ isMove:false });
-        if(this.data.page[this.data.sp]>0) move=0;
-        else if(this.data.page[this.data.sp]<this.data.bodyMax[this.data.sp=='x'?'w':'h']) move=this.data.bodyMax[this.data.sp=='x'?'w':'h'];
-        this.translate(move,0);
-        this.setData({ ['page.'+this.data.sp]:move });
+      this.startPage = {x:touch.clientX,y:touch.clientY};
+      this.isUpper = false;
+      this.isLower = false;
+      // 容器-宽高
+      HtmlInfo(this,'#html',(res)=>{
+        this.setData({ ['html.w']:parseInt(res[0].width), ['html.h']:parseInt(res[0].height) });
       });
+      // 开启滑动
+      this.scrollEnabled(true);
     },
-
+    
     /* 移动 */
     move(e){
       if(!this.props.isScroll) return false;
       // 开始
       const touch = e.touches?e.touches[0]:e;
       this.movePage = {
-        x: parseInt((touch.clientX-this.startPage.x)*100)/100,
-        y: parseInt((touch.clientY-this.startPage.y)*100)/100,
+        x: parseInt(touch.clientX-this.startPage.x),
+        y: parseInt(touch.clientY-this.startPage.y),
       }
-      // 是否移动
-      const move = Math.abs(this.movePage[this.data.sp]);
-      if(move<this.props.moveMin) return false;
-      // 移动距离
-      this.setData({ isMove:true });
-      this.tmpPage[this.data.sp] = parseInt((this.data.page[this.data.sp]+this.movePage[this.data.sp])*100)/100;
-      // 方向
-      if(this.tmpPage[this.data.sp]>0){
+      // 移动-距离
+      this.tmpPage[this.data.sp] = this.movePage[this.data.sp];
+      // 移动-方向
+      if(this.data.body[this.data.sp]<=0 && this.tmpPage[this.data.sp]>0){
+        this.isUpper = true;
         // 控制上限
         let x = this.props.upper-this.tmpPage[this.data.sp];
-        if(x<-this.props.upper) this.tmpPage[this.data.sp] = this.props.upper*2;
-        // 加载
-        this._translateUpper(x>0?x:0);
-        // 触发-左拉、下拉
-        this.isUpper = this.tmpPage[this.data.sp]>=this.props.upper?true:false;
-      }else{
-        // 控制下限
-        let y = this.props.lower+(this.tmpPage[this.data.sp]-this.data.bodyMax[this.data.sp=='x'?'w':'h']);
-        if(y<-this.props.lower) this.tmpPage[this.data.sp] = this.data.bodyMax[this.data.sp=='x'?'w':'h']-this.props.lower*2;
-        // 加载
-        this._translateLower(y>0?y:0);
-        // 触发-左拉、下拉
-        this.isLower = this.tmpPage[this.data.sp]<=this.data.bodyMax[this.data.sp=='x'?'w':'h']-this.props.lower?true:false;
+        if(x<0) this.tmpPage[this.data.sp] = this.props.upper;
+        // 值变化
+        if(this.tmpPage[this.data.sp]!=this.tmpUpper){
+          this.tmpUpper = this.tmpPage[this.data.sp];
+          // this.scrollEnabled(false);
+          // 加载
+          this._translateUpper(x>0?x:0,400);
+          // 位置
+          this.translate(this.tmpPage[this.data.sp],400);
+          // 事件
+          if(this.data.sp=='x'){
+            this.setData({
+              ['body.x']:-this.tmpPage[this.data.sp],
+              ['body.y']:0,
+            });
+            this.props.onScroll(this.res());
+          }else{
+            this.setData({
+              ['body.x']:0,
+              ['body.y']:-this.tmpPage[this.data.sp],
+            });
+            this.props.onScroll(this.res());
+          }
+        }
+      }else if(this.data.body[this.data.sp]>0 && this.data.body[this.data.sp]>=this.data.body[this.data.sp=='x'?'w':'h']-this.data.html[this.data.sp=='x'?'w':'h'] && this.tmpPage[this.data.sp]<0){
+        this.isLower = true;
+        // 控制上限
+        let y = this.props.lower+this.tmpPage[this.data.sp];
+        if(y<0) this.tmpPage[this.data.sp] = -this.props.lower;
+        // 值变化
+        if(this.tmpPage[this.data.sp]!=this.tmpLower){
+          this.tmpLower = this.tmpPage[this.data.sp];
+          // this.scrollEnabled(false);
+          // 加载
+          this._translateLower(y>0?y:0,400);
+          // 位置
+          this.translate(this.tmpPage[this.data.sp],400);
+          // 事件
+          if(this.data.sp=='x'){
+            this.setData({
+              ['body.x']:this.data.body.w-this.data.html.w-this.tmpPage[this.data.sp],
+              ['body.y']:0,
+            });
+            this.props.onScroll(this.res());
+          }else{
+            this.setData({
+              ['body.x']:0,
+              ['body.y']:this.data.body.h-this.data.html.h-this.tmpPage[this.data.sp],
+            });
+            this.props.onScroll(this.res());
+          }
+        }
       }
-      // 位置
-      this.translate(this.tmpPage[this.data.sp],16);
-      // 事项
-      if(this.props.scrollX) this.props.onScroll({x:this.tmpPage[this.sp],y:0});
-      else this.props.onScroll({x:0,y:this.tmpPage[this.data.sp]});
     },
 
     /* 结束 */
     end(e){
-      // 方向
+      // 控制上限、下限
+      if(this.isUpper){
+        // 重置
+        this.isUpper = false;
+        this._translateUpper(this.props.upper,400);
+        this.translate(0,400);
+        this.scrollEnabled(true);
+        // 事件
+        if(this.data.sp=='x'){
+          this.setData({
+            ['body.x']:0,
+            ['body.y']:0,
+          });
+          this.props.onScroll(this.res());
+          if(this.tmpPage[this.data.sp]>=this.props.upper) this.props.onLeft(this.res());
+        }else{
+          this.setData({
+            ['body.x']:0,
+            ['body.y']:0,
+          });
+          this.props.onScroll(this.res());
+          if(this.tmpPage[this.data.sp]>=this.props.upper) this.props.onDown(this.res());
+        }
+      }else if(this.isLower){
+        // 重置
+        this.isLower = false;
+        this._translateLower(this.props.lower,400);
+        this.translate(0,400);
+        this.scrollEnabled(true);
+        // 事件
+        if(this.data.sp=='x'){
+          this.setData({
+            ['body.x']:this.data.body.h-this.data.html.h,
+            ['body.y']:0,
+          });
+          this.props.onScroll(this.res());
+          this.props.onRight(this.res());
+        }else{
+          this.setData({
+            ['body.x']:0,
+            ['body.y']:this.data.body.h-this.data.html.h,
+          });
+          this.props.onScroll(this.res());
+          this.props.onUp(this.res());
+        }
+      }
+      // 滑动方向
       const ratio = Math.abs(this.movePage.x/this.movePage.y) || 0;
       if(ratio>1 && this.movePage.x>this.data.limit){
         this.props.onSwipe('left');
@@ -219,121 +252,58 @@ Component({
       }else if(ratio<1 && this.movePage.y<-this.data.limit){
         this.props.onSwipe('up');
       }
-      // 加速-是否滑动
-      if(!this.props.isScroll || !this.data.isMove) return false;
-      // 加速-比例
-      let time = parseInt(e.timeStamp-this.startTime);
-      let n = Math.abs(this.movePage[this.data.sp]/time);
-      n = n<0.5?0:n;
-      let move = parseInt(n*100*8*100)/100;
-      let t = parseInt(move*2);
-      // 加速-距离
-      move = this.movePage[this.data.sp]>0?move:-move;
-      this.tmpPage[this.data.sp] = parseInt((this.tmpPage[this.data.sp]+move)*100)/100;
-      // 控制上限、下限
-      if(this.tmpPage[this.data.sp]>0){
-        // 触发-左拉、下拉
-        if(this.data.isUpper){
-          this.data.isUpper = false;
-          if(this.props.scrollX) this.props.onLeft(this.res());
-          else this.props.onDown(this.res());
-        }
-        // 限制距离
-        t = parseInt(t-this.tmpPage[this.data.sp]*2);
-        t = t<=0?300:t;
-        this.tmpPage[this.data.sp] = 0;
-        this._translateUpper(this.props.upper);
-      }else if(this.tmpPage[this.data.sp]<this.data.bodyMax[this.data.sp=='x'?'w':'h']){
-        // 触发-右拉、上拉
-        if(this.data.isLower){
-          this.data.isLower = false;
-          if(this.props.scrollX) this.props.onRight(this.res());
-          else this.props.onUp(this.res());
-        }
-        // 限制距离
-        t = parseInt(t-(this.data.bodyMax[this.data.sp=='x'?'w':'h']-this.tmpPage[this.data.sp])*2);
-        t = t<=0?300:t;
-        this.tmpPage[this.data.sp] = parseInt(this.data.bodyMax[this.data.sp=='x'?'w':'h']);
-        this._translateLower(this.props.lower);
-      }
-      // 加速-位置
-      this.translate(this.tmpPage[this.data.sp],t);
-      // 加速-实时
-      this.progress = 0;
-      this.t = t/10;
-      clearInterval(this.timeMove);
-      this.timeMove = setInterval(()=>{ this.render(); },10);
     },
 
-    /* 动画时间 */
-    render(){
-      this.progress += 1;
-      // 位置
-      this.getTranslate((move)=>{
-        // 事项
-        if(this.props.scrollX) this.props.onScroll({x:move,y:0});
-        else this.props.onScroll({x:0,y:move});
-      });
-      // 控制
-      if(this.progress > this.t){
-        clearInterval(this.timeMove);
-      }
+    /* 滑动事件 */
+    scroll(e){
+      const x = parseInt(e.detail.scrollLeft);
+      const y = parseInt(e.detail.scrollTop);
+      const w = e.detail.scrollWidth;
+      const h = e.detail.scrollHeight;
+      this.setData({ ['body.x']:x,['body.y']:y,['body.w']:w,['body.h']:h });
+      this.props.onScroll(this.res());
+    },
+
+    /* 滑动状态 */
+    scrollEnabled(state){
+      if(this.data.sp=='x') this.setData({ scrollX:state });
+      else this.setData({ scrollY:state });
     },
 
     /* 滚动-位置 */
-    translate(xy,time){
-      if(this.props.scrollX) this.setData({ ['refBody.transform']:`translate(${xy}px,0)` });
-      else this.setData({ ['refBody.transform']:`translate(0,${xy}px)` });
+    translate(n,time){
       this.setData({
-        ['refBody.transition-duration']:`${time}ms`,
-        ['refBody.transition-timing-function']:`cubic-bezier(${this.data.cubicBezier})`,
+        ['refHtml.transition-duration']:`${time}ms`,
+        ['refHtml.transition-timing-function']:'linear',
       });
-      // 更新样式
-      this.setStyle('body',this.data.refBody);
-    },
-    /* 实时位置 */
-    getTranslate(callback){
-      const xy = this.props.scrollX?'left':'top';
-      this.getDomInfo('#body',(res)=>{
-        let v = -parseInt((this.data.refHtml[xy]-res[xy])*100)/100 || 0;
-        callback(v);
-      });
-    },
-    /* 滚动-指定位置 */
-    scrollTo(xy,time){
-      // 初始化
-      this.init();
-      // 参数
-      xy = xy || 0;
-      if(xy=='max') xy=this.data.bodyMax[this.data.sp=='x'?'w':'h'];
-      else if(xy=='min') xy=0;
-      time = time || 600;
-      // 位置
-      this.translate(xy,time);
-      this.setData({ ['page.'+this.data.sp]:xy });
+      if(this.data.sp=='x') this.setData({ ['refHtml.transform']:`translate(${n}px,0)` });
+      else this.setData({ ['refHtml.transform']:`translate(0,${n}px)` });
+      this.setStyle('html',this.data.refHtml);
     },
 
     /* 加载-左/上 */
-    _translateUpper(n){
-      this.setData({ ['refUpper.opacity']:(100-n/this.props.upper*100)/100 });
-      if(this.props.scrollX) this.setData({ ['refUpper.transform']:`translate(-${n}px,0)` });
+    _translateUpper(n,time){
+      this.setData({
+        ['refUpper.opacity']:(100-n/this.props.upper*100)/100,
+        ['refUpper.transition-duration']:`${time}ms`,
+        ['refUpper.transition-timing-function']:'linear',
+      });
+      if(this.data.sp=='x') this.setData({ ['refUpper.transform']:`translate(-${n}px,0)` });
       else this.setData({ ['refUpper.transform']:`translate(0,-${n}px)` });
       this.setStyle('upper',this.data.refUpper);
     },
     /* 加载-右/下 */
-    _translateLower(n){
-      this.setData({ ['refLower.opacity']:(100-n/this.props.lower*100)/100 });
-      if(this.props.scrollX) this.setData({ ['refLower.transform']:`translate(${n}px,0)` });
+    _translateLower(n,time){
+      this.setData({
+        ['refLower.opacity']:(100-n/this.props.lower*100)/100,
+        ['refLower.transition-duration']:`${time}ms`,
+        ['refLower.transition-timing-function']:'linear',
+      });
+      if(this.data.sp=='x') this.setData({ ['refLower.transform']:`translate(${n}px,0)` });
       else this.setData({ ['refLower.transform']:`translate(0,${n}px)` });
       this.setStyle('lower',this.data.refLower);
     },
 
-    /* Dom Info */
-    getDomInfo(dom,callback){
-      my.createSelectorQuery().select(dom).boundingClientRect().exec((res)=>{
-        return callback(res[0]);
-      });
-    },
     /* Array to Style */
     setStyle(name,val){
       let str = '';

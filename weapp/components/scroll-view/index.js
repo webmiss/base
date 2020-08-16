@@ -132,13 +132,13 @@ Component({
       // 移动-方向
       if(this.tmpPage[this.data.sp]>0){
         this.isUpper = true;
+        this.scrollEnabled(false);
         // 控制上限
         let x = this.data.upper-this.tmpPage[this.data.sp];
         if(x<0) this.tmpPage[this.data.sp] = this.data.upper;
         // 值变化
         if(this.tmpPage[this.data.sp]!=this.tmpUpper){
           this.tmpUpper = this.tmpPage[this.data.sp];
-          this.scrollEnabled(false);
           // 加载
           this._translateUpper(x>0?x:0,400);
           // 位置
@@ -160,13 +160,13 @@ Component({
         }
       }else{
         this.isLower = true;
+        this.scrollEnabled(false);
         // 控制上限
         let y = this.data.lower+this.tmpPage[this.data.sp];
         if(y<0) this.tmpPage[this.data.sp] = -this.data.lower;
         // 值变化
         if(this.tmpPage[this.data.sp]!=this.tmpLower){
           this.tmpLower = this.tmpPage[this.data.sp];
-          this.scrollEnabled(false);
           // 加载
           this._translateLower(y>0?y:0,400);
           // 位置

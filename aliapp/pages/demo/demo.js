@@ -23,4 +23,9 @@ create(store,{
     if(e=='left') Back(1);
   },
 
+  /* 滑动 */
+  scroll(e){
+    // console.log(e.detail);
+  },
+
 });

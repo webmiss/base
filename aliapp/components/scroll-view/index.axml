@@ -1,16 +1,16 @@
-<view id="html" class="wm-scroll_html" catchTouchMove style="{{style.html}}">
+<view id="box" class="wm-scroll_html" style="{{style.box}}">
   <!-- 左拉/下拉 -->
-  <view id="upper" v-show="upperLoad" class="wm-scroll_load_body" style="{{style.upper}}">
+  <view id="upper" hidden="{{!upperLoad}}" class="wm-scroll_load_body" style="{{style.upper}}">
     <view class="wm-scroll_load">
       <text class="{{upperIcon}}" style="color:{{upperColor}};"></text>
     </view>
   </view>
   <!-- 滑动内容 -->
-  <view id="body" class="wm-scroll_body" onTouchStart="start" onTouchMove="move" onTouchEnd="end" style="{{style.body}}">
+  <scroll-view id="html" class="wm-scroll_view" onTouchStart="start" catchTouchMove="move" onTouchEnd="end" scroll-x="{{scrollX}}" scroll-y="{{scrollY}}" onScroll="scroll" style="{{style.html}}">
     <slot></slot>
-  </view>
+  </scroll-view>
   <!-- 右拉/上拉 -->
-  <view id="lower" v-show="lowerLoad" class="wm-scroll_load_body" style="{{style.lower}}">
+  <view id="lower" hidden="{{!lowerLoad}}" class="wm-scroll_load_body" style="{{style.lower}}">
     <view class="wm-scroll_load">
       <text class="{{lowerIcon}}" style="color:{{lowerColor}};"></text>
     </view>

@@ -22,6 +22,7 @@ create(store,{
     if(name=='left') return Back(1);
   },
 
+  /* 滑动 */
   scroll(e){
     // console.log(e.detail);
   },
