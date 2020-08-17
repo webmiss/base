@@ -1,6 +1,8 @@
 
 import HtmlInfo from '../../libray/inc/html-info'
 
+const app = getApp();
+
 Component({
   mixins: [],
   props: {
@@ -37,6 +39,7 @@ Component({
     style: {box:'',upper:'',lower:'',html:''},  //样式
     cubicBezier: '0.25,0.46,0.45,0.94', //动画
     disable: false,
+    platform: '',
   },
   didMount(){
     /* 滑动方向 */
@@ -53,8 +56,9 @@ Component({
       });
       // 中
       this.setData({
-        ['refBox.width']:'inherit',
+        ['refBox.width']:'auto',
         ['refBox.height']:'inherit',
+        ['refBox.min-width']:'100%',
       });
       // 右
       this.setData({
@@ -76,7 +80,8 @@ Component({
       // 中
       this.setData({
         ['refBox.width']:'inherit',
-        ['refBox.height']:'inherit',
+        ['refBox.height']:'auto',
+        ['refBox.min-height']:'100%',
       });
       // 下
       this.setData({
@@ -91,6 +96,10 @@ Component({
     this.setStyle('upper',this.data.refUpper);
     this.setStyle('lower',this.data.refLower);
     this.setStyle('box',this.data.refBox);
+    // 是否IOS
+    setTimeout(()=>{
+      this.setData({ platform:app.globalData.platform });
+    },1000);
   },
   methods: {
 
@@ -145,9 +154,9 @@ Component({
         if(this.tmpPage[this.data.sp]!=this.tmpUpper){
           this.tmpUpper = this.tmpPage[this.data.sp];
           // 加载
-          this._translateUpper(x>0?x:0,400);
+          this._translateUpper(x>0?x:0,100);
           // 位置
-          // this.translate(this.tmpPage[this.data.sp],400);
+          if(this.data.platform!='iOS') this.translate(this.tmpPage[this.data.sp],100);
           // 事件
           if(this.data.sp=='x'){
             this.setData({
@@ -173,9 +182,9 @@ Component({
         if(this.tmpPage[this.data.sp]!=this.tmpLower){
           this.tmpLower = this.tmpPage[this.data.sp];
           // 加载
-          this._translateLower(y>0?y:0,400);
+          this._translateLower(y>0?y:0,100);
           // 位置
-          // this.translate(this.tmpPage[this.data.sp],400);
+          if(this.data.platform!='iOS') this.translate(this.tmpPage[this.data.sp],100);
           // 事件
           if(this.data.sp=='x'){
             this.setData({

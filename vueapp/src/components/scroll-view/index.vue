@@ -154,9 +154,9 @@ export default {
         if(this.tmpPage[this.sp]!=this.tmpUpper){
           this.tmpUpper = this.tmpPage[this.sp];
           // 加载
-          this._translateUpper(x>0?x:0,400);
+          this._translateUpper(x>0?x:0,100);
           // 位置
-          this.translate(this.tmpPage[this.sp],400);
+          this.translate(this.tmpPage[this.sp],100);
           // 事件
           if(this.sp=='x'){
             this.body.x = -this.tmpPage[this.sp];
@@ -178,9 +178,9 @@ export default {
         if(this.tmpPage[this.sp]!=this.tmpLower){
           this.tmpLower = this.tmpPage[this.sp];
           // 加载
-          this._translateLower(y>0?y:0,400);
+          this._translateLower(y>0?y:0,100);
           // 位置
-          this.translate(this.tmpPage[this.sp],400);
+          this.translate(this.tmpPage[this.sp],100);
           // 事件
           if(this.sp=='x'){
             this.body.x = this.body.w-this.html.w-this.tmpPage[this.sp];

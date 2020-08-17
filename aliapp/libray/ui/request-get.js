@@ -7,7 +7,7 @@ export default (url,data,success,fail)=>{
   my.request({
     url: url,
     data: data,
-    header: Env.request.headers,
+    headers: Env.request.headers,
     success: success,
     fail: fail,
   });

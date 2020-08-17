@@ -140,9 +140,9 @@ Component({
         if(this.tmpPage[this.data.sp]!=this.tmpUpper){
           this.tmpUpper = this.tmpPage[this.data.sp];
           // 加载
-          this._translateUpper(x>0?x:0,400);
+          this._translateUpper(x>0?x:0,100);
           // 位置
-          this.translate(this.tmpPage[this.data.sp],400);
+          this.translate(this.tmpPage[this.data.sp],100);
           // 事件
           if(this.data.sp=='x'){
             this.setData({
@@ -168,9 +168,9 @@ Component({
         if(this.tmpPage[this.data.sp]!=this.tmpLower){
           this.tmpLower = this.tmpPage[this.data.sp];
           // 加载
-          this._translateLower(y>0?y:0,400);
+          this._translateLower(y>0?y:0,100);
           // 位置
-          this.translate(this.tmpPage[this.data.sp],400);
+          this.translate(this.tmpPage[this.data.sp],100);
           // 事件
           if(this.data.sp=='x'){
             this.setData({

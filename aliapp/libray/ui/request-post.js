@@ -8,7 +8,7 @@ export default (url,data,success,fail)=>{
     url: url,
     data: data,
     method: 'POST',
-    header: Env.request.headers,
+    headers: Env.request.headers,
     success: success,
     fail: fail,
   });

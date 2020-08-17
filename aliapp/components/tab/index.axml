@@ -1,0 +1,12 @@
+<view class="wm-tab_html">
+  <wm-scroll-view class="wm-tab_scroll" isScroll="{{scroll}}" scroll-x="{{true}}" scroll-y="{{false}}" upperLoad="{{false}}" lowerLoad="{{false}}">
+    <view class="wm-tab_body">
+      <view class="wm-tab_list" style="width: {{nw}};">
+        <view style="width: {{w}}%;" a:for="{{list}}" a:for-index="index" class="wm-tab_text {{active==index?'wm-tab_active':''}}" onTap="tabClick" data-k="{{index}}" data-v="{{item}}">
+          <text class="text">{{item.name}}</text>
+        </view>
+      </view>
+      <view class="wm-tab_line" style="width: {{w}}%; transform: {{transform}};"></view>
+    </view>
+  </wm-scroll-view>
+</view>
