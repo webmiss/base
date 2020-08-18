@@ -1,4 +1,4 @@
-<view class="page_view_html" hidden="{{hidden}}">
+<view id="html" class="page_view_html" hidden="{{hidden}}">
   <view class="page_view_header" style="height: {{height-16}}px; line-height: {{height-16}}px; padding-top: {{statusBar+8}}px; padding-bottom: 8px; background-color: {{bgColor}}; color: {{color}};">
     <!-- Left -->
     <view class="page_view_left flex center">
@@ -17,5 +17,5 @@
   <view a:if="{{!immersed}}" class="page_view_body" style="padding-top: {{height+statusBar}}px; height: {{screenHeight-height-statusBar}}px;">
     <slot name="body"></slot>
   </view>
-  <view a:else class="page_view_body" style="height: {{screenHeight}}px"><slot name="body"></slot></view>
+  <view a:else class="page_view_body" style="height: inherit;"><slot name="body"></slot></view>
 </view>

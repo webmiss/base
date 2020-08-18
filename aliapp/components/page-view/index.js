@@ -1,4 +1,5 @@
 import Env from '../../env'
+import HtmlInfo from '../../libray/inc/html-info'
 
 const app = getApp();
 
@@ -21,9 +22,11 @@ Component({
       this.setData({
         statusBar: app.globalData.statusBarHeight,
         height: app.globalData.titleBarHeight,
-        screenHeight: app.globalData.screenHeight,
       });
     },300);
+    HtmlInfo(this,'#html',(res)=>{
+      this.setData({ screenHeight:res[0].height });
+    });
   },
   methods: {},
 });

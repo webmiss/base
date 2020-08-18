@@ -16,13 +16,6 @@ App({
         this.globalData.platform = res.platform;
         this.globalData.statusBarHeight = res.statusBarHeight;
         this.globalData.titleBarHeight = res.titleBarHeight;
-        if(res.platform=='iOS' || res.platform=='ios'){
-          this.globalData.screenWidth = res.screenWidth;
-          this.globalData.screenHeight = res.screenHeight;
-        }else{
-          this.globalData.screenWidth = res.windowWidth;
-          this.globalData.screenHeight = res.windowHeight+res.statusBarHeight-4;
-        }
       },
     });
     // 隐藏收藏
