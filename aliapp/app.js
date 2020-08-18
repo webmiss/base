@@ -16,6 +16,8 @@ App({
         this.globalData.platform = res.platform;
         this.globalData.statusBarHeight = res.statusBarHeight;
         this.globalData.titleBarHeight = res.titleBarHeight;
+        this.globalData.screenWidth = res.screenWidth;
+        this.globalData.screenHeight = res.screenHeight;
       },
     });
     // 隐藏收藏
