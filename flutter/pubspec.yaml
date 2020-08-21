@@ -12,7 +12,8 @@ dependencies:
   permission_handler: ^5.0.1+1  #读写授权
   package_info: ^0.4.1  #APP信息
   ota_update: ^2.4.1 #APP更新
-  http: ^0.12.2 #Http请求
+  dio: ^3.0.10  #Http请求
+  url_launcher: ^5.5.0  #打开浏览器
   flutter_svg: ^0.18.0  #Svg图片
 # 插件-开发
 dev_dependencies:

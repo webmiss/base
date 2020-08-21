@@ -4,9 +4,14 @@ import 'package:webmis/env.dart';
 import 'package:webmis/library/ui/request.dart';
 import 'package:webmis/library/ui/ui-color.dart';
 import 'package:webmis/library/ui/ui-svg.dart';
+
 import 'package:webmis/library/inc/time-set.dart';
+import 'package:webmis/library/inc/version-diff.dart';
+
 import 'package:webmis/library/plus/app-info.dart';
 
+import 'package:ota_update/ota_update.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webmis/views/index.dart';
 
 void main() => runApp(MyApp());
@@ -33,7 +38,8 @@ class _SplashScreenState extends State<SplashScreen> {
   bool _isUpDate = false; //是否更新
   bool _isUpButton = false; //更新按钮
   String _upMsg = '检测更新'; //提示信息
-  double _upProgress = 0.10;  //进度
+  double _upProgress = 0.00;  //进度
+  Map<String,String> _upInfo = {}; //软件包
   
   /* 构造函数 */
   @override
@@ -59,33 +65,70 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   /* 跳转首页 */
+  Future<void> _goHome(){
+    return Navigator.of(context).pushReplacementNamed('/home');
+  }
   Future<void> _startTime() async {
     setTimeout((){
       if(Env.update['start']) _checkUpdate();
-      else Navigator.of(context).pushReplacementNamed('/home');
-    },3000);
+      else _goHome();
+    },2000);
   }
 
   /* 检测更新 */
   Future _checkUpdate() async {
     Map info = await appInfo();
-    print(info);
-    // Get
-    get('index/index',{}).then((res){
-      print(res);
-    });
-
-    setState((){
-      _isUpDate = true;
-      _isUpButton = true;
+    post('index/appUpdate',{'os':info['platform']}).then((res){
+      if(res['code']!=0) return false;
+      // 版本比较
+      if(!versionDiff(info['version'],res['version'])) return _goHome();
+      // 更新
+      setState((){
+        _isUpDate = true;
+        _isUpButton = true;
+        _upInfo = {
+          'platform': res['platform'],
+          'version': res['version'],
+          'file': res['file'],
+          'size': (res['size']/1024/1024).toStringAsFixed(2),
+        };
+        _upMsg = '新版本: '+_upInfo['version']+'  大小: '+_upInfo['size']+'MB';
+      });
     });
   }
   /* 下载更新 */
   Future _upDataDown() async {
-    Map info = await appInfo();
-    print(info);
-    print(info['appName']);
-    // print('下载更新');
+    if(_upInfo['platform']=='Android'){
+      double _progress;
+      String _size;
+      // 下载
+      setState(()=> _isUpButton=false );
+      OtaUpdate().execute(_upInfo['file']).listen((OtaEvent event) {
+        if(event.status==OtaStatus.DOWNLOADING){
+          _progress = double.parse(event.value)/100;
+          _size = (_progress*double.parse(_upInfo['size'])).toStringAsFixed(2);
+          setState((){
+            _upProgress = _progress;
+            _upMsg = '新版本: '+_upInfo['version']+'  大小: '+_size+'/'+_upInfo['size']+'MB';
+          });
+        }else if(event.status==OtaStatus.INSTALLING){
+          setState((){
+            _upProgress = 0.99;
+            _upMsg = '正在安装...';
+            _isUpButton = true;
+          });
+        }else{
+          setState(()=> _upMsg='下载失败！请重启APP重试');
+        }
+      });
+    }else if(_upInfo['platform']=='iOS'){
+      if(await canLaunch(Env.upIosUrl)){
+        setState(()=> _upMsg='请在应用商店下载');
+        return await launch(Env.upIosUrl);
+      }else{
+        setState(()=> _upMsg='无法打开应用商店！');
+      }
+    }
   }
 
   /* 启动画面 */
@@ -93,9 +136,9 @@ class _SplashScreenState extends State<SplashScreen> {
     final size = MediaQuery.of(context).size;
     // 竖屏、横屏
     if(size.width<size.height){
-      return Image.asset('lib/assets/screen/portrait.png',height:size.height,fit:BoxFit.cover);
+      return Image.asset('lib/assets/screen/portrait.png',width:size.width,fit:BoxFit.cover);
     }else{
-      return Image.asset('lib/assets/screen/landscape.png',width:size.width,fit:BoxFit.cover);
+      return Image.asset('lib/assets/screen/landscape.png',height:size.height,fit:BoxFit.cover);
     }
   }
 
@@ -148,7 +191,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       valueColor: AlwaysStoppedAnimation<Color>(uiColor(Env.update['loading'])),
                     ),
                   ),
-                  Text(_upMsg,style: TextStyle(color: uiColor(Env.update['msgColor']))),
+                  Text(_upMsg,style: TextStyle(fontSize: 12, color: uiColor(Env.update['msgColor']))),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 20),
                     child: _button,
