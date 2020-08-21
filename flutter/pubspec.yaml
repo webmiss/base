@@ -1,0 +1,29 @@
+name: webmis
+description: A new Flutter project.
+version: 1.0.0+1
+publish_to: 'none'
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+# 插件
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^0.1.3
+  permission_handler: ^5.0.1+1  #读写授权
+  package_info: ^0.4.1  #APP信息
+  ota_update: ^2.4.1 #APP更新
+  http: ^0.12.2 #Http请求
+  flutter_svg: ^0.18.0  #Svg图片
+# 插件-开发
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+# 配置
+flutter:
+  # 图标
+  uses-material-design: true
+  # 本地资源
+  assets:
+   - lib/assets/logo.svg
+   - lib/assets/screen/portrait.png
+   - lib/assets/screen/landscape.png

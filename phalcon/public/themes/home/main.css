@@ -6,6 +6,7 @@
 /* 初始化 */
 *{margin: 0; padding: 0;}
 html,body,#app{height: 100%; color: #364149; font-size: 14px;}
+body{overflow: hidden;}
 a{cursor: pointer; color: #6FB737; text-decoration: none;}
 a:hover{color: #FF6600;}
 ul{list-style: none;}
