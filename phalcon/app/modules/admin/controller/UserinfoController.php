@@ -18,7 +18,7 @@ class UserInfoController extends UserBase {
       'name'=>$data->name?$data->name:'',
       'gender'=>$data->gender?$data->gender:'',
       'birthday'=>$data->birthday?$data->birthday:'',
-      'img'=>$data->img?$this->config->img_url.$data->img:'',
+      'img'=>$data->img?$this->config->base_url.$data->img:'',
     ];
 		return self::getJSON(['code'=>0,'list'=>$list]);
   }
@@ -39,7 +39,7 @@ class UserInfoController extends UserBase {
       $model->$key = trim($val);
     }
     $uinfo = $model->toArray();
-    $uinfo['img'] = $uinfo['img']?$this->config->img_url.$uinfo['img']:'';
+    $uinfo['img'] = $uinfo['img']?$this->config->base_url.$uinfo['img']:'';
     return $model->save()==true?self::getJSON(['code'=>0,'uinfo'=>$uinfo]):self::error(4022);
   }
 
@@ -62,7 +62,7 @@ class UserInfoController extends UserBase {
       // 保存
       if($model->save()==true){
         @unlink($img);
-        return self::getJSON(['code'=>0,'img'=>$this->config->img_url.self::$imgDir.$res['filename']]);
+        return self::getJSON(['code'=>0,'img'=>$this->config->base_url.self::$imgDir.$res['filename']]);
       }else{
         return self::getJSON(['code'=>4030,'msg'=>'保存数据失败!']);
       }

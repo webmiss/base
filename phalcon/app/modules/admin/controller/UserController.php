@@ -53,7 +53,7 @@ class UserController extends Base{
         'nickname'=>$uData->nickname,
         'name'=>$uData->name,
         'gender'=>$uData->gender,
-        'img'=>$uData->img?$this->config->img_url.$uData->img:'',
+        'img'=>$uData->img?$this->config->base_url.$uData->img:'',
       ],
       'token'=>self::setToken($uData->id,['uname'=>$uname]),
     ]);
@@ -69,7 +69,7 @@ class UserController extends Base{
       if(!$uinfo) return self::getJSON(['code'=>0,'time'=>$time]);
       // 用户信息
       $uinfo = UserInfo::findFirst(['uid='.$res->uid,'columns'=>'nickname,position,name,img']);
-      $uinfo->img = $uinfo->img?$this->config->img_url.$uinfo->img:'';
+      $uinfo->img = $uinfo->img?$this->config->base_url.$uinfo->img:'';
       return self::getJSON(['code'=>0,'time'=>$time,'uinfo'=>$uinfo]);
     }else{
       return self::error(1000);

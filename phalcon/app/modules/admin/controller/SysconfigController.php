@@ -16,7 +16,7 @@ class SysConfigController extends UserBase {
 		foreach($config as $val){
       $data[$val['name']] = $val['val'];
       if($val['name']=='logo' || $val['name']=='login_bg'){
-        $data[$val['name']] = $val['val']?$this->config->img_url.$val['val']:'';
+        $data[$val['name']] = $val['val']?$this->config->base_url.$val['val']:'';
       }
 		}
 		return self::getJSON(['code'=>0,'list'=>$data]);
@@ -55,7 +55,7 @@ class SysConfigController extends UserBase {
       $model->val = self::$imgDir.$res['filename'];
       if($model->save()==true){
         @unlink($img);
-        return self::getJSON(['code'=>0,'img'=>$this->config->img_url.self::$imgDir.$res['filename']]);
+        return self::getJSON(['code'=>0,'img'=>$this->config->base_url.self::$imgDir.$res['filename']]);
       }else{
         return self::getJSON(['code'=>4030,'msg'=>'保存数据失败!']);
       }

@@ -25,7 +25,7 @@ class SysFileManageController extends UserBase{
   function listAction(){
     $path = $this->request->get('path','string');
     $list = File::lists($path);
-    return self::getJSON(['code'=>0,'url'=>$this->config->img_url,'data'=>$list]);
+    return self::getJSON(['code'=>0,'url'=>$this->config->base_url,'data'=>$list]);
   }
 
   /* 新建文件夹 */

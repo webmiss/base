@@ -37,7 +37,7 @@ class IndexController extends Base{
       if(in_array($val['name'],$arr)){
         $data[$val['name']] = $val['val'];
         if($val['name']=='logo' || $val['name']=='login_bg'){
-          $data[$val['name']] = $val['val']?$this->config->img_url.$val['val']:'';
+          $data[$val['name']] = $val['val']?$this->config->base_url.$val['val']:'';
         }
       }
     }

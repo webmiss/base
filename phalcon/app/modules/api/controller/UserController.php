@@ -34,7 +34,7 @@ class UserController extends UserBase {
     if(!$uData) return self::getJSON(['code'=>4010]);
     // 是否禁用
     $uData = (Object)$uData[0];
-    $uData->img = $uData->img?$this->config->img_url.$uData->img:'';
+    $uData->img = $uData->img?$this->config->base_url.$uData->img:'';
     if($uData->state!='1') return self::getJSON(['code'=>4011]);
     unset($uData->state);
     // 登录时间
@@ -134,7 +134,7 @@ class UserController extends UserBase {
       $uinfo->uid = $uid;
       $uinfo->save();
     };
-    $uinfo->img = $uinfo->img?$this->config->img_url.$uinfo->img:'';
+    $uinfo->img = $uinfo->img?$this->config->base_url.$uinfo->img:'';
     $data = array_merge($user->toArray(),$uinfo->toArray());
     return self::getJSON(['code'=>0,'info'=>$data]);
   }
@@ -204,7 +204,7 @@ class UserController extends UserBase {
     $model->img = self::$imgDir.$res['filename'];
     if($model->save()==true){
       if($tmp) @unlink($tmp);
-      return self::getJSON(['code'=>0,'img'=>$this->config->img_url.self::$imgDir.$res['filename']]);
+      return self::getJSON(['code'=>0,'img'=>$this->config->base_url.self::$imgDir.$res['filename']]);
     }else{
       return self::getJSON(['code'=>4030]);
     }
