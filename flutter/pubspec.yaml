@@ -23,6 +23,11 @@ dev_dependencies:
 flutter:
   # 图标
   uses-material-design: true
+  # 字体图标
+  fonts:
+   - family: icomoon
+     fonts:
+       - asset: lib/assets/fonts/icomoon.ttf
   # 本地资源
   assets:
    - lib/assets/logo.svg

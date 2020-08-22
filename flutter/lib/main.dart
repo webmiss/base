@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'dart:io';
+import 'package:flutter/services.dart';
+
 import 'package:webmis/env.dart';
 import 'package:webmis/library/ui/request.dart';
 import 'package:webmis/library/ui/ui-color.dart';
@@ -12,11 +15,22 @@ import 'package:webmis/library/plus/app-info.dart';
 
 import 'package:ota_update/ota_update.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:webmis/views/index.dart';
 
-void main() => runApp(MyApp());
+import 'package:webmis/views/Home.dart';
+
+void main(){
+  runApp(MyApp());
+  // 沉浸式状态栏
+  if(Platform.isAndroid){
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+    ));
+  }
+}
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
