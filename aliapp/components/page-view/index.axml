@@ -1,5 +1,5 @@
 <view id="html" class="page_view_html" hidden="{{hidden}}">
-  <view class="page_view_header" style="height: {{height-16}}px; line-height: {{height-16}}px; padding-top: {{statusBar+8}}px; padding-bottom: 8px; background-color: {{bgColor}}; color: {{color}};">
+  <view class="page_view_header" style="height: {{height-10}}px; line-height: {{height-10}}px; padding-top: {{statusBar+5}}px; padding-bottom: 5px; background-color: {{bgColor}}; color: {{color}};">
     <!-- Left -->
     <view class="page_view_left flex center">
       <slot name="left"></slot>

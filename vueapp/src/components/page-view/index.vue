@@ -1,7 +1,7 @@
 <template>
   <div class="page_view_html">
     <!-- header -->
-    <div class="page_view_header" v-if="header" :style="{height:(height-16)+'px', lineHeight:(height-16)+'px', paddingTop:($store.state.statusBarHeight+8)+'px', paddingBottom:'8px', backgroundColor:bgColor, color:color}">
+    <div class="page_view_header" v-if="header" :style="{height:(height-10)+'px', lineHeight:(height-10)+'px', paddingTop:($store.state.statusBarHeight+5)+'px', paddingBottom:'5px', backgroundColor:bgColor, color:color}">
       <!-- Left -->
       <div class="page_view_left flex center">
         <slot name="left"></slot>
