@@ -18,6 +18,7 @@ class MsgState extends State<Msg> with AutomaticKeepAliveClientMixin {
 
   /* Widget */
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     /* 显示 */
     return Scaffold(

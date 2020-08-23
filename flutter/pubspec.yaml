@@ -28,8 +28,13 @@ flutter:
    - family: icomoon
      fonts:
        - asset: lib/assets/fonts/icomoon.ttf
+   - family: wmui
+     fonts:
+       - asset: lib/assets/fonts/wmui.ttf
   # 本地资源
   assets:
    - lib/assets/logo.svg
    - lib/assets/screen/portrait.png
    - lib/assets/screen/landscape.png
+   - lib/assets/icon/logo.svg
+   - lib/assets/icon/bg.svg

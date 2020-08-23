@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:webmis/library/ui/ui-color.dart';
+import 'package:webmis/library/ui/ui-svg.dart';
 import 'package:webmis/components/page-view.dart';
+
+import 'package:webmis/views/demo/Demo.dart';
 
 class Index extends StatefulWidget {
   @override
@@ -21,6 +24,7 @@ class IndexState extends State<Index> with AutomaticKeepAliveClientMixin {
 
   /* Widget */
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     /* 显示 */
     return Scaffold(
@@ -28,8 +32,49 @@ class IndexState extends State<Index> with AutomaticKeepAliveClientMixin {
         slotLeft: Center(
           child: Text('五华区'),
         ),
-        slotBody: Center(
-          child: Text('首页'),
+        slotBody:Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment(0.0,-0.2),
+              end: Alignment.bottomCenter,
+              colors: [uiColor('#FFFFFF'),uiColor('#F2F4F6')],
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Logo
+              Container(
+                width: double.infinity,
+                height: 62,
+                child: uiSvg(src:'lib/assets/icon/logo.svg'),
+              ),
+              Container(
+                child: Text(
+                  'webmis.vip',
+                  style: TextStyle(fontSize: 20,color: uiColor('#666666')),
+                ),
+              ),
+              Container(
+                height: 125,
+                child: uiSvg(src:'lib/assets/icon/bg.svg'),
+              ),
+              GestureDetector(
+                child: Container(
+                  width: 80,
+                  height: 30,
+                  child: Center(
+                    child: Text(
+                      '[ Demo ]',
+                      style: TextStyle(fontSize: 14, color: uiColor('#666666')),
+                    ),
+                  ),
+                ),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context){return Demo();}))
+              ),
+            ],
+          ),
         ),
       ),
     );

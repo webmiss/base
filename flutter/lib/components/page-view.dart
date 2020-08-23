@@ -63,6 +63,8 @@ Widget pageView({
     children: [
       // 内容
       Container(
+        width: double.infinity,
+        height: double.infinity,
         padding: EdgeInsets.only(
           top: _height,
         ),

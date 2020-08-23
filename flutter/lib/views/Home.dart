@@ -6,7 +6,6 @@ import 'package:webmis/library/ui/ui-color.dart';
 import 'package:webmis/views/index/Index.dart';
 import 'package:webmis/views/index/Msg.dart';
 import 'package:webmis/views/index/Me.dart';
-import 'package:webmis/views/demo/Demo.dart';
 
 class Home extends StatefulWidget {
   @override

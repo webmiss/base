@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: Env.dev,
-      title: 'Flutter Demo',
+      title: 'WebMIS Flutter',
       home: SplashScreen(),
       routes: <String, WidgetBuilder>{
         '/home': (BuildContext context) => new Home()
@@ -216,6 +216,9 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         ),
         Positioned(
+          left: 0,
+          right: 0,
+          bottom: 32.0,
           child: Column(
             children: <Widget>[
               Container(
@@ -233,9 +236,6 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ],
           ),
-          left: 0,
-          right: 0,
-          bottom: 32.0,
         ),
       ]
     );
