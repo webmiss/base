@@ -37,6 +37,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: Env.dev,
       title: 'WebMIS Flutter',
       home: SplashScreen(),
+      theme: ThemeData(
+        platform: TargetPlatform.iOS,
+        brightness: Brightness.light,
+        accentColor: uiColor(Env.color['primary']),
+        primaryColor: uiColor(Env.color['primary']),
+      ),
       routes: <String, WidgetBuilder>{
         '/home': (BuildContext context) => new Home()
       },
