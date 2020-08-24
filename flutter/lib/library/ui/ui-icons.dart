@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 /* 字体图标 */
+// ignore: camel_case_types
 class uiIcons {
   /* UI */
   static const IconData back = IconData(0xe903, fontFamily: 'wmui');
