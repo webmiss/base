@@ -73,7 +73,7 @@ i{font-style: normal;}
 .back_dark.icons{color: #FFF;}
 
 /* 切换动画 */
-.view{position: fixed; z-index: 0; width:100%; height: 100%; transition: all 500ms cubic-bezier(0.165,0.84,0.44,1); background-color: #FFF;}
+.view{position: fixed; z-index: 0; width:100%; height: 100%; transition: all 400ms cubic-bezier(0.165,0.84,0.44,1); background-color: #FFF;}
 .view_dark{background-color: #242628;}
 .slide-left-enter,.slide-right-leave-active{z-index: 1; transform: translate(100%,0);}
 .slide-right-enter,.slide-left-leave-active{z-index: -1; transform: translate(-30%,0);}
