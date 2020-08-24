@@ -49,7 +49,7 @@ class DemoState extends State<Demo> {
           height: 120,
           color: uiColor('#FFFFFF'),
           child: Center(
-            child: Text(s.toString(),style: TextStyle(fontSize: 16),),
+            child: Ui.text(s.toString(),fontSize: 14),
           ),
         )
       );
