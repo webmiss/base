@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:webmis/library/ui/ui.dart';
 import 'package:webmis/library/ui/ui-color.dart';
+import 'package:webmis/library/ui/ui-navigator-to.dart';
+
 import 'package:webmis/components/page-view.dart';
 import 'package:webmis/components/scroll-view.dart';
 
@@ -25,21 +28,10 @@ class DemoState extends State<Demo> {
     /* 显示 */
     return Scaffold(
       body: pageView(
-        slotLeft:GestureDetector(
-          child: Container(
-            width: 40,
-            child: Icon(IconData(0xe903, fontFamily: 'wmui'),size: 22,color:uiColor('#FF6600'),),
-          ),
-          onTap: () => Navigator.pop(context,'参数'),
-        ),
-        slotTitle: Center(
-          child: Text(
-            'Demo',
-            style: TextStyle(fontSize: 18,color: uiColor('#333333')),
-          ),
-        ),
+        slotLeft:Ui.back(context),
+        slotTitle: Ui.title('Demo'),
         slotBody: scrollView(
-          swipe: (res){ if(res=='left'){ Navigator.pop(context); } },
+          swipe: (res){ if(res=='left'){ NavigatorTo.pop(context); } },
           slotHtml: _listView(),
         ),
       ),

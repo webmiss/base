@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:webmis/env.dart';
+import 'package:webmis/library/ui/ui-icons.dart';
 import 'package:webmis/library/ui/ui-color.dart';
 
 import 'package:webmis/views/index/Index.dart';
@@ -45,11 +46,11 @@ class _HomeState extends State<Home> {
         selectedFontSize: 9,
         unselectedFontSize: 9,
         selectedLabelStyle: TextStyle(height: 1.4),
-        iconSize: 26,
+        iconSize: 22,
         items: [
-          BottomNavigationBarItem(title: Text('消息'), icon: Icon(IconData(0xe902, fontFamily: 'icomoon')),),
-          BottomNavigationBarItem(title: Text('首页'), icon: Icon(IconData(0xe900, fontFamily: 'icomoon')),),
-          BottomNavigationBarItem(title: Text('我的'), icon: Icon(IconData(0xe901, fontFamily: 'icomoon')),),
+          BottomNavigationBarItem(title: Text('消息'), icon: Icon(uiIcons.msg)),
+          BottomNavigationBarItem(title: Text('首页'), icon: Icon(uiIcons.home)),
+          BottomNavigationBarItem(title: Text('我的'), icon: Icon(uiIcons.me)),
         ],
         currentIndex: _currentIndex,
         onTap: (index){

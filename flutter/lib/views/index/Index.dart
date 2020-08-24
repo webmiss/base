@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:webmis/library/ui/ui.dart';
 import 'package:webmis/library/ui/ui-color.dart';
 import 'package:webmis/library/ui/ui-svg.dart';
+import 'package:webmis/library/ui/ui-navigator-to.dart';
+
 import 'package:webmis/components/page-view.dart';
 
 import 'package:webmis/views/demo/Demo.dart';
@@ -57,21 +60,18 @@ class IndexState extends State<Index> with AutomaticKeepAliveClientMixin {
                 ),
               ),
               Container(
-                height: 125,
+                height: 100,
                 child: uiSvg(src:'lib/assets/icon/bg.svg'),
               ),
               GestureDetector(
+                onTap: ()=> NavigatorTo.push(context,page: Demo()),
                 child: Container(
                   width: 80,
                   height: 30,
                   child: Center(
-                    child: Text(
-                      '[ Demo ]',
-                      style: TextStyle(fontSize: 14, color: uiColor('#666666')),
-                    ),
+                    child: Ui.text('[ Demo ]'),
                   ),
                 ),
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context){return Demo();}))
               ),
             ],
           ),
