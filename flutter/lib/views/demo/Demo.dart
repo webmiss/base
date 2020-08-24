@@ -14,7 +14,7 @@ class Demo extends StatefulWidget {
 class DemoState extends State<Demo> {
 
   /* 属性 */
-  List<double> lists = [0,1,2,3,4,5,6,7,8,9];
+  List<int> lists = [0,1,2,3,4,5,6,7,8,9];
 
   /* 构造函数 */
   @override
