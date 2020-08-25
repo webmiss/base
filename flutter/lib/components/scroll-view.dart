@@ -7,7 +7,7 @@ Widget scrollView({
   bool scrollX: false,
   bool scrollY: true,
   Function swipe,
-  double limit: 60,
+  double limit: 120,
   String bgColor: '#F2F4F6',
 }){
 
