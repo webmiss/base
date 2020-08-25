@@ -14,7 +14,7 @@ class Ui{
   }){
     return GestureDetector(
       child: Container( width: 40,
-        child: Icon(uiIcons.back,size: 18,color:uiColor(color),),
+        child: Icon(uiIcons.back,size: 16,color:uiColor(color),),
       ),
       onTap: ()=> NavigatorTo.pop(context,parm:parm),
     );
