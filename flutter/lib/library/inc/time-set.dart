@@ -1,13 +1,13 @@
 import 'dart:async';
 
 /* 倒计时 */
-void setTimeout(Function fun, int time){
+Timer setTimeout(Function fun, int time){
   Duration timeout = Duration(milliseconds: time);
-  Timer(timeout, fun);
+  return Timer(timeout, fun);
 }
 
 /* 定时器 */
-void setInterval(Function fun, int time){
+Timer setInterval(Function fun, int time){
   Duration timeout = Duration(milliseconds: time);
-  Timer.periodic(timeout, fun);
+  return Timer.periodic(timeout, fun);
 }
