@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:webmis/library/ui/ui.dart';
-import 'package:webmis/library/ui/ui-color.dart';
 
 import 'package:webmis/library/inc/time-set.dart';
 
@@ -10,7 +9,7 @@ class Toast {
   static String _msg;
   static BuildContext _context;
   static bool _show = false;
-  static var _t = null;
+  static var _t;
   Toast(
     BuildContext context,
     String msg,
