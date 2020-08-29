@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:webmis/env.dart';
+import 'package:webmis/library/ui/ui.dart';
 import 'package:webmis/library/ui/ui-icons.dart';
 import 'package:webmis/library/ui/ui-color.dart';
 
@@ -29,40 +30,73 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView.builder(
-        // 保存状态
-        physics: NeverScrollableScrollPhysics(),
-        controller: _pageController,
-        onPageChanged: _changeTab,
-        // 回调
-        itemCount: _pages.length,
-        itemBuilder: (context, index) => _pages[index],
-      ),
-      // 导航
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: uiColor(Env.color['primary']),
-        unselectedItemColor: uiColor(Env.color['info']),
-        selectedFontSize: 9,
-        unselectedFontSize: 9,
-        selectedLabelStyle: TextStyle(height: 1.4),
-        iconSize: 22,
-        items: [
-          BottomNavigationBarItem(title: Text('消息'), icon: Icon(uiIcons.msg)),
-          BottomNavigationBarItem(title: Text('首页'), icon: Icon(uiIcons.home)),
-          BottomNavigationBarItem(title: Text('我的'), icon: Icon(uiIcons.me)),
+      body: Stack(
+        children: [
+          Container(
+            color: uiColor('#FF0000'),
+            width: double.infinity,
+            height: double.infinity,
+            margin: EdgeInsets.only(bottom:50),
+            child: PageView.builder(
+              // 保存状态
+              physics: NeverScrollableScrollPhysics(),
+              controller: _pageController,
+              onPageChanged: _changeTab,
+              // 回调
+              itemCount: _pages.length,
+              itemBuilder: (context, index) => _pages[index],
+            ),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              width: double.infinity,
+              height: 50,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: _tabs(context),
+              ),
+            ),
+          ),
         ],
-        currentIndex: _currentIndex,
-        onTap: (index){
-          // 切换页面
-          _pageController.jumpToPage(index);
-        },
       ),
     );
   }
 
+  /* 导航菜单 */
+  List<Widget> _tabs(context){
+    final _width = MediaQuery.of(context).size.width/1;
+    final _height = double.infinity;
+    return [
+
+      // 首页
+      GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          width: _width,
+          height: _height,
+          color: uiColor('#FFFFFF'),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Icon(uiIcons.home,color: uiColor(_currentIndex==1?Env.color['primary']:Env.color['info']),),
+              Ui.text('首页',fontSize:9,color: _currentIndex==1?Env.color['primary']:Env.color['info']),
+            ],
+          ),
+        ),
+        onTap: ()=> _changeTab(1),
+      ),
+      
+    ];
+  }
+
   /* 切换导航 */
   void _changeTab(int index){
-    setState(()=> _currentIndex=index );
+    if(index!=_currentIndex){
+      setState(()=> _currentIndex=index );
+      _pageController.jumpToPage(index);
+    }
   }
 }
