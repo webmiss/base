@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 // ignore: camel_case_types
 class uiIcons {
   /* UI */
+  static const IconData loading = IconData(0xe900, fontFamily: 'wmui');
   static const IconData back = IconData(0xe903, fontFamily: 'wmui');
   /* APP */
   static const IconData home = IconData(0xe900, fontFamily: 'icomoon');
