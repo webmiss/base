@@ -52,5 +52,12 @@ class LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
       }),
     );
   }
+
+  /* 销毁 */
+  @override
+  void dispose(){
+    _controller.dispose();
+    super.dispose();
+  }
    
 }
