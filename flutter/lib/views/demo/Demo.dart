@@ -27,7 +27,7 @@ class DemoState extends State<Demo> {
   Widget build(BuildContext context) {
     /* 显示 */
     return Scaffold(
-      body: pageView(
+      body: WmPageView(
         slotLeft:Ui.back(context),
         slotTitle: Ui.title('Demo'),
         slotBody: scrollView(

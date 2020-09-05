@@ -31,7 +31,9 @@ class IndexState extends State<Index> with AutomaticKeepAliveClientMixin {
   Widget build(BuildContext context) {
     /* 显示 */
     return Scaffold(
-      body: pageView(
+      body: WmPageView(
+        immersed: true,
+        bgColor: Color.fromRGBO(0,0,0,0.0),
         slotLeft: Center(
           child: Text('五华区'),
         ),
