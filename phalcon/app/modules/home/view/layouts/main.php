@@ -35,7 +35,7 @@
       <div class="top_nav_body sidebar">
         <ul class="top_nav">
           <li><a href="https://webmis.vip/"<?php echo $this->dispatcher->getActionName()=='index'?' class="an"':'';?>>首页</a></li>
-          <li><a href="https://webmis.vip/docs/app/install/index"<?php echo $this->dispatcher->getActionName()=='app'?' class="an"':'';?>>APP</a></li>
+          <li><a href="https://webmis.vip/docs/app/install/index"<?php echo $this->dispatcher->getActionName()=='app'?' class="an"':'';?>>VueAPP</a></li>
           <li><a href="https://webmis.vip/docs/admin/install/index"<?php echo $this->dispatcher->getActionName()=='admin'?' class="an"':'';?>>Admin</a></li>
           <li><a href="https://webmis.vip/docs/flutter/install/index"<?php echo $this->dispatcher->getActionName()=='flutter'?' class="an"':'';?>>Flutter</a></li>
           <li><a href="https://webmis.vip/docs/phalcon/install/index"<?php echo $this->dispatcher->getActionName()=='phalcon'?' class="an"':'';?>>Phalcon</a></li>
