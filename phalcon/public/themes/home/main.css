@@ -51,6 +51,12 @@ i{font-style: normal;}
 .nowrap_text{overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;}
 .nowrap_three{overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;}
 
+/* 滚动条 */
+.sidebar::-webkit-scrollbar{width: 4px;}
+.sidebar::-webkit-scrollbar-thumb{border-radius: 4px; background: transparent;}
+.sidebar:hover::-webkit-scrollbar-thumb{background: rgba(136,136,136,0.4);}
+.sidebar:hover::-webkit-scrollbar-track{background: rgba(136,136,136,0.1);}
+
 /* 头部 */
 .top_body{position: fixed; z-index: 99; width: 100%; padding: 8px 0; background-color: #24292E;}
 .top{position: relative; padding: 0 16px;  height: 40px; line-height: 40px;}
@@ -58,7 +64,8 @@ i{font-style: normal;}
 .top_logo{float: left; width: 40px; height: 100%; background-color: #FFF; border-radius: 50%; background-image: url('img/logo.svg'); background-size: 75%; transition: All 0.4s ease-in-out;}
 .top_logo:hover{transform: rotate(360deg);}
 
-.top_nav_body{float: left; width: calc(100% - 180px); margin-left: 8px; overflow: hidden;}
+.top_nav_body{float: left; width: calc(100% - 180px); margin-left: 8px; overflow-x: auto;}
+.top_nav_body::-webkit-scrollbar{display:none}
 .top_nav{display: flex; width: 480px; height: 100%;}
 .top_nav li{width: 80px; display: flex; align-items: center; box-sizing: border-box; flex: 1;}
 .top_nav a{flex: 1; text-align: center; color: #999; font-size: 16px;}

@@ -16,8 +16,6 @@
   <!-- VUE -->
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<script type="module" src="/themes/home/main.js"></script>
-	<!-- 滑块 -->
-  <script src="https://cdn.jsdelivr.net/npm/better-scroll"></script>
   <!-- CSS -->
 <?php if(isset($LoadCSS)){foreach($LoadCSS as $val){;?>
   <link rel="stylesheet" type="text/css" href="<?php echo $val;?>" />
@@ -34,7 +32,7 @@
       <!-- Logo -->
       <h1 class="bgImg top_logo" title="WebMIS"></h1>
       <!-- 菜单 -->
-      <div ref="TopNav" class="top_nav_body">
+      <div class="top_nav_body sidebar">
         <ul class="top_nav">
           <li><a href="https://webmis.vip/"<?php echo $this->dispatcher->getActionName()=='index'?' class="an"':'';?>>首页</a></li>
           <li><a href="https://webmis.vip/docs/app/install/index"<?php echo $this->dispatcher->getActionName()=='app'?' class="an"':'';?>>APP</a></li>

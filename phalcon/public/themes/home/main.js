@@ -6,9 +6,6 @@ const vm = new Vue({
     navScroll: null,
   },
   mounted(){
-    /* 导航菜单-滑动 */
-    let nav = this.$refs.TopNav;
-    if(nav) this.navScroll = new BScroll(nav,{click:true,scrollX:true});
   },
   methods:{
 
