@@ -8,20 +8,22 @@ import 'package:webmis/library/ui/ui-color.dart';
 
 /* 页面布局 */
 class WmPageView extends StatefulWidget {
-  final bool immersed;
-  final Widget slotTitle;
-  final Widget slotLeft;
-  final Widget slotRight;
-  final Widget slotBody;
-  final Color bgColor;
-  final String statusBar;
+  final Widget slotBody;  //中部内容
+  final Widget slotTitle; //头部内容
+  final Widget slotLeft;  //头部左侧
+  final Widget slotRight; //头部右侧
+  final bool immersed;  //沉浸式
+  final bool header;  //显示头部
+  final Color bgColor;  //头部背景颜色
+  final String statusBar; //状态栏: 'dark'和'light'
   const WmPageView({
     Key key,
-    this.immersed: false,
+    this.slotBody,
     this.slotTitle,
     this.slotLeft,
     this.slotRight,
-    this.slotBody,
+    this.immersed: false,
+    this.header: true,
     this.bgColor,
     this.statusBar: 'dark',
   }): super(key: key);
@@ -70,7 +72,7 @@ class WmPageViewState extends State<WmPageView> {
           child: this.widget.slotBody,
         ),
         // 头部
-        Container(
+        if(this.widget.header) Container(
           color: this.widget.bgColor!=null?this.widget.bgColor:uiColor(Env.statusBar['bgColor']),
           padding: EdgeInsets.only(top: _statusHeight+5.0,bottom: 5.0, left: 10.0, right: 10.0),
           height: _topHeight,
