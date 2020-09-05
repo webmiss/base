@@ -8,10 +8,10 @@ import 'package:webmis/library/ui/ui-color.dart';
 
 /* 页面布局 */
 class WmPageView extends StatefulWidget {
-  final Widget slotBody;  //中部内容
-  final Widget slotTitle; //头部内容
-  final Widget slotLeft;  //头部左侧
-  final Widget slotRight; //头部右侧
+  final Widget slotBody;  //中部
+  final Widget slotTitle; //头部
+  final Widget slotLeft;  //头部-左侧
+  final Widget slotRight; //头部-右侧
   final bool immersed;  //沉浸式
   final bool header;  //显示头部
   final Color bgColor;  //头部背景颜色
