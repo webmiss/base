@@ -12,18 +12,14 @@ import PlusReady from './library/plus/plus-ready'
 /* 组件 */
 import Popup from '@/components/popup'
 import Action from '@/components/action'
-/* Scroll */
-import BScroll from 'better-scroll'
+import ScrollView from '@/components/scroll-view'
 
 export default {
   name: 'APP',
-  components: {Action,Popup},
+  components: {Action,Popup,ScrollView},
   data(){
     return {
       storage: Storage,
-      // 滑动
-      menusScroll: null,
-      actionScroll: null,
       // 更新APP
       update: {show:false,os:'',down:false,loading:'0%',msg:'检测更新',file:'',total:0},
       upDateColor: Env.update,
@@ -173,24 +169,6 @@ export default {
       // 默认菜单
       this.$store.state.collapseMenu = Storage.getItem('isCollapse')=='true'?true:false;
       this.$store.state.defaultMenu = Storage.getItem('defaultMenu')?Storage.getItem('defaultMenu'):'3';
-      // 滑动-菜单
-      let menu = this.$refs.LeftMenus;
-      if(menu){
-        this.menusScroll = new BScroll(menu,{
-          scrollY:true,
-          click:true,probeType:2,mouseWheel:true,
-          scrollbar:{fade:true,interactive:false},
-        });
-      }
-      // 滑动-动作
-      let action = this.$refs.TopAction;
-      if(action){
-        this.actionScroll = new BScroll(action,{
-          scrollX:true,
-          click:true,probeType:2,mouseWheel:true,
-          scrollbar:{fade:true,interactive:false},
-        });
-      }
       // 请求
       Post('Usermain/getMenus',{token:Storage.getItem('token')},(res)=>{
         let d = res.data;

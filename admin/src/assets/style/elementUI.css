@@ -1,0 +1,31 @@
+/* ElementUI */
+body .el-input-group__prepend{padding: 0 10px;}
+
+/* 菜单 */
+.app_menus .el-menu{border: none;}
+.app_menus .el-submenu__title{height: 46px; line-height: 46px; color: #CCC;}
+.app_menus .el-submenu__title:hover{background-color: #30333A;}
+.app_menus .el-submenu__title .fa{font-size: 21px; margin-right: 10px; color: #666;}
+.app_menus .el-submenu__title .icons{width: 24px; height: 24px; line-height: 24px; font-size: 20px; display: inline-block; margin-right: 5px; text-align: center;}
+.app_menus .el-submenu .el-menu-item{height: 36px; line-height: 36px; color: #FFF;}
+.app_menus ul{background-color: #20222A;}
+.app_menus .el-menu-item:hover{background-color: #30333A; color: #6FB737;}
+.app_menus .el-menu-item:hover i{color: #FFF;}
+.app_menus .el-menu-item.is-active{background-color: #6FB737; color: #FFF;}
+
+/* 弹出层-居中 */
+.el-dialog{position: absolute; border-radius: 5px; top: 50%; left: 50%; margin: 0 !important; transform: translate(-50%, -50%); max-height: calc(100% - 10px); max-width: calc(100% - 10px); display: flex; flex-direction: column;}
+.el-dialog .el-dialog__body{overflow: auto; color: #666666;}
+.el-dialog--center .el-dialog__body{padding: 10px 15px;}
+.el-dialog--center .el-dialog__footer{padding: 10px 20px 20px;}
+
+/* 单选 */
+.el-radio{margin-right: 20px;}
+.el-radio__inner{border: #999 1px solid;}
+
+/* Tree */
+.el-tree-node__content{height: 32px;}
+.tree_node{flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 8px;}
+.tree_node_title{padding: 8px 10px; font-weight: bold;}
+.tree_node_title dd{padding: 0 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
+.tree_node_width dd{padding: 0 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}

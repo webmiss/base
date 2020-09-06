@@ -1,6 +1,7 @@
 /* 正式 */
 const title = 'WebMIS API';
-const baseUrl = 'https://api.webmis.vip/';
+const baseUrl = 'https://demo-api.webmis.vip/';
+const socket = 'wss://demo-api.webmis.vip/wss';
 
 export default {
   dev: false, // 是否开发模式
