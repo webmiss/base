@@ -7,7 +7,7 @@
     </div>
   </div>
   <!-- 滑动内容 -->
-  <div ref="html" class="wm-scroll_view" @touchstart="start" @touchmove="move" @touchend="end">
+  <div ref="html" class="wm-scroll_view" :class="scrollX?isMobile?'wm-scroll_view_x':'wm-scroll_view_y':!isMobile?'wm-scroll_view_y':''" @touchstart="start" @touchmove="move" @touchend="end">
     <slot></slot>
   </div>
   <!-- 右拉/上拉 -->
@@ -23,12 +23,16 @@
 .wm-scroll_html{position: relative; overflow: hidden;}
 /* 内容 */
 .wm-scroll_view{position: absolute; overflow: hidden; width: 100%; height: 100%; transform: translate(0,0);}
-.wm-scroll_view::-webkit-scrollbar{display:none}
+.wm-scroll_view_x::-webkit-scrollbar{display:none}
+.wm-scroll_view_y::-webkit-scrollbar{width: 4px;}
+.wm-scroll_view_y::-webkit-scrollbar-thumb{border-radius: 4px; background: transparent;}
+.wm-scroll_view_y:hover::-webkit-scrollbar-thumb{background: rgba(136,136,136,0.4);}
+.wm-scroll_view_y:hover::-webkit-scrollbar-track{background: rgba(136,136,136,0.1);}
 /* Loading */
 .wm-scroll_load_body{position: absolute; overflow: hidden; z-index: 1; opacity: 0;}
 @keyframes loading { 0% {transform: rotate(0deg);} 50% {transform: rotate(180deg);} 100% {transform: rotate(360deg);} }
-.wm-scroll_load{position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);}
-.wm-scroll_load i{position: absolute; margin: -12px 0 0 -12px; font-size: 22px; color: #6FB737; animation: loading 2s linear 0s infinite;}
+.wm-scroll_load{position: absolute; width: 30px; height: 30px; line-height: 30px; margin: -15px 0 0 -15px; text-align: center; left: 50%; top: 50%; transform: translate(-50%,-50%); animation: loading 2s linear 0s infinite;}
+.wm-scroll_load i{font-size: 22px; color: #6FB737;}
 </style>
 
 <script>
@@ -51,7 +55,8 @@ export default {
   },
   data(){
     return {
-      sp:'', //滑动方向
+      isMobile: true, //是否手机
+      sp: 'y', //滑动方向
       html: {w:0,h:0},  //容器
       body: {w:0,h:0,x:0,y:0},  //内容
       limit: 60,  //最小距离
@@ -62,6 +67,9 @@ export default {
     }
   },
   mounted(){
+    /* 是否手机 */
+    this.isMobile = this._isMobile();
+    console.log(this.isMobile);
     /* 滑动方向 */
     this.sp = this.scrollX?'x':'y';
     /* 加载动画 */
@@ -101,6 +109,12 @@ export default {
     this.refHtml.addEventListener('scroll',this.scroll);
   },
   methods:{
+
+    /* 是否手机 */
+    _isMobile(){
+      const flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+      return flag?flag[0]:false;
+    },
 
     /* 返回 */
     res(){
