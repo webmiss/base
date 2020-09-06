@@ -70,7 +70,6 @@ export default {
   mounted(){
     /* 是否手机 */
     this.isMobile = IsMobile();
-    console.log(this.isMobile);
     /* 滑动方向 */
     this.sp = this.scrollX?'x':'y';
     /* 加载动画 */
