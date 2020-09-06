@@ -7,10 +7,10 @@
       <!-- 文件信息 -->
       <el-row class="file_path">
         <span class="path">
-          <span @click="selectAll()"><a>全选</a></span>
-          <span class="split">|</span>
           <span v-if="path=='/'">根目录</span>
-          <span v-else @click="backDir()"><a>上级</a></span>
+          <span v-else @click="backDir()"><a>返回上级</a></span>
+          <span class="split">|</span>
+          <span @click="selectAll()"><a>全选</a></span>
           <span class="split">|</span>
           <span>{{ path }}</span>
         </span>

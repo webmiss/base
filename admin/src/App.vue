@@ -127,6 +127,8 @@
 @import url('./assets/style/icon.css');
 /* UI */
 @import url('./assets/style/ui.css');
+/* APP */
+@import url('./assets/style/app.css');
 /* ElementUI */
 @import url('./assets/style/elementUI.css');
 </style>
