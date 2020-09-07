@@ -12,7 +12,7 @@
 .top_logo{float: left; width: 40px; height: 100%; background-color: #FFF; border-radius: 50%; background-image: url('img/logo.svg'); background-size: 75%; transition: All 0.4s ease-in-out;}
 .top_logo:hover{transform: rotate(360deg);}
 
-.top_nav_body{float: left; width: calc(100% - 150px); height: 100%; margin-left: 8px; overflow-x: auto;}
+.top_nav_body{float: left; width: calc(100% - 160px); height: 100%; margin-left: 8px; overflow-x: auto;}
 .top_nav_body::-webkit-scrollbar{display:none}
 .top_nav{display: flex; height: 100%;}
 .top_nav li{width: 80px; display: flex; align-items: center; box-sizing: border-box; flex: 1;}
@@ -35,10 +35,10 @@
 @media screen and ( max-width: 768px ){
 }
 @media screen and ( max-width: 640px ){
-}
-@media screen and ( max-width: 375px ){
   .top_nav_body{width: calc(100% - 50px);}
   .top_right{display: none;}
+}
+@media screen and ( max-width: 375px ){
 }
 @media screen and ( max-width: 320px ) {
 }
