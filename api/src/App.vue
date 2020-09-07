@@ -84,7 +84,7 @@ ul{list-style: none;}
 <script>
 import Env from '@/env'
 import Menus from '@/Menus'
-import {Storage} from '@/library/ui'
+import {Storage} from '@/library/inc'
 export default {
   data(){
     return {
