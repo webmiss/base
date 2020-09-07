@@ -33,11 +33,12 @@
       <h1 class="bgImg top_logo" title="WebMIS"></h1>
       <!-- 菜单 -->
       <wm-scroll-view :scroll-x="true" :upper-load="false" :lower-load="false" class="top_nav_body">
-        <ul class="top_nav" :style="{width: 8*80+'px'}">
+        <ul class="top_nav" :style="{width: 9*80+'px'}">
           <li><a href="https://webmis.vip/"<?php echo $this->dispatcher->getActionName()=='index'?' class="an"':'';?>>首页</a></li>
           <li><a href="https://webmis.vip/docs/app/install/index"<?php echo $this->dispatcher->getActionName()=='app'?' class="an"':'';?>>VueAPP</a></li>
           <li><a href="https://webmis.vip/docs/admin/install/index"<?php echo $this->dispatcher->getActionName()=='admin'?' class="an"':'';?>>Admin</a></li>
           <li><a href="https://webmis.vip/docs/flutter/install/index"<?php echo $this->dispatcher->getActionName()=='flutter'?' class="an"':'';?>>Flutter</a></li>
+          <li><a href="https://webmis.vip/docs/api/install/index"<?php echo $this->dispatcher->getActionName()=='api'?' class="an"':'';?>>Api</a></li>
           <li><a href="https://webmis.vip/docs/phalcon/install/index"<?php echo $this->dispatcher->getActionName()=='phalcon'?' class="an"':'';?>>Phalcon</a></li>
           <li><a href="https://webmis.vip/docs/python/install/index"<?php echo $this->dispatcher->getActionName()=='python'?' class="an"':'';?>>Python</a></li>
           <li><a href="https://webmis.vip/docs/java/install/index"<?php echo $this->dispatcher->getActionName()=='java'?' class="an"':'';?>>SpringBoot</a></li>
