@@ -26,13 +26,17 @@
 
 /* 内容 */
 .body{max-width: 1200px; min-width: 320px; margin: 0 auto;}
-.html_body{padding-top: 56px;}
 .copy{position: absolute; width: 100%; line-height: 40px; bottom: 0; text-align: center; color: #666; font-size: 12px;}
+.html_body{padding-top: 56px; height: calc(100% - 56px); background-color: #24292E;}
+.html_body .body{position: relative; width: 100%; height: calc(100% - 40px);}
+.html_body_bg{position: absolute; width: 100%; height: 100%; mask-image: url(./img/bg.svg); -webkit-mask-image: url(./img/bg.svg); background-color: #000;}
+.html_body_ct{overflow: hidden; width: 100%; height: 100%; background-color: #FFF;}
 
 /* 响应式布局 */
 @media screen and ( max-width: 1024px ){
 }
 @media screen and ( max-width: 768px ){
+  .html_body_bg{mask-size: auto 120%; -webkit-mask-size: auto 120%;}
 }
 @media screen and ( max-width: 640px ){
   .top_nav_body{width: calc(100% - 50px);}

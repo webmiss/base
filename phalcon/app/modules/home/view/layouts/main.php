@@ -52,8 +52,11 @@
     </div>
   </div>
   <!-- 内容 -->
-  <div id="app">
-    <?php echo $this->getContent(); ?>
+  <div id="app" class="html_body">
+    <div class="body">
+<?php echo $this->getContent(); ?>
+      <div class="mask html_body_bg"></div>
+    </div>
     <!-- 版权 -->
     <div class="copy">{{copy}}</div>
   </div>

@@ -1,8 +1,6 @@
 /* 首页 */
-.index_body{height: 100%; background-color: #24292E;}
-.index_bg{height: 100%; mask-image: url(../img/bg.svg); -webkit-mask-image: url(../img/bg.svg); background-color: #000;}
 .index_ct{color: #FFF; text-align: center; padding: 16px;}
-.index_ct h1{font-size: 32px; line-height: 60px; font-weight: normal;}
+.index_ct h1{font-size: 40px; line-height: 60px; font-weight: normal;}
 .index_key{line-height: 30px; font-size: 16px; color: #999;}
 .index_key span{padding: 0 8px;}
 .index_an{padding: 24px 0;}
@@ -20,16 +18,15 @@
 .index_qr_show p{line-height: 32px; margin-top: 8px; text-align: center; background-color: #595; color: #FFF; border-radius: 3px;}
 
 /* 响应式布局 */
-@media screen and ( max-width: 1024px ) {
+@media screen and ( max-width: 1024px ){
 }
-@media screen and ( max-width: 768px ) {
-.index_bg{mask-size: auto 90%; -webkit-mask-size: auto 90%;}
+@media screen and ( max-width: 768px ){
 }
-@media screen and ( max-width: 640px ) {
+@media screen and ( max-width: 640px ){
 .index_qr li{margin: 0 16px;}
 }
-@media screen and ( max-width: 375px ) {
+@media screen and ( max-width: 375px ){
 .index_qr li{margin: 0 8px;}
 }
-@media screen and ( max-width: 320px ) {
+@media screen and ( max-width: 320px ){
 }
