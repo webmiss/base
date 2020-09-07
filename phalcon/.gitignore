@@ -1,3 +1,4 @@
 public/upload/*
+public/themes/env.js
 composer.lock
 app/config/env.php

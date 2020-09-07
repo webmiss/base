@@ -3,7 +3,6 @@ import Toast from '/themes/library/ui/ui-toast.js'
 const vm = new Vue({
   el: '#main',
   data:{
-    navScroll: null,
   },
   mounted(){
   },

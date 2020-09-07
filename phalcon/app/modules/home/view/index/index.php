@@ -3,15 +3,15 @@
     <div class="body">
       <!-- 项目 -->
       <div class="ctCenter verticalCenter index_ct">
-        <h1>WebMIS基础框架</h1>
+        <h1>WebMIS</h1>
         <div class="index_key">
-          Phalcon<span>/</span>NodeJS<span>/</span>HMVC<span>/</span>Vue APP<span>/</span>小程序<span>/</span>API工具
+          全栈开发基础框架.技术<br/>
+          PHP / Python / Java / Phalcon / Flutter / NodeJS / Vue / Swoole / Redis / API
         </div>
         <div class="index_an">
           <a class="an1" href="https://webmis.vip/docs/webmis/install/index">文档</a>
           <a class="an2" href="https://github.com/webmiss/base">GitHub</a>
         </div>
-        <div class="index_key">>>>>>>>> Demo <<<<<<<<</div>
         <!-- 二维码 -->
         <ul class="index_qr flex_center">
           <li>

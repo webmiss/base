@@ -51,6 +51,9 @@
   <!-- 内容 -->
   <div id="app">
     <?php echo $this->getContent(); ?>
+    <!-- 版权 -->
+    <div class="copy">{{copy}}</div>
   </div>
+  <!-- 内容 End -->
 </body>
 </html>
