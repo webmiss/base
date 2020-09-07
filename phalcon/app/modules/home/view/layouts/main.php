@@ -32,16 +32,18 @@
       <!-- Logo -->
       <h1 class="bgImg top_logo" title="WebMIS"></h1>
       <!-- 菜单 -->
-      <div class="top_nav_body sidebar">
-        <ul class="top_nav">
+      <wm-scroll-view :scroll-x="true" :upper-load="false" :lower-load="false" class="top_nav_body">
+        <ul class="top_nav" :style="{width: 8*80+'px'}">
           <li><a href="https://webmis.vip/"<?php echo $this->dispatcher->getActionName()=='index'?' class="an"':'';?>>首页</a></li>
           <li><a href="https://webmis.vip/docs/app/install/index"<?php echo $this->dispatcher->getActionName()=='app'?' class="an"':'';?>>VueAPP</a></li>
           <li><a href="https://webmis.vip/docs/admin/install/index"<?php echo $this->dispatcher->getActionName()=='admin'?' class="an"':'';?>>Admin</a></li>
           <li><a href="https://webmis.vip/docs/flutter/install/index"<?php echo $this->dispatcher->getActionName()=='flutter'?' class="an"':'';?>>Flutter</a></li>
           <li><a href="https://webmis.vip/docs/phalcon/install/index"<?php echo $this->dispatcher->getActionName()=='phalcon'?' class="an"':'';?>>Phalcon</a></li>
+          <li><a href="https://webmis.vip/docs/python/install/index"<?php echo $this->dispatcher->getActionName()=='python'?' class="an"':'';?>>Python</a></li>
+          <li><a href="https://webmis.vip/docs/java/install/index"<?php echo $this->dispatcher->getActionName()=='java'?' class="an"':'';?>>SpringBoot</a></li>
           <li><a href="https://webmis.vip/docs/linux/shell/index"<?php echo $this->dispatcher->getActionName()=='linux'?' class="an"':'';?>>Linux</a></li>
         </ul>
-      </div>
+      </wm-scroll-view>
       <!-- 用户 -->
       <div class="top_right flex">
         <a class="login" @click="showMsg('正在开发!')">登录</a>|<a class="register" @click="showMsg('正在开发!')">注册</a>
