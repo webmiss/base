@@ -27,7 +27,7 @@
 </div>
 <!-- 项目 End -->
 <!-- 二维码-显示 -->
-<popup v-model="code.show">
+<popup v-model="code.show" style="display: none;">
   <div class="index_qr_show">
     <img :src="code.img" />
     <p class="an" @click="downCode()">下载二维码</p>

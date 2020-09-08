@@ -11,10 +11,8 @@
   <meta name="keywords" content="<?php echo $Keywords;?>" />
   <meta  name="description"  content="<?php echo $Description;?>"/>
   <link rel="stylesheet" type="text/css" href="/themes/home/main.css" />
-  <!-- Axios -->
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <!-- VUE -->
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="/themes/library/pub/axios.min.js"></script>
+  <script src="/themes/library/pub/vue.min.js"></script>
 	<script type="module" src="/themes/home/main.js"></script>
   <!-- CSS -->
 <?php if(isset($LoadCSS)){foreach($LoadCSS as $val){;?>
@@ -30,11 +28,10 @@
   <div id="main" class="top_body">
     <div class="body top">
       <!-- Logo -->
-      <h1 class="bgImg top_logo" title="WebMIS"></h1>
+      <a href="https://webmis.vip/" class="bgImg top_logo" title="WebMIS"></a>
       <!-- 菜单 -->
       <wm-scroll-view :scroll-x="true" :upper-load="false" :lower-load="false" class="top_nav_body">
-        <ul class="top_nav" :style="{width: 9*80+'px'}">
-          <li><a href="https://webmis.vip/"<?php echo $this->dispatcher->getActionName()=='index'?' class="an"':'';?>>首页</a></li>
+        <ul class="top_nav" :style="{width: 8*80+'px'}">
           <li><a href="https://webmis.vip/docs/app/install/index"<?php echo $this->dispatcher->getActionName()=='app'?' class="an"':'';?>>VueAPP</a></li>
           <li><a href="https://webmis.vip/docs/admin/install/index"<?php echo $this->dispatcher->getActionName()=='admin'?' class="an"':'';?>>Admin</a></li>
           <li><a href="https://webmis.vip/docs/flutter/install/index"<?php echo $this->dispatcher->getActionName()=='flutter'?' class="an"':'';?>>Flutter</a></li>
