@@ -1,7 +1,6 @@
 # WebMIS
 全栈开发基础框架，包括 PHP / Python / SpringBoot / Phalcon / Flutter / NodeJS / Vue / Swoole / Redis / API 等技术，为企业提供一套完整的技术解决方案，满足快速开发的同时，坚固源码文件规划，前后端人员配合和技术体系规范。
 
-## 开源项目
 ```bash
 git clone https://github.com/webmiss/base
 ```
