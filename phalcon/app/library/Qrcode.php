@@ -15,7 +15,7 @@ class Qrcode{
     if (!file_exists($tmpPath)) mkdir($tmpPath,0777,true);
     // 文件名
     $file = $tmpPath.self::_getName().'.png';
-    exec('qrencode -o '.$file.' -s '.$size.' -m 1 "'.$text.'"');
+    exec('qrencode -o '.$file.' -s '.$size.' -m 1 "'.$text.'" &');
     // 内容
     $ct = file_get_contents($file);
     // 清理
