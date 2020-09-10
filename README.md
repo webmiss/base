@@ -5,7 +5,7 @@
 ```bash
 git clone https://github.com/webmiss/base
 ```
-- 对我们项目支持的方式点击“Star”,这是我们持续维护的动力 ^_^!
+- 对项目支持的方式是点击“Star”,这是我们持续维护的动力 ^_^!
 
 
 ### VueAdmin - 后台管理系统
