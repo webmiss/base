@@ -220,10 +220,10 @@ export default {
       this.refHtml.style.transitionDuration = `${time}ms`;
       this.refHtml.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
       if(this.sp=='x'){
-        this.refHtml.style.paddingLeft = `${xy}px`;
+        if(this.isMobile!='iPhone') this.refHtml.style.paddingLeft = `${xy}px`;
         // this.refHtml.style.width = `calc(100% - ${xy}px)`;
       }else{
-        this.refHtml.style.paddingTop = `${xy}px`;
+        if(this.isMobile!='iPhone') this.refHtml.style.paddingTop = `${xy}px`;
         // this.refHtml.style.height = `calc(100% - ${xy}px)`;
       }
     },
