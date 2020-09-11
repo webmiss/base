@@ -63,6 +63,7 @@ export default {
       // 中
       this.refHtml.style.overflowX = 'auto';
       this.refBody.style.width = 'fit-content';
+      this.refBody.style.height = 'inherit';
     }else{
       // 上
       this.refUpper.style.top = 0;
@@ -71,6 +72,7 @@ export default {
       this.refUpper.style.transform = `translate(0,-${this.upper}px)`;
       // 中
       this.refHtml.style.overflowY = 'auto';
+      this.refBody.style.width = 'inherit';
       this.refBody.style.height = 'fit-content';
     }
     /* 监听内容变化 */
