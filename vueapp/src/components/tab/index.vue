@@ -1,6 +1,6 @@
 <template>
 <div class="wm-tab_html">
-  <scroll-view class="wm-tab_scroll" :isScroll="scroll" :scroll-x="true" :scroll-y="false" :upperLoad="false" :lowerLoad="false">
+  <scroll-view class="wm-tab_scroll" :isScroll="scroll" :scroll-x="true" :upperLoad="false">
     <div class="wm-tab_body">
       <div class="wm-tab_list" :style="{width:nw}">
         <div class="wm-tab_text" :style="{width:w+'%'}" v-for="(v,k) in list" :key="k" :class="active==k?'wm-tab_active':''" @click="tabClick(k,v)">
