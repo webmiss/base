@@ -1,13 +1,13 @@
 <template>
-<div ref="html" class="wm-scroll_html" :class="scrollX?isMobile?'wm-scroll_x':'wm-scroll_y':!isMobile?'wm-scroll_y':''">
+<div class="wm-scroll_html">
   <!-- 左拉/下拉 -->
   <div ref="upper" v-show="upperLoad" class="wm-scroll_load_body" :style="{backgroundColor:upperBg}">
-    <div ref="body" class="wm-scroll_load">
+    <div class="wm-scroll_load">
       <i :class="upperIcon" :style="{color:upperColor}"></i>
     </div>
   </div>
   <!-- 滑动内容 -->
-  <div ref="body" class="wm-scroll_body" @touchstart="start" @touchmove="move" @touchend="end">
+  <div ref="html" class="wm-scroll_view" :class="scrollX?isMobile?'wm-scroll_view_x':'wm-scroll_view_y':!isMobile?'wm-scroll_view_y':''" @touchstart="start" @touchmove="move" @touchend="end">
     <slot></slot>
   </div>
 </div>
@@ -15,15 +15,15 @@
 
 <style scoped>
 .wm-scroll_html{position: relative; overflow: hidden;}
-.wm-scroll_body{position: relative; overflow: hidden; display: block;}
+.wm-scroll_view{position: relative; overflow: hidden; width: 100%; height: 100%;}
 /* 滚动条 */
-.wm-scroll_x::-webkit-scrollbar{display:none}
-.wm-scroll_y::-webkit-scrollbar{width: 4px;}
-.wm-scroll_y::-webkit-scrollbar-thumb{border-radius: 4px; background: transparent;}
-.wm-scroll_y:hover::-webkit-scrollbar-thumb{background: rgba(136,136,136,0.4);}
-.wm-scroll_y:hover::-webkit-scrollbar-track{background: rgba(136,136,136,0.1);}
+.wm-scroll_view_x::-webkit-scrollbar{display:none}
+.wm-scroll_view_y::-webkit-scrollbar{width: 4px;}
+.wm-scroll_view_y::-webkit-scrollbar-thumb{border-radius: 4px; background: transparent;}
+.wm-scroll_view_y:hover::-webkit-scrollbar-thumb{background: rgba(136,136,136,0.4);}
+.wm-scroll_view_y:hover::-webkit-scrollbar-track{background: rgba(136,136,136,0.1);}
 /* Loading */
-.wm-scroll_load_body{position: absolute; overflow: hidden; z-index: 1; opacity: 1;}
+.wm-scroll_load_body{position: absolute; overflow: hidden; z-index: 1; opacity: 0;}
 @keyframes loading { 0% {transform: rotate(0deg);} 50% {transform: rotate(180deg);} 100% {transform: rotate(360deg);} }
 .wm-scroll_load{position: absolute; width: 30px; height: 30px; line-height: 30px; margin: -15px 0 0 -15px; text-align: center; left: 50%; top: 50%; transform: translate(-50%,-50%); animation: loading 2s linear 0s infinite;}
 .wm-scroll_load i{font-size: 22px; color: #6FB737;}
@@ -52,8 +52,8 @@ export default {
       body: {w:0,h:0,x:0,y:0},  //内容
       limit: 60,  //最小距离
       refUpper: {}, //左上内容
-      refHtml: {}, //区域
-      refBody: {}, //内容
+      refUpperBody: {}, //左下内容
+      refHtml: {}, //中间内容
       cubicBezier: '0.25,0.46,0.45,0.94', //动画
     }
   },
@@ -66,9 +66,8 @@ export default {
     this.refUpper = this.$refs.upper;
     /* 对象 */
     this.refHtml = this.$refs.html;
-    this.refBody = this.$refs.body;
     /* 默认值 */
-     if(this.sp=='x'){
+    if(this.sp=='x'){
       // 左
       this.refUpper.style.left = 0;
       this.refUpper.style.width = `${this.upper}px`;
@@ -76,8 +75,6 @@ export default {
       this.refUpper.style.transform = `translate(-${this.upper}px,0)`;
       // 中
       this.refHtml.style.overflowX = 'auto';
-      this.refBody.style.width = 'fit-content';
-      this.refBody.style.height = 'inherit';
     }else{
       // 上
       this.refUpper.style.top = 0;
@@ -86,8 +83,6 @@ export default {
       this.refUpper.style.transform = `translate(0,-${this.upper}px)`;
       // 中
       this.refHtml.style.overflowY = 'auto';
-      this.refBody.style.width = 'inherit';
-      this.refBody.style.height = 'fit-content';
     }
     /* 监听内容变化 */
     this.refHtml.addEventListener('scroll',this.scroll);
@@ -138,8 +133,8 @@ export default {
       // 开始
       const touch = e.touches?e.touches[0]:e;
       this.movePage = {
-        x: touch.clientX-this.startPage.x,
-        y: touch.clientY-this.startPage.y,
+        x: parseInt(touch.clientX-this.startPage.x),
+        y: parseInt(touch.clientY-this.startPage.y),
       }
       // 移动-距离
       this.tmpPage[this.sp] = this.movePage[this.sp];
@@ -152,9 +147,9 @@ export default {
         if(this.tmpPage[this.sp]!=this.tmpUpper){
           this.tmpUpper = this.tmpPage[this.sp];
           // 加载
-          this._translateUpper(x>0?x:0,0);
+          this._translateUpper(x>0?x:0,100);
           // 位置
-          this.translate(this.tmpPage[this.sp],0);
+          this.translate(this.tmpPage[this.sp],100);
           // 事件
           if(this.sp=='x'){
             this.body.x = -this.tmpPage[this.sp];
@@ -174,10 +169,9 @@ export default {
         }
       }
     },
-
     /* 结束 */
     end(e){
-      // 控制上限、下限
+      // 控制上限
       if(this.isUpper){
         // 重置
         this.isUpper = false;
@@ -223,10 +217,15 @@ export default {
 
     /* 滚动-位置 */
     translate(xy,time){
-      this.refBody.style.transitionDuration = `${time}ms`;
-      this.refBody.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
-      if(this.sp=='x') this.refBody.style.paddingLeft = `${xy}px`;
-      else this.refBody.style.paddingTop = `${xy}px`;
+      this.refHtml.style.transitionDuration = `${time}ms`;
+      this.refHtml.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
+      if(this.sp=='x'){
+        this.refHtml.style.paddingLeft = `${xy}px`;
+        // this.refHtml.style.width = `calc(100% - ${xy}px)`;
+      }else{
+        this.refHtml.style.paddingTop = `${xy}px`;
+        // this.refHtml.style.height = `calc(100% - ${xy}px)`;
+      }
     },
     
     /* 加载-左/上 */
