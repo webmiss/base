@@ -1,4 +1,4 @@
-import {Back} from '@/library/ui'
+import Back from '../../library/ui/ui-back'
 /* 组件 */
 import PageView from '@/components/page-view'
 import ScrollView from '@/components/scroll-view'
@@ -7,8 +7,7 @@ export default {
   components: {PageView,ScrollView},
   data(){
     return {
-      indexData:{scroll:null,},
-      lists:[0,1,2,3,4,5,6,7,8,9],
+      lists:[0,1,2],
     }
   },
   computed:{
@@ -22,6 +21,18 @@ export default {
     back(res){
       if(res=='left') return Back(this,1);
     },
+
+    /* 下拉刷新 */
+    reFresh(res){
+      this.lists = [0,1,2,3,4,5,6,7,8,9];
+    },
+
+    /* 上拉加载 */
+    upLoad(res){
+      setTimeout(()=>{
+        for(let i=0; i<10; i++) this.lists.push(i);
+      },1000);
+    }
 
   }
 }
