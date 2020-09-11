@@ -12,15 +12,15 @@
   <!-- 二维码 -->
   <ul class="index_qr flex_center">
     <li>
-      <div><img src="https://webmis.vip/index/qrcode/app" @click="showCode('https://webmis.vip/index/qrcode/app')" /></div>
-      <p>APP下载</p>
+      <div><img src="https://webmis.vip/index/qrcode/docs" @click="showCode('https://webmis.vip/index/qrcode/docs')" /></div>
+      <p>文档</p>
     </li>
     <li>
-    <div><img src="https://webmis.vip/index/qrcode/wapp" @click="showCode('https://webmis.vip/index/qrcode/wapp')" /></div>
-      <p>小程序</p>
+    <div><img src="https://webmis.vip/index/qrcode/demo" @click="showCode('https://webmis.vip/index/qrcode/demo')" /></div>
+      <p>Demo</p>
     </li>
     <li>
-      <div><img src="https://webmis.vip/index/qrcode/wap" @click="showCode('https://webmis.vip/index/qrcode/wap')" /></div>
+      <div><img src="https://webmis.vip/index/qrcode/wechat" @click="showCode('https://webmis.vip/index/qrcode/wechat')" /></div>
       <p>公众号</p>
     </li>
   </ul>

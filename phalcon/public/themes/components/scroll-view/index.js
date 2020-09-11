@@ -90,15 +90,8 @@ export default {
       }
     },
 
-    /* 开始 */
-    start(e){
-      // 开始坐标
-      let touch = e.touches?e.touches[0]:e;
-      this.movePage = {x:0,y:0};
-      this.tmpPage = {x:0,y:0};
-      this.startPage = {x:touch.clientX,y:touch.clientY};
-      this.isUpper = false;
-      this.isLower = false;
+    /* 重置 */
+    refresh(){
       // 容器-宽高
       this.html.w = this.refHtml.offsetWidth;
       this.html.h = this.refHtml.offsetHeight;
@@ -108,8 +101,19 @@ export default {
       // 滑动范围
       this.body.min = 0;
       this.body.max = this.body[this.sp=='x'?'w':'h']-this.html[this.sp=='x'?'w':'h']-50;
-      // 控制上拉加载
+    },
+
+    /* 开始 */
+    start(e){
+      let touch = e.touches?e.touches[0]:e;
+      this.movePage = {x:0,y:0};
+      this.tmpPage = {x:0,y:0};
+      this.startPage = {x:touch.clientX,y:touch.clientY};
+      // 控制事件
+      this.isUpper = false;
       this.isLower = true;
+      // 重置
+      this.refresh();
     },
 
     /* 移动 */
