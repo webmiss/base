@@ -1,10 +1,10 @@
 import Back from '../../library/ui/ui-back'
 /* 组件 */
 import PageView from '@/components/page-view'
-import ScrollView from '@/components/scroll-view'
+import WmScrollView from '@/components/scroll-view'
 
 export default {
-  components: {PageView,ScrollView},
+  components: {PageView,WmScrollView},
   data(){
     return {
       lists:[0,1,2],
