@@ -126,6 +126,7 @@ export default {
       this.tmpPage[this.sp] = this.movePage[this.sp];
       if(this.body[this.sp]<=0 && this.tmpPage[this.sp]>0){
         this.isUpper = true;
+        if(this.isMobile) this.scrollEnabled('hidden');
         // 控制上限
         let x = this.upper-this.tmpPage[this.sp];
         if(x<0) this.tmpPage[this.sp] = this.upper;
@@ -163,6 +164,7 @@ export default {
         this.isUpper = false;
         this._translateUpper(this.upper,400);
         this.translate(0,400);
+        this.scrollEnabled('auto');
         // 事件
         if(this.sp=='x'){
           this.body.x = 0;
@@ -206,10 +208,10 @@ export default {
       this.refHtml.style.transitionDuration = `${time}ms`;
       this.refHtml.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
       if(this.sp=='x'){
-        if(this.isMobile!='iPhone') this.refHtml.style.paddingLeft = `${xy}px`;
+        this.refHtml.style.paddingLeft = `${xy}px`;
         // this.refHtml.style.width = `calc(100% - ${xy}px)`;
       }else{
-        if(this.isMobile!='iPhone') this.refHtml.style.paddingTop = `${xy}px`;
+        this.refHtml.style.paddingTop = `${xy}px`;
         // this.refHtml.style.height = `calc(100% - ${xy}px)`;
       }
     },
@@ -221,6 +223,13 @@ export default {
       this.refUpper.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
       if(this.sp=='x') this.refUpper.style.transform = `translate(-${n}px,0)`;
       else this.refUpper.style.transform = `translate(0,-${n}px)`;
+    },
+
+    /* 滑动状态 */
+    scrollEnabled(state){
+      state = state || 'auto';
+      if(this.sp=='x') this.refHtml.style.overflowX = state;
+      else this.refHtml.style.overflowY = state;
     },
 
   }
