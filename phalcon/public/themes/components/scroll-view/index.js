@@ -97,7 +97,7 @@ export default {
       this.body.h = this.refHtml.scrollHeight;
       // 滑动范围
       this.body.min = 0;
-      this.body.max = this.body[this.sp=='x'?'w':'h']-this.html[this.sp=='x'?'w':'h']-50;
+      this.body.max = this.body[this.sp=='x'?'w':'h']-this.html[this.sp=='x'?'w':'h']-this.lowerBoundary;
     },
 
     /* 开始 */
@@ -195,6 +195,7 @@ export default {
     scroll(){
       this.body.x = this.refHtml.scrollLeft;
       this.body.y = this.refHtml.scrollTop;
+      // 事件-滑动
       this.$emit('scroll',this.res());
       // 事件-加载
       if(this.isLower && this.tmpPage[this.sp]<0 && this.body[this.sp]>=this.body.max){

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:webmis/library/inc/time-set.dart';
+
 import 'package:webmis/library/ui/ui.dart';
 import 'package:webmis/library/ui/ui-color.dart';
 import 'package:webmis/library/ui/ui-navigator-to.dart';
@@ -14,12 +16,33 @@ class Demo extends StatefulWidget {
 class DemoState extends State<Demo> {
 
   /* 属性 */
-  List<int> lists = [0,1,2,3,4,5,6,7,8,9];
+  List<int> lists;
 
   /* 构造函数 */
   @override
   void initState() {
     super.initState();
+    // 数据
+    setState((){ lists = [0,1,2,3,4,5,6,7,8,9]; });
+  }
+
+  /* 下拉刷新 */
+  Future _reFresh(res) async {
+    setState((){ lists = [0,1,2,3,4,5,6,7,8,9]; });
+  }
+
+  /* 下拉刷新 */
+  Future _upLoad(res) async {
+    setTimeout((){
+      for(var i=0; i<10; i++) lists.add(i);
+      setState(()=> lists);
+    },1000);
+  }
+  
+  /* 销毁 */
+  @override
+  void dispose(){
+    super.dispose();
   }
 
   /* Widget */
@@ -30,7 +53,9 @@ class DemoState extends State<Demo> {
       body: WmPageView(
         slotLeft:Ui.back(context),
         slotTitle: Ui.title('Demo'),
-        slotBody: scrollView(
+        slotBody: WmScrollView(
+          down: _reFresh,
+          up: _upLoad,
           swipe: (res){ if(res=='left'){ NavigatorTo.pop(context); } },
           slotHtml: _listView(),
         ),
@@ -54,6 +79,7 @@ class DemoState extends State<Demo> {
         )
       );
     }
+    setState(()=> lists);
     return _html;
   }
 
