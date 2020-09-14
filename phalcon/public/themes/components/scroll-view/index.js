@@ -29,6 +29,7 @@ export default {
     upperIcon: {type: String, default: 'ui ui_loading'},
     upperBg: {type: String, default: ''},
     upperColor: {type: String, default: ''},
+    limit: {type: Number, default: 120},
   },
   data(){
     return {
@@ -36,7 +37,6 @@ export default {
       sp: 'y', //滑动方向
       html: {w:0,h:0},  //容器
       body: {w:0,h:0,x:0,y:0},  //内容
-      limit: 60,  //最小距离
       refUpper: {}, //左上内容
       refHtml: {}, //中间内容
       cubicBezier: '0.25,0.46,0.45,0.94', //动画
