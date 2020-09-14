@@ -52,7 +52,6 @@ export default {
       body: {w:0,h:0,x:0,y:0},  //内容
       limit: 60,  //最小距离
       refUpper: {}, //左上内容
-      refUpperBody: {}, //左下内容
       refHtml: {}, //中间内容
       cubicBezier: '0.25,0.46,0.45,0.94', //动画
     }
