@@ -11,8 +11,8 @@ git clone https://github.com/webmiss/base
 - 文档: https://webmis.vip/docs/admin/install/index
 - Demo: https://demo-admin.webmis.vip/ 帐号: admin 密码: 123456
 
-<img src="https://webmis.vip/webmis/admin1.png" width="768" alt="WebMIS Admin" /><br>
-<img src="https://webmis.vip/webmis/admin2.png" width="768" alt="WebMIS Admin" /><br>
+<img src="https://webmis.vip/webmis/admin1.png" width="640" alt="WebMIS Admin" /><br>
+<img src="https://webmis.vip/webmis/admin2.png" width="640" alt="WebMIS Admin" /><br>
 
 ## AliApp - 支付宝小程序
 封装函数，规范命名和参数，统一APP和小程序使用方式，实现一次开发稍加改动便可兼容多种小程序。
