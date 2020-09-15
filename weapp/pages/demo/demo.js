@@ -6,7 +6,7 @@ create(store,{
   data:{
     isLogin: null,
     uInfo: null,
-    lists:[0,1,2,3,4,5,6,7,8,9],
+    lists:[0,1,2],
   },
   /* 分享 */
   onShareAppMessage(res){
@@ -22,9 +22,18 @@ create(store,{
     if(name=='left') return Back(1);
   },
 
-  /* 滑动 */
-  scroll(e){
-    // console.log(e.detail);
+  /* 下拉刷新 */
+  reFresh(e){
+    this.setData({ lists: [0,1,2,3,4,5,6,7,8,9] });
   },
+
+  /* 上拉加载 */
+  upLoad(e){
+    setTimeout(()=>{
+      let list = this.data.lists;
+      for(let i=0; i<10; i++) list.push(i);
+      this.setData({ lists: list });
+    },1000);
+  }
 
 });

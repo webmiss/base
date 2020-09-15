@@ -3,11 +3,13 @@
     <text class="back ui ui_left" noTap="back" data-swipe="left"></text>
   </view>
   <view slot="title">Demo</view>
-  <!-- 滑动 -->
-  <wm-scroll-view slot="body" class="html" onScroll="scroll" onSwipe="back">
-    <view class="test">
-      <view a:for="{{lists}}" a:key="index">{{item}}</view>
-    </view>
-  </wm-scroll-view>
-  <!-- 滑动 End -->
+  <view slot="body" class="html">
+    <!-- 滑动 -->
+    <wm-scroll-view class="html" onSwipe="back" onDown="reFresh" onUp="upLoad">
+      <view class="test">
+        <view a:for="{{lists}}" a:key="index">{{item}}</view>
+      </view>
+    </wm-scroll-view>
+    <!-- 滑动 End -->
+  </view>
 </page-view>

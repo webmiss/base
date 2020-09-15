@@ -10,6 +10,7 @@ git clone https://github.com/webmiss/base
 采用Vue2和ElementUI开发，包括APP自动更新、Socket通信、菜单管理、动作菜单、用户多权限、角色权限，文件管理等功能。 可通过后台创建功能菜单，并分配不同用户、不同动作(添加、编辑、删除等)。提供Socket客户端，可链接到服务器处理各种即时业务。 系统配置可更改登录页头像、背景、版权信息等。
 - 文档: https://webmis.vip/docs/admin/install/index
 - Demo: https://demo-admin.webmis.vip/ 帐号: admin 密码: 123456
+![WebMIS theme](webmis1.jpg?raw=true)
 
 ## AliApp - 支付宝小程序
 封装函数，规范命名和参数，统一APP和小程序使用方式，实现一次开发稍加改动便可兼容多种小程序。
@@ -28,7 +29,7 @@ git clone https://github.com/webmiss/base
 - 文档: https://webmis.vip/docs/phalcon/install/index
 - Demo-网站: https://demo-api.webmis.vip/
 - Demo-前端API: https://demo-api.webmis.vip/api/
-- Demo-后台API: https://demo-api.webmis.vip/api/
+- Demo-后台API: https://demo-api.webmis.vip/admin/
 
 ## Project - 项目资料
 APP设计规范、证书、数据库文件、字体图标等

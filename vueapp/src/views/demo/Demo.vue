@@ -3,7 +3,7 @@
     <div slot="left"><i class="back ui ui_left" @click="back('left')"></i></div>
     <div slot="title">Demo</div>
     <!-- 滑动 -->
-    <wm-scroll-view slot="body" class="nav_body" @swipe="back" @down="reFresh" @up="upLoad">
+    <wm-scroll-view slot="body" class="html" @swipe="back" @down="reFresh" @up="upLoad">
       <div class="test">
         <div v-for="(val,key) in lists" :key="key">{{val}}</div>
       </div>

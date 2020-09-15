@@ -149,9 +149,9 @@ export default {
         if(this.tmpPage[this.sp]!=this.tmpUpper){
           this.tmpUpper = this.tmpPage[this.sp];
           // 加载
-          this._translateUpper(x>0?x:0,100);
+          this._translateUpper(x>0?x:0,200);
           // 位置
-          this.translate(this.tmpPage[this.sp],100);
+          this.translate(this.tmpPage[this.sp],200);
           // 事件
           if(this.sp=='x'){
             this.body.x = -this.tmpPage[this.sp];
@@ -220,15 +220,15 @@ export default {
     },
 
     /* 滚动-位置 */
-    translate(xy,time){
+    translate(n,time){
       this.refHtml.style.transitionDuration = `${time}ms`;
       this.refHtml.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
       if(this.sp=='x'){
-        this.refHtml.style.paddingLeft = `${xy}px`;
-        // this.refHtml.style.width = `calc(100% - ${xy}px)`;
+        this.refHtml.style.paddingLeft = `${n}px`;
+        // this.refHtml.style.width = `calc(100% - ${n}px)`;
       }else{
-        this.refHtml.style.paddingTop = `${xy}px`;
-        // this.refHtml.style.height = `calc(100% - ${xy}px)`;
+        this.refHtml.style.paddingTop = `${n}px`;
+        // this.refHtml.style.height = `calc(100% - ${n}px)`;
       }
     },
     

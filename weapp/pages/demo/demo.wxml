@@ -4,7 +4,7 @@
   </view>
   <view slot="title">Demo</view>
   <!-- 滑动 -->
-  <wm-scroll-view slot="body" class="html" bind:scroll="scroll" bind:swipe="back">
+  <wm-scroll-view slot="body" class="html" bind:swipe="back" bind:down="reFresh" bind:up="upLoad">
     <view class="test">
       <view wx:for="{{lists}}" wx:key="index">{{item}}</view>
     </view>

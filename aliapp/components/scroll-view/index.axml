@@ -6,13 +6,7 @@
     </view>
   </view>
   <!-- 滑动内容 -->
-  <scroll-view id="html" class="wm-scroll_view" onTouchStart="start" onTouchMove="move" onTouchEnd="end" onScroll="scroll" scroll-x="{{scrollX}}" scroll-y="{{scrollY}}" disable-scroll="{{disable}}" trap-scroll="{{true}}" style="{{style.html}}">
+  <scroll-view id="html" class="wm-scroll_view" catchTouchStart="start" catchTouchMove="move" catchTouchEnd="end" onScroll="scroll" scroll-x="{{scrollX}}" scroll-y="{{scrollY}}" disable-scroll="{{disable}}" onScrollToLower="toLower" lower-threshold="{{lowerBoundary}}" style="{{style.html}}">
     <slot></slot>
   </scroll-view>
-  <!-- 右拉/上拉 -->
-  <view id="lower" hidden="{{!lowerLoad}}" class="wm-scroll_load_body" style="{{style.lower}}">
-    <view class="wm-scroll_load">
-      <text class="{{lowerIcon}}" style="color:{{lowerColor}};"></text>
-    </view>
-  </view>
 </view>
