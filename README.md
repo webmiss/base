@@ -55,7 +55,7 @@ APP设计规范、证书、数据库文件、字体图标等
 封装函数，规范命名和参数，统一APP和小程序使用方式，实现一次开发稍加改动便可兼容多种小程序。
 - 文档: https://webmis.vip/docs/app/wapp/config
 
-<img src="https://webmis.vip/webmis/flutter.png" width="200" alt="WebMIS Flutter" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://webmis.vip/webmis/vueapp.png" width="200" alt="WebMIS VueApp" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://webmis.vip/webmis/weapp.png" width="200" alt="WebMIS Weapp" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://webmis.vip/webmis/aliapp.png" width="200" alt="WebMIS Aliapp" />
+<img src="https://webmis.vip/webmis/flutter.png" width="160" alt="WebMIS Flutter" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://webmis.vip/webmis/vueapp.png" width="160" alt="WebMIS VueApp" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://webmis.vip/webmis/weapp.png" width="160" alt="WebMIS Weapp" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://webmis.vip/webmis/aliapp.png" width="160" alt="WebMIS Aliapp" />
 
 <br/>
 
