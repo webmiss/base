@@ -31,35 +31,31 @@ git clone https://github.com/webmiss/base
 <img src="https://webmis.vip/webmis/api.png" width="375" alt="WebMIS Api" />
 <br/>
 
-## Flutter - APP项目
-采用Flutter开发，包括APP自动更新、Socket通信、底部导航菜单、PageView页面布局、Scroller滑动、Popup弹出层等功能。 封装函数，规范命名和参数，便于从JS开发切换回来的适应问题，合理规划开发。
-- 文档: https://webmis.vip/docs/flutter/install/index
-
-<img src="https://webmis.vip/webmis/flutter.png" width="200" alt="WebMIS Flutter" />
-<br/>
-
-
-## VueAPP - 混合型APP(H5+Runtime)
-采用Vue2和5+Runtime开发，包括APP自动更新、Socket通信、仿手机页面切换效果、底部导航菜单、Scroller滑动、Popup弹出层等功能。 运用模块化思路整体规划项目，分别将项目划分页面、Ui组件、JS模块三个部分，便于维护和扩展。 封装函数，规范命名和参数，统一APP和小程序使用方式，实现一次开发稍加改动便可兼容多种小程序。 另外，这是前后台配套的全栈式解决方案，处理登录、验证、缓存、列队等问题。
-- 文档: https://webmis.vip/docs/app/install/index
-- Demo: https://demo-app.webmis.vip/
-
-<img src="https://webmis.vip/webmis/vueapp.png" width="200" alt="WebMIS VueApp" />
-
-<br/>
-
-
-## 小程序 - 微信(WeApp)、支付宝(AliApp)
-封装函数，规范命名和参数，统一APP和小程序使用方式，实现一次开发稍加改动便可兼容多种小程序。
-- 文档: https://webmis.vip/docs/app/wapp/config
-
-<img src="https://webmis.vip/webmis/weapp.png" width="200" alt="WebMIS Weapp" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://webmis.vip/webmis/aliapp.png" width="200" alt="WebMIS Aliapp" />
-
-<br/>
-
 ## Project - 项目资料
 APP设计规范、证书、数据库文件、字体图标等
 
 <img src="https://webmis.vip/webmis/app.png" width="375" alt="WebMIS App" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://webmis.vip/webmis/screen.png" width="375" alt="WebMIS Screen" />
 
 <br/>
+
+## Flutter - APP项目
+采用Flutter开发，包括APP自动更新、Socket通信、底部导航菜单、PageView页面布局、Scroller滑动、Popup弹出层等功能。 封装函数，规范命名和参数，便于从JS开发切换回来的适应问题，合理规划开发。
+- 文档: https://webmis.vip/docs/flutter/install/index
+
+<br/>
+
+## VueAPP - 混合型APP(H5+Runtime)
+采用Vue2和5+Runtime开发，包括APP自动更新、Socket通信、仿手机页面切换效果、底部导航菜单、Scroller滑动、Popup弹出层等功能。 运用模块化思路整体规划项目，分别将项目划分页面、Ui组件、JS模块三个部分，便于维护和扩展。 封装函数，规范命名和参数，统一APP和小程序使用方式，实现一次开发稍加改动便可兼容多种小程序。 另外，这是前后台配套的全栈式解决方案，处理登录、验证、缓存、列队等问题。
+- 文档: https://webmis.vip/docs/app/install/index
+- Demo: https://demo-app.webmis.vip/
+
+<br />
+
+## 小程序 - 微信(WeApp)、支付宝(AliApp)
+封装函数，规范命名和参数，统一APP和小程序使用方式，实现一次开发稍加改动便可兼容多种小程序。
+- 文档: https://webmis.vip/docs/app/wapp/config
+
+<img src="https://webmis.vip/webmis/flutter.png" width="200" alt="WebMIS Flutter" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://webmis.vip/webmis/vueapp.png" width="200" alt="WebMIS VueApp" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://webmis.vip/webmis/weapp.png" width="200" alt="WebMIS Weapp" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://webmis.vip/webmis/aliapp.png" width="200" alt="WebMIS Aliapp" />
+
+<br/>
+
