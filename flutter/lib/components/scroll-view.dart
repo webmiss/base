@@ -19,7 +19,7 @@ class WmScrollView extends StatefulWidget {
   final String upperBg;
   final String upperColor;
   final double limit;
-  final String bgColor;
+  final Color bgColor;
   // 事件
   final Function scroll;
   final Function up;
@@ -39,7 +39,7 @@ class WmScrollView extends StatefulWidget {
     this.upperBg: '',
     this.upperColor: '',
     this.limit: 120,
-    this.bgColor: '#F2F4F6',
+    this.bgColor,
     this.scroll,
     this.up,
     this.down,
@@ -118,7 +118,7 @@ class WmScrollViewState extends State<WmScrollView> {
           child: Container(
             width: double.infinity,
             height: double.infinity,
-            color: uiColor(this.widget.bgColor),
+            color: this.widget.bgColor,
             child: ListView(
               controller: _controller,
               scrollDirection: _sp=='x'?Axis.horizontal:Axis.vertical,
