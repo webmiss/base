@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webmis/env.dart';
 import 'package:webmis/library/ui/ui-icons.dart';
 import 'package:webmis/library/ui/ui-color.dart';
 import 'package:webmis/library/ui/ui-navigator-to.dart';
@@ -21,24 +22,89 @@ class Ui{
   }
 
   /* 标题 */
-  static Widget title(String title,{
-    double fontSize: 16,
-    String color: '#333333',
-  }){
+  static Widget title(text){
     return Center(
-      child: Text( title,
-        style: TextStyle(fontSize: fontSize,color: uiColor(color)),
+      child: Ui.text(text,fontSize:16),
+    );
+  }
+
+  /* 文本-隐藏 */
+  static Widget nowrap(text,{
+    double fontSize: 14,
+    double height: 1.0,
+    String color: '#222222',
+    FontWeight fontWeight: FontWeight.normal,
+    int maxLines: 1,
+    TextOverflow overflow: TextOverflow.ellipsis,
+  }){
+    return Ui.text(
+      text,
+      fontSize: fontSize,
+      height: height,
+      color: color,
+      fontWeight: fontWeight,
+      maxLines: maxLines,
+      overflow: overflow,
+    );
+  }
+
+  /* 文本 */
+  static Widget text(text,{
+    double fontSize: 14,
+    double height: 1.5,
+    String color: '#222222',
+    FontWeight fontWeight: FontWeight.normal,
+    TextDecoration decoration: TextDecoration.none,
+    int maxLines,
+    TextOverflow overflow,
+  }){
+    return Text(
+      text,
+      maxLines: maxLines,
+      softWrap: true,
+      overflow: overflow,
+      style: TextStyle(
+        fontSize: fontSize,
+        color: uiColor(color),
+        fontWeight: fontWeight,
+        height: height,
+        decoration: decoration
       ),
     );
   }
 
-  /* 文字 */
-  static Widget text(text,{
-    double fontSize: 12,
-    String color: '#333333',
+  /* 按钮 */
+  static Widget button(text,{
+    double width: double.infinity,
+    double height: 50.0,
+    double borderRadius: 8.0,
+    String borderColor: '#F2F2F2',
+    String bgColor: '#FFFFFF',
+    String textColor: '',
+    Function click,
   }){
-    return Text( text,
-      style: TextStyle(fontSize: fontSize,color: uiColor(color)),
+    return Material(
+      child: Ink(
+        decoration: BoxDecoration(
+          color: uiColor(bgColor),
+          borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+          border: Border.all(width: 1, color: uiColor(borderColor)),
+        ),
+        child: InkResponse(
+          radius: 200.0,
+          splashColor: uiColor(Env.color['primary']),
+          containedInkWell: true,
+          highlightShape: BoxShape.rectangle,
+          child: Container(
+            width: width,
+            height: height,
+            alignment: Alignment(0, 0),
+            padding: EdgeInsets.all(8),
+            child: Ui.nowrap(text,color: textColor!=''?textColor:Env.color['primary']),
+          ),
+          onTap: ()=>click(),
+        ),
+      ),
     );
   }
 
