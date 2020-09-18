@@ -19,7 +19,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:webmis/views/Home.dart';
 
 void main(){
-  runApp(MyApp());
   // 沉浸式状态栏
   if(Platform.isAndroid){
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -27,6 +26,8 @@ void main(){
       statusBarIconBrightness: Brightness.dark,
     ));
   }
+  // APP
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
