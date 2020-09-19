@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:webmis/library/plus/map-geolocation.dart';
 import 'package:webmis/library/ui/ui.dart';
 import 'package:webmis/library/ui/ui-color.dart';
 import 'package:webmis/library/ui/ui-svg.dart';
@@ -18,11 +19,28 @@ class IndexState extends State<Index> with AutomaticKeepAliveClientMixin {
   /* 保存状态 */
   @override 
   bool get wantKeepAlive => true;
+  Map<String,dynamic> _location;
 
   /* 构造函数 */
   @override
   void initState() {
     super.initState();
+    // 定位
+    _getLocation();
+  }
+
+  /* 销毁 */
+  @override
+  void dispose(){
+    super.dispose();
+    MapGeolocation.dispose();
+  }
+
+  /* 定位 */
+  Future<void> _getLocation() async {
+    MapGeolocation.fetch(context).then((res){
+      setState(()=> _location=res );
+    });
   }
 
   /* Widget */
@@ -35,7 +53,9 @@ class IndexState extends State<Index> with AutomaticKeepAliveClientMixin {
         immersed: true,
         bgColor: Color.fromRGBO(0,0,0,0.0),
         slotLeft: Center(
-          child: Text('五华区'),
+          child: Text(
+            _location!=null?(_location['district']!=''?_location['district']:'定位失败'):'正在定位'
+          ),
         ),
         slotBody:Container(
           width: double.infinity,

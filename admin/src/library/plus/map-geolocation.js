@@ -14,11 +14,15 @@ const _geolocation = (callback,fail)=>{
   try{
     plus.geolocation.getCurrentPosition((res)=>{
       let data = {
+        longitude: res.coords.longitude,
+        latitude: res.coords.latitude,
         province: res.address.province,
         city: res.address.city,
         district: res.address.district,
-        longitude: res.coords.longitude,
-        latitude: res.coords.latitude,
+        street: res.address.street,
+        streetnum: res.address.streetNum,
+        poiname: res.address.poiName,
+        address: res.address.poiName+res.address.streetNum,
       };
       // 保存本地
       Storage.setItem('geolocation',JSON.stringify(data));
@@ -32,11 +36,15 @@ const _geolocation = (callback,fail)=>{
         geolocation.getCurrentPosition((status, res)=>{
           if(res && res.position){
             let data = {
+              longitude: res.position.lng,
+              latitude: res.position.lat,
               province: res.addressComponent.province,
               city: res.addressComponent.city,
               district: res.addressComponent.district,
-              longitude: res.position.lng,
-              latitude: res.position.lat,
+              street: res.addressComponent.street,
+              streetnum: res.addressComponent.streetNumber,
+              poiname: res.addressComponent.township,
+              address: res.addressComponent.township+res.addressComponent.streetNumber,
             };
             // 保存本地
             Storage.setItem('geolocation',JSON.stringify(data));

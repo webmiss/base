@@ -41,5 +41,13 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSFileProviderPresenceUsageDescription</key>
+	<string>使用时允许访问文件</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>始终允许定位(提高后台定位准确率)</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>使用时始终允许定位</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>使用时允许定位</string>
 </dict>
 </plist>

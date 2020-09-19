@@ -27,6 +27,7 @@ void main(){
     ));
   }
   // APP
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
