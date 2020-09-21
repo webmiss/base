@@ -102,11 +102,12 @@ const setCenter = (center)=>{
 }
 /* 设置级别 */
 const setZoom = (zoom)=>{
-  zoom = zoom || 18;
+  zoom = zoom || 16;
   map.setZoom(zoom);
 }
 /* 点标记 */
 const addMarker = (markers)=>{
+  allMarkers = [];
   for(let i in markers){
     allMarkers.push(
       new AMap.Marker({
@@ -131,5 +132,5 @@ function reLocation(){
     ''';
     return MapHtml.htmlBase64(title: '高德地图',html: _html);
   }
-  
+
 }
