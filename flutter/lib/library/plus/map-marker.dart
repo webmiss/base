@@ -107,6 +107,7 @@ const setZoom = (zoom)=>{
 }
 /* 点标记 */
 const addMarker = (markers)=>{
+  map.clearMap();
   allMarkers = [];
   for(let i in markers){
     allMarkers.push(
@@ -122,7 +123,7 @@ const addMarker = (markers)=>{
 }
 /* 点标记-清除 */
 const clearMarker = ()=>{
-  map.remove(allMarkers);
+  map.clearMap();
 }
 /* 回调-重新定位 */
 function reLocation(){
