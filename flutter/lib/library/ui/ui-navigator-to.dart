@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 class NavigatorTo{
 
   /* 跳转 */
-  static void push(context,{page}){
-    Navigator.push(context, MaterialPageRoute(builder: (context){return page;}));
+  static void push(context,{page,then}){
+    Navigator.push(context, MaterialPageRoute(builder: (context){return page;})).then(then);
     // Navigator.push(context, CustomRouteSlide(page));
   }
   

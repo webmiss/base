@@ -44,7 +44,6 @@ class MapGeolocation {
     bool perm = await MapGeolocation.perm(context);
     // 定位
     if(perm){
-      // Stream location = AmapLocation.instance.listenLocation();
       await for (final location in AmapLocation.instance.listenLocation()) {
         res = {
           'longitude': location.latLng.longitude,
