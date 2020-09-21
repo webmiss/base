@@ -114,7 +114,7 @@ const addMarker = (markers)=>{
       new AMap.Marker({
         content: '<div class="map_marker"><div class="map_marker_img" style="background-image: url('+markers[i].img+')"></div></div>',
         position:  markers[i].position,
-        offset: new AMap.Pixel(-32, -64),
+        offset: new AMap.Pixel(-28, -56),
         title: markers[i].title,
       })
     );
