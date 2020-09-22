@@ -45,6 +45,11 @@ class Toast {
       _show = false;
       _overlayEntry.markNeedsBuild();
     },time);
+
+    Future.delayed(Duration(seconds: 5)).then((value) {
+      // 移除层可以通过调用OverlayEntry的remove方法。
+      _overlayEntry.remove();
+    });
     
   }
 
