@@ -17,7 +17,7 @@ Future get(String url, [Map<String, dynamic> params]) async {
   // 请求
   try {
     response = await _dio.get(url,queryParameters:params);
-    return response.data!=''?convert.jsonDecode(response.data):null;
+    return response.data.runtimeType==String&&response.data!=''?convert.jsonDecode(response.data):response.data;
   } on DioError catch(e) {
     RegExp host = RegExp(r'(localhost|127.0.0.1)');
     String msg = host.firstMatch(url)==null?e.message:'请使用IP或外网地址';
@@ -34,7 +34,7 @@ Future post(String url, Map<String, dynamic> params) async {
   // 请求
   try {
     response = await _dio.post(url,data:params);
-    return response.data!=''?convert.jsonDecode(response.data):null;
+    return response.data.runtimeType==String&&response.data!=''?convert.jsonDecode(response.data):response.data;
   } on DioError catch(e) {
     RegExp host = RegExp(r'(localhost|127.0.0.1)');
     String msg = host.firstMatch(url)==null?e.message:'请使用IP或外网地址';
