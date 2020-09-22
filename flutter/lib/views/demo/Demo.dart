@@ -53,7 +53,7 @@ class DemoState extends State<Demo> {
     /* 显示 */
     return Scaffold(
       body: WmPageView(
-        slotLeft:Ui.back(context),
+        slotLeft: Ui.back(context),
         slotTitle: Ui.title('Demo'),
         slotBody: WmScrollView(
           down: _reFresh,
