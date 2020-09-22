@@ -4,19 +4,19 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webmis/library/plus/map-html.dart';
 
 /* 页面布局 */
-class MapMarker extends StatefulWidget {
+class MapRiding extends StatefulWidget {
   // 参数
   final Function controller;
   final javascript;
-  const MapMarker({
+  const MapRiding({
     Key key,
     this.controller,
     this.javascript,
   }): super(key: key);
   @override
-  State<StatefulWidget> createState() => MapMarkerState();
+  State<StatefulWidget> createState() => MapRidingState();
 }
-class MapMarkerState extends State<MapMarker> {
+class MapRidingState extends State<MapRiding> {
 
   String _html; //Html内容
   WebViewController _controller;
@@ -51,13 +51,9 @@ class MapMarkerState extends State<MapMarker> {
   void setZoom(int zoom){
     _controller.evaluateJavascript('setZoom('+zoom.toString()+')');
   }
-  /* 地图-点标记 */
-  void addMarker(List markers){
-    _controller.evaluateJavascript('addMarker('+convert.jsonEncode(markers)+')');
-  }
-  /* 地图-清除点标记 */
-  void clearMarker(){
-    _controller.evaluateJavascript('clearMarker()');
+  /* 地图-级别 */
+  void setRiding(src,dst){
+    _controller.evaluateJavascript('setRiding('+convert.jsonEncode(src)+','+convert.jsonEncode(dst)+')');
   }
 
   /* 销毁 */
@@ -85,9 +81,7 @@ class MapMarkerState extends State<MapMarker> {
   /* Html */
   String _getHtml(){
     _html = '''
-<div class="map_tool map_tool_location" onclick="reLocation()"></div>
-<style>
-</style>
+<div class="map_tool map_tool_refresh" onclick="reLocation()"></div>
 <script type="text/javascript">
 let allMarkers = [];
 /* 地图 */
@@ -118,9 +112,27 @@ const addMarker = (markers)=>{
   }
   map.add(allMarkers);
 }
-/* 点标记-清除 */
-const clearMarker = ()=>{
-  map.clearMap();
+/* 规划路线-骑行 */
+const setRiding = (src,dst)=>{
+  // 标记
+  addMarker([src,dst]);
+  // 配置
+  const riding = new AMap.Riding({
+    map: map,
+    policy: 1,
+    hideMarkers: true,
+    isOutline: false,
+    autoFitView: true,
+  });
+  // 路线
+  riding.search(src.position,dst.position, (status, result)=>{
+    if(status === 'complete'){
+      const data = result.routes[0].rides;
+      let res = [];
+      for(let i in data) res.push({action:data[i].action,text:data[i].instruction});
+      getPanel.postMessage(JSON.stringify(res));
+    }
+  });
 }
 /* 回调-重新定位 */
 const reLocation = ()=>{

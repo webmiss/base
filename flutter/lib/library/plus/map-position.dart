@@ -1,30 +1,33 @@
-import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webmis/library/plus/map-html.dart';
 
 /* 页面布局 */
-class MapMarker extends StatefulWidget {
+class MapPosition extends StatefulWidget {
   // 参数
   final Function controller;
   final javascript;
-  const MapMarker({
+  final String img;
+  const MapPosition({
     Key key,
     this.controller,
     this.javascript,
+    this.img: 'https://webmis.vip/themes/home/img/logo.svg',
   }): super(key: key);
   @override
-  State<StatefulWidget> createState() => MapMarkerState();
+  State<StatefulWidget> createState() => MapPositionState();
 }
-class MapMarkerState extends State<MapMarker> {
+class MapPositionState extends State<MapPosition> {
 
   String _html; //Html内容
   WebViewController _controller;
+  String _img;
 
   /* 构造函数 */
   @override
   void initState() {
     super.initState();
+    setState(()=>_img=this.widget.img);
   }
 
   /* 加载完成 */
@@ -50,14 +53,6 @@ class MapMarkerState extends State<MapMarker> {
   /* 地图-级别 */
   void setZoom(int zoom){
     _controller.evaluateJavascript('setZoom('+zoom.toString()+')');
-  }
-  /* 地图-点标记 */
-  void addMarker(List markers){
-    _controller.evaluateJavascript('addMarker('+convert.jsonEncode(markers)+')');
-  }
-  /* 地图-清除点标记 */
-  void clearMarker(){
-    _controller.evaluateJavascript('clearMarker()');
   }
 
   /* 销毁 */
@@ -86,8 +81,9 @@ class MapMarkerState extends State<MapMarker> {
   String _getHtml(){
     _html = '''
 <div class="map_tool map_tool_location" onclick="reLocation()"></div>
-<style>
-</style>
+<div class="map_marker map_me">
+  <div class="map_marker_img" style="background-image: url($_img)"></div>
+</div>
 <script type="text/javascript">
 let allMarkers = [];
 /* 地图 */
@@ -102,30 +98,15 @@ const setZoom = (zoom)=>{
   zoom = zoom || 16;
   map.setZoom(zoom);
 }
-/* 点标记 */
-const addMarker = (markers)=>{
-  map.clearMap();
-  allMarkers = [];
-  for(let i in markers){
-    allMarkers.push(
-      new AMap.Marker({
-        content: '<div class="map_marker"><div class="map_marker_img" style="background-image: url('+markers[i].img+')"></div></div>',
-        position:  markers[i].position,
-        offset: new AMap.Pixel(-28, -56),
-        title: markers[i].title,
-      })
-    );
-  }
-  map.add(allMarkers);
-}
-/* 点标记-清除 */
-const clearMarker = ()=>{
-  map.clearMap();
-}
 /* 回调-重新定位 */
 const reLocation = ()=>{
   getLocation.postMessage('');
 }
+/* 回调-地图移动 */
+map.on('moveend', ()=>{
+  const center = map.getCenter();
+  getPosition.postMessage(JSON.stringify(center));
+});
 </script>
     ''';
     return MapHtml.htmlBase64(title: '高德地图',html: _html);
