@@ -27,21 +27,6 @@ class MapMarkerState extends State<MapMarker> {
     super.initState();
   }
 
-  /* 加载完成 */
-  Future _onload(String url) async {
-    this.widget.controller(this);
-  }
-  /* 回调JS */
-  List<JavascriptChannel> _setJavaScript() {
-    List<List> data = this.widget.javascript;
-    return List.generate(data.length, (index) {
-      return JavascriptChannel(
-        name: data[index][0],
-        onMessageReceived: data[index][1],
-      );
-    });
-  }
-
   /* 地图-中心点 */
   void setCenter(List<dynamic> center){
     if(center.length>0) _controller.evaluateJavascript('setCenter(['+center[0].toString()+','+center[1].toString()+'])');
@@ -64,6 +49,21 @@ class MapMarkerState extends State<MapMarker> {
   @override
   void dispose(){
     super.dispose();
+  }
+
+  /* 加载完成 */
+  Future _onload(String url) async {
+    this.widget.controller(this);
+  }
+  /* 回调JS */
+  List<JavascriptChannel> _setJavaScript() {
+    List<Map> data = this.widget.javascript;
+    return List.generate(data.length, (index) {
+      return JavascriptChannel(
+        name: data[index]['name'],
+        onMessageReceived: data[index]['msg'],
+      );
+    });
   }
 
   /* Widget */
