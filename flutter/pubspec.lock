@@ -104,6 +104,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_alipay:
+    dependency: "direct main"
+    description:
+      name: flutter_alipay
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.0"
   flutter_page_indicator:
     dependency: transitive
     description:
@@ -135,6 +142,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  fluwx:
+    dependency: "direct main"
+    description:
+      name: fluwx
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.3.0"
   foundation_fluttify:
     dependency: transitive
     description:

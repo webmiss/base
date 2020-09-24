@@ -22,9 +22,7 @@ Future get(String url, [Map<String, dynamic> params]) async {
     RegExp host = RegExp(r'(localhost|127.0.0.1)');
     String msg = host.firstMatch(url)==null?e.message:'请使用IP或外网地址';
     return {'type':_formatDioError(e),'url':url,'msg':msg};
-  } finally {
-    _dio.close();
-  }
+  } finally {}
 }
 
 /* Post请求 */
@@ -39,9 +37,7 @@ Future post(String url, Map<String, dynamic> params) async {
     RegExp host = RegExp(r'(localhost|127.0.0.1)');
     String msg = host.firstMatch(url)==null?e.message:'请使用IP或外网地址';
     return {'type':_formatDioError(e),'url':url,'msg':msg};
-  } finally {
-    _dio.close();
-  }
+  } finally { }
 }
 
 /* 请求错误 */
