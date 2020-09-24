@@ -25,16 +25,22 @@ void main(){
       statusBarIconBrightness: Brightness.dark,
     ));
   }
-  // APP
+  // 强制竖屏
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context)=>Store(),),
-      ],
-      child: MyApp(),
-    )
-  );
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]).then((_){
+    runApp(
+      // 状态管理
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context)=>Store(),),
+        ],
+        child: MyApp(),
+      )
+    );
+  });
 }
 
 class MyApp extends StatelessWidget {

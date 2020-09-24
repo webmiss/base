@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:webmis/store.dart';
 import 'package:provider/provider.dart';
 
-import 'package:webmis/library/plus/map-geolocation.dart';
 import 'package:webmis/library/ui/ui.dart';
 import 'package:webmis/library/ui/ui-color.dart';
 import 'package:webmis/library/ui/ui-svg.dart';
 import 'package:webmis/library/ui/ui-navigator-to.dart';
+import 'package:webmis/library/ui/storage.dart';
 
 import 'package:webmis/components/page-view.dart';
 import 'package:webmis/views/demo/Demo.dart';
@@ -20,29 +20,23 @@ class IndexState extends State<Index> with AutomaticKeepAliveClientMixin {
   /* 保存状态 */
   @override 
   bool get wantKeepAlive => true;
-  Map<String,dynamic> _location;
+  String _city;
 
   /* 构造函数 */
   @override
   void initState() {
     super.initState();
     print(Provider.of<Store>(context,listen: false).isLogin);
-    // 定位
-    _getLocation();
+    // 区域
+    Storage.getItem('city').then((res){
+      if(res!=null && res!='') setState(()=>_city=res);
+    });
   }
 
   /* 销毁 */
   @override
   void dispose(){
     super.dispose();
-    MapGeolocation.dispose();
-  }
-
-  /* 定位 */
-  Future<void> _getLocation() async {
-    // MapGeolocation.fetch(context).then((res){
-    //   setState(()=> _location=res );
-    // });
   }
 
   /* Widget */
@@ -56,7 +50,7 @@ class IndexState extends State<Index> with AutomaticKeepAliveClientMixin {
         bgColor: Color.fromRGBO(0,0,0,0.0),
         slotLeft: Center(
           child: Text(
-            _location!=null?(_location['district']!=''?_location['district']:'定位失败'):'正在定位'
+            _city!=null?_city:'正在定位'
           ),
         ),
         slotBody:Container(

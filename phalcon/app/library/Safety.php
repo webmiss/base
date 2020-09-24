@@ -35,7 +35,7 @@ class Safety{
 	static function decode($token='',$key=''){
 		$token = str_replace('_','+',$token);
 		$crypt = new Crypt();
-		$data = json_decode($crypt->decryptBase64($token, $key));
+		$data = json_decode(@$crypt->decryptBase64($token, $key));
 		return $data;
 	}
 
