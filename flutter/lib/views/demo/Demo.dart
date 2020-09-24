@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:webmis/store.dart';
+import 'package:provider/provider.dart';
 
 import 'package:webmis/library/inc/time-set.dart';
 
@@ -22,9 +24,12 @@ class DemoState extends State<Demo> {
   @override
   void initState() {
     super.initState();
+    // 登录状态
+    setTimeout((){
+      Provider.of<Store>(context,listen: false).setIsLogin(true);
+    },300);
     // 数据
     setState((){ lists = [0,1,2,3,4,5,6,7,8,9]; });
-
   }
 
   /* 下拉刷新 */
@@ -49,7 +54,6 @@ class DemoState extends State<Demo> {
   /* Widget */
   @override
   Widget build(BuildContext context) {
-    
     /* 显示 */
     return Scaffold(
       body: WmPageView(

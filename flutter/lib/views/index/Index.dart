@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:webmis/store.dart';
+import 'package:provider/provider.dart';
 
 import 'package:webmis/library/plus/map-geolocation.dart';
 import 'package:webmis/library/ui/ui.dart';
@@ -24,6 +26,7 @@ class IndexState extends State<Index> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
+    print(Provider.of<Store>(context,listen: false).isLogin);
     // 定位
     _getLocation();
   }
@@ -37,9 +40,9 @@ class IndexState extends State<Index> with AutomaticKeepAliveClientMixin {
 
   /* 定位 */
   Future<void> _getLocation() async {
-    MapGeolocation.fetch(context).then((res){
-      setState(()=> _location=res );
-    });
+    // MapGeolocation.fetch(context).then((res){
+    //   setState(()=> _location=res );
+    // });
   }
 
   /* Widget */
@@ -85,7 +88,7 @@ class IndexState extends State<Index> with AutomaticKeepAliveClientMixin {
                 child: uiSvg(src:'lib/assets/icon/bg.svg'),
               ),
               GestureDetector(
-                onTap: ()=> NavigatorTo.push(context,page: Demo()),
+                onTap: ()=> NavigatorTo.push(context,page:Demo()),
                 child: Container(
                   width: 80,
                   height: 30,

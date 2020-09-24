@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-
-import 'dart:io';
 import 'package:flutter/services.dart';
+import 'dart:io';
 
 import 'package:webmis/env.dart';
+import 'package:webmis/store.dart';
+import 'package:provider/provider.dart';
+
 import 'package:webmis/library/ui/request.dart';
 import 'package:webmis/library/ui/ui-color.dart';
 import 'package:webmis/library/ui/ui-svg.dart';
-
 import 'package:webmis/library/inc/time-set.dart';
 import 'package:webmis/library/inc/version-diff.dart';
-
 import 'package:webmis/library/plus/app-info.dart';
 
 import 'package:ota_update/ota_update.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'package:webmis/views/Home.dart';
 
 void main(){
@@ -28,7 +27,14 @@ void main(){
   }
   // APP
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context)=>Store(),),
+      ],
+      child: MyApp(),
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -51,6 +57,8 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+/* 启动画面 */
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();  
@@ -67,7 +75,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // 启动画面
+    // 启动时间
     _startTime();
   }
 
@@ -90,6 +98,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _goHome(){
     return Navigator.of(context).pushReplacementNamed('/home');
   }
+  /* 启动时间 */
   Future<void> _startTime() async {
     setTimeout((){
       if(Env.update['start']) _checkUpdate();
