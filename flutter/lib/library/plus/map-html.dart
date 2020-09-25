@@ -28,7 +28,7 @@ html,body{overflow: hidden; margin: 0; padding: 0; height: 100%; text-align: cen
 .map_marker_img{width: 42px; height: 42px; margin: 0 auto; background-color: #FFF; border-radius: 50%; background-repeat: no-repeat; background-position: center center; background-size: 100%;}
 .map_me{position: absolute; margin-top: -20px; z-index: 99; left: 50%; top: 50%; transform: translate(-50%,-50%);}
 /* 工具 */
-.map_tool{cursor: pointer; position: absolute; z-index: 99; right: 10px; bottom: 10px; width: 32px; height: 32px; background-color: #FFF; border-radius: 50%; box-shadow: 0 0 10px rgba(0,0,0,0.1); background-repeat: no-repeat; background-position: center center; background-size: 60%;}
+.map_tool{cursor: pointer; position: absolute; z-index: 99; right: 16px; bottom: 16px; width: 32px; height: 32px; background-color: #FFF; border-radius: 50%; box-shadow: 0 0 10px rgba(0,0,0,0.1); background-repeat: no-repeat; background-position: center center; background-size: 60%;}
 .map_tool_location{background-image: url(https://webmis.vip/map/img/map_location.svg);}
 .map_tool_refresh{background-image: url(https://webmis.vip/map/img/map_refresh.svg);}
 /* 高德 */
