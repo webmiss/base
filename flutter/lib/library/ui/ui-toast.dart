@@ -3,12 +3,8 @@ import 'package:webmis/library/ui/ui.dart';
 
 /* UI-提示 */
 class Toast {
-  static OverlayEntry _overlayEntry;
-  static String _msg;
-  static BuildContext _context;
   static bool _show = false;
   static double _top = 0.0;
-
   Toast(
     BuildContext context,
     String msg,
@@ -17,23 +13,22 @@ class Toast {
 
     // 参数
     assert(msg != null);
-    _msg = msg;
-    _context = context;
     // 内容
-    _overlayEntry = OverlayEntry(builder: (BuildContext context)=>_getBox() );
+    OverlayEntry _overlayEntry = OverlayEntry(builder: (BuildContext context)=>_getBox(context,msg) );
     // 显示
     _show = true;
-    _top = MediaQuery.of(_context).size.height*1/10;
     Overlay.of(context).insert(_overlayEntry);
     // 清除
-    Future.delayed(Duration(milliseconds: time)).then((value) {
+    Future.delayed(Duration(milliseconds: time)).then((res) {
       _overlayEntry.remove();
     });
     
   }
 
-  /* 容器-动画 */
-  Widget _getBox(){
+  /* 内容 */
+  Widget _getBox(BuildContext context, String msg){
+    // 距离顶部
+    _top = MediaQuery.of(context).size.height*1/10;
     return AnimatedPositioned(
       top: _top,
       duration: Duration(milliseconds: _show?400:200),
@@ -42,21 +37,16 @@ class Toast {
         duration: Duration(milliseconds: _show?400:3000),
         child: Container(
           alignment: Alignment.center,
-          width: MediaQuery.of(_context).size.width,
-          child: _getToast(),
-        ),
-      ),
-    );
-  }
-
-  /* 内容 */
-  Widget _getToast(){
-    return Center(
-      child: Card(
-        color: Color.fromRGBO(0,0,0,0.5),
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
-          child: Ui.text(_msg,fontSize: 14, color: '#FFFFFF'),
+          width: MediaQuery.of(context).size.width,
+          child: Center(
+            child: Card(
+              color: Color.fromRGBO(0,0,0,0.5),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+                child: Ui.text(msg,fontSize: 14, color: '#FFFFFF'),
+              ),
+            ),
+          ),
         ),
       ),
     );

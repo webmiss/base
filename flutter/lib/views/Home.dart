@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:webmis/env.dart';
+import 'package:webmis/library/Start.dart';
 import 'package:webmis/library/ui/ui.dart';
 import 'package:webmis/library/ui/ui-icons.dart';
 import 'package:webmis/library/ui/ui-color.dart';
@@ -29,6 +30,8 @@ class _HomeState extends State<Home> {
   /* Widget */
   @override
   Widget build(BuildContext context) {
+    /* 启动服务 */
+    Start.init(context);
     return Scaffold(
       body: Stack(
         children: [
