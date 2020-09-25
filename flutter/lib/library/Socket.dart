@@ -34,8 +34,7 @@ class Socket{
   static Future<void> msg(Map<String,dynamic> d) async {
     // 阅读
     final voice = await Storage.getItem('voice');
-    Notify(_context,d['data']['title'],d['data']['content'],isRead: voice==true??false);
-    print(d);
+    Notify(_context,d['data']['title'],d['data']['content'],isRead: voice!=true??false);
   }
 
   /* 通知 */
@@ -52,7 +51,6 @@ class Socket{
       _store = Ui.store(_context);
       Storage.setItem('token','EsA_l6u445xsZ53rPzTxzjlvVNQP4WG0m6mzfRxvbMOpd0ZNTZT9iTz20_AcG_QTb6LSJMvcTer4w8p9oq8j9qGTlebbmHBA9Gvb_CA=');
       Ui.store(_context).setIsLogin(true);
-      // print('login: ${_store.isLogin} socket: ${_store.socket}');
       // 验证
       if(_store.isLogin && ( _store.socket==null || _channel==null )){
         Storage.getItem('token').then((token){

@@ -24,6 +24,7 @@ dependencies:
   amap_location_fluttify: ^0.17.0 #高德定位
   flutter_alipay: "^1.0.0"  #支付宝
   fluwx: ^2.3.0  #微信
+  audioplayers: ^0.16.1 #播放音频
 # 插件-开发
 dev_dependencies:
   flutter_test:
