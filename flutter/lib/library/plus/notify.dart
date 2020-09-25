@@ -16,7 +16,7 @@ class Notify {
   ){
     _context = context;
     // 显示消息
-    String text = Env.msg['msg_content']=='title'?title:content;
+    String text = Env.msg['content']=='title'?title:content;
     Toast(context,text);
     /* 是否阅读 */
     if(isRead) readAudio(text);

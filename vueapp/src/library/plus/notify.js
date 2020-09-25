@@ -4,13 +4,13 @@ import Post from '@/library/ui/request-post'
 /* 本地消息 */
 export default (title,content,isRead)=>{
   // 浏览器
-  if(Inc.config.msgBrowser && window.Notification && Notification.permission !== "denied") {
+  if(Inc.config.msg.browser && window.Notification && Notification.permission !== "denied") {
     Notification.requestPermission(function(status) {
       new Notification(title, {body:content });
     });
   }
   // 显示消息
-  const text = Inc.config.msgContent=='title'?title:content;
+  const text = Inc.config.msg.content=='title'?title:content;
   Toast(text);
   /* 是否阅读 */
   isRead = isRead || false;
