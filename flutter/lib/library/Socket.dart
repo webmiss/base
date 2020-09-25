@@ -49,8 +49,6 @@ class Socket{
     if(_socketInterval!=null) _socketInterval.cancel();
     _socketInterval = setInterval((res){
       _store = Ui.store(_context);
-      Storage.setItem('token','EsA_l6u445xsZ53rPzTxzjlvVNQP4WG0m6mzfRxvbMOpd0ZNTZT9iTz20_AcG_QTb6LSJMvcTer4w8p9oq8j9qGTlebbmHBA9Gvb_CA=');
-      Ui.store(_context).setIsLogin(true);
       // 验证
       if(_store.isLogin && ( _store.socket==null || _channel==null )){
         Storage.getItem('token').then((token){

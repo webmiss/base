@@ -16,6 +16,7 @@ dependencies:
   provider: ^4.3.2+2  #状态管理
   path_provider: ^1.6.14  #读写权限
   shared_preferences: ^0.5.10  #本地硬盘
+  web_socket_channel: ^1.1.0  #WebSocket
   url_launcher: ^5.5.0  #打开浏览器
   flutter_svg: ^0.18.0  #Svg图片
   flutter_swiper: ^1.1.6  #轮播图
