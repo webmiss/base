@@ -5,6 +5,7 @@ import 'package:webmis/library/ui/storage.dart';
 import 'package:webmis/library/ui/request.dart';
 import 'package:webmis/library/inc/time-set.dart';
 import 'package:webmis/library/plus/map-geolocation.dart';
+import 'package:webmis/library/Socket.dart';
 
 /* 启动 */
 class Start{
@@ -20,7 +21,9 @@ class Start{
     if(_tokenInterval!=null) _tokenInterval.cancel();
     _tokenInterval = setInterval((res)=>tokenState(1),10000);
     /* 获取定位 */
-    geoLocation();
+    if(Env.amap['start']) geoLocation();
+    /* 消息推送 */
+    if(Env.socket['start']) Socket.start(_context);
   }
 
   /* 登录验证 */

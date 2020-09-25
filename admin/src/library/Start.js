@@ -1,10 +1,12 @@
-import Socket from '@/library/Socket'
-
+import Env from '@/env'
 import Toast from '../library/ui/ui-toast'
 import Storage from '../library/ui/storage'
 import Post from '../library/ui/request-post'
 import Back from '../library/ui/ui-back'
-import PlusReady from '@/library/plus/plus-ready'
+import PlusReady from '../library/plus/plus-ready'
+import PlusBack from '../library/plus/plus-back'
+import MapGeolocation from '../library/plus/map-geolocation'
+import Socket from '../library/Socket'
 
 /* 启动 */
 export default {
@@ -30,32 +32,33 @@ export default {
        }, false);
       // Android返回键
       let backcount = 0;
-      let webview = plus.webview.currentWebview();
-      plus.key.addEventListener('backbutton', ()=>{
-        webview.canBack((e)=>{
-          if(e.canBack){
-            // 关闭摄像头
-            if(this.self.$store.state.scan) this.self.$store.state.scan.close();
-            // 返回
-            Back(this.self,1);
-          }else{
-            if(backcount>0) plus.runtime.quit();
-            Toast('再按一次退出应用!');
-            backcount++;
-            setTimeout(()=>{backcount=0;},2000);
-          }
-        });
+      PlusBack((e)=>{
+        if(e.canBack){
+          // 关闭摄像头
+          if(this.self.$store.state.scan) this.self.$store.state.scan.close();
+          // 返回
+          Back(this.self,1);
+        }else{
+          if(backcount>0) plus.runtime.quit();
+          Toast('再按一次退出应用!');
+          backcount++;
+          setTimeout(()=>{backcount=0;},2000);
+        }
       });
     });
 
     /* 登录验证 */
-    this.tokenState(1);
-    clearInterval(this.tokenInterval);
-    this.tokenInterval = setInterval(()=>{
-      this.tokenState(0);
-    },10000);
+    if(Env.login.start){
+      this.tokenState(1);
+      clearInterval(this.tokenInterval);
+      this.tokenInterval = setInterval(()=>{
+        this.tokenState(0);
+      },10000);
+    }
+    /* 获取定位 */
+    if(Env.amap.start) this.geoLocation();
     /* 消息推送 */
-    Socket.start(this.self);
+    if(Env.socket.start) Socket.start(this.self);
     /* 系统信息 */
     this.getConfig();
   },
@@ -64,11 +67,14 @@ export default {
   tokenState(uinfo){
     const token = Storage.getItem('token');
     if(token){
-      Post('user/token',{token:token,uinfo:uinfo},(res)=>{
+      Post(Env.login.api,{token:token,uinfo:uinfo},(res)=>{
         const d = res.data;
         if(d.code==0){
           this.self.$store.state.isLogin = true;
-          if(d.uinfo) this.self.$store.state.uInfo = d.uinfo;
+          // 用户信息
+          if(d[Env.login.uinfo]){
+            this.self.$store.state.uInfo = d[Env.login.uinfo];
+          }
         }else{
           this.self.$store.state.isLogin = false;
           this.self.$store.state.uInfo = {};
@@ -79,6 +85,16 @@ export default {
       this.self.$store.state.isLogin = false;
       Storage.setItem('token','');
     }
+  },
+
+  /* 获取定位 */
+  geoLocation(){
+    setTimeout(()=>{
+      MapGeolocation((res)=>{
+        this.self.$store.state.geolocation = res;
+        Storage.setItem('city',res.district);
+      },(e)=>{ Toast('获取定位失败!'); });
+    },1000);
   },
 
   /* 系统信息 */

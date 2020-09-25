@@ -1,12 +1,11 @@
+import Env from '@/env'
 import Toast from '../library/ui/ui-toast'
 import Storage from '../library/ui/storage'
 import Post from '../library/ui/request-post'
 import Back from '../library/ui/ui-back'
-
 import PlusReady from '../library/plus/plus-ready'
 import PlusBack from '../library/plus/plus-back'
 import MapGeolocation from '../library/plus/map-geolocation'
-
 import Socket from '../library/Socket'
 
 /* 启动 */
@@ -49,26 +48,31 @@ export default {
     });
 
     /* 登录验证 */
-    this.tokenState(1);
-    clearInterval(this.tokenInterval);
-    this.tokenInterval = setInterval(()=>{
-      this.tokenState(0);
-    },10000);
+    if(Env.login.start){
+      this.tokenState(1);
+      clearInterval(this.tokenInterval);
+      this.tokenInterval = setInterval(()=>{
+        this.tokenState(0);
+      },10000);
+    }
     /* 获取定位 */
-    this.geoLocation();
+    if(Env.amap.start) this.geoLocation();
     /* 消息推送 */
-    Socket.start(this.self);
+    if(Env.socket.start) Socket.start(this.self);
   },
 
   /* 登录验证 */
   tokenState(uinfo){
     const token = Storage.getItem('token');
     if(token){
-      Post('user/token',{token:token,uinfo:uinfo},(res)=>{
+      Post(Env.login.api,{token:token,uinfo:uinfo},(res)=>{
         const d = res.data;
         if(d.code==0){
           this.self.$store.state.isLogin = true;
-          if(d.uinfo) this.self.$store.state.uInfo = d.uinfo;
+          // 用户信息
+          if(d[Env.login.uinfo]){
+            this.self.$store.state.uInfo = d[Env.login.uinfo];
+          }
         }else{
           this.self.$store.state.isLogin = false;
           this.self.$store.state.uInfo = {};

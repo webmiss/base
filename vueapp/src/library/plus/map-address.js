@@ -4,7 +4,7 @@ import {Storage} from '@/library/ui'
 
 /* 高德地图-初始化 */
 VueAMap.initAMapApiLoader({
-  key: Env.amapKey,
+  key: Env.amap.jsapi_key,
   plugin: ['AMap.Geolocation','PlaceSearch'],
   v: '1.4.15'
 });

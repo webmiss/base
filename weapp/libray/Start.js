@@ -1,5 +1,7 @@
-import {Post,Storage} from './ui/index'
-import {MapGeolocation} from './plus/index'
+import Env from '../env'
+import Storage from './ui/storage'
+import Post from './ui/request-post'
+import MapGeolocation from './plus/map-geolocation'
 import Socket from './Socket'
 
 /* 启动 */
@@ -11,26 +13,32 @@ export default {
   init(self){
     this.self = self;
     /* 登录验证 */
-    this.tokenState(1);
-    clearInterval(this.tokenInterval);
-    this.tokenInterval = setInterval(()=>{
-      this.tokenState(0);
-    },10000);
+    if(Env.login.start){
+      this.tokenState(1);
+      clearInterval(this.tokenInterval);
+      this.tokenInterval = setInterval(()=>{
+        this.tokenState(0);
+      },10000);
+    }
     /* 获取定位 */
-    this.geoLocation();
+    if(Env.amap.start) this.geoLocation();
     /* 消息推送 */
-    Socket.start(this.self);
+    if(Env.socket.start) Socket.start(this.self);
   },
 
   /* 登录验证 */
   tokenState(uinfo){
     const token = Storage.getItem('token');
+    const city = Storage.getItem('city');
     if(token){
-      Post('user/token',{token:token,uinfo:uinfo},(res)=>{
+      Post(Env.login.api,{token:token,uinfo:uinfo},(res)=>{
         const d = res.data;
         if(d.code==0){
           this.self.store.data.isLogin = true;
-          if(d.uinfo) this.self.store.data.uInfo = d.uinfo;
+          // 用户信息
+          if(d[Env.login.uinfo]){
+            this.self.store.data.uInfo = d[Env.login.uinfo];
+          }
           this.self.update();
         }else{
           this.self.store.data.isLogin = false;

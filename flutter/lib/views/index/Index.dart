@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:webmis/store.dart';
-import 'package:provider/provider.dart';
 
 import 'package:webmis/library/ui/ui.dart';
 import 'package:webmis/library/ui/ui-color.dart';
@@ -26,7 +24,6 @@ class IndexState extends State<Index> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
-    print(Provider.of<Store>(context,listen: false).isLogin);
     // 区域
     Storage.getItem('city').then((res){
       if(res!=null && res!='') setState(()=>_city=res);

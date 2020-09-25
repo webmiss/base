@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:webmis/store.dart';
-import 'package:provider/provider.dart';
-
-import 'package:webmis/library/inc/time-set.dart';
-
 import 'package:webmis/library/ui/ui.dart';
 import 'package:webmis/library/ui/ui-color.dart';
 import 'package:webmis/library/ui/ui-navigator-to.dart';
+import 'package:webmis/library/inc/time-set.dart';
 
 import 'package:webmis/components/page-view.dart';
 import 'package:webmis/components/scroll-view.dart';
@@ -24,10 +20,6 @@ class DemoState extends State<Demo> {
   @override
   void initState() {
     super.initState();
-    // 登录状态
-    setTimeout((){
-      Provider.of<Store>(context,listen: false).setIsLogin(true);
-    },300);
     // 数据
     setState((){ lists = [0,1,2,3,4,5,6,7,8,9]; });
   }

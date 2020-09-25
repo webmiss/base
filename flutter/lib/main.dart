@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:io';
 
 import 'package:webmis/env.dart';
+import 'package:webmis/library/Start.dart';
 import 'package:webmis/store.dart';
 import 'package:provider/provider.dart';
 
@@ -47,6 +48,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /* 启动服务 */
+    Start.init(context);
+    /* APP设置 */
     return MaterialApp(
       debugShowCheckedModeBanner: Env.dev,
       title: 'WebMIS Flutter',
@@ -265,6 +269,3 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
 }
-
-
-

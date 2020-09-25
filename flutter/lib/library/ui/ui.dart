@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webmis/env.dart';
+import 'package:webmis/store.dart';
+import 'package:provider/provider.dart';
 import 'package:webmis/library/ui/ui-icons.dart';
 import 'package:webmis/library/ui/ui-color.dart';
 import 'package:webmis/library/ui/ui-navigator-to.dart';
@@ -19,6 +21,11 @@ class Ui{
       ),
       onTap: ()=> NavigatorTo.pop(context,parm:parm),
     );
+  }
+
+  /* 全局状态 */
+  static Store store(BuildContext context){
+    return Provider.of<Store>(context,listen: false);
   }
 
   /* 标题 */

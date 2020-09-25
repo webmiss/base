@@ -2,7 +2,7 @@ import Env from '../../env'
 import Storage from '../ui/storage'
 import amap from './amap-wx'
 
-const Map = new amap.AMapWX({ key: Env.amapKey});
+const Map = new amap.AMapWX({ key: Env.amap.jsapi_key});
 
 // 高德-城市信息
 const _getCity = (callback,fail,longitude,latitude)=>{
