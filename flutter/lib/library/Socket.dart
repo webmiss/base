@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'dart:convert' as convert;
 import 'package:webmis/env.dart';
 import 'package:webmis/library/inc/time-set.dart';
@@ -6,8 +7,6 @@ import 'package:webmis/library/ui/ui.dart';
 import 'package:webmis/library/ui/storage.dart';
 import 'package:webmis/library/ui/ui-toast.dart';
 import 'package:webmis/library/plus/notify.dart';
-import 'package:web_socket_channel/io.dart';
-// import 'package:web_socket_channel/status.dart' as status;
 
 /* Socket客户端 */
 class Socket{
@@ -60,22 +59,39 @@ class Socket{
 
   /* 链接 */
   static Future socket(String token) async {
-    _channel = IOWebSocketChannel.connect(Env.socket['server']+'?token='+token);
-    print('Socket开启');
-    Ui.store(_context).setSocket(_channel);
-    // 心跳包
-    if(_heartbeat!=null) _heartbeat.cancel();
-    _heartbeat = setInterval((res){
-      _channel.sink.add(convert.jsonEncode({'type':''}));
-    },10000);
-    // 接收
-    _channel.stream.listen((msg) {
-      Map<String,dynamic> d = convert.jsonDecode(msg);
-      // 是否成功
-      if(d['code']!=0) return Toast(_context,d['msg']);
-      // 消息路由
-      msgRouter(d);
+    WebSocket.connect(Env.socket['server']+'?token='+token).then((WebSocket ws){
+      print('Socket开启');
+      _channel = ws;
+      Ui.store(_context).setSocket(_channel);
+      // 心跳包
+      if(_heartbeat!=null) _heartbeat.cancel();
+      _heartbeat = setInterval((res){
+        _channel.add(convert.jsonEncode({'type':''}));
+      },10000);
+      // 接收
+      _channel.listen((msg){
+        Map<String,dynamic> d = convert.jsonDecode(msg);
+        // 是否成功
+        if(d['code']!=0) return Toast(_context,d['msg']);
+        // 消息路由
+        msgRouter(d);
+      },onDone: (){
+        print('Socket关闭');
+        _closeMsg();
+      },onError: (e){
+        print('监听失败: $e');
+      },cancelOnError: true);
+    }).catchError((e){
+      print('链接失败: $e');
     });
+  }
+
+  /* 关闭 */
+  static Future<bool> _closeMsg() async {
+    if(_channel!=null){
+      Ui.store(_context).setSocket(null);
+    }
+    return true;
   }
 
 }

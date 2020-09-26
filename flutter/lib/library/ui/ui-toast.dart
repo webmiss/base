@@ -8,7 +8,7 @@ class Toast {
   Toast(
     BuildContext context,
     String msg,
-    { int time: 2000 }
+    { int time: 3000 }
   ){
 
     // 参数
