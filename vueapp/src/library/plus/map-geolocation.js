@@ -1,13 +1,13 @@
-import Env from '@/env'
+import Env from '../../env'
 import VueAMap from 'vue-amap';
 import Storage from '@/library/ui/storage'
 
 /* 高德地图-初始化 */
-VueAMap.initAMapApiLoader({
-  key: Env.amap.jsapi_key,
-  plugin: ['AMap.Geolocation','PlaceSearch'],
-  v: '1.4.15'
-});
+// VueAMap.initAMapApiLoader({
+//   key: Env.amap.jsapi_key,
+//   plugin: ['AMap.Geolocation','PlaceSearch'],
+//   v: '1.4.15'
+// });
 
 /* 地图-定位 */
 const _geolocation = (callback,fail)=>{

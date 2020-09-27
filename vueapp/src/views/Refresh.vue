@@ -8,9 +8,6 @@ export default {
     });
   },
   mounted(){
-    // 动作菜单-配置
-    this.$store.state.action.url = '';
-    this.$store.state.action.menus = '';
   },
 }
 </script>

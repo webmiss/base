@@ -1,7 +1,7 @@
 import NavigateTo from '../library/ui/ui-navigate-to'
 /* 组件 */
-import PageView from '@/components/page-view'
 import WmTabbar from '@/components/tabbar'
+import PageView from '@/components/page-view'
 
 export default {
   components: {WmTabbar,PageView},

@@ -1,9 +1,6 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+export default createStore({
   state: {
     mode: 'light',  // 模式: light、dark
     statusBarHeight: 0, // 状态栏
@@ -14,5 +11,11 @@ export default new Vuex.Store({
     uMsg: {scroll:null, group:[],num:''}, // 消息
     uNotify: {},  // 通知
     scan: null, // 摄像头
+  },
+  mutations: {
+  },
+  actions: {
+  },
+  modules: {
   }
-});
+})

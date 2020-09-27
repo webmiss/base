@@ -21,7 +21,8 @@ export default {
   },
   watch:{
     $route(to,from){
-      // 页面切换
+      // 页面切换动画
+      if(to.path=='/' && from.path=='/') return ;
       this.transitionName = this.$router.isBack?'slide-right':'slide-left';
       this.$router.isBack = false;
     }

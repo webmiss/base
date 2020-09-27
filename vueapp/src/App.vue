@@ -1,12 +1,11 @@
 <template>
   <div id="app">
-    
     <!-- 更新APP -->
     <div v-if="update.show" class="update_body" :style="{backgroundColor: upDateColor.bg}">
       <div class="update_ct verticalCenter">
         <div class="logo" :style="{backgroundColor: upDateColor.logoBg}"><div></div></div>
         <div class="loading" :style="{backgroundImage: 'linear-gradient(to right, '+upDateColor.loading+', '+upDateColor.loading+' '+update.loading+', '+upDateColor.loaded+' '+update.loading+', '+upDateColor.loaded+' 100%)'}"></div>
-        <div class="load_msg" v-html="update.msg" :style="{color:upDateColor.msgColor}">正在加载应用</div>
+        <div class="load_msg" :style="{color:upDateColor.msgColor}">{{update.msg}}</div>
         <div class="load_button">
           <button class="Button" v-if="update.down" @click="updateDown()" :style="{color:upDateColor.butColor,backgroundColor:upDateColor.butBg,}">{{upDateColor.butText}}</button>
         </div>
@@ -14,16 +13,15 @@
       <div class="update_logo" :style="{color:upDateColor.copy}"><h1>{{$config.title}}</h1><h2>{{$config.copy}}</h2></div>
     </div>
     <!-- 更新APP End -->
-
     <!-- 页面 -->
-    <transition :name="transitionName">
+    <router-view v-slot="{ Component }">
       <keep-alive :max="keepAlive">
-        <router-view class="view" :class="mode=='dark'?'view_dark':''" v-if="$route.meta.keepAlive"></router-view>
-        <router-view class="view" :class="mode=='dark'?'view_dark':''" v-if="!$route.meta.keepAlive" :key="'time'+new Date().getTime()"></router-view>
+        <transition :name="transitionName">
+          <component :is="Component" class="view" :class="mode=='dark'?'view_dark':''" />
+        </transition>
       </keep-alive>
-    </transition>
+    </router-view>
     <!-- 页面 End -->
-
   </div>
 </template>
 

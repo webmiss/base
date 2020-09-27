@@ -1,6 +1,7 @@
 import Env from '@/env'
-import {Toast,Storage} from '@/library/ui'
-import {Notify} from '@/library/plus'
+import Toast from '../library/ui/ui-toast'
+import Storage from '../library/ui/storage'
+import Notify from '../library/plus/notify'
 
 /* Socket */
 export default {
@@ -50,8 +51,8 @@ export default {
   start(self){
     this.self = self;
     // 重启Socket
-    clearInterval(this.msgInterval);
-    this.msgInterval = setInterval(()=>{
+    clearInterval(this.socketInterval);
+    this.socketInterval = setInterval(()=>{
       if(this.self.$store.state.isLogin && (!this.self.$store.state.socket || this.self.$store.state.socket.readyState!=1)) this.start(self);
     },3000);
     // Token

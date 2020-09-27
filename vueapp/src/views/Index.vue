@@ -1,15 +1,14 @@
 <template>
   <div>
-
     <!-- 首页 -->
     <page-view v-show="tabBar.active==0" class="in_html" :class="mode=='dark'?'in_html_dark':''" :immersed="true" :color="mode=='dark'?'#FFF':'#333'" :bgColor="'rgba(255,255,255,0)'">
       <!-- Header -->
-      <div slot="left">{{ $store.state.geolocation.district || '获取定位' }}</div>
-      <div slot="right">
+      <template #left>{{ $store.state.geolocation.district || '获取定位' }}</template>
+      <template #right>
         <i class="icons icon_scan"></i>
-      </div>
+      </template>
       <!-- Content -->
-      <div slot="body" class="nav_body">
+      <template #body class="nav_body">
         <div class="in_body" :class="mode=='dark'?'in_body_dark':''">
           <div class="verticalCenter in_ct">
             <div class="logo">
@@ -24,13 +23,11 @@
             </div>
           </div>
         </div>
-      </div>
+      </template>
     </page-view>
     <!-- 首页 End -->
-    
     <!-- 底部导航 -->
-    <wm-tabbar v-model="tabBar.active" @change="navTab"></wm-tabbar>
-
+    <wm-tabbar :active="tabBar.active" @change="navTab"></wm-tabbar>
   </div>
 </template>
 

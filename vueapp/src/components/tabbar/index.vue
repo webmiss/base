@@ -25,21 +25,11 @@
 <script>
 export default {
   name: 'TabBar',
-  model: {
-    prop: "active",
-    event: 'active',
-  },
   props: {
-    active: {type: Number | String, default: 0},
-  },
-  data(){
-    return {
-    }
+    active: {type: Number, default: 0},
   },
   computed:{
     mode(){ return this.$store.state.mode; },
-  },
-  mounted(){
   },
   methods:{
 
