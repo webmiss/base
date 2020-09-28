@@ -11,7 +11,6 @@
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "vue": "^3.0.0-0",
-    "vue-amap": "^0.5.10",
     "vue-pickers": "^2.5.3",
     "vue-router": "^4.0.0-0",
     "vue-swipe": "^2.4.0",

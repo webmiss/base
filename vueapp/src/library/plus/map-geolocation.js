@@ -1,5 +1,5 @@
 import Env from '../../env'
-import VueAMap from 'vue-amap';
+// import VueAMap from 'vue-amap';
 import Storage from '@/library/ui/storage'
 
 /* 高德地图-初始化 */
