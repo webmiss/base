@@ -66,6 +66,7 @@
 	<array>
 		<string>weixin</string>
 		<string>weixinULAPI</string>
+		<string>iosamap</string>
 	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
