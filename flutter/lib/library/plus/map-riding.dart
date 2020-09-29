@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webmis/library/plus/map-html.dart';
 
-/* 页面布局 */
+/* 地图-骑行线路 */
 class MapRiding extends StatefulWidget {
   // 参数
   final Function controller;
@@ -36,7 +36,7 @@ class MapRidingState extends State<MapRiding> {
   void setZoom(int zoom){
     _controller.evaluateJavascript('setZoom('+zoom.toString()+')');
   }
-  /* 地图-级别 */
+  /* 地图-线路 */
   void setRiding(src,dst){
     _controller.evaluateJavascript('setRiding('+convert.jsonEncode(src)+','+convert.jsonEncode(dst)+')');
   }

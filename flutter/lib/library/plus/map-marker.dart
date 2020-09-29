@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webmis/library/plus/map-html.dart';
 
-/* 页面布局 */
+/* 地图-点标记 */
 class MapMarker extends StatefulWidget {
   // 参数
   final Function controller;
