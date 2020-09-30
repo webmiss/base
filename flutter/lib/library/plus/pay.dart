@@ -1,3 +1,4 @@
+import 'dart:convert' as convert;
 import 'package:webmis/env.dart';
 import 'package:webmis/library/ui/request.dart';
 import 'package:flutter_alipay/flutter_alipay.dart';
@@ -19,7 +20,7 @@ class Pay{
     var isPay = await fluwx.isWeChatInstalled;
     if(isPay==false) throw '没有安装微信!';
     // 请求
-    data['type']='app';
+    data['type']='APP';
     Map res = await post(url, data);
     if(res['code']!=0) throw res['code'];
     // 支付
@@ -29,7 +30,7 @@ class Pay{
       prepayId: res['data']['prepayid'],
       packageValue: res['data']['package'],
       nonceStr: res['data']['noncestr'],
-      timeStamp: res['data']['timestamp'],
+      timeStamp: int.parse(res['data']['timestamp']),
       sign: res['data']['sign'],
     );
     // 回调
@@ -41,19 +42,20 @@ class Pay{
   }
 
   /* 支付宝 */
-  static Future<AlipayResult> alipay(String url, Map<String,dynamic> data) async {
+  static Future alipay(String url, Map<String,dynamic> data) async {
     // 配置
     await FlutterAlipay.setIosUrlSchema(Env.pay['universalLink']);
     // 检测
     // var isPay = await FlutterAlipay.isInstalled();
     // if(isPay==false) throw '没有安装支付宝!';
     // 请求
-    data['type']='APP';
+    data['type']='app';
     Map res = await post(url, data);
     if(res['code']!=0) throw res['code'];
     // 支付
-    var result = await FlutterAlipay.pay(res['data']);
-    return result;
+    AlipayResult pay = await FlutterAlipay.pay(res['data']);
+    Map result = convert.jsonDecode(pay.result);
+    return result[''];
   }
 
 }
