@@ -6,15 +6,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Controller("ApiIndexController")
+@RequestMapping("/api")
 public class IndexController{
 
-  @RequestMapping("/api/index")
+  /* 首页 */
+  @RequestMapping("")
+  String get(){
+    return this.index();
+  }
+  @RequestMapping("/index")
   String index(){
     return "Api";
   }
 
-  @RequestMapping("/api/test")
-  String home(){
-    return "Test";
-  }
 }

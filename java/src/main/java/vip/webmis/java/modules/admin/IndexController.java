@@ -6,9 +6,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Controller("AdminIndexController")
+@RequestMapping("/admin")
 public class IndexController{
 
-  @RequestMapping("/admin/index")
+  /* 首页 */
+  @RequestMapping("")
+  String get(){
+    return this.index();
+  }
+  @RequestMapping("/index")
   String index(){
     return "Admin";
   }
