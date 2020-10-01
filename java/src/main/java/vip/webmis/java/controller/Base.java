@@ -1,7 +1,5 @@
 package vip.webmis.java.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import javax.servlet.http.HttpServletResponse;
 import vip.webmis.java.library.Dynamic;
