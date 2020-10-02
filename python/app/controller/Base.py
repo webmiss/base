@@ -16,7 +16,7 @@ class Base :
   def bug(self,data,next=False):
     self.getJSON({})
     print(data)
-    if(next==False): self.error('Bug')
+    if(next==False): self.error('%s'%(data))
 
   # 异常错误
   def error(self,code=''):
