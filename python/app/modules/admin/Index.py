@@ -1,5 +1,7 @@
+from app.controller.Base import Base
 
-class Index :
+class Index(Base) :
 
+  # 首页
   def index(self):
-    return 'Admin'
+    return self.getJSON({'code':0,'msg':'Admin'})

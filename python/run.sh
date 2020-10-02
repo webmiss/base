@@ -1,2 +1,2 @@
 #!/bin/bash
-python app/web.py
+python web.py
