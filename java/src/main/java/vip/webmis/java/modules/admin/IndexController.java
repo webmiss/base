@@ -2,6 +2,7 @@ package vip.webmis.java.modules.admin;
 
 import vip.webmis.java.controller.Base;
 import vip.webmis.java.library.Dynamic;
+
 import java.util.HashMap;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
@@ -15,8 +16,7 @@ public class IndexController extends Base {
 
   /* 首页 */
   @RequestMapping("")
-  String index(HttpServletResponse response){
-    bug(new Dynamic<String>("打印测试"));
+  String index(HttpServletResponse response) {
     // 返回数据
     HashMap<String,Object> data = new HashMap<String,Object>();
     data.put("code",0);

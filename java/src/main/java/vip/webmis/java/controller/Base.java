@@ -19,9 +19,17 @@ public class Base {
   }
 
   /* 调试信息 */
-  static protected void bug(Dynamic<?> data) {
+  static protected void bug(Dynamic<?> data, boolean next){ }
+  static protected void bug(Dynamic<?> data) throws Exception {
+    boolean next = false;
     getJSON(new HashMap<String, Object>());
     System.out.println(data.getKey());
+    if(next==false) error((String)data.getKey());
+  }
+
+  /* 异常错误 */
+  static protected void error(String msg) throws Exception {
+    throw new Exception(msg);
   }
 
 }
