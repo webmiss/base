@@ -1,5 +1,5 @@
 *__pycache__
-app/config/env.py
+app/env.py
 server/web.log
 server/web.sock
 
