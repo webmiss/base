@@ -73,7 +73,7 @@ class SysPermController extends UserBase {
     }else{
       // 注册
       $user = new User();
-      $user->id = self::getId();
+      $user->id = Inc::getId();
       $user->tel = $data->tel;
       $user->password = md5($data->passwd);
       if(!$user->save()) return self::getJSON(['code'=>4001,'msg'=>'注册失败!']);
@@ -100,7 +100,7 @@ class SysPermController extends UserBase {
     $model = UserPerm::findFirst(['uid=:uid:','bind'=>['uid'=>$data->uid]]);
     if(!$model) return self::getJSON(['code'=>0,'msg'=>'用户不存在!']);
     // 是否管理员
-    if(self::isAdmin($model->uid)) return self::getJSON(['code'=>4001,'msg'=>'无权修改!']);
+    if($this->isAdmin($model->uid)) return self::getJSON(['code'=>4001,'msg'=>'无权修改!']);
     // 修改账户、密码
     $user = User::findFirst(['id=:uid:','bind'=>['uid'=>$data->uid]]);
     $user->tel = $data->tel;
@@ -135,7 +135,7 @@ class SysPermController extends UserBase {
     if($type=='admin') $model->state_admin = $state;
     elseif($type=='app') $model->state_app = $state;
     // 是否管理员
-    if(self::isAdmin($model->uid)) return self::getJSON(['code'=>4001,'msg'=>'无权修改!']);
+    if($this->isAdmin($model->uid)) return self::getJSON(['code'=>4001,'msg'=>'无权修改!']);
     // 结果
     return $model->save()?self::getJSON(['code'=>0]):self::error(4022);
   }
@@ -217,7 +217,7 @@ class SysPermController extends UserBase {
     $model = UserPerm::findFirst(['uid=:uid:','bind'=>['uid'=>$uid]]);
     if(!$model) return self::getJSON(['code'=>4001,'msg'=>'无效用户!']);
     // 是否管理员
-    if(self::isAdmin($model->uid)) return self::getJSON(['code'=>4001,'msg'=>'无权修改!']);
+    if($this->isAdmin($model->uid)) return self::getJSON(['code'=>4001,'msg'=>'无权修改!']);
     // 数据
     $model->perm = $perm;
     $model->role = $role;

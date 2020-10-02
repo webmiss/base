@@ -15,6 +15,12 @@ class Inc{
 		return $base_url;
 	}
 
+	/* 自动编号ID-18位 */
+  static function getId(){
+    list($msec, $sec) = explode(' ', microtime());
+    return date('YmdHis').substr($msec,2,4);
+  }
+
 	/* 加密-字符串 */
 	static function getKey($str){
 		$config = require APP_PATH.'/config/env.php';

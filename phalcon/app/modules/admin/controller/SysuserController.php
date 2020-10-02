@@ -60,7 +60,7 @@ class SysUserController extends UserBase {
     if($res) return self::getJSON(['code'=>0,'msg'=>'已存在该系统!']);
     // 注册
     $model = new User();
-    $model->id = self::getId();
+    $model->id = Inc::getId();
     $model->tel = $data->tel;
     $model->password = md5($data->passwd);
     // 结果

@@ -2,7 +2,7 @@
 
 use \Swoole\WebSocket\Server as WebSocket;
 use \Swoole\Coroutine\Http\Client;
-use app\library\Centre;
+use app\library\Inc;
 
 class SocketTask extends TaskBase{
 
@@ -24,71 +24,15 @@ class SocketTask extends TaskBase{
     // 参数
     $data = json_decode($frame->data);
     if(!is_object($data)) return $server->push($frame->fd, json_encode(['code'=>400,'msg'=>'格式错误']));
-    /* 消息组 */
-    if($data->type=='group') $this->msgGroup($server,$frame,$data);
     /* 消息 */
     elseif($data->type=='msg') $this->msg($server,$frame,$data);
-  }
-
-  /* 消息组 */
-  private function msgGroup($server,$frame,$data){
-    // 是否用户
-    if(empty($this->uid)) return false;
-    // 100条分组
-    $all = $this->db()->fetchAll(
-      'SELECT * FROM user_msg WHERE is_del NOT LIKE "%\"'.$this->uid.'\"%" AND (fid='.$this->uid.' OR uid='.$this->uid.') LIMIT 0,'.$this->msg_limit
-    );
-    // 分组
-    $tmpData = [];
-    $num = [];
-    foreach($all as $val){
-      // 是否用户
-      $gid = $val['uid']!=$this->uid?'uid':'fid';
-      // 是否已读
-      $is_new = json_decode($val['is_new'],1);
-      $is_new = in_array((string)$this->uid,$is_new)?'1':'0';
-      // 组信息
-      $tmpData[(string)$val[$gid]]['fid'] = $val[$gid];
-      $tmpData[(string)$val[$gid]]['num'] = 0;
-      $tmpData[(string)$val[$gid]]['msg'][] = [
-        'id'=>$val['id'],
-        'type'=>$val['type'],
-        'fid'=>$val['fid'],
-        'ctime'=>$val['ctime'],
-        'title'=>$val['title'],
-        'content'=>$val['content'],
-        'img'=>$this->_getImg($val['fid']),
-        'is_new'=>$is_new,
-      ];
-      // 记录未读
-      if($is_new=='0'){
-        if(isset($num[(string)$val[$gid]])) $num[(string)$val[$gid]]++;
-        else $num[(string)$val[$gid]] = 1;
-      }
-    }
-    // 未读数量
-    foreach($num as $key=>$val){
-      $tmpData[(string)$key]['num'] = $val;
-    }
-    // 倒序
-    foreach($tmpData as $key=>$val){
-      $tmpData[$key]['name'] = $this->_getName($key);
-      $tmpData[$key]['img'] = $this->_getImg($key);
-      $tmpData[$key]['msg'] = array_reverse($val['msg']);
-    }
-    // 结果
-    $msg = (Object)[];
-    $msg->code = 0;
-    $msg->type = 'group';
-    $msg->data = (Object)$tmpData;
-    return $server->push($frame->fd, json_encode($msg));
   }
 
   /* 消息 */
   private function msg($server,$frame,$data){
     // 消息-保存
     $msg = (Object)[];
-    $msg->id = $this->getId();
+    $msg->id = Inc::getId();
     $msg->type = '0';
     $msg->uid = $data->data->uid;
     $msg->fid = $data->data->fid;
@@ -118,27 +62,6 @@ class SocketTask extends TaskBase{
       $sql = $this->getSql(['type'=>'add','table'=>'user_msg','data'=>$data]);
       $this->db()->execute($sql);
     }
-  }
-
-  /* 用户头像 */
-  private function _getImg($uid){
-    $img = $this->redis()->get($this->config->socket_name.'uImg'.$uid);
-		if(!$img){
-      $res = Centre::uinfo($uid);
-      $img = $res->code==0?$res->info->img:'';
-      $this->redis()->setex($this->config->socket_name.'uImg'.$uid,10*60,$img);
-    }
-    return $img;
-  }
-  /* 用户昵称 */
-  private function _getName($uid){
-    $name = $this->redis()->get($this->config->socket_name.'uName'.$uid);
-		if(!$name){
-      $res = Centre::uinfo($uid);
-      $name = $res->code==0?$res->info->nickname:'';
-      $this->redis()->setex($this->config->socket_name.'uName'.$uid,10*60,$name);
-    }
-    return $name;
   }
 
   /* 客户端 */
