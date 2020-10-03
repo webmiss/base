@@ -3,7 +3,7 @@
 
 import string
 import json
-from app.env import Env
+from app.Env import Env
 from flask import Flask,request
 
 # 框架
@@ -38,6 +38,7 @@ def index(c='Index',a='index',p1='',p2='',p3=''):
   # 排除路由
   url = request.path.split('/',2)[1].lower()
   if(url not in Env.exclude): return _start('home',c,a,[p1,p2,p3])
+  else: return ''
 
 # Api
 @app.route('/api',methods=['GET', 'POST'])

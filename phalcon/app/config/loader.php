@@ -6,6 +6,7 @@ $loader = new Loader();
 
 /* 注册：命名空间 */
 $loader->registerNamespaces([
+  'app'  => APP_PATH,
   'app\library'  => APP_PATH.'/library/',
   'app\controller'  => APP_PATH.'/controller/',
   'app\model'  => APP_PATH.'/model/',

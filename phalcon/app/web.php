@@ -4,10 +4,7 @@ use Phalcon\Di;
 use Phalcon\Mvc\Router;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Application;
-use Phalcon\Config\Adapter\Php as phpConfig;
-
-// 开发模式(1.Development，2.Production)
-$mode = 'Production';
+use app\Env;
 
 define('BASE_PATH', dirname(__DIR__));
 define('APP_PATH', BASE_PATH . '/app');
@@ -18,10 +15,6 @@ require BASE_PATH.'/vendor/autoload.php';
 try {
   // 注册堆栈框架
   $di = new Di();
-  /* 注册：配置 */
-	$di->setShared('config', function () {
-    return new phpConfig(APP_PATH.'/config/env.php');
-  });
   // 自动加载
   require APP_PATH.'/config/loader.php';
   // 公共服务
@@ -64,7 +57,7 @@ try {
   $uri = explode('?', $di->get('request')->getURI());
 	$app->handle($uri[0]??'/')->send();
 }catch (\Exception $e){
-  if($mode=='Development'){
+  if(Env::$debug){
     echo $e->getMessage().'<br>';
     echo '<pre>'.$e->getTraceAsString().'</pre>';
   }else{

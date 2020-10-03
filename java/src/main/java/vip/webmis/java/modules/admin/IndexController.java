@@ -1,7 +1,6 @@
 package vip.webmis.java.modules.admin;
 
 import vip.webmis.java.controller.Base;
-import vip.webmis.java.library.Dynamic;
 
 import java.util.HashMap;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +15,7 @@ public class IndexController extends Base {
 
   /* 首页 */
   @RequestMapping("")
-  String index(HttpServletResponse response) {
+  String index(HttpServletResponse response) throws Exception {
     // 返回数据
     HashMap<String,Object> data = new HashMap<String,Object>();
     data.put("code",0);

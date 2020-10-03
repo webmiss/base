@@ -1,36 +1,27 @@
 <?php
 
+use app\Env;
+
 /**
 * 注册：数据库
 */
 $di->setShared('db', function () {
   // 配置文件
-  $config = $this->getConfig();
+  $conf = Env::db();
   // 参数
   $params = [
-    'host'=>$config->database->host,
-    'username'=>$config->database->username,
-    'password'=>$config->database->password,
-    'dbname'=>$config->database->dbname,
-    'charset'=>$config->database->charset
+    'host'=>$conf['host'],
+    'username'=>$conf['username'],
+    'password'=>$conf['password'],
+    'dbname'=>$conf['dbname'],
+    'port'=>$conf['port'],
+    'charset'=>$conf['charset']
   ];
   // 删除编码
-  if ($config->database->adapter == 'Postgresql') unset($params['charset']);
+  if ($conf['adapter'] == 'Postgresql') unset($params['charset']);
   // 命名空间
-  $class = 'Phalcon\Db\Adapter\Pdo\\' . $config->database->adapter;
+  $class = 'Phalcon\Db\Adapter\Pdo\\'.$conf['adapter'];
   return new $class($params);
-});
-
-/**
-* 注册：Redis
-*/
-$di->setShared('redis', function () {
-  $config = $this->getConfig();
-  $redis = new \Redis();
-  $redis->connect($config->redis->host,$config->redis->port);
-  if($config->redis->pwd) $redis->auth($config->redis->pwd);
-  $redis->select($config->redis->db);
-  return $redis;
 });
 
 /**
