@@ -11,7 +11,7 @@ public class IndexController {
   @RequestMapping("")
   String index(HashMap<String,Object> map){
     map.put("test","这是一个模板！");
-    return "/index";
+    return "index";
   }
 
 }
