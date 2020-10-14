@@ -1,6 +1,5 @@
 import Env from '@/env'
 import Start from '@/library/Start'
-import Socket from '@/library/Socket'
 
 import Loading from './library/ui/ui-loading'
 import Post from './library/ui/request-post'
@@ -10,27 +9,36 @@ import VersionDiff from './library/inc/version-diff'
 import Reg from './library/inc/reg'
 import PlusReady from './library/plus/plus-ready'
 /* 组件 */
-import Popup from '@/components/popup'
-import Action from '@/components/action'
 import ScrollView from '@/components/scroll-view'
+import wmMenu from './components/menu'
+import wmInput from './components/input'
+import wmButton from './components/button'
 
 export default {
   name: 'APP',
-  components: {Action,Popup,ScrollView},
+  components: {ScrollView,wmMenu,wmInput,wmButton},
   data(){
     return {
+      env: Env,
       storage: Storage,
+      store: this.$store.state,
       // 更新APP
-      update: {show:false,os:'',down:false,loading:'0%',msg:'检测更新',file:'',total:0},
+      update: {show:false,os:'',down:false,loading:'1%',msg:'检测更新',file:'',total:0},
       upDateColor: Env.update,
       // 登录数据
       login: {uname:'',passwd:'',subText:'登 录',dis:false},
       // 左侧菜单
       menus: [],
+      menusActive: [0,0], 
       // 配置
       config:{show:false, title:'系统配置', is_msg_audio:true,},
-      // 消息
-      msg:{show:false},
+      // 语言
+      languageNum: 0,
+      language:[
+        {name:'php',val:'PHP( Phalcon )'},
+        {name:'python',val:'Python( Flask )'},
+        {name:'java',val:'Java( SpringBoot )'},
+      ],
     }
   },
   mounted(){
@@ -38,12 +46,29 @@ export default {
     Start.init(this);
     // 检测更新
     if(Env.update.start) this.isUpdate();
-    // 获取菜单
-    if(Storage.getItem('token')) this.getMenus();
+    // 用户名
+    this.login.uname = Storage.getItem('uname'); 
+    // 默认语言
+    this.reLanguage();
     // Enter事件
     this._enter();
+    // 是否登录
+    if(Storage.getItem('token')) this.getMenus();
   },
   methods:{
+
+    /* 切换语言 */
+    platform(index){
+      let data = this.language[index];
+      data.index = index;
+      Storage.setItem('platform',JSON.stringify(data));
+      window.location.href = '';
+    },
+    reLanguage(){
+      const lag = Storage.getItem('platform');
+      const lagData = lag?JSON.parse(lag):this.language[0];
+      this.languageNum = lagData.index || 0;
+    },
 
     /* 检测更新 */
     isUpdate(){
@@ -128,103 +153,65 @@ export default {
         this.login.dis = false;
         const d = res.data;
         if(d.code==0){
-          this.$store.state.isLogin = true;
-          this.$store.state.uInfo = d.uinfo;
+          this.store.isLogin = true;
+          this.store.uInfo = d.uinfo;
           Storage.setItem('token',d.token);
+          Storage.setItem('uname',d.uinfo.uname);
+          Storage.setItem('uinfo',JSON.stringify(d.uinfo));
           // 用户菜单
           this.getMenus();
           // 刷新路由
           this.$router.replace({path:'/refresh'});
         }else{
-          this.$store.state.isLogin = false;
-          this.$store.state.uInfo = {};
+          this.store.isLogin = false;
+          this.store.uInfo = {};
           Storage.setItem('token','');
           Toast(d.msg);
         }
       },(e)=>{
         load.clear();
         Toast('网络加载失败!');
+        this.login.subText = '登 录';
+        this.login.dis = false;
       });
     },
     /* 退出 */
     logout(){
-      this.$store.state.isLogin = false;
-      this.$store.state.uInfo = {};
+      this.store.isLogin = false;
+      this.store.uInfo = {};
       Storage.setItem('token','');
-      // 关闭Socket
-      Socket._closeMsg();
-      // Enter事件
-      this._enter();
+      this.login.passwd = '';
     },
     /* Enter登录 */
     _enter(){
       document.onkeydown = (event)=>{
         let e = event || window.event || arguments.callee.caller.arguments[0];
-        if(e && e.keyCode==13 && !this.$store.state.isLogin) this.loginSub();
+        if(e && e.keyCode==13 && !this.store.isLogin) this.loginSub();
       }
     },
 
     /* 用户菜单 */
     getMenus(){
-      // 默认菜单
-      this.$store.state.collapseMenu = Storage.getItem('isCollapse')=='true'?true:false;
-      this.$store.state.defaultMenu = Storage.getItem('defaultMenu')?Storage.getItem('defaultMenu'):'3';
-      // 请求
-      Post('Usermain/getMenus',{token:Storage.getItem('token')},(res)=>{
+      Post('Sysmenus/getMenus',{token:Storage.getItem('token')},(res)=>{
         let d = res.data;
         if(d.code==0){
-          this.$store.state.menus = d.menus;
+          this.menus = d.menus;
+          // 默认菜单
+          this.menusActive = Storage.getItem('menusActive')?JSON.parse(Storage.getItem('menusActive')):[0,1];
+          const obj = this.$refs.Menus;
+          setTimeout(()=>{
+            obj.titleClick(this.menusActive[0]);
+            obj.menuClick(this.menusActive);
+          },300);
         }
-      });
+      });      
     },
-    /* 收缩菜单 */
-    hideMenus(){
-      this.isCollapse = !this.isCollapse;
-      Storage.setItem('isCollapse',this.isCollapse);
-      this.$store.state.collapseMenu = this.isCollapse;
-    },
-    /* 跳转地址 */
-    openUrl(ico,url,index,name){
-      // 保存-当前位置
-      Storage.setItem('MenuName',name);
-      Storage.setItem('defaultMenu',index);
-      this.$store.state.defaultMenu = index;
-      // 保存-快捷方式
-      if(index!='3'){
-        let menus = JSON.parse(Storage.getItem('Menus') || '[]');
-        let data = {ico:ico,url:url,index:index,name:name};
-        const n = menus.findIndex((item)=>JSON.stringify(item)==JSON.stringify(data));
-        if(n>=0) menus.splice(n,1);
-        menus.push({ico:ico,url:url,index:index,name:name});
-        // 保存
-        Storage.setItem('Menus',JSON.stringify(menus));
-      }
-      // 跳转
+    /* 点击菜单 */
+    menuClick(pos){
+      Storage.setItem('menusActive',JSON.stringify(pos));
+      const url = this.menus[pos[0]].children[pos[1]].url;
+      console.log(url);
       this.$router.push(url);
-    },
-
-    /* 系统配置 */
-    openConfig(){
-      this.config.show = true;
-    },
-    subConfig(key){
-      let data = {};
-      data[key] = this.config[key]?'1':'0';
-      // 提交
-      const load = Loading();
-      Post('Userinfo/edit',
-        {token:Storage.getItem('token'),data:JSON.stringify(data)},
-      (res)=>{
-        load.clear();
-        const d = res.data;
-        this.$store.state.uinfo[key] = this.config[key];
-        return d.code==0?Toast(d.msg):Toast(d.msg);
-      });
-    },
-
-    /* 消息-显示 */
-    openMsg(){
-      this.msg.show = true;
     },
 
   }

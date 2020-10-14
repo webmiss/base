@@ -8,6 +8,7 @@ import HtmlLoad from './html-load.js'
 import PriceFormat from './price-format.js'
 import PriceToFixed from './price-to-fixed.js'
 import Reg from './reg.js'
+import TelCall from './tel-call.js'
 import TelFormat from './tel-format.js'
 import TimeDate from './time-date.js'
 import TimeDay from './time-day.js'
@@ -28,7 +29,8 @@ export default {
   PriceFormat,  //格式化价格
   PriceToFixed, //金额-不四舍五入
   Reg,  //正则验证
-  TelFormat,  //格式化手机号码
+  TelCall,  //拨打号码
+  TelFormat,  //格式化手机
   TimeDate, //年月日时分秒
   TimeDay,  //获取日期
   TimeFormat, //时间格式
@@ -48,6 +50,7 @@ export {
   PriceFormat,
   PriceToFixed,
   Reg,
+  TelCall,
   TelFormat,
   TimeDate,
   TimeDay,

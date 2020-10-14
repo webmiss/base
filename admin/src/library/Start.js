@@ -53,7 +53,7 @@ export default {
       clearInterval(this.tokenInterval);
       this.tokenInterval = setInterval(()=>{
         this.tokenState(0);
-      },10000);
+      },Env.login.time);
     }
     /* 获取定位 */
     if(Env.amap.start) this.geoLocation();
@@ -102,6 +102,8 @@ export default {
     Post('index/getConfig',{},(res)=>{
       const d = res.data;
       if(d.code==0) this.self.$store.state.system = d.list;
+    },(e)=>{
+      Toast('网络加载失败!');
     });
   },
 
