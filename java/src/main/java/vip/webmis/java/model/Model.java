@@ -197,7 +197,7 @@ public class Model {
         // 等待超时(毫秒)
         dataSource.setMaxWait(60000);
       }
-      return conn = (Connection) dataSource.getConnection();
+      return (Connection) dataSource.getConnection();
     } catch (SQLException e) {
       System.out.println("链接数据库: %s"+e.getMessage());
       return conn;
