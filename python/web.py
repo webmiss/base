@@ -53,7 +53,6 @@ def api(c='Index',a='index',p1='',p2='',p3=''):
 
 # Admin
 @app.route('/admin',methods=['GET', 'POST'])
-@app.route('/admin/',methods=['GET', 'POST'])
 @app.route('/admin/<c>',methods=['GET', 'POST'])
 @app.route('/admin/<c>/<a>',methods=['GET', 'POST'])
 @app.route('/admin/<c>/<a>/<p1>',methods=['GET', 'POST'])
