@@ -1,7 +1,7 @@
 <?php
 namespace app\modules\api\controller;
 
-use app\controller\Base;
+use app\common\Base;
 use app\library\Code;
 
 class IndexController extends Base{
@@ -23,7 +23,7 @@ class IndexController extends Base{
     elseif($os=='Android') $file = 'upload/down/android.apk';
     else return self::getJSON(['code'=>4000,'msg'=>'未知平台,暂无下载!']);
     $size = is_file($file)?filesize($file):0;
-    return self::getJSON(['code'=>0,'version'=>'1.0.2','platform'=>$os,'size'=>$size,'file'=>$this->config->base_url.$file]);
+    return self::getJSON(['code'=>0,'version'=>'1.0.0','platform'=>$os,'size'=>$size,'file'=>$this->config->base_url.$file]);
   }
   
 }

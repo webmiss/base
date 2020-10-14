@@ -4,7 +4,7 @@ namespace app\model;
 
 use app\library\Safety;
 
-/* 用户 */
+/* 用户表 */
 class User extends BaseModel{
 
   public $id;

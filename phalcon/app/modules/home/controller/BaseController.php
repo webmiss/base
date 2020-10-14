@@ -1,7 +1,7 @@
 <?php
 namespace app\modules\home\controller;
 
-use app\controller\Base;
+use app\common\Base;
 
 class BaseController extends Base{
 

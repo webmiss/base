@@ -1,9 +1,10 @@
 <?php
 
-namespace app\modules\admin\model;
+namespace app\model;
 
 use app\model\BaseModel;
 
+/* 系统菜单表 */
 class SysMenu extends BaseModel{
 
   private $id;

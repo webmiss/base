@@ -2,8 +2,9 @@
 
 namespace app\modules\admin\controller;
 
-use app\controller\Base;
+use app\common\Base;
 use app\model\SysConfig;
+use app\Env;
 
 /**
 * 网站：首页
@@ -30,18 +31,18 @@ class IndexController extends Base{
 
   /* 系统配置 */
   public function getConfigAction(){
-    $config = SysConfig::find(['','columns'=>'name,title,val'])->toArray();
-    $data = [];
+    $config = SysConfig::find(['columns'=>'name,title,val'])->toArray();
     $arr = ['title','copy','logo','login_bg'];
+    $list = [];
     foreach($config as $val){
       if(in_array($val['name'],$arr)){
-        $data[$val['name']] = $val['val'];
+        $list[$val['name']] = $val['val'];
         if($val['name']=='logo' || $val['name']=='login_bg'){
-          $data[$val['name']] = $val['val']?$this->config->base_url.$val['val']:'';
+          $list[$val['name']] = $val['val']?Env::$base_url.$val['val']:'';
         }
       }
     }
-    return self::getJSON(['code'=>0,'list'=>$data]);
+    return self::getJSON(['code'=>0,'list'=>$list,'msg'=>'成功']);
   }
 
 }

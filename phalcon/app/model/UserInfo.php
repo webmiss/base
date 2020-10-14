@@ -2,7 +2,7 @@
 
 namespace app\model;
 
-/* 用户信息 */
+/* 用户信息表 */
 class UserInfo extends BaseModel{
 
   public $uid;

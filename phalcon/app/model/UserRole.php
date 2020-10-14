@@ -2,7 +2,7 @@
 
 namespace app\model;
 
-/* 角色 */
+/* 角色表 */
 class UserRole extends BaseModel{
 
   private $id;

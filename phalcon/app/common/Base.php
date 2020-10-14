@@ -1,6 +1,6 @@
 <?php
 
-namespace app\controller;
+namespace app\common;
 
 use Phalcon\Mvc\Controller;
 
@@ -16,9 +16,9 @@ class Base extends Controller{
 
   /* 调试信息 */
   static protected function bug($data='',$next=false){
-    self::getJSON();
-    printf("%s",$data);
-    if($next==false) self::error("%s",$data);
+    $res = self::getJSON($data);
+    print_r($data);
+    if($next==false) self::error($res);
   }
 
   /* 异常错误 */

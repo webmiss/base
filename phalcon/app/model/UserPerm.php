@@ -2,7 +2,7 @@
 
 namespace app\model;
 
-/* 权限 */
+/* 权限表 */
 class UserPerm extends BaseModel{
 
   public $uid;

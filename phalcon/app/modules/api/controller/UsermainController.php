@@ -1,9 +1,10 @@
 <?php
 namespace app\modules\api\controller;
 
+use app\common\Base;
 use app\library\BaiduAi;
 
-class UserMainController extends UserBase{
+class UserMainController extends Base{
 
   /* 百度Token */
   function baiduAudioAction(){

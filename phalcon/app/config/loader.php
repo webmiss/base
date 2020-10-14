@@ -8,7 +8,7 @@ $loader = new Loader();
 $loader->registerNamespaces([
   'app'  => APP_PATH,
   'app\library'  => APP_PATH.'/library/',
-  'app\controller'  => APP_PATH.'/controller/',
+  'app\common'  => APP_PATH.'/common/',
   'app\model'  => APP_PATH.'/model/',
 ]);
 

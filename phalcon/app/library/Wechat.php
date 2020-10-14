@@ -98,7 +98,7 @@ class Wechat{
   /* 获取OpenID */
   static function getOpenid($code){
     $config = require APP_PATH.'/config/env.php';
-    $res = file_get_contents(self::$api_url.'sns/jscode2session?appid='.$config['wechat_AppID'].'&secret='.$config['wechat_AppSecret'].'&js_code='.$code.'&grant_type=authorization_code');
+    $res = file_get_contents(self::$api_url.'sns/jscode2session?appid='.$config['weapp_AppID'].'&secret='.$config['weapp_AppSecret'].'&js_code='.$code.'&grant_type=authorization_code');
     $res = json_decode($res);
     return isset($res->openid)?$res->openid:'';
   }

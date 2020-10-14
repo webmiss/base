@@ -2,7 +2,7 @@
 
 namespace app\model;
 
-/* 系统配置 */
+/* 系统配置表 */
 class SysConfig extends BaseModel{
 
   private $id;
