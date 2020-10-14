@@ -1,4 +1,4 @@
-package vip.webmis.java.library;
+package vip.webmis.java.common;
 
 /* 泛型 */
 public class Dynamic<T> {

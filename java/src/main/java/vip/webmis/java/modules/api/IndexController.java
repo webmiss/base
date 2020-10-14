@@ -1,6 +1,6 @@
 package vip.webmis.java.modules.api;
 
-import vip.webmis.java.controller.Base;
+import vip.webmis.java.common.Base;
 import java.util.HashMap;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

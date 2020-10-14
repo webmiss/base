@@ -5,7 +5,7 @@ from app.Env import Env
 class Redis:
 
   # 启动
-  def run(self):
-    conf = Env.redis(self)
+  def run():
+    conf = Env.redis()
     pool = redis.ConnectionPool(**conf)
     return redis.StrictRedis(connection_pool=pool)

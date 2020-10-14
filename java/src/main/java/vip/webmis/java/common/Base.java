@@ -1,9 +1,9 @@
-package vip.webmis.java.controller;
+package vip.webmis.java.common;
 
 import java.util.HashMap;
 import javax.servlet.http.HttpServletResponse;
-import vip.webmis.java.library.Dynamic;
 import com.alibaba.fastjson.JSON;
+
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -19,12 +19,13 @@ public class Base {
   }
 
   /* 调试信息 */
-  static protected void bug(Dynamic<?> data, boolean next){ }
+  static protected void bug(Dynamic<?> data, boolean next) {
+  }
   static protected void bug(Dynamic<?> data) throws Exception {
     boolean next = false;
     getJSON(new HashMap<String, Object>());
     System.out.println(data.getKey());
-    if(next==false) error((String)data.getKey());
+    if (next == false) error((String) data.getKey());
   }
 
   /* 异常错误 */

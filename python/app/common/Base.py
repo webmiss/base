@@ -1,5 +1,5 @@
 import json
-from flask import make_response
+from flask import make_response,request
 
 class Base :
 
@@ -22,3 +22,10 @@ class Base :
   def error(self,msg=''):
     self.getJSON()
     raise Exception(msg)
+
+  # 请求
+  def request(self):
+    data = None
+    if request.method=='POST': data=request.form
+    elif request.method=='GET': data=request.args
+    return data

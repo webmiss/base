@@ -1,6 +1,6 @@
-from app.controller.Base import Base
+from app.common.Base import Base
 
-class Index(Base) :
+class IndexController(Base) :
 
   # 首页
   def index(self):
