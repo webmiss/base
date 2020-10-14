@@ -6,6 +6,10 @@ git clone https://github.com/webmiss/base
 ```
 <br/>
 
+<img src="https://webmis.vip/webmis/admin.jpg" width="100%" alt="WebMIS" />
+
+<br/>
+
 ## Flutter - APP项目
 采用Flutter开发，包括APP自动更新、Socket通信、底部导航菜单、PageView页面布局、Scroller滑动、Popup弹出层等功能。 封装函数，规范命名和参数，便于从JS开发切换回来的适应问题，合理规划开发。
 - 文档: https://webmis.vip/docs/flutter/install/index
@@ -28,7 +32,7 @@ git clone https://github.com/webmiss/base
 <br/>
 
 ## VueAdmin - 后台管理系统
-采用Vue2和ElementUI开发，包括APP自动更新、Socket通信、菜单管理、动作菜单、用户多权限、角色权限，文件管理等功能。 可通过后台创建功能菜单，并分配不同用户、不同动作(添加、编辑、删除等)。提供Socket客户端，可链接到服务器处理各种即时业务。 系统配置可更改登录页头像、背景、版权信息等。
+采用Vue3开发，包括APP自动更新、Socket通信、菜单管理、动作菜单、用户多权限、角色权限，文件管理等功能。
 - 文档: https://webmis.vip/docs/admin/install/index
 - Demo: https://demo-admin.webmis.vip/ 帐号: admin 密码: 123456
 - 目前支持: PHP7、Python3、Java
