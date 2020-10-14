@@ -1,9 +1,8 @@
 <?php
-
 namespace app\model;
 
 /* 用户信息表 */
-class UserInfo extends BaseModel{
+class UserInfo extends Model {
 
   public $uid;
   public $birthday;

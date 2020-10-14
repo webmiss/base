@@ -3,7 +3,7 @@
 namespace app\model;
 
 /* 系统配置表 */
-class SysConfig extends BaseModel{
+class SysConfig extends Model {
 
   private $id;
   public $title;

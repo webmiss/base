@@ -1,8 +1,7 @@
 <?php
-
 namespace app\model;
 
-class UserOauth extends BaseModel{
+class UserOauth extends Model{
 
   private $id;
 

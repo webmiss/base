@@ -1,8 +1,7 @@
 <?php
-
 namespace app\model;
 
-class UserMsg extends BaseModel{
+class UserMsg extends Model{
 
   public $id;
   public $title;

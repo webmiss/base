@@ -1,10 +1,7 @@
 <?php
-
 namespace app\model;
 
-use app\model\BaseModel;
-
-class SysMenuAction extends BaseModel{
+class SysMenuAction extends Model{
 
   private $id;
   public $name;

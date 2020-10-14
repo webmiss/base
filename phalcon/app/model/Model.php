@@ -2,10 +2,10 @@
 
 namespace app\model;
 
-use Phalcon\Mvc\Model;
+use Phalcon\Mvc\Model as PhalconModel;
 
-class BaseModel extends Model{
-
+class Model extends PhalconModel{
+  
   /* 返回JSON */
   static protected function getJSON($data=''){
     header('Access-Control-Allow-Origin:*');

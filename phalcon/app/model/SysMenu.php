@@ -1,11 +1,8 @@
 <?php
-
 namespace app\model;
 
-use app\model\BaseModel;
-
 /* 系统菜单表 */
-class SysMenu extends BaseModel{
+class SysMenu extends Model {
 
   private $id;
   private $fid;

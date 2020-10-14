@@ -1,11 +1,10 @@
 <?php
-
 namespace app\model;
 
 use app\library\Safety;
 
 /* 用户表 */
-class User extends BaseModel{
+class User extends Model{
 
   public $id;
   public $uname;

@@ -1,9 +1,8 @@
 <?php
-
 namespace app\model;
 
 /* 角色表 */
-class UserRole extends BaseModel{
+class UserRole extends Model {
 
   private $id;
   public $role;
