@@ -31,7 +31,7 @@
       <a href="https://webmis.vip/" class="bgImg top_logo" title="WebMIS"></a>
       <!-- 菜单 -->
       <wm-scroll-view :scroll-x="true" :upper-load="false" :lower-load="false" class="top_nav_body">
-        <ul class="top_nav" :style="{width: 7*80+'px'}">
+        <ul class="top_nav" :style="{width: 7*84+'px'}">
           <li><a href="https://webmis.vip/docs/vue/install/index"<?php echo $this->dispatcher->getActionName()=='vue'?' class="an"':'';?>>VueAPP</a></li>
           <li><a href="https://webmis.vip/docs/flutter/install/index"<?php echo $this->dispatcher->getActionName()=='flutter'?' class="an"':'';?>>Flutter</a></li>
           <li><a href="https://webmis.vip/docs/admin/install/index"<?php echo $this->dispatcher->getActionName()=='admin'?' class="an"':'';?>>Admin</a></li>

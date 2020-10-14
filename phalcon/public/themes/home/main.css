@@ -17,6 +17,7 @@
 .top_nav{display: flex; height: 100%;}
 .top_nav li{width: 80px; display: flex; align-items: center; box-sizing: border-box; flex: 1;}
 .top_nav a{flex: 1; text-align: center; color: #999; font-size: 16px;}
+.top_nav a:hover{color: #6FB737;}
 .top_nav .an{color: #6FB737;}
 
 .top_right{position: absolute; right: 16px; top: 0; height: 40px; color: #999;}
