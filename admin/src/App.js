@@ -35,8 +35,8 @@ export default {
       // 语言
       languageNum: 0,
       language:[
-        {name:'php',val:'PHP( Phalcon )'},
-        {name:'python',val:'Python( Flask )'},
+        {name:'php',val:'PHP7( Phalcon4 )'},
+        {name:'python',val:'Python3( Flask )'},
         {name:'java',val:'Java( SpringBoot )'},
       ],
     }
