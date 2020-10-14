@@ -18,8 +18,6 @@ public class Model {
 
   private static DruidDataSource dataSource = null;
   private static Connection conn = null;
-  private static Statement stmt = null;
-  private static ResultSet rs = null;
   private static boolean state = false;
   private static int flag = 0;
   protected String table = "";
@@ -69,39 +67,26 @@ public class Model {
   /* 提交 */
   private boolean sqlCommit(String sql) {
     try {
-      // 链接
-      if (conn == null || conn.isClosed())
-        connect();
       // 自动提交
       if (state) {
+        if(conn==null || conn.isClosed()) conn = connect();
         conn.setAutoCommit(false);
-        stmt = conn.createStatement();
-        stmt.executeUpdate(sql);
+        Statement _st = conn.createStatement();
+        _st.executeUpdate(sql);
+        _st.close();
       } else {
-        conn.setAutoCommit(true);
-        stmt = conn.createStatement();
-        stmt.executeUpdate(sql);
-        stmt.close();
-        conn.close();
+        Connection _cn = connect();
+        _cn.setAutoCommit(true);
+        Statement _st = _cn.createStatement();
+        _st.executeUpdate(sql);
+        _st.close();
+        _cn.close();
       }
       return true;
     } catch (SQLException e) {
       flag++;
       System.out.println("执行失败: " + e.getMessage());
       return false;
-    } finally {
-      if (!state && stmt != null)
-        try {
-          stmt.close();
-        } catch (SQLException e) {
-          System.out.println("关闭资源: " + e.getMessage());
-        }
-      if (!state && conn != null)
-        try {
-          conn.close();
-        } catch (SQLException e) {
-          System.out.println("关闭链接: " + e.getMessage());
-        }
     }
   }
 
@@ -126,44 +111,24 @@ public class Model {
   /* 查询-单条 */
   public HashMap<String, Object> fetchOne(String sql) {
     HashMap<String, Object> map = new HashMap<String, Object>();
+    Connection _cn = connect();
     try {
-      if (conn == null || conn.isClosed())
-        connect();
-      stmt = conn.createStatement();
-      rs = stmt.executeQuery(sql);
-      ResultSetMetaData data = rs.getMetaData();
+      Statement _st = _cn.createStatement();
+      ResultSet _rs = _st.executeQuery(sql);
+      ResultSetMetaData data = _rs.getMetaData();
       int num = data.getColumnCount();
-      if (rs.next()) {
+      if (_rs.next()) {
         for (int i = 1; i <= num; i++) {
-          map.put(data.getColumnLabel(i), rs.getObject(i));
+          map.put(data.getColumnLabel(i), _rs.getObject(i));
         }
       }
       // 关闭
-      rs.close();
-      stmt.close();
-      conn.close();
+      _rs.close();
+      _st.close();
+      _cn.close();
     } catch (SQLException e) {
       System.out.println(sql);
       System.out.println("查询[单条]: " + e.getMessage());
-    } finally {
-      if (!state && rs != null)
-        try {
-          rs.close();
-        } catch (SQLException e) {
-          System.out.println("关闭数据: " + e.getMessage());
-        }
-      if (!state && stmt != null)
-        try {
-          stmt.close();
-        } catch (SQLException e) {
-          System.out.println("关闭资源: " + e.getMessage());
-        }
-      if (!state && conn != null)
-        try {
-          conn.close();
-        } catch (SQLException e) {
-          System.out.println("关闭链接: " + e.getMessage());
-        }
     }
     return map;
   }
@@ -171,46 +136,26 @@ public class Model {
   /* 查询-全部 */
   public ArrayList<HashMap<String, Object>> fetchAll(String sql) {
     ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+    Connection _cn = connect();
     try {
-      if (conn == null || conn.isClosed())
-        connect();
-      stmt = conn.createStatement();
-      rs = stmt.executeQuery(sql);
-      ResultSetMetaData data = rs.getMetaData();
+      Statement _st = _cn.createStatement();
+      ResultSet _rs = _st.executeQuery(sql);
+      ResultSetMetaData data = _rs.getMetaData();
       int num = data.getColumnCount();
-      while (rs.next()) {
+      while (_rs.next()) {
         HashMap<String, Object> map = new HashMap<String, Object>();
         for (int i = 1; i <= num; i++) {
-          map.put(data.getColumnLabel(i), rs.getObject(i));
+          map.put(data.getColumnLabel(i), _rs.getObject(i));
         }
         list.add(map);
       }
       // 关闭
-      rs.close();
-      stmt.close();
-      conn.close();
+      _rs.close();
+      _st.close();
+      _cn.close();
     } catch (SQLException e) {
       System.out.println(sql);
       System.out.println("查询[全部]: " + e.getMessage());
-    } finally {
-      if (!state && rs != null)
-        try {
-          rs.close();
-        } catch (SQLException e) {
-          System.out.println("关闭数据: " + e.getMessage());
-        }
-      if (!state && stmt != null)
-        try {
-          stmt.close();
-        } catch (SQLException e) {
-          System.out.println("关闭资源: " + e.getMessage());
-        }
-      if (!state && conn != null)
-        try {
-          conn.close();
-        } catch (SQLException e) {
-          System.out.println("关闭链接: " + e.getMessage());
-        }
     }
     return list;
   }
@@ -222,37 +167,16 @@ public class Model {
   public void commit() {
     state = false;
     try {
-      if (flag > 0)
-        conn.rollback();
+      if(flag>0) conn.rollback();
       conn.commit();
-      stmt.close();
       conn.close();
     } catch (SQLException e) {
       System.out.println("提交失败: " + e.getMessage());
-    } finally {
-      if (!state && rs != null)
-        try {
-          rs.close();
-        } catch (SQLException e) {
-          System.out.println("关闭数据: " + e.getMessage());
-        }
-      if (stmt != null)
-        try {
-          stmt.close();
-        } catch (SQLException e) {
-          System.out.println("关闭资源: " + e.getMessage());
-        }
-      if (conn != null)
-        try {
-          conn.close();
-        } catch (SQLException e) {
-          System.out.println("关闭链接: " + e.getMessage());
-        }
     }
   }
 
   /* 链接 */
-  private boolean connect() {
+  private Connection connect() {
     try {
       if(dataSource==null){
         HashMap<String,Object> conf = Env.db();
@@ -269,15 +193,14 @@ public class Model {
         dataSource.setTestOnBorrow(true);
         dataSource.setTestOnReturn(true);
         // 空闲检测(毫秒)
-        dataSource.setTimeBetweenEvictionRunsMillis(20000);
+        dataSource.setTimeBetweenEvictionRunsMillis(60000);
         // 等待超时(毫秒)
-        dataSource.setMaxWait(20000);
+        dataSource.setMaxWait(60000);
       }
-      conn = (Connection) dataSource.getConnection();
-      return true;
+      return conn = (Connection) dataSource.getConnection();
     } catch (SQLException e) {
       System.out.println("链接数据库: %s"+e.getMessage());
-      return false;
+      return conn;
     }
   }
 

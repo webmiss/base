@@ -41,13 +41,13 @@ public class UserController extends Base {
     // 是否存在
     if(uData.isEmpty()){
       data.put("code",4000);
-      data.put("msg","该用户已被禁用");
+      data.put("msg","帐号或密码错误");
       return getJSON(data);
     }
     // 是否禁用
     if(!uData.get("state").equals("1")){
       data.put("code",4000);
-      data.put("msg","帐号或密码错误");
+      data.put("msg","该用户已被禁用");
       return getJSON(data);
     }else if(!uData.get("state_admin").equals("1")){
       data.put("code",4000);
