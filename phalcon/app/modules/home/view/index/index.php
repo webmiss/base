@@ -6,7 +6,7 @@
     PHP / Python / SpringBoot / Phalcon / Flutter / NodeJS / Vue / Swoole / Redis / API
   </div>
   <div class="index_an">
-    <a class="an1" href="https://webmis.vip/docs/webmis/install/index">文档</a>
+    <a class="an1" href="https://webmis.vip/docs/vue/install/index">文档</a>
     <a class="an2" href="https://github.com/webmiss/base">GitHub</a>
   </div>
   <!-- 二维码 -->
