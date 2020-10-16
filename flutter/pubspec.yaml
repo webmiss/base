@@ -22,7 +22,7 @@ dependencies:
   webview_flutter: ^0.3.22+1  #WebView
   amap_core_fluttify: ^0.12.0 #高德地图
   amap_location_fluttify: ^0.17.0 #高德定位
-  flutter_alipay: "^1.0.0"  #支付宝
+  tobias: ^1.7.1+1  #支付宝
   fluwx: ^2.3.0  #微信
   audioplayers: ^0.16.1 #播放音频
 # 插件-开发

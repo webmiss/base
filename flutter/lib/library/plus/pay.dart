@@ -1,7 +1,6 @@
-import 'dart:convert' as convert;
 import 'package:webmis/env.dart';
 import 'package:webmis/library/ui/request.dart';
-import 'package:flutter_alipay/flutter_alipay.dart';
+import 'package:tobias/tobias.dart';
 import 'package:fluwx/fluwx.dart' as fluwx;
 
 /* 支付类 */
@@ -43,19 +42,16 @@ class Pay{
 
   /* 支付宝 */
   static Future alipay(String url, Map<String,dynamic> data) async {
-    // 配置
-    await FlutterAlipay.setIosUrlSchema(Env.pay['universalLink']);
     // 检测
-    // var isPay = await FlutterAlipay.isInstalled();
-    // if(isPay==false) throw '没有安装支付宝!';
+    var isPay = await isAliPayInstalled();
+    if(isPay==false) throw '没有安装支付宝!';
     // 请求
     data['type']='app';
     Map res = await post(url, data);
     if(res['code']!=0) throw res['code'];
     // 支付
-    AlipayResult pay = await FlutterAlipay.pay(res['data']);
-    Map result = convert.jsonDecode(pay.result);
-    return result[''];
+    Map<dynamic, dynamic> pay = await aliPayAuth(res['data']);
+    return pay;
   }
 
 }
