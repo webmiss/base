@@ -1,12 +1,6 @@
 <template>
   <div>
-    <!-- 功能菜单 -->
-    <el-input class="hide" v-model="actionType"></el-input>
-    <!-- 内容 -->
-    <el-row class="body">
-      暂无数据！
-    </el-row>
-    <!-- 内容 End -->
+    Demo
   </div>
 </template>
 

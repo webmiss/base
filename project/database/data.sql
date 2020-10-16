@@ -65,7 +65,7 @@ CREATE TABLE `sys_menus_action` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='动作菜单';
 
 INSERT INTO `sys_menus_action` (`id`, `name`, `action`, `perm`, `ico`) VALUES
-(1,	'全部',	'list',	'1',	'el-icon-refresh'),
+(1,	'刷新',	'list',	'1',	'el-icon-refresh'),
 (2,	'搜索',	'sea',	'2',	'el-icon-search'),
 (3,	'添加',	'add',	'4',	'el-icon-plus'),
 (4,	'编辑',	'edit',	'8',	'el-icon-edit'),

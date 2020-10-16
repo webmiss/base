@@ -1,7 +1,7 @@
 <template>
   <div class="wm-action">
     <template v-if="action.length>0" >
-      <div class="item" v-for="(val,key) in action" :key="key">{{val.name}}</div>
+      <div class="item" v-for="(val,key) in action" :key="key" @click="openAction(val.action)">{{val.name}}</div>
     </template>
     <div class="wm-action_title">{{store.menuName || store.system.title}}</div>
   </div>
@@ -41,7 +41,11 @@ export default {
 
     /* 动作菜单 */
     getAction(url){
-      if(!url) return false;
+      if(!url){
+        this.store.menuName='';
+        this.action = [];
+        return false;
+      } 
       Post('Sysmenusaction/getAction',{token:Storage.getItem('token'),url:url},(res)=>{
         const d = res.data;
         if(d.code==0){
@@ -58,11 +62,9 @@ export default {
 
     /* 触发事件 */
     openAction(type){
-      store.action.type = type;
+      this.store.action.type = type;
       // 重置
-      setTimeout(()=>{
-        store.action.type = '';
-      },1000);
+      setTimeout(()=>{ this.store.action.type = ''; },1000);
     }
 
   }
