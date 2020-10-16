@@ -40,15 +40,9 @@ class AdminToken extends Base {
     return $token;
   }
 
-  /* Url权限 */
-  static function urlVerify($url){
-    $token = self::verify();
-    // 全部菜单
-    $all = SysMenu::find(['url<>""','columns'=>'id,url']);
-    $menus = [];
-    foreach($all as $val) $menus[$val->url]=$val->id;
-    // 权限
-    $perm = UserPerm::findFirst(['uid='.$token->uid,'columns'=>'perm,role']);
+  /* 用户权限 */
+  static function perm($uid){
+    $perm = UserPerm::findFirst(['uid='.$uid,'columns'=>'perm,role']);
     if(!$perm) self::error('没有分配权限!');
     if($perm->role!='0') $perm=UserRole::findFirst(['id='.$perm->role,'columns'=>'perm']);
     // 拆分
@@ -57,12 +51,24 @@ class AdminToken extends Base {
     $arr = explode(' ',$permStr);
     foreach($arr as $val){
       $s = explode(':',$val);
-      $permAll[] = $s[0];
+      $permAll[$s[0]] = $s[1];
     }
+    return $permAll;
+  }
+
+  /* Url权限 */
+  static function urlVerify($url){
+    $token = self::verify();
+    // 全部菜单
+    $all = SysMenu::find(['url<>""','columns'=>'id,url']);
+    $menus = [];
+    foreach($all as $val) $menus[$val->url]=$val->id;
     // 是否存在
     if(!isset($menus[$url])) self::error('Url错误!');
+    // 权限
+    $permAll = self::perm($token->uid);
     // 是否有权限
-    if(!in_array($menus[$url],$permAll)) self::error('无权访问!');
+    if(!isset($permAll[$menus[$url]])) self::error('无权访问!');
     return true;
   }
 

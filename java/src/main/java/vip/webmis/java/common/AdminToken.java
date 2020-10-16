@@ -38,6 +38,31 @@ public class AdminToken extends Base {
     return token;
   }
 
+  /* 用户权限 */
+  public static HashMap<String, Object> perm(String uid) throws Exception {
+    // 权限
+    HashMap<String, Object> params = new HashMap<String, Object>();
+    params.put("where", "uid="+uid);
+    params.put("columns", "perm,role");
+    HashMap<String, Object> perm = new UserPerm().findFirst(params);
+    if(perm.isEmpty()) error("没有分配权限!");
+    if(!perm.get("role").equals("0")){
+      params = new HashMap<String, Object>();
+      params.put("where", "id="+perm.get("role"));
+      params.put("columns", "perm");
+      perm = new UserRole().findFirst(params);
+    }
+    // 拆分
+    HashMap<String, Object> permAll = new HashMap<String, Object>();
+    String permStr = (String)perm.get("perm");
+    String[] arr = permStr.split(" ");
+    for(String val : arr){
+      String[] s = val.split(":");
+      permAll.put(String.valueOf(s[0]),s[1]);
+    }
+    return permAll;
+  }
+
   /* Url权限 */
   public static boolean urlVerify(String token, String url) throws Exception {
     HashMap<String, Object> params;
@@ -51,30 +76,12 @@ public class AdminToken extends Base {
     for(HashMap<String, Object> val : all){
       menus.put((String)val.get("url"), (Integer)val.get("id"));
     }
-    // 权限
-    params = new HashMap<String, Object>();
-    params.put("where", "uid="+res.get("uid"));
-    params.put("columns", "perm,role");
-    HashMap<String, Object> perm = new UserPerm().findFirst(params);
-    if(perm.isEmpty()) error("没有分配权限!");
-    if(!perm.get("role").equals("0")){
-      params = new HashMap<String, Object>();
-      params.put("where", "id="+perm.get("role"));
-      params.put("columns", "perm");
-      perm = new UserRole().findFirst(params);
-    }
-    // 拆分
-    ArrayList<Integer> permAll = new ArrayList<Integer>();
-    String permStr = (String)perm.get("perm");
-    String[] arr = permStr.split(" ");
-    for(String val : arr){
-      String[] s = val.split(":");
-      permAll.add(Integer.valueOf(s[0]));
-    }
     // 是否存在
     if(!menus.containsKey(url)) error("Url错误!");
+    // 权限
+    HashMap<String, Object> permAll = perm(String.valueOf(res.get("uid")));
     // 是否有权限
-    if(!permAll.contains(menus.get(url))) error("无权访问!");
+    if(!permAll.containsKey(String.valueOf(menus.get(url)))) error("无权访问!");
     return true;
   }
 

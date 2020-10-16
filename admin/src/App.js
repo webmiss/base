@@ -9,14 +9,15 @@ import VersionDiff from './library/inc/version-diff'
 import Reg from './library/inc/reg'
 import PlusReady from './library/plus/plus-ready'
 /* 组件 */
-import ScrollView from '@/components/scroll-view'
+import ScrollView from './components/scroll-view'
 import wmMenu from './components/menu'
 import wmInput from './components/input'
 import wmButton from './components/button'
+import wmAction from './components/action'
 
 export default {
   name: 'APP',
-  components: {ScrollView,wmMenu,wmInput,wmButton},
+  components: {ScrollView,wmMenu,wmInput,wmButton,wmAction},
   data(){
     return {
       env: Env,
@@ -209,9 +210,9 @@ export default {
     /* 点击菜单 */
     menuClick(pos){
       Storage.setItem('menusActive',JSON.stringify(pos));
-      const url = this.menus[pos[0]].children[pos[1]].url;
-      console.log(url);
-      this.$router.push(url);
+      const obj = this.menus[pos[0]].children[pos[1]];
+      this.store.menuName = obj.title=='控制台'?'':obj.title;
+      this.$router.push(obj.url);
     },
 
   }

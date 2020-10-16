@@ -21,7 +21,7 @@ public class DesktopController extends Base {
     // 返回数据
     HashMap<String, Object> data = new HashMap<String, Object>();
     data.put("code", 0);
-    data.put("msg", "DeskTop");
+    data.put("msg", "成功");
     return getJSON(data);
   }
 

@@ -11,7 +11,7 @@ class DeskTopController extends Base{
   /* 构造函数 */
   function initialize(){
     // 控制器权限
-    AdminToken::urlVerify('DeskTop');
+    AdminToken::urlVerify('/');
   }
 
   /* 首页 */

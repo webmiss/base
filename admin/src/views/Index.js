@@ -4,12 +4,13 @@ import Storage from '../library/ui/storage'
 export default {
   data(){
     return {
+      store: this.$store.state,
     }
   },
   mounted(){
-    // Post('desktop/index',{token:Storage.getItem('token')},(res)=>{
-    //   console.log(res.data);
-    // });
+    // 动作菜单
+    this.store.action.url = '';
+    this.store.action.menus = '';
   },
   methods:{
 

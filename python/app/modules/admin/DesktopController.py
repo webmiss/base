@@ -5,7 +5,7 @@ class DesktopController(Base) :
 
   # 构造函数
   def __init__(self):
-    AdminToken().urlVerify('DeskTop')
+    AdminToken().urlVerify('/')
 
   # 首页
   def index(self):

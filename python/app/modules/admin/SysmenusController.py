@@ -13,7 +13,7 @@ class SysmenusController(Base) :
     # 验证
     AdminToken().verify()
 
-  # 获取菜单
+  # 获取[菜单]
   def getMenus(self):
     # 全部菜单
     self.menus = {}

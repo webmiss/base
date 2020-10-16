@@ -1,24 +1,33 @@
 <template>
-  <el-row v-if="actions.length" class="action" :style="{minWidth:width}">
-    <el-button-group ref="Action">
-      <el-button v-for="val in actions" :key="val.name" :icon="val.ico" @click="openAction(val.action)">{{val.name}}</el-button>
-    </el-button-group>
-  </el-row>
+  <div class="wm-action">
+    <template v-if="action.length>0" >
+      <div class="item" v-for="(val,key) in action" :key="key">{{val.name}}</div>
+    </template>
+    <div class="wm-action_title">{{store.menuName || store.system.title}}</div>
+  </div>
 </template>
+
+<style scoped>
+.wm-action{white-space: nowrap; display: inline-block; overflow: hidden; padding-right: 1px; font-size: 14px; border-radius: 4px; height: 40px; line-height: 40px; box-sizing: border-box;}
+.wm-action .item{cursor: pointer; display: inline-block; margin-right: -1px; padding: 0 24px; height: 38px; border: #DCDFE6 1px solid; background-color: #FFF;}
+.wm-action .item:hover{border-color: #C2E7B0; background-color: #F0F9EB; color: #6FB737;}
+.wm-action_title{font-size: 16px; font-weight: 500;}
+</style>
 
 <script>
 import Post from '@/library/ui/request-post'
 import Storage from '@/library/ui/storage'
+import Toast from '@/library/ui/ui-toast'
 export default {
-  name:'ImageView',
+  name:'Action',
   props: {
     url: {type: String, default: ''},
     menus: '',
   },
   data(){
     return {
-      width: '1200px',
-      actions:[],
+      store: this.$store.state,
+      action:[],
     }
   },
   watch:{
@@ -27,34 +36,32 @@ export default {
     },
   },
   mounted(){
-    this.getAction(this.url);
   },
   methods:{
 
     /* 动作菜单 */
     getAction(url){
-      Post('Usermain/getMenusAction',{token:Storage.getItem('token'),url:url},(res)=>{
+      if(!url) return false;
+      Post('Sysmenusaction/getAction',{token:Storage.getItem('token'),url:url},(res)=>{
         const d = res.data;
         if(d.code==0){
-          this.actions = d.menuAction;
+          this.action = d.action;
           // 追加
-          if(this.menus) for(let i in this.menus) this.actions.push(this.menus[i]);
-          // 重置宽度
-          setTimeout(()=>{
-            let test = this.$refs.Action.$el;
-            this.width = (test.offsetWidth+1)+'px';
-            this.$store.state.action.width = this.width;
-          },3000);
+          if(this.menus){
+            for(let i in this.menus) this.action.push(this.menus[i]);
+          }
+        }else{
+          Toast(d.msg);
         }
       });
     },
 
     /* 触发事件 */
     openAction(type){
-      this.$store.state.action.type = type;
+      store.action.type = type;
       // 重置
       setTimeout(()=>{
-        this.$store.state.action.type = '';
+        store.action.type = '';
       },1000);
     }
 

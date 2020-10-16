@@ -77,7 +77,7 @@
     <!-- 中间内容 -->
     <div class="app_right">
       <scroll-view  class="app_top" :upperLoad="false" :lowerLoad="false" :scroll-x="true">
-        top
+        <wm-action :url="store.action.url" :menus="store.action.menus"></wm-action>
       </scroll-view>
       <div class="app_main">
         <router-view v-slot="{ Component }">

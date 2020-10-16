@@ -13,7 +13,7 @@
 
 /* 登录 */
 .login_bg{position: fixed; z-index: 99; left: 0; top: 0; width: 100%; height: 100%;}
-.login_body{position: absolute; width: 100%; max-width: 320px; left: 50%; top: 50%; transform: translate(-50%,-50%);}
+.login_body{position: absolute; width: 100%; max-width: 360px; left: 50%; top: 50%; transform: translate(-50%,-50%);}
 .login_logo{height: 32px; line-height: 32px; padding: 16px 0;}
 .login_logo div{width: 32px; height: 32px; border-radius: 50%; background-size: 70%; background-color: #F2F4F6;}
 .login_logo h2{padding-left: 8px;}
@@ -37,7 +37,7 @@
 .app_body{overflow: hidden; height: 100%;}
 .app_left{width: 200px; background-color: #24292E;}
 .app_right{position: relative; width: calc(100% - 200px);}
-.app_top{position: absolute; height: 60px; top: 0; box-shadow: 0 1px #EEE;}
+.app_top{position: relative; height: 42px; padding: 10px 16px; top: 0;}
 .app_copy{position: absolute; width: 100%; height: 40px; line-height: 40px; bottom: 0; text-align: center; color: #999; font-size: 12px; background-color: #F2F4F6;}
 .app_main{overflow: auto; height: calc(100% - 100px);}
 

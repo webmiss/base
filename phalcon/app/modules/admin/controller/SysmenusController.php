@@ -5,37 +5,38 @@ namespace app\modules\admin\controller;
 use app\common\Base;
 use app\common\AdminToken;
 use app\model\SysMenu;
+use app\model\SysMenuAction;
 
-class SysMenusController extends Base {
+class SysMenusActionController extends Base {
 
-  static private $menus=[]; // 菜单
+  static $tokenData;
 
   /* 构造函数 */
   function initialize(){
     // 验证
-    AdminToken::verify();
+    self::$tokenData = AdminToken::verify();
   }
 
-  /* 获取菜单 */
-	function getMenusAction(){
-    // 全部菜单
-    self::$menus = [];
-    $all = SysMenu::find(['columns'=>'id,fid,title,url,ico','order'=>'sort DESC,id'])->toArray();
-    foreach($all as $val){
-      self::$menus[$val['fid']][] = $val;
+  /* 获取[动作菜单] */
+  function getActionAction(){
+    $url = trim($this->request->get('url'));
+    // 是否为空
+    if(empty($url)) return self::getJSON(['code'=>4000,'msg'=>'获取动作不能为空!']);
+    // 菜单ID
+    $mid = SysMenu::findFirst(['url=:url:','bind'=>['url'=>$url],'columns'=>'id']);
+    if(!$mid) return self::getJSON(['code'=>4000,'msg'=>'获取动作不存在!']);
+    // 全部动作
+    $action = [];
+    $permAll = AdminToken::perm(self::$tokenData->uid);
+    $perm = $permAll[$mid->id];
+    $aMenus = SysMenuAction::find(['columns'=>'name,action,ico,perm']);
+    foreach($aMenus as $val){
+      // 匹配权限值
+			if(intval($perm)&intval($val->perm)){
+        $action[] = ['name'=>$val->name,'action'=>$val->action,'ico'=>$val->ico];
+      }
     }
-    // 查询菜单
-    return self::getJSON(['code'=>0,'menus'=>self::_getMenu(0)]);
+    return self::getJSON(['code'=>0,'action'=>$action]);
   }
-  // 递归菜单
-	static private function _getMenu($fid){
-    $data = [];
-    $M = isset(self::$menus[$fid])?self::$menus[$fid]:[];
-		foreach($M as $val){
-      $val['children'] = self::_getMenu($val['id']);
-      $data[] = $val;
-		}
-		return $data;
-  }
-  
+
 }

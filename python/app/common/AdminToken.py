@@ -40,6 +40,20 @@ class AdminToken(Base):
     Redis.run().setex(name,Env.admin_token_time,'1')
     return token
 
+  # 用户权限
+  def perm(self,uid):
+    perm = UserPerm().findFirst({'where':'uid='+str(uid),'columns':'perm,role'})
+    if perm==None : self.error('没有分配权限!')
+    if perm['role']!='0' : perm=UserRole().findFirst({'where':'id='+str(perm['role']),'columns':'perm'})
+    # 拆分
+    permAll = {}
+    permStr = perm['perm']
+    arr = permStr.split(' ')
+    for val in arr :
+      s = val.split(':')
+      permAll[str(s[0])] = s[1]
+    return permAll
+
   # Url权限
   def urlVerify(self,url):
     token = self.verify()
@@ -48,19 +62,10 @@ class AdminToken(Base):
     menus = {}
     for val in all :
       menus[val['url']] = val['id']
-    # 权限
-    perm = UserPerm().findFirst({'where':'uid='+str(token['uid']),'columns':'perm,role'})
-    if perm==None : self.error('没有分配权限!')
-    if perm['role']!='0' : perm=UserRole().findFirst({'where':'id='+str(perm['role']),'columns':'perm'})
-    # 拆分
-    permAll = []
-    permStr = perm['perm']
-    arr = permStr.split(' ')
-    for val in arr :
-      s = val.split(':')
-      permAll.append(s[0])
     # 是否存在
     if url not in menus.keys() : self.error('Url错误!')
+    # 权限
+    permAll = self.perm(token['uid'])
     # 是否有权限
-    if str(menus[url]) not in permAll : self.error('无权访问!')
+    if str(menus[url]) not in permAll.keys() : self.error('无权访问!')
     return True

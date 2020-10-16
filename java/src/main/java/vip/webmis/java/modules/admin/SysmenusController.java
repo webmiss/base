@@ -22,7 +22,7 @@ public class SysmenusController extends Base {
 
   private static HashMap<String, Object> menus = null;
 
-  /* 首页 */
+  /* 获取[菜单] */
   @RequestMapping("/getMenus")
   String getMenus(String token) throws Exception {
     // 验证
