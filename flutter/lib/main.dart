@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:io';
 
 import 'package:webmis/env.dart';
+import 'package:webmis/library/ui/ui-toast.dart';
 import 'package:webmis/store.dart';
 import 'package:provider/provider.dart';
 
@@ -117,7 +118,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future _checkUpdate() async {
     Map info = await appInfo();
     post('index/appUpdate',{'os':info['platform']}).then((res){
-      if(res['code']!=0) return false;
+      if(res['code']!=0) return Toast(context,res['msg']);
       // 版本比较
       if(!versionDiff(info['version'],res['version'])) return _goHome();
       // 更新
