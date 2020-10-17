@@ -5,7 +5,8 @@
 </template>
 
 <style scoped>
-input{border: none; background: none; width: calc(100% - 32px); height: 32px; line-height: 32px; padding: 4px 16px; border-radius: 4px; border: #DADCDF 1px solid; background-color: #F2F4F6;}
+input{border: none; background: none; -webkit-appearance: none; outline: none; font: 400 14px Arial; caret-color: #6FB737;}
+input{width: calc(100% - 32px); box-sizing: border-box; height: 40px; line-height: 20px; padding: 10px 16px; border-radius: 4px; border: #DADCDF 1px solid; background-color: #F2F4F6;}
 input:hover{border: #6FB737 1px solid;}
 input:focus{outline: none;}
 </style>

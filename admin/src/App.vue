@@ -100,14 +100,10 @@
 <style>
 /* 表单缩放问题 */
 @media only screen and (min-device-width : 320px) and (max-device-width : 1024px) {
-
   select:focus,
   textarea:focus,
-  input:focus {
-    font-size: 16px !important;
-  }
+  input:focus {font-size: 16px !important;}
 }
-
 /* 字体图标 */
 @import url('./assets/style/icon.css');
 /* UI */
