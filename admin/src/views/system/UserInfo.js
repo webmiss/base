@@ -1,4 +1,4 @@
-/* 组件 */
+/* UI组件 */
 import wmMain from '../../components/main'
 import wmForm from '../../components/form'
 import wmFormTitle from '../../components/form/title'

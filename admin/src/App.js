@@ -1,6 +1,6 @@
 import Env from '@/env'
 import Start from '@/library/Start'
-
+/* JS组件 */
 import Loading from './library/ui/ui-loading'
 import Post from './library/ui/request-post'
 import Toast from './library/ui/ui-toast'
@@ -8,7 +8,7 @@ import Storage from './library/ui/storage'
 import VersionDiff from './library/inc/version-diff'
 import Reg from './library/inc/reg'
 import PlusReady from './library/plus/plus-ready'
-/* 组件 */
+/* UI组件 */
 import ScrollView from './components/scroll-view'
 import wmMenu from './components/menu'
 import wmInput from './components/input'
