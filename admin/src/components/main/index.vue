@@ -8,7 +8,7 @@
 
 <style scoped>
 .wm-main{overflow: auto; height: 100%;}
-.wm-main_body{padding: 24px 16px;}
+.wm-main_body{padding: 16px;}
 /* 滚动条 */
 .wm-main_y::-webkit-scrollbar{width: 8px;}
 .wm-main_y::-webkit-scrollbar-thumb{border-radius: 4px; background: transparent;}

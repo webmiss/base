@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <button class="button" :disabled="disabled">
-      <slot></slot>
-    </button>
-  </div>
+  <button class="button" :disabled="disabled">
+    <slot></slot>
+  </button>
 </template>
 
 <style scoped>

@@ -1,6 +1,11 @@
 <template>
   <div>
-    <input :value="value" @input="$emit('update:value', $event.target.value)" :type="type" :placeholder="placeholder">
+    <input
+      :value="value"
+      @input="$emit('update:value', $event.target.value)"
+      :type="type"
+      :maxlength="maxlength"
+      :placeholder="placeholder">
   </div>
 </template>
 
@@ -17,6 +22,7 @@ export default {
   props: {
     value: {type: String, default: ''},
     type: {type: String, default: 'text'},
+    maxlength: {type: String, default: ''},
     placeholder: {type: String, default: ''},
   },
 }
