@@ -34,12 +34,12 @@
 .login_type:hover .list,.login_type:hover .arrow_up{display: block;}
 
 /* 主要框架 */
-.app_body{overflow: hidden; height: 100%;}
-.app_left{width: 200px; background-color: #24292E;}
-.app_right{position: relative; width: calc(100% - 200px);}
-.app_top{position: relative; height: 42px; padding: 10px 16px; top: 0;}
+.app_body{position: relative; overflow: hidden; height: 100%;}
+.app_left{position: absolute; left: 0; width: 200px; height: 100%; background-color: #24292E;}
+.app_right{position: absolute; right: 0; width: calc(100% - 200px); height: 100%;}
+.app_top{position: relative; height: 42px; padding: 10px 16px; box-shadow: 0 1px 0 #F2F4F6;}
+.app_main{position: absolute; width: 100%; height: calc(100% - 100px);}
 .app_copy{position: absolute; width: 100%; height: 40px; line-height: 40px; bottom: 0; text-align: center; color: #999; font-size: 12px; background-color: #F2F4F6;}
-.app_main{overflow: auto; height: calc(100% - 100px);}
 
 /* 菜单 */
 .app_user{position: relative; padding: 16px 16px 8px; text-align: center; color: #999; border-bottom: rgba(0,0,0,0.3) 1px solid;}

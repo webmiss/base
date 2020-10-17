@@ -1,7 +1,7 @@
 <template>
 <div id="app">
 
-  <!-- 更新APP -->
+  <!-- Update -->
   <div v-if="update.show" class="update_body" :style="{backgroundColor: upDateColor.bg}">
     <div class="update_ct verticalCenter">
       <div class="logo" :style="{backgroundColor: upDateColor.logoBg}">
@@ -18,9 +18,9 @@
       <h2>{{env.copy}}</h2>
     </div>
   </div>
-  <!-- 更新APP End -->
+  <!-- Update End -->
 
-  <!-- 登录 -->
+  <!-- Login -->
   <div v-show="store.isLogin===false" class="login_bg bgImg bgcover" :style="{backgroundImage:'url('+(store.system.login_bg?store.system.login_bg:require('./assets/bg.jpg'))+')'}">
     <div class="login_body">
       <div class="login_logo flex_center">
@@ -51,30 +51,34 @@
       <div class="login_copy nowrap">&copy; {{store.system.copy}}&nbsp;&nbsp;版本：{{env.version}}</div>
     </div>
   </div>
-  <!-- 登录 End -->
-  <!-- 主要框架 -->
+  <!-- Login End -->
+
+  <!-- Main -->
   <div class="app_body flex" v-show="store.isLogin===true" :style="{paddingTop:store.statusBarHeight}">
-    <!-- 菜单 -->
-    <scroll-view :upperLoad="false" :lowerLoad="false" class="app_left">
-      <!-- 用户信息 -->
-      <div class="app_user">
-        <div class="img">
-          <div v-if="store.uInfo.img" :style="{backgroundImage:'url('+store.uInfo.img+')'}"></div>
-          <div v-else class="bgImg tu"></div>
+    <!-- Left -->
+    <div class="app_left">
+      <scroll-view :upperLoad="false" :lowerLoad="false" style="height: 100%;">
+        <!-- 用户信息 -->
+        <div class="app_user">
+          <div class="img">
+            <div v-if="store.uInfo.img" :style="{backgroundImage:'url('+store.uInfo.img+')'}"></div>
+            <div v-else class="bgImg tu"></div>
+          </div>
+          <div class="info nowrap">
+            {{store.uInfo.nickname || '昵称'}}({{store.uInfo.name || '姓名'}})
+          </div>
         </div>
-        <div class="info nowrap">
-          {{store.uInfo.nickname || '昵称'}}({{store.uInfo.name || '姓名'}})
+        <!-- 菜单 -->
+        <wm-menu ref="Menus" :data="menus" :defaultActive="menusActive" @select="menuClick"></wm-menu>
+        <!-- 登录状态 -->
+        <div class="app_login nowrap">
+          <span class="config">{{store.uInfo.uname}}</span>&gt;
+          <span class="logout" @click="logout()">退出</span>
         </div>
-      </div>
-      <!-- 菜单 -->
-      <wm-menu ref="Menus" :data="menus" :defaultActive="menusActive" @select="menuClick"></wm-menu>
-      <!-- 登录状态 -->
-      <div class="app_login nowrap">
-        <span class="config">{{store.uInfo.uname}}</span>&gt;
-        <span class="logout" @click="logout()">退出</span>
-      </div>
-    </scroll-view>
-    <!-- 中间内容 -->
+      </scroll-view>
+    </div>
+    <!-- Left End -->
+    <!-- Right -->
     <div class="app_right">
       <scroll-view  class="app_top" :upperLoad="false" :lowerLoad="false" :scroll-x="true">
         <wm-action :url="store.action.url" :menus="store.action.menus"></wm-action>
@@ -90,9 +94,9 @@
         所属：{{store.system.title}}&nbsp;&nbsp;&copy; {{store.system.copy}}&nbsp;&nbsp;版本：{{env.version}}
       </div>
     </div>
-    <!-- 中间内容 End -->
+    <!-- Right End -->
   </div>
-  <!-- 主要框架 End -->
+  <!-- Main End -->
 
 </div>
 </template>
