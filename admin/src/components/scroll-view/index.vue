@@ -18,7 +18,7 @@
 .wm-scroll_view{position: relative; overflow: hidden; width: 100%; height: 100%;}
 /* 滚动条 */
 .wm-scroll_view_x::-webkit-scrollbar{display:none}
-.wm-scroll_view_y::-webkit-scrollbar{width: 4px;}
+.wm-scroll_view_y::-webkit-scrollbar{width: 8px;}
 .wm-scroll_view_y::-webkit-scrollbar-thumb{border-radius: 4px; background: transparent;}
 .wm-scroll_view_y:hover::-webkit-scrollbar-thumb{background: rgba(136,136,136,0.4);}
 .wm-scroll_view_y:hover::-webkit-scrollbar-track{background: rgba(136,136,136,0.1);}
