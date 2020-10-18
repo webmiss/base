@@ -36,7 +36,10 @@ export default {
 
     /* 上传头像 */
     upImg(res){
-      if(res.code==0) this.store.uInfo.img = res.img;
+      if(res.code==0){
+        this.form.img = res.img;
+        this.store.uInfo.img = res.img;
+      }
       return Toast(res.msg);
     }
 
