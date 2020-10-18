@@ -1,9 +1,10 @@
 <template>
   <wm-main>
     <wm-form class="max_width">
-      <wm-form-title>基本信息</wm-form-title>
       <wm-form-item label="头像">
-
+        <wm-upload :url="upload.url" :param="upload.param" @upload="upImg">
+          <wm-img width="80px" height="80px" radius="50%" :url="form.img"></wm-img>
+        </wm-upload>
       </wm-form-item>
       <wm-form-item label="昵称">
         <wm-input :value="form.nickname" @update:value="form.nickname=$event" maxlength="12" placeholder="用户昵称" />
