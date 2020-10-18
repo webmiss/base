@@ -1,4 +1,5 @@
 /* JS组件 */
+import Toast from '../../library/ui/ui-toast'
 import Storage from '../../library/ui/storage'
 /* UI组件 */
 import wmMain from '../../components/main'
@@ -35,7 +36,8 @@ export default {
 
     /* 上传头像 */
     upImg(res){
-      console.log(res);
+      if(res.code==0) this.store.uInfo.img = res.img;
+      return Toast(res.msg);
     }
 
   },
