@@ -61,7 +61,7 @@
         <!-- 用户信息 -->
         <div class="app_user">
           <div class="img">
-            <div v-if="store.uInfo.img" :style="{backgroundImage:'url('+store.uInfo.img+')'}"></div>
+            <div v-if="store.uInfo.img" class="bgImg" :style="{backgroundImage:'url('+store.uInfo.img+')'}"></div>
             <div v-else class="bgImg tu"></div>
           </div>
           <div class="info nowrap">
