@@ -59,7 +59,7 @@ class Upload{
     if(file_put_contents($param['path'].$param['filename'],base64_decode($base64))){
       return ['filename'=>$param['filename']];
     }else{
-      return '保存文件失败!';
+      return false;
     }
   }
 

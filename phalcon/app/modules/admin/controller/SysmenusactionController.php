@@ -9,7 +9,7 @@ use app\model\SysMenuAction;
 
 class SysMenusActionController extends Base {
 
-  static $tokenData;
+  private static $tokenData;
 
   /* 构造函数 */
   function initialize(){

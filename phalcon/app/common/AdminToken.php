@@ -69,7 +69,7 @@ class AdminToken extends Base {
     $permAll = self::perm($token->uid);
     // 是否有权限
     if(!isset($permAll[$menus[$url]])) self::error('无权访问!');
-    return true;
+    return $token;
   }
 
 }

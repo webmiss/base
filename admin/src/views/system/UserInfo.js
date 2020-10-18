@@ -16,7 +16,7 @@ export default {
       store: this.$store.state,
       form: {img:'',nickname:'',name:'',gender:'',birthday:'',position:''},
       upload: {
-        url:'Userinfo/upImage',
+        url:'Userinfo/upImg',
         param:{token:Storage.getItem('token')}
       },
     }

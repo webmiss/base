@@ -19,7 +19,7 @@
         
       </wm-form-item>
       <wm-form-item label="职务">
-        <wm-input :value="form.position" @update:value="form.position=$event" maxlength="8" placeholder="填写姓名" />
+        <wm-input :value="form.position" @update:value="form.position=$event" maxlength="8" placeholder="职务、职称" />
       </wm-form-item>
       <wm-form-item type="botton">
         <wm-button @click="onSubmit()">保存设置</wm-button>
