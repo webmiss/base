@@ -71,7 +71,7 @@ class UserController extends Base{
       // 用户信息
       $uinfo = UserInfo::findFirst(['uid='.$res->uid,'columns'=>'nickname,position,name,img']);
       $uinfo->uname = $res->uname;
-      $uinfo->img = $uinfo->img?$this->config->base_url.$uinfo->img:'';
+      $uinfo->img = $uinfo->img?Env::$base_url.$uinfo->img:'';
       return self::getJSON(['code'=>0,'msg'=>'成功','time'=>$res->n_time,'uinfo'=>$uinfo]);
     }else{
       return self::getJSON(['code'=>4000,'msg'=>'请重新登录!']);
