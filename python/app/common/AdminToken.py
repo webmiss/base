@@ -68,4 +68,4 @@ class AdminToken(Base):
     permAll = self.perm(token['uid'])
     # 是否有权限
     if str(menus[url]) not in permAll.keys() : self.error('无权访问!')
-    return True
+    return token
