@@ -64,7 +64,7 @@ public class AdminToken extends Base {
   }
 
   /* Url权限 */
-  public static boolean urlVerify(String token, String url) throws Exception {
+  public static HashMap<String, Object> urlVerify(String token, String url) throws Exception {
     HashMap<String, Object> params;
     HashMap<String, Object> res = verify(token);
     // 全部菜单
@@ -82,7 +82,7 @@ public class AdminToken extends Base {
     HashMap<String, Object> permAll = perm(String.valueOf(res.get("uid")));
     // 是否有权限
     if(!permAll.containsKey(String.valueOf(menus.get(url)))) error("无权访问!");
-    return true;
+    return res;
   }
 
 }

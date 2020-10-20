@@ -12,7 +12,7 @@ class Upload:
     param = {
       'path':'upload/',  #上传路径
       'base64':'',  #文件内容
-      'filename':'',  #文件内容
+      'filename':'',  #文件名
       'ext':'png', #后缀
     }
     param.update(data)
@@ -28,11 +28,11 @@ class Upload:
     # 创建目录
     if not os.path.exists(param['path']) : os.makedirs(param['path'])
     # 文件名
-    param['filename'] = self._getName()+'.'+param['ext'] if not param['filename'] else param['filename']
-    with open(param['path']+param['filename'],'wb') as f :
+    filename = self._getName()+'.'+param['ext'] if not param['filename'] else param['filename']
+    with open(param['path']+filename,'wb') as f :
       f.write(Base64.b64decode(base64))
       f.close()
-      return {'filename':param['filename']}
+      return {'filename':filename}
 
   # 获取名称
   def _getName(self):

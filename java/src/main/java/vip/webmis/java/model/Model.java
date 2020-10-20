@@ -39,7 +39,7 @@ public class Model {
     for (String k : params.keySet())
       keys += "`" + k + "`,";
     for (Object v : params.values())
-      vals += v != null && v != "null" ? "\"" + (String) v + "\"," : (String) v + ",";
+      vals += v != null && v != "null" ? "\"" + String.valueOf(v) + "\"," : String.valueOf(v) + ",";
     keys = keys.substring(0, keys.length() - 1);
     vals = vals.substring(0, vals.length() - 1);
     String sql = String.format("INSERT INTO %s(%s) values(%s)", this.table, keys, vals);
@@ -50,7 +50,7 @@ public class Model {
   public boolean update(HashMap<String, Object> params, String where) {
     String vals = "";
     for (String k : params.keySet())
-      vals += k + "=\"" + (String) params.get(k) + "\",";
+      vals += k + "=\"" + String.valueOf(params.get(k)) + "\",";
     vals = vals.substring(0, vals.length() - 1);
     String sql = String.format("UPDATE `%s` SET %s WHERE %s", this.table, vals, where);
     return sqlCommit(sql);

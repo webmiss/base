@@ -56,10 +56,10 @@ class Upload{
     // 创建目录
     if (!file_exists($param['path'])) mkdir($param['path'],0777,true);
     // 文件名
-    $param['filename'] = empty($param['filename'])?self::_getName().'.'.$param['ext']:$param['filename'];
+    $filename = empty($param['filename'])?self::_getName().'.'.$param['ext']:$param['filename'];
     // 保存文件
-    if(file_put_contents($param['path'].$param['filename'],base64_decode($base64))){
-      return ['filename'=>$param['filename']];
+    if(file_put_contents($param['path'].$filename,base64_decode($base64))){
+      return ['filename'=>$filename];
     }else{
       return false;
     }
