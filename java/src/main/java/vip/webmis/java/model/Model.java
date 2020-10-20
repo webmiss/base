@@ -197,7 +197,7 @@ public class Model {
       }
       return (Connection) dataSource.getConnection();
     } catch (SQLException e) {
-      System.out.println("链接数据库: %s"+e.getMessage());
+      System.out.println("链接数据库: "+e.getMessage());
       return conn;
     }
   }
