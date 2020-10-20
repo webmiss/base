@@ -7,7 +7,7 @@ import base64 as Base64
 class Upload:
 
   # Base64上传
-  def base64(self,default={}):
+  def base64(self,data={}):
     # 参数
     param = {
       'path':'upload/',  #上传路径
@@ -15,7 +15,7 @@ class Upload:
       'filename':'',  #文件内容
       'ext':'png', #后缀
     }
-    param.update(default)
+    param.update(data)
     # 内容
     base64 = param['base64']
     # 否有类型
