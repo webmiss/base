@@ -44,8 +44,8 @@ class Upload{
       'ext'=>'png', //后缀
     ],$param);
     // 否有类型
-    if(strstr($param['base64'],',')){
-      $ct = explode(',',$param['base64']);
+    $ct = explode(',',$param['base64']);
+    if(count($ct)>1){
       if($ct[0]=='data:image/jpeg;base64') $param['ext']='jpg';
       elseif($ct[0]=='data:image/png;base64') $param['ext']='png';
       elseif($ct[0]=='data:image/gif;base64') $param['ext']='gif';
