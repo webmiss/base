@@ -20,7 +20,7 @@ class UserInfoController extends Base{
     self::$tokenData = AdminToken::urlVerify('UserInfo');
   }
 
-  /* 首页 */
+  /* 头像上传 */
   function upImgAction(){
     $base64 = $this->request->get('base64');
     if(empty($base64)) return self::getJSON(['code'=>4000,'msg'=>'Base64内容为空!']);
