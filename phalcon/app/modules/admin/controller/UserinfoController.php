@@ -31,11 +31,13 @@ class UserInfoController extends Base{
       if(!$model){
         $model = new UserInfo();
         $model->uid = self::$tokenData->uid;
+        $model->ctime = date('YmdHis');
       }
       // 头像
       $img = isset($model->img)?$model->img:'';
       // 保存
       $model->img = self::$imgDir.$res['filename'];
+      $model->utime = date('YmdHis');
       if($model->save()){
         @unlink($img);
         return self::getJSON(['code'=>0,'msg'=>'成功','img'=>Env::$base_url.self::$imgDir.$res['filename']]);
