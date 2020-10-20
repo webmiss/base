@@ -40,7 +40,7 @@ class UserInfoController extends Base{
       $model->utime = date('YmdHis');
       if($model->save()){
         @unlink($img);
-        return self::getJSON(['code'=>0,'msg'=>'成功','img'=>Env::$base_url.self::$imgDir.$res['filename']]);
+        return self::getJSON(['code'=>0,'msg'=>'上传成功','img'=>Env::$base_url.self::$imgDir.$res['filename']]);
       }else{
         return self::getJSON(['code'=>4000,'msg'=>'保存图片失败!']);
       }
