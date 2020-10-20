@@ -43,6 +43,8 @@ class Upload{
       'filename'=>'', //文件名
       'ext'=>'png', //后缀
     ],$param);
+    // 内容
+    $base64 = $param['base64'];
     // 否有类型
     $ct = explode(',',$param['base64']);
     if(count($ct)>1){
