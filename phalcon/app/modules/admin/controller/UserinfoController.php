@@ -34,8 +34,8 @@ class UserInfoController extends Base{
       }
       // 头像
       $img = isset($model->img)?$model->img:'';
-      $model->img = self::$imgDir.$res['filename'];
       // 保存
+      $model->img = self::$imgDir.$res['filename'];
       if($model->save()){
         @unlink($img);
         return self::getJSON(['code'=>0,'msg'=>'成功','img'=>Env::$base_url.self::$imgDir.$res['filename']]);
