@@ -9,11 +9,11 @@
 </style>
 
 <script>
-import Loading from '../../library/ui/ui-loading'
-import Toast from '../../library/ui/ui-toast'
-import Post from '../../library/ui/request-post'
-import Camera from '../../library/plus/camera'
-import ImgReader from '../../library/plus/img-reader'
+import Loading from '../../../library/ui/ui-loading'
+import Toast from '../../../library/ui/ui-toast'
+import Post from '../../../library/ui/request-post'
+import Camera from '../../../library/plus/camera'
+import ImgReader from '../../../library/plus/img-reader'
 export default {
   name:'Img',
   props: {
