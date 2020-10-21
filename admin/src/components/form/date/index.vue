@@ -27,7 +27,7 @@ export default {
   components: {wmInput},
   props: {
     value: {type: String, default: ''},
-    width: {type: String, default: '200px'},
+    width: {type: String, default: '160px'},
     placeholder: {type: String, default: '选择日期'},
   },
   mounted(){
