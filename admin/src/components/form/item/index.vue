@@ -8,9 +8,9 @@
 </template>
 
 <style scoped>
-.wm-form_item{overflow: hidden;}
-.wm-form_item_label{float: left; line-height: 40px; text-align: right; padding-right: 16px; color: #666; font-size: 14px; box-sizing: border-box;}
-.wm-form_item_body{line-height: 40px; margin-left: 80px;}
+.wm-form_item{line-height: 40px;}
+.wm-form_item_label{float: left; text-align: right; padding-right: 16px; color: #666; font-size: 14px; box-sizing: border-box;}
+.wm-form_item_body{margin-left: 80px;}
 </style>
 
 <script>
