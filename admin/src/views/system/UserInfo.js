@@ -8,10 +8,10 @@ import wmFormItem from '../../components/form/item'
 import wmInput from '../../components/form/input'
 import wmButton from '../../components/form/button'
 import wmImg from '../../components/img'
-import wmUpimg from '../../components/upimg'
+import wmImgUpload from '../../components/img/upload'
 
 export default {
-  components: {wmMain,wmForm,wmFormItem,wmInput,wmButton,wmImg,wmUpimg},
+  components: {wmMain,wmForm,wmFormItem,wmInput,wmButton,wmImg,wmImgUpload},
   data(){
     return {
       store: this.$store.state,
