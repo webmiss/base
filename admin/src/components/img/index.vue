@@ -2,15 +2,16 @@
   <div ref="img" class="wm-img">
     <div v-if="url" :style="{backgroundImage:'url('+url+')',backgroundSize:size}"></div>
     <div v-else class="wm-img_null">
-      <i class="ui ui_img"></i>
+      <i class="ui ui_img" :title="title"></i>
     </div>
   </div>
 </template>
 
 <style scoped>
 .wm-img{overflow: hidden; border: #DCDFE6 1px solid;}
-.wm-img div{width: 100%; height: 100%; background-color: #F2F4F6; color: #666; text-align: center; background-size: cover; background-position: center; background-repeat: no-repeat;}
-.wm-img_null i{font-size: 40px; color: #999;}
+.wm-img div{width: 100%; height: 100%; background-color: #F6F8FA; color: #666; text-align: center; background-size: cover; background-position: center; background-repeat: no-repeat;}
+.wm-img_null i{font-size: 40px; color: #ABADAF;}
+.wm-img_null i:hover{color: #6FB737;}
 </style>
 
 <script>
@@ -22,6 +23,7 @@ export default {
     width: {type: String, default: '90px'}, //宽
     height: {type: String, default: '40px'},  //高
     radius: {type: String, default: '0px'}, //圆角
+    title: {type: String, default: '图片'}, //提示
   },
   mounted(){
     // 属性

@@ -1,5 +1,5 @@
 <template>
-  <div class="wm-upload" @click="upImage()">
+  <div class="wm-upload" @click="upImage()" :title="title">
     <slot></slot>
   </div>
 </template>
@@ -17,10 +17,11 @@ import ImgReader from '../../../library/plus/img-reader'
 export default {
   name:'ImgUpLoad',
   props: {
-    url: {type: String, default: ''},
-    width: {type: Number, default: 200},
-    height: {type: Number, default: 200},
-    param: {type: Object, default: {}},
+    url: {type: String, default: ''}, //上传地址
+    width: {type: Number, default: 200},  //宽
+    height: {type: Number, default: 200}, //高
+    param: {type: Object, default: {}}, //提交参数
+    title: {type: String, default: '上传图片'}, //提示
   },
   methods:{
 
