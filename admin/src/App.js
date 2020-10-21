@@ -11,8 +11,8 @@ import PlusReady from './library/plus/plus-ready'
 /* UI组件 */
 import ScrollView from './components/scroll-view'
 import wmMenu from './components/menu'
-import wmInput from './components/input'
-import wmButton from './components/button'
+import wmInput from './components/form/input'
+import wmButton from './components/form/button'
 import wmAction from './components/action'
 
 export default {
@@ -205,7 +205,7 @@ export default {
             obj.menuClick(this.menusActive);
           },300);
         }
-      });      
+      });
     },
     /* 点击菜单 */
     menuClick(pos){

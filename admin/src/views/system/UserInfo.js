@@ -5,13 +5,13 @@ import Storage from '../../library/ui/storage'
 import wmMain from '../../components/main'
 import wmForm from '../../components/form'
 import wmFormItem from '../../components/form/item'
-import wmInput from '../../components/input'
-import wmButton from '../../components/button'
+import wmInput from '../../components/form/input'
+import wmButton from '../../components/form/button'
 import wmImg from '../../components/img'
-import wmUpload from '../../components/upload'
+import wmUpimg from '../../components/upimg'
 
 export default {
-  components: {wmMain,wmForm,wmFormItem,wmInput,wmButton,wmImg,wmUpload},
+  components: {wmMain,wmForm,wmFormItem,wmInput,wmButton,wmImg,wmUpimg},
   data(){
     return {
       store: this.$store.state,
