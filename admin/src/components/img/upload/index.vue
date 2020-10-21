@@ -15,7 +15,7 @@ import Post from '../../../library/ui/request-post'
 import Camera from '../../../library/plus/camera'
 import ImgReader from '../../../library/plus/img-reader'
 export default {
-  name:'Img',
+  name:'ImgUpLoad',
   props: {
     url: {type: String, default: ''},
     width: {type: Number, default: 200},

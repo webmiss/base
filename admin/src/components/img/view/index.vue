@@ -56,7 +56,7 @@
 
 <script>
 export default {
-  name:'ImageView',
+  name:'ImgView',
   model: {
     prop: "show",
     event: 'show',
