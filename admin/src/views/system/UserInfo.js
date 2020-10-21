@@ -1,5 +1,7 @@
 /* JS组件 */
+import Loading from '../../library/ui/ui-loading'
 import Toast from '../../library/ui/ui-toast'
+import Post from '../../library/ui/request-post'
 import Storage from '../../library/ui/storage'
 /* UI组件 */
 import wmMain from '../../components/main'
@@ -29,13 +31,32 @@ export default {
     // 动作菜单-获取
     this.store.action.url = '';
     this.store.action.menus = '';
+    // 加载数据
+    this.loadData();
   },
   methods:{
 
+    /* 加载数据 */
+    loadData(){
+      const load = Loading();
+      Post('Userinfo/list',{token:Storage.getItem('token')},(res)=>{
+        load.clear();
+        const d = res.data;
+        if(d.code!=0) return Toast(d.msg);
+        else this.form = d.list;
+      });
+    },
+
     /* 提交表单 */
     onSubmit(){
-      console.log('sub');
-      console.log(this.form);
+      const data = JSON.stringify(this.form);
+      const load = Loading();
+      Post('Userinfo/edit',{token:Storage.getItem('token'),data:data},(res)=>{
+        load.clear();
+        const d = res.data;
+        if(d.code==0) this.store.uInfo = d.uinfo;
+        return Toast(d.msg);
+      });
     },
 
     /* 上传头像 */

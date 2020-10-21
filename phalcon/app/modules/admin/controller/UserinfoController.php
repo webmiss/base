@@ -20,6 +20,57 @@ class UserInfoController extends Base{
     self::$tokenData = AdminToken::urlVerify('UserInfo');
   }
 
+  /* 列表 */
+  function listAction(){
+    $model = UserInfo::findFirst(['uid='.self::$tokenData->uid]);
+    // 添加
+    if(!$model){
+      $model = new UserInfo();
+      $model->uid = self::$tokenData->uid;
+      $model->ctime = date('YmdHis');
+      $model->save();
+    }
+    // 数据
+    $list = [
+      'img'=>!empty($model->img)?Env::$base_url.$model->img:'',
+      'nickname'=>$model->nickname,
+      'name'=>$model->name,
+      'gender'=>$model->gender,
+      'birthday'=>$model->birthday,
+      'position'=>$model->position,
+    ];
+    return self::getJSON(['code'=>0,'msg'=>'成功','list'=>$list]);
+  }
+
+  /* 编辑 */
+  function editAction(){
+    $data = $this->request->get('data');
+    if(empty($data)) return self::getJSON(['code'=>4000,'msg'=>'参数错误!']);
+    $data = json_decode($data);
+    // 数据
+    $arr = ['uid','img'];
+    $model = UserInfo::findFirst(['uid='.self::$tokenData->uid]);
+    foreach($data as $key=>$val){
+      if(in_array($key,$arr)) continue;
+      $model->$key = trim($val);
+    }
+    // 返回
+    $uinfo = [
+      'img'=>!empty($model->img)?Env::$base_url.$model->img:'',
+      'nickname'=>$model->nickname,
+      'name'=>$model->name,
+      'gender'=>$model->gender,
+      'birthday'=>$model->birthday,
+      'position'=>$model->position,
+    ];
+    // 保存
+    if($model->save()){
+      return self::getJSON(['code'=>0,'msg'=>'成功','uinfo'=>$uinfo]);
+    }else{
+      return self::getJSON(['code'=>5000,'msg'=>'保存失败']);
+    }
+  }
+
   /* 头像上传 */
   function upImgAction(){
     $base64 = $this->request->get('base64');
