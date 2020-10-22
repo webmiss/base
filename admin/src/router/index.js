@@ -6,7 +6,7 @@ const routes = [
   {path:'/refresh', name:'Refresh', component:()=>import('../views/Refresh.vue')},
   // 首页
   {path:'/UserInfo', name:'UserInfo', component:()=>import('../views/system/UserInfo.vue')},
-  // {path:'/UserPasswd', name:'UserPasswd', component:()=>import('../views/system/UserPasswd.vue')},
+  {path:'/UserPasswd', name:'UserPasswd', component:()=>import('../views/system/UserPasswd.vue')},
   // 设置
   // {path:'/SysUser', name:'SysUser', component:()=>import('../views/system/User.vue')},
   // {path:'/SysPerm', name:'SysPerm', component:()=>import('../views/system/Perm.vue')},
