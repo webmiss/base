@@ -63,14 +63,17 @@ class Model(Base) :
     if self._state :
       self._sqlAll.append(sql)
     else :
+      res = False
       cs = self._conn.cursor()
       try:
         cs.execute(sql)
         self._conn.commit()
+        res = True
       except:
         self._conn.rollback()
       cs.close()
       self._conn.close()
+      return res
 
   # 删除
   def delete(self,where=''):
@@ -80,14 +83,17 @@ class Model(Base) :
     if self._state :
       self._sqlAll.append(sql)
     else :
+      res = False
       cs = self._conn.cursor()
       try:
         cs.execute(sql)
         self._conn.commit()
+        res = True
       except:
         self._conn.rollback()
       cs.close()
       self._conn.close()
+      return res
 
   # 组合SQL
   def sql(self,type,params={}):
