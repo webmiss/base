@@ -2,6 +2,11 @@ package vip.webmis.java.modules.admin;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,17 +26,99 @@ public class UserinfoController extends Base {
 
   private static String imgDir = "upload/user/img/";
 
+  /* 列表 */
+  @RequestMapping("/list")
+  String list(String token) throws Exception {
+    HashMap<String, Object> tokenData = AdminToken.urlVerify(token,"UserInfo");
+    HashMap<String, Object> _res;
+    HashMap<String, Object> params;
+    params = new HashMap<String, Object>();
+    params.put("where","uid="+String.valueOf(tokenData.get("uid")));
+    HashMap<String, Object> info = new UserInfo().findFirst(params);
+    // 添加
+    if(info.isEmpty()){
+      params = new HashMap<String, Object>();
+      params.put("uid",String.valueOf(tokenData.get("uid")));
+      params.put("ctime",Inc.date("y-M-d H:m:s"));
+      new UserInfo().insert(params);
+      // 查询
+      params = new HashMap<String, Object>();
+      params.put("where","uid="+String.valueOf(tokenData.get("uid")));
+      info = new UserInfo().findFirst(params);
+    }
+    // 数据
+    HashMap<String, Object> list = new HashMap<String, Object>();
+    list.put("img",!info.get("img").equals("")?Env.base_url+String.valueOf(info.get("img")):"");
+    list.put("nickname",info.get("nickname"));
+    list.put("name",info.get("name"));
+    list.put("gender",info.get("gender"));
+    list.put("birthday",info.get("birthday")!=null?info.get("birthday"):"");
+    list.put("position",info.get("position"));
+    // 返回
+    _res = new HashMap<String, Object>();
+    _res.put("code", 0);
+    _res.put("msg", "成功");
+    _res.put("list", list);
+    return getJSON(_res);
+  }
+
+  /* 头像上传 */
+  @RequestMapping("/edit")
+  String edit(String token, String data) throws Exception {
+    HashMap<String, Object> tokenData = AdminToken.urlVerify(token,"UserInfo");
+    HashMap<String, Object> _res;
+    if(data==null || data.isEmpty()){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 4000);
+      _res.put("msg", "参数错误!");
+      return getJSON(_res);
+    }
+    // 数据
+    HashMap<String, Object> params = new HashMap<String, Object>();
+    Set<String> arr = new HashSet<String>();
+    arr.add("uid");
+    arr.add("img");
+    JSONObject jsonData = JSON.parseObject(data);
+    Set<String> keys = jsonData.keySet();
+    for(String key : keys){
+      if(arr.contains(key)) continue;
+      params.put(key,String.valueOf(jsonData.get(key)).trim());
+    }
+    // 用户信息
+    HashMap<String, Object> uinfo = new HashMap<String, Object>();
+    uinfo.put("img",jsonData.get("img"));
+    uinfo.put("nickname",params.get("nickname"));
+    uinfo.put("name",params.get("name"));
+    uinfo.put("gender",params.get("gender"));
+    uinfo.put("birthday",params.get("birthday"));
+    uinfo.put("position",params.get("position"));
+    // 保存
+    boolean res = new UserInfo().update(params,"uid="+String.valueOf(tokenData.get("uid")));
+    if(res){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 0);
+      _res.put("msg", "成功");
+      _res.put("uinfo", uinfo);
+      return getJSON(_res);
+    }else{
+      _res = new HashMap<String, Object>();
+      _res.put("code", 5000);
+      _res.put("msg", "保存失败!");
+      return getJSON(_res);
+    }
+  }
+
   /* 头像上传 */
   @RequestMapping("/upImg")
   String index(String token, String base64) throws Exception {
     HashMap<String, Object> tokenData = AdminToken.urlVerify(token,"UserInfo");
-    HashMap<String, Object> data;
+    HashMap<String, Object> _res;
     // 是否为空
     if(base64==null || base64.isEmpty()){
-      data = new HashMap<String, Object>();
-      data.put("code", 4000);
-      data.put("msg", "Base64内容为空!");
-      return getJSON(data);
+      _res = new HashMap<String, Object>();
+      _res.put("code", 4000);
+      _res.put("msg", "Base64内容为空!");
+      return getJSON(_res);
     }
     // 上传
     HashMap<String, Object> param = new HashMap<String, Object>();
@@ -62,16 +149,16 @@ public class UserinfoController extends Base {
         if(file.exists()) file.delete();
       }
       // 返回数据
-      data = new HashMap<String, Object>();
-      data.put("code", 0);
-      data.put("msg", "成功");
-      data.put("img", Env.base_url+imgDir+String.valueOf(res.get("filename")));
-      return getJSON(data);
+      _res = new HashMap<String, Object>();
+      _res.put("code", 0);
+      _res.put("msg", "成功");
+      _res.put("img", Env.base_url+imgDir+String.valueOf(res.get("filename")));
+      return getJSON(_res);
     }else{
-      data = new HashMap<String, Object>();
-      data.put("code", 5000);
-      data.put("msg", "保存图片失败!");
-      return getJSON(data);
+      _res = new HashMap<String, Object>();
+      _res.put("code", 5000);
+      _res.put("msg", "保存图片失败!");
+      return getJSON(_res);
     }
   }
 

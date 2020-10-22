@@ -1,4 +1,5 @@
 import os
+import json
 from app.Env import Env
 from app.common.Base import Base
 from app.common.AdminToken import AdminToken
@@ -14,6 +15,55 @@ class UserinfoController(Base) :
   # 构造函数
   def __init__(self):
     self.tokenData = AdminToken().urlVerify('UserInfo')
+
+  # 列表
+  def list(self):
+    info = UserInfo().findFirst({'where':'uid='+str(self.tokenData['uid'])})
+    # 添加
+    if not info :
+      UserInfo().insert({
+        'uid': str(self.tokenData['uid']),
+        'ctime': Inc.date('%Y%m%d%H%M%S'),
+      })
+      # 查询
+      info = UserInfo().findFirst({'where':'uid='+str(self.tokenData['uid'])})
+    # 数据
+    list = {
+      'img': Env.base_url+info['img'] if info['img'] else '',
+      'nickname': info['nickname'],
+      'name': info['name'],
+      'gender': info['gender'],
+      'birthday': str(info['birthday']) if info['birthday'] else "",
+      'position': info['position'],
+    }
+    return self.getJSON({'code':0,'msg':'成功','list':list})
+
+  # 编辑
+  def edit(self):
+    req = self.request()
+    data = req.get('data')
+    if(not data): return self.getJSON({'code':4000,'msg':'参数错误!'})
+    jsonData = json.loads(data)
+    # 数据
+    params = {}
+    arr = ['uid','img']
+    keys = jsonData.keys()
+    for key in keys :
+      if key in arr : continue
+      params[key] = jsonData[key].strip()
+    # 用户信息
+    uinfo = {
+      'img': jsonData['img'],
+      'nickname': params['nickname'],
+      'name': params['name'],
+      'gender': params['gender'],
+      'birthday': params['birthday'],
+      'position': params['position'],
+    }
+    # 保存
+    res = UserInfo().update(params,'uid='+str(self.tokenData['uid']))
+    if res : return self.getJSON({'code':0,'msg':'成功','uinfo':uinfo})
+    else : return self.getJSON({'code':5000,'msg':'保存失败!'})
 
   # 头像上传
   def upImg(self):

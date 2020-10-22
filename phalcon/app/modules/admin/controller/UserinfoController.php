@@ -54,21 +54,18 @@ class UserInfoController extends Base{
       if(in_array($key,$arr)) continue;
       $model->$key = trim($val);
     }
-    // 返回
+    // 用户信息
     $uinfo = [
       'img'=>!empty($model->img)?Env::$base_url.$model->img:'',
       'nickname'=>$model->nickname,
       'name'=>$model->name,
       'gender'=>$model->gender,
-      'birthday'=>$model->birthday,
+      'birthday'=>$model->birthday?$model->birthday:'',
       'position'=>$model->position,
     ];
     // 保存
-    if($model->save()){
-      return self::getJSON(['code'=>0,'msg'=>'成功','uinfo'=>$uinfo]);
-    }else{
-      return self::getJSON(['code'=>5000,'msg'=>'保存失败']);
-    }
+    if($model->save()) return self::getJSON(['code'=>0,'msg'=>'成功','uinfo'=>$uinfo]);
+    else return self::getJSON(['code'=>5000,'msg'=>'保存失败!']);
   }
 
   /* 头像上传 */
