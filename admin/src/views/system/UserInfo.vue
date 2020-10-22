@@ -1,6 +1,6 @@
 <template>
   <wm-main>
-    <wm-form class="max_width">
+    <wm-form>
       <wm-form-item label="头像">
         <wm-img-upload :url="upload.url" :param="upload.param" @upload="upImg">
           <wm-img width="80px" height="80px" radius="50%" :url="form.img"></wm-img>
