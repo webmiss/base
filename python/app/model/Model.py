@@ -39,16 +39,18 @@ class Model(Base) :
     if self._state :
       self._sqlAll.append(sql)
     else :
+      id = 0
       cs = self._conn.cursor()
       try:
         cs.execute(sql)
+        id = cs.lastrowid
         self._conn.commit()
       except:
         self._conn.rollback()
       cs.close()
       self._conn.close()
+      return id
       
-
   # 更新
   def update(self,params,where=''):
     # SQL
