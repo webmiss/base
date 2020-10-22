@@ -3,6 +3,7 @@ package vip.webmis.java.model;
 import vip.webmis.java.Env;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -19,6 +20,7 @@ public class Model {
   private static boolean state = false;
   private static int flag = 0;
   protected String table = "";
+  private int id = 0;
 
   /* 查询-单条 */
   public HashMap<String, Object> findFirst(HashMap<String, Object> params) {
@@ -33,7 +35,7 @@ public class Model {
   }
 
   /* 新增 */
-  public boolean insert(HashMap<String, Object> params) {
+  public int insert(HashMap<String, Object> params) {
     String keys = "";
     String vals = "";
     for (String k : params.keySet())
@@ -43,7 +45,8 @@ public class Model {
     keys = keys.substring(0, keys.length() - 1);
     vals = vals.substring(0, vals.length() - 1);
     String sql = String.format("INSERT INTO %s(%s) values(%s)", this.table, keys, vals);
-    return sqlCommit(sql);
+    sqlCommit("insert",sql);
+    return id;
   }
 
   /* 更新 */
@@ -53,17 +56,17 @@ public class Model {
       vals += k + "=\"" + String.valueOf(params.get(k)) + "\",";
     vals = vals.substring(0, vals.length() - 1);
     String sql = String.format("UPDATE `%s` SET %s WHERE %s", this.table, vals, where);
-    return sqlCommit(sql);
+    return sqlCommit("update",sql);
   }
 
   /* 删除 */
   public boolean delete(String where) {
     String sql = String.format("DELETE FROM `%s` WHERE %s", this.table, where);
-    return sqlCommit(sql);
+    return sqlCommit("delete",sql);
   }
 
   /* 提交 */
-  private boolean sqlCommit(String sql) {
+  private boolean sqlCommit(String type, String sql) {
     try {
       // 自动提交
       if (state) {
@@ -75,9 +78,19 @@ public class Model {
       } else {
         Connection _cn = connect();
         _cn.setAutoCommit(true);
-        Statement _st = _cn.createStatement();
-        _st.executeUpdate(sql);
-        _st.close();
+        // 自增ID
+        if(type=="insert"){
+          PreparedStatement _st = _cn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+          _st.executeUpdate();
+          ResultSet _rs = _st.getGeneratedKeys();
+          id = _rs.next()?_rs.getInt(1):0;
+          _rs.close();
+          _st.close();
+        }else{
+          Statement _st = _cn.createStatement();
+          _st.executeUpdate(sql);
+          _st.close();
+        }
         _cn.close();
       }
       return true;
