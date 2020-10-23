@@ -120,7 +120,7 @@ class _SplashScreenState extends State<SplashScreen> {
     post('index/appUpdate',{'os':info['platform']}).then((res){
       if(res['code']!=0) return Toast(context,res['msg']);
       // 版本比较
-      if(!versionDiff(info['version'],res['version'])) return _goHome();
+      if(versionDiff(info['version'],res['version'])) return _goHome();
       // 更新
       setState((){
         _isUpDate = true;
