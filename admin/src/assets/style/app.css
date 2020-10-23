@@ -34,7 +34,7 @@
 .login_type:hover .list,.login_type:hover .arrow_up{display: block;}
 
 /* 主要框架 */
-.app_body{position: relative; overflow: hidden; height: 100%;}
+.app_body{position: relative; overflow: hidden; height: 100%; min-width: 640px;}
 .app_left{position: absolute; left: 0; width: 200px; height: 100%; background-color: #24292E;}
 .app_right{position: absolute; right: 0; width: calc(100% - 200px); height: 100%;}
 .app_top{position: relative; height: 42px; padding: 10px 16px; box-shadow: 0 1px 0 #F2F4F6;}
