@@ -1,11 +1,9 @@
 <?php
+namespace app\common;
 
-/**
-* 公共类
-*/
+use app\Env;
 
-namespace app\library;
-
+/* 公共类 */
 class Inc{
 
 	/* 获取URL */
@@ -23,15 +21,13 @@ class Inc{
 
 	/* 加密-字符串 */
 	static function getKey($str){
-		$config = require APP_PATH.'/config/env.php';
-		return md5($str.$config['key']);
+		return md5($str.Env::$key);
 	}
 	/* 加密-数组 */
 	static function getKeyArr($param=''){
-		$config = require APP_PATH.'/config/env.php';
 		ksort($param);
 		reset($param);
-		$param['sign'] = $config['key'];
+		$param['sign'] = Env::$key;
 		return md5(http_build_query($param));
 	}
 
