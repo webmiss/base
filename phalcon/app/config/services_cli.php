@@ -15,7 +15,8 @@ $di->setShared('db', function () {
     'password'=>$conf['password'],
     'dbname'=>$conf['dbname'],
     'port'=>$conf['port'],
-    'charset'=>$conf['charset']
+    'charset'=>$conf['charset'],
+    'persistent'=>$conf['persistent'],
   ];
   // 删除编码
   if ($conf['adapter'] == 'Postgresql') unset($params['charset']);
