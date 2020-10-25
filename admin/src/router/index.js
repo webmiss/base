@@ -8,7 +8,7 @@ const routes = [
   {path:'/UserInfo', name:'UserInfo', component:()=>import('../views/system/UserInfo.vue')},
   {path:'/UserPasswd', name:'UserPasswd', component:()=>import('../views/system/UserPasswd.vue')},
   // 设置
-  // {path:'/SysUser', name:'SysUser', component:()=>import('../views/system/User.vue')},
+  {path:'/SysUser', name:'SysUser', component:()=>import('../views/system/User.vue')},
   // {path:'/SysPerm', name:'SysPerm', component:()=>import('../views/system/Perm.vue')},
   // {path:'/SysRole', name:'SysRole', component:()=>import('../views/system/Role.vue')},
   // {path:'/SysConfig', name:'SysConfig', component:()=>import('../views/system/Config.vue')},
