@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name:'Form',
+  name: 'Form',
   props: {
     labelWidth: {type: String, default: '90px'},
     labelHeight: {type: String, default: '40px'},

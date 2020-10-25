@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name:'FormItem',
+  name: 'FormItem',
   props: {
     type: {type: String, default: 'label'},
     label: {type: String, default: ''},

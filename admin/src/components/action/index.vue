@@ -19,7 +19,7 @@ import Post from '@/library/ui/request-post'
 import Storage from '@/library/ui/storage'
 import Toast from '@/library/ui/ui-toast'
 export default {
-  name:'Action',
+  name: 'Action',
   props: {
     url: {type: String, default: ''},
     menus: '',

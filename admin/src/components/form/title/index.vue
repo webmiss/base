@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name:'FormTitle',
+  name: 'FormTitle',
   props: {
     fontSize: {type: String, default: '15px'},
   },

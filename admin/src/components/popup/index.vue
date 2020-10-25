@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name:'PopUp',
+  name: 'PopUp',
   model: {
     prop: "show",
     event: 'show',

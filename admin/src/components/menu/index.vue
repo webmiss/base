@@ -31,7 +31,7 @@
 
 <script>
 export default {
-  name:'Menu',
+  name: 'Menu',
   props: {
     data: {type: Array, default: []},
     defaultActive: {type: Array, default: [0,0]},

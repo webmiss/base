@@ -8,10 +8,10 @@
 </template>
 
 <style scoped>
-.wm-radio_item{position: relative; cursor: pointer; display: inline-block; line-height: 32px; white-space: nowrap; padding: 0 16px 0 8px;}
+.wm-radio_item{position: relative; cursor: pointer; display: inline-block; white-space: nowrap; line-height: 32px; padding: 0 16px 0 8px;}
 .wm-radio_item div{display: inline-block;}
-.wm-radio_item .checked{position: absolute; top: 50%; margin-top: -8px; width: 16px; height: 16px; border: #DCDFE6 1px solid; background-color: #F6F8FA; border-radius: 50%;}
-.wm-radio_item .name{font-size: 14px; padding-left: 24px;}
+.wm-radio_item .checked{position: absolute; top: 50%; margin-top: -8px; width: 16px; height: 16px; border: #DADCDF 1px solid; background-color: #F6F8FA; border-radius: 50%;}
+.wm-radio_item .name{padding-left: 24px; font-size: 14px;}
 .wm-radio_item:hover{background-color: #F6F8FA; border-radius: 4px;}
 .wm-radio_item:hover .checked{border-color: #595;}
 .wm-radio_item .active{border-color: #595; background-color: #6FB737;}
@@ -20,10 +20,10 @@
 
 <script>
 export default {
-  name:'Radio',
+  name: 'Radio',
   props: {
-    data: {type: Array, default: []},
-    value: {type: String, default: ''},
+    data: {type: Array, default: []}, //数据: [{name:'男',val:'男'},{name:'女',val:'女'}]
+    value: {type: String, default: ''}, //默认值: val
   },
   watch:{
     value(val){

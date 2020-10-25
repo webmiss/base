@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name:'Img',
+  name: 'Img',
   props: {
     url: {type: String, default: ''}, //图片地址
     size: {type: String, default: 'cover'}, //背景大小

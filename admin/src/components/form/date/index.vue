@@ -23,7 +23,7 @@
 import wmInput from '../input'
 import TimeDay from '../../../library/inc/time-day'
 export default {
-  name:'Date',
+  name: 'Date',
   components: {wmInput},
   props: {
     value: {type: String, default: ''},

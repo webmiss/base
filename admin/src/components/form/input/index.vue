@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name:'Input',
+  name: 'Input',
   props: {
     value: {type: String, default: ''},
     type: {type: String, default: 'text'},

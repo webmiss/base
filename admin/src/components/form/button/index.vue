@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name:'Botton',
+  name: 'Botton',
   props: {
     disabled: {type: Boolean, default: false},
   },

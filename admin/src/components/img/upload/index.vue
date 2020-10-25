@@ -15,7 +15,7 @@ import Post from '../../../library/ui/request-post'
 import Camera from '../../../library/plus/camera'
 import ImgReader from '../../../library/plus/img-reader'
 export default {
-  name:'ImgUpLoad',
+  name: 'ImgUpLoad',
   props: {
     url: {type: String, default: ''}, //上传地址
     width: {type: Number, default: 200},  //宽
