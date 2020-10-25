@@ -12,12 +12,13 @@ export default {
   watch:{
     // 动作菜单-点击
     actionType(val){
+      if(!val) return false;
       console.log(val);
     }
   },
   activated(){
     // 动作菜单-获取
-    this.store.action.url = 'UserInfo';
+    this.store.action.url = '';
     this.store.action.menus = '';
   },
   mounted(){
