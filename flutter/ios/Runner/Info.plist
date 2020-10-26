@@ -44,9 +44,9 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSCameraUsageDescription</key>
-	<string>用于会员拍照上传头像</string>
+	<string>会员拍照上传头像</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>用于会员拍照上传头像</string>
+	<string>会员拍照上传头像</string>
 	<key>NSFileProviderPresenceUsageDescription</key>
 	<string>使用时允许访问文件</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -55,6 +55,16 @@
 	<string>获取定位，获取会员所在城市区域，便于提供附近的便捷服务</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>获取定位，获取会员所在城市区域，便于提供附近的便捷服务</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>用户推送订单信息</string>
+	<key>NSContactsUsageDescription</key>
+	<string>用户联系服务人员</string>
+	<key>NSAppleMusicUsageDescription</key> 
+	<string>是否允许App访问媒体资料库</string>
+	<key>NSMotionUsageDescription</key>
+	<string>运动权限</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>语音识别权限</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
