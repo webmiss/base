@@ -1,3 +1,5 @@
+# lib/env.dart
+
 # Miscellaneous
 *.class
 *.log
@@ -32,7 +34,6 @@
 .pub/
 /build/
 pubspec.lock
-lib/env.dart
 
 # Web related
 lib/generated_plugin_registrant.dart
