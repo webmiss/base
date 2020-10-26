@@ -10,7 +10,7 @@
 <style scoped>
 .wm-checkbox{position: relative; cursor: pointer; display: inline-block; white-space: nowrap; line-height: 32px; padding: 0 8px;}
 .wm-checkbox div{display: inline-block;}
-.wm-checkbox .checked{position: absolute; top: 50%; margin-top: -8px; width: 14px; height: 14px; border: #DADCDF 1px solid; background-color: #F6F8FA; border-radius: 2px;}
+.wm-checkbox .checked{position: absolute; top: 50%; margin-top: -8px; width: 14px; height: 14px; border: #DCDFE6 1px solid; background-color: #F2F4F6; border-radius: 2px;}
 .wm-checkbox .name{padding-left: 24px; font-size: 14px;}
 .wm-checkbox:hover{background-color: #F6F8FA; border-radius: 4px;}
 .wm-checkbox:hover .checked{border-color: #595;}
