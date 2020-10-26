@@ -59,7 +59,6 @@ export default {
        style.lineHeight = '22px';
        style.fontSize = '12px';
     }
-    console.log(color);
   },
 }
 </script>
