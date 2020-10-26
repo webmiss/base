@@ -1,5 +1,8 @@
+/* UI组件 */
+import wmMain from '@/components/main'
 
 export default {
+  components: {wmMain},
   data(){
     return {
       store: this.$store.state,
