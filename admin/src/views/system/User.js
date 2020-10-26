@@ -1,15 +1,17 @@
 /* JS组件 */
-import Loading from '../../library/ui/ui-loading'
-import Toast from '../../library/ui/ui-toast'
-import Post from '../../library/ui/request-post'
-import Storage from '../../library/ui/storage'
+import Loading from '@/library/ui/ui-loading'
+import Toast from '@/library/ui/ui-toast'
+import Post from '@/library/ui/request-post'
+import Storage from '@/library/ui/storage'
 /* UI组件 */
-import wmMain from '../../components/main'
-import wmTable from '../../components/table'
-import wmTableTitle from '../../components/table/title'
-import wmTableTr from '../../components/table/tr'
+import wmMain from '@/components/main'
+import wmTable from '@/components/table'
+import wmTableTitle from '@/components/table/title'
+import wmTableTr from '@/components/table/tr'
+import wmTag from '@/components/tag'
+import wmPopover from '@/components/popover'
 export default {
-  components: {wmMain,wmTable,wmTableTitle,wmTableTr},
+  components: {wmMain,wmTable,wmTableTitle,wmTableTr,wmTag,wmPopover},
   data(){
     return {
       store: this.$store.state,
