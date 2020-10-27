@@ -24,7 +24,7 @@ export default {
       color: {
         primary:{
           plain:['#C2E7B0','#F0F9EB','#6FB737'],
-          dark:['#6FB737','#595','#FFF'],
+          dark:['#595','#595','#FFF'],
         },
         info:{
           plain:['#DCDFE6','#F4F6F8','#909399'],
