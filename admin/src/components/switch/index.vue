@@ -30,18 +30,18 @@ export default {
     /* 点击开关 */
     switchClick(){
       // 对象
-      const box = this.$refs.Switch;
-      const cursor = this.$refs.SwitchCursor;
+      const box = this.$refs.Switch.style;
+      const cursor = this.$refs.SwitchCursor.style;
       // 动画
-      box.style.transitionDuration = `400ms`;
-      cursor.style.transitionDuration = `400ms`;
+      box.transitionDuration = `400ms`;
+      cursor.transitionDuration = `400ms`;
       // 位置
       if(this.value){
-        box.style.backgroundColor = this.activeColor;
-        cursor.style.left = '22px';
+        box.backgroundColor = this.activeColor;
+        cursor.left = '22px';
       }else{
-        box.style.backgroundColor = this.inactiveColor;
-        cursor.style.left = '2px';
+        box.backgroundColor = this.inactiveColor;
+        cursor.left = '2px';
       }
     }
 
