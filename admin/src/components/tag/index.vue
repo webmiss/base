@@ -24,8 +24,8 @@ export default {
           dark:['#595','#6FB737','#FFF'],
         },
         info:{
-          plain:['#DCDFE6','#F4F6F8','#999'],
-          dark:['#666','#999','#FFF'],
+          plain:['#DCDFE6','#F4F6F8','#909399'],
+          dark:['#909399','#909399','#FFF'],
         },
         warning:{
           plain:['#F5DAB1','#FDF6EC','#E6A23C'],
