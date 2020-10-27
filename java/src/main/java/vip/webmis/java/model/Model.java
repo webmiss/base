@@ -10,8 +10,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.fastjson.JSON;
 
 public class Model {
 
@@ -21,16 +24,19 @@ public class Model {
   private static int flag = 0;
   protected String table = "";
   private int id = 0;
+  private String sql_reg = "(?:')|(?:--)|(/\\*(?:.|[\\n\\r])*?\\*/)|(\\b(select|select|update|union|and|or|delete|insert|trancate|char|into|substr|ascii|declare|exec|count|master|into|drop|execute)\\b)";
 
   /* 查询-单条 */
   public HashMap<String, Object> findFirst(HashMap<String, Object> params) {
-    String sql = this.sql("SELECT", params);
+    String sql = this._getSql("SELECT", params);
+    if(sql=="") return null;
     return fetchOne(sql);
   }
 
   /* 查询-多条 */
   public ArrayList<HashMap<String, Object>> find(HashMap<String, Object> params) {
-    String sql = this.sql("SELECT", params);
+    String sql = this._getSql("SELECT", params);
+    if(sql=="") return null;
     return fetchAll(sql);
   }
 
@@ -38,29 +44,64 @@ public class Model {
   public int insert(HashMap<String, Object> params) {
     String keys = "";
     String vals = "";
-    for (String k : params.keySet())
+    for (String k : params.keySet()){
       keys += "`" + k + "`,";
-    for (Object v : params.values())
-      vals += v != null && v != "null" ? "\"" + String.valueOf(v) + "\"," : String.valueOf(v) + ",";
-    keys = keys.substring(0, keys.length() - 1);
-    vals = vals.substring(0, vals.length() - 1);
+    }
+    for (Object v : params.values()){
+      vals += v!=null&&v!="null"?"\""+filter(String.valueOf(v))+"\",":filter(String.valueOf(v))+",";
+    }
+    keys = keys.substring(0, keys.length()-1);
+    vals = vals.substring(0, vals.length()-1);
     String sql = String.format("INSERT INTO %s(%s) values(%s)", this.table, keys, vals);
     sqlCommit("insert",sql);
     return id;
   }
 
   /* 更新 */
-  public boolean update(HashMap<String, Object> params, String where) {
+  public boolean update(HashMap<String, Object> params) {
+    // 是否数据
+    if(!params.containsKey("data")){
+      System.out.println("请传入更新数据!");
+      return false;
+    }
+    // 是否WHERE
+    if(!params.containsKey("where") && params.get("where").equals("")){
+      System.out.println("必需传入Where条件!");
+      return false;
+    }
+    // 过滤WHERE
+    String where = String.valueOf(params.get("where"));
+    if(params.containsKey("bind")){
+      Map<String, Object> bind = JSON.parseObject(JSON.toJSONString(params.get("bind")));
+      where = bindWhere(where,bind);
+      if(where=="") return false;
+    }
+    // 组合SQL
     String vals = "";
-    for (String k : params.keySet())
-      vals += k + "=\"" + String.valueOf(params.get(k)) + "\",";
-    vals = vals.substring(0, vals.length() - 1);
+    Map<String, Object> data = JSON.parseObject(JSON.toJSONString(params.get("data")));
+    for (String k : data.keySet()){
+      vals += k + "=\"" + filter(String.valueOf(data.get(k))) + "\",";
+    }
+    vals = vals.substring(0, vals.length()-1);
     String sql = String.format("UPDATE `%s` SET %s WHERE %s", this.table, vals, where);
     return sqlCommit("update",sql);
   }
 
   /* 删除 */
-  public boolean delete(String where) {
+  public boolean delete(HashMap<String, Object> params) {
+    // 是否WHERE
+    if(!params.containsKey("where") && params.get("where").equals("")){
+      System.out.println("必需传入Where条件!");
+      return false;
+    }
+    // 过滤WHERE
+    String where = String.valueOf(params.get("where"));
+    if(params.containsKey("bind")){
+      Map<String, Object> bind = JSON.parseObject(JSON.toJSONString(params.get("bind")));
+      where = bindWhere(where,bind);
+      if(where=="") return false;
+    }
+    // 组合SQL
     String sql = String.format("DELETE FROM `%s` WHERE %s", this.table, where);
     return sqlCommit("delete",sql);
   }
@@ -102,21 +143,48 @@ public class Model {
   }
 
   /* 组合SQL */
-  public String sql(String type, HashMap<String, Object> params) {
+  private String _getSql(String type, HashMap<String, Object> params) {
     // 参数
-    String columns = params.get("columns") != null ? (String) params.get("columns") : "*";
-    String table = params.get("table") != null ? (String) params.get("table") : this.table;
+    String columns = params.containsKey("columns")?String.valueOf(params.get("columns")):"*";
+    String table = params.containsKey("table")?String.valueOf(params.get("table")):this.table;
     // SQL
     String sql = String.format("%s %s FROM %s", type, columns, table);
-    if (params.get("where") != null)
-      sql += " WHERE " + (String) params.get("where");
-    if (params.get("group") != null)
-      sql += " GROUP BY " + (String) params.get("group");
-    if (params.get("order") != null)
-      sql += " ORDER BY " + (String) params.get("order");
-    if (params.get("limit") != null)
-      sql += " LIMIT " + (String) params.get("limit");
+    // Where
+    if(params.containsKey("where")){
+      // 过滤WHERE
+      String where = String.valueOf(params.get("where"));
+      if(params.containsKey("bind")){
+        Map<String, Object> bind = JSON.parseObject(JSON.toJSONString(params.get("bind")));
+        where = bindWhere(where,bind);
+        if(where=="") return "";
+      }
+      sql += " WHERE "+where;
+    }
+    // Group
+    if(params.containsKey("group")) sql += " GROUP BY "+String.valueOf(params.get("group"));
+    // Order
+    if(params.containsKey("order")) sql += " ORDER BY "+String.valueOf(params.get("order"));
+    // limit
+    if(params.containsKey("limit")) sql += " LIMIT "+String.valueOf(params.get("limit"));
     return sql;
+  }
+
+  /* 过滤-参数值 */
+  public static String filter(String str){
+    return str.replaceAll(".*([';]+|(--)+).*", "");
+  }
+  /* 过滤-WHERE */
+  public String bindWhere(String where, Map<String, Object> bind){
+    String str;
+    String lower;
+    for(String k : bind.keySet()){
+      // 小写、匹配、替换
+      str = String.valueOf(bind.get(k));
+      lower = str.toLowerCase();
+      if(Pattern.compile(sql_reg).matcher(lower).find()) return "";
+      where = where.replaceAll(":"+k+":",str.replaceAll(sql_reg,""));
+    }
+    return where;
   }
 
   /* 查询-单条 */
@@ -128,10 +196,8 @@ public class Model {
       ResultSet _rs = _st.executeQuery(sql);
       ResultSetMetaData data = _rs.getMetaData();
       int num = data.getColumnCount();
-      if (_rs.next()) {
-        for (int i = 1; i <= num; i++) {
-          map.put(data.getColumnLabel(i), _rs.getObject(i));
-        }
+      if(_rs.next()){
+        for(int i = 1; i <= num; i++) map.put(data.getColumnLabel(i), _rs.getObject(i));
       }
       // 关闭
       _rs.close();
@@ -155,9 +221,7 @@ public class Model {
       int num = data.getColumnCount();
       while (_rs.next()) {
         HashMap<String, Object> map = new HashMap<String, Object>();
-        for (int i = 1; i <= num; i++) {
-          map.put(data.getColumnLabel(i), _rs.getObject(i));
-        }
+        for (int i = 1; i <= num; i++) map.put(data.getColumnLabel(i), _rs.getObject(i));
         list.add(map);
       }
       // 关闭

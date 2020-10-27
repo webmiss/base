@@ -49,7 +49,10 @@ public class UserpasswdController extends Base {
     // 保存
     params = new HashMap<String, Object>();
     params.put("password",Inc.md5(passwd1));
-    boolean res = new User().update(params, String.format("id=%s",tokenData.get("uid")));
+    HashMap<String, Object> uData = new HashMap<String, Object>();
+    uData.put("data",params);
+    uData.put("where",String.format("id=%s",tokenData.get("uid")));
+    boolean res = new User().update(uData);
     if(res){
       _res = new HashMap<String, Object>();
       _res.put("code", 0);

@@ -93,7 +93,10 @@ public class UserinfoController extends Base {
     uinfo.put("birthday",params.get("birthday"));
     uinfo.put("position",params.get("position"));
     // 保存
-    boolean res = new UserInfo().update(params,"uid="+String.valueOf(tokenData.get("uid")));
+    HashMap<String, Object> uData = new HashMap<String, Object>();
+    uData.put("data",params);
+    uData.put("where","uid="+String.valueOf(tokenData.get("uid")));
+    boolean res = new UserInfo().update(uData);
     if(res){
       _res = new HashMap<String, Object>();
       _res.put("code", 0);
@@ -143,7 +146,10 @@ public class UserinfoController extends Base {
         param.put("uid",tokenData.get("uid"));
         param.put("img",imgDir+String.valueOf(res.get("filename")));
         param.put("utime",Inc.date("y-M-d H:m:s"));
-        new UserInfo().update(param,"uid="+String.valueOf(tokenData.get("uid")));
+        HashMap<String, Object> uData = new HashMap<String, Object>();
+        uData.put("data",param);
+        uData.put("where","uid="+String.valueOf(tokenData.get("uid")));
+        new UserInfo().update(uData);
         // 清理头像
         File file = new File(img);
         if(file.exists()) file.delete();

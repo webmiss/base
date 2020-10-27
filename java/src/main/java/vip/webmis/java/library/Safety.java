@@ -27,7 +27,7 @@ public class Safety {
     data.put("tel", "^1\\d{10}$");
     data.put("email", "^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.[a-zA-Z0-9_-])+");
     data.put("idcard", "^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$|^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([0-9]|X)$");
-    Pattern pattern = Pattern.compile((String)data.get(name));
+    Pattern pattern = Pattern.compile((String.valueOf(data.get(name))));
     Matcher matcher = pattern.matcher(val);
     return matcher.matches();
   }

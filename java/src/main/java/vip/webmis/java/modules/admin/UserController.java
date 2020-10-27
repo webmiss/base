@@ -24,13 +24,13 @@ public class UserController extends Base {
   @RequestMapping("/login")
   String login(String uname, String passwd){
     HashMap<String,Object> params;
-    HashMap<String,Object> data = new HashMap<String,Object>();
+    HashMap<String,Object> _res = new HashMap<String,Object>();
     passwd = Inc.md5(passwd);
     // 验证用户名
     if(Safety.isRight("uname",uname)!=true && Safety.isRight("tel",uname)!=true && Safety.isRight("email",uname)!=true){
-      data.put("code",4000);
-      data.put("msg","请输入用户名/手机/邮箱");
-      return getJSON(data);
+      _res.put("code",4000);
+      _res.put("msg","请输入用户名/手机/邮箱");
+      return getJSON(_res);
     }
     // 查询数据
     params = new HashMap<String,Object>();
@@ -40,27 +40,30 @@ public class UserController extends Base {
     HashMap<String,Object> uData = new User().findFirst(params);
     // 是否存在
     if(uData.isEmpty()){
-      data.put("code",4000);
-      data.put("msg","帐号或密码错误");
-      return getJSON(data);
+      _res.put("code",4000);
+      _res.put("msg","帐号或密码错误");
+      return getJSON(_res);
     }
     // 是否禁用
     if(!uData.get("state").equals("1")){
-      data.put("code",4000);
-      data.put("msg","该用户已被禁用");
-      return getJSON(data);
+      _res.put("code",4000);
+      _res.put("msg","该用户已被禁用");
+      return getJSON(_res);
     }else if(!uData.get("state_admin").equals("1")){
-      data.put("code",4000);
-      data.put("msg","该用户不允许登录");
-      return getJSON(data);
+      _res.put("code",4000);
+      _res.put("msg","该用户不允许登录");
+      return getJSON(_res);
     }
     // 登录时间
+    HashMap<String,Object> data = new HashMap<String,Object>();
+    data.put("ltime", Inc.date("y-M-d H:m:s"));
     params = new HashMap<String,Object>();
-    params.put("ltime", Inc.date("y-M-d H:m:s"));
-    new User().update(params,"id="+uData.get("id"));
+    params.put("data", data);
+    params.put("where","id="+uData.get("id"));
+    new User().update(params);
     // 返回
-    data.put("code",0);
-    data.put("msg","成功");
+    _res.put("code",0);
+    _res.put("msg","成功");
     HashMap<String,Object> uinfo = new HashMap<String,Object>();
     uinfo.put("uid",uData.get("id"));
     uinfo.put("uname",uname);
@@ -69,12 +72,12 @@ public class UserController extends Base {
     uinfo.put("name",uData.get("name"));
     uinfo.put("gender",uData.get("gender"));
     uinfo.put("img",!uData.get("img").equals("")?Env.base_url+(String)uData.get("img"):"");
-    data.put("uinfo",uinfo);
+    _res.put("uinfo",uinfo);
     HashMap<String,Object> tData = new HashMap<String,Object>();
     tData.put("uid",uData.get("id"));
     tData.put("uname",uname);
-    data.put("token",AdminToken.create(tData));
-    return getJSON(data);
+    _res.put("token",AdminToken.create(tData));
+    return getJSON(_res);
   }
 
   /* 验证Token */
