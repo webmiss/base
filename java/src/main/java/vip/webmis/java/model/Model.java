@@ -65,7 +65,7 @@ public class Model {
       return false;
     }
     // 是否WHERE
-    if(!params.containsKey("where") && params.get("where").equals("")){
+    if(!params.containsKey("where") || params.get("where").equals("")){
       System.out.println("必需传入Where条件!");
       return false;
     }
@@ -90,7 +90,7 @@ public class Model {
   /* 删除 */
   public boolean delete(HashMap<String, Object> params) {
     // 是否WHERE
-    if(!params.containsKey("where") && params.get("where").equals("")){
+    if(!params.containsKey("where") || params.get("where").equals("")){
       System.out.println("必需传入Where条件!");
       return false;
     }
