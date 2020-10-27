@@ -11,7 +11,6 @@
       </wm-table-title>
       <wm-table-tr v-for="(val,key) in page.list" :key="key" :value="val.uid">
         <td width="180">{{val.uid}}</td>
-        <td width="120">{{ val.tel || val.email || val.uname}}</td>
         <td width="160">
           <wm-popover type="top" effect="dark" width="180px">
             <template #body>
@@ -19,12 +18,18 @@
               <p>更新: {{ val.utime || '无' }}</p>
             </template>
             <template #reference>
-              <wm-tag size="medium">{{val.ltime || '无'}}</wm-tag>
+              <wm-tag size="medium">{{val.tel || val.email || val.uname}}</wm-tag>
             </template>
           </wm-popover>
         </td>
-        <td width="70">{{val.state}}</td>
-        <td>用户信息</td>
+        <td width="160">{{val.ltime || '无'}}</td>
+        <td width="70">
+          <wm-switch :value="val.state" @update:value="setState($event,val.uid)"></wm-switch>
+        </td>
+        <td>
+          <wm-button v-if="val.nickname" size="medium" @click="editInfo(val)">{{val.nickname}}</wm-button>
+          <wm-button v-else type="info" size="medium" @click="editInfo(val)">添加</wm-button>
+        </td>
       </wm-table-tr>
     </wm-table>
     <!-- List End -->
@@ -32,6 +37,7 @@
 </template>
 
 <style scoped>
+.wm-button{margin-right: 16px;}
 </style>
 
 <script src="./User.js"></script>

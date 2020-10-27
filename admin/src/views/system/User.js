@@ -10,8 +10,10 @@ import wmTableTitle from '@/components/table/title'
 import wmTableTr from '@/components/table/tr'
 import wmTag from '@/components/tag'
 import wmPopover from '@/components/popover'
+import wmSwitch from '@/components/switch'
+import wmButton from '@/components/form/button'
 export default {
-  components: {wmMain,wmTable,wmTableTitle,wmTableTr,wmTag,wmPopover},
+  components: {wmMain,wmTable,wmTableTitle,wmTableTr,wmTag,wmPopover,wmSwitch,wmButton},
   data(){
     return {
       store: this.$store.state,
@@ -79,6 +81,11 @@ export default {
       const table = this.$refs.Table;
       const vals = table.getVals();
       console.log(vals);
+    },
+
+    /* 状态 */
+    setState(val,uid){
+      console.log(val,uid);
     },
 
   },
