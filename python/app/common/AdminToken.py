@@ -1,8 +1,8 @@
 from flask import request
 from app.Env import Env
 from app.common.Base import Base
+from app.common.Inc import Inc
 
-from app.library.Inc import Inc
 from app.library.Safety import Safety
 from app.library.Redis import Redis
 

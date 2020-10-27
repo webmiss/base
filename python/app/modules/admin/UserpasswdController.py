@@ -1,6 +1,6 @@
 from app.common.Base import Base
 from app.common.AdminToken import AdminToken
-from app.library.Inc import Inc
+from app.common.Inc import Inc
 from app.library.Safety import Safety
 from app.model.User import User
 
