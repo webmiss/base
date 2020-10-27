@@ -1,4 +1,4 @@
-package vip.webmis.java.library;
+package vip.webmis.java.common;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import vip.webmis.java.common.AdminToken;
 import vip.webmis.java.common.Base;
-import vip.webmis.java.library.Inc;
+import vip.webmis.java.common.Inc;
 import vip.webmis.java.library.Safety;
 import vip.webmis.java.model.User;
 
