@@ -160,11 +160,9 @@ public class Model {
       }
       sql += " WHERE "+where;
     }
-    // Group
+    // Group、Order、limit
     if(params.containsKey("group")) sql += " GROUP BY "+String.valueOf(params.get("group"));
-    // Order
     if(params.containsKey("order")) sql += " ORDER BY "+String.valueOf(params.get("order"));
-    // limit
     if(params.containsKey("limit")) sql += " LIMIT "+String.valueOf(params.get("limit"));
     return sql;
   }
