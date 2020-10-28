@@ -30,7 +30,10 @@ class UserpasswdController(Base) :
     if not info :
       return self.getJSON({'code':4000,'msg':'当前密码错误!'})
     # 保存
-    res = User().update({'password':Inc.md5(passwd1)},'id=%s'%(self.tokenData['uid']))
+    res = User().update({
+      'data': {'password':Inc.md5(passwd1)},
+      'where': 'id=%s'%self.tokenData['uid'],
+    })
     if res :
       return self.getJSON({'code':0,'msg':'成功'})
     else :

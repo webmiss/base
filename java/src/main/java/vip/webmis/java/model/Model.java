@@ -26,6 +26,27 @@ public class Model {
   private int id = 0;
   private String sql_reg = "(?:')|(?:--)|(/\\*(?:.|[\\n\\r])*?\\*/)|(\\b(select|select|update|union|and|or|delete|insert|trancate|char|into|substr|ascii|declare|exec|count|master|into|drop|execute)\\b)";
 
+  /* 过滤-参数值 */
+  public static String filter(String str){
+    return str.replaceAll(".*([';]+|(--)+).*", "");
+  }
+  /* 过滤-WHERE */
+  public String bindWhere(String where, Map<String, Object> bind){
+    String v;
+    String lower;
+    for(String k : bind.keySet()){
+      v = String.valueOf(bind.get(k));
+      // 小写、匹配、替换
+      lower = v.toLowerCase();
+      if(Pattern.compile(sql_reg).matcher(lower).find()){
+        System.out.println("SQL过滤: "+v);
+        return "";
+      }
+      where = where.replaceAll(":"+k+":",v.replaceAll(sql_reg,""));
+    }
+    return where;
+  }
+
   /* 查询-单条 */
   public HashMap<String, Object> findFirst(HashMap<String, Object> params) {
     String sql = this._getSql("SELECT", params);
@@ -48,7 +69,7 @@ public class Model {
       keys += "`" + k + "`,";
     }
     for (Object v : params.values()){
-      vals += v!=null&&v!="null"?"\""+filter(String.valueOf(v))+"\",":filter(String.valueOf(v))+",";
+      vals += v!=null&&v!="null"?"\""+filter(String.valueOf(v))+"\",":String.valueOf(v)+",";
     }
     keys = keys.substring(0, keys.length()-1);
     vals = vals.substring(0, vals.length()-1);
@@ -165,24 +186,6 @@ public class Model {
     if(params.containsKey("order")) sql += " ORDER BY "+String.valueOf(params.get("order"));
     if(params.containsKey("limit")) sql += " LIMIT "+String.valueOf(params.get("limit"));
     return sql;
-  }
-
-  /* 过滤-参数值 */
-  public static String filter(String str){
-    return str.replaceAll(".*([';]+|(--)+).*", "");
-  }
-  /* 过滤-WHERE */
-  public String bindWhere(String where, Map<String, Object> bind){
-    String str;
-    String lower;
-    for(String k : bind.keySet()){
-      // 小写、匹配、替换
-      str = String.valueOf(bind.get(k));
-      lower = str.toLowerCase();
-      if(Pattern.compile(sql_reg).matcher(lower).find()) return "";
-      where = where.replaceAll(":"+k+":",str.replaceAll(sql_reg,""));
-    }
-    return where;
   }
 
   /* 查询-单条 */

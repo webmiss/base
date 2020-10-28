@@ -61,7 +61,10 @@ class UserinfoController(Base) :
       'position': params['position'],
     }
     # 保存
-    res = UserInfo().update(params,'uid='+str(self.tokenData['uid']))
+    res = UserInfo().update({
+      'data': params,
+      'where': 'uid='+str(self.tokenData['uid'])
+    })
     if res : return self.getJSON({'code':0,'msg':'成功','uinfo':uinfo})
     else : return self.getJSON({'code':5000,'msg':'保存失败!'})
 
@@ -85,9 +88,12 @@ class UserinfoController(Base) :
         img = info['img'] if info['img'] else ''
         # 保存
         UserInfo().update({
-          'img': self.imgDir+res['filename'],
-          'utime': Inc.date('%Y%m%d%H%M%S'),
-        },'uid='+str(self.tokenData['uid']))
+          'data':{
+            'img': self.imgDir+res['filename'],
+            'utime': Inc.date('%Y%m%d%H%M%S'),
+          },
+          'where': 'uid='+str(self.tokenData['uid']),
+        })
         # 清理头像
         if os.path.exists(img) : os.remove(img)
       return self.getJSON({'code':0,'msg':'上传成功','img':Env.base_url+self.imgDir+res['filename']})

@@ -29,7 +29,10 @@ class UserController(Base) :
     if uData['state']!='1' : return self.getJSON({'code':4000,'msg':'该用户已被禁用'})
     elif  uData['state_admin']!='1' : return self.getJSON({'code':4000,'msg':'该用户不允许登录'})
     # 登录时间
-    User().update({'ltime':Inc.date('%Y%m%d%H%M%S')},'id='+str(uData['id']))
+    User().update({
+      'data': {'ltime':Inc.date('%Y%m%d%H%M%S')},
+      'where': 'id='+str(uData['id']),
+    }),
     # 返回
     return self.getJSON({
       'code':0,
