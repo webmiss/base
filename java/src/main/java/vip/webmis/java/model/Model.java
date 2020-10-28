@@ -26,7 +26,7 @@ public class Model {
   private int id = 0;
   private String sql_reg = "(?:')|(?:--)|(/\\*(?:.|[\\n\\r])*?\\*/)|(\\b(select|select|update|union|and|or|delete|insert|trancate|char|into|substr|ascii|declare|exec|count|master|into|drop|execute)\\b)";
 
-  /* 过滤-参数值 */
+  /* 过滤-SQL */
   public static String filter(String str){
     return str.replaceAll(".*([';]+|(--)+).*", "");
   }

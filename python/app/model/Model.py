@@ -18,7 +18,7 @@ class Model(Base) :
       pool = PooledDB(**Env.db())
       self._conn = pool.connection()
 
-  # 过滤-参数值
+  # 过滤-SQL
   def filter(self, str=''):
     return re.sub(r'.*([\';]+|(--)+).*','',str)
   # 过滤-WHERE
