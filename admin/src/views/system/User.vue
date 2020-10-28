@@ -1,7 +1,7 @@
 <template>
   <wm-main>
     <!-- List -->
-    <wm-table ref="Table" :data="page.list">
+    <wm-table class="table" ref="Table" :data="page.list">
       <wm-table-title>
         <td>UID</td>
         <td>账号</td>
@@ -37,6 +37,7 @@
 </template>
 
 <style scoped>
+.table{min-width: 800px;}
 .wm-button{margin-right: 16px;}
 </style>
 
