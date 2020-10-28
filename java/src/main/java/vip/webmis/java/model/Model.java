@@ -63,6 +63,10 @@ public class Model {
   }
 
   /* 统计条数 */
+  public int count() {
+    HashMap<String, Object> params = new HashMap<String, Object>();
+    return count(params);
+  }
   public int count(HashMap<String, Object> params) {
     params.put("columns","count(*) as total");
     String sql = this._getSql("SELECT", params);
