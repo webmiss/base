@@ -26,7 +26,7 @@ public class Model {
   private int id = 0;
   private String sql_reg = "(?:')|(?:--)|(/\\*(?:.|[\\n\\r])*?\\*/)|(\\b(select|select|update|union|and|or|delete|insert|trancate|char|into|substr|ascii|declare|exec|count|master|into|drop|execute)\\b)";
 
-  /* 过滤-SQL */
+  /* 过滤-参数值 */
   public static String filter(String str){
     return str.replaceAll(".*([';]+|(--)+).*", "");
   }
@@ -49,6 +49,7 @@ public class Model {
 
   /* 查询-单条 */
   public HashMap<String, Object> findFirst(HashMap<String, Object> params) {
+    if(!params.containsKey("limit")) params.put("limit","0,1");
     String sql = this._getSql("SELECT", params);
     if(sql=="") return null;
     return fetchOne(sql);
@@ -59,6 +60,15 @@ public class Model {
     String sql = this._getSql("SELECT", params);
     if(sql=="") return null;
     return fetchAll(sql);
+  }
+
+  /* 统计条数 */
+  public int count(HashMap<String, Object> params) {
+    params.put("columns","count(*) as total");
+    String sql = this._getSql("SELECT", params);
+    if(sql=="") return 0;
+    HashMap<String, Object> data = fetchOne(sql);
+    return Integer.parseInt(data.get("total").toString());
   }
 
   /* 新增 */

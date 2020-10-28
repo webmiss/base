@@ -35,6 +35,7 @@ class Model(Base) :
 
   # 查询-单条
   def findFirst(self,params={}):
+    if 'limit' not in params.keys() : params['limit'] = '0,1'
     sql = self._getSql('SELECT',params)
     if sql=='' : return None
     data = self.fetchOne(sql)
@@ -45,6 +46,13 @@ class Model(Base) :
     sql = self._getSql('SELECT',params)
     if sql=='' : return None
     data = self.fetchAll(sql)
+    return data
+
+  # 统计条数
+  def count(self,params={}):
+    sql = self._getSql('SELECT',params)
+    if sql=='' : return None
+    data = self.fetchAll(sql,'count')
     return data
 
   # 新增
@@ -169,9 +177,12 @@ class Model(Base) :
     return res
 
   # 查询-全部
-  def fetchAll(self,sql,params=[]):
+  def fetchAll(self,sql,type=''):
     cs = self._conn.cursor(cursor=pymysql.cursors.DictCursor)
-    cs.execute(sql, params)
+    # 条数
+    num = cs.execute(sql)
+    if type=='count' : return num
+    # 数据
     res = cs.fetchall()
     cs.close()
     self._conn.close()
