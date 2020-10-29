@@ -30,6 +30,6 @@ class SysmenusactionController(Base) :
     aMenus = SysMenuAction().find({'columns':'name,action,ico,perm'})
     for val in aMenus :
       # 匹配权限值
-      if int(perm)&int(val['perm'])==1 :
+      if int(perm)&int(val['perm'])>0 :
         action += [{'name':val['name'],'action':val['action'],'ico':val['ico']}]
     return self.getJSON({'code':0,'action':action})

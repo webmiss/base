@@ -21,12 +21,13 @@ import vip.webmis.java.model.SysMenu;
 public class SysmenusController extends Base {
 
   private static HashMap<String, Object> menus = null;
+  private static HashMap<String, Object> permAll = null;
 
   /* 获取[菜单] */
   @RequestMapping("/getMenus")
   String getMenus(String token) throws Exception {
     // 验证
-    AdminToken.verify(token);
+    HashMap<String, Object> tokenData = AdminToken.verify(token);
     // 全部菜单
     menus = new HashMap<String, Object>();
     HashMap<String, Object> params = new HashMap<String, Object>();
@@ -46,7 +47,9 @@ public class SysmenusController extends Base {
         menus.put(fid,list);
       }
     }
-    // 返回数据
+    // 全部权限
+    permAll = AdminToken.perm(String.valueOf(tokenData.get("uid")));
+    // 组合菜单
     HashMap<String, Object> data = new HashMap<String, Object>();
     data.put("code", 0);
     data.put("msg", "成功");
@@ -59,8 +62,10 @@ public class SysmenusController extends Base {
     JSONArray M = menus.containsKey(fid)?JSON.parseArray(JSON.toJSONString(menus.get(fid))):JSON.parseArray(JSON.toJSONString(data));
     for( Object val : M) {
       JSONObject now = JSON.parseObject(JSON.toJSONString(val));
-      now.put("children", _getMenu(String.valueOf(now.get("id"))));
-      data.add(now);
+      if(permAll.containsKey(String.valueOf(now.get("id")))){
+        now.put("children", _getMenu(String.valueOf(now.get("id"))));
+        data.add(now);
+      }
     }
     return data;
   }
