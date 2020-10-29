@@ -2,10 +2,9 @@
 
 namespace app\modules\admin\controller;
 
+use app\Env;
 use app\common\Base;
 use app\common\AdminToken;
-use app\common\Where;
-use app\common\Inc;
 
 /* 控制台 */
 class SysUserController extends Base{
@@ -19,15 +18,8 @@ class SysUserController extends Base{
   /* 列表 */
   function listAction(){
     $data = $this->request->get('data');
-    $data = Where::getSearch($data)['data'];
+    // 搜索
     $where = '';
-    if(isset($data['uname']) && !empty($data['uname'])){
-      $where = '(a.uname LIKE "%'.$data['uname'].'%" OR a.tel LIKE "%'.$data['uname'].'%" OR a.email LIKE "%'.$data['uname'].'%")';
-    }
-    // 分页
-    $page = $this->request->get('page','int');
-    $limit = $this->request->get('limit','int');
-    $start = ($page-1)*$limit;
     // 查询数据
     $builder = $this->modelsManager->createBuilder();
     $builder->addfrom('app\model\User', 'a');
@@ -39,16 +31,25 @@ class SysUserController extends Base{
       b.nickname as nickname,b.position as position,b.name as name,b.gender as gender,b.birthday as birthday,b.img as img
     ');
     $builder->orderBy('a.id DESC');
-    // 数据
+    // 统计
     $total = $builder->getQuery()->execute()->count();
+    // 分页
+    $page = $this->request->get('page','int');
+    $limit = $this->request->get('limit','int');
+    $start = ($page-1)*$limit;
     $builder->limit($limit,$start);
-    $data = $builder->getQuery()->execute()->toArray();
+    // 数据
+    $list = $builder->getQuery()->execute()->toArray();
     // 状态
-    foreach ($data as $key => $val) {
-      $data[$key]['age'] = $val['birthday']?Inc::getAge($val['birthday']):'';
-      $data[$key]['state'] = $val['state']?true:false;
+    foreach ($list as $key => $val) {
+      $list[$key]['state'] = $val['state']?true:false;
+      $list[$key]['img'] = $val['img']?Env::$base_url.$val['img']:'';
+      $list[$key]['birthday'] = $val['birthday']?$val['birthday']:'';
+      $list[$key]['rtime'] = $val['rtime']?$val['rtime']:'';
+      $list[$key]['ltime'] = $val['ltime']?$val['ltime']:'';
+      $list[$key]['utime'] = $val['utime']?$val['utime']:'';
     }
-    return self::getJSON(['code'=>0, 'msg'=>'成功', 'list'=>$data, 'total'=>$total]);
+    return self::getJSON(['code'=>0,'msg'=>'成功','list'=>$list,'total'=>$total]);
   }
 
 }
