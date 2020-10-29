@@ -1,8 +1,8 @@
 <template>
-  <div ref="img" class="wm-img">
+  <div ref="img" class="wm-img" :title="title">
     <div v-if="url" :style="{backgroundImage:'url('+url+')',backgroundSize:size}"></div>
     <div v-else class="wm-img_null">
-      <i class="ui ui_img" :title="title" :style="{fontSize:icoSize}"></i>
+      <i class="ui ui_img" :style="{fontSize:icoSize}"></i>
     </div>
   </div>
 </template>
@@ -23,7 +23,7 @@ export default {
     width: {type: String, default: '90px'}, //宽
     height: {type: String, default: '40px'},  //高
     radius: {type: String, default: '0px'}, //圆角
-    title: {type: String, default: '图片'}, //提示
+    title: {type: String, default: ''}, //提示
     icoSize: {type: String, default: '32px'}, //图标大小
   },
   mounted(){

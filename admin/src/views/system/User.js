@@ -8,12 +8,13 @@ import wmMain from '@/components/main'
 import wmTable from '@/components/table'
 import wmTableTitle from '@/components/table/title'
 import wmTableTr from '@/components/table/tr'
+import wmImg from '../../components/img'
 import wmTag from '@/components/tag'
 import wmPopover from '@/components/popover'
 import wmSwitch from '@/components/switch'
 import wmButton from '@/components/form/button'
 export default {
-  components: {wmMain,wmTable,wmTableTitle,wmTableTr,wmTag,wmPopover,wmSwitch,wmButton},
+  components: {wmMain,wmTable,wmTableTitle,wmTableTr,wmImg,wmTag,wmPopover,wmSwitch,wmButton},
   data(){
     return {
       store: this.$store.state,
