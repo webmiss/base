@@ -60,9 +60,9 @@ public class Model {
   }
 
   /* 查询-多条 */
-  public HashMap<String, Object> find() {
+  public ArrayList<HashMap<String, Object>> find() {
     HashMap<String, Object> params = new HashMap<String, Object>();
-    return findFirst(params);
+    return find(params);
   }
   public ArrayList<HashMap<String, Object>> find(HashMap<String, Object> params) {
     String sql = this._getSql("SELECT", params);
