@@ -51,7 +51,7 @@ public class SysmenusactionController extends Base {
     ArrayList<HashMap<String, Object>> aMenus = new SysMenuAction().find(params);
     for(HashMap<String, Object> val : aMenus){
       // 匹配权限值
-      if((perm&Integer.valueOf((String)val.get("perm")))==1){
+      if((perm&Integer.valueOf((String)val.get("perm")))>0){
         data = new HashMap<String, Object>();
         data.put("name",val.get("name"));
         data.put("action",val.get("action"));
