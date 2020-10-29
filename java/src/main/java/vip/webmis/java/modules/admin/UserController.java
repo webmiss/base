@@ -56,7 +56,7 @@ public class UserController extends Base {
     }
     // 登录时间
     HashMap<String,Object> data = new HashMap<String,Object>();
-    data.put("ltime", Inc.date("y-M-d H:m:s"));
+    data.put("ltime", Inc.date("yyyy-MM-dd HH:mm:ss"));
     params = new HashMap<String,Object>();
     params.put("data", data);
     params.put("where","id="+uData.get("id"));

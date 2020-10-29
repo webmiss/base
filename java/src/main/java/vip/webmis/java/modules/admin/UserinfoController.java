@@ -39,7 +39,7 @@ public class UserinfoController extends Base {
     if(info.isEmpty()){
       params = new HashMap<String, Object>();
       params.put("uid",String.valueOf(tokenData.get("uid")));
-      params.put("ctime",Inc.date("y-M-d H:m:s"));
+      params.put("ctime",Inc.date("yyyy-MM-dd HH:mm:ss"));
       new UserInfo().insert(params);
       // 查询
       params = new HashMap<String, Object>();
@@ -136,7 +136,7 @@ public class UserinfoController extends Base {
         param = new HashMap<String, Object>();
         param.put("uid",tokenData.get("uid"));
         param.put("img",imgDir+String.valueOf(res.get("filename")));
-        param.put("ctime",Inc.date("y-M-d H:m:s"));
+        param.put("ctime",Inc.date("yyyy-MM-dd HH:mm:ss"));
         new UserInfo().insert(param);
       }else{
         // 头像
@@ -145,7 +145,7 @@ public class UserinfoController extends Base {
         param = new HashMap<String, Object>();
         param.put("uid",tokenData.get("uid"));
         param.put("img",imgDir+String.valueOf(res.get("filename")));
-        param.put("utime",Inc.date("y-M-d H:m:s"));
+        param.put("utime",Inc.date("yyyy-MM-dd HH:mm:ss"));
         HashMap<String, Object> uData = new HashMap<String, Object>();
         uData.put("data",param);
         uData.put("where","uid="+String.valueOf(tokenData.get("uid")));
