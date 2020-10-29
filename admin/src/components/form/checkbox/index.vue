@@ -23,7 +23,7 @@
 export default {
   name: 'Checkbox',
   props: {
-    value: {type: String, default: ''}, //checkbox[value]
+    value: '', //checkbox[value]
     label: {type: String, default: ''}, //名称
     checked: {type: Boolean, default: false}, //是否选中
   },

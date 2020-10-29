@@ -19,7 +19,7 @@ export default {
   name: 'TableRow',
   components: {wmCheckbox},
   props: {
-    value: {type:String, default:''}, //checkbox[value]
+    value: '', //checkbox[value]
   },
 }
 </script>
