@@ -48,6 +48,10 @@ public class Model {
   }
 
   /* 查询-单条 */
+  public HashMap<String, Object> findFirst() {
+    HashMap<String, Object> params = new HashMap<String, Object>();
+    return findFirst(params);
+  }
   public HashMap<String, Object> findFirst(HashMap<String, Object> params) {
     if(!params.containsKey("limit")) params.put("limit","0,1");
     String sql = this._getSql("SELECT", params);
@@ -56,6 +60,10 @@ public class Model {
   }
 
   /* 查询-多条 */
+  public HashMap<String, Object> find() {
+    HashMap<String, Object> params = new HashMap<String, Object>();
+    return findFirst(params);
+  }
   public ArrayList<HashMap<String, Object>> find(HashMap<String, Object> params) {
     String sql = this._getSql("SELECT", params);
     if(sql=="") return null;
