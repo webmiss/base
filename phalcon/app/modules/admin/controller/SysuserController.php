@@ -5,8 +5,11 @@ namespace app\modules\admin\controller;
 use app\Env;
 use app\common\Base;
 use app\common\AdminToken;
+use app\common\Inc;
+use app\library\Safety;
+use app\model\User;
 
-/* 控制台 */
+/* 用户管理 */
 class SysUserController extends Base{
 
   /* 构造函数 */
@@ -50,6 +53,37 @@ class SysUserController extends Base{
       $list[$key]['utime'] = $val['utime']?$val['utime']:'';
     }
     return self::getJSON(['code'=>0,'msg'=>'成功','list'=>$list,'total'=>$total]);
+  }
+
+  /* 添加 */
+  function addAction(){
+    // 参数
+    $data = $this->request->get('data');
+    $data = json_decode($data);
+    if(!$data || !isset($data->tel) || empty($data->tel)){
+      return self::getJSON(['code'=>4000,'msg'=>'参数错误!']);
+    }
+    $tel = trim($data->tel);
+    $passwd = $data->passwd?md5($data->passwd):md5('123456');
+    // 验证手机
+    if(!Safety::isRight('tel',$tel)){
+      return self::getJSON(['code'=>4000,'msg'=>'手机号码有误!']);
+    }
+    // 是否存在
+    $res = User::findFirst(['tel=:tel:','bind'=>['tel'=>$tel]]);
+    if($res) return self::getJSON(['code'=>4000,'msg'=>'该用户已存在!']);
+    // 保存
+    $model = new User();
+    $model->id = Inc::getId();
+    $model->tel = $tel;
+    $model->password = $passwd;
+    $model->rtime = date('YmdHis');
+    // 结果
+    if($model->save()){
+      return self::getJSON(['code'=>0,'msg'=>'成功']);
+    }else{
+      return self::getJSON(['code'=>5000,'msg'=>'添加失败!']);
+    }
   }
 
 }
