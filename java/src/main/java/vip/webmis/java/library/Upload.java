@@ -66,10 +66,9 @@ public class Upload {
 
   /* 获取名称 */
   private static String _getName(){
-    DateTimeFormatter df = DateTimeFormatter.ofPattern("yMdHmsSSSS");
+    DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSSS");
     LocalDateTime now = LocalDateTime.now();
-    String d = df.format(now);
-    return d;
+    return df.format(now);
   }
 
 }
