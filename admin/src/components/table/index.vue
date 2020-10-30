@@ -24,6 +24,7 @@ export default {
     getVals(){
       let vals = [];
       const obj = document.querySelectorAll('.wm-table_checkbox div.active');
+      if(obj.length==0) return '';
       for(let i=0; i<obj.length; i++){
         vals.push(obj[i].querySelector('input').value);
       }
@@ -36,7 +37,7 @@ export default {
       let row = {};
       // 是否选择
       const obj = document.querySelector('.wm-table_checkbox div.active');
-      if(!obj) return row;
+      if(!obj) return '';
       // 获取数据
       const val = obj.querySelector('input').value;
       for(let i in this.data){
@@ -51,7 +52,7 @@ export default {
       let row = [];
       // 是否选择
       const obj = document.querySelectorAll('.wm-table_checkbox div.active');
-      if(!obj) return row;
+      if(!obj) return '';
       // 获取数据
       for(let x=0; x<obj.length; x++){
         let val = obj[x].querySelector('input').value;
