@@ -10,7 +10,7 @@
           <slot></slot>
         </div>
       </div>
-      <div class="wm-dialog_footer">
+      <div class="wm-dialog_footer" :style="{textAlign:footerAlign}">
         <slot name="footer"></slot>
       </div>
     </div>
@@ -27,7 +27,7 @@
 .wm-dialog_close::after{transform: rotate(45deg); margin-left: -25%;}
 .wm-dialog_close::before{transform: rotate(-45deg); margin-left: -25%;}
 .wm-dialog_body{overflow: auto; width: 100%; height: calc(100% - 48px - 70px);}
-.wm-dialog_footer{height: 40px; padding: 10px 0 20px; text-align: center;}
+.wm-dialog_footer{height: 40px; padding: 10px 0 20px;}
 </style>
 
 <script>
@@ -43,6 +43,7 @@ export default {
     maxWidth: {type: String, default: '900px'},  //宽
     maxHeight: {type: String, default: '90%'},  //高
     titleAlign: {type: String, default: 'center'},  //标题对齐方式
+    footerAlign: {type: String, default: 'center'},  //底部对齐方式
     bodyPadding: {type: String, default: '8px 16px'},  //内容间隙
     bgColor: {type: String, default: '#FFF'},  //高
     bgClose: {type: Boolean, default: false},  //点击背景关闭
