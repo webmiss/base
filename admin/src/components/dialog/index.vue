@@ -49,7 +49,10 @@ export default {
     bgClose: {type: Boolean, default: false},  //点击背景关闭
     
   },
-  mounted(){
+  watch:{
+    show(val){
+      if(!val) this.$refs.Popup.close();
+    }
   },
   methods:{
 
