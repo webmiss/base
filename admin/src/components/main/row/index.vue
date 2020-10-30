@@ -13,7 +13,7 @@ export default {
   name: 'Row',
   props: {
     lineHeight: {type: String, default: '40px'}, //高
-    fontSize: {type: String, default: '14px'}, //高
+    fontSize: {type: String, default: '14px'}, //字体大小
   },
 }
 </script>
