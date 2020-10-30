@@ -14,17 +14,10 @@ class Inc:
   def md5(str) :
     return hashlib.md5(str.encode(encoding='utf-8')).hexdigest()
 
-  # 自动编号ID-18位
-  def getId() :
-    d = time.strftime('%Y%m%d%H%M%S',time.localtime())
-    t = datetime.datetime.now()
-    n = str(t.microsecond)[2:6]
-    return d+n
-
   # Json转-转字符串
-  def json_encode(str) :
+  def json_encode(arr) :
     try :
-      return json.dumps(str)
+      return json.dumps(arr)
     except Exception as e :
       return False
   # Json-转数组
@@ -33,3 +26,10 @@ class Inc:
       return json.loads(str)
     except Exception as e :
       return False
+
+  # 自动编号ID-18位
+  def getId() :
+    d = time.strftime('%Y%m%d%H%M%S',time.localtime())
+    t = datetime.datetime.now()
+    n = str(t.microsecond)[2:6]
+    return d+n
