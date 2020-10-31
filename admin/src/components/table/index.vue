@@ -27,7 +27,7 @@ export default {
 
     /* 重置勾选 */
     reset(){
-      const obj = document.querySelectorAll('.wm-table_checkbox div.active');
+      const obj = document.querySelectorAll('.wm-table .checkbox div.active');
       if(obj.length==0) return '';
       for(let i=0; i<obj.length; i++){
         obj[i].classList.remove("active");
