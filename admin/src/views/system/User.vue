@@ -90,7 +90,7 @@
     </wm-dialog>
     <!-- Del End -->
 
-    <!-- Edit -->
+    <!-- Info -->
     <wm-dialog title="用户信息" width="420px" :show="info.show" @update:show="info.show=$event">
       <wm-form class="form">
         <wm-form-item label="昵称">
@@ -113,7 +113,7 @@
         <wm-button @click="subInfo()">更 新</wm-button>
       </template>
     </wm-dialog>
-    <!-- Edit End -->
+    <!-- Info End -->
 
   </wm-main>
 </template>

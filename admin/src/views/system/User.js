@@ -31,10 +31,10 @@ export default {
       // 搜索、添加、编辑、删除
       sea: {show:false,form:{uname:''}},
       add: {show:false,form:{tel:'',passwd:''}},
-      edit: {show:false,form:{tel:'',passwd:''}},
-      del: {show:false},
+      edit: {show:false,id:'',form:{tel:'',passwd:''}},
+      del: {show:false,ids:''},
       // 用户信息
-      info: {show:false,form:{}},
+      info: {show:false,id:'',form:{}},
       gender: [{name:'男',val:'男'},{name:'女',val:'女'}],
     }
   },
@@ -72,6 +72,8 @@ export default {
 
     /* 加载数据 */
     loadData(){
+      this.page.list = [];
+      this.page.total = 0;
       const load = Loading();
       Post('Sysuser/list',{
         token: Storage.getItem('token'),
@@ -90,14 +92,16 @@ export default {
 
     /* 搜索 */
     subSea(){
-
+      this.sea.show = false;
+      this.page.page = 1;
+      this.loadData();
     },
 
     /* 添加 */
     subAdd(){
       this.add.show = false;
       // 提交
-      let data = JSON.stringify(this.add.form);
+      const data = JSON.stringify(this.add.form);
       const load = Loading();
       Post('Sysuser/add',{token:Storage.getItem('token'),data:data},(res)=>{
         load.clear();
@@ -114,9 +118,22 @@ export default {
       if(!row) return Toast('请选择数据!');
       this.edit.show = true;
       // 默认值
-      this.edit.form.uid = row.uid;
+      this.edit.uid = row.uid;
       this.edit.form.tel = row.tel;
       this.edit.form.passwd = '';
+    },
+    subEdit(){
+      this.edit.show = false;
+      // 提交
+      const uid = this.edit.uid;
+      const data = JSON.stringify(this.edit.form);
+      const load = Loading();
+      Post('Sysuser/edit',{token:Storage.getItem('token'),uid:uid,data:data},(res)=>{
+        load.clear();
+        const d = res.data;
+        if(d.code===0) this.loadData();
+        return Toast(d.msg);
+      });
     },
 
     /* 删除 */
@@ -125,23 +142,54 @@ export default {
       const vals = table.getVals();
       if(!vals) return Toast('请选择数据!');
       this.del.show = true;
-      console.log(vals);
+      this.del.ids = JSON.stringify(vals);
+    },
+    subDel(){
+      this.del.show = false;
+      // 提交
+      const load = Loading();
+      Post('Sysuser/delete',{token:Storage.getItem('token'),data:this.del.ids},(res)=>{
+        load.clear();
+        const d = res.data;
+        if(d.code===0) this.loadData();
+        return Toast(d.msg);
+      });
     },
 
     /* 状态 */
     setState(val,uid){
-      console.log(val,uid);
+      const state = val?'1':'0';
+      const load = Loading();
+      Post('Sysuser/state',{token:Storage.getItem('token'),uid:uid,state:state},(res)=>{
+        load.clear();
+        const d = res.data;
+        return Toast(d.msg);
+      });
     },
 
     /* 用户信息 */
     infoData(row){
       this.info.show = true;
       // 默认值
-      this.info.form.nickname = row.nickname;
-      this.info.form.name = row.name;
-      this.info.form.gender = row.gender;
-      this.info.form.birthday = row.birthday;
-      this.info.form.position = row.position;
+      this.info.uid = row.uid;
+      this.info.form.nickname = row.nickname || '';
+      this.info.form.name = row.name || '';
+      this.info.form.gender = row.gender || '';
+      this.info.form.birthday = row.birthday || '';
+      this.info.form.position = row.position || '';
+    },
+    subInfo(){
+      this.info.show = false;
+      // 提交
+      const uid = this.info.uid;
+      const data = JSON.stringify(this.info.form);
+      const load = Loading();
+      Post('Sysuser/info',{token:Storage.getItem('token'),uid:uid,data:data},(res)=>{
+        load.clear();
+        const d = res.data;
+        if(d.code===0) this.loadData();
+        return Toast(d.msg);
+      });
     },
 
   },
