@@ -3,6 +3,7 @@ package vip.webmis.java.common;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -30,17 +31,26 @@ public class Inc {
     return DigestUtils.md5DigestAsHex(str.getBytes());
   }
 
-  /* Json转-转字符串 */
+  /* JSON转字符串 */
   public static String json_encode(Dynamic<?> arr) {
     return JSON.toJSONString(arr);
   }
 
-  /* Json-转数组 */
+  /* JSON转数组 */
   public static JSONObject json_decode(String str) {
     try{ return JSON.parseObject(str); }catch (Exception e){ return null; }
   }
   public static JSONArray json_decode_array(String str) {
     try{ return JSON.parseArray(str); }catch (Exception e){ return null; }
+  }
+
+  /* 数组格式化字符串 */
+  public static String implode(String glue, List<Object> arr){
+    String str="";
+    for(int i=0; i<arr.size(); i++){
+      str += String.valueOf(arr.get(i))+glue;
+    }
+    return str.substring(0,str.length()-1);
   }
 
   /* 自动编号ID-18位 */
