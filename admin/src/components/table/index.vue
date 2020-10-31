@@ -18,7 +18,21 @@ export default {
   props: {
     data: {type:Array, default:[]}, //数据: [{id:val},{id:val}]
   },
+  watch:{
+    data(val){
+      this.reset();
+    }
+  },
   methods:{
+
+    /* 重置勾选 */
+    reset(){
+      const obj = document.querySelectorAll('.wm-table_checkbox div.active');
+      if(obj.length==0) return '';
+      for(let i=0; i<obj.length; i++){
+        obj[i].classList.remove("active");
+      }
+    },
 
     /* 获取选中值 */
     getVals(){
