@@ -97,7 +97,7 @@ class Model(Base) :
     keys = params['data'].keys()
     vals = ''
     for k in keys:
-      vals += '%s="%s",'%(k,params['data'][k])
+      vals += '%s=%s,'%(k,params['data'][k]) if params['data'][k]=='null' else '%s="%s",'%(k,self.filter(params['data'][k]))
     sql = 'UPDATE `%s` SET %s WHERE %s'%(self.table,vals[:-1],where)
     # 提交
     if self._state :
