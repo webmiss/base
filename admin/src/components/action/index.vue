@@ -41,19 +41,14 @@ export default {
 
     /* 动作菜单 */
     getAction(url){
-      if(!url){
-        this.store.menuName='';
-        this.action = [];
-        return false;
-      } 
+      this.action = [];
+      if(!url) return this.store.menuName='';
       Post('Sysmenusaction/getAction',{token:Storage.getItem('token'),url:url},(res)=>{
         const d = res.data;
         if(d.code==0){
           this.action = d.action;
-          // 追加
-          if(this.menus){
-            for(let i in this.menus) this.action.push(this.menus[i]);
-          }
+          // 追加菜单
+          if(this.menus) for(let i in this.menus) this.action.push(this.menus[i]);
         }else{
           Toast(d.msg);
         }
