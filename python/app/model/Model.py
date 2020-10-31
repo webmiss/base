@@ -79,7 +79,7 @@ class Model(Base) :
       return id
       
   # 更新
-  def update(self,params,where=''):
+  def update(self,params):
     # 是否数据
     if 'data' not in params.keys():
       print('请传入更新数据!')
