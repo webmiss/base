@@ -87,11 +87,11 @@ public class Model {
   public int insert(HashMap<String, Object> params) {
     String keys = "";
     String vals = "";
-    for (String k : params.keySet()){
-      keys += "`" + k + "`,";
+    for(String k : params.keySet()){
+      keys += "`"+k+"`,";
     }
-    for (Object v : params.values()){
-      vals += v!=null&&v!="null"?"\""+filter(String.valueOf(v))+"\",":String.valueOf(v)+",";
+    for(Object v : params.values()){
+      vals += !v.equals("null")?"\""+filter(String.valueOf(v))+"\",":String.valueOf(v)+",";
     }
     keys = keys.substring(0, keys.length()-1);
     vals = vals.substring(0, vals.length()-1);
@@ -120,10 +120,12 @@ public class Model {
       if(where=="") return false;
     }
     // 组合SQL
+    String v;
     String vals = "";
     Map<String, Object> data = JSON.parseObject(JSON.toJSONString(params.get("data")));
     for (String k : data.keySet()){
-      vals += k + "=\"" + filter(String.valueOf(data.get(k))) + "\",";
+      v = String.valueOf(data.get(k));
+      vals += !data.get(k).equals("null")?k+"=\""+filter(v)+"\",":k+"="+v+",";
     }
     vals = vals.substring(0, vals.length()-1);
     String sql = String.format("UPDATE `%s` SET %s WHERE %s", this.table, vals, where);
