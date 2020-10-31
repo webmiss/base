@@ -46,7 +46,7 @@ class UserController(Base) :
         'gender':uData['gender'],
         'img': Env.base_url+uData['img'] if uData['img']!='' else '',
       },
-      'token': AdminToken().create({'uid':uData['id'],'uname':uname})
+      'token': AdminToken().create({'uid':str(uData['id']),'uname':uname})
     })
 
   # 验证Token

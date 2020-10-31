@@ -74,7 +74,7 @@ public class UserController extends Base {
     uinfo.put("img",!uData.get("img").equals("")?Env.base_url+(String)uData.get("img"):"");
     _res.put("uinfo",uinfo);
     HashMap<String,Object> tData = new HashMap<String,Object>();
-    tData.put("uid",uData.get("id"));
+    tData.put("uid",uData.get("id").toString());
     tData.put("uname",uname);
     _res.put("token",AdminToken.create(tData));
     return getJSON(_res);
