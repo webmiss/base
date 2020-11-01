@@ -17,7 +17,7 @@ export default {
       // 信息
       info: {url:'', path:'/', loaded:'0%'},
       // 列表、新建、打包、重命名、删除
-      lists: {url:'', folder:[], files:[], dirNum:0, fileNum:0, size:0},
+      lists: {url:'', folder:[], files:[], dirNum:0, fileNum:0, size:'0KB'},
       folder: {show:false, form:{name:''}},
       zipData: {show:false, form:{name:'', files:[]}},
       renameData: {show:false, form:{rename:'', name:''}},

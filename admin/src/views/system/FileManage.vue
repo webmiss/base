@@ -50,8 +50,8 @@
 
 <style scoped>
 /* 信息 */
-.file_path{line-height: 40px; padding: 4px 16px;}
-.file_path a{color: #333;}
+.file_path{line-height: 20px; padding: 16px;}
+.file_path a{color: #333; user-select: none;}
 .file_path a:hover{color: #6FB737;}
 .file_path .path{color: #999;}
 .file_path .path span{padding: 5px 8px;}
