@@ -65,7 +65,7 @@
 .file_body li{float: left; margin: 5px;}
 .file{width: 128px; height: 128px; border: #FFF 1px solid; border-radius: 5px;}
 .file:hover{background-color: #F2F4F6;}
-.file .name{line-height: 40px; text-align: center; padding: 0 5px;}
+.file .name{line-height: 24px; text-align: center; padding: 8px 5px;}
 
 /* 选择 */
 .check{position: absolute; width: 18px; height: 18px; margin: 10px 0 0 -10px; background-color: #24292E; border-radius: 50%;}
