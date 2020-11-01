@@ -65,7 +65,7 @@
 .file_body li{float: left; margin: 5px;}
 .file{width: 128px; height: 128px; border: #FFF 1px solid; border-radius: 5px;}
 .file:hover{background-color: #F2F4F6;}
-.file .name{line-height: 38px; text-align: center; padding: 0 5px;}
+.file .name{line-height: 40px; text-align: center; padding: 0 5px;}
 
 /* 选择 */
 .check{position: absolute; width: 18px; height: 18px; margin: 10px 0 0 -10px; background-color: #24292E; border-radius: 50%;}
@@ -80,8 +80,8 @@
 .file_active .file{border-color: #6FB737; background-color: #F2F4F6;}
 
 /* 文件夹 */
-.file_ct{width: 100%; height: 82px; line-height: 82px; text-align: center;}
-.file_ct .icons{font-size: 48px; color: #B9C9D6;}
+.file_ct{width: 100%; height: 84px; line-height: 84px; text-align: center;}
+.file_ct .icons{font-size: 64px; color: #B9C9D6;}
 .file_ct .icon_folder{color: #FFD65D;}
 /* 图片 */
 .file_img{width: 100%; height: 100%; background-color: #F2F4F6;}
