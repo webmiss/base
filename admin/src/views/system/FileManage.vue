@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="html">
 
     <!-- 文件信息 -->
     <div class="file_path">
@@ -19,8 +19,9 @@
     </div>
     <!-- 文件信息 End -->
 
-    <!-- 列表 -->
-    <ul class="file_body" v-if="lists.folder.length!=0 || lists.files.length!=0">
+    <div class="file_body">
+      <!-- 列表 -->
+      <ul v-if="lists.folder.length!=0 || lists.files.length!=0">
         <!-- 文件夹 -->
         <li v-for="(val,key) in lists.folder" :key="'dir'+key" :class="val.check?'file_active':'file_state'">
           <div class="file_click" @click="val.check=!val.check"><i class="check"></i></div>
@@ -44,6 +45,7 @@
         </li>
       </ul>
       <!-- 列表 End -->
+    </div>
 
   </div>
 </template>
@@ -61,8 +63,9 @@
 .file_load .text{position: absolute; padding-top: 10px; text-align: right;}
 
 /* 列表 */
-.file_body{overflow: hidden; padding: 20px 5px;}
-.file_body li{float: left; margin: 5px;}
+.file_body{overflow: auto; height: calc(100% - 56px); padding: 0 5px;}
+.file_body ul{overflow: hidden; padding: 20px 0;}
+.file_body li{position: relative; float: left; margin: 5px;}
 .file{width: 128px; height: 128px; border: #FFF 1px solid; border-radius: 5px;}
 .file:hover{background-color: #F2F4F6;}
 .file .name{line-height: 24px; text-align: center; padding: 8px 5px;}
