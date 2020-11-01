@@ -64,7 +64,7 @@ export default {
     this.store.action.url = 'SysUser';
     this.store.action.menus = '';
     // 加载数据
-    this.loadData();
+    if(Storage.getItem('token')) this.loadData();
   },
   mounted(){
   },

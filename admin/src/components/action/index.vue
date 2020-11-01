@@ -42,7 +42,7 @@ export default {
     /* 动作菜单 */
     getAction(url){
       this.action = [];
-      if(!url) return this.store.menuName='';
+      if(!url || !Storage.getItem('token')) return this.store.menuName='';
       Post('Sysmenusaction/getAction',{token:Storage.getItem('token'),url:url},(res)=>{
         const d = res.data;
         if(d.code==0){
