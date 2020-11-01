@@ -6,7 +6,7 @@
 
 <style scoped>
 .wm-button:focus,button:active:focus,button.active:focus,button.focus,button:active.focus,button.active.focus{outline: none; border-color: transparent; box-shadow:none;}
-.wm-button{border: #DCDFE6 1px solid; background: none; cursor: pointer; line-height: 40px; font-size: 14px; text-align: center; border-radius: 4px; box-shadow: 0 2px 3px rgba(0,0,0,.1);}
+.wm-button{user-select: none; border: #DCDFE6 1px solid; background: none; cursor: pointer; line-height: 40px; font-size: 14px; text-align: center; border-radius: 4px; box-shadow: 0 2px 3px rgba(0,0,0,.1);}
 .wm-button:disabled{background-color: #999;}
 </style>
 
