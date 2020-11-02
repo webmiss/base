@@ -2,6 +2,7 @@ from app.Env import Env
 from app.common.Base import Base
 from app.common.AdminToken import AdminToken
 from app.common.Inc import Inc
+from app.common.Data import Data
 from app.library.Safety import Safety
 from app.model.User import User
 from app.model.UserInfo import UserInfo
@@ -72,7 +73,7 @@ class SysuserController(Base) :
     if res : return self.getJSON({'code':4000,'msg':'该用户已存在!'})
     # 保存
     params = {
-      'id': Inc.getId(),
+      'id': Data.getId(),
       'tel': tel,
       'password': passwd,
       'rtime': Inc.date('%Y%m%d%H%M%S'),
