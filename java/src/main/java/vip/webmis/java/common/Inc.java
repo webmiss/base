@@ -51,5 +51,23 @@ public class Inc {
     }
     return str.substring(0,str.length()-1);
   }
+
+  /* 去除首尾字符 */
+  public static String trim(String str){
+    return trim(str, " ");
+  }
+  public static String trim(String str, String glue){
+    if (str == null || str.equals("")) return str;
+    boolean beginIndexFlag = true;
+    boolean endIndexFlag = true;
+    do{
+        int beginIndex = str.indexOf(glue) == 0 ? 1 : 0;
+        int endIndex = str.lastIndexOf(glue) + 1 == str.length() ? str.lastIndexOf(glue) : str.length();
+        str = str.substring(beginIndex, endIndex);
+        beginIndexFlag = (str.indexOf(glue) == 0);
+        endIndexFlag = (str.lastIndexOf(glue) + 1 == str.length());
+    } while (beginIndexFlag || endIndexFlag);
+    return str;
+  }
   
 }
