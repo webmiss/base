@@ -72,8 +72,6 @@ public class MyFiles {
         data.put("fileNum", Integer.valueOf(data.get("fileNum").toString())+1);
       }
       // 大小
-      long t = Inc.time("yyyy-MM-dd","2020-10-21");
-      System.out.println(t);
       data.put("size", formatBytes(total));
     }
     return data;
