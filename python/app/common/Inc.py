@@ -6,7 +6,8 @@ import json
 class Inc:
 
   # 格式化时间
-  def date(format='%Y-%m-%d %H:%M:%S',t=time.localtime()) :
+  def date(format='%Y-%m-%d %H:%M:%S',t=None) :
+    t = time.localtime(t)
     return time.strftime(format,t)
 
   # Md5加密
