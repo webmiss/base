@@ -21,32 +21,19 @@ class Safety{
     return preg_match($data[$name],$val)?true:false;
   }
 
-  // /* Token-验证 */
-  // static function verToken($token){
-  //   // 解密
-  //   $data = Safety::decode($token,$this->config->key);
-  //   if(!$data) return '';
-  //   // 续期
-  //   $tmp_token = $this->redis->get($this->config->token_name.$data->uid);
-  //   if(empty($token) || $token!=$tmp_token) return false;
-  //   $this->redis->setex($this->config->token_name.$data->uid,$this->config->token_time,$token);
-  //   // 结果
-  //   return $data;
-  // }
+  /* 加密-字符串 */
+	static function key($str){
+		return md5($str.Env::$key);
+	}
+	/* 加密-数组 */
+	static function KeyArray($param=''){
+		ksort($param);
+		reset($param);
+		$param['sign'] = Env::$key;
+		return md5(http_build_query($param));
+	}
 
-  // /* Token-加密 */
-  // protected function setToken($uid,$data){
-  //   $token = Safety::encode([
-  //     'uid'=>$uid,
-  //     'ltime'=>date('YmdHis'),
-  //     'data'=>$data,
-  //   ],$this->config->key);
-  //   // 缓存
-  //   $this->redis->setex($this->config->token_name.$uid,$this->config->token_time,$token);
-  //   return $token;
-  // }
-
-  /* 加密 */
+  /* 加密-Base64 */
   static function encode($data=[]){
     $text = is_array($data)?json_encode($data):$data;
     try{
@@ -60,7 +47,7 @@ class Safety{
     
   }
 
-  /* 解密 */
+  /* 解密-Base64 */
   static function decode($token=''){
     $token = str_replace('_','+',$token);
     try{

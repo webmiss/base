@@ -5,6 +5,7 @@ use app\Env;
 use app\common\Base;
 use app\common\AdminToken;
 use app\common\Inc;
+use app\common\Data;
 use app\library\Safety;
 use app\model\User;
 use app\model\UserInfo;
@@ -79,7 +80,7 @@ class SysUserController extends Base{
     if($res) return self::getJSON(['code'=>4000,'msg'=>'该用户已存在!']);
     // 保存
     $model = new User();
-    $model->id = Inc::getId();
+    $model->id = Data::getId();
     $model->tel = $tel;
     $model->password = $passwd;
     $model->rtime = date('YmdHis');

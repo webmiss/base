@@ -13,24 +13,6 @@ class Inc{
 		return $base_url;
 	}
 
-	/* 自动编号ID-18位 */
-  static function getId(){
-    list($msec, $sec) = explode(' ', microtime());
-    return date('YmdHis').substr($msec,2,4);
-  }
-
-	/* 加密-字符串 */
-	static function getKey($str){
-		return md5($str.Env::$key);
-	}
-	/* 加密-数组 */
-	static function getKeyArr($param=''){
-		ksort($param);
-		reset($param);
-		$param['sign'] = Env::$key;
-		return md5(http_build_query($param));
-	}
-
 	/* Post */
 	static function curlPost($url='', $data=[], $type='', $header=[]){
 		// 方式
@@ -82,16 +64,6 @@ class Inc{
 			if($append) $strLast.=$append;
 			return $strLast;
 		}
-	}
-
-	/* 计算年龄 */
-	static function getAge($birthday){
-		$date = date("Y-m-d");
-		list($y,$m,$d)=explode("-",$birthday);
-		list($ty,$tm,$td)=explode("-", $date);
-		$age=$ty-$y;
-		if($tm>$m || $tm==$m&&$td>$d) $age+=1;
-		return $age;
 	}
 
 }
