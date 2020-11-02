@@ -39,17 +39,15 @@ public class Upload {
     }
     // 创建目录
     File dir = new File(String.valueOf(param.get("path")));
-    if (!dir.exists())
-      dir.mkdirs();
+    if (!dir.exists()) dir.mkdirs();
     // 文件名
-    String filename = param.get("filename").equals("") ? _getName() + "." + String.valueOf(param.get("ext"))
-        : String.valueOf(param.get("filename"));
+    String filename = param.get("filename").equals("")?_getName()+"."+String.valueOf(param.get("ext")):String.valueOf(param.get("filename"));
     // 保存文件
     FileOutputStream fos = null;
     BufferedOutputStream bos = null;
     try {
       byte[] bytes = Base64.getDecoder().decode(base64);
-      File file = new File(String.valueOf(param.get("path")) + filename);
+      File file = new File(String.valueOf(param.get("path"))+filename);
       fos = new java.io.FileOutputStream(file);
       bos = new BufferedOutputStream(fos);
       bos.write(bytes);
