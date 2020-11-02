@@ -2,7 +2,7 @@ import time
 import hashlib
 import json
 
-# 公共函数
+# 公共类
 class Inc:
 
   # 格式化时间

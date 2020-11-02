@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import vip.webmis.java.Env;
 import vip.webmis.java.common.AdminToken;
 import vip.webmis.java.common.Base;
+import vip.webmis.java.common.Data;
 import vip.webmis.java.common.Inc;
 import vip.webmis.java.library.Safety;
 import vip.webmis.java.model.User;
@@ -117,7 +118,7 @@ public class SysuserController extends Base {
     }
     // 保存
     params = new HashMap<String, Object>();
-    params.put("id",Inc.getId());
+    params.put("id",Data.getId());
     params.put("tel",tel);
     params.put("password",passwd);
     params.put("rtime",Inc.date("yyyy-MM-dd HH:mm:ss"));

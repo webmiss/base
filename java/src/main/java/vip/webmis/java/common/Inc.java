@@ -11,7 +11,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import org.springframework.util.DigestUtils;
 
-/* 公共函数 */
+/* 公共类 */
 public class Inc {
 
   /* 格式化时间 */
@@ -19,7 +19,6 @@ public class Inc {
     String time = null;
     return date(format, time);
   }
-
   public static String date(String format, String time) {
     DateTimeFormatter df = DateTimeFormatter.ofPattern(format);
     LocalDateTime now = LocalDateTime.now();
@@ -51,13 +50,6 @@ public class Inc {
       str += String.valueOf(arr.get(i))+glue;
     }
     return str.substring(0,str.length()-1);
-  }
-
-  /* 自动编号ID-18位 */
-  public static String getId(){
-    DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSSS");
-    LocalDateTime now = LocalDateTime.now();
-    return df.format(now);
   }
   
 }

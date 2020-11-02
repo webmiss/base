@@ -1,7 +1,7 @@
 import time
 import datetime
 
-# 公共函数
+# 数据类
 class Data:
 
   # 自动编号ID-18位
