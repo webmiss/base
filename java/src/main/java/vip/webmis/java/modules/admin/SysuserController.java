@@ -59,15 +59,11 @@ public class SysuserController extends Base {
     for (HashMap<String, Object> val : list) {
       val.put("state", val.get("state").equals("1") ? true : false);
       val.put("uid", val.get("uid").toString());
-      val.put("img",
-          val.get("img") != null && !val.get("img").equals("") ? Env.base_url + String.valueOf(val.get("img")) : "");
+      val.put("img", val.get("img") != null && !val.get("img").equals("") ? Env.base_url + String.valueOf(val.get("img")) : "");
       val.put("birthday", val.get("birthday") != null ? String.valueOf(val.get("birthday")) : "");
-      val.put("rtime",
-          val.get("rtime") != null ? Inc.date("yyyy-MM-dd HH:mm:ss", String.valueOf(val.get("rtime"))) : "");
-      val.put("ltime",
-          val.get("ltime") != null ? Inc.date("yyyy-MM-dd HH:mm:ss", String.valueOf(val.get("ltime"))) : "");
-      val.put("utime",
-          val.get("utime") != null ? Inc.date("yyyy-MM-dd HH:mm:ss", String.valueOf(val.get("utime"))) : "");
+      // val.put("rtime", val.get("rtime") != null ? val.get("rtime").toString(). : "");
+      // val.put("ltime", val.get("ltime") != null ? Inc.date("yyyy-MM-dd HH:mm:ss", String.valueOf(val.get("ltime"))) : "");
+      // val.put("utime", val.get("utime") != null ? Inc.date("yyyy-MM-dd HH:mm:ss", String.valueOf(val.get("utime"))) : "");
     }
     // 返回数据
     HashMap<String, Object> _res = new HashMap<String, Object>();

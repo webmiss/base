@@ -1,8 +1,8 @@
 package vip.webmis.java.common;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.alibaba.fastjson.JSON;
@@ -14,15 +14,29 @@ import org.springframework.util.DigestUtils;
 /* 公共类 */
 public class Inc {
 
+  /* 时间戳 */
+  public static long time() {
+    return time("yyyy-MM-dd HH:mm:ss","");
+  }
+  public static long time(String format, String d) {
+    if(d.equals("") || d.equals("")) return new Date().getTime();
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+    try {
+      Date date = simpleDateFormat.parse(d);
+      return date.getTime();
+    }catch(ParseException e){
+      return 0;
+    }
+  }
+
   /* 格式化时间 */
   public static String date(String format) {
-    String time = null;
-    return date(format, time);
+    return date(format, 0);
   }
-  public static String date(String format, String time) {
-    DateTimeFormatter df = DateTimeFormatter.ofPattern(format);
-    LocalDateTime now = LocalDateTime.now();
-    return df.format(time != null ? Timestamp.valueOf(time).toLocalDateTime() : now);
+  public static String date(String format, long time) {
+    long t = new Date().getTime();
+    t = time!=0?time:t;
+    return new SimpleDateFormat(format).format(new Date(t));
   }
 
   /* Md5加密 */
