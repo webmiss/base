@@ -7,7 +7,7 @@ class Files{
   public static $file_root = '.';
   private static $zipObj = null;
   
-  /* Folders & Files */
+  /* 列表(文件夹&文件) */
   static function lists($path='/') {
     // 路径
     $path = $path=='/'?'':trim($path, '/').'/';
@@ -25,53 +25,87 @@ class Files{
     $root = self::$file_root.$path;
     if(!is_dir($root)) return $data;
     // 文件夹&文件
-    $d = opendir($root);
-    while($f = readdir($d)) {
-      if($f == "." || $f == ".."){continue;}
+    $list = scandir($root);
+    foreach($list as $f) {
+      if($f=='.' || $f=='..') continue;
       $ff = $root . '/' . $f;
+      $size = self::fileSize($ff);
+      $data['size'] += $size;
       $ctime = self::getCtime($ff);
       $mtime = self::getMtime($ff);
       $perm = self::getPerm($ff);
       if(is_dir($ff)){
-        $size = self::dirsize($ff);
         $data['folder'][] = ['name'=>$f, 'size'=>self::formatBytes($size), 'ctime'=>$ctime, 'mtime'=>$mtime, 'perm'=>$perm];
-        $data['size'] += $size;
         $data['dirNum']++;
       }else {
-        $size = self::size($ff);
         $ext = self::getExt($f);
         $data['files'][] = ['name'=>$f, 'size'=>self::formatBytes($size), 'ctime'=>$ctime, 'mtime'=>$mtime, 'perm'=>$perm, 'ext'=>$ext];
-        $data['size'] += $size;
         $data['fileNum']++;
       }
     }
     // 大小
     $data['size'] = self::formatBytes($data['size']);
-    // !empty($data['folder'])?sort($data['folder']):false;
-    // !empty($data['files'])?sort($data['files']):false;
     return $data;
   }
 
-  /* Mkdir */
+  /* 新建-文件夹 */
   static function mkDir($path) {
     $dir = self::$file_root.$path;
     if(!is_dir($dir)){
       return mkdir($dir,0777,true)===true?true:false;
-    }else{return false;}
+    }else{
+      return false;
+    }
   }
-  /* saveFile */
+
+  /* 新建-文件 */
   static function saveFile($file,$content=''){
     return file_put_contents($file,$content)===true?true:false;
   }
 
-  /* Rename */
+  /* 重命名 */
   static function reName($rename,$name) {
-    $ff = self::$file_root.$rename;
-    $f = self::$file_root.$name;
-    return rename($ff,$f)===true?true:false;
+    $src = self::$file_root.$rename;
+    $dst = self::$file_root.$name;
+    return rename($src,$dst)===true?true:false;
   }
 
-  /* All Files */
+  /* Upload */
+  static function upload($path,$upName){
+    $file = str_replace(' ','_',$_FILES[$upName]['name']);
+    return move_uploaded_file($_FILES[$upName]['tmp_name'],self::$file_root.$path.$file)===true?true:false;
+  }
+  
+  /* Download */
+  static function down($file){
+    $fileinfo = pathinfo($file);
+    header('Content-type: application/x-'.$fileinfo['extension']);
+    header('Content-Disposition: attachment; filename='.$fileinfo['basename']);
+    header('Content-Length: '.filesize($file));
+    return readfile($file);
+  }
+
+  /* 删除(文件夹&文件) */
+  static function delAll($path){
+    $obj = self::$file_root.$path;
+    if(is_dir($obj)){
+      // 文件夹
+      $list = scandir($obj);
+      foreach ($list as $f) {
+        if($f=='.' || $f=='..') continue;
+        $ff = $path.'/'.$f;
+        if(is_dir(self::$file_root.$ff)) self::delAll($ff);
+        else unlink(self::$file_root.$ff);
+      }
+      // 空目录
+      rmdir($obj);
+    }elseif(is_file($obj)){
+      // 文件
+      unlink($obj);
+    }
+  }
+
+  /* 压缩 */
   static function zipAll($path,$files,$name){
     self::$zipObj = new \ZipArchive();
     $filename = self::$file_root.$path.$name.'.zip';
@@ -105,118 +139,41 @@ class Files{
     }
   }
 
-  /* Upload */
-  static function upload($path,$upName){
-    $file = str_replace(' ','_',$_FILES[$upName]['name']);
-    return move_uploaded_file($_FILES[$upName]['tmp_name'],self::$file_root.$path.$file)===true?true:false;
-  }
-  
-  /* Download */
-  static function down($file){
-    $fileinfo = pathinfo($file);
-    header('Content-type: application/x-'.$fileinfo['extension']);
-    header('Content-Disposition: attachment; filename='.$fileinfo['basename']);
-    header('Content-Length: '.filesize($file));
-    return readfile($file);
-  }
-
-  /* Delete folder and file */
-  static function delAll($path){
-    if(is_dir(self::$file_root.$path)){
-      $dirs = scandir(self::$file_root.$path);
-      foreach ($dirs as $dir) {
-        if ($dir != '.' && $dir != '..') {
-          // 目录和文件
-          $sonDir = $path.'/'.$dir;
-          if(is_dir(self::$file_root.$sonDir)){
-            // 递归删除
-            self::delAll($sonDir);
-            // 删除空目录
-            rmdir(self::$file_root.$sonDir);
-          }else{
-            // 删除文件
-            unlink(self::$file_root.$sonDir);
-          }
-        }
-      }
-      // 删除空目录
-      rmdir(self::$file_root.$path);
-    }else{
-      if(is_file(self::$file_root.$path)) unlink(self::$file_root.$path);
-    }
-  }
-
-  /* EditPerm */
-  static function editPerm($path,$perm) {
-    $ff = self::$file_root.$path;
-    $perm = octdec($perm);
-    $data = false;
-    if(!is_dir($ff)) {
-      $data = chmod($ff,$perm)===true?true:false;
-    }else {
-      $data = self::editDirPerm($ff,$perm)===true?true:false;
-    }
-    return $data;
-  }
-  static function editDirPerm($dir,$perm) {
-    $data = true;
-    $d = opendir($dir);
-    while ($file = readdir($d)){
-      if($file == "." || $file == ".."){continue;}
-      $fullpath = $dir . "/" . $file;
-      if(!is_dir($fullpath)){
-        $data = chmod($fullpath,$perm)===true?true:false;
-      }else{
-        $data = self::editDirPerm($fullpath,$perm)===true?true:false;
-      }
-      if($data==false){break;}
-    }
-    closedir($d);
-    return chmod($dir,$perm)===true&&$data?true:false;
-  }
-
-  /* Folder Size */
-  static function dirsize($dir) {
-    $handle=opendir($dir);
-    $size = 0;
-    while($file=readdir($handle)){
-      if($file == "." || $file == ".."){continue;}
-      if(is_dir("$dir/$file")){
-        $size += self::dirsize("$dir/$file");
-      }else{
-        $size += filesize("$dir/$file");
-      }
-    }
-    closedir($handle);
-    return $size;
-  }
-
-  /* File Size */
-  static function size($file='') {
+  /* 大小(文件夹&文件) */
+  static function fileSize($ff){
     $total = 0;
-    // File
-    if(is_file($file)){}
+    // 文件
+    if(is_file($ff)){
+      $total += filesize($ff);
+    }elseif(is_dir($ff)){
+      // 文件夹
+      $list = scandir($ff);
+      foreach($list as $f){
+        if($f=='.' || $f=='..') continue;
+        $total += self::fileSize($ff.'/'.$f);
+      }
+    }
     return $total;
   }
 
-  /* File Perm */
+  /* 获取权限值 */
   static function getPerm($ff) {
     return substr(sprintf('%o',fileperms($ff)),-3);
   }
-  /* Ctime */
+  /* 创建时间 */
   static function getCtime($ff) {
     return date("Y-m-d H:i:s",filectime($ff));
   }
-  /* Mtime */
+  /* 修改时间 */
   static function getMtime($ff='') {
     return date("Y-m-d H:i:s",filemtime($ff));
   }
-  /* File ext */
+  /* 文件后缀 */
   static function getExt($fileName){
     return strtolower(substr(strrchr($fileName, '.'), 1));
   }
 
-  /* Format Byte */
+  /* 格式化 */
   static function formatBytes($bytes){
     if($bytes >= 1073741824){
       $bytes = round($bytes*100/1073741824)/100 . 'GB';

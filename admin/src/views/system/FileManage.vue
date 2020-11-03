@@ -47,6 +47,41 @@
       <!-- 列表 End -->
     </div>
 
+    <!-- 新建文件夹 -->
+    <wm-dialog title="新建文件夹" width="420px" :show="folder.show" @update:show="folder.show=$event">
+      <wm-form class="form">
+        <wm-form-item label="名称">
+          <wm-input :value="folder.form.name" @update:value="folder.form.name=$event" placeholder="文件夹名称" />
+        </wm-form-item>
+      </wm-form>
+      <template #footer>
+        <wm-button @click="subDir()">新 建</wm-button>
+      </template>
+    </wm-dialog>
+    <!-- 新建文件夹 End -->
+
+    <!-- 重命名 -->
+    <wm-dialog title="重命名" width="420px" :show="rename.show" @update:show="rename.show=$event">
+      <wm-form class="form">
+        <wm-form-item label="名称">
+          <wm-input :value="rename.form.name" @update:value="rename.form.name=$event" placeholder="重命名的名称" />
+        </wm-form-item>
+      </wm-form>
+      <template #footer>
+        <wm-button @click="subRename()">重命名</wm-button>
+      </template>
+    </wm-dialog>
+    <!-- 重命名 End -->
+
+    <!-- 删除 -->
+    <wm-dialog title="删除" width="320px" :show="del.show" @update:show="del.show=$event">
+      <wm-row>是否删除已选择文件夹或文件？</wm-row>
+      <template #footer>
+        <wm-button @click="subDel()">彻底删除</wm-button>
+      </template>
+    </wm-dialog>
+    <!-- 删除 End -->
+
   </div>
 </template>
 

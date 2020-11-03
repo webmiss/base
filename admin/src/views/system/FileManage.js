@@ -4,13 +4,15 @@ import Toast from '../../library/ui/ui-toast'
 import Post from '../../library/ui/request-post'
 import Storage from '../../library/ui/storage'
 /* UI组件 */
+import wmRow from '@/components/main/row'
+import wmDialog from '@/components/dialog'
 import wmForm from '../../components/form'
 import wmFormItem from '../../components/form/item'
 import wmInput from '../../components/form/input'
 import wmButton from '../../components/form/button'
 
 export default {
-  components: {wmForm,wmFormItem,wmInput,wmButton},
+  components: {wmRow,wmDialog,wmForm,wmFormItem,wmInput,wmButton},
   data(){
     return {
       store: this.$store.state,
@@ -19,9 +21,9 @@ export default {
       // 列表、新建、打包、重命名、删除
       lists: {url:'', folder:[], files:[], dirNum:0, fileNum:0, size:'0KB'},
       folder: {show:false, form:{name:''}},
-      zipData: {show:false, form:{name:'', files:[]}},
-      renameData: {show:false, form:{rename:'', name:''}},
-      delData: {show:false, data:[]},
+      zip: {show:false, form:{name:'', files:[]}},
+      rename: {show:false, form:{rename:'', name:''}},
+      del: {show:false, data:[]},
       // 图片预览
       imgView:{show: false, imgs:[], index: 0},
     }
@@ -37,6 +39,19 @@ export default {
       console.log(val);
       if(val=='list'){
         this.loadData();
+      }else if(val=='mkdir'){
+        this.folder.show = true;
+      }else if(val=='rename'){
+        const names = this.getCheckName();
+        if(!names) return ;
+        this.rename.show = true;
+        this.rename.form.rename = names[0];
+        this.rename.form.name = names[0];
+      }else if(val=='remove'){
+        const names = this.getCheckName();
+        if(!names) return ;
+        this.del.show = true;
+        this.del.data = names;
       }
     }
   },
@@ -45,9 +60,9 @@ export default {
     this.store.action.url = 'SysFileManage';
     this.store.action.menus = [
       {name:'新建文件夹', action:'mkdir', ico:''},
+      {name:'重命名', action:'rename', ico:''},
       {name:'上传', action:'upload', ico:''},
       {name:'打包', action:'zip', ico:''},
-      {name:'重命名', action:'rename', ico:''},
       {name:'删除', action:'remove', ico:''},
     ];
     // 加载数据
@@ -91,6 +106,36 @@ export default {
       }
       // 加载数据
       this.loadData();
+    },
+
+    /* 新建文件夹 */
+    subDir(){
+      const name = this.folder.form.name;
+      // 是否存在
+      if(!this.isExist(name)) return false;
+      // 提交
+      this.folder.show = false;
+      this.subAjax('mkDir',{path:this.info.path, name:name});
+    },
+
+    /* 重命名 */
+    subRename(){
+      const rename = this.rename.form.rename;
+      const name = this.rename.form.name;
+      if(!name) return Toast('名称不能为空');
+      // 是否存在
+      if(!this.isExist(name)) return false;
+      // 提交
+      this.rename.show = false;
+      this.subAjax('reName',{path:this.info.path, rename:rename, name:name});
+    },
+
+    /* 删除 */
+    subDel(){
+      const data = JSON.stringify(this.del.data);
+      // 提交
+      this.del.show = false;
+      this.subAjax('rmFile',{path:this.info.path, data:data});
     },
 
     /* 打开文件夹 */
@@ -141,6 +186,58 @@ export default {
       const arr = ['png','jpg','jpeg','gif','svg'];
       const index = arr.indexOf(ext);
       return index>=0?true:false;
+    },
+
+    /* 是否存在 */
+    isExist(name){
+      if(!name){ Toast('请填写名称'); return false; }
+      // 文件夹、文件
+      let res = true;
+      const folder = this.lists.folder;
+      const files = this.lists.files;
+      for(let i in folder){
+        if(folder[i].name==name){
+          Toast('已存在文件夹'); res=false;
+        }
+      }
+      for(let i in files){
+        if(files[i].name==name){
+          Toast('已存在文件'); res=false;
+        }
+      }
+      return res;
+    },
+
+    /* 获取选中 */
+    getCheckName(){
+      const folder = this.lists.folder;
+      const files = this.lists.files;
+      let name = [];
+      // 文件夹
+      for(let i in folder) if(folder[i].check) name.push(folder[i].name);
+      // 文件
+      for(let i in files) if(files[i].check) name.push(files[i].name);
+      if(name.length<1){
+        Toast('请选择内容');
+        return false;
+      }else{
+        return name;
+      }
+    },
+
+    /* 提交数据 */
+    subAjax(action,parameter,callback,config){
+      parameter.token = Storage.getItem('token');
+      const load = Loading();
+      Post('Sysfilemanage/'+action,parameter,(res)=>{
+        load.clear();
+        const d = res.data;
+        // 回调
+        if(callback) callback(d);
+        // 结果
+        if(d.msg) Toast(d.msg);
+        if(d.code===0) this.loadData();
+      },(e)=>{},config);
     },
 
   },

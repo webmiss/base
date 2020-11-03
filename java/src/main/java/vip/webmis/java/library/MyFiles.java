@@ -15,7 +15,7 @@ public class MyFiles {
 
   public static String file_root = ".";
 
-  /* Folders & Files */
+  /* 列表(文件夹&文件) */
   public static HashMap<String, Object> lists(String path) {
     HashMap<String, Object> data = new HashMap<String, Object>();
     // 路径
@@ -77,17 +77,52 @@ public class MyFiles {
     return data;
   }
 
-  /* Size-String */
+  /* 新建-文件夹 */
+  public static boolean mkDir(String path){
+    File dir = new File(file_root+path);
+    if(!dir.isDirectory()){
+      return dir.mkdirs();
+    }else{
+      return false;
+    }
+  }
+
+  /* 重命名 */
+  public static boolean reName(String rename, String name){
+    File src = new File(file_root+rename);
+    File dst = new File(file_root+name);
+    return src.renameTo(dst);
+  }
+
+
+  /* 删除(文件夹&文件) */
+  public static void delAll(String path){
+    File obj = new File(file_root+path);
+    if(obj.isDirectory()){
+      final File[] list = obj.listFiles();
+      for (final File f : list){
+        String ff = path+"/"+f.getName();
+        if(f.isDirectory()) delAll(ff);
+        else f.delete();
+      }
+      // 空目录
+      obj.delete();
+    }else if(obj.isFile()){
+      obj.delete();
+    }
+  }
+
+  /* 大小(文件夹&文件) */
   public static Long size(String ff){
     File file = new File(ff);
     return fileSize(file);
   }
-  /* Size-File */
+  /* 大小(文件夹&文件) */
   public static Long fileSize(File file){
     long total = 0;
-    // File
+    // 文件
     if(file.isFile()) return file.length();
-    // Folder
+    // 文件夹
     final File[] children = file.listFiles();
     if (children!=null){
       for (final File child : children){
@@ -97,7 +132,7 @@ public class MyFiles {
     return total;
   }
   
-  /* File Perm */
+  /* 获取权限值 */
   public static String getPerm(String ff) {
     File file = new File(ff);
     String str="";
@@ -110,7 +145,7 @@ public class MyFiles {
     else str = String.valueOf(perm);
     return str;
   }
-  /* Ctime */
+  /* 创建时间 */
   public static String getCtime(String ff) {
     String time = "";
     try {
@@ -120,7 +155,7 @@ public class MyFiles {
     }catch(IOException e){ }
     return time;
   }
-  /* Mtime */
+  /* 修改时间 */
   public static String getMtime(String ff){
     String time = "";
     try {
@@ -130,12 +165,12 @@ public class MyFiles {
     }catch(IOException e){ }
     return time;
   }
-  /* File ext */
+  /* 文件后缀 */
   public static String getExt(String fileName){
     return fileName.substring(fileName.lastIndexOf(".")+1).toLowerCase();
   }
 
-  /* Format Byte */
+  /* 格式化 */
   public static String formatBytes(Long bytes){
     String str;
     double tmp;

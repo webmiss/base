@@ -7,7 +7,7 @@ class Files:
 
   file_root = '.'
 
-  # Folders & Files
+  # 列表(文件夹&文件)
   def lists(self,path='/'):
     # 路径
     path = '' if path=='/' else path.strip('/')+'/'
@@ -28,7 +28,7 @@ class Files:
     list = os.listdir(root)
     for f in list :
       ff = root+'/'+f
-      size = os.path.getsize(ff)
+      size = self.fileSize(ff)
       data['size'] += size
       ctime = self.getCtime(ff)
       mtime = self.getMtime(ff)
@@ -44,20 +44,62 @@ class Files:
     data['size'] = self.formatBytes(data['size'])
     return data
 
-  # File Perm
+  # 新建-文件夹
+  def mkDir(self,path):
+    dir = self.file_root+path
+    if not os.path.isdir(dir) :
+      return True if os.makedirs(dir)==None else False
+    else :
+      return False
+  # 重命名
+  def reName(self,rename,name):
+    src = self.file_root+rename
+    dst = self.file_root+name
+    return True if os.rename(src,dst)==None else False
+
+  # 删除(文件夹&文件)
+  def delAll(self,path):
+    obj = self.file_root+path
+    if os.path.isdir(obj) :
+      # 文件夹
+      list = os.listdir(obj)
+      for f in list :
+        ff = path+'/'+f
+        if os.path.isdir(self.file_root+ff) : self.delAll(ff)
+        else : os.remove(self.file_root+ff)
+      # 空目录
+      os.removedirs(obj)
+    elif os.path.isfile(obj) :
+      os.remove(obj)
+
+  # 大小(文件夹&文件)
+  def fileSize(self,ff):
+    total = 0
+    # 文件
+    if os.path.isfile(ff) :
+      total += os.path.getsize(ff)
+    elif os.path.isdir(ff) :
+      # 文件夹
+      list = os.listdir(ff)
+      for f in list :
+        total += self.fileSize(ff+'/'+f)
+    return total
+
+
+  # 获取权限值
   def getPerm(self,ff):
     return oct(os.stat(ff).st_mode)[-3:]
-  # Ctime
+  # 创建时间
   def getCtime(self,ff):
     return Inc.date('%Y-%m-%d %H:%M:%S',os.path.getctime(ff))
-  # Mtime
+  # 修改时间
   def getMtime(self,ff):
     return Inc.date('%Y-%m-%d %H:%M:%S',os.path.getmtime(ff))
-  # File ext
+  # 文件后缀
   def getExt(sefl,fileName):
     return fileName.split('.')[-1:][0].lower()
 
-  # Format Byte
+  # 格式化
   def formatBytes(self,bytes):
     if bytes >= 1073741824 :
       bytes = '%sGB'%(round(bytes*100/1073741824)/100)
