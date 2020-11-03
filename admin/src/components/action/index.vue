@@ -9,7 +9,7 @@
 
 <style scoped>
 .wm-action{white-space: nowrap; display: inline-block; overflow: hidden; padding-right: 1px; font-size: 14px; border-radius: 4px; height: 40px; line-height: 40px; box-sizing: border-box;}
-.wm-action .item{cursor: pointer; display: inline-block; margin-right: -1px; padding: 0 24px; height: 38px; border: #DCDFE6 1px solid; background-color: #FFF;}
+.wm-action .item{user-select: none; cursor: pointer; display: inline-block; margin-right: -1px; padding: 0 24px; height: 38px; border: #DCDFE6 1px solid; background-color: #FFF;}
 .wm-action .item:hover{border-color: #C2E7B0; background-color: #F0F9EB; color: #6FB737;}
 .wm-action_title{font-size: 16px; font-weight: 500;}
 </style>
