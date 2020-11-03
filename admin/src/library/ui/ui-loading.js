@@ -17,7 +17,7 @@ export default (time)=>{
   },time);
   return {
     clear:()=>{
-      document.body.removeChild(obj);
+      try{ document.body.removeChild(obj); }catch(e){}
       clearTimeout(loadingTime);
     }
   };
