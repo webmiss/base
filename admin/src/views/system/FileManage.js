@@ -11,9 +11,10 @@ import wmFormItem from '../../components/form/item'
 import wmInput from '../../components/form/input'
 import wmButton from '../../components/form/button'
 import wmUploader from '../../components/uploader'
+import wmImgView from '../../components/img/view'
 
 export default {
-  components: {wmRow,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmUploader},
+  components: {wmRow,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmUploader,wmImgView},
   data(){
     return {
       store: this.$store.state,
@@ -240,6 +241,13 @@ export default {
       }else{
         return name;
       }
+    },
+
+    /* 获取后缀 */
+    getType(filename){
+      const index1 = filename.lastIndexOf('.')+1;
+      const index2 = filename.length;
+      return filename.substring(index1,index2);
     },
 
     /* 提交数据 */

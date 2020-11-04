@@ -85,6 +85,9 @@
     </wm-dialog>
     <!-- 删除 End -->
 
+    <!-- 图片预览 -->
+    <wm-img-view ref="imgShow" :show="imgView.show" @update:show="imgView.show=$event"></wm-img-view>
+
   </div>
 </template>
 

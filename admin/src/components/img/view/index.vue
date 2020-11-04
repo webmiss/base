@@ -57,13 +57,9 @@
 <script>
 export default {
   name: 'ImgView',
-  model: {
-    prop: "show",
-    event: 'show',
-  },
   props: {
     show: {type: Boolean, default: false},
-    opacity: {type: Number, default: 0.7},
+    opacity: {type: Number, default: 0.8},
     color: {type: String, default: '#6FB737'},
     iconLoading: {type: String, default: 'ui ui_loading'},
     iconLeft: {type: String, default: 'ui ui_left'},
@@ -111,7 +107,7 @@ export default {
     /* 关闭 */
     close(){
       setTimeout(()=>{
-        this.$emit('show',false);
+        this.$emit('update:show',false);
       },300);
       // 背景动画
       let bg = this.$refs.ImgBG;
