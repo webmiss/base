@@ -11,10 +11,15 @@ public class Base {
 
   /* 返回JSON */
   static protected String getJSON(HashMap<String, Object> data) {
-    HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
-    response.setHeader("Access-Control-Allow-Origin", "*");
-    response.setHeader("Access-Control-Allow-Methods", "*");
-    response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    return getJSON(data, false);
+  }
+  static protected String getJSON(HashMap<String, Object> data, boolean allow) {
+    if(allow){
+      HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+      response.setHeader("Access-Control-Allow-Origin", "*");
+      response.setHeader("Access-Control-Allow-Methods", "*");
+      response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    }
     return JSON.toJSONString(data);
   }
 
