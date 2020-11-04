@@ -25,7 +25,7 @@ export default {
   /* 请求 */
   request:{
     headers: {
-      "Content-Type":"multipart/form-data"  // 表单方式
+      "Content-Type":"application/x-www-form-urlencoded"  // 表单方式
     },
   },
   /* 状态栏 */

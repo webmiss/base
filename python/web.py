@@ -5,10 +5,13 @@ import string
 import json
 from app.Env import Env
 from flask import Flask,request,make_response
+import flask_cors
 
 # 框架
 app = Flask(__name__)
 app.debug=Env.debug
+# 允许跨域
+flask_cors.CORS(app)
 
 # 执行
 def _start(m,c,a,p=[]):
