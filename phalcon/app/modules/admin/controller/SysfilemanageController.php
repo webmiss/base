@@ -6,6 +6,7 @@ use app\Env;
 use app\common\Base;
 use app\common\AdminToken;
 use app\library\Files;
+use app\library\Upload;
 use app\library\Down;
 
 /* 文件管理 */
@@ -55,6 +56,19 @@ class SysFileManageController extends Base{
       return self::getJSON(['code'=>0,'msg'=>'成功']);
     }else{
       return self::getJSON(['code'=>5000,'msg'=>'重命名失败!']);
+    }
+  }
+
+  /* 上传 */
+  function upFileAction(){
+    $path = $this->request->get('path','string');
+    if(empty($path)) return self::getJSON(['code'=>4000,'msg'=>'参数错误!']);
+    // 执行
+    $res = Upload::file(['path'=>self::$dirRoot.$path,'bind'=>'']);
+    if($res['state']){
+      return self::getJSON(['code'=>0,'msg'=>'成功']);
+    }else{
+      return self::getJSON(['code'=>5000,'msg'=>$res['msg']]);
     }
   }
 

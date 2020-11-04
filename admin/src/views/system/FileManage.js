@@ -10,9 +10,10 @@ import wmForm from '../../components/form'
 import wmFormItem from '../../components/form/item'
 import wmInput from '../../components/form/input'
 import wmButton from '../../components/form/button'
+import wmUploader from '../../components/uploader'
 
 export default {
-  components: {wmRow,wmDialog,wmForm,wmFormItem,wmInput,wmButton},
+  components: {wmRow,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmUploader},
   data(){
     return {
       store: this.$store.state,
@@ -22,6 +23,7 @@ export default {
       lists: {url:'', folder:[], files:[], dirNum:0, fileNum:0, size:'0KB'},
       folder: {show:false, form:{name:''}},
       zip: {show:false, form:{name:'', files:[]}},
+      upload: {url:'Sysfilemanage/upFile', param:{}},
       rename: {show:false, form:{rename:'', name:''}},
       del: {show:false, data:[]},
       // 图片预览
@@ -36,7 +38,7 @@ export default {
     // 动作菜单-点击
     actionType(val){
       if(!val) return false;
-      console.log(val);
+      // console.log(val);
       if(val=='list'){
         this.loadData();
       }else if(val=='mkdir'){
@@ -47,6 +49,10 @@ export default {
         this.rename.show = true;
         this.rename.form.rename = names[0];
         this.rename.form.name = names[0];
+      }else if(val=='upload'){
+        this.upload.param = {token: Storage.getItem('token'), path: this.info.path};
+        const obj = this.$refs.Uploader;
+        obj.upload();
       }else if(val=='remove'){
         const names = this.getCheckName();
         if(!names) return ;
@@ -62,7 +68,7 @@ export default {
       {name:'新建文件夹', action:'mkdir', ico:''},
       {name:'重命名', action:'rename', ico:''},
       {name:'上传', action:'upload', ico:''},
-      {name:'打包', action:'zip', ico:''},
+      // {name:'打包', action:'zip', ico:''},
       {name:'删除', action:'remove', ico:''},
     ];
     // 加载数据
@@ -128,6 +134,17 @@ export default {
       // 提交
       this.rename.show = false;
       this.subAjax('reName',{path:this.info.path, rename:rename, name:name});
+    },
+
+    /* 上传 */
+    upProgress(event){
+      let complete = (event.loaded/event.total*100 | 0);
+      if(complete<100){
+        this.info.loaded = complete+'%';
+      }else{
+        this.info.loaded = '0%';
+        this.loadData();
+      }
     },
 
     /* 删除 */

@@ -73,6 +73,9 @@
     </wm-dialog>
     <!-- 重命名 End -->
 
+    <!-- 上传 -->
+    <wm-uploader class="hide" ref="Uploader" :url="upload.url" :param="upload.param" @progress="upProgress"></wm-uploader>
+
     <!-- 删除 -->
     <wm-dialog title="删除" width="320px" :show="del.show" @update:show="del.show=$event">
       <wm-row>是否删除已选择文件夹或文件？</wm-row>
@@ -98,7 +101,7 @@
 .file_load .text{position: absolute; padding-top: 10px; text-align: right;}
 
 /* 列表 */
-.file_body{overflow: auto; height: calc(100% - 56px); padding: 0 5px;}
+.file_body{overflow: auto; height: calc(100% - 56px); padding: 0 16px;}
 .file_body ul{overflow: hidden; padding: 20px 0;}
 .file_body li{position: relative; float: left; margin: 5px;}
 .file{width: 128px; height: 128px; border: #FFF 1px solid; border-radius: 5px;}

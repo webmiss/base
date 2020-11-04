@@ -7,12 +7,15 @@ import com.alibaba.fastjson.JSONArray;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import vip.webmis.java.common.AdminToken;
 import vip.webmis.java.common.Base;
 import vip.webmis.java.common.Inc;
 import vip.webmis.java.library.MyFiles;
+import vip.webmis.java.library.Upload;
 
 /* 文件管理 */
 @RestController
@@ -95,6 +98,37 @@ public class SysfilemanageController extends Base {
       _res = new HashMap<String, Object>();
       _res.put("code", 5000);
       _res.put("msg", "重命名失败!");
+      return getJSON(_res);
+    }
+  }
+
+  /* 上传 */
+  @RequestMapping("/upFile")
+  String upFile(String token, String path, @RequestParam("up") MultipartFile file) throws Exception {
+    AdminToken.urlVerify(token,"SysFileManage");
+    HashMap<String, Object> _res;
+    // 参数
+    path = path.trim();
+    if(path.equals("")){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 4000);
+      _res.put("msg", "参数错误!");
+      return getJSON(_res);
+    }
+    // 执行
+    HashMap<String, Object> params = new HashMap<String, Object>();
+    params.put("path",dirRoot+path);
+    params.put("bind",null);
+    HashMap<String, Object> res = Upload.file(file,params);
+    if(res.get("state").equals(true)){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 0);
+      _res.put("msg", "成功");
+      return getJSON(_res);
+    }else{
+      _res = new HashMap<String, Object>();
+      _res.put("code", 5000);
+      _res.put("msg", res.get("msg"));
       return getJSON(_res);
     }
   }

@@ -13,7 +13,7 @@ import vip.webmis.java.model.UserRole;
 public class AdminToken extends Base {
 
   /* 验证&数据 */
-  public static HashMap<String, Object> verify(String token) throws Exception {
+  public static HashMap<String, Object> verify(String token) {
     // 验证Token
     HashMap<String, Object> res = Safety.decode(token);
     if(res==null || res.isEmpty()) error("Token验证失败!");
@@ -38,7 +38,7 @@ public class AdminToken extends Base {
   }
 
   /* 用户权限 */
-  public static HashMap<String, Object> perm(String uid) throws Exception {
+  public static HashMap<String, Object> perm(String uid) {
     // 权限
     HashMap<String, Object> params = new HashMap<String, Object>();
     params.put("where", "uid="+uid);
@@ -63,7 +63,7 @@ public class AdminToken extends Base {
   }
 
   /* Url权限 */
-  public static HashMap<String, Object> urlVerify(String token, String url) throws Exception {
+  public static HashMap<String, Object> urlVerify(String token, String url) {
     HashMap<String, Object> params;
     HashMap<String, Object> res = verify(token);
     // 全部菜单

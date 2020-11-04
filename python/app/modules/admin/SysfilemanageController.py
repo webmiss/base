@@ -4,6 +4,7 @@ from app.common.Base import Base
 from app.common.AdminToken import AdminToken
 from app.common.Inc import Inc
 from app.library.Files import Files
+from app.library.Upload import Upload
 
 # 文件管理
 class SysfilemanageController(Base) :
@@ -50,6 +51,19 @@ class SysfilemanageController(Base) :
       return self.getJSON({'code':0,'msg':'成功'})
     else :
       return self.getJSON({'code':5000,'msg':'重命名失败!'})
+
+  # 上传
+  def upFile(self):
+    # 参数
+    req = self.request()
+    path = req.get('path').strip()
+    if not path : return self.getJSON({'code':4000,'msg':'参数错误!'})
+    # 执行
+    res = Upload().file({'path':self.dirRoot+path,'bind':None})
+    if res['state'] :
+      return self.getJSON({'code':0,'msg':'成功'})
+    else :
+      return self.getJSON({'code':5000,'msg':res['msg']})
 
   # 删除
   def rmFile(self):

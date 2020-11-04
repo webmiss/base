@@ -3,7 +3,6 @@ package vip.webmis.java.common;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -58,7 +57,7 @@ public class Inc {
   }
 
   /* 数组格式化字符串 */
-  public static String implode(String glue, List<Object> arr){
+  public static String implode(String glue, JSONArray arr){
     String str="";
     for(int i=0; i<arr.size(); i++){
       str += String.valueOf(arr.get(i))+glue;

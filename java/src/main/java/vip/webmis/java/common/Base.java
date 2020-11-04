@@ -13,8 +13,9 @@ public class Base {
   static protected String getJSON(HashMap<String, Object> data) {
     return getJSON(data, false);
   }
+
   static protected String getJSON(HashMap<String, Object> data, boolean allow) {
-    if(allow){
+    if (allow) {
       HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
       response.setHeader("Access-Control-Allow-Origin", "*");
       response.setHeader("Access-Control-Allow-Methods", "*");
@@ -26,16 +27,18 @@ public class Base {
   /* 调试信息 */
   static protected void bug(Dynamic<?> data, boolean next) {
   }
-  static protected void bug(Dynamic<?> data) throws Exception {
+
+  static protected void bug(Dynamic<?> data) {
     boolean next = false;
     getJSON(new HashMap<String, Object>());
     System.out.println(data.getKey());
-    if (next == false) error((String) data.getKey());
+    if (next == false)
+      error((String) data.getKey());
   }
 
   /* 异常错误 */
-  static protected void error(String msg) throws Exception {
-    throw new Exception(msg);
+  static protected void error(String msg) {
+    try { throw new Exception(msg); }catch(Exception e){}
   }
 
 }

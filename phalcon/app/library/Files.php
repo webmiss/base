@@ -69,12 +69,6 @@ class Files{
     $dst = self::$file_root.$name;
     return rename($src,$dst)===true?true:false;
   }
-
-  /* Upload */
-  static function upload($path,$upName){
-    $file = str_replace(' ','_',$_FILES[$upName]['name']);
-    return move_uploaded_file($_FILES[$upName]['tmp_name'],self::$file_root.$path.$file)===true?true:false;
-  }
   
   /* Download */
   static function down($file){

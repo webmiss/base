@@ -35,8 +35,10 @@ export default {
           // 提交
           Post(this.url,this.param,(res)=>{
             const d = res.data;
-            if(d.code==0) Toast('正在上传!');
-          },{},{onUploadProgress:(event)=>{
+            Toast(d.msg);
+          },()=>{
+            Toast('网络加载错误!');
+          },{onUploadProgress:(event)=>{
             this.$emit('progress',event);
           }});
         }

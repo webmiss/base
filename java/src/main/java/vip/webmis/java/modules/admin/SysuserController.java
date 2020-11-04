@@ -3,9 +3,9 @@ package vip.webmis.java.modules.admin;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import org.springframework.stereotype.Controller;
@@ -227,7 +227,7 @@ public class SysuserController extends Base {
     HashMap<String, Object> _res;
     HashMap<String, Object> bind;
     // 参数
-    List<Object> req = Inc.json_decode_array(data);
+    JSONArray req = Inc.json_decode_array(data);
     if(req==null){
       _res = new HashMap<String, Object>();
       _res.put("code", 4000);

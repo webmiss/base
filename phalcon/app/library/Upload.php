@@ -17,24 +17,24 @@ class Upload{
       'filename'=>'', //文件名
       'bind'=>['jpg','jpeg','png','gif','mov','mp4','wav','mp3'], //允许格式
     ],$param);
+    // 文件
+    $file = $_FILES[$param['upName']];
     // 限制格式
-    $ext = substr(strrchr($_FILES[$param['upName']]['name'],'.'),1);
+    $ext = strtolower(substr(strrchr($file['name'],'.'),1));
     if($param['bind']){
       if(!in_array($ext,$param['bind'])){
-        $res['state'] = false;
-        $res['msg'] = '只支持'.implode(',',$param['bind']).'格式!';
-        return $res;
+        return ['state'=>false,'msg'=>'只支持'.implode(',',$param['bind']).'格式!'];
       }
     }
     // 是否重命名
-    $param['filename'] = empty($param['filename'])?$_FILES[$param['upName']]['name']:$param['filename'].'.'.$ext;
+    $param['filename'] = empty($param['filename'])?$file['name']:$param['filename'].'.'.$ext;
     // 创建目录
     if (!file_exists($param['path'])) mkdir($param['path'],0777,true);
     // 移动文件
-    if(@move_uploaded_file($_FILES[$param['upName']]['tmp_name'],$param['path'].$param['filename'])){
+    if(@move_uploaded_file($file['tmp_name'],$param['path'].$param['filename'])){
       return ['state'=>true,'filename'=>$param['filename']];
     }else{
-      return ['state'=>true,'msg'=>'保存图片失败!'];
+      return ['state'=>false,'msg'=>'保存失败!'];
     }
   }
 
@@ -42,7 +42,7 @@ class Upload{
   static function base64($param=[]){
     // 参数
     $param = array_merge([
-      'path'=>'upload/',  //上传路径
+      'path'=>'upload/',  //上传目录
       'base64'=>'',  //文件内容
       'filename'=>'', //文件名
       'ext'=>'png', //后缀
