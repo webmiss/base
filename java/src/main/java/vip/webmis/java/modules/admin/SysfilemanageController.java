@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import vip.webmis.java.Env;
 import vip.webmis.java.common.AdminToken;
 import vip.webmis.java.common.Base;
 import vip.webmis.java.common.Inc;
@@ -40,7 +41,7 @@ public class SysfilemanageController extends Base {
     HashMap<String, Object> list = MyFiles.lists(path);
     HashMap<String, Object> _res = new HashMap<String, Object>();
     _res.put("code", 0);
-    _res.put("msg", "成功");
+    _res.put("url", Env.base_url+dirRoot);
     _res.put("data", list);
     return getJSON(_res);
   }

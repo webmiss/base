@@ -84,7 +84,7 @@ export default {
         load.clear();
         const d = res.data;
         if(d.code==0){
-          this.url = d.url;
+          this.info.url = d.url;
           this.lists = d.data;
         }
       });

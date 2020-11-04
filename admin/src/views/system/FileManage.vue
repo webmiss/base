@@ -37,7 +37,7 @@
           <div class="file_click" @click="val.check=!val.check"><i class="check"></i></div>
           <div class="file" @click="openFile(val.name)">
             <div class="file_ct">
-              <div class="file_img bgImg" v-if="isImg(val.ext)" :style="{backgroundImage:'url('+url+lists.path+val.name+')'}"></div>
+              <div class="file_img bgImg" v-if="isImg(val.ext)" :style="{backgroundImage:'url('+info.url+lists.path+val.name+')'}"></div>
               <i class="icons icon_file_text" v-else></i>
             </div>
             <div class="name nowrap" :title="val.name">{{ val.name }}</div>
