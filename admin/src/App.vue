@@ -3,14 +3,14 @@
 
   <!-- Update -->
   <div v-if="update.show" class="update_body" :style="{backgroundColor: upDateColor.bg}">
-    <div class="update_ct verticalCenter">
+    <div class="update_ct">
       <div class="logo" :style="{backgroundColor: upDateColor.logoBg}">
         <div></div>
       </div>
       <div class="loading" :style="{backgroundImage: 'linear-gradient(to right, '+upDateColor.loading+', '+upDateColor.loading+' '+update.loading+', '+upDateColor.loaded+' '+update.loading+', '+upDateColor.loaded+' 100%)'}"></div>
       <div class="load_msg" :style="{color:upDateColor.msgColor}">{{update.msg}}</div>
       <div class="load_button">
-        <button class="Button" v-if="update.down" @click="updateDown()" :style="{color:upDateColor.butColor,backgroundColor:upDateColor.butBg,}">{{upDateColor.butText}}</button>
+        <wm-button v-if="update.down" size="medium" @click="updateDown()">{{upDateColor.butText}}</wm-button>
       </div>
     </div>
     <div class="update_logo" :style="{color:upDateColor.copy}">
@@ -29,13 +29,18 @@
       </div>
       <div class="login_ct">
         <div class="login_type">
-          <div class="title">&lt; {{language[languageNum].val}} &gt;</div>
-          <div class="arrow flex_center">
-            <div class="arrow_up"></div>
-          </div>
-          <ul class="list">
-            <li v-for="(val,index) in language" :key="index" @click="platform(index)">{{val.val}}</li>
-          </ul>
+        <wm-popover type="bottom" effect="dark" width="180px">
+          <template #body>
+            <ul class="login_type_list">
+              <template v-for="(val,index) in language">
+                <li :key="index" v-if="language[languageNum].val!=val.val" @click="platform(index)" >{{val.val}}</li>
+              </template>
+            </ul>
+          </template>
+          <template #reference>
+            <div class="login_type_title">&lt; {{language[languageNum].val}} &gt;</div>
+          </template>
+        </wm-popover>
         </div>
         <h3>会员登录</h3>
         <div class="login_input">

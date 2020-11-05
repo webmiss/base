@@ -14,10 +14,11 @@ import wmMenu from './components/menu'
 import wmInput from './components/form/input'
 import wmButton from './components/form/button'
 import wmAction from './components/action'
+import wmPopover from '@/components/popover'
 
 export default {
   name: 'APP',
-  components: {ScrollView,wmMenu,wmInput,wmButton,wmAction},
+  components: {ScrollView,wmMenu,wmInput,wmButton,wmAction,wmPopover},
   data(){
     return {
       env: Env,

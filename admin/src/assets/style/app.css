@@ -3,13 +3,12 @@
 .update_logo{position: fixed; width: 100%; left: 0; bottom: 15px; line-height: 20px; text-align: center; padding: 10px 0;}
 .update_logo h1{font-size: 16px;}
 .update_logo h2{font-size: 10px; font-weight: normal;}
-.update_ct{width: 220px;}
-.update_ct .logo{width: 120px; height: 120px; margin: 0px auto 20px; border-radius: 50%;}
+.update_ct{width: 220px; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);}
+.update_ct .logo{width: 96px; height: 96px; margin: 0px auto 20px; border-radius: 50%;}
 .update_ct .logo div{height: 100%; background: url('../logo.svg') no-repeat center; background-size: 65%;}
 .update_ct .loading{height: 5px; border-radius: 5px;}
 .update_ct .load_msg{color: #FFF; text-align: center; padding: 8px 0; font-size: 14px;}
 .update_ct .load_button{text-align: center; padding-top: 16px;}
-.update_ct .load_button button{width: auto; height: 36px; line-height: 36px; padding: 0 20px; font-size: 14px;}
 
 /* 登录 */
 .login_bg{position: fixed; z-index: 99; left: 0; top: 0; width: 100%; height: 100%;}
@@ -25,13 +24,10 @@
 .login_copy{line-height: 40px; text-align: center; font-size: 12px;color: #444;}
 
 .login_type{cursor: pointer; position: absolute; width: 200px; top: 0; left: 50%; transform: translate(-50%,0); font-size: 12px; text-align: center;}
-.login_type .title{line-height: 20px; background-color: rgba(0,0,0,.7); color: #6FB737; border-radius: 0 0 24px 24px;}
-.login_type .arrow{position: relative; margin-top: -8px;}
-.login_type .arrow_up{display: none; border-color:transparent transparent rgba(0,0,0,.7) transparent;}
-.login_type .list{display: none; overflow: hidden; border-radius: 4px;}
-.login_type .list li{line-height: 40px; background-color: rgba(0,0,0,.7); color: #FFF;}
-.login_type .list li:hover{color: #6FB737;}
-.login_type:hover .list,.login_type:hover .arrow_up{display: block;}
+.login_type_title{padding: 0 16px; line-height: 24px; background-color: rgba(0,0,0,.7); color: #6FB737; border-radius: 0 0 24px 24px;}
+.login_type_list{overflow: hidden; border-radius: 4px;}
+.login_type_list li{line-height: 40px; color: #FFF;}
+.login_type_list li:hover{color: #6FB737;}
 
 /* 主要框架 */
 .app_body{position: relative; overflow: hidden; height: 100%; min-width: 640px;}
