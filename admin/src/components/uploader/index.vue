@@ -38,9 +38,11 @@ export default {
             Toast(d.msg);
           },()=>{
             Toast('网络加载错误!');
-          },{onUploadProgress:(event)=>{
-            this.$emit('progress',event);
-          }});
+          },{
+            onUploadProgress:(event)=>{
+              this.$emit('progress',event);
+            }
+          });
         }
       };
     },
