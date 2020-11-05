@@ -13,6 +13,7 @@ class SysMenusActionController extends Base {
 
   /* 构造函数 */
   function initialize(){
+    parent::initialize();
     // 验证
     self::$tokenData = AdminToken::verify();
   }

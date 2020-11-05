@@ -16,6 +16,7 @@ class UserInfoController extends Base{
 
   /* 构造函数 */
   function initialize(){
+    parent::initialize();
     // 控制器权限
     self::$tokenData = AdminToken::urlVerify('UserInfo');
   }

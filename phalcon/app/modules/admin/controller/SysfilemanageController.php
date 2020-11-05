@@ -16,6 +16,7 @@ class SysFileManageController extends Base{
 
   /* 构造函数 */
   function initialize(){
+    parent::initialize();
     // 控制器权限
     AdminToken::urlVerify('SysFileManage');
     // 文件根目录

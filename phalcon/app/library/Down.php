@@ -20,10 +20,6 @@ class Down{
   /* Blob方式 */
   static function fileBlob($path='',$filename=''){
     $file = $path.$filename;
-    header('Content-type: application/octet-stream');
-    header('Accept-Ranges: bytes');
-    header('Accept-Length: '.filesize($file));
-    header('Content-Disposition: attachment; filename='.$filename);
     return file_get_contents($file);
   }
 
