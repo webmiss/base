@@ -3,6 +3,7 @@ import Loading from '../../library/ui/ui-loading'
 import Toast from '../../library/ui/ui-toast'
 import Post from '../../library/ui/request-post'
 import Storage from '../../library/ui/storage'
+import DownBlob from '../../library/inc/down-blob'
 /* UI组件 */
 import wmRow from '@/components/main/row'
 import wmDialog from '@/components/dialog'
@@ -20,12 +21,13 @@ export default {
       store: this.$store.state,
       // 信息
       info: {url:'', path:'/', loaded:'0%'},
-      // 列表、新建、打包、重命名、删除
+      // 列表、新建、重命名、上传、下载、打包、删除
       lists: {url:'', folder:[], files:[], dirNum:0, fileNum:0, size:'0KB'},
       folder: {show:false, form:{name:''}},
-      zip: {show:false, form:{name:'', files:[]}},
-      upload: {url:'Sysfilemanage/upFile', param:{}},
       rename: {show:false, form:{rename:'', name:''}},
+      upload: {url:'Sysfilemanage/upFile', param:{}},
+      down: {show:false,filename:''},
+      zip: {show:false, form:{name:'', files:[]}},
       del: {show:false, data:[]},
       // 图片预览
       imgView:{show: false, imgs:[], index: 0},
@@ -148,6 +150,16 @@ export default {
       }
     },
 
+    /* 下载 */
+    downFile(){
+      this.down.show = false;
+      DownBlob('Sysfilemanage/downFile',{
+        token:Storage.getItem('token'),
+        path: this.info.path,
+        filename: this.down.filename,
+      });
+    },
+
     /* 删除 */
     subDel(){
       const data = JSON.stringify(this.del.data);
@@ -164,8 +176,8 @@ export default {
     },
 
     /* 打开文件 */
-    openFile(file){
-      const ext = this.getType(file);
+    openFile(filename){
+      const ext = this.getType(filename);
       // 是否图片
       if(this.isImg(ext)){
         // 全部图片
@@ -174,7 +186,7 @@ export default {
         let index = 0;
         for(let i in all){
           if(this.isImg(all[i].ext)){
-            if(file==all[i].name) index=imgs.length;
+            if(filename==all[i].name) index=imgs.length;
             imgs.push({
               src: this.info.url+this.lists.path+all[i].name,
               name: all[i].name,
@@ -186,16 +198,8 @@ export default {
         this.imgView.show = true;
         this.$refs.imgShow.open(imgs,index);
       }else{
-        this.$confirm('文件名: '+file,'文件下载',{
-          confirmButtonText: '立即下载',
-          cancelButtonText: '取消',
-          center: true
-        }).then(()=>{
-          Toast('开始下载');
-          this.downFile(file);
-        }).catch(()=>{
-          Toast('已取消');
-        });
+        this.down.show = true;
+        this.down.filename = filename;
       }
     },
 

@@ -76,6 +76,15 @@
     <!-- 上传 -->
     <wm-uploader class="hide" ref="Uploader" :url="upload.url" :param="upload.param" @progress="upProgress"></wm-uploader>
 
+    <!-- 下载 -->
+    <wm-dialog title="下载文件" width="320px" :show="down.show" @update:show="down.show=$event">
+      <wm-row>{{down.filename}}</wm-row>
+      <template #footer>
+        <wm-button @click="downFile()">确定</wm-button>
+      </template>
+    </wm-dialog>
+    <!-- 下载 End -->
+
     <!-- 删除 -->
     <wm-dialog title="删除" width="320px" :show="del.show" @update:show="del.show=$event">
       <wm-row>是否删除已选择文件夹或文件？</wm-row>
