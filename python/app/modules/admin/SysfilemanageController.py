@@ -5,6 +5,7 @@ from app.common.AdminToken import AdminToken
 from app.common.Inc import Inc
 from app.library.Files import Files
 from app.library.Upload import Upload
+from app.library.Down import Down
 
 # 文件管理
 class SysfilemanageController(Base) :
@@ -64,6 +65,16 @@ class SysfilemanageController(Base) :
       return self.getJSON({'code':0,'msg':'成功'})
     else :
       return self.getJSON({'code':5000,'msg':res['msg']})
+
+  # 下载
+  def downFile(self):
+    # 参数
+    req = self.request()
+    path = req.get('path').strip()
+    filename = req.get('filename').strip()
+    if not path or not filename : return None
+    # 执行
+    return Down().fileBlob(self.dirRoot+path,filename)
 
   # 删除
   def rmFile(self):

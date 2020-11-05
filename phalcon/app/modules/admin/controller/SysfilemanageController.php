@@ -72,6 +72,15 @@ class SysFileManageController extends Base{
     }
   }
 
+  /* 下载 */
+  function downFileAction(){
+    $path = $this->request->get('path','string');
+    $filename = $this->request->get('filename','string');
+    if(empty($path) || empty($filename)) return null;
+    // 文件流
+    return Down::fileBlob(self::$dirRoot.$path,$filename);
+  }
+
   /* 删除 */
   function rmFileAction(){
     // 参数

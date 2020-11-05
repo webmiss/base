@@ -15,6 +15,7 @@ import vip.webmis.java.Env;
 import vip.webmis.java.common.AdminToken;
 import vip.webmis.java.common.Base;
 import vip.webmis.java.common.Inc;
+import vip.webmis.java.library.Down;
 import vip.webmis.java.library.MyFiles;
 import vip.webmis.java.library.Upload;
 
@@ -134,6 +135,18 @@ public class SysfilemanageController extends Base {
     }
   }
 
+  /* 下载 */
+  @RequestMapping("/downFile")
+  byte[] downFile(String token, String path, String filename) throws Exception {
+    AdminToken.urlVerify(token,"SysFileManage");
+    // 参数
+    path = path.trim();
+    filename = filename.trim();
+    if(path.equals("") || filename.equals("")) return null;
+    // 文件流
+    return Down.fileBlob(dirRoot+path, filename);
+  }
+
   /* 删除 */
   @RequestMapping("/rmFile")
   String rmFile(String token, String path, String data) throws Exception {
@@ -155,6 +168,5 @@ public class SysfilemanageController extends Base {
     _res.put("msg", "成功");
     return getJSON(_res);
   }
-
 
 }

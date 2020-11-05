@@ -1,11 +1,7 @@
 <?php
-
-/**
-* 文件类
-*/
-
 namespace app\library;
 
+/* 下载类 */
 class Down{
 
   /* 导出Excel */
@@ -21,14 +17,14 @@ class Down{
 		header("Expires: 0");
   }
 
-  /* 下载文件 */
-  static function file($path='',$filename=''){
+  /* Blob方式 */
+  static function fileBlob($path='',$filename=''){
     $file = $path.$filename;
     header('Content-type: application/octet-stream');
     header('Accept-Ranges: bytes');
-    header ('Accept-Length: '.filesize($file));
-    header ('Content-Disposition: attachment; filename='.$filename);
-    return readfile($file);
+    header('Accept-Length: '.filesize($file));
+    header('Content-Disposition: attachment; filename='.$filename);
+    return file_get_contents($file);
   }
 
 }
