@@ -10,7 +10,6 @@ helpText(){
   echo "    stop        停止服务"
   echo "<args>"
   echo "    -f          指定入口文件, 默认: $f"
-  echo ""
 }
 
 # 默认
