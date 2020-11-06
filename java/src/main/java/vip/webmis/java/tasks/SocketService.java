@@ -1,4 +1,4 @@
-package vip.webmis.java.component;
+package vip.webmis.java.tasks;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
