@@ -12,13 +12,16 @@ Component({
     bgColor: {type: String, value: ''},
   },
   data: {
+    _show: false,
     refBg: {},  //背景
     refBody: {},  //容器
     style: {bg:'',body:''}, //样式
   },
   observers: {
     show(val){
-      if(val) this.showBG(true);
+      this.showBG(val);
+      if(val) this.setData({_show: true});
+      else{setTimeout(()=>{ this.setData({_show: false}); },1000)}
     },
   },
   attached(){
@@ -75,30 +78,30 @@ Component({
   methods: {
 
     /* 动画 */
-    showBG(show){
+    showBG(_show){
       setTimeout(()=>{
         // 背景
-        this.setData({ ['refBg.opacity']:show?1:0, });
+        this.setData({ ['refBg.opacity']:_show?1:0, });
         // 位置
         if(this.data.position=='left'){
-          this.setData({ ['refBody.transform']:show?'translate(-1px,0)':'translate(-110%,0)' });
+          this.setData({ ['refBody.transform']:_show?'translate(-1px,0)':'translate(-110%,0)' });
         }else if(this.data.position=='right'){
-          this.setData({ ['refBody.transform']:show?'translate(1px,0)':'translate(110%,0)' });
+          this.setData({ ['refBody.transform']:_show?'translate(1px,0)':'translate(110%,0)' });
         }else if(this.data.position=='top'){
-          this.setData({ ['refBody.transform']:show?'translate(0,-1px)':'translate(0,-110%)' });
+          this.setData({ ['refBody.transform']:_show?'translate(0,-1px)':'translate(0,-110%)' });
         }else if(this.data.position=='bottom'){
-          this.setData({ ['refBody.transform']:show?'translate(0,1px)':'translate(0,110%)' });
+          this.setData({ ['refBody.transform']:_show?'translate(0,1px)':'translate(0,110%)' });
         }else{
           this.setData({
-            ['refBody.opacity']:show?1:0,
-            ['refBody.top']:show?'50%':'30%',
+            ['refBody.opacity']:_show?1:0,
+            ['refBody.top']:_show?'50%':'30%',
           });
         }
         // 更新样式
         this.setStyle('bg',this.data.refBg);
         this.setStyle('body',this.data.refBody);
         // 当前状态
-        setTimeout(()=>{ this.triggerEvent('show',show); },300);
+        setTimeout(()=>{ this.triggerEvent('_show',_show); },300);
       },300);
     },
 
@@ -110,7 +113,7 @@ Component({
     /* 关闭 */
     close(){
       this.showBG(false);
-      setTimeout(()=>{ this.setData({ show:false }); },600);
+      setTimeout(()=>{ this.setData({ _show:false }); },600);
     },
 
     /* Array to Style */

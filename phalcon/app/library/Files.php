@@ -69,15 +69,6 @@ class Files{
     $dst = self::$file_root.$name;
     return rename($src,$dst)===true?true:false;
   }
-  
-  /* Download */
-  static function down($file){
-    $fileinfo = pathinfo($file);
-    header('Content-type: application/x-'.$fileinfo['extension']);
-    header('Content-Disposition: attachment; filename='.$fileinfo['basename']);
-    header('Content-Length: '.filesize($file));
-    return readfile($file);
-  }
 
   /* 删除(文件夹&文件) */
   static function delAll($path){
