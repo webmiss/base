@@ -48,7 +48,7 @@ public class SysmenusController extends Base {
       }
     }
     // 全部权限
-    permAll = AdminToken.perm(String.valueOf(tokenData.get("uid")));
+    permAll = AdminToken.perm(tokenData.get("uid").toString());
     // 组合菜单
     HashMap<String, Object> data = new HashMap<String, Object>();
     data.put("code", 0);

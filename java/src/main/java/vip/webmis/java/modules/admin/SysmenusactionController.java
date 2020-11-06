@@ -44,7 +44,7 @@ public class SysmenusactionController extends Base {
     }
     // 全部动作
     ArrayList<HashMap<String, Object>> action = new ArrayList<HashMap<String, Object>>();
-    HashMap<String, Object> permAll = AdminToken.perm(String.valueOf(tokenData.get("uid")));
+    HashMap<String, Object> permAll = AdminToken.perm(tokenData.get("uid").toString());
     Integer perm = Integer.valueOf((String)permAll.get(String.valueOf(mid.get("id"))));
     params = new HashMap<String, Object>();
     params.put("columns","name,action,ico,perm");
