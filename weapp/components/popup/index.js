@@ -21,7 +21,7 @@ Component({
     show(val){
       this.showBG(val);
       if(val) this.setData({_show: true});
-      else{setTimeout(()=>{ this.setData({_show: false}); },1000)}
+      else{setTimeout(()=>{ this.setData({_show: false}); },600)}
     },
   },
   attached(){
