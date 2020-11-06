@@ -45,7 +45,7 @@ public class Inc {
 
   /* JSON转字符串 */
   public static String json_encode(Dynamic<?> arr) {
-    return JSON.toJSONString(arr);
+    return JSON.toJSONString(arr.getKey());
   }
 
   /* JSON转数组 */
