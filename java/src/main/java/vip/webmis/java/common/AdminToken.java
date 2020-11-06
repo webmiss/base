@@ -29,7 +29,7 @@ public class AdminToken extends Base {
 
   /* 生成 */
   public static String create(HashMap<String, Object> data) {
-    data.put("l_time", Inc.date("yMdHms"));
+    data.put("l_time", Inc.date("yyyy-MM-dd HH:mm:ss"));
     String token = Safety.encode(data);
     // 缓存
     String name = Env.admin_token_prefix+String.valueOf(data.get("uid"));

@@ -12,6 +12,9 @@ class Env :
   admin_token_prefix = 'AdminToken_';  #前缀
   admin_token_time = 1*3600;  #有效时长
   admin_token_auto = True;  #自动续期
+  api_token_prefix = 'AdminToken_';  #前缀
+  api_token_time = 7*24*3600;  #有效时长
+  api_token_auto = True;  #自动续期
 
   # 数据库
   def db():

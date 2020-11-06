@@ -73,7 +73,7 @@ class SysfilemanageController(Base) :
     path = req.get('path').strip()
     filename = req.get('filename').strip()
     if not path or not filename : return None
-    # 执行
+    # 文件流
     return Down().fileBlob(self.dirRoot+path,filename)
 
   # 删除

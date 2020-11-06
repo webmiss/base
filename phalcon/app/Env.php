@@ -12,6 +12,9 @@ class Env{
   static $admin_token_prefix = 'AdminToken_';  //前缀
   static $admin_token_time = 1*3600;  //有效时长
   static $admin_token_auto = true;  //自动续期
+  static $api_token_prefix = 'AdminToken_';  //前缀
+  static $api_token_time = 7*24*3600;  //有效时长
+  static $api_token_auto = true;  //自动续期
 
   /* 数据库 */
   static function db() {

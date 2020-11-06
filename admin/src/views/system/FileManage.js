@@ -41,7 +41,6 @@ export default {
     // 动作菜单-点击
     actionType(val){
       if(!val) return false;
-      // console.log(val);
       if(val=='list'){
         this.loadData();
       }else if(val=='mkdir'){

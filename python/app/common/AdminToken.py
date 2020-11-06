@@ -1,4 +1,5 @@
 from flask import request
+
 from app.Env import Env
 from app.common.Base import Base
 from app.common.Inc import Inc
@@ -33,7 +34,7 @@ class AdminToken(Base):
 
   # 生成
   def create(self,data) :
-    data['l_time'] = Inc.date('%Y%m%d%H%M%S')
+    data['l_time'] = Inc.date('%Y-%m-%d %H:%M:%S')
     token = Safety.encode(data)
     # 缓存
     name = Env.admin_token_prefix+str(data['uid'])

@@ -13,6 +13,9 @@ public class Env {
   public static final String admin_token_prefix = "AdminToken_";  //前缀
   public static final int admin_token_time = 1*3600;  //有效时长
   public static final boolean admin_token_auto = true;  //自动续期
+  public static final String api_token_prefix = "ApiToken_";  //前缀
+  public static final int api_token_time = 7*24*3600;  //有效时长
+  public static final boolean api_token_auto = true;  //自动续期
 
   /* 数据库 */
   public static HashMap<String,Object> db() {

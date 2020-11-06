@@ -32,7 +32,7 @@ class AdminToken extends Base {
 
   /* 生成 */
   static function create($data){
-    $data['l_time'] = date('YmdHis');
+    $data['l_time'] = date('Y-m-d H:i:s');
     $token = Safety::encode($data);
     // 缓存
     $name = Env::$admin_token_prefix.$data['uid'];

@@ -75,6 +75,7 @@ class SysFileManageController extends Base{
 
   /* 下载 */
   function downFileAction(){
+    // 参数
     $path = $this->request->get('path','string');
     $filename = $this->request->get('filename','string');
     if(empty($path) || empty($filename)) return null;
