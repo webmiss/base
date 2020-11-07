@@ -15,7 +15,7 @@ export default {
     labelHeight: {type: String, default: '40px'},
   },
   mounted(){
-    setTimeout(()=>{ this.init(); },480);
+    this.init();
   },
 
   methods:{
