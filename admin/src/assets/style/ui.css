@@ -42,12 +42,6 @@ h3{font-size: 16px; font-weight: 500;}
 .nowrap_text{overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;}
 .nowrap_three{overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;}
 
-/* 内容 */
-.body{padding: 15px; background-color: #FFF;}
-.page{padding: 0 20px 20px; text-align: center; background-color: #FFF;}
-/* 编辑器 */
-body .tox-silver-sink{z-index: 3000;}
-
 /* Loading */
 @keyframes loading { 0% {transform: rotate(0deg);} 50% {transform: rotate(180deg);} 100% {transform: rotate(360deg);} }
 .wm-ui_load{position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%;}

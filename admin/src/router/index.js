@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
 /* 路由 */
 const routes = [
   {path:'/', name:'index', component:()=>import('../views/Index.vue')},
@@ -18,12 +19,14 @@ const routes = [
   
   // 业务
 ]
+
 /* 配置 */
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
-// 返回上级
+
+/* 返回上级 */
 router.goBack = function(num){
   this.isBack = true;
   this.go(num);
