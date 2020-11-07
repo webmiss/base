@@ -31,7 +31,7 @@ export default {
       login: {uname:'',passwd:'',subText:'登 录',dis:false},
       // 左侧菜单
       menus: [],
-      menusActive: [0,0], 
+      menusActive: [0,0],
       // 配置
       config:{show:false, title:'系统配置', is_msg_audio:true,},
       // 语言
@@ -199,12 +199,12 @@ export default {
         if(d.code==0){
           this.menus = d.menus;
           // 默认菜单
-          this.menusActive = Storage.getItem('menusActive')?JSON.parse(Storage.getItem('menusActive')):[0,1];
+          this.menusActive = Storage.getItem('menusActive')?JSON.parse(Storage.getItem('menusActive')):[0,0];
           const obj = this.$refs.Menus;
           setTimeout(()=>{
             obj.titleClick(this.menusActive[0]);
             obj.menuClick(this.menusActive);
-          },300);
+          },400);
         }
       });
     },

@@ -74,7 +74,7 @@
           </div>
         </div>
         <!-- 菜单 -->
-        <wm-menu ref="Menus" :data="menus" :defaultActive="menusActive" @select="menuClick"></wm-menu>
+        <wm-menu ref="Menus" effect="dark" :data="menus" :defaultActive="menusActive" @select="menuClick"></wm-menu>
         <!-- 登录状态 -->
         <div class="app_login nowrap">
           <span class="config">{{store.uInfo.uname}}</span>&gt;
