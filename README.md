@@ -6,7 +6,7 @@ git clone https://github.com/webmiss/base
 ```
 <br/>
 
-<img src="https://webmis.vip/webmis/admin.jpg" width="100%" alt="WebMIS" />
+<img src="https://webmis.vip/webmis/admin1.png" width="375" alt="WebMIS Admin" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://webmis.vip/webmis/admin2.png" width="375" alt="WebMIS Admin" />
 
 <br/>
 
@@ -34,8 +34,6 @@ git clone https://github.com/webmiss/base
 - 文档: https://webmis.vip/docs/admin/install/index
 - Demo: https://demo-admin.webmis.vip/ 帐号: admin 密码: 123456
 - 目前支持: PHP7、Python3、Java
-
-<img src="https://webmis.vip/webmis/admin1.png" width="375" alt="WebMIS Admin" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://webmis.vip/webmis/admin2.png" width="375" alt="WebMIS Admin" />
 
 <br/>
 
@@ -73,6 +71,6 @@ git clone https://github.com/webmiss/base
 ## Project - 项目资料
 APP设计规范、证书、数据库文件、字体图标等
 
-<img src="https://webmis.vip/webmis/app.png" width="375" alt="WebMIS App" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://webmis.vip/webmis/screen.png" width="375" alt="WebMIS Screen" />
+<img src="https://webmis.vip/webmis/app.png" width="100%" alt="WebMIS App" />
 
 <br/>
