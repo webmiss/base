@@ -1,19 +1,13 @@
-/* 正式 */
-const title = 'WebMIS API';
-const baseUrl = 'https://demo-api.webmis.vip/';
-const socket = 'wss://demo-api.webmis.vip/wss';
-
 export default {
-  dev: false, // 是否开发模式
-  title: title, // 应用名称
+  title: 'WebMIS API', // 应用名称
   version: '1.0.0', // 应用版本
-  baseUrl: baseUrl, // 数据地址
-  apiUrl: baseUrl+'api/', // 数据接口地址
+  apiUrl: 'https://demo-api.webmis.vip/api/',  // 数据接口地址
   copy: 'Copyright © WebMIS.vip 2020',  // 版权信息
+  token: '', //Token
   /* 请求 */
   request:{
     headers: {
-      "Content-Type":"multipart/form-data"  // 表单方式
+      "Content-Type":"application/x-www-form-urlencoded"  // 表单方式
     },
   },
 }

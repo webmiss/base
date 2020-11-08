@@ -1,22 +1,29 @@
-const token = '';
-const menus = [
-  // 首页
-  {title:'首页',menus:[
-    {title:'使用说明',url:'/',menus:[]},
-  ]},
-  {title:'APP',menus:[
-    {title:'测试',menus:[
-      // 案例
-      {title:'案例',menus:[],name:'Test',data:{
-        api: 'test', method: 'post',
-        parameter: [
-          {key:'token',val:token,text:'Token（必填）'},
-          {key:'id',val:1,text:'ID（必填）'},
-          {key:'name',val:'张三',text:'姓名'},
-        ],
-        remark:{list:{id: '用户ID',name: '姓名',}},
+import Env from './env'
+/* 菜单配置 */
+export default ()=>{
+  return [
+    {title:'公共接口', children:[
+      {title:'首页',data:{
+        url: Env.apiUrl+'index/index', method: 'post',
+        param: [
+          {key:'token', val:Env.token, text:'Token（必填）'},
+          {key:'name', val:Env.token, text:'WebMIS'},
+        ]
+      }},
+      {title:'测试',data:{
+        url: Env.apiUrl+'index/test', method: 'get',
+        param: [
+          {key:'test', val:'', text:'测试'},
+        ]
       }},
     ]},
-  ]},
-];
-export default menus
+    {title:'业务', children:[
+      {title:'测试接口',data:{
+        url: Env.apiUrl+'test/test', method: 'put',
+        param: [
+          {key:'test', val:'', text:'测试'},
+        ]
+      }},
+    ]},
+  ];
+}

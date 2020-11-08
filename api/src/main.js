@@ -1,23 +1,19 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import router from './router'
 import store from './store'
-
-// 主题（element-ui/lib/theme-chalk/index.css）
-import ElementUI from 'element-ui'
-import './assets/theme/index.css'
+// APP
 import App from './App.vue'
-
 // 配置
-import Env from '@/env'
+import Env from './env'
 document.title = Env.title;
-Vue.config.productionTip = Env.dev;
+// APP
+createApp(App).use(store).use(router).mount('#app')
 
-// 全局注册
-Vue.prototype.$config = Env;
-Vue.use(ElementUI);
-
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+/* 用户点击播放问题 */
+document.body.ontouchstart = ()=>{
+  try{
+    if(plus.os.name!='iOS') document.createElement('audio');
+  }catch(e){
+    document.createElement('audio');
+  }
+}

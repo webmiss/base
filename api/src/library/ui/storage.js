@@ -1,4 +1,4 @@
-/* 图片处理 */
+/* 本地硬盘 */
 export default {
   /* 保存 */
   setItem(key,data){

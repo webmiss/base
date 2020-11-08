@@ -1,4 +1,4 @@
-import Env from '@/env'
+import Env from '../../env.js'
 import axios from 'axios'
 
 /* Put请求 */
