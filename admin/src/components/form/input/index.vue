@@ -6,13 +6,15 @@
       @input="$emit('update:value', $event.target.value)"
       :type="type"
       :maxlength="maxlength"
-      :placeholder="placeholder">
+      :placeholder="placeholder"
+      :style="{width:width,height:height,lineHeight:lineHeight,padding:padding,textAlign:align}"
+    >
   </div>
 </template>
 
 <style scoped>
 .wm-input{border: none; background: none; -webkit-appearance: none; outline: none; font: 400 14px Arial; caret-color: #595;}
-.wm-input{width: 100%; box-sizing: border-box; height: 40px; line-height: 20px; padding: 10px 16px; border-radius: 4px; border: #DCDFE6 1px solid; background-color: #F6F8FA;}
+.wm-input{box-sizing: border-box; border-radius: 4px; border: #DCDFE6 1px solid; background-color: #F6F8FA;}
 .wm-input:hover{border: #6FB737 1px solid;}
 .wm-input:focus{outline: none;}
 </style>
@@ -21,10 +23,15 @@
 export default {
   name: 'Input',
   props: {
-    value: {type: String, default: ''},
-    type: {type: String, default: 'text'},
-    maxlength: {type: String, default: ''},
-    placeholder: {type: String, default: ''},
+    value: '',  //值
+    type: {type: String, default: 'text'},  //类型: input属性
+    maxlength: {type: String, default: ''}, //最大字符: 默认
+    placeholder: {type: String, default: ''}, //提示: 无
+    width: {type: String, default: '100%'}, //宽度: '100%'
+    height: {type: String, default: '40px'},  //高度: '40px'
+    lineHeight: {type: String, default: '20px'},  //行高: '20px'
+    padding: {type: String, default: '10px 16px'},  //间距: '10px 16px'
+    align: {type: String, default: ''}, //文本对齐方式: 'left'
   },
 }
 </script>
