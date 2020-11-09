@@ -84,7 +84,6 @@ export default {
       }
       this.lists = list;
       // 更新页码
-      this.input = page>1?page:'';
       isPage = isPage==false?false:true;
       if(isPage) this.$emit('update:page',page);
     },
@@ -95,11 +94,12 @@ export default {
       let page = n || 1;
       if(n<1) page = 1;
       else if(n>this.max) page = this.max;
+      this.input = '';
       clearTimeout(this.timeTmp);
       this.timeTmp = setTimeout(()=>{
+        this.input = page>=1?page:'';
         this.toPage(page);
-        console.log(page);
-      },1000);
+      },2000);
     },
 
   },
