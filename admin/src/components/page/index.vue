@@ -11,7 +11,7 @@
       <li class="arrow" v-else @click="toPage(page+1)"><i class="arrow_right"></i></li>
     </ul>
     <div class="wm-page_info flex">
-      <wm-input :value="input" @update:value="subInput" placeholder="页码" width="50px" height="28px" align="center" padding="4px 2px" />
+      <wm-input :value="input" @update:value="subInput" placeholder="页码" width="60px" height="28px" align="center" padding="4px 2px" />
     </div>
   </div>
 </template>
