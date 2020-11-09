@@ -53,7 +53,7 @@ export default {
   },
   watch:{
     total(val){
-      this.init();
+      if(val>0) this.init();
     }
   },
   methods:{
@@ -62,11 +62,11 @@ export default {
     init(){
       this.num = this.total;
       this.max = Math.ceil(this.total/this.limit);
-      this.toPage(this.page);
+      this.toPage(this.page,false);
     },
 
     /* 翻页 */
-    toPage(n){
+    toPage(n,isPage){
       let page = n;
       // 边界
       if(n<1) page = 1;
@@ -85,7 +85,8 @@ export default {
       this.lists = list;
       // 更新页码
       this.input = page>1?page:'';
-      this.$emit('update:page',page);
+      isPage = isPage==false?false:true;
+      if(isPage) this.$emit('update:page',page);
     },
 
     /* 跳转 */
