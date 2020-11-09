@@ -53,22 +53,23 @@ export default {
   },
   watch:{
     total(val){
-      if(val>0) this.init();
+      this.init();
     }
   },
   methods:{
 
     /* 初始化 */
     init(){
-      this.num = this.total;
       this.max = Math.ceil(this.total/this.limit);
       this.toPage(this.page,false);
     },
 
     /* 翻页 */
     toPage(n,isPage){
-      let page = n;
+      // 是否数据
+      if(this.total==0) return this.lists = [];
       // 边界
+      let page = n;
       if(n<1) page = 1;
       else if(n>this.max) page = this.max;
       // 中间

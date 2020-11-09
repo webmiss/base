@@ -35,6 +35,7 @@
       </wm-table-tr>
     </wm-table>
     <!-- List End -->
+    <wm-page :page="page.page" :limit="page.limit" :total="page.total" @update:page="subPage"></wm-page>
 
     <!-- Sea -->
     <wm-dialog title="搜索" width="420px" :show="sea.show" @update:show="sea.show=$event">
