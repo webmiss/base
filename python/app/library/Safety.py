@@ -17,9 +17,9 @@ class Safety:
     return True if re.match(data[name],val) else False
 
   # 加密
-  def encode(data={}):
+  def encode(param={}):
     try :
-      token = jwt.encode(data, Env.key, algorithm='HS256')
+      token = jwt.encode(param, Env.key, algorithm='HS256')
       return token.decode('utf8')
     except Exception as e :
       return None

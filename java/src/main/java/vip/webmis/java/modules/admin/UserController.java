@@ -82,7 +82,7 @@ public class UserController extends Base {
 
   /* 验证Token */
   @RequestMapping("/token")
-  String token(String token, Integer uinfo) throws Exception {
+  String token(String token, Integer uinfo) {
     HashMap<String,Object> data = new HashMap<String,Object>();
     HashMap<String, Object> res = AdminToken.verify(token);
     if(!res.isEmpty()){

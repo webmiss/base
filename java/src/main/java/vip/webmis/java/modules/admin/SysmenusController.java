@@ -25,7 +25,7 @@ public class SysmenusController extends Base {
 
   /* 获取[菜单] */
   @RequestMapping("/getMenus")
-  String getMenus(String token) throws Exception {
+  String getMenus(String token) {
     // 验证
     HashMap<String, Object> tokenData = AdminToken.verify(token);
     // 全部菜单

@@ -26,7 +26,7 @@ class Safety{
 		return md5($str.Env::$key);
 	}
 	/* 加密-数组 */
-	static function KeyArray($param=''){
+	static function keyArray($param=[]){
 		ksort($param);
 		reset($param);
 		$param['sign'] = Env::$key;
@@ -34,8 +34,8 @@ class Safety{
 	}
 
   /* 加密-Base64 */
-  static function encode($data=[]){
-    $text = is_array($data)?json_encode($data):$data;
+  static function encode($param=[]){
+    $text = is_array($param)?json_encode($param):$param;
     try{
       $crypt = new Crypt();
       $token = @$crypt->encryptBase64($text, Env::$key);
@@ -44,7 +44,6 @@ class Safety{
     }catch (\Exception $e){
       return '';
     }
-    
   }
 
   /* 解密-Base64 */

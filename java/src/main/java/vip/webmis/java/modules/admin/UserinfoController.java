@@ -28,7 +28,7 @@ public class UserinfoController extends Base {
 
   /* 列表 */
   @RequestMapping("/list")
-  String list(String token) throws Exception {
+  String list(String token) {
     HashMap<String, Object> tokenData = AdminToken.urlVerify(token,"UserInfo");
     HashMap<String, Object> _res;
     HashMap<String, Object> params;
@@ -64,7 +64,7 @@ public class UserinfoController extends Base {
 
   /* 头像上传 */
   @RequestMapping("/edit")
-  String edit(String token, String data) throws Exception {
+  String edit(String token, String data) {
     HashMap<String, Object> tokenData = AdminToken.urlVerify(token,"UserInfo");
     HashMap<String, Object> _res;
     if(data==null || data.isEmpty()){
@@ -113,7 +113,7 @@ public class UserinfoController extends Base {
 
   /* 头像上传 */
   @RequestMapping("/upImg")
-  String index(String token, String base64) throws Exception {
+  String index(String token, String base64) {
     HashMap<String, Object> tokenData = AdminToken.urlVerify(token,"UserInfo");
     HashMap<String, Object> _res;
     // 是否为空

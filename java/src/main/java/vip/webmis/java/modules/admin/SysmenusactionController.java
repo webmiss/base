@@ -19,7 +19,7 @@ public class SysmenusactionController extends Base {
 
   /* 获取[动作菜单] */
   @RequestMapping("/getAction")
-  String getMenus(String token,String url) throws Exception {
+  String getMenus(String token,String url) {
     HashMap<String, Object> params;
     HashMap<String, Object> data;
     // 验证

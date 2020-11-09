@@ -29,7 +29,7 @@ public class SysuserController extends Base {
 
   /* 列表 */
   @RequestMapping("/list")
-  String list(String token, String data, int page, int limit) throws Exception {
+  String list(String token, String data, int page, int limit) {
     // 验证
     AdminToken.urlVerify(token, "SysUser");
     // 搜索
@@ -79,7 +79,7 @@ public class SysuserController extends Base {
 
   /* 添加 */
   @RequestMapping("/add")
-  String add(String token, String data) throws Exception {
+  String add(String token, String data) {
     // 验证
     AdminToken.urlVerify(token, "SysUser");
     HashMap<String, Object> _res;
@@ -137,7 +137,7 @@ public class SysuserController extends Base {
 
   /* 编辑 */
   @RequestMapping("/edit")
-  String edit(String token, String uid, String data) throws Exception {
+  String edit(String token, String uid, String data) {
     // 验证
     AdminToken.urlVerify(token, "SysUser");
     HashMap<String, Object> _res;
@@ -224,7 +224,7 @@ public class SysuserController extends Base {
 
   /* 删除 */
   @RequestMapping("/delete")
-  String delete(String token, String data) throws Exception {
+  String delete(String token, String data) {
     // 验证
     AdminToken.urlVerify(token, "SysUser");
     HashMap<String, Object> _res;
@@ -270,7 +270,7 @@ public class SysuserController extends Base {
 
   /* 状态 */
   @RequestMapping("/state")
-  String state(String token, String uid, String state) throws Exception {
+  String state(String token, String uid, String state) {
     // 验证
     AdminToken.urlVerify(token, "SysUser");
     HashMap<String, Object> _res;
@@ -309,7 +309,7 @@ public class SysuserController extends Base {
 
   /* 用户信息 */
   @RequestMapping("/info")
-  String info(String token, String uid, String data) throws Exception {
+  String info(String token, String uid, String data) {
     // 验证
     HashMap<String, Object> tokenData = AdminToken.urlVerify(token, "SysUser");
     HashMap<String, Object> _res;

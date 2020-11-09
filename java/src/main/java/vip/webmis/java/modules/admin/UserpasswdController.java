@@ -19,7 +19,7 @@ public class UserpasswdController extends Base {
 
   /* 修改密码 */
   @RequestMapping("/edit")
-  String index(String token, String passwd, String passwd1) throws Exception {
+  String index(String token, String passwd, String passwd1) {
     HashMap<String, Object> tokenData = AdminToken.urlVerify(token,"UserPasswd");
     HashMap<String, Object> _res;
     // 验证
