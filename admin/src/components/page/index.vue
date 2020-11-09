@@ -1,6 +1,6 @@
 <template>
   <div class="wm-page" :style="{padding: padding}">
-    <div class="wm-page_info">共 {{num}} 条, {{max}} 页</div>
+    <div class="wm-page_info">共 {{total}} 条, {{max}} 页</div>
     <ul class="wm-page_list">
       <li class="arrow arrow_dis" v-if="page<=1"><i class="arrow_left"></i></li>
       <li class="arrow" v-else @click="toPage(page-1)"><i class="arrow_left"></i></li>
@@ -46,19 +46,24 @@ export default {
   },
   data(){
     return {
-      num: 0,
       max: 0,
       lists: [],
       input: '',
     }
   },
-  mounted(){
-    // 参数
-    this.num = this.total;
-    this.max = Math.ceil(this.total/this.limit);
-    this.toPage(this.page);
+  watch:{
+    total(val){
+      this.init();
+    }
   },
   methods:{
+
+    /* 初始化 */
+    init(){
+      this.num = this.total;
+      this.max = Math.ceil(this.total/this.limit);
+      this.toPage(this.page);
+    },
 
     /* 翻页 */
     toPage(n){
