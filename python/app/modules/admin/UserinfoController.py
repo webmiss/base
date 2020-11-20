@@ -18,15 +18,20 @@ class UserinfoController(Base) :
 
   # 列表
   def list(self):
-    info = UserInfo().findFirst({'where':'uid='+str(self.tokenData['uid'])})
+    # 查询
+    m1 = UserInfo()
+    m1.where('uid='+str(self.tokenData['uid']))
+    info = m1.findFirst()
     # 添加
-    if not info :
-      UserInfo().insert({
-        'uid': str(self.tokenData['uid']),
-        'ctime': Inc.date('%Y%m%d%H%M%S'),
-      })
+    if len(info)==0 :
+      m2 = UserInfo()
+      m2.uid = str(self.tokenData['uid'])
+      m2.ctime = Inc.date('%Y%m%d%H%M%S')
+      m2.create()
       # 查询
-      info = UserInfo().findFirst({'where':'uid='+str(self.tokenData['uid'])})
+      m3 = UserInfo()
+      m3.where('uid='+str(self.tokenData['uid']))
+      info = m3.findFirst()
     # 数据
     list = {
       'img': Env.base_url+info['img'] if info['img'] else '',
@@ -45,27 +50,24 @@ class UserinfoController(Base) :
     if(not data): return self.getJSON({'code':4000,'msg':'参数错误!'})
     jsonData = json.loads(data)
     # 数据
-    params = {}
-    arr = ['uid','img']
-    keys = jsonData.keys()
-    for key in keys :
-      if key in arr : continue
-      params[key] = jsonData[key].strip()
+    model = UserInfo()
+    model.nickname = jsonData['nickname'].strip()
+    model.name = jsonData['name'].strip()
+    model.gender = jsonData['gender'].strip()
+    model.birthday = jsonData['birthday'].strip()
+    model.position = jsonData['position'].strip()
+    model.where('uid='+str(self.tokenData['uid']))
     # 用户信息
     uinfo = {
       'img': jsonData['img'],
-      'nickname': params['nickname'],
-      'name': params['name'],
-      'gender': params['gender'],
-      'birthday': params['birthday'],
-      'position': params['position'],
+      'nickname': jsonData['nickname'].strip(),
+      'name': jsonData['name'].strip(),
+      'gender': jsonData['gender'].strip(),
+      'birthday': jsonData['birthday'].strip(),
+      'position': jsonData['position'].strip(),
     }
     # 保存
-    res = UserInfo().update({
-      'data': params,
-      'where': 'uid='+str(self.tokenData['uid'])
-    })
-    if res : return self.getJSON({'code':0,'msg':'成功','uinfo':uinfo})
+    if model.update() : return self.getJSON({'code':0,'msg':'成功','uinfo':uinfo})
     else : return self.getJSON({'code':5000,'msg':'保存失败!'})
 
   # 头像上传
@@ -76,26 +78,20 @@ class UserinfoController(Base) :
     # 上传
     res = Upload().base64({'path':self.imgDir,'base64':base64})
     if res :
-      info = UserInfo().findFirst({'where':'uid='+str(self.tokenData['uid'])})
-      if not info :
-        UserInfo().insert({
-          'uid': self.tokenData['uid'],
-          'img': self.imgDir+res['filename'],
-          'ctime': Inc.date('%Y%m%d%H%M%S'),
-        })
-      else :
-        # 头像
-        img = info['img'] if info['img'] else ''
-        # 保存
-        UserInfo().update({
-          'data':{
-            'img': self.imgDir+res['filename'],
-            'utime': Inc.date('%Y%m%d%H%M%S'),
-          },
-          'where': 'uid='+str(self.tokenData['uid']),
-        })
+      m1 = UserInfo()
+      m1.where('uid='+str(self.tokenData['uid']))
+      info = m1.findFirst()
+      # 头像
+      img = info['img'] if info['img'] else ''
+      # 保存
+      m2 = UserInfo()
+      m2.img = self.imgDir+res['filename']
+      m2.where('uid='+str(self.tokenData['uid']))
+      if m2.update() :
         # 清理头像
         if os.path.exists(img) : os.remove(img)
-      return self.getJSON({'code':0,'msg':'上传成功','img':Env.base_url+self.imgDir+res['filename']})
+        return self.getJSON({'code':0,'msg':'上传成功','img':Env.base_url+self.imgDir+res['filename']})
+      else :
+        return self.getJSON({'code':5000,'msg':'保存数据失败!'})
     else :
       return self.getJSON({'code':5000,'msg':'保存图片失败!'})

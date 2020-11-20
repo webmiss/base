@@ -11,9 +11,9 @@ class SysConfig extends Model {
   public $ctime;
   public $utime;
 
+  /* 构造函数 */
   public function initialize(){
-    // 数据表
-    $this->setSource('sys_config');
+    $this->setSource('sys_config'); //数据表
   }
 
   /* 保存 */

@@ -13,9 +13,9 @@ class User extends Model{
   public $rtime;
   public $utime;
 
+  /* 构造函数 */
   public function initialize(){
-    // 数据表
-    $this->setSource('user');
+    $this->setSource('user'); //数据表
   }
 
   /* 保存 */

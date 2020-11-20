@@ -3,6 +3,8 @@ package vip.webmis.java.modules.admin;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.alibaba.fastjson.JSONObject;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +21,7 @@ public class SysmenusactionController extends Base {
 
   /* 获取[动作菜单] */
   @RequestMapping("/getAction")
-  String getMenus(String token,String url) {
-    HashMap<String, Object> params;
+  String getMenus(String token,String url) throws Exception {
     HashMap<String, Object> data;
     // 验证
     HashMap<String, Object> tokenData = AdminToken.verify(token);
@@ -32,23 +33,25 @@ public class SysmenusactionController extends Base {
       return getJSON(data);
     }
     // 菜单ID
-    params = new HashMap<String, Object>();
-    params.put("where","url=\""+url+"\"");
-    params.put("columns","id");
-    HashMap<String, Object> mid = new SysMenu().findFirst(params);
+    SysMenu m1 = new SysMenu();
+    JSONObject bind = new JSONObject();
+    bind.put("url",url);
+    m1.where("url=\":url:\"",bind);
+    m1.columns("id");
+    HashMap<String, Object> mid = m1.findFirst();
     if(mid.isEmpty()){
       data = new HashMap<String, Object>();
       data.put("code", 4000);
-      data.put("msg", "获取动作不存在!");
+      data.put("msg", "获取 "+url+" 不存在!");
       return getJSON(data);
     }
     // 全部动作
     ArrayList<HashMap<String, Object>> action = new ArrayList<HashMap<String, Object>>();
     HashMap<String, Object> permAll = AdminToken.perm(tokenData.get("uid").toString());
     Integer perm = Integer.valueOf((String)permAll.get(String.valueOf(mid.get("id"))));
-    params = new HashMap<String, Object>();
-    params.put("columns","name,action,ico,perm");
-    ArrayList<HashMap<String, Object>> aMenus = new SysMenuAction().find(params);
+    SysMenuAction m2 = new SysMenuAction();
+    m2.columns("name,action,ico,perm");
+    ArrayList<HashMap<String, Object>> aMenus = m2.find();
     for(HashMap<String, Object> val : aMenus){
       // 匹配权限值
       if((perm&Integer.valueOf((String)val.get("perm")))>0){

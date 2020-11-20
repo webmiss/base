@@ -9,9 +9,9 @@ class UserMsg extends Model{
   public $ctime;
   public $utime;
 
+  /* 构造函数 */
   public function initialize(){
-    // 数据表
-    $this->setSource('user_msg');
+    $this->setSource('user_msg'); //数据表
   }
 
   /* 保存 */

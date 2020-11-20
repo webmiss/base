@@ -10,9 +10,9 @@ class SysMenuAction extends Model{
   public $ctime;
   public $utime;
 
+  /* 构造函数 */
   public function initialize(){
-    // 数据表
-    $this->setSource('sys_menus_action');
+    $this->setSource('sys_menus_action'); //数据表
   }
 
   /* 保存 */

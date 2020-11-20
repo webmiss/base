@@ -19,7 +19,10 @@ class SysmenusController(Base) :
   def getMenus(self):
     # 全部菜单
     self.menus = {}
-    all = SysMenu().find({'columns':'id,fid,title,url,ico','order':'sort DESC,id'})
+    model = SysMenu()
+    model.columns('id,fid,title,url,ico')
+    model.order('sort DESC,id')
+    all = model.find()
     for val in all :
       fid = str(val['fid'])
       if fid in self.menus : self.menus[fid] += [val]

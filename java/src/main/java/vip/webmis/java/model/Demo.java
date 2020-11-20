@@ -4,19 +4,26 @@ import com.alibaba.fastjson.JSONObject;
 
 import vip.webmis.java.common.Inc;
 
-/* 系统配置表 */
-public class SysConfig extends Model {
+/* 用户信息表 */
+public class Demo extends Model {
 
-  public int id = 0;
+  public int uid = 0;
   public String title = "";
-  public String name = "";
-  public String val = "";
   public String ctime = "null";
   public String utime = "null";
-  
+
   /* 构造函数 */
-  public SysConfig() {
-    this.setSource("sys_config"); //数据表
+  public Demo() {
+    this.setPrimaryKey("uid"); //主键
+    this.setSource("test"); //数据表
+  }
+
+  /* 标题 */
+  public void setTitle(String val){
+    title = val;
+  }
+  public String getTitle(){
+    return title;
   }
 
   /* 创建 */
@@ -35,4 +42,7 @@ public class SysConfig extends Model {
     return fields;
   }
 
+  /* 删除 */
+  public void beforeDelete(){ }
+  
 }

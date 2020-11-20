@@ -1,16 +1,31 @@
 <?php
 namespace app\model;
 
-/* 权限表 */
-class UserPerm extends Model {
+/* 用户信息表 */
+class Demo extends Model {
 
   public $uid;
+  public $title;
   public $ctime;
   public $utime;
-
+  
   /* 构造函数 */
   public function initialize(){
-    $this->setSource('user_perm');  //数据表
+    $this->setSource('test'); //数据表
+  }
+
+  /* 标题 */
+  function setTitle($val){
+    $this->title = $val;
+  }
+  function getTitle(){
+    return $this->title;
+  }
+
+  /* 保存 */
+  public function beforeSave(){
+    // 生日
+    if(empty($this->birthday)) $this->birthday = null;
   }
 
   /* 创建 */
@@ -25,7 +40,6 @@ class UserPerm extends Model {
 
   /* 删除 */
   public function beforeDelete(){
-    if($this->uid==1) return self::error('禁止删除超级管理员!');
   }
 
 }

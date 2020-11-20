@@ -4,9 +4,9 @@ import vip.webmis.java.Env;
 import vip.webmis.java.common.Base;
 import vip.webmis.java.model.SysConfig;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,43 +20,36 @@ public class IndexController extends Base {
   @RequestMapping("")
   String index() {
     // 返回数据
-    HashMap<String, Object> data = new HashMap<String, Object>();
-    data.put("code", 0);
-    data.put("msg", "Admin");
-    return getJSON(data);
+    HashMap<String,Object> _res = new HashMap<String,Object>();
+    _res.put("code", 0);
+    _res.put("msg", "Admin");
+    return getJSON(_res);
   }
 
   /* 系统配置 */
   @RequestMapping("/getConfig")
-  String getConfig() throws SQLException {
-    // 查询条件
-    HashMap<String,Object> params = new HashMap<String,Object>();
-    params.put("columns","name,title,val");
-    ArrayList<HashMap<String, Object>> config = new SysConfig().find(params);
-    // 限制内容
-    ArrayList<String> arr = new ArrayList<>();
-    arr.add("title");
-    arr.add("copy");
-    arr.add("logo");
-    arr.add("login_bg");
+  String getConfig() throws Exception {
+    HashMap<String,Object> _res;
+    // 查询
+    SysConfig model = new SysConfig();
+    model.where("name in ('title','copy','logo','login_bg')");
+    model.columns("name,val");
+    ArrayList<HashMap<String, Object>> config = model.find();
     // 数据
     HashMap<String,Object> list = new HashMap<String,Object>();
-    for(int i=0; i<config.size(); i++){
-      HashMap<String,Object> val = config.get(i);
-      String name = (String)val.get("name");
-      if(arr.contains(name)){
-        list.put(name, val.get("val"));
-        if(name.equals("logo") || name.equals("login_bg")){
-          list.put((String)val.get("name"),val.get("val").equals("")==false?Env.base_url+val.get("val"):"");
-        }
+    for(HashMap<String, Object> val : config){
+      if(val.get("name").equals("logo") || val.get("name").equals("login_bg")){
+        list.put(val.get("name").toString(),!val.get("val").equals("")?Env.base_url+val.get("val"):"");
+      }else{
+        list.put(val.get("name").toString(),val.get("val"));
       }
     }
     // 返回
-    HashMap<String,Object> data = new HashMap<String,Object>();
-    data.put("code",0);
-    data.put("msg","成功");
-    data.put("list",list);
-    return getJSON(data);
+    _res = new HashMap<String,Object>();
+    _res.put("code", 0);
+    _res.put("msg", "成功");
+    _res.put("list",list);
+    return getJSON(_res);
   }
 
 }

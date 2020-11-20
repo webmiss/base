@@ -14,6 +14,7 @@ class Base :
 
   # 异常错误
   def error(self,msg=''):
+    print(msg)
     raise Exception(msg)
 
   # 请求

@@ -23,18 +23,18 @@ class UserpasswdController(Base) :
     if not Safety.isRight('passwd',passwd) or not Safety.isRight('passwd',passwd1) :
       return self.getJSON({'code':4000,'msg':'密码格式错误!'})
     # 用户信息
-    info = User().findFirst({
-      'where': 'id=%s AND password="%s"'%(self.tokenData['uid'],Inc.md5(passwd)),
-      'columns': 'id',
-    })
-    if not info :
+    m1 = User()
+    m1.where('id=%s AND password="%s"'%(self.tokenData['uid'],Inc.md5(passwd)))
+    m1.columns('id')
+    info = m1.findFirst()
+    # 是否存在
+    if len(info)==0 :
       return self.getJSON({'code':4000,'msg':'当前密码错误!'})
     # 保存
-    res = User().update({
-      'data': {'password':Inc.md5(passwd1)},
-      'where': 'id=%s'%self.tokenData['uid'],
-    })
-    if res :
+    m2 = User()
+    m2.password = Inc.md5(passwd1)
+    m2.where('id='+str(self.tokenData['uid']))
+    if m2.update() :
       return self.getJSON({'code':0,'msg':'成功'})
     else :
       return self.getJSON({'code':5000,'msg':'修改失败!'})

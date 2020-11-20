@@ -5,9 +5,9 @@ class UserOauth extends Model{
 
   private $id;
 
+  /* 构造函数 */
   public function initialize(){
-    // 数据表
-    $this->setSource('user_oauth');
+    $this->setSource('user_oauth'); //数据表
   }
 
 }

@@ -20,7 +20,7 @@ class UserController extends Base{
     if(Safety::isRight('uname',$uname)!==true && Safety::isRight('tel',$uname)!==true && Safety::isRight('email',$uname)!==true){
       return self::getJSON(['code'=>4000,'msg'=>'请输入用户名/手机/邮箱']);
     }
-    // 查询数据
+    // 查询
     $builder = $this->modelsManager->createBuilder();
     $builder->addfrom('app\model\User', 'a');
     $builder->leftJoin('app\model\UserInfo', 'a.id=b.uid', 'b');
@@ -72,6 +72,7 @@ class UserController extends Base{
       $uinfo = UserInfo::findFirst(['uid='.$res->uid,'columns'=>'nickname,position,name,img']);
       $uinfo->uname = $res->uname;
       $uinfo->img = $uinfo->img?Env::$base_url.$uinfo->img:'';
+      // 返回
       return self::getJSON(['code'=>0,'msg'=>'成功','time'=>$res->n_time,'uinfo'=>$uinfo]);
     }else{
       return self::getJSON(['code'=>4000,'msg'=>'请重新登录!']);

@@ -1,23 +1,24 @@
 from app.model.Model import Model
 from app.common.Inc import Inc
 
-# 用户信息表
-class UserInfo(Model):
+# Demo
+class Demo(Model):
 
-  uid = '0'
-  nickname = ''
-  position = ''
-  name = ''
-  gender = ''
-  birthday = ''
-  img = ''
+  uid = 0
+  title = ''
   ctime = 'null'
   utime = 'null'
 
   # 构造函数
   def __init__(self):
     self.setPrimaryKey('uid')
-    self.setSource('user_info')
+    self.setSource('test')
+
+  # 标题
+  def setTitle(self,val):
+    self.title = val
+  def getTitle(self):
+    return self.title
 
   # 创建
   def beforeCreate(self):
@@ -26,3 +27,7 @@ class UserInfo(Model):
   # 更新
   def beforeUpdate(self):
     if self.utime=='null' : self.utime=Inc.date('%Y%m%d%H%M%S')
+
+  # 删除
+  def beforeDelete(self):
+    pass

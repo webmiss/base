@@ -37,7 +37,7 @@ public class SysfilemanageController extends Base {
 
   /* 列表 */
   @RequestMapping("/list")
-  String list(String token, String path) {
+  String list(String token, String path) throws Exception {
     AdminToken.urlVerify(token,"SysFileManage");
     HashMap<String, Object> list = MyFiles.lists(path);
     HashMap<String, Object> _res = new HashMap<String, Object>();
@@ -49,7 +49,7 @@ public class SysfilemanageController extends Base {
 
   /* 新建文件夹 */
   @RequestMapping("/mkDir")
-  String mkDir(String token, String path, String name) {
+  String mkDir(String token, String path, String name) throws Exception {
     AdminToken.urlVerify(token,"SysFileManage");
     HashMap<String, Object> _res;
     // 参数
@@ -77,7 +77,7 @@ public class SysfilemanageController extends Base {
 
   /* 重命名 */
   @RequestMapping("/reName")
-  String reName(String token, String path, String rename, String name) {
+  String reName(String token, String path, String rename, String name) throws Exception {
     AdminToken.urlVerify(token,"SysFileManage");
     HashMap<String, Object> _res;
     // 参数
@@ -106,7 +106,7 @@ public class SysfilemanageController extends Base {
 
   /* 上传 */
   @RequestMapping("/upFile")
-  String upFile(String token, String path, @RequestParam("up") MultipartFile file) {
+  String upFile(String token, String path, @RequestParam("up") MultipartFile file) throws Exception {
     AdminToken.urlVerify(token,"SysFileManage");
     HashMap<String, Object> _res;
     // 参数
@@ -137,7 +137,7 @@ public class SysfilemanageController extends Base {
 
   /* 下载 */
   @RequestMapping("/downFile")
-  byte[] downFile(String token, String path, String filename) {
+  byte[] downFile(String token, String path, String filename) throws Exception {
     AdminToken.urlVerify(token,"SysFileManage");
     // 参数
     path = path.trim();
@@ -149,7 +149,7 @@ public class SysfilemanageController extends Base {
 
   /* 删除 */
   @RequestMapping("/rmFile")
-  String rmFile(String token, String path, String data) {
+  String rmFile(String token, String path, String data) throws Exception {
     AdminToken.urlVerify(token,"SysFileManage");
     HashMap<String, Object> _res;
     // 参数

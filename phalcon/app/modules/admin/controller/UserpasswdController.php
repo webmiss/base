@@ -24,17 +24,21 @@ class UserPasswdController extends Base{
     $passwd = $this->request->get('passwd');
     $passwd1 = $this->request->get('passwd1');
     // 验证
-    if($passwd==$passwd1)
+    if($passwd==$passwd1){
       return self::getJSON(['code'=>4000,'msg'=>'不能与原密码相同!']);
-    if(!Safety::isRight('passwd',$passwd) || !Safety::isRight('passwd',$passwd1))
+    }
+    if(!Safety::isRight('passwd',$passwd) || !Safety::isRight('passwd',$passwd1)){
       return self::getJSON(['code'=>4000,'msg'=>'密码格式错误!']);
+    }
     // 用户信息
     $model = User::findFirst([
       'id=:id: AND password=:passwd:',
       'bind'=>['id'=>self::$tokenData->uid,'passwd'=>md5($passwd)],
     ]);
-    if(!$model)
+    // 是否存在
+    if(!$model){
       return self::getJSON(['code'=>4000,'msg'=>'当前密码错误!']);
+    }
     $model->password = md5($passwd1);
     // 保存
     if($model->save()){

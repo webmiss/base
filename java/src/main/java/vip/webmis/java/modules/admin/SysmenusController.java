@@ -25,15 +25,15 @@ public class SysmenusController extends Base {
 
   /* 获取[菜单] */
   @RequestMapping("/getMenus")
-  String getMenus(String token) {
+  String getMenus(String token) throws Exception {
     // 验证
     HashMap<String, Object> tokenData = AdminToken.verify(token);
     // 全部菜单
     menus = new HashMap<String, Object>();
-    HashMap<String, Object> params = new HashMap<String, Object>();
-    params.put("columns", "id,fid,title,url,ico");
-    params.put("order", "sort DESC,id");
-    ArrayList<HashMap<String, Object>> all = new SysMenu().find(params);
+    SysMenu model = new SysMenu();
+    model.columns("id,fid,title,url,ico");
+    model.order("sort DESC,id");
+    ArrayList<HashMap<String, Object>> all = model.find();
     for (HashMap<String, Object> val : all) {
       String fid = String.valueOf(val.get("fid"));
       if (menus.containsKey(fid)) {

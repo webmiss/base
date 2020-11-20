@@ -10,9 +10,9 @@ class SysMenu extends Model {
   public $ctime;
   public $utime;
 
+  /* 构造函数 */
   public function initialize(){
-    // 数据表
-    $this->setSource('sys_menus');
+    $this->setSource('sys_menus');  //数据表
   }
 
   /* FID */

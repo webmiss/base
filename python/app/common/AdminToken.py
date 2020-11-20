@@ -43,9 +43,16 @@ class AdminToken(Base):
 
   # 用户权限
   def perm(self,uid):
-    perm = UserPerm().findFirst({'where':'uid='+str(uid),'columns':'perm,role'})
-    if perm==None : self.error('没有分配权限!')
-    if perm['role']!='0' : perm=UserRole().findFirst({'where':'id='+str(perm['role']),'columns':'perm'})
+    # 权限
+    m1 = UserPerm()
+    m1.where('uid='+str(uid))
+    m1.columns('perm,role')
+    perm = m1.findFirst()
+    if len(perm)==0 : self.error('没有分配权限!')
+    if perm['role']!='0' :
+      m2 = UserRole()
+      m2.where('id='+str(perm['role']))
+      m2.columns('perm')
     # 拆分
     permAll = {}
     permStr = perm['perm']
@@ -59,7 +66,10 @@ class AdminToken(Base):
   def urlVerify(self,url):
     token = self.verify()
     # 全部菜单
-    all = SysMenu().find({'where':'url<>""','columns':'id,url'})
+    model = SysMenu()
+    model.where('url<>""')
+    model.columns('id,url')
+    all = model.find()
     menus = {}
     for val in all :
       menus[val['url']] = val['id']

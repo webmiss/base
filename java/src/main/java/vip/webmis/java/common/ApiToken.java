@@ -9,7 +9,7 @@ import vip.webmis.java.library.Safety;
 public class ApiToken extends Base {
 
   /* 验证&数据 */
-  public static HashMap<String, Object> verify(String token) {
+  public static HashMap<String, Object> verify(String token) throws Exception {
     // 验证Token
     HashMap<String, Object> res = Safety.decode(token);
     if(res==null || res.isEmpty()) error("Token验证失败!");

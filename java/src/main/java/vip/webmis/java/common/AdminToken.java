@@ -13,7 +13,7 @@ import vip.webmis.java.model.UserRole;
 public class AdminToken extends Base {
 
   /* 验证&数据 */
-  public static HashMap<String, Object> verify(String token) {
+  public static HashMap<String, Object> verify(String token) throws Exception {
     // 验证Token
     HashMap<String, Object> res = Safety.decode(token);
     if(res==null || res.isEmpty()) error("Token验证失败!");
@@ -38,18 +38,18 @@ public class AdminToken extends Base {
   }
 
   /* 用户权限 */
-  public static HashMap<String, Object> perm(String uid) {
+  public static HashMap<String, Object> perm(String uid) throws Exception {
     // 权限
-    HashMap<String, Object> params = new HashMap<String, Object>();
-    params.put("where", "uid="+uid);
-    params.put("columns", "perm,role");
-    HashMap<String, Object> perm = new UserPerm().findFirst(params);
+    UserPerm m1 = new UserPerm();
+    m1.where("uid="+uid);
+    m1.columns("perm,role");
+    HashMap<String, Object> perm = m1.findFirst();
     if(perm.isEmpty()) error("没有分配权限!");
     if(!perm.get("role").equals("0")){
-      params = new HashMap<String, Object>();
-      params.put("where", "id="+perm.get("role"));
-      params.put("columns", "perm");
-      perm = new UserRole().findFirst(params);
+      UserRole m2 = new UserRole();
+      m2.where("id="+perm.get("role").toString());
+      m2.columns("perm");
+      perm = m2.findFirst();
     }
     // 拆分
     HashMap<String, Object> permAll = new HashMap<String, Object>();
@@ -63,14 +63,13 @@ public class AdminToken extends Base {
   }
 
   /* Url权限 */
-  public static HashMap<String, Object> urlVerify(String token, String url) {
-    HashMap<String, Object> params;
+  public static HashMap<String, Object> urlVerify(String token, String url) throws Exception {
     HashMap<String, Object> res = verify(token);
     // 全部菜单
-    params = new HashMap<String, Object>();
-    params.put("where", "url<>\"\"");
-    params.put("columns", "id,url");
-    ArrayList<HashMap<String, Object>> all = new SysMenu().find(params);
+    SysMenu model = new SysMenu();
+    model.where("url<>\"\"");
+    model.columns("id,url");
+    ArrayList<HashMap<String, Object>> all = model.find();
     HashMap<String, Object> menus = new HashMap<String, Object>();
     for(HashMap<String, Object> val : all){
       menus.put((String)val.get("url"), (Integer)val.get("id"));

@@ -9,9 +9,9 @@ class UserRole extends Model {
   public $ctime;
   public $utime;
 
+  /* 构造函数 */
   public function initialize(){
-    // 数据表
-    $this->setSource('user_role');
+    $this->setSource('user_role');  //数据表
   }
 
   /* 保存 */

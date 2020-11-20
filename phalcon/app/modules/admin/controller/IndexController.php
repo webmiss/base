@@ -31,18 +31,22 @@ class IndexController extends Base{
 
   /* 系统配置 */
   public function getConfigAction(){
-    $config = SysConfig::find(['columns'=>'name,title,val'])->toArray();
-    $arr = ['title','copy','logo','login_bg'];
+    // 查询
+    $config = SysConfig::find([
+      'name in ("title","copy","logo","login_bg")',
+      'columns'=>'name,val',
+    ])->toArray();
+    // 数据
     $list = [];
     foreach($config as $val){
-      if(in_array($val['name'],$arr)){
+      if($val['name']=='logo' || $val['name']=='login_bg'){
+        $list[$val['name']] = $val['val']?Env::$base_url.$val['val']:'';
+      }else{
         $list[$val['name']] = $val['val'];
-        if($val['name']=='logo' || $val['name']=='login_bg'){
-          $list[$val['name']] = $val['val']?Env::$base_url.$val['val']:'';
-        }
       }
     }
-    return self::getJSON(['code'=>0,'list'=>$list,'msg'=>'成功']);
+    // 返回
+    return self::getJSON(['code'=>0,'msg'=>'成功','list'=>$list]);
   }
 
 }

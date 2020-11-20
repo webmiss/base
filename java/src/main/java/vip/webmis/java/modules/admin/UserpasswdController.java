@@ -19,7 +19,7 @@ public class UserpasswdController extends Base {
 
   /* 修改密码 */
   @RequestMapping("/edit")
-  String index(String token, String passwd, String passwd1) {
+  String index(String token, String passwd, String passwd1) throws Exception {
     HashMap<String, Object> tokenData = AdminToken.urlVerify(token,"UserPasswd");
     HashMap<String, Object> _res;
     // 验证
@@ -36,10 +36,11 @@ public class UserpasswdController extends Base {
       return getJSON(_res);
     }
     // 用户信息
-    HashMap<String, Object> params = new HashMap<String, Object>();
-    params.put("where",String.format("id=%s AND password=\"%s\"",tokenData.get("uid"),Inc.md5(passwd)));
-    params.put("columns","id");
-    HashMap<String, Object> info = new User().findFirst(params);
+    User m1 = new User();
+    m1.where(String.format("id=%s AND password=\"%s\"",tokenData.get("uid"),Inc.md5(passwd)));
+    m1.columns("id");
+    HashMap<String, Object> info = m1.findFirst();
+    // 是否存在
     if(info.isEmpty()){
       _res = new HashMap<String, Object>();
       _res.put("code", 4000);
@@ -47,13 +48,11 @@ public class UserpasswdController extends Base {
       return getJSON(_res);
     }
     // 保存
-    params = new HashMap<String, Object>();
-    params.put("password",Inc.md5(passwd1));
-    HashMap<String, Object> uData = new HashMap<String, Object>();
-    uData.put("data",params);
-    uData.put("where",String.format("id=%s",tokenData.get("uid")));
-    boolean res = new User().update(uData);
-    if(res){
+    User m2 = new User();
+    m2.password = Inc.md5(passwd1);
+    m2.uField("password");
+    m2.where("id="+tokenData.get("uid").toString());
+    if(m2.update()){
       _res = new HashMap<String, Object>();
       _res.put("code", 0);
       _res.put("msg", "成功");

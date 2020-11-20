@@ -21,13 +21,18 @@ class SysmenusactionController(Base) :
     # 是否为空
     if url=='' : return self.getJSON({'code':4000,'msg':'获取动作不能为空!'})
     # 菜单ID
-    mid = SysMenu().findFirst({'where':'url="%s"'%(url),'columns':'id'})
-    if mid == None : return self.getJSON({'code':4000,'msg':'获取动作不存在!'})
+    m1 = SysMenu()
+    m1.where('url=":url:"',{'url':url})
+    m1.columns('id')
+    mid = m1.findFirst()
+    if len(mid)==0 : return self.getJSON({'code':4000,'msg':'获取 '+str(url)+' 不存在!'})
     # 全部动作
     action = []
     permAll = AdminToken().perm(self.tokenData['uid'])
     perm = permAll[str(mid['id'])]
-    aMenus = SysMenuAction().find({'columns':'name,action,ico,perm'})
+    m2 = SysMenuAction()
+    m2.columns('name,action,ico,perm')
+    aMenus = m2.find()
     for val in aMenus :
       # 匹配权限值
       if int(perm)&int(val['perm'])>0 :

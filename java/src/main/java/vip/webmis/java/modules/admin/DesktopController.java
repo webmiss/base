@@ -16,7 +16,7 @@ public class DesktopController extends Base {
 
   /* 首页 */
   @RequestMapping("/index")
-  String index(String token) {
+  String index(String token) throws Exception {
     AdminToken.urlVerify(token,"/");
     // 返回数据
     HashMap<String, Object> _res = new HashMap<String, Object>();

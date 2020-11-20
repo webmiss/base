@@ -49,24 +49,27 @@ class UserInfoController extends Base{
     if(empty($data)) return self::getJSON(['code'=>4000,'msg'=>'参数错误!']);
     $data = json_decode($data);
     // 数据
-    $arr = ['uid','img'];
     $model = UserInfo::findFirst(['uid='.self::$tokenData->uid]);
-    foreach($data as $key=>$val){
-      if(in_array($key,$arr)) continue;
-      $model->$key = trim($val);
-    }
+    $model->nickname = trim($data->nickname);
+    $model->name = trim($data->name);
+    $model->gender = trim($data->gender);
+    $model->birthday = trim($data->birthday);
+    $model->position = trim($data->position);
     // 用户信息
     $uinfo = [
-      'img'=>!empty($model->img)?Env::$base_url.$model->img:'',
-      'nickname'=>$model->nickname,
-      'name'=>$model->name,
-      'gender'=>$model->gender,
-      'birthday'=>$model->birthday?$model->birthday:'',
-      'position'=>$model->position,
+      'img'=>trim($data->img),
+      'nickname'=>trim($data->nickname),
+      'name'=>trim($data->name),
+      'gender'=>trim($data->gender),
+      'birthday'=>trim($data->birthday),
+      'position'=>trim($data->position),
     ];
     // 保存
-    if($model->save()) return self::getJSON(['code'=>0,'msg'=>'成功','uinfo'=>$uinfo]);
-    else return self::getJSON(['code'=>5000,'msg'=>'保存失败!']);
+    if($model->save()){
+      return self::getJSON(['code'=>0,'msg'=>'成功','uinfo'=>$uinfo]);
+    }else{
+      return self::getJSON(['code'=>5000,'msg'=>'保存失败!']);
+    }
   }
 
   /* 头像上传 */
@@ -77,21 +80,17 @@ class UserInfoController extends Base{
     $res = Upload::base64(['path'=>self::$imgDir,'base64'=>$base64]);
     if($res){
       $model = UserInfo::findFirst(['uid='.self::$tokenData->uid]);
-      if(!$model){
-        $model = new UserInfo();
-        $model->uid = self::$tokenData->uid;
-        $model->ctime = date('YmdHis');
-      }
       // 头像
       $img = isset($model->img)?$model->img:'';
       // 保存
       $model->img = self::$imgDir.$res['filename'];
       $model->utime = date('YmdHis');
       if($model->save()){
-        @unlink($img);
+        // 清理头像
+        if(is_file($img)) unlink($img);
         return self::getJSON(['code'=>0,'msg'=>'上传成功','img'=>Env::$base_url.self::$imgDir.$res['filename']]);
       }else{
-        return self::getJSON(['code'=>4000,'msg'=>'保存图片失败!']);
+        return self::getJSON(['code'=>5000,'msg'=>'保存数据失败!']);
       }
     }else{
       return self::getJSON(['code'=>5000,'msg'=>'保存图片失败!']);

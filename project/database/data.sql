@@ -167,4 +167,13 @@ CREATE TABLE `user_role` (
 INSERT INTO `user_role` (`id`, `role`, `ctime`, `utime`, `perm`) VALUES
 (1,	'普通用户',	NULL,	NULL,	'1:0 3:0 4:1 5:1 6:1 14:1');
 
+DROP TABLE IF EXISTS `test`;
+CREATE TABLE `test` (
+  `uid` int(3) NOT NULL AUTO_INCREMENT,
+  `title` varchar(16) NOT NULL,
+  `ctime` datetime DEFAULT NULL,
+  `utime` datetime DEFAULT NULL,
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- 2020-06-09 01:54:55

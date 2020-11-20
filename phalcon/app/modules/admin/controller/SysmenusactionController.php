@@ -25,7 +25,7 @@ class SysMenusActionController extends Base {
     if(empty($url)) return self::getJSON(['code'=>4000,'msg'=>'获取动作不能为空!']);
     // 菜单ID
     $mid = SysMenu::findFirst(['url=:url:','bind'=>['url'=>$url],'columns'=>'id']);
-    if(!$mid) return self::getJSON(['code'=>4000,'msg'=>'获取动作不存在!']);
+    if(!$mid) return self::getJSON(['code'=>4000,'msg'=>'获取 '.$url.' 不存在!']);
     // 全部动作
     $action = [];
     $permAll = AdminToken::perm(self::$tokenData->uid);

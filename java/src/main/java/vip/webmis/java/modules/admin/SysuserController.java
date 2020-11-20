@@ -2,8 +2,6 @@ package vip.webmis.java.modules.admin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -29,38 +27,38 @@ public class SysuserController extends Base {
 
   /* 列表 */
   @RequestMapping("/list")
-  String list(String token, String data, int page, int limit) {
+  String list(String token, String data, int page, int limit) throws Exception {
     // 验证
     AdminToken.urlVerify(token, "SysUser");
     // 搜索
     JSONObject req = Inc.json_decode(data);
     String uname = String.valueOf(req.get("uname")).trim();
     String where = "a.uname LIKE \"%:uname:%\" OR a.tel LIKE \"%:uname:%\" OR a.email LIKE \"%:uname:%\"";
-    HashMap<String, Object> bind = new HashMap<String, Object>();
+    JSONObject bind = new JSONObject();
     bind.put("uname",uname);
     // 查询
-    HashMap<String, Object> params = new HashMap<String, Object>();
-    params.put("table", "user as a LEFT JOIN user_info as b ON a.id=b.uid");
-    params.put("columns", "a.id as uid,a.uname as uname,a.email as email,a.tel as tel,a.state as state,"
-        + "a.rtime as rtime,a.ltime as ltime,a.utime as utime,"
-        + "b.nickname as nickname,b.position as position,b.name as name,b.gender as gender,b.birthday as birthday,b.img as img");
-    params.put("order", "a.id DESC");
-    params.put("where", where);
-    params.put("bind", bind);
+    User model = new User();
+    model.table("user as a LEFT JOIN user_info as b ON a.id=b.uid");
+    model.columns(
+      "a.id as uid,a.uname as uname,a.email as email,a.tel as tel,a.state as state," +
+      "a.rtime as rtime,a.ltime as ltime,a.utime as utime," +
+      "b.nickname as nickname,b.position as position,b.name as name,b.gender as gender,b.birthday as birthday,b.img as img"
+    );
+    model.order("a.id DESC");
+    model.where(where,bind);
     // 统计
-    HashMap<String, Object> cparams = new HashMap<String, Object>(params);
-    int total = new User().count(cparams);
+    int total = model.count();
     // 分页
-    String start = String.valueOf((page - 1) * limit);
-    params.put("limit", start + "," + String.valueOf(limit));
+    String start = String.valueOf((page-1)*limit);
+    model.limit(start+","+String.valueOf(limit));
     // 数据
-    ArrayList<HashMap<String, Object>> list = new User().find(params);
+    ArrayList<HashMap<String, Object>> list = model.find();
     // 状态
     for (HashMap<String, Object> val : list) {
-      val.put("state", val.get("state").equals("1") ? true : false);
+      val.put("state", val.get("state").equals("1")?true:false);
       val.put("uid", val.get("uid").toString());
-      val.put("img", val.get("img") != null && !val.get("img").equals("") ? Env.base_url + String.valueOf(val.get("img")) : "");
-      val.put("birthday", val.get("birthday") != null ? String.valueOf(val.get("birthday")) : "");
+      val.put("img", val.get("img")!=null&&!val.get("img").equals("")?Env.base_url + String.valueOf(val.get("img")):"");
+      val.put("birthday", val.get("birthday")!=null?String.valueOf(val.get("birthday")):"");
       long rtime = Inc.time("yyyy-MM-dd HH:mm:ss",String.valueOf(val.get("rtime")));
       val.put("rtime", rtime>0?Inc.date("yyyy-MM-dd HH:mm:ss",rtime):"");
       long ltime = Inc.time("yyyy-MM-dd HH:mm:ss",String.valueOf(val.get("ltime")));
@@ -79,12 +77,11 @@ public class SysuserController extends Base {
 
   /* 添加 */
   @RequestMapping("/add")
-  String add(String token, String data) {
-    // 验证
-    AdminToken.urlVerify(token, "SysUser");
+  String add(String token, String data) throws Exception {
     HashMap<String, Object> _res;
-    HashMap<String, Object> params;
-    HashMap<String, Object> bind;
+    JSONObject bind;
+    // 验证
+    AdminToken.urlVerify(token,"SysUser");
     // 参数
     JSONObject req = Inc.json_decode(data);
     if(req==null || !req.containsKey("tel") || req.get("tel").equals("")){
@@ -103,12 +100,11 @@ public class SysuserController extends Base {
       return getJSON(_res);
     }
     // 是否存在
-    bind = new HashMap<String, Object>();
+    User m1 = new User();
+    bind = new JSONObject();
     bind.put("tel",tel);
-    params = new HashMap<String, Object>();
-    params.put("where","tel=:tel:");
-    params.put("bind",bind);
-    HashMap<String, Object> res = new User().findFirst(params);
+    m1.where("tel=:tel:",bind);
+    HashMap<String, Object> res = m1.findFirst();
     if(!res.isEmpty()){
       _res = new HashMap<String, Object>();
       _res.put("code", 4000);
@@ -116,13 +112,12 @@ public class SysuserController extends Base {
       return getJSON(_res);
     }
     // 保存
-    params = new HashMap<String, Object>();
-    params.put("id",Data.getId());
-    params.put("tel",tel);
-    params.put("password",passwd);
-    params.put("rtime",Inc.date("yyyy-MM-dd HH:mm:ss"));
+    User m2 = new User();
+    m2.id = Data.getId();
+    m2.tel = tel;
+    m2.password = passwd;
     // 结果
-    if(new User().insert(params)==0){
+    if(m2.create()){
       _res = new HashMap<String, Object>();
       _res.put("code", 0);
       _res.put("msg", "成功");
@@ -137,13 +132,11 @@ public class SysuserController extends Base {
 
   /* 编辑 */
   @RequestMapping("/edit")
-  String edit(String token, String uid, String data) {
+  String edit(String token, String uid, String data) throws Exception {
+    HashMap<String, Object> _res;
+    JSONObject bind;
     // 验证
     AdminToken.urlVerify(token, "SysUser");
-    HashMap<String, Object> _res;
-    HashMap<String, Object> params;
-    HashMap<String, Object> uData;
-    HashMap<String, Object> bind;
     // 参数
     JSONObject req = Inc.json_decode(data);
     if(req==null || !req.containsKey("tel") || req.get("tel").equals("")){
@@ -163,24 +156,21 @@ public class SysuserController extends Base {
       return getJSON(_res);
     }
     // 是否存在
-    bind = new HashMap<String, Object>();
+    User m1 = new User();
+    bind = new JSONObject();
     bind.put("tel",tel);
-    params = new HashMap<String, Object>();
-    params.put("where","tel=:tel:");
-    params.put("bind",bind);
-    HashMap<String, Object> res = new User().findFirst(params);
+    m1.where("tel=:tel:",bind);
+    HashMap<String, Object> res = m1.findFirst();
     if(!res.isEmpty()){
       // 更新密码
       if(passwd!=""){
-        uData = new HashMap<String, Object>();
-        uData.put("password",passwd);
-        bind = new HashMap<String, Object>();
+        User m2 = new User();
+        m2.password = passwd;
+        m2.uField("password,utime");
+        bind = new JSONObject();
         bind.put("uid",uid);
-        params = new HashMap<String, Object>();
-        params.put("data",uData);
-        params.put("where","id=:uid:");
-        params.put("bind",bind);
-        if(new User().update(params)){
+        m2.where("id=:uid:",bind);
+        if(m2.update()){
           _res = new HashMap<String, Object>();
           _res.put("code", 0);
           _res.put("msg", "成功");
@@ -199,17 +189,19 @@ public class SysuserController extends Base {
       }
     }
     // 修改手机
-    uData = new HashMap<String, Object>();
-    uData.put("tel",tel);
-    if(passwd!="") uData.put("password",passwd);
-    bind = new HashMap<String, Object>();
+    User m3 = new User();
+    m3.tel = tel;
+    if(passwd!=""){
+      m3.password = passwd;
+      m3.uField("tel,password,utime");
+    }else{
+      m3.uField("tel,utime");
+    }
+    bind = new JSONObject();
     bind.put("uid",uid);
-    params = new HashMap<String, Object>();
-    params.put("data",uData);
-    params.put("where","id=:uid:");
-    params.put("bind",bind);
+    m3.where("id=:uid:",bind);
     // 结果
-    if(new User().update(params)){
+    if(m3.update()){
       _res = new HashMap<String, Object>();
       _res.put("code", 0);
       _res.put("msg", "成功");
@@ -224,11 +216,11 @@ public class SysuserController extends Base {
 
   /* 删除 */
   @RequestMapping("/delete")
-  String delete(String token, String data) {
+  String delete(String token, String data) throws Exception {
+    HashMap<String, Object> _res;
+    JSONObject bind;
     // 验证
     AdminToken.urlVerify(token, "SysUser");
-    HashMap<String, Object> _res;
-    HashMap<String, Object> bind;
     // 参数
     JSONArray req = Inc.json_decode_array(data);
     if(req==null){
@@ -246,16 +238,14 @@ public class SysuserController extends Base {
     }
     // ID
     String ids = Inc.implode(",",req);
-    bind = new HashMap<String, Object>();
+    bind = new JSONObject();
     bind.put("uid",ids);
-    HashMap<String, Object> user = new HashMap<String, Object>();
-    user.put("where","id in(:uid:)");
-    user.put("bind",bind);
-    HashMap<String, Object> uinfo = new HashMap<String, Object>();
-    uinfo.put("where","uid in(:uid:)");
-    uinfo.put("bind",bind);
+    User m1 = new User();
+    m1.where("id in(:uid:)",bind);
+    UserInfo m2 = new UserInfo();
+    m2.where("uid in(:uid:)",bind);
     // 结果
-    if(new User().delete(user) && new UserInfo().delete(uinfo)){
+    if(m1.delete() && m2.delete()){
       _res = new HashMap<String, Object>();
       _res.put("code", 0);
       _res.put("msg", "成功");
@@ -270,10 +260,11 @@ public class SysuserController extends Base {
 
   /* 状态 */
   @RequestMapping("/state")
-  String state(String token, String uid, String state) {
-    // 验证
-    AdminToken.urlVerify(token, "SysUser");
+  String state(String token, String uid, String state) throws Exception {
     HashMap<String, Object> _res;
+    JSONObject bind;
+    // 验证
+    AdminToken.urlVerify(token,"SysUser");
     // 参数
     uid = uid.trim();
     state = state.trim();
@@ -285,16 +276,14 @@ public class SysuserController extends Base {
       return getJSON(_res);
     }
     // 更改
-    HashMap<String, Object> uData = new HashMap<String, Object>();
-    uData.put("state",state.equals("1")?"1":"0");
-    HashMap<String, Object> bind = new HashMap<String, Object>();
+    User model = new User();
+    model.state = state.equals("1")?"1":"0";
+    model.uField("state,utime");
+    bind = new JSONObject();
     bind.put("uid",uid);
-    HashMap<String, Object> params = new HashMap<String, Object>();
-    params.put("data",uData);
-    params.put("where","id=:uid:");
-    params.put("bind",bind);
+    model.where("id=:uid:",bind);
     // 结果
-    if(new User().update(params)){
+    if(model.update()){
       _res = new HashMap<String, Object>();
       _res.put("code", 0);
       _res.put("msg", "成功");
@@ -309,13 +298,12 @@ public class SysuserController extends Base {
 
   /* 用户信息 */
   @RequestMapping("/info")
-  String info(String token, String uid, String data) {
+  String info(String token, String uid, String data) throws Exception {
+    HashMap<String, Object> _res;
+    JSONObject bind;
+    boolean res;
     // 验证
     HashMap<String, Object> tokenData = AdminToken.urlVerify(token, "SysUser");
-    HashMap<String, Object> _res;
-    HashMap<String, Object> params;
-    HashMap<String, Object> uData;
-    HashMap<String, Object> bind;
     // 参数
     JSONObject req = Inc.json_decode(data);
     if(req==null){
@@ -333,38 +321,39 @@ public class SysuserController extends Base {
       return getJSON(_res);
     }
     // 查询
-    bind = new HashMap<String, Object>();
+    UserInfo m1 = new UserInfo();
+    bind = new JSONObject();
     bind.put("uid",uid);
-    params = new HashMap<String, Object>();
-    params.put("where","uid=:uid:");
-    params.put("bind",bind);
-    HashMap<String, Object> info = new UserInfo().findFirst(params);
+    m1.where("uid=:uid:",bind);
+    HashMap<String, Object> info = m1.findFirst();
     // 数据
-    uData = new HashMap<String, Object>();
-    Set<String> arr = new HashSet<String>();
-    arr.add("uid");
-    Set<String> keys = req.keySet();
-    for(String key : keys){
-      if(arr.contains(key)) continue;
-      uData.put(key,String.valueOf(req.get(key)).trim());
-    }
-    if(uData.get("birthday").equals("")) uData.put("birthday","null");
-    // 是否存在
+    String birthday = String.valueOf(req.get("birthday")).trim();
+    UserInfo m2 = new UserInfo();
+    m2.nickname = String.valueOf(req.get("nickname")).trim();
+    m2.name = String.valueOf(req.get("name")).trim();
+    m2.gender = String.valueOf(req.get("gender")).trim();
+    m2.birthday = !birthday.equals("")?birthday:"null";
+    m2.position = String.valueOf(req.get("position")).trim();
     if(info.isEmpty()){
-      uData.put("uid",uid);
-      new UserInfo().insert(uData);
+      m2.uid = uid;
+      res = m2.create();
     }else{
-      params = new HashMap<String, Object>();
-      params.put("data",uData);
-      params.put("where","uid=:uid:");
-      params.put("bind",bind);
-      new UserInfo().update(params);
+      m2.uField("utime,nickname,name,gender,birthday,position");
+      m2.where("uid=:uid:",bind);
+      res = m2.update();
     }
     // 结果
-    _res = new HashMap<String, Object>();
-    _res.put("code", 0);
-    _res.put("msg", "成功");
-    return getJSON(_res);
+    if(res){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 0);
+      _res.put("msg", "成功");
+      return getJSON(_res);
+    }else{
+      _res = new HashMap<String, Object>();
+      _res.put("code", 5000);
+      _res.put("msg", "更新失败!");
+      return getJSON(_res);
+    }
   }
 
 }

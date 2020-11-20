@@ -10,12 +10,16 @@ class IndexController(Base) :
 
   # 系统配置
   def getConfig(self):
-    config = SysConfig().find({'columns':'name,title,val'})
-    arr = ['title','copy','logo','login_bg']
+    # 查询
+    model = SysConfig()
+    model.where('name in ("title","copy","logo","login_bg")')
+    model.columns('name,val')
+    config = model.find()
+    # 数据
     list = {}
     for val in config :
-      if val['name'] in arr :
+      if val['name']=='logo' or val['name']=='login_bg' :
+        list[val['name']] = Env.base_url+val['val'] if val['val']!='' else ''
+      else :
         list[val['name']] = val['val']
-        if val['name']=='logo' or val['name']=='login_bg' :
-          list[val['name']] = Env.base_url+val['val'] if val['val']!='' else ''
     return self.getJSON({'code':0,'list':list,'msg':'成功'})
