@@ -19,6 +19,37 @@ class SysMenusController extends Base {
     self::$tokenData = AdminToken::verify();
   }
 
+  /* 列表 */
+  function listAction(){
+    // 搜索
+    $data = json_decode($this->request->get('data'));
+    $fid = trim($data->fid);
+    $title = trim($data->title);
+    $url = trim($data->url);
+    $where = SysMenu::bindWhere(
+      'fid LIKE "%:fid:%" AND title LIKE "%:title:%" AND url LIKE "%:url:%"',
+      ['fid'=>$fid,'title'=>$title,'url'=>$url]
+    );
+    // 分页
+    $page = $this->request->get('page','int');
+    $limit = $this->request->get('limit','int');
+    $start = ($page-1)*$limit;
+    // 统计
+    $total = SysMenu::count($where);
+    // 数据
+    $list = SysMenu::find([
+      $where,
+      'limit'=>['number'=>$limit,'offset'=>$start],
+      'order'=>'sort DESC, fid'
+    ])->toArray();
+    // 状态
+    foreach ($list as $key => $val) {
+      $list[$key]['ctime'] = $val['ctime']?$val['ctime']:'';
+      $list[$key]['utime'] = $val['utime']?$val['utime']:'';
+    }
+    return self::getJSON(['code'=>0,'msg'=>'成功','list'=>$list,'total'=>$total]);
+  }
+
   /* 获取[菜单] */
 	function getMenusAction(){
     // 全部菜单

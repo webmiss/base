@@ -9,7 +9,7 @@ use Phalcon\Crypt;
 */
 class Safety{
 
-  /* 正则 */
+  /* 正则-公共 */
   static function isRight($name='',$val=''){
     $data = [
       'uname'=>'/^[a-zA-Z][a-zA-Z0-9\_\@\-\*\&]{3,15}$/',
@@ -19,6 +19,11 @@ class Safety{
       'idcard'=>'/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/',
     ];
     return preg_match($data[$name],$val)?true:false;
+  }
+
+  /* 正则-验证 */
+  static function test($reg, $val){
+    return preg_match('/'.$reg.'/',$val)?true:false;
   }
 
   /* 加密-字符串 */

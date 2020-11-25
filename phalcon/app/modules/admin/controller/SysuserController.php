@@ -4,7 +4,6 @@ namespace app\modules\admin\controller;
 use app\Env;
 use app\common\Base;
 use app\common\AdminToken;
-use app\common\Inc;
 use app\common\Data;
 use app\library\Safety;
 use app\model\User;
@@ -18,7 +17,7 @@ class SysUserController extends Base{
   /* 构造函数 */
   function initialize(){
     parent::initialize();
-    // 控制器权限
+    // 验证
     self::$tokenData = AdminToken::urlVerify('SysUser');
   }
 
@@ -30,15 +29,14 @@ class SysUserController extends Base{
     $uname = trim($data->uname);
     $where = 'a.uname LIKE :uname: OR a.tel LIKE :uname: OR a.email LIKE :uname:';
     $bind = ['uname'=>"%$uname%"];
-    // 查询数据
+    // 查询
     $builder = $this->modelsManager->createBuilder();
     $builder->addfrom('app\model\User', 'a');
     $builder->leftJoin('app\model\UserInfo', 'a.id=b.uid', 'b');
     $builder->where($where,$bind);
     $builder->columns('
-      a.id as uid,a.uname as uname,a.email as email,a.tel as tel,a.state as state,
-      a.rtime as rtime,a.ltime as ltime,a.utime as utime,
-      b.nickname as nickname,b.position as position,b.name as name,b.gender as gender,b.birthday as birthday,b.img as img
+      a.id AS uid, a.uname, a.email, a.tel, a.state, a.rtime, a.ltime, a.utime,
+      b.nickname, b.position, b.name, b.gender, b.birthday, b.img
     ');
     $builder->orderBy('a.id DESC');
     // 统计
