@@ -19,7 +19,7 @@ class UserController(Base) :
       return self.getJSON({'code':4000,'msg':'请输入用户名/手机/邮箱'})
     # 查询
     model = User()
-    model.table('user as a LEFT JOIN user_info as b ON a.id=b.uid LEFT JOIN user_perm as c ON a.id=c.uid')
+    model.table('user AS a LEFT JOIN user_info AS b ON a.id=b.uid LEFT JOIN user_perm AS c ON a.id=c.uid')
     model.columns('a.id, a.state, b.position, b.nickname, b.name, b.gender, b.img, c.state_admin')
     model.where('(a.uname=":uname:" OR a.tel=":uname:" OR a.email=":uname:") AND a.password=":passwd:"',{'uname':uname,'passwd':passwd})
     uData = model.findFirst()

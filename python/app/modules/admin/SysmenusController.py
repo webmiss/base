@@ -1,6 +1,6 @@
 from app.common.Base import Base
 from app.common.AdminToken import AdminToken
-
+from app.common.Inc import Inc
 from app.model.SysMenu import SysMenu
 
 # 用户
@@ -14,6 +14,35 @@ class SysmenusController(Base) :
   def __init__(self):
     # 验证
     self.tokenData = AdminToken().verify()
+
+  # 列表
+  def list(self):
+    req = self.request()
+    # 搜索
+    data = Inc.json_decode(req.get('data'))
+    fid = data['fid'].strip()
+    title = data['title'].strip()
+    url = data['url'].strip()
+    where = 'fid LIKE "%:fid:%" AND title LIKE "%:title:%" AND url LIKE "%:url:%"'
+    bind = {'fid':fid,'title':title,'url':url}
+    # 查询
+    model = SysMenu()
+    model.where(where,bind)
+    model.order('sort DESC, fid')
+    # 统计
+    total = model.count()
+    # 分页
+    page = req.get('page')
+    limit = req.get('limit')
+    start = (int(page)-1)*int(limit)
+    model.limit(str(start)+','+limit)
+    # 数据
+    list = model.find()
+    # 状态
+    for val in list :
+      val['ctime'] = str(val['ctime']) if val['ctime'] else ''
+      val['utime'] = str(val['utime']) if val['utime'] else ''
+    return self.getJSON({'code':0,'msg':'成功','list':list,'total':total})
 
   # 获取[菜单]
   def getMenus(self):

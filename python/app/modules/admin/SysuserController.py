@@ -16,7 +16,7 @@ class SysuserController(Base) :
   def __init__(self):
     self.tokenData = AdminToken().urlVerify('SysUser')
 
-  # 首页
+  # 列表
   def list(self):
     req = self.request()
     # 搜索
@@ -26,13 +26,13 @@ class SysuserController(Base) :
     bind = {'uname':uname}
     # 查询
     model = User()
-    model.table('user as a LEFT JOIN user_info as b ON a.id=b.uid')
+    model.table('user AS a LEFT JOIN user_info AS b ON a.id=b.uid')
     model.columns(
-      'a.id as uid,a.uname as uname,a.email as email,a.tel as tel,a.state as state,'+
-      'a.rtime as rtime,a.ltime as ltime,a.utime as utime,'+
-      'b.nickname as nickname,b.position as position,b.name as name,b.gender as gender,b.birthday as birthday,b.img as img'
+      'a.id AS uid, a.uname, a.email, a.tel, a.state, a.rtime, a.ltime, a.utime,'+
+      'b.nickname, b.position, b.name, b.gender, b.birthday, b.img'
     )
     model.where(where,bind)
+    model.order('a.id DESC')
     # 统计
     total = model.count()
     # 分页
