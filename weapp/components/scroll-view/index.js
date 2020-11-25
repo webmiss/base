@@ -22,6 +22,7 @@ Component({
     sp:'', //滑动方向
     html: {w:0,h:0},  //容器
     body: {w:0,h:0,x:0,y:0},  //内容
+    isUp: false, //之前内容的高度
     refUpper: {}, //左上内容
     refHtml: {}, //容器内容
     refBox: {}, //中间内容
@@ -66,7 +67,6 @@ Component({
     this.setStyle('box',this.data.refBox);
   },
   methods: {
-
     /* 返回 */
     res(){
       return {
@@ -78,7 +78,6 @@ Component({
         boxH: this.data.html.h,
       }
     },
-
     /* 开始 */
     start(e){
       // 开始坐标
@@ -94,8 +93,8 @@ Component({
       });
       // 开启滑动
       this.scrollEnabled(true);
+      this.setData({'isUp':true});
     },
-    
     /* 移动 */
     move(e){
       if(!this.data.isScroll) return false;
@@ -138,7 +137,6 @@ Component({
         }
       }
     },
-
     /* 结束 */
     end(e){
       // 控制上限、下限
@@ -166,7 +164,6 @@ Component({
         }
       }
     },
-
     /* 滑动事件 */
     scroll(e){
       const x = parseInt(e.detail.scrollLeft);
@@ -175,17 +172,14 @@ Component({
       const h = e.detail.scrollHeight;
       this.setData({ ['body.x']:x,['body.y']:y,['body.w']:w,['body.h']:h });
       this.triggerEvent('scroll',this.res());
-    },
-
-    /* 底部 */
-    toLower(e){
-      if(this.isLower){
-        this.isLower = false;
-        this.triggerEvent('up',this.res());
+      if(y > this.data.body.h-this.data.html.h-this.data.lowerBoundary&&y < this.data.body.h-this.data.html.h&&this.data.isUp){
+        const ratio = Math.abs(this.moveBodyPage.x/this.moveBodyPage.y) || 0;
+        if(ratio<1 && this.moveBodyPage.y<1){
+          this.setData({'isUp':false});
+          this.triggerEvent('up',this.res());
+        }
       }
-      
     },
-
     /* 滑动方向 */
     startBody(e){
       let touch = e.touches?e.touches[0]:e;
@@ -212,13 +206,11 @@ Component({
         this.triggerEvent('swipe','up');
       }
     },
-
     /* 滑动状态 */
     scrollEnabled(state){
       if(this.data.sp=='x') this.setData({ scrollX:state });
       else this.setData({ scrollY:state });
     },
-
     /* 滚动-位置 */
     translate(n,time){
       this.setData({
@@ -234,7 +226,6 @@ Component({
       }
       this.setStyle('html',this.data.refHtml);
     },
-
     /* 加载-左/上 */
     _translateUpper(n,time){
       this.setData({
@@ -246,13 +237,11 @@ Component({
       else this.setData({ ['refUpper.transform']:`translate(0,-${n}px)` });
       this.setStyle('upper',this.data.refUpper);
     },
-
     /* Array to Style */
     setStyle(name,val){
       let str = '';
       for(let k in val) str += `${k}:${val[k]}; `;
       this.setData({ [`style.${name}`]:str });
     },
-    
   }
 })
