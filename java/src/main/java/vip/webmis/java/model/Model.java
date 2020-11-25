@@ -1,6 +1,7 @@
 package vip.webmis.java.model;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -133,7 +134,7 @@ public class Model extends Base {
   }
 
   /* 新增 */
-  public Boolean create() {
+  public Boolean create() throws Exception {
     __sql = ""; //默认SQL
     __getAllFields(); //全部字段
     __callback("beforeCreate",__fields);  //回调函数
@@ -179,7 +180,7 @@ public class Model extends Base {
     return res.get("state").equals(true)?true:false;
   }
   /* 指定更新字段 */
-  public Model uField(String field) {
+  public Model uField(String field) throws Exception {
     __getAllFields(); //全部字段
     JSONObject fields = new JSONObject();
     String[] arr = field.split(",");
@@ -348,13 +349,13 @@ public class Model extends Base {
   }
   
   /* 验证&取值 */
-  private void __getAllFields(){
+  private void __getAllFields() throws Exception {
     __fields = new JSONObject();
     String name;
     String mName;
     Method method;
     Object res;
-    try {
+    // try {
       // 类
       Object obj = this.getClass().getDeclaredConstructor().newInstance();
       // 字段
@@ -366,7 +367,11 @@ public class Model extends Base {
         // 设置
         if(methods.contains("set"+mName)){
           method = this.getClass().getMethod("set"+mName,field.get(this).getClass());
-          method.invoke(obj,field.get(this));
+          try {
+            method.invoke(obj,field.get(this));
+          } catch (InvocationTargetException e) {
+            throw new Exception(e.getTargetException().getMessage());
+          }
         }
         // 获取
         if(methods.contains("get"+mName)){
@@ -377,10 +382,6 @@ public class Model extends Base {
           __fields.put(name,field.get(this));
         }
       }
-
-    } catch (Exception e) {
-      System.out.println("模型错误: "+e.getMessage());
-    }
   }
   /* 获取全部函数 */
   private ArrayList<String> _getMethod(){

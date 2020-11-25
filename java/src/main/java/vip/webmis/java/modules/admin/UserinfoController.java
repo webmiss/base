@@ -73,7 +73,6 @@ public class UserinfoController extends Base {
     }
     JSONObject jsonData = JSON.parseObject(data);
     // 数据
-
     UserInfo model = new UserInfo();
     model.nickname = jsonData.get("nickname").toString().trim();
     model.name = jsonData.get("name").toString().trim();

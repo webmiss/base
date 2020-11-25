@@ -38,14 +38,13 @@ public class SysuserController extends Base {
     bind.put("uname",uname);
     // 查询
     User model = new User();
-    model.table("user as a LEFT JOIN user_info as b ON a.id=b.uid");
+    model.table("user AS a LEFT JOIN user_info AS b ON a.id=b.uid");
     model.columns(
-      "a.id as uid,a.uname as uname,a.email as email,a.tel as tel,a.state as state," +
-      "a.rtime as rtime,a.ltime as ltime,a.utime as utime," +
-      "b.nickname as nickname,b.position as position,b.name as name,b.gender as gender,b.birthday as birthday,b.img as img"
+      "a.id AS uid, a.uname, a.email, a.tel, a.state, a.rtime, a.ltime, a.utime,"+
+      "b.nickname, b.position, b.name, b.gender, b.birthday, b.img"
     );
-    model.order("a.id DESC");
     model.where(where,bind);
+    model.order("a.id DESC");
     // 统计
     int total = model.count();
     // 分页
@@ -54,17 +53,22 @@ public class SysuserController extends Base {
     // 数据
     ArrayList<HashMap<String, Object>> list = model.find();
     // 状态
+    String tmp = "";
+    String time = "";
     for (HashMap<String, Object> val : list) {
       val.put("state", val.get("state").equals("1")?true:false);
       val.put("uid", val.get("uid").toString());
       val.put("img", val.get("img")!=null&&!val.get("img").equals("")?Env.base_url + String.valueOf(val.get("img")):"");
       val.put("birthday", val.get("birthday")!=null?String.valueOf(val.get("birthday")):"");
-      long rtime = Inc.time("yyyy-MM-dd HH:mm:ss",String.valueOf(val.get("rtime")));
-      val.put("rtime", rtime>0?Inc.date("yyyy-MM-dd HH:mm:ss",rtime):"");
-      long ltime = Inc.time("yyyy-MM-dd HH:mm:ss",String.valueOf(val.get("ltime")));
-      val.put("ltime", ltime>0?Inc.date("yyyy-MM-dd HH:mm:ss",ltime):"");
-      long utime = Inc.time("yyyy-MM-dd HH:mm:ss",String.valueOf(val.get("utime")));
-      val.put("utime", utime>0?Inc.date("yyyy-MM-dd HH:mm:ss",utime):"");
+      tmp = String.valueOf(val.get("rtime"));
+      time = !tmp.equals("null")?Inc.date("yyyy-MM-dd HH:mm:ss",Long.valueOf(tmp)):"";
+      val.put("rtime", time);
+      tmp = String.valueOf(val.get("ltime"));
+      time = !tmp.equals("null")?Inc.date("yyyy-MM-dd HH:mm:ss",Long.valueOf(tmp)):"";
+      val.put("ltime", time);
+      tmp = String.valueOf(val.get("utime"));
+      time = !tmp.equals("null")?Inc.date("yyyy-MM-dd HH:mm:ss",Long.valueOf(tmp)):"";
+      val.put("utime", time);
     }
     // 返回数据
     HashMap<String, Object> _res = new HashMap<String, Object>();
@@ -83,15 +87,15 @@ public class SysuserController extends Base {
     // 验证
     AdminToken.urlVerify(token,"SysUser");
     // 参数
-    JSONObject req = Inc.json_decode(data);
-    if(req==null || !req.containsKey("tel") || req.get("tel").equals("")){
+    JSONObject json = Inc.json_decode(data);
+    if(json==null || !json.containsKey("tel") || json.get("tel").equals("")){
       _res = new HashMap<String, Object>();
       _res.put("code", 4000);
       _res.put("msg", "参数错误!");
       return getJSON(_res);
     }
-    String tel = req.get("tel").toString().trim();
-    String passwd = !req.get("passwd").equals("")?Inc.md5(req.get("passwd").toString()):Inc.md5("123456");
+    String tel = json.get("tel").toString().trim();
+    String passwd = !json.get("passwd").equals("")?Inc.md5(json.get("passwd").toString()):Inc.md5("123456");
     // 验证手机
     if(!Safety.isRight("tel",tel)){
       _res = new HashMap<String, Object>();
@@ -138,16 +142,16 @@ public class SysuserController extends Base {
     // 验证
     AdminToken.urlVerify(token, "SysUser");
     // 参数
-    JSONObject req = Inc.json_decode(data);
-    if(req==null || !req.containsKey("tel") || req.get("tel").equals("")){
+    JSONObject json = Inc.json_decode(data);
+    if(json==null || !json.containsKey("tel") || json.get("tel").equals("")){
       _res = new HashMap<String, Object>();
       _res.put("code", 4000);
       _res.put("msg", "参数错误!");
       return getJSON(_res);
     }
     uid = uid.trim();
-    String tel = req.get("tel").toString().trim();
-    String passwd = !req.get("passwd").equals("")?Inc.md5(req.get("passwd").toString()):"";
+    String tel = json.get("tel").toString().trim();
+    String passwd = !json.get("passwd").equals("")?Inc.md5(json.get("passwd").toString()):"";
     // 验证手机
     if(!Safety.isRight("tel",tel)){
       _res = new HashMap<String, Object>();

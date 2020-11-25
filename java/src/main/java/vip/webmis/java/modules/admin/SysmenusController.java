@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import vip.webmis.java.common.AdminToken;
 import vip.webmis.java.common.Base;
+import vip.webmis.java.common.Inc;
 import vip.webmis.java.model.SysMenu;
 
 @RestController
@@ -22,6 +23,52 @@ public class SysmenusController extends Base {
 
   private static HashMap<String, Object> menus = null;
   private static HashMap<String, Object> permAll = null;
+
+  /* 列表 */
+  @RequestMapping("/list")
+  String list(String token, String data, int page, int limit) throws Exception {
+    // 验证
+    AdminToken.urlVerify(token, "SysMenus");
+    // 搜索
+    JSONObject req = Inc.json_decode(data);
+    String fid = String.valueOf(req.get("fid")).trim();
+    String title = String.valueOf(req.get("title")).trim();
+    String url = String.valueOf(req.get("url")).trim();
+    String where = "fid LIKE \"%:fid:%\" AND title LIKE \"%:title:%\" AND url LIKE \"%:url:%\"";
+    JSONObject bind = new JSONObject();
+    bind.put("fid",fid);
+    bind.put("title",title);
+    bind.put("url",url);
+    // 查询
+    SysMenu model = new SysMenu();
+    model.where(where,bind);
+    model.order("sort DESC, fid");
+    // 统计
+    int total = model.count();
+    // 分页
+    String start = String.valueOf((page-1)*limit);
+    model.limit(start+","+String.valueOf(limit));
+    // 数据
+    ArrayList<HashMap<String, Object>> list = model.find();
+    // 状态
+    String tmp = "";
+    String time = "";
+    for (HashMap<String, Object> val : list) {
+      tmp = String.valueOf(val.get("ctime"));
+      time = !tmp.equals("null")?Inc.date("yyyy-MM-dd HH:mm:ss",Long.valueOf(tmp)):"";
+      val.put("ctime", time);
+      tmp = String.valueOf(val.get("utime"));
+      time = !tmp.equals("null")?Inc.date("yyyy-MM-dd HH:mm:ss",Long.valueOf(tmp)):"";
+      val.put("utime", time);
+    }
+    // 返回数据
+    HashMap<String, Object> _res = new HashMap<String, Object>();
+    _res.put("code", 0);
+    _res.put("msg", "成功");
+    _res.put("list", list);
+    _res.put("total", total);
+    return getJSON(_res);
+  }
 
   /* 获取[菜单] */
   @RequestMapping("/getMenus")

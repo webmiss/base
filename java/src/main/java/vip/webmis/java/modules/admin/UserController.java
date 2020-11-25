@@ -36,7 +36,7 @@ public class UserController extends Base {
     }
     // 查询
     User model = new User();
-    model.table("user as a LEFT JOIN user_info as b ON a.id=b.uid LEFT JOIN user_perm as c ON a.id=c.uid");
+    model.table("user AS a LEFT JOIN user_info AS b ON a.id=b.uid LEFT JOIN user_perm AS c ON a.id=c.uid");
     model.columns("a.id, a.state, b.position, b.nickname, b.name, b.gender, b.img, c.state_admin");
     JSONObject bind = new JSONObject();
     bind.put("uname",uname);

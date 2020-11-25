@@ -19,7 +19,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
  */
 public class Safety {
 
-  /* 正则 */
+  /* 正则-公共 */
   public static boolean isRight(String name, String val){
     HashMap<String,Object> data = new HashMap<String,Object>();
     data.put("uname", "^[a-zA-Z][a-zA-Z0-9\\_\\@\\-\\*\\&]{3,15}$");
@@ -27,7 +27,14 @@ public class Safety {
     data.put("tel", "^1\\d{10}$");
     data.put("email", "^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.[a-zA-Z0-9_-])+");
     data.put("idcard", "^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$|^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([0-9]|X)$");
-    Pattern pattern = Pattern.compile((String.valueOf(data.get(name))));
+    Pattern pattern = Pattern.compile(data.get(name).toString());
+    Matcher matcher = pattern.matcher(val);
+    return matcher.matches();
+  }
+
+  /* 正则-验证 */
+  public static boolean test(String reg, String val){
+    Pattern pattern = Pattern.compile(reg);
     Matcher matcher = pattern.matcher(val);
     return matcher.matches();
   }
