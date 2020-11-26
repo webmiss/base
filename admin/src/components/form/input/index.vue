@@ -7,7 +7,14 @@
       :type="type"
       :maxlength="maxlength"
       :placeholder="placeholder"
-      :style="{width:width,height:height,lineHeight:lineHeight,padding:padding,textAlign:align}"
+      :style="{
+        width: width,
+        maxWidth: maxWidth,
+        height: height,
+        lineHeight: lineHeight,
+        padding: padding,
+        textAlign: align
+      }"
     >
   </div>
 </template>
@@ -28,6 +35,7 @@ export default {
     maxlength: {type: String, default: ''}, //最大字符: 默认
     placeholder: {type: String, default: ''}, //提示: 无
     width: {type: String, default: '100%'}, //宽度: '100%'
+    maxWidth: {type: String, default: 'auto'}, //宽度: '100%'
     height: {type: String, default: '40px'},  //高度: '40px'
     lineHeight: {type: String, default: '20px'},  //行高: '20px'
     padding: {type: String, default: '10px 16px'},  //间距: '10px 16px'
