@@ -41,6 +41,75 @@ class SysmenusController(Base) :
       val['utime'] = str(val['utime']) if val['utime'] else ''
     return self.getJSON({'code':0,'msg':'成功','list':list,'total':total})
 
+  # 添加
+  def add(self):
+    # 验证
+    AdminToken().urlVerify('SysMenus')
+    # 参数
+    req = self.request()
+    data = Inc.json_decode(req.get('data'))
+    if not data or type(data)!=dict :
+      return self.getJSON({'code':4000,'msg':'参数错误!'})
+    # 数据
+    model = SysMenu()
+    model.fid = data['fid'].strip() if 'fid' in data.keys() else '0'
+    model.title = data['title'].strip() if 'title' in data.keys() else ''
+    model.url = data['url'].strip() if 'url' in data.keys() else ''
+    model.perm = data['perm'].strip() if 'perm' in data.keys() else '0'
+    model.ico = data['ico'].strip() if 'ico' in data.keys() else ''
+    model.sort = data['sort'].strip() if 'sort' in data.keys() else '0'
+    model.remark = data['remark'].strip() if 'remark' in data.keys() else ''
+    # 结果
+    if model.create() :
+      return self.getJSON({'code':0,'msg':'成功'})
+    else :
+      return self.getJSON({'code':5000,'msg':'添加失败!'})
+
+  # 编辑
+  def edit(self):
+    # 验证
+    AdminToken().urlVerify('SysMenus')
+    # 参数
+    req = self.request()
+    data = Inc.json_decode(req.get('data'))
+    if not data or type(data)!=dict :
+      return self.getJSON({'code':4000,'msg':'参数错误!'})
+    id = req.get('id')
+    # 数据
+    model = SysMenu()
+    model.fid = data['fid'] if 'fid' in data.keys() else '0'
+    model.title = data['title'].strip() if 'title' in data.keys() else ''
+    model.url = data['url'].strip() if 'url' in data.keys() else ''
+    model.perm = data['perm'] if 'perm' in data.keys() else '0'
+    model.ico = data['ico'].strip() if 'ico' in data.keys() else ''
+    model.sort = data['sort'] if 'sort' in data.keys() else '0'
+    model.remark = data['remark'].strip() if 'remark' in data.keys() else ''
+    model.where('id=:id:',{'id':id})
+    # 结果
+    if model.update() :
+      return self.getJSON({'code':0,'msg':'成功'})
+    else :
+      return self.getJSON({'code':5000,'msg':'编辑失败!'})
+
+  # 删除
+  def delete(self):
+    # 验证
+    AdminToken().urlVerify('SysMenus')
+    # 参数
+    req = self.request()
+    data = Inc.json_decode(req.get('data'))
+    if not data :
+      return self.getJSON({'code':4000,'msg':'参数错误!'})
+    # ID
+    ids = Inc.implode(',',data)
+    model = SysMenu()
+    model.where('id in(:ids:)',{'ids':ids})
+    # 结果
+    if model.delete() :
+      return self.getJSON({'code':0,'msg':'成功'})
+    else :
+      return self.getJSON({'code':5000,'msg':'删除失败!'})
+
   # 获取[菜单]
   def getMenus(self):
     # 验证

@@ -82,5 +82,15 @@ public class Inc {
     } while (beginIndexFlag || endIndexFlag);
     return str;
   }
+
+  /* 是否数字 */
+  public static Boolean is_numeric(String str){
+    try{
+      Double.parseDouble(str);
+      return true;
+    }catch (Exception e){
+      return false;
+    }
+  }
   
 }

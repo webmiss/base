@@ -111,5 +111,55 @@ export default {
       });
     },
 
+    /* 编辑 */
+    editData(){
+      const table = this.$refs.Table;
+      const row = table.getRow();
+      if(!row) return Toast('请选择数据!');
+      this.edit.show = true;
+      // 默认值
+      this.edit.id = row.id;
+      this.edit.form.fid = row.fid;
+      this.edit.form.title = row.title;
+      this.edit.form.url = row.url;
+      this.edit.form.perm = row.perm;
+      this.edit.form.ico = row.ico;
+      this.edit.form.sort = row.sort;
+      this.edit.form.remark = row.remark;
+    },
+    subEdit(){
+      this.edit.show = false;
+      // 提交
+      const id = this.edit.id;
+      const data = JSON.stringify(this.edit.form);
+      const load = Loading();
+      Post('Sysmenus/edit',{token:Storage.getItem('token'),id:id,data:data},(res)=>{
+        load.clear();
+        const d = res.data;
+        if(d.code===0) this.loadData();
+        return Toast(d.msg);
+      });
+    },
+
+    /* 删除 */
+    delData(){
+      const table = this.$refs.Table;
+      const vals = table.getVals();
+      if(!vals) return Toast('请选择数据!');
+      this.del.show = true;
+      this.del.ids = JSON.stringify(vals);
+    },
+    subDel(){
+      this.del.show = false;
+      // 提交
+      const load = Loading();
+      Post('Sysmenus/delete',{token:Storage.getItem('token'),data:this.del.ids},(res)=>{
+        load.clear();
+        const d = res.data;
+        if(d.code===0) this.loadData();
+        return Toast(d.msg);
+      });
+    },
+
   },
 }

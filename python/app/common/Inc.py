@@ -30,3 +30,12 @@ class Inc:
   # 数组格式化字符串
   def implode(glue,arr) :
     return glue.join(arr)
+
+  # 是否数字
+  def is_numeric(str) :
+    try :
+      float(str)
+      return True
+    except Exception as e :
+      return False
+

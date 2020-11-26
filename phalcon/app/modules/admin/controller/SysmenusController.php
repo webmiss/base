@@ -50,6 +50,83 @@ class SysMenusController extends Base {
     return self::getJSON(['code'=>0,'msg'=>'成功','list'=>$list,'total'=>$total]);
   }
 
+  /* 添加 */
+  function addAction(){
+    // 验证
+    AdminToken::urlVerify('SysMenus');
+    // 参数
+    $data = trim($this->request->get('data'));
+    $data = json_decode($data);
+    if(empty($data)){
+      return self::getJSON(['code'=>4000,'msg'=>'参数错误!']);
+    }
+    // 数据
+    $model = new SysMenu();
+    $model->fid = isset($data->fid)?trim($data->fid):'0';
+    $model->title = isset($data->title)?trim($data->title):'';
+    $model->url = isset($data->url)?trim($data->url):'';
+    $model->perm = isset($data->perm)?trim($data->perm):'0';
+    $model->ico = isset($data->ico)?trim($data->ico):'';
+    $model->sort = isset($data->sort)?trim($data->sort):'0';
+    $model->remark = isset($data->remark)?trim($data->remark):'';
+    // 结果
+    if($model->save()){
+      return self::getJSON(['code'=>0,'msg'=>'成功']);
+    }else{
+      return self::getJSON(['code'=>5000,'msg'=>'添加失败!']);
+    }
+  }
+
+  /* 编辑 */
+  function editAction(){
+    // 验证
+    AdminToken::urlVerify('SysMenus');
+    // 参数
+    $data = trim($this->request->get('data'));
+    $data = json_decode($data);
+    if(empty($data)){
+      return self::getJSON(['code'=>4000,'msg'=>'参数错误!']);
+    }
+    $id = trim($this->request->get('id'));
+    // 数据
+    $model = SysMenu::findFirst(['id=:id:','bind'=>['id'=>$id]]);
+    $model->fid = isset($data->fid)?trim($data->fid):'0';
+    $model->title = isset($data->title)?trim($data->title):'';
+    $model->url = isset($data->url)?trim($data->url):'';
+    $model->perm = isset($data->perm)?trim($data->perm):'0';
+    $model->ico = isset($data->ico)?trim($data->ico):'';
+    $model->sort = isset($data->sort)?trim($data->sort):'0';
+    $model->remark = isset($data->remark)?trim($data->remark):'';
+    // 结果
+    if($model->save()){
+      return self::getJSON(['code'=>0,'msg'=>'成功']);
+    }else{
+      return self::getJSON(['code'=>5000,'msg'=>'编辑失败!']);
+    }
+  }
+
+  /* 删除 */
+  function deleteAction(){
+    // 验证
+    AdminToken::urlVerify('SysMenus');
+    // 参数
+    $data = trim($this->request->get('data'));
+    $data = json_decode($data);
+    if(empty($data)){
+      return self::getJSON(['code'=>4000,'msg'=>'参数错误!']);
+    }
+    // ID
+    $ids = implode(',',$data);
+    $where = SysMenu::bindWhere('id in(:ids:)',['ids'=>$ids]);
+    $model = SysMenu::find($where);
+    // 结果
+    if($model->delete()){
+      return self::getJSON(['code'=>0,'msg'=>'成功']);
+    }else{
+      return self::getJSON(['code'=>5000,'msg'=>'删除失败!']);
+    }
+  }
+
   /* 获取[菜单] */
 	function getMenusAction(){
     // 验证

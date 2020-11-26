@@ -70,6 +70,120 @@ public class SysmenusController extends Base {
     return getJSON(_res);
   }
 
+  /* 添加 */
+  @RequestMapping("/add")
+  String add(String token, String data) throws Exception {
+    HashMap<String, Object> _res;
+    // 验证
+    AdminToken.urlVerify(token,"SysMenus");
+    // 参数
+    JSONObject json = Inc.json_decode(data);
+    if(json==null || json.isEmpty()){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 4000);
+      _res.put("msg", "参数错误!");
+      return getJSON(_res);
+    }
+    // 数据
+    SysMenu model = new SysMenu();
+    model.fid = json.containsKey("fid")?json.get("fid").toString().trim():"0";
+    model.title = json.containsKey("title")?json.get("title").toString().trim():"";
+    model.url = json.containsKey("url")?json.get("url").toString().trim():"";
+    model.perm = json.containsKey("perm")?json.get("perm").toString().trim():"0";
+    model.ico = json.containsKey("ico")?json.get("ico").toString().trim():"";
+    model.sort = json.containsKey("sort")?json.get("sort").toString().trim():"0";
+    model.remark = json.containsKey("remark")?json.get("remark").toString().trim():"";
+    // 结果
+    if(model.create()){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 0);
+      _res.put("msg", "成功");
+      return getJSON(_res);
+    }else{
+      _res = new HashMap<String, Object>();
+      _res.put("code", 5000);
+      _res.put("msg", "添加失败!");
+      return getJSON(_res);
+    }
+  }
+
+  /* 编辑 */
+  @RequestMapping("/edit")
+  String edit(String token, int id, String data) throws Exception {
+    HashMap<String, Object> _res;
+    JSONObject bind;
+    // 验证
+    AdminToken.urlVerify(token, "SysMenus");
+    // 参数
+    JSONObject json = Inc.json_decode(data);
+    if(json==null || json.isEmpty()){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 4000);
+      _res.put("msg", "参数错误!");
+      return getJSON(_res);
+    }
+    // 数据
+    SysMenu model = new SysMenu();
+    model.fid = json.containsKey("fid")?json.get("fid").toString().trim():"0";
+    model.title = json.containsKey("title")?json.get("title").toString().trim():"";
+    model.url = json.containsKey("url")?json.get("url").toString().trim():"";
+    model.perm = json.containsKey("perm")?json.get("perm").toString().trim():"0";
+    model.ico = json.containsKey("ico")?json.get("ico").toString().trim():"";
+    model.sort = json.containsKey("sort")?json.get("sort").toString().trim():"0";
+    model.remark = json.containsKey("remark")?json.get("remark").toString().trim():"";
+    bind = new JSONObject();
+    bind.put("id",id);
+    model.where("id=:id:",bind);
+    model.uField("fid,title,url,perm,ico,sort,remark");
+    // 结果
+    if(model.update()){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 0);
+      _res.put("msg", "成功");
+      return getJSON(_res);
+    }else{
+      _res = new HashMap<String, Object>();
+      _res.put("code", 5000);
+      _res.put("msg", "编辑失败!");
+      return getJSON(_res);
+    }
+  }
+
+  /* 删除 */
+  @RequestMapping("/delete")
+  String delete(String token, String data) throws Exception {
+    HashMap<String, Object> _res;
+    JSONObject bind;
+    // 验证
+    AdminToken.urlVerify(token, "SysMenus");
+    // 参数
+    JSONArray req = Inc.json_decode_array(data);
+    if(req==null || req.isEmpty()){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 4000);
+      _res.put("msg", "参数错误!");
+      return getJSON(_res);
+    }
+    // ID
+    String ids = Inc.implode(",",req);
+    bind = new JSONObject();
+    bind.put("ids",ids);
+    SysMenu model = new SysMenu();
+    model.where("id in(:ids:)",bind);
+    // 结果
+    if(model.delete()){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 0);
+      _res.put("msg", "成功");
+      return getJSON(_res);
+    }else{
+      _res = new HashMap<String, Object>();
+      _res.put("code", 5000);
+      _res.put("msg", "删除失败!");
+      return getJSON(_res);
+    }
+  }
+
   /* 获取[菜单] */
   @RequestMapping("/getMenus")
   String getMenus(String token) throws Exception {
