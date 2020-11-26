@@ -30,10 +30,10 @@ public class SysmenusController extends Base {
     // 验证
     AdminToken.urlVerify(token, "SysMenus");
     // 搜索
-    JSONObject req = Inc.json_decode(data);
-    String fid = String.valueOf(req.get("fid")).trim();
-    String title = String.valueOf(req.get("title")).trim();
-    String url = String.valueOf(req.get("url")).trim();
+    JSONObject json = Inc.json_decode(data);
+    String fid = json.containsKey("fid")?String.valueOf(json.get("fid")).trim():"";
+    String title = json.containsKey("title")?String.valueOf(json.get("title")).trim():"";
+    String url = json.containsKey("url")?String.valueOf(json.get("url")).trim():"";
     String where = "fid LIKE \"%:fid:%\" AND title LIKE \"%:title:%\" AND url LIKE \"%:url:%\"";
     JSONObject bind = new JSONObject();
     bind.put("fid",fid);

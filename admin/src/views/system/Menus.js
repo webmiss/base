@@ -26,9 +26,9 @@ export default {
       store: this.$store.state,
       page: {list:[], page:1, limit:10, total:0,},
       // 搜索、添加、编辑、删除
-      sea: {show:false,form:{fid:'',title:'',url:''}},
-      add: {show:false,form:{tel:'',passwd:''}},
-      edit: {show:false,id:'',form:{tel:'',passwd:''}},
+      sea: {show:false,form:{}},
+      add: {show:false,form:{}},
+      edit: {show:false,id:'',form:{}},
       del: {show:false,ids:''},
     }
   },
@@ -95,6 +95,20 @@ export default {
       this.sea.show = false;
       this.page.page = 1;
       this.loadData();
+    },
+
+    /* 添加 */
+    subAdd(){
+      this.add.show = false;
+      // 提交
+      const data = JSON.stringify(this.add.form);
+      const load = Loading();
+      Post('Sysmenus/add',{token:Storage.getItem('token'),data:data},(res)=>{
+        load.clear();
+        const d = res.data;
+        if(d.code===0) this.loadData();
+        return Toast(d.msg);
+      });
     },
 
   },

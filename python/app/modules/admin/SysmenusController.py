@@ -10,19 +10,16 @@ class SysmenusController(Base) :
   tokenData = {}
   permAll = {}
 
-  # 构造函数
-  def __init__(self):
-    # 验证
-    self.tokenData = AdminToken().verify()
-
   # 列表
   def list(self):
-    req = self.request()
+    # 验证
+    AdminToken().urlVerify('SysMenus')
     # 搜索
+    req = self.request()
     data = Inc.json_decode(req.get('data'))
-    fid = data['fid'].strip()
-    title = data['title'].strip()
-    url = data['url'].strip()
+    fid = data['fid'].strip() if 'fid' in data.keys() else ''
+    title = data['title'].strip() if 'title' in data.keys() else ''
+    url = data['url'].strip() if 'url' in data.keys() else ''
     where = 'fid LIKE "%:fid:%" AND title LIKE "%:title:%" AND url LIKE "%:url:%"'
     bind = {'fid':fid,'title':title,'url':url}
     # 查询
@@ -46,6 +43,8 @@ class SysmenusController(Base) :
 
   # 获取[菜单]
   def getMenus(self):
+    # 验证
+    self.tokenData = AdminToken().verify()
     # 全部菜单
     self.menus = {}
     model = SysMenu()

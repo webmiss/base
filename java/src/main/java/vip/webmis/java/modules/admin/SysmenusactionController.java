@@ -27,9 +27,9 @@ public class SysmenusactionController extends Base {
     // 验证
     AdminToken.urlVerify(token, "SysMenusAction");
     // 搜索
-    JSONObject req = Inc.json_decode(data);
-    String name = String.valueOf(req.get("name")).trim();
-    String action = String.valueOf(req.get("action")).trim();
+    JSONObject json = Inc.json_decode(data);
+    String name = json.containsKey("name")?String.valueOf(json.get("name")).trim():"";
+    String action = json.containsKey("action")?String.valueOf(json.get("action")).trim():"";
     String where = "name LIKE \"%:name:%\" AND action LIKE \"%:action:%\"";
     JSONObject bind = new JSONObject();
     bind.put("name",name);
@@ -167,7 +167,7 @@ public class SysmenusactionController extends Base {
     HashMap<String, Object> data;
     // 验证
     HashMap<String, Object> tokenData = AdminToken.verify(token);
-    // 是否为空
+    // 参数
     if(url.equals("")){
       data = new HashMap<String, Object>();
       data.put("code", 4000);

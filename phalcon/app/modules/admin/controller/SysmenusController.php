@@ -15,17 +15,17 @@ class SysMenusController extends Base {
   /* 构造函数 */
   function initialize(){
     parent::initialize();
-    // 验证
-    self::$tokenData = AdminToken::verify();
   }
 
   /* 列表 */
   function listAction(){
+    // 验证
+    AdminToken::urlVerify('SysMenus');
     // 搜索
     $data = json_decode($this->request->get('data'));
-    $fid = trim($data->fid);
-    $title = trim($data->title);
-    $url = trim($data->url);
+    $fid = isset($data->fid)?trim($data->fid):'';
+    $title = isset($data->title)?trim($data->title):'';
+    $url = isset($data->url)?trim($data->url):'';
     $where = SysMenu::bindWhere(
       'fid LIKE "%:fid:%" AND title LIKE "%:title:%" AND url LIKE "%:url:%"',
       ['fid'=>$fid,'title'=>$title,'url'=>$url]
@@ -52,6 +52,8 @@ class SysMenusController extends Base {
 
   /* 获取[菜单] */
 	function getMenusAction(){
+    // 验证
+    self::$tokenData = AdminToken::verify();
     // 全部菜单
     self::$menus = [];
     $all = SysMenu::find(['columns'=>'id,fid,title,url,ico','order'=>'sort DESC,id'])->toArray();

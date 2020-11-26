@@ -14,16 +14,16 @@ class SysMenusActionController extends Base {
   /* 构造函数 */
   function initialize(){
     parent::initialize();
-    // 验证
-    self::$tokenData = AdminToken::verify();
   }
 
   /* 列表 */
   function listAction(){
+    // 验证
+    AdminToken::urlVerify('SysMenusAction');
     // 搜索
     $data = json_decode($this->request->get('data'));
-    $name = trim($data->name);
-    $action = trim($data->action);
+    $name = isset($data->name)?trim($data->name):'';
+    $action = isset($data->action)?trim($data->action):'';
     $where = SysMenuAction::bindWhere(
       'name LIKE "%:name:%" AND action LIKE "%:action:%"',
       ['name'=>$name,'action'=>$action]
@@ -45,6 +45,8 @@ class SysMenusActionController extends Base {
 
   /* 添加 */
   function addAction(){
+    // 验证
+    AdminToken::urlVerify('SysMenusAction');
     // 参数
     $data = trim($this->request->get('data'));
     $data = json_decode($data);
@@ -67,6 +69,8 @@ class SysMenusActionController extends Base {
 
   /* 编辑 */
   function editAction(){
+    // 验证
+    AdminToken::urlVerify('SysMenusAction');
     // 参数
     $data = trim($this->request->get('data'));
     $data = json_decode($data);
@@ -90,6 +94,8 @@ class SysMenusActionController extends Base {
 
   /* 删除 */
   function deleteAction(){
+    // 验证
+    AdminToken::urlVerify('SysMenusAction');
     // 参数
     $data = trim($this->request->get('data'));
     $data = json_decode($data);
@@ -110,8 +116,10 @@ class SysMenusActionController extends Base {
 
   /* 获取[动作菜单] */
   function getActionAction(){
+    // 验证
+    self::$tokenData = AdminToken::verify();
+    // 参数
     $url = trim($this->request->get('url'));
-    // 是否为空
     if(empty($url)) return self::getJSON(['code'=>4000,'msg'=>'获取动作不能为空!']);
     // 菜单ID
     $mid = SysMenu::findFirst(['url=:url:','bind'=>['url'=>$url],'columns'=>'id']);

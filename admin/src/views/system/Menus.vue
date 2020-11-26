@@ -1,12 +1,13 @@
 <template>
   <wm-main>
+
     <!-- List -->
     <wm-table class="table" ref="Table" :data="page.list">
       <wm-table-title>
         <td width="30">FID</td>
         <td width="120">名称</td>
         <td width="80">控制器</td>
-        <td width="60">权限</td>
+        <td width="60">权限值</td>
         <td width="160">图标</td>
         <td width="60">排序</td>
         <td>备注</td>
@@ -37,8 +38,14 @@
     <!-- Sea -->
     <wm-dialog title="搜索" width="420px" :show="sea.show" @update:show="sea.show=$event">
       <wm-form class="form">
-        <wm-form-item label="账号">
-          <wm-input :value="sea.form.uname" @update:value="sea.form.uname=$event" maxlength="16" placeholder="用户名/手机号码/邮箱" />
+        <wm-form-item label="FID">
+          <wm-input :value="sea.form.fid" @update:value="sea.form.fid=$event" placeholder="FID" />
+        </wm-form-item>
+        <wm-form-item label="名称">
+          <wm-input :value="sea.form.title" @update:value="sea.form.title=$event" placeholder="菜单名称" />
+        </wm-form-item>
+        <wm-form-item label="控制器">
+          <wm-input :value="sea.form.url" @update:value="sea.form.url=$event" placeholder="菜单名称" />
         </wm-form-item>
       </wm-form>
       <template #footer>
@@ -46,6 +53,34 @@
       </template>
     </wm-dialog>
     <!-- Sea End -->
+
+    <!-- Add -->
+    <wm-dialog title="添加" width="680px" :show="add.show" @update:show="add.show=$event">
+      <wm-form class="form">
+        <wm-form-item label="FID">
+          <wm-input :value="add.form.fid" @update:value="add.form.fid=$event" maxlength="3" maxWidth="80px" placeholder="Fid" />
+        </wm-form-item>
+        <wm-form-item label="名称">
+          <wm-input :value="add.form.title" @update:value="add.form.title=$event" maxlength="8" maxWidth="320px" placeholder="菜单名称" />
+        </wm-form-item>
+        <wm-form-item label="控制器">
+          <wm-input :value="add.form.url" @update:value="add.form.url=$event" maxlength="24" maxWidth="320px" placeholder="控制器" />
+        </wm-form-item>
+        <wm-form-item label="预设权限">
+          <wm-input :value="add.form.perm" @update:value="add.form.perm=$event" maxlength="4" maxWidth="80px" placeholder="权限值" />
+        </wm-form-item>
+        <wm-form-item label="图标样式">
+          <wm-input :value="add.form.ico" @update:value="add.form.ico=$event" maxlength="32" maxWidth="240px" placeholder="图标样式" />
+        </wm-form-item>
+        <wm-form-item label="排序">
+          <wm-input :value="add.form.sort" @update:value="add.form.sort=$event" maxlength="2" maxWidth="240px" placeholder="例如: 1、2、3" />
+        </wm-form-item>
+      </wm-form>
+      <template #footer>
+        <wm-button @click="subAdd()">添 加</wm-button>
+      </template>
+    </wm-dialog>
+    <!-- Add End -->
 
   </wm-main>
 </template>

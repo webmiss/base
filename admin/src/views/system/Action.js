@@ -24,7 +24,7 @@ export default {
       store: this.$store.state,
       page: {list:[], page:1, limit:10, total:0,},
       // 搜索、添加、编辑、删除
-      sea: {show:false,form:{name:'',action:''}},
+      sea: {show:false,form:{}},
       add: {show:false,form:{}},
       edit: {show:false,id:'',form:{}},
       del: {show:false,ids:''},

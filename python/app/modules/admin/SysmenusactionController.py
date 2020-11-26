@@ -9,18 +9,15 @@ class SysmenusactionController(Base) :
 
   tokenData = {}
 
-  # 构造函数
-  def __init__(self):
-    # 验证
-    self.tokenData = AdminToken().verify()
-
   # 列表
   def list(self):
-    req = self.request()
+    # 验证
+    AdminToken().urlVerify('SysMenusAction')
     # 搜索
+    req = self.request()
     data = Inc.json_decode(req.get('data'))
-    name = data['name'].strip()
-    action = data['action'].strip()
+    name = data['name'].strip() if 'name' in data.keys() else ''
+    action = data['action'].strip() if 'action' in data.keys() else ''
     where = 'name LIKE "%:name:%" AND action LIKE "%:action:%"'
     bind = {'name':name,'action':action}
     # 查询
@@ -41,6 +38,8 @@ class SysmenusactionController(Base) :
 
   # 添加
   def add(self):
+    # 验证
+    AdminToken().urlVerify('SysMenusAction')
     # 参数
     req = self.request()
     data = Inc.json_decode(req.get('data'))
@@ -60,6 +59,8 @@ class SysmenusactionController(Base) :
 
   # 编辑
   def edit(self):
+    # 验证
+    AdminToken().urlVerify('SysMenusAction')
     # 参数
     req = self.request()
     data = Inc.json_decode(req.get('data'))
@@ -81,6 +82,8 @@ class SysmenusactionController(Base) :
 
   # 删除
   def delete(self):
+    # 验证
+    AdminToken().urlVerify('SysMenusAction')
     # 参数
     req = self.request()
     data = Inc.json_decode(req.get('data'))
@@ -98,9 +101,11 @@ class SysmenusactionController(Base) :
 
   # 获取[动作菜单]
   def getAction(self):
+    # 验证
+    self.tokenData = AdminToken().verify()
+    # 参数
     req = self.request()
     url = req.get('url')
-    # 是否为空
     if url=='' : return self.getJSON({'code':4000,'msg':'获取动作不能为空!'})
     # 菜单ID
     m1 = SysMenu()
