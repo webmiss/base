@@ -21,7 +21,7 @@
   <!-- Update End -->
 
   <!-- Login -->
-  <div v-show="store.isLogin===false" class="login_bg bgImg bgcover" :style="{backgroundImage:'url('+(store.system.login_bg?store.system.login_bg:require('./assets/bg.jpg'))+')'}">
+  <div v-show="store.isLogin===false" class="login_bg bgImg bgcover" :style="{backgroundImage:'url('+(store.system.login_bg?store.system.login_bg:'')+')'}">
     <div class="login_body">
       <div class="login_logo flex_center">
         <div class="bgImg" :style="{backgroundImage:'url('+(store.system.logo?store.system.logo:require('./assets/logo.svg'))+')'}"></div>
