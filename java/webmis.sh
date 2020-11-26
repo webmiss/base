@@ -39,11 +39,11 @@ elif [ "$s" == "start" ]; then
   nohup java -jar $f >> log.txt &
 # 重启
 elif [ "$s" == "restart" ]; then
-  ps -aux | grep java | grep -v grep | awk {'print $2'} | xargs kill -2
+  ps -aux | grep java | grep -v grep | awk {'print $2'} | xargs kill
   nohup java -jar $f >> log.txt &
 # 停止
 elif [ "$s" == "stop" ]; then
-  ps -aux | grep java | grep -v grep | awk {'print $2'} | xargs kill -2
+  ps -aux | grep java | grep -v grep | awk {'print $2'} | xargs kill
 else
   helpText
 fi

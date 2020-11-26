@@ -34,14 +34,14 @@ if [ "$s" == "run" ]; then
   python $f
 # 启动
 elif [ "$s" == "start" ]; then
-  uwsgi --ini web.ini &
+  uwsgi --ini $c &
 # 重启
 elif [ "$s" == "restart" ]; then
-  ps -aux | grep uwsgi | grep -v grep | awk {'print $2'} | xargs kill -2
-  uwsgi --ini web.ini &
+  ps -aux | grep uwsgi | grep -v grep | awk {'print $2'} | xargs kill
+  uwsgi --ini $c &
 # 停止
 elif [ "$s" == "stop" ]; then
-  ps -aux | grep uwsgi | grep -v grep | awk {'print $2'} | xargs kill -2
+  ps -aux | grep uwsgi | grep -v grep | awk {'print $2'} | xargs kill
 else
   helpText
 fi
