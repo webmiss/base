@@ -49,7 +49,7 @@ class SysmenusactionController(Base) :
     model = SysMenuAction()
     model.name = data['name'].strip() if 'name' in data.keys() else ''
     model.action = data['action'].strip() if 'action' in data.keys() else ''
-    model.perm = data['perm'].strip() if 'perm' in data.keys() else 2
+    model.perm = data['perm'].strip() if 'perm' in data.keys() else '2'
     model.ico = data['ico'].strip() if 'ico' in data.keys() else ''
     # 结果
     if model.create() :
@@ -71,7 +71,7 @@ class SysmenusactionController(Base) :
     model = SysMenuAction()
     model.name = data['name'].strip() if 'name' in data.keys() else ''
     model.action = data['action'].strip() if 'action' in data.keys() else ''
-    model.perm = data['perm'].strip() if 'perm' in data.keys() else 2
+    model.perm = data['perm'].strip() if 'perm' in data.keys() else '2'
     model.ico = data['ico'].strip() if 'ico' in data.keys() else ''
     model.where('id=:id:',{'id':id})
     # 结果

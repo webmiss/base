@@ -57,7 +57,7 @@ class SysMenusActionController extends Base {
     $model = new SysMenuAction();
     $model->name = isset($data->name)?trim($data->name):'';
     $model->action = isset($data->action)?trim($data->action):'';
-    $model->perm = isset($data->perm)?trim($data->perm):0;
+    $model->perm = isset($data->perm)?trim($data->perm):'0';
     $model->ico = isset($data->ico)?trim($data->ico):'';
     // 结果
     if($model->save()){
@@ -82,7 +82,7 @@ class SysMenusActionController extends Base {
     $model = SysMenuAction::findFirst(['id=:id:','bind'=>['id'=>$id]]);
     $model->name = isset($data->name)?trim($data->name):'';
     $model->action = isset($data->action)?trim($data->action):'';
-    $model->perm = isset($data->perm)?trim($data->perm):0;
+    $model->perm = isset($data->perm)?trim($data->perm):'0';
     $model->ico = isset($data->ico)?trim($data->ico):'';
     // 结果
     if($model->save()){

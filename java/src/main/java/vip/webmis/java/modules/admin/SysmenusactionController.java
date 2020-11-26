@@ -71,7 +71,7 @@ public class SysmenusactionController extends Base {
     SysMenuAction model = new SysMenuAction();
     model.name = json.containsKey("name")?json.get("name").toString().trim():"";
     model.action = json.containsKey("action")?json.get("action").toString().trim():"";
-    model.perm = json.containsKey("perm")?Integer.valueOf(json.get("perm").toString().trim()):0;
+    model.perm = json.containsKey("perm")?json.get("perm").toString().trim():"0";
     model.ico = json.containsKey("ico")?json.get("ico").toString().trim():"";
     // 结果
     if(model.create()){
@@ -106,7 +106,7 @@ public class SysmenusactionController extends Base {
     SysMenuAction model = new SysMenuAction();
     model.name = json.containsKey("name")?json.get("name").toString().trim():"";
     model.action = json.containsKey("action")?json.get("action").toString().trim():"";
-    model.perm = json.containsKey("perm")?Integer.valueOf(json.get("perm").toString().trim()):0;
+    model.perm = json.containsKey("perm")?json.get("perm").toString().trim():"0";
     model.ico = json.containsKey("ico")?json.get("ico").toString().trim():"";
     bind = new JSONObject();
     bind.put("id",id);

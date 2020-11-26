@@ -7,7 +7,7 @@ class SysMenuAction(Model):
   id = None
   name = ''
   action = ''
-  perm = 0
+  perm = '0'
   ico = ''
 
   # 构造函数

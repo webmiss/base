@@ -8,7 +8,7 @@ public class SysMenuAction extends Model {
   public int id = 0;
   public String name = "";
   public String action = "";
-  public int perm = 0;
+  public String perm = "0";
   public String ico = "";
   
   /* 构造函数 */
@@ -40,13 +40,13 @@ public class SysMenuAction extends Model {
   }
 
   /* 权限 */
-  public void setPerm(Integer val) throws Exception {
-    if(val<2 || val%2!=0){
+  public void setPerm(String val) throws Exception {
+    if(Integer.parseInt(val)<2 || Integer.parseInt(val)%2!=0){
       error("权限为2的n次方!");
     }
     perm = val;
   }
-  public int getPerm(){
+  public String getPerm(){
     return perm;
   }
 
