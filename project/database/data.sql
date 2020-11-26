@@ -50,7 +50,7 @@ INSERT INTO `sys_menus` (`id`, `fid`, `title`, `url`, `perm`, `ico`, `ctime`, `u
 (9,	2,	'用户权限',	'SysPerm',	31,	'icons icon_sys_perm',	'2018-12-15 00:00:00',	'2020-05-26 10:59:08',	0,	''),
 (10,	2,	'用户角色',	'SysRole',	31,	'icons icon_sys_role',	'2018-12-15 00:00:00',	'2020-05-26 10:59:20',	0,	''),
 (11,	2,	'系统配置',	'SysConfig',	1,	'icons icon_sys_config',	'2018-12-15 00:00:00',	'2020-05-26 10:59:47',	0,	''),
-(12,	2,	'系统菜单',	'SysMenus',	21,	'icons icon_sys_menu',	'2018-12-15 00:00:00',	'2020-05-26 10:59:59',	0,	''),
+(12,	2,	'系统菜单',	'SysMenus',	31,	'icons icon_sys_menu',	'2018-12-15 00:00:00',	'2020-05-26 10:59:59',	0,	''),
 (13,	2,	'动作菜单',	'SysMenusAction',	31,	'icons icon_sys_action',	'2019-01-27 11:28:31',	'2020-05-26 11:00:28',	0,	''),
 (14,	3,	'Demo',	'Demo',	31,	'icons icon_app',	'2020-05-22 18:10:32',	'2020-05-26 11:00:54',	0,	'');
 
@@ -152,7 +152,7 @@ CREATE TABLE `user_perm` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限表';
 
 INSERT INTO `user_perm` (`uid`, `utime`, `perm`, `role`, `state_admin`, `state_app`) VALUES
-(1,	'2020-05-22 18:10:48',	'1:0 2:0 3:0 4:1 5:1 6:1 7:1 8:31 9:31 10:31 11:1 12:21 13:31 14:31',	'0',	'1',	'0');
+(1,	'2020-05-22 18:10:48',	'1:0 2:0 3:0 4:1 5:1 6:1 7:1 8:31 9:31 10:31 11:1 12:31 13:31 14:31',	'0',	'1',	'0');
 
 DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role` (
