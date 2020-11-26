@@ -18,6 +18,18 @@ public class UserRole extends Model {
     this.setSource("user_role"); //数据表
   }
 
+  /* 名称 */
+  public void setRole(String val) throws Exception {
+    int num = val.length();
+    if(num<2 || num>16){
+      error("名称为2~16位字符!");
+    }
+    role = val;
+  }
+  public String getRole(){
+    return role;
+  }
+
   /* 创建 */
   public JSONObject beforeCreate(JSONObject fields){
     if(fields.get("ctime").equals("null")){

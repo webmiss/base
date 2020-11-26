@@ -157,7 +157,7 @@ INSERT INTO `user_perm` (`uid`, `utime`, `perm`, `role`, `state_admin`, `state_a
 DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `role` varchar(6) NOT NULL DEFAULT '' COMMENT '角色名称',
+  `role` varchar(16) NOT NULL COMMENT '角色名称',
   `ctime` datetime DEFAULT NULL COMMENT '创建时间',
   `utime` datetime DEFAULT NULL COMMENT '更新时间',
   `perm` text DEFAULT NULL COMMENT '权限值',

@@ -3,6 +3,7 @@ package vip.webmis.java.modules.admin;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import org.springframework.stereotype.Controller;
@@ -26,8 +27,8 @@ public class SysroleController extends Base {
     // 验证
     AdminToken.urlVerify(token, "SysRole");
     // 搜索
-    JSONObject req = Inc.json_decode(data);
-    String role = String.valueOf(req.get("role")).trim();
+    JSONObject json = Inc.json_decode(data);
+    String role = json.containsKey("role")?String.valueOf(json.get("role")).trim():"";
     String where = "role LIKE '%:role:%'";
     JSONObject bind = new JSONObject();
     bind.put("role",role);
@@ -59,6 +60,108 @@ public class SysroleController extends Base {
     _res.put("list", list);
     _res.put("total", total);
     return getJSON(_res);
+  }
+
+  /* 添加 */
+  @RequestMapping("/add")
+  String add(String token, String data) throws Exception {
+    HashMap<String, Object> _res;
+    // 验证
+    AdminToken.urlVerify(token,"SysMenusAction");
+    // 参数
+    JSONObject json = Inc.json_decode(data);
+    if(json==null || json.isEmpty()){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 4000);
+      _res.put("msg", "参数错误!");
+      return getJSON(_res);
+    }
+    // 数据
+    UserRole model = new UserRole();
+    model.role = json.containsKey("role")?json.get("role").toString().trim():"";
+    // 结果
+    if(model.create()){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 0);
+      _res.put("msg", "成功");
+      return getJSON(_res);
+    }else{
+      _res = new HashMap<String, Object>();
+      _res.put("code", 5000);
+      _res.put("msg", "添加失败!");
+      return getJSON(_res);
+    }
+  }
+
+  /* 编辑 */
+  @RequestMapping("/edit")
+  String edit(String token, int id, String data) throws Exception {
+    HashMap<String, Object> _res;
+    JSONObject bind;
+    // 验证
+    AdminToken.urlVerify(token, "SysMenusAction");
+    // 参数
+    JSONObject json = Inc.json_decode(data);
+    if(json==null || json.isEmpty()){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 4000);
+      _res.put("msg", "参数错误!");
+      return getJSON(_res);
+    }
+    // 数据
+    UserRole model = new UserRole();
+    model.role = json.containsKey("role")?json.get("role").toString().trim():"";
+    bind = new JSONObject();
+    bind.put("id",id);
+    model.where("id=:id:",bind);
+    model.uField("name,action,perm,ico");
+    // 结果
+    if(model.update()){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 0);
+      _res.put("msg", "成功");
+      return getJSON(_res);
+    }else{
+      _res = new HashMap<String, Object>();
+      _res.put("code", 5000);
+      _res.put("msg", "编辑失败!");
+      return getJSON(_res);
+    }
+  }
+
+  /* 删除 */
+  @RequestMapping("/delete")
+  String delete(String token, String data) throws Exception {
+    HashMap<String, Object> _res;
+    JSONObject bind;
+    // 验证
+    AdminToken.urlVerify(token, "SysMenusAction");
+    // 参数
+    JSONArray req = Inc.json_decode_array(data);
+    if(req==null || req.isEmpty()){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 4000);
+      _res.put("msg", "参数错误!");
+      return getJSON(_res);
+    }
+    // ID
+    String ids = Inc.implode(",",req);
+    bind = new JSONObject();
+    bind.put("ids",ids);
+    UserRole model = new UserRole();
+    model.where("id in(:ids:)",bind);
+    // 结果
+    if(model.delete()){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 0);
+      _res.put("msg", "成功");
+      return getJSON(_res);
+    }else{
+      _res = new HashMap<String, Object>();
+      _res.put("code", 5000);
+      _res.put("msg", "删除失败!");
+      return getJSON(_res);
+    }
   }
 
 }
