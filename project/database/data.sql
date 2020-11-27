@@ -144,8 +144,8 @@ CREATE TABLE `user_perm` (
   `state_admin` enum('0','1') NOT NULL DEFAULT '0' COMMENT '后台登录',
   `state_app` enum('0','1') NOT NULL DEFAULT '1' COMMENT 'APP登录',
   `utime` datetime DEFAULT NULL COMMENT '更新时间',
-  `role` varchar(6) NOT NULL DEFAULT '' COMMENT '角色权限',
-  `perm` text DEFAULT NULL COMMENT '专属权限',
+  `role` varchar(6) DEFAULT '' COMMENT '角色权限',
+  `perm` text DEFAULT '' COMMENT '专属权限',
   PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限表';
 

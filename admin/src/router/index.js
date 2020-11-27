@@ -11,7 +11,6 @@ const routes = [
   // 设置
   {path:'/SysFileManage', name:'SysFileManage', component:()=>import('../views/system/FileManage.vue')},
   {path:'/SysUser', name:'SysUser', component:()=>import('../views/system/User.vue')},
-  {path:'/SysPerm', name:'SysPerm', component:()=>import('../views/system/Perm.vue')},
   {path:'/SysRole', name:'SysRole', component:()=>import('../views/system/Role.vue')},
   {path:'/SysConfig', name:'SysConfig', component:()=>import('../views/system/Config.vue')},
   {path:'/SysMenus', name:'SysMenus', component:()=>import('../views/system/Menus.vue')},
