@@ -47,12 +47,11 @@ INSERT INTO `sys_menus` (`id`, `fid`, `title`, `url`, `perm`, `ico`, `ctime`, `u
 (6,	1,	'修改密码',	'UserPasswd',	1,	'icons icon_user_passwd',	'2019-01-27 11:31:10',	'2020-05-26 10:58:26',	0,	''),
 (7,	2,	'文件目录',	'SysFileManage',	1,	'icons icon_sys_folder',	'2018-12-15 00:00:00',	'2020-05-26 10:58:39',	0,	''),
 (8,	2,	'用户管理',	'SysUser',	31,	'icons icon_sys_user',	'2020-05-22 16:02:56',	'2020-05-26 11:00:40',	0,	''),
-(9,	2,	'用户权限',	'SysPerm',	31,	'icons icon_sys_perm',	'2018-12-15 00:00:00',	'2020-05-26 10:59:08',	0,	''),
-(10,	2,	'用户角色',	'SysRole',	31,	'icons icon_sys_role',	'2018-12-15 00:00:00',	'2020-05-26 10:59:20',	0,	''),
-(11,	2,	'系统配置',	'SysConfig',	1,	'icons icon_sys_config',	'2018-12-15 00:00:00',	'2020-05-26 10:59:47',	0,	''),
-(12,	2,	'系统菜单',	'SysMenus',	31,	'icons icon_sys_menu',	'2018-12-15 00:00:00',	'2020-05-26 10:59:59',	0,	''),
-(13,	2,	'动作菜单',	'SysMenusAction',	31,	'icons icon_sys_action',	'2019-01-27 11:28:31',	'2020-05-26 11:00:28',	0,	''),
-(14,	3,	'Demo',	'Demo',	31,	'icons icon_app',	'2020-05-22 18:10:32',	'2020-05-26 11:00:54',	0,	'');
+(9,	2,	'角色权限',	'SysRole',	31,	'icons icon_sys_role',	'2018-12-15 00:00:00',	'2020-05-26 10:59:20',	0,	''),
+(10,	2,	'系统配置',	'SysConfig',	1,	'icons icon_sys_config',	'2018-12-15 00:00:00',	'2020-05-26 10:59:47',	0,	''),
+(11,	2,	'系统菜单',	'SysMenus',	31,	'icons icon_sys_menu',	'2018-12-15 00:00:00',	'2020-05-26 10:59:59',	0,	''),
+(12,	2,	'动作菜单',	'SysMenusAction',	31,	'icons icon_sys_action',	'2019-01-27 11:28:31',	'2020-05-26 11:00:28',	0,	''),
+(13,	3,	'Demo',	'Demo',	31,	'icons icon_app',	'2020-05-22 18:10:32',	'2020-05-26 11:00:54',	0,	'');
 
 DROP TABLE IF EXISTS `sys_menus_action`;
 CREATE TABLE `sys_menus_action` (
@@ -95,19 +94,18 @@ INSERT INTO `user` (`id`, `uname`, `tel`, `email`, `password`, `rtime`, `ltime`,
 DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE `user_info` (
   `uid` bigint(18) unsigned NOT NULL COMMENT 'uid',
+  `utime` datetime DEFAULT NULL COMMENT '更新时间',
   `nickname` varchar(8) NOT NULL DEFAULT '' COMMENT '昵称',
   `position` varchar(8) NOT NULL DEFAULT '' COMMENT '职位',
   `name` varchar(8) NOT NULL DEFAULT '' COMMENT '姓名',
   `gender` enum('男','女','') NOT NULL DEFAULT '' COMMENT '性别',
   `birthday` date DEFAULT NULL COMMENT '生日',
   `img` varchar(64) NOT NULL DEFAULT '' COMMENT '头像',
-  `ctime` datetime DEFAULT NULL COMMENT '创建时间',
-  `utime` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息';
 
-INSERT INTO `user_info` (`uid`, `nickname`, `position`, `name`, `gender`, `birthday`, `img`, `ctime`, `utime`) VALUES
-(1,	'WebMIS',	'系统开发',	'管理员',	'男',	'1984-12-17',	'',	NULL,	'2020-05-22 14:25:06');
+INSERT INTO `user_info` (`uid`, `utime`, `nickname`, `position`, `name`, `gender`, `birthday`, `img`) VALUES
+(1,	NULL,	'WebMIS',	'系统开发',	'管理员',	'男',	'1984-12-17',	'');
 
 DROP TABLE IF EXISTS `user_msg`;
 CREATE TABLE `user_msg` (
@@ -152,7 +150,7 @@ CREATE TABLE `user_perm` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限表';
 
 INSERT INTO `user_perm` (`uid`, `utime`, `perm`, `role`, `state_admin`, `state_app`) VALUES
-(1,	'2020-05-22 18:10:48',	'1:0 2:0 3:0 4:1 5:1 6:1 7:1 8:31 9:31 10:31 11:1 12:31 13:31 14:31',	'0',	'1',	'0');
+(1,	'2020-05-22 18:10:48',	'1:0 2:0 3:0 4:1 5:1 6:1 7:1 8:31 9:31 10:1 11:31 12:31 13:31',	'0',	'1',	'0');
 
 DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role` (
