@@ -101,6 +101,13 @@ public class SysuserController extends Base {
     String id = Data.getId();
     String tel = json.containsKey("tel")&&!json.get("tel").equals("")?String.valueOf(json.get("tel")).trim():"";
     String passwd = json.containsKey("passwd")&&!json.get("passwd").equals("")?Inc.md5(json.get("passwd").toString()):"";
+    // 手机号码
+    if(tel.equals("")){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 4000);
+      _res.put("msg", "请输入手机号码!");
+      return getJSON(_res);
+    }
     // 是否存在
     User user = new User();
     bind = new JSONObject();
@@ -159,8 +166,15 @@ public class SysuserController extends Base {
       return getJSON(_res);
     }
     uid = uid.trim();
-    String tel = json.containsKey("tel")&&!json.get("tel").equals("")?String.valueOf(json.get("tel")).trim():"0";
+    String tel = json.containsKey("tel")&&!json.get("tel").equals("")?String.valueOf(json.get("tel")).trim():"";
     String passwd = json.containsKey("passwd")&&!json.get("passwd").equals("")?Inc.md5(json.get("passwd").toString()):"";
+    // 手机号码
+    if(tel.equals("")){
+      _res = new HashMap<String, Object>();
+      _res.put("code", 4000);
+      _res.put("msg", "请输入手机号码!");
+      return getJSON(_res);
+    }
     // 是否存在
     User m1 = new User();
     bind = new JSONObject();

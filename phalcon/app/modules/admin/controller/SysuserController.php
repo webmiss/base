@@ -76,6 +76,10 @@ class SysUserController extends Base{
     $id = Data::getId();
     $tel = isset($data->tel)&&!empty($data->tel)?trim($data->tel):'';
     $passwd = isset($data->passwd)&&!empty($data->passwd)?md5($data->passwd):'';
+    // 手机号码
+    if(empty($tel)){
+      return self::getJSON(['code'=>4000,'msg'=>'请输入手机号码!']);
+    }
     // 是否存在
     $where = User::bindWhere('tel=:tel:',['tel'=>$tel]);
     $res = User::findFirst($where);
@@ -112,8 +116,12 @@ class SysUserController extends Base{
       return self::getJSON(['code'=>4000,'msg'=>'参数错误!']);
     }
     $uid = trim($this->request->get('uid'));
-    $tel = isset($data->tel)&&!empty($data->tel)?trim($data->tel):'0';
+    $tel = isset($data->tel)&&!empty($data->tel)?trim($data->tel):'';
     $passwd = isset($data->passwd)&&!empty($data->passwd)?md5($data->passwd):'';
+    // 手机号码
+    if(empty($tel)){
+      return self::getJSON(['code'=>4000,'msg'=>'请输入手机号码!']);
+    }
     // 是否存在
     $where = User::bindWhere('tel=":tel:"',['tel'=>$tel]);
     $model = User::findFirst($where);

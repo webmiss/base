@@ -67,6 +67,9 @@ class SysuserController(Base) :
     id = Data.getId()
     tel = data['tel'].strip() if 'tel' in data.keys() and data['tel']!='' else ''
     passwd = Inc.md5(data['passwd']) if 'passwd' in data.keys() and data['passwd']!='' else ''
+    # 手机号码
+    if tel=='' :
+      return self.getJSON({'code':4000,'msg':'请输入手机号码!'})
     # 是否存在
     user = User()
     user.where('tel=:tel:',{'tel':tel})
@@ -102,8 +105,11 @@ class SysuserController(Base) :
     if not data or type(data)!=dict :
       return self.getJSON({'code':4000,'msg':'参数错误!'})
     uid = req.get('uid').strip()
-    tel = data['tel'].strip() if 'tel' in data.keys() and data['tel']!='' else '0'
+    tel = data['tel'].strip() if 'tel' in data.keys() and data['tel']!='' else ''
     passwd = Inc.md5(data['passwd']) if 'passwd' in data.keys() and data['passwd']!='' else ''
+    # 手机号码
+    if tel=='' :
+      return self.getJSON({'code':4000,'msg':'请输入手机号码!'})
     # 是否存在
     m1 = User()
     m1.where('tel=":tel:"',{'tel':tel})
