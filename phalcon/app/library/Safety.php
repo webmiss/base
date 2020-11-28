@@ -10,7 +10,7 @@ use Phalcon\Crypt;
 class Safety{
 
   /* 正则-公共 */
-  static function isRight($name='',$val=''){
+  static function isRight(string $name='',string $val=''): bool {
     $data = [
       'uname'=>'/^[a-zA-Z][a-zA-Z0-9\_\@\-\*\&]{3,15}$/',
       'passwd'=>'/^[a-zA-Z0-9|_|@|-|*|&]{6,16}$/',
@@ -22,16 +22,16 @@ class Safety{
   }
 
   /* 正则-验证 */
-  static function test($reg, $val){
+  static function test(string $reg, $val): bool {
     return preg_match('/'.$reg.'/',$val)?true:false;
   }
 
   /* 加密-字符串 */
-	static function key($str){
+	static function key(string $str): string {
 		return md5($str.Env::$key);
 	}
 	/* 加密-数组 */
-	static function keyArray($param=[]){
+	static function keyArray(array $param=[]): string {
 		ksort($param);
 		reset($param);
 		$param['sign'] = Env::$key;
@@ -39,7 +39,7 @@ class Safety{
 	}
 
   /* 加密-Base64 */
-  static function encode($param=[]){
+  static function encode(array $param=[]): ?string {
     $text = is_array($param)?json_encode($param):$param;
     try{
       $crypt = new Crypt();
@@ -47,19 +47,19 @@ class Safety{
       $token = str_replace('+','_',$token);
       return $token;
     }catch (\Exception $e){
-      return '';
+      return null;
     }
   }
 
   /* 解密-Base64 */
-  static function decode($token=''){
+  static function decode(string $token=''): ?object {
     $token = str_replace('_','+',$token);
     try{
       $crypt = new Crypt();
       $data = json_decode(@$crypt->decryptBase64($token, Env::$key));
       return $data;
     }catch (\Exception $e){
-      return '';
+      return null;
     }
   }
 
