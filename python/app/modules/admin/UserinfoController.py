@@ -19,19 +19,9 @@ class UserinfoController(Base) :
   # 列表
   def list(self):
     # 查询
-    m1 = UserInfo()
-    m1.where('uid='+str(self.tokenData['uid']))
-    info = m1.findFirst()
-    # 添加
-    if len(info)==0 :
-      m2 = UserInfo()
-      m2.uid = str(self.tokenData['uid'])
-      m2.ctime = Inc.date('%Y%m%d%H%M%S')
-      m2.create()
-      # 查询
-      m3 = UserInfo()
-      m3.where('uid='+str(self.tokenData['uid']))
-      info = m3.findFirst()
+    model = UserInfo()
+    model.where('uid='+str(self.tokenData['uid']))
+    info = model.findFirst()
     # 数据
     list = {
       'img': Env.base_url+info['img'] if info['img'] else '',
@@ -47,8 +37,9 @@ class UserinfoController(Base) :
   def edit(self):
     req = self.request()
     data = req.get('data')
-    if(not data): return self.getJSON({'code':4000,'msg':'参数错误!'})
     jsonData = json.loads(data)
+    if not data or type(data)!=dict :
+      return self.getJSON({'code':4000,'msg':'参数错误!'})
     # 数据
     model = UserInfo()
     model.nickname = jsonData['nickname'].strip()

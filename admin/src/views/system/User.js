@@ -30,13 +30,15 @@ export default {
       store: this.$store.state,
       page: {list:[], page:1, limit:10, total:0,},
       // 搜索、添加、编辑、删除
-      sea: {show:false,form:{uname:''}},
-      add: {show:false,form:{tel:'',passwd:''}},
-      edit: {show:false,id:'',form:{tel:'',passwd:''}},
-      del: {show:false,ids:''},
+      sea: {show:false, form:{}},
+      add: {show:false, form:{}},
+      edit: {show:false, id:'', form:{}},
+      del: {show:false, ids:''},
+      // 权限
+      perm: {show:false, id:'', perm:''},
       // 用户信息
-      info: {show:false,id:'',form:{}},
-      gender: [{name:'男',val:'男'},{name:'女',val:'女'}],
+      info: {show:false, id:'', form:{}},
+      gender: [{name:'男', val:'男'},{name:'女', val:'女'}],
     }
   },
   computed: {
@@ -164,14 +166,24 @@ export default {
     },
 
     /* 状态 */
-    setState(val,uid){
+    setState(type,val,uid){
       const state = val?'1':'0';
       const load = Loading();
-      Post('Sysuser/state',{token:Storage.getItem('token'),uid:uid,state:state},(res)=>{
+      Post('Sysuser/state',{token:Storage.getItem('token'),uid:uid,type:type,state:state},(res)=>{
         load.clear();
         const d = res.data;
+        if(d.code!==0) val=val
         return Toast(d.msg);
       });
+    },
+
+    /* 权限 */
+    permData(uid,perm){
+      this.perm.show = true;
+      console.log(uid,perm);
+    },
+    subPerm(){
+
     },
 
     /* 用户信息 */

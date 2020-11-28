@@ -1,36 +1,53 @@
 <template>
   <wm-main>
+
     <!-- List -->
     <wm-table class="table" ref="Table" :data="page.list">
       <wm-table-title>
         <td width="60">UID</td>
-        <td width="160">账号</td>
-        <td width="180">登录时间</td>
+        <td width="128">账号</td>
         <td width="60">状态</td>
-        <td>操作</td>
+        <td width="60">后台</td>
+        <td width="60">APP</td>
+        <td width="80">权限</td>
+        <td>个人信息</td>
       </wm-table-title>
       <wm-table-tr v-for="(val,key) in page.list" :key="key" :value="val.uid">
         <td>
           <wm-img width="40px" height="40px" radius="50%" icoSize="24px" :url="val.img" :title="val.uid"></wm-img>
         </td>
         <td>
-          <wm-popover type="top" effect="dark" width="180px">
+          <wm-popover type="bottom" effect="dark" width="180px">
             <template #body>
+              <p>昵称: {{ val.nickname || '无' }}</p>
+              <p>姓名: {{ val.name || '无' }}</p>
+              <p>性别: {{ val.gender || '无' }}</p>
+              <p>生日: {{ val.birthday || '无' }}</p>
+              <p>职务: {{ val.position || '无' }}</p>
               <p>注册: {{ val.rtime || '无' }}</p>
-              <p>更新: {{ val.utime || '无' }}</p>
+              <p>登录: {{ val.ltime || '无' }}</p>
             </template>
             <template #reference>
-              <wm-tag size="medium">{{val.tel || val.email || val.uname}}</wm-tag>
+              <wm-tag size="medium">{{ val.tel || val.email || val.uname }}</wm-tag>
             </template>
           </wm-popover>
         </td>
-        <td>{{val.ltime || '无'}}</td>
         <td>
-          <wm-switch :value="val.state" @update:value="setState($event,val.uid)"></wm-switch>
+          <wm-switch :value="val.state" @update:value="setState('state',$event,val.uid)"></wm-switch>
         </td>
         <td>
-          <wm-button v-if="val.nickname" size="medium" @click="infoData(val)">{{val.nickname}}</wm-button>
-          <wm-button v-else type="info" size="medium" @click="infoData(val)">添加</wm-button>
+          <wm-switch :value="val.state_admin" @update:value="setState('state_admin',$event,val.uid)"></wm-switch>
+        </td>
+        <td>
+          <wm-switch :value="val.state_app" @update:value="setState('state_app',$event,val.uid)"></wm-switch>
+        </td>
+        <td>
+          <wm-button v-if="val.perm" type="danger" size="medium" @click="permData(val.uid,val.perm)">私有</wm-button>
+          <wm-button v-else size="medium" @click="permData(val.uid,val.perm)">角色</wm-button>
+        </td>
+        <td>
+          <wm-button v-if="val.nickname" type="info" size="medium" @click="infoData(val)">{{ val.nickname }}</wm-button>
+          <wm-button v-else type="info" size="medium" @click="infoData(val)">无</wm-button>
         </td>
       </wm-table-tr>
     </wm-table>
@@ -116,11 +133,20 @@
     </wm-dialog>
     <!-- Info End -->
 
+    <!-- Perm -->
+    <wm-dialog title="权限" width="420px" :show="perm.show" @update:show="perm.show=$event">
+      <div>内容</div>
+      <template #footer>
+        <wm-button @click="subInfo()">更 新</wm-button>
+      </template>
+    </wm-dialog>
+    <!-- Perm End -->
+
   </wm-main>
 </template>
 
 <style scoped>
-.table{min-width: 720px;}
+.table{min-width: 800px;}
 .form{padding-right: 24px;}
 </style>
 

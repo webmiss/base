@@ -7,50 +7,70 @@ use app\library\Safety;
 class User extends Model{
 
   public $id;
-  public $uname;
-  public $tel;
-  public $email;
-  public $rtime;
-  public $utime;
+  protected $uname;
+  protected $tel;
+  protected $email;
+  protected $password;
+  protected $rtime;
+  protected $utime;
 
   /* 构造函数 */
-  public function initialize(){
+  function initialize(){
     $this->setSource('user'); //数据表
   }
 
-  /* 保存 */
-  public function beforeSave(){
-    // 用户名
-    if(!empty($this->uname)){
-      $msg = Safety::isRight('uname',$this->uname);
-      if($msg!==true) return self::error($msg);
+  /* 用户名 */
+  function setUname($val){
+    if(!empty($val)){
+      if(!Safety::isRight('uname',$val)) self::error('用户名英文开头4～16位!');
     }
-    // 手机
-    if(!empty($this->tel)){
-      $msg = Safety::isRight('tel',$this->tel);
-      if($msg!==true) return self::error($msg);
+    $this->uname = $val;
+  }
+  function getUname(){
+    return $this->uname;
+  }
+
+  /* 手机 */
+  function setTel($val){
+    if(!empty($val)){
+      if(!Safety::isRight('tel',$val)) self::error('手机号码有误!');
     }
-    // 邮箱
-    if(!empty($this->email)){
-      $msg = Safety::isRight('email',$this->email);
-      if($msg!==true) return self::error($msg);
+    $this->tel = $val;
+  }
+  function getTel(){
+    return $this->tel;
+  }
+
+  /* 邮箱 */
+  function setEmail($val){
+    if(!empty($val)){
+      if(!Safety::isRight('email',$val)) self::error('邮箱有误!');
     }
+    $this->email = $val;
+  }
+  function getEmail(){
+    return $this->email;
+  }
+
+  /* 密码 */
+  function setPassword($val){
+    if(empty($val)){
+      $val = md5('123456');
+    }
+    $this->password = $val;
+  }
+  function getPassword(){
+    return $this->password;
   }
 
   /* 创建 */
   public function beforeCreate(){
-    // 注册时间
     $this->rtime = date('YmdHis');
   }
 
   /* 更新 */
   public function beforeUpdate(){
     $this->utime = date('YmdHis');
-  }
-
-  /* 删除 */
-  public function beforeDelete(){
-    if($this->id==1) return self::error('禁止删除超级管理员!');
   }
 
 }

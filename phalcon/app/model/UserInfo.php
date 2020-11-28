@@ -5,34 +5,28 @@ namespace app\model;
 class UserInfo extends Model {
 
   public $uid;
-  public $birthday;
-  public $ctime;
-  public $utime;
+  protected $birthday;
+  protected $utime;
   
   /* 构造函数 */
   public function initialize(){
     $this->setSource('user_info');  //数据表
   }
 
-  /* 保存 */
-  public function beforeSave(){
-    // 生日
-    if(empty($this->birthday)) $this->birthday = null;
+  /* 生日 */
+  function setBirthday($val){
+    if(empty($val)){
+      $val = null;
+    }
+    $this->birthday = $val;
   }
-
-  /* 创建 */
-  public function beforeCreate(){
-    $this->ctime = date('YmdHis');
+  function getBirthday(){
+    return $this->birthday;
   }
 
   /* 更新 */
   public function beforeUpdate(){
     $this->utime = date('YmdHis');
-  }
-
-  /* 删除 */
-  public function beforeDelete(){
-    if($this->uid==1) return self::error('禁止删除超级管理员!');
   }
 
 }

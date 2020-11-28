@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import vip.webmis.java.Env;
 import vip.webmis.java.common.AdminToken;
 import vip.webmis.java.common.Base;
-import vip.webmis.java.common.Inc;
 import vip.webmis.java.library.Upload;
 import vip.webmis.java.model.UserInfo;
 
@@ -30,20 +29,9 @@ public class UserinfoController extends Base {
     HashMap<String, Object> tokenData = AdminToken.urlVerify(token,"UserInfo");
     HashMap<String, Object> _res;
     // 查询
-    UserInfo m1 = new UserInfo();
-    m1.where("uid="+tokenData.get("uid").toString());
-    HashMap<String, Object> info = m1.findFirst();
-    // 添加
-    if(info.isEmpty()){
-      UserInfo m2 = new UserInfo();
-      m2.uid = tokenData.get("uid").toString();
-      m2.ctime = Inc.date("yyyy-MM-dd HH:mm:ss");
-      m2.create();
-      // 查询
-      UserInfo m3 = new UserInfo();
-      m3.where("uid="+tokenData.get("uid").toString());
-      info = m3.findFirst();
-    }
+    UserInfo model = new UserInfo();
+    model.where("uid="+tokenData.get("uid").toString());
+    HashMap<String, Object> info = model.findFirst();
     // 数据
     HashMap<String, Object> list = new HashMap<String, Object>();
     list.put("img",info.get("img")!=null&&!info.get("img").equals("")?Env.base_url+String.valueOf(info.get("img")):"");
@@ -65,30 +53,30 @@ public class UserinfoController extends Base {
   String edit(String token, String data) throws Exception {
     HashMap<String, Object> tokenData = AdminToken.urlVerify(token,"UserInfo");
     HashMap<String, Object> _res;
-    if(data==null || data.isEmpty()){
+    JSONObject json = JSON.parseObject(data);
+    if(json==null || json.isEmpty()){
       _res = new HashMap<String, Object>();
       _res.put("code", 4000);
       _res.put("msg", "参数错误!");
       return getJSON(_res);
     }
-    JSONObject jsonData = JSON.parseObject(data);
     // 数据
     UserInfo model = new UserInfo();
-    model.nickname = jsonData.get("nickname").toString().trim();
-    model.name = jsonData.get("name").toString().trim();
-    model.gender = jsonData.get("gender").toString().trim();
-    model.birthday = jsonData.get("birthday").toString().trim();
-    model.position = jsonData.get("position").toString().trim();
+    model.nickname = json.get("nickname").toString().trim();
+    model.name = json.get("name").toString().trim();
+    model.gender = json.get("gender").toString().trim();
+    model.birthday = json.get("birthday").toString().trim();
+    model.position = json.get("position").toString().trim();
     model.uField("nickname,name,gender,birthday,position");
     model.where("uid="+tokenData.get("uid").toString());
     // 用户信息
     HashMap<String,Object> uinfo = new HashMap<String,Object>();
-    uinfo.put("img",jsonData.get("img").toString().trim());
-    uinfo.put("nickname",jsonData.get("nickname").toString().trim());
-    uinfo.put("name",jsonData.get("name").toString().trim());
-    uinfo.put("gender",jsonData.get("gender").toString().trim());
-    uinfo.put("birthday",jsonData.get("birthday").toString().trim());
-    uinfo.put("position",jsonData.get("position").toString().trim());
+    uinfo.put("img",json.get("img").toString().trim());
+    uinfo.put("nickname",json.get("nickname").toString().trim());
+    uinfo.put("name",json.get("name").toString().trim());
+    uinfo.put("gender",json.get("gender").toString().trim());
+    uinfo.put("birthday",json.get("birthday").toString().trim());
+    uinfo.put("position",json.get("position").toString().trim());
     // 保存
     if(model.update()){
       _res = new HashMap<String, Object>();

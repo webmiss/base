@@ -26,10 +26,12 @@ export default {
       store: this.$store.state,
       page: {list:[], page:1, limit:10, total:0,},
       // 搜索、添加、编辑、删除
-      sea: {show:false,form:{}},
-      add: {show:false,form:{}},
-      edit: {show:false,id:'',form:{}},
-      del: {show:false,ids:''},
+      sea: {show:false, form:{}},
+      add: {show:false, form:{}},
+      edit: {show:false, id:'', form:{}},
+      del: {show:false, ids:''},
+      // 权限
+      perm: {show:false, id:'', perm:''},
     }
   },
   computed: {
@@ -153,6 +155,15 @@ export default {
         if(d.code===0) this.loadData();
         return Toast(d.msg);
       });
+    },
+
+    /* 权限 */
+    permData(uid,perm){
+      this.perm.show = true;
+      console.log(uid,perm);
+    },
+    subPerm(){
+
     },
 
   },

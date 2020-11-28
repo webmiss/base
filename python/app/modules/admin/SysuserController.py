@@ -3,9 +3,10 @@ from app.common.Base import Base
 from app.common.AdminToken import AdminToken
 from app.common.Inc import Inc
 from app.common.Data import Data
-from app.library.Safety import Safety
+from app.model.Model import Model
 from app.model.User import User
 from app.model.UserInfo import UserInfo
+from app.model.UserPerm import UserPerm
 
 # 用户管理
 class SysuserController(Base) :
@@ -21,15 +22,16 @@ class SysuserController(Base) :
     req = self.request()
     # 搜索
     data = Inc.json_decode(req.get('data'))
-    uname = data['uname']
-    where = 'a.uname LIKE \"%:uname:%\" OR a.tel LIKE \"%:uname:%\" OR a.email LIKE \"%:uname:%\"'
+    uname = data['uname'].strip() if 'uname' in data.keys() else ''
+    where = 'a.uname LIKE "%:uname:%" OR a.tel LIKE "%:uname:%" OR a.email LIKE "%:uname:%"'
     bind = {'uname':uname}
     # 查询
     model = User()
-    model.table('user AS a LEFT JOIN user_info AS b ON a.id=b.uid')
+    model.table('user AS a LEFT JOIN user_info AS b ON a.id=b.uid LEFT JOIN user_perm AS c ON a.id=c.uid')
     model.columns(
       'a.id AS uid, a.uname, a.email, a.tel, a.state, a.rtime, a.ltime, a.utime,'+
-      'b.nickname, b.position, b.name, b.gender, b.birthday, b.img'
+      'b.nickname, b.position, b.name, b.gender, b.birthday, b.img,'+
+      'c.role, c.state_admin, c.state_app, c.perm'
     )
     model.where(where,bind)
     model.order('a.id DESC')
@@ -45,6 +47,8 @@ class SysuserController(Base) :
     # 状态
     for val in list :
       val['state'] = True if val['state']=='1' else False
+      val['state_admin'] = True if val['state_admin']=='1' else False
+      val['state_app'] = True if val['state_app']=='1' else False
       val['uid'] = str(val['uid'])
       val['img'] = Env.base_url+str(val['img']) if val['img'] else ''
       val['birthday'] = str(val['birthday']) if val['birthday'] else ''
@@ -58,28 +62,36 @@ class SysuserController(Base) :
     # 参数
     req = self.request()
     data = Inc.json_decode(req.get('data'))
-    if not data or type(data)!=dict or not data.get('tel') :
+    if not data or type(data)!=dict :
       return self.getJSON({'code':4000,'msg':'参数错误!'})
-    tel = data['tel'].strip()
-    passwd = Inc.md5(data['passwd']) if data['passwd']!='' else Inc.md5('123456')
-    # 验证手机
-    res = Safety.isRight('tel',tel)
-    if not Safety.isRight('tel',tel) :
-      return self.getJSON({'code':4000,'msg':'手机号码有误!'})
+    id = Data.getId()
+    tel = data['tel'].strip() if 'tel' in data.keys() and data['tel']!='' else ''
+    passwd = Inc.md5(data['passwd']) if 'passwd' in data.keys() and data['passwd']!='' else ''
     # 是否存在
-    m1 = User()
-    m1.where('tel=:tel:',{'tel':tel})
-    res = m1.findFirst()
+    user = User()
+    user.where('tel=:tel:',{'tel':tel})
+    res = user.findFirst()
     if len(res)>0 : return self.getJSON({'code':4000,'msg':'该用户已存在!'})
-    # 保存
-    m2 = User()
-    m2.id = Data.getId()
-    m2.tel = tel
-    m2.password = passwd
+    # 事务
+    model = Model()
+    model.begin()
+    # 用户
+    m1 = User()
+    m1.id = id
+    m1.tel = tel
+    m1.password = passwd
+    # 信息
+    m2 = UserInfo()
+    m2.uid = id
+    # 权限
+    m3 = UserPerm()
+    m3.uid = id
     # 结果
-    if m2.create() :
+    if m1.create() and m2.create() and m3.create() :
+      model.commit()
       return self.getJSON({'code':0,'msg':'成功'})
     else :
+      model.commit()
       return self.getJSON({'code':5000,'msg':'添加失败!'})
 
   # 编辑
@@ -87,35 +99,25 @@ class SysuserController(Base) :
     # 参数
     req = self.request()
     data = Inc.json_decode(req.get('data'))
-    if not data or type(data)!=dict or not data.get('tel') :
+    if not data or type(data)!=dict :
       return self.getJSON({'code':4000,'msg':'参数错误!'})
     uid = req.get('uid').strip()
-    tel = data['tel'].strip()
-    passwd = Inc.md5(data['passwd']) if data['passwd']!='' else ''
-    # 验证手机
-    res = Safety.isRight('tel',tel)
-    if not Safety.isRight('tel',tel) :
-      return self.getJSON({'code':4000,'msg':'手机号码有误!'})
+    tel = data['tel'].strip() if 'tel' in data.keys() and data['tel']!='' else '0'
+    passwd = Inc.md5(data['passwd']) if 'passwd' in data.keys() and data['passwd']!='' else ''
     # 是否存在
     m1 = User()
-    m1.where('tel=:tel:',{'tel':tel})
+    m1.where('tel=":tel:"',{'tel':tel})
     res = m1.findFirst()
+    model = User()
     if len(res)>0 :
-      # 更新密码
-      if passwd != '' :
-        m2 = User()
-        m2.password = passwd
-        m2.where('id=:uid:',{'uid':uid})
-        if m2.update() : return self.getJSON({'code':0,'msg':'成功'})
-        else : return self.getJSON({'code':5000,'msg':'更新密码失败!'})
-      else :
-        return self.getJSON({'code':4000,'msg':'密码为6-16位字符!'})
-    # 修改手机
-    m3 = User()
-    m3.tel = tel
-    if passwd != '' : m3.password = passwd
-    m3.where('id=:uid:',{'uid':uid})
-    if m3.update() :
+      model.password = passwd if passwd!='' else res['password']
+      model.where('tel=":tel:"',{'tel':tel})
+    else :
+      model.tel = tel
+      model.password = passwd
+      model.where('id=:id:',{'id':uid})
+    # 结果
+    if model.update() :
       return self.getJSON({'code':0,'msg':'成功'})
     else :
       return self.getJSON({'code':5000,'msg':'编辑失败!'})
@@ -132,14 +134,20 @@ class SysuserController(Base) :
       return self.getJSON({'code':4000,'msg':'无法删除系统管理员!'})
     # ID
     ids = Inc.implode(',',data)
-    m1 = User()
-    m1.where('id in(:uid:)',{'uid':ids})
-    m2 = UserInfo()
-    m2.where('uid in(:uid:)',{'uid':ids})
+    user = User()
+    user.where('id in(:uid:)',{'uid':ids})
+    uinfo = UserInfo()
+    uinfo.where('uid in(:uid:)',{'uid':ids})
+    perm = UserPerm()
+    perm.where('uid in(:uid:)',{'uid':ids})
     # 结果
-    if m1.delete() and m2.delete() :
+    model = Model()
+    model.begin()
+    if user.delete() and uinfo.delete() and perm.delete() :
+      model.commit()
       return self.getJSON({'code':0,'msg':'成功'})
     else :
+      model.commit()
       return self.getJSON({'code':5000,'msg':'删除失败!'})
 
   # 状态
@@ -147,14 +155,27 @@ class SysuserController(Base) :
     # 参数
     req = self.request()
     uid = req.get('uid').strip()
+    type = req.get('type').strip()
     state = req.get('state').strip()
     if not uid or not state : return self.getJSON({'code':4000,'msg':'参数错误!'})
     # 管理员
     if uid=='1' : return self.getJSON({'code':4000,'msg':'禁止修改系统管理员!'})
     # 更改
-    model = User()
-    model.state = '1' if state=='1' else '0'
-    model.where('id=:uid:',{'uid':uid})
+    state = '1' if state=='1' else '0'
+    if type=='state' :
+      model = User()
+      model.state = state
+      model.where('id=:uid:',{'uid':uid})
+    elif type=='state_admin' :
+      model = UserPerm()
+      model.state_admin = state
+      model.where('uid=:uid:',{'uid':uid})
+    elif type=='state_app' :
+      model = UserPerm()
+      model.state_app = state
+      model.where('uid=:uid:',{'uid':uid})
+    else :
+      return self.getJSON({'code':4000,'msg':'未知类型!'})
     # 结果
     if model.update() :
       return self.getJSON({'code':0,'msg':'成功'})
@@ -172,24 +193,16 @@ class SysuserController(Base) :
     # 管理员
     if self.tokenData['uid']!='1' and uid=='1' :
       return self.getJSON({'code':4000,'msg':'非系统管理员!'})
-    # 查询
-    m1 = UserInfo()
-    m1.where('uid=:uid:',{'uid':uid})
-    info = m1.findFirst()
     # 数据
-    m2 = UserInfo()
-    m2.nickname = data['nickname'].strip()
-    m2.name = data['name'].strip()
-    m2.gender = data['gender'].strip()
-    m2.birthday = data['birthday'].strip() if data['birthday'].strip()!='' else 'null'
-    m2.position = data['position'].strip()
-    # 是否存在
-    if len(info)==0 :
-      m2.uid = uid
-      res = m2.create()
-    else :
-      m2.where('uid=:uid:',{'uid':uid})
-      res = m2.update()
+    model = UserInfo()
+    model.nickname = data['nickname'].strip()
+    model.name = data['name'].strip()
+    model.gender = data['gender'].strip()
+    model.birthday = data['gender'].strip()
+    model.position = data['position'].strip()
+    model.where('uid=:uid:',{'uid':uid})
     # 结果
-    if res : return self.getJSON({'code':0,'msg':'成功'})
-    else : return self.getJSON({'code':5000,'msg':'更新失败!'})
+    if model.update() :
+      return self.getJSON({'code':0,'msg':'成功'})
+    else :
+      return self.getJSON({'code':5000,'msg':'更新失败!'})

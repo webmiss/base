@@ -8,27 +8,29 @@ import vip.webmis.java.common.Inc;
 public class UserInfo extends Model {
 
   public String uid = "0";
+  public String utime = "null";
   public String nickname = "";
   public String position = "";
   public String name = "";
   public String gender = "";
-  public String birthday = "";
+  public String birthday = "null";
   public String img = "";
-  public String ctime = "null";
-  public String utime = "null";
-
+  
   /* 构造函数 */
   public UserInfo() {
     this.setPrimaryKey("uid"); //主键
     this.setSource("user_info"); //数据表
   }
 
-  /* 创建 */
-  public JSONObject beforeCreate(JSONObject fields){
-    if(fields.get("ctime").equals("null")){
-      fields.put("ctime",Inc.date("yyyy-MM-dd HH:mm:ss"));
+  /* 生日 */
+  public void setBirthday(String val) throws Exception {
+    if(val.equals("")){
+      val = "null";
     }
-    return fields;
+    birthday = val;
+  }
+  public String getBirthday(){
+    return birthday;
   }
 
   /* 更新 */
@@ -38,5 +40,5 @@ public class UserInfo extends Model {
     }
     return fields;
   }
-  
+
 }
