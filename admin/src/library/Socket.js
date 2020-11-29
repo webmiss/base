@@ -1,27 +1,14 @@
 import Env from '@/env'
 import Toast from '../library/ui/ui-toast'
 import Storage from '../library/ui/storage'
-import Notify from '../library/plus/notify'
+import Msg from './Msg'
 
 /* Socket */
 export default {
 
   self: null,
   store: null,
-
-  /* 消息路由 */
-  msgRouter(d){
-    if(d.type=='group') this.msgGroup(d); //消息组
-    else if(d.type=='msg') this.msg(d); //消息
-    else if(d.type=='notify') this.msgNotify(d); //通知
-  },
-
-  /* 消息 */
-  msg(d){
-    // 阅读
-    const voice = Storage.getItem('voice');
-    Notify(d.data.title,d.data.content,voice?true:false);
-  },
+  socket: null,
 
   /* 启动 */
   start(self){
@@ -30,7 +17,7 @@ export default {
     // 重启Socket
     clearInterval(this.socketInterval);
     this.socketInterval = setInterval(()=>{
-      if(this.store.isLogin && (!this.store.socket || this.store.socket.readyState!=1)) this.start(self);
+      if(this.store.isLogin && (!this.socket || this.socket.readyState!=1)) this.start(self);
     },Env.socket.time);
     // Token
     const token = Storage.getItem('token');
@@ -39,42 +26,43 @@ export default {
     if(Env.socket.start) this.socket(token);
   },
 
-  /* 链接 */
+  /* WebSocket */
   socket(token){
-    this.store.socket = new WebSocket(Env.socket.server+'?token='+token);
-    /* 链接 */
-    this.store.socket.onopen = ()=>{
+    this.socket = new WebSocket(Env.socket.server+'?token='+token);
+    // 链接
+    this.socket.onopen = ()=>{
       console.log('Socket开启');
       // 心跳包
       clearInterval(this.heartbeat);
       this.heartbeat = setInterval(()=>{
         try{
-          this.store.socket.send(JSON.stringify({type:''}));
+          this.socket.send(JSON.stringify({type:''}));
         }catch(e){
           this._closeMsg();
         }
       },10000);
     }
-    /* 关闭 */
-    this.store.socket.onclose = ()=>{
+    // 关闭
+    this.socket.onclose = ()=>{
       console.log('Socket关闭');
       this._closeMsg();
     }
-    /* 接收 */
-    this.store.socket.onmessage = (res)=>{
+    // 接收
+    this.socket.onmessage = (res)=>{
       const d = JSON.parse(res.data);
       // 是否成功
       if(d.code!=0) return Toast(d.msg);
       // 消息路由
-      this.msgRouter(d);
+      Msg.router(this.socket,d);
+      // this.msgRouter(d);
     };
   },
   
   /* 关闭 */
   _closeMsg(){
-    if(!this.store.socket) return;
-    this.store.socket.close();
-    this.store.socket = null;
+    if(!this.socket) return;
+    this.socket.close();
+    this.socket = null;
   },
 
 }
