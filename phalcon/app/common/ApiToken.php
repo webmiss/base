@@ -2,6 +2,7 @@
 namespace app\common;
 
 use Phalcon\Http\Request;
+
 use app\Env;
 use app\library\Safety;
 use app\library\Redis;
@@ -9,10 +10,10 @@ use app\library\Redis;
 class AdminToken extends Base {
 
   /* 验证&数据 */
-  static function verify(){
+  static function verify(string $token=''): ?object {
     // 获取Token
     $request = new Request();
-    $token = $request->get('token');
+    $token = $token?:$request->get('token');
     // 验证Token
     $res = Safety::decode($token);
     if(!$res) self::error('Token验证失败!');
@@ -27,7 +28,7 @@ class AdminToken extends Base {
   }
 
   /* 生成 */
-  static function create($data){
+  static function create(array $data): ?string {
     $data['l_time'] = date('Y-m-d H:i:s');
     $token = Safety::encode($data);
     // 缓存

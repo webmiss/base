@@ -2,10 +2,10 @@
 namespace app\common;
 
 use Phalcon\Http\Request;
+
 use app\Env;
 use app\library\Safety;
 use app\library\Redis;
-
 use app\model\SysMenu;
 use app\model\UserPerm;
 use app\model\UserRole;
@@ -13,10 +13,10 @@ use app\model\UserRole;
 class AdminToken extends Base {
 
   /* 验证&数据 */
-  static function verify(){
+  static function verify(string $token=''): ?object {
     // 获取Token
     $request = new Request();
-    $token = $request->get('token');
+    $token = $token?:$request->get('token');
     // 验证Token
     $res = Safety::decode($token);
     if(!$res) self::error('Token验证失败!');
@@ -31,7 +31,7 @@ class AdminToken extends Base {
   }
 
   /* 生成 */
-  static function create($data){
+  static function create(array $data): ?string {
     $data['l_time'] = date('Y-m-d H:i:s');
     $token = Safety::encode($data);
     // 缓存
@@ -41,7 +41,7 @@ class AdminToken extends Base {
   }
 
   /* 用户权限 */
-  static function perm($uid){
+  static function perm(string $uid): array {
     $perm = UserPerm::findFirst(['uid='.$uid,'columns'=>'perm,role']);
     if(!$perm) self::error('没有分配权限!');
     if($perm->role!='0') $perm=UserRole::findFirst(['id='.$perm->role,'columns'=>'perm']);
@@ -57,7 +57,7 @@ class AdminToken extends Base {
   }
 
   /* Url权限 */
-  static function urlVerify($url){
+  static function urlVerify(string $url): ?object {
     $token = self::verify();
     // 全部菜单
     $all = SysMenu::find(['url<>""','columns'=>'id,url']);

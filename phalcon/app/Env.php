@@ -15,6 +15,10 @@ class Env{
   static $api_token_prefix = 'AdminToken_';  //前缀
   static $api_token_time = 7*24*3600;  //有效时长
   static $api_token_auto = true;  //自动续期
+  /* Socket */
+  static $socket_name = 'Socket_'; //缓存名称
+  static $socket_ip = '0.0.0.0'; //IP地址
+  static $socket_port = 9011; //IP地址
 
   /* 数据库 */
   static function db() {
