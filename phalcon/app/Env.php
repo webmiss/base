@@ -4,6 +4,10 @@ namespace app;
 class Env{
 
   static $debug = false; //调试模式
+  /* Web */
+  static $title = 'WebMIS'; //标题
+  static $keywords = 'WebMIS,开放平台'; //关键字
+  static $description = 'WebMIS全栈开发基础框架.技术,PHP,Python,SpringBoot,Phalcon,Flutter,NodeJS,Vue,Swoole,Redis,API'; //关键字
   /* 资源 */
   static $base_url = 'https://demo-api.webmis.vip/'; //根目录
   /* 加密 */

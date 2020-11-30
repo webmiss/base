@@ -1,6 +1,7 @@
 <?php
 namespace app\modules\home\controller;
 
+use app\Env;
 use app\common\Base;
 
 class BaseController extends Base{
@@ -8,9 +9,9 @@ class BaseController extends Base{
   /* 构造函数 */
 	public function initialize(){
     // SEO
-		$this->view->setVar('WebTitle',$this->config->title);
-		$this->view->setVar('Keywords',$this->config->Keywords);
-		$this->view->setVar('Description',$this->config->description);
+		$this->view->setVar('WebTitle',Env::$title);
+		$this->view->setVar('Keywords',Env::$keywords);
+    $this->view->setVar('Description',Env::$description);
   }
 
   /* 调用试图 */
