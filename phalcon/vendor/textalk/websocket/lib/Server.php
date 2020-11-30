@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (C) 2014, 2015 Textalk
+ * Copyright (C) 2014-2020 Textalk/Abicart and contributors.
  *
  * This file is part of Websocket PHP and is free software under the ISC License.
  * License text: https://raw.githubusercontent.com/Textalk/websocket-php/master/COPYING
@@ -9,98 +9,149 @@
 
 namespace WebSocket;
 
-/**
- * This is just a simple stub for testing the Client.  It could be made useful…
- */
-class Server extends Base {
-  protected $addr, $port, $listening, $request;
+class Server extends Base
+{
+    // Default options
+    protected static $default_options = [
+      'timeout'       => null,
+      'fragment_size' => 4096,
+      'port'          => 8000,
+      'logger'        => null,
+    ];
 
-  /**
-   * @param array   $options
-   *   Associative array containing:
-   *   - timeout:  Set the socket timeout in seconds.  Default: 5
-   *   - port:     Chose port for listening.
-   */
-  public function __construct(array $options = array()) {
+    protected $addr;
+    protected $port;
+    protected $listening;
+    protected $request;
+    protected $request_path;
 
-    // the fragment size
-    if (!array_key_exists('fragment_size', $options)) $options['fragment_size'] = 4096;
+    /**
+     * @param array $options
+     *   Associative array containing:
+     *   - timeout:       Set the socket timeout in seconds.
+     *   - fragment_size: Set framgemnt size.  Default: 4096
+     *   - port:          Chose port for listening. Default 8000.
+     */
+    public function __construct(array $options = [])
+    {
+        $this->options = array_merge(self::$default_options, $options);
+        $this->port = $this->options['port'];
+        $this->setLogger($this->options['logger']);
 
+        do {
+            $this->listening = @stream_socket_server("tcp://0.0.0.0:$this->port", $errno, $errstr);
+        } while ($this->listening === false && $this->port++ < 10000);
 
-    $this->port = isset($options['port']) ? $options['port'] : 8000;
-    $this->options = $options;
+        if (!$this->listening) {
+            $error = "Could not open listening socket: {$errstr} ({$errno})";
+            $this->logger->error($error);
+            throw new ConnectionException($error, $errno);
+        }
 
-    do {
-      $this->listening = @stream_socket_server("tcp://0.0.0.0:$this->port", $errno, $errstr);
-    } while ($this->listening === false && $this->port++ < 10000);
-
-    if (!$this->listening) {
-      throw new ConnectionException("Could not open listening socket.");
-    }
-  }
-
-  public function getPort()    { return $this->port;         }
-  public function getPath()    { return $this->request_path; }
-  public function getRequest() { return $this->request;      }
-
-  public function getHeader($header) {
-    foreach ($this->request as $row) {
-      if (stripos($row, $header) !== false) {
-        list($headername, $headervalue) = explode(":", $row);
-        return trim($headervalue);
-      }
-    }
-    return null;
-  }
-
-  public function accept() {
-    if (empty($this->options['timeout'])) {
-      $this->socket = stream_socket_accept($this->listening);
-    }
-    else {
-      $this->socket = stream_socket_accept($this->listening, $this->options['timeout']);
-      stream_set_timeout($this->socket, $this->options['timeout']);
+        $this->logger->info("Server listening to port {$this->port}");
     }
 
-    $this->performHandshake();
-
-    return $this->socket;
-  }
-
-  protected function performHandshake() {
-    $request = '';
-    do {
-      $buffer = stream_get_line($this->socket, 1024, "\r\n");
-      $request .= $buffer . "\n";
-      $metadata = stream_get_meta_data($this->socket);
-    } while (!feof($this->socket) && $metadata['unread_bytes'] > 0);
-
-    if (!preg_match('/GET (.*) HTTP\//mUi', $request, $matches)) {
-      throw new ConnectionException("No GET in request:\n" . $request);
-    }
-    $get_uri = trim($matches[1]);
-    $uri_parts = parse_url($get_uri);
-
-    $this->request = explode("\n", $request);
-    $this->request_path = $uri_parts['path'];
-    /// @todo Get query and fragment as well.
-
-    if (!preg_match('#Sec-WebSocket-Key:\s(.*)$#mUi', $request, $matches)) {
-      throw new ConnectionException("Client had no Key in upgrade request:\n" . $request);
+    public function __destruct()
+    {
+        if ($this->isConnected()) {
+            fclose($this->socket);
+        }
+        $this->socket = null;
     }
 
-    $key = trim($matches[1]);
+    public function getPort(): int
+    {
+        return $this->port;
+    }
 
-    /// @todo Validate key length and base 64...
-    $response_key = base64_encode(pack('H*', sha1($key . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11')));
+    public function getPath(): string
+    {
+        return $this->request_path;
+    }
 
-    $header = "HTTP/1.1 101 Switching Protocols\r\n"
-      . "Upgrade: websocket\r\n"
-      . "Connection: Upgrade\r\n"
-      . "Sec-WebSocket-Accept: $response_key\r\n"
-      . "\r\n";
+    public function getRequest(): array
+    {
+        return $this->request;
+    }
 
-    $this->write($header);
-    $this->is_connected = true;
-  }
+    public function getHeader($header): ?string
+    {
+        foreach ($this->request as $row) {
+            if (stripos($row, $header) !== false) {
+                list($headername, $headervalue) = explode(":", $row);
+                return trim($headervalue);
+            }
+        }
+        return null;
+    }
+
+    public function accept(): bool
+    {
+        $this->socket = null;
+        return (bool)$this->listening;
+    }
+
+    protected function connect(): void
+    {
+        if (empty($this->options['timeout'])) {
+            $this->socket = @stream_socket_accept($this->listening);
+            if (!$this->socket) {
+                $error = 'Server failed to connect.';
+                $this->logger->error($error);
+                throw new ConnectionException($error);
+            }
+        } else {
+            $this->socket = @stream_socket_accept($this->listening, $this->options['timeout']);
+            if (!$this->socket) {
+                $error = 'Server failed to connect.';
+                $this->logger->error($error);
+                throw new ConnectionException($error);
+            }
+            stream_set_timeout($this->socket, $this->options['timeout']);
+        }
+
+        $this->performHandshake();
+        $this->logger->info("Server connected to port {$this->port}");
+    }
+
+    protected function performHandshake(): void
+    {
+        $request = '';
+        do {
+            $buffer = stream_get_line($this->socket, 1024, "\r\n");
+            $request .= $buffer . "\n";
+            $metadata = stream_get_meta_data($this->socket);
+        } while (!feof($this->socket) && $metadata['unread_bytes'] > 0);
+
+        if (!preg_match('/GET (.*) HTTP\//mUi', $request, $matches)) {
+            $error = "No GET in request: {$request}";
+            $this->logger->error($error);
+            throw new ConnectionException($error);
+        }
+        $get_uri = trim($matches[1]);
+        $uri_parts = parse_url($get_uri);
+
+        $this->request = explode("\n", $request);
+        $this->request_path = $uri_parts['path'];
+        /// @todo Get query and fragment as well.
+
+        if (!preg_match('#Sec-WebSocket-Key:\s(.*)$#mUi', $request, $matches)) {
+            $error = "Client had no Key in upgrade request: {$request}";
+            $this->logger->error($error);
+            throw new ConnectionException($error);
+        }
+
+        $key = trim($matches[1]);
+
+        /// @todo Validate key length and base 64...
+        $response_key = base64_encode(pack('H*', sha1($key . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11')));
+
+        $header = "HTTP/1.1 101 Switching Protocols\r\n"
+                . "Upgrade: websocket\r\n"
+                . "Connection: Upgrade\r\n"
+                . "Sec-WebSocket-Accept: $response_key\r\n"
+                . "\r\n";
+
+        $this->write($header);
+    }
 }

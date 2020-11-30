@@ -1,16 +1,13 @@
 language: php
 
 php:
-  - 5.5
-  - 5.4
+  - 7.4
+  - 7.3
+  - 7.2
 
 before_script:
-  - curl -s http://getcomposer.org/installer | php
-  - php composer.phar install --dev --no-interaction
+  - make install build
 
 script:
-  - mkdir -p build/logs
-  - ./vendor/bin/phpunit
-
-after_script:
-  - php vendor/bin/coveralls -v
+  - make coverage
+  - make cs-check

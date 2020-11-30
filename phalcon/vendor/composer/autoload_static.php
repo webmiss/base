@@ -11,6 +11,10 @@ class ComposerStaticInitc155f15d42940d7ef080134e3a851143
         array (
             'WebSocket\\' => 10,
         ),
+        'P' => 
+        array (
+            'Psr\\Log\\' => 8,
+        ),
         'A' => 
         array (
             'App\\' => 4,
@@ -22,10 +26,18 @@ class ComposerStaticInitc155f15d42940d7ef080134e3a851143
         array (
             0 => __DIR__ . '/..' . '/textalk/websocket/lib',
         ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
         ),
+    );
+
+    public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -33,6 +45,7 @@ class ComposerStaticInitc155f15d42940d7ef080134e3a851143
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitc155f15d42940d7ef080134e3a851143::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitc155f15d42940d7ef080134e3a851143::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitc155f15d42940d7ef080134e3a851143::$classMap;
 
         }, null, ClassLoader::class);
     }

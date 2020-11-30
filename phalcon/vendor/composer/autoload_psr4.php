@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'WebSocket\\' => array($vendorDir . '/textalk/websocket/lib'),
+    'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'App\\' => array($baseDir . '/app'),
 );
