@@ -23,12 +23,12 @@ export default {
     const token = Storage.getItem('token');
     if(!token) return false;
     // 开启
-    if(Env.socket.start) this.socket(token);
+    if(Env.socket.start) this.socketOpen(token);
   },
 
   /* WebSocket */
-  socket(token){
-    this.socket = new WebSocket(Env.socket.server+'?token='+token);
+  socketOpen(token){
+    this.socket = new WebSocket(Env.socket.server);
     // 链接
     this.socket.onopen = ()=>{
       console.log('Socket开启');
@@ -52,9 +52,8 @@ export default {
       const d = JSON.parse(res.data);
       // 是否成功
       if(d.code!=0) return Toast(d.msg);
-      // 消息路由
+      // 路由
       Msg.router(this.socket,d);
-      // this.msgRouter(d);
     };
   },
   

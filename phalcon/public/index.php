@@ -1,3 +1,3 @@
 <?php
 // web入口
-require __DIR__.'/../app/web.php';
+require __DIR__.'/../web.php';

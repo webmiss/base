@@ -4,7 +4,7 @@ use Phalcon\Di\FactoryDefault\Cli;
 use Phalcon\Cli\Console;
 use Phalcon\Config\Adapter\Php as phpConfig;
 
-define('BASE_PATH', dirname(__DIR__));
+define('BASE_PATH', __DIR__);
 define('APP_PATH', BASE_PATH . '/app');
 
 // Composer
@@ -42,6 +42,7 @@ foreach ($argv as $k=>$v) {
 try {
   $console->handle($args);
 }catch(\Exception $e) {
-  fwrite(STDERR, $e->getMessage() . PHP_EOL);
-  exit(1);
+  echo 123;
+  // fwrite(STDERR, $e->getMessage() . PHP_EOL);
+  // exit(1);
 }

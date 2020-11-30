@@ -2,6 +2,7 @@
 use app\Env;
 use app\common\Base;
 use app\common\AdminToken;
+use app\common\ApiToken;
 use app\common\Msg;
 use app\library\Redis;
 
@@ -48,18 +49,21 @@ class SocketTask extends Base{
       if(Redis::run()->get($this->fd_name)) Redis::run()->del($this->fd_name);
       if(Redis::run()->get($this->uid_name)) Redis::run()->del($this->uid_name);
       // Token
-      $token = $request->get['token'];
-      if(!isset($token) || empty($token)) return false;
+      $token = $request->get['token']??'';
+      if(empty($token)) return $this->errer($server,$request->fd,'Socket参数错误!');
       // 验证
-      $res = AdminToken::verify($token);
-      if($res || $token==Env::$key){
+      $type = $request->get['type']??'';
+      if($type=='admin') $res = AdminToken::socket($token);
+      elseif($type=='api') $res = ApiToken::socket($token);
+      else return $this->errer($server,$request->fd,'Socket参数错误!');
+      if($res['state'] || $token==Env::$key){
         // 用户ID
-        $this->uid = $res->uid??$this->suid;
+        $this->uid = $res['data']->uid??$this->suid;
         // 记录FD
         Redis::run()->hSet($this->fd_name,$request->fd,$this->uid);
         Redis::run()->hSet($this->uid_name,$this->uid,$request->fd);
       }else{
-        $server->disconnect($request->fd);
+        return $this->errer($server,$request->fd,$res['msg']);
       }
     });
     // 关闭
@@ -77,6 +81,12 @@ class SocketTask extends Base{
     });
     // 启动
     $server->start();
+  }
+
+  /* 错误信息 */
+  private function errer($server,$fd,$msg){
+    $server->push($fd,self::getJSON(['code'=>4000,'msg'=>$msg]));
+    return $server->disconnect($fd);
   }
 
 }

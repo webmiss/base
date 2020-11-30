@@ -6,7 +6,7 @@ use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Application;
 use app\Env;
 
-define('BASE_PATH', dirname(__DIR__));
+define('BASE_PATH', __DIR__);
 define('APP_PATH', BASE_PATH . '/app');
 
 // Composer

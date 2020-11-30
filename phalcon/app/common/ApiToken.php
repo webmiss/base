@@ -7,7 +7,20 @@ use app\Env;
 use app\library\Safety;
 use app\library\Redis;
 
-class AdminToken extends Base {
+class ApiToken extends Base {
+
+  /* 验证-Socket */
+  static function socket(string $token=''): array {
+    // 验证Token
+    $res = Safety::decode($token);
+    if(!$res) return ['state'=>false,'msg'=>'Token验证失败!'];
+    $name = Env::$api_token_prefix.$res->uid;
+    // 是否超时
+    $time =  Redis::run()->ttl($name);
+    if($time<=0) return ['state'=>false,'msg'=>'Token已超时!'];
+    $res->n_time =  $time;
+    return ['state'=>true,'data'=>$res];
+  }
 
   /* 验证&数据 */
   static function verify(string $token=''): ?object {
