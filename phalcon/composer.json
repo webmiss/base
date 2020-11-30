@@ -12,7 +12,8 @@
   "minimum-stability": "dev",
   "require": {
     "php": "^7.2",
-    "textalk/websocket": "^1.2.0"
+    "swoole/ide-helper": "^4.5.8",
+    "textalk/websocket": "^1.4.2"
   },
   "autoload": {
     "psr-4": {

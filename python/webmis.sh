@@ -1,44 +1,35 @@
 #!/bin/bash
 
+# 配置
+index="web.py"
+config="web.ini"
+s=$1
+
 # 帮助
 helpText(){
-  echo "用法: webmis <command> <args>"
+  echo "用法:"
+  echo "  ./webmis.sh <command>"
   echo "<command>"
-  echo "    run         运行"
-  echo "    start       服务器端启动"
-  echo "    restart     重启服务: 中断进程并且重新启动"
-  echo "    stop        停止服务"
+  echo "  serve       运行"
+  echo "  start       服务器端启动"
+  echo "  restart     重启服务: 中断进程并且重新启动"
+  echo "  stop        停止服务"
   echo "<args>"
-  echo "    -f          指定入口文件, 默认: $f"
+  echo "  index       入口文件: $index"
+  echo "  config      服务器配置: $config"
 }
 
-# 默认
-s=$1
-f="web.py"
-c="web.ini"
-
-# 参数
-while getopts ":f:c:h:" opt
-do
-  case $opt in
-    f) f="$OPTARG" ;;
-    c) c="$OPTARG" ;;
-    ?)
-    helpText
-    exit 1;;
-  esac
-done
-
 # 运行
-if [ "$s" == "run" ]; then
-  python $f
+if [ "$s" == "serve" ]; then
+  python $index
 # 启动
 elif [ "$s" == "start" ]; then
-  uwsgi --ini $c &
+  echo $config
+  # uwsgi --ini $c &
 # 重启
 elif [ "$s" == "restart" ]; then
   ps -aux | grep uwsgi | grep -v grep | awk {'print $2'} | xargs kill
-  uwsgi --ini $c &
+  uwsgi --ini $config &
 # 停止
 elif [ "$s" == "stop" ]; then
   ps -aux | grep uwsgi | grep -v grep | awk {'print $2'} | xargs kill
