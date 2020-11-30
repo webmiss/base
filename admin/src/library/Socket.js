@@ -28,7 +28,7 @@ export default {
 
   /* WebSocket */
   socketOpen(token){
-    this.socket = new WebSocket(Env.socket.server);
+    this.socket = new WebSocket(Env.socket.server+'?type=admin&token='+token);
     // 链接
     this.socket.onopen = ()=>{
       console.log('Socket开启');
