@@ -10,9 +10,8 @@ export default createStore({
     system: {}, //系统信息
     /* 菜单 */
     menuName: '',  //用户菜单
-    action: {url:'',type:'',width:'',menus:''}, //动作菜单
+    action: {name:'',url:'',action:'',width:'',menus:''}, //动作菜单
     /* 功能 */
-    socket: null, //Socket
     scan: null, //摄像头
   },
   mutations: {

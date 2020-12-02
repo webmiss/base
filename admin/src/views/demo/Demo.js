@@ -7,7 +7,11 @@ export default {
   },
   computed: {
     // 动作菜单-监听
-    actionType(){ return this.$store.state.action.type; }
+    actionType(){
+      const name = this.store.action.name;
+      const action = this.store.action.action;
+      return name=='Demo'&&action?action:false;
+    }
   },
   watch:{
     // 动作菜单-点击
@@ -18,6 +22,7 @@ export default {
   },
   activated(){
     // 动作菜单-获取
+    this.store.action.name = 'Demo';
     this.store.action.url = '';
     this.store.action.menus = '';
   },

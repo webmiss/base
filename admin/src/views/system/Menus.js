@@ -34,7 +34,11 @@ export default {
   },
   computed: {
     // 动作菜单-监听
-    actionType(){ return this.$store.state.action.type; }
+    actionType(){
+      const name = this.store.action.name;
+      const action = this.store.action.action;
+      return name=='SysMenus'&&action?action:false;
+    }
   },
   watch:{
     // 动作菜单-点击
@@ -55,6 +59,7 @@ export default {
   },
   activated(){
     // 动作菜单-获取
+    this.store.action.name = 'SysMenus';
     this.store.action.url = 'SysMenus';
     this.store.action.menus = '';
     // 加载数据

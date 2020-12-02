@@ -36,7 +36,11 @@ export default {
   },
   computed: {
     // 动作菜单-监听
-    actionType(){ return this.$store.state.action.type; }
+    actionType(){
+      const name = this.store.action.name;
+      const action = this.store.action.action;
+      return name=='SysRole'&&action?action:false;
+    }
   },
   watch:{
     // 动作菜单-点击
@@ -57,6 +61,7 @@ export default {
   },
   activated(){
     // 动作菜单-获取
+    this.store.action.name = 'SysRole';
     this.store.action.url = 'SysRole';
     this.store.action.menus = '';
     // 加载数据

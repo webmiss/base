@@ -3,66 +3,70 @@ import Loading from '../../library/ui/ui-loading'
 import Toast from '../../library/ui/ui-toast'
 import Post from '../../library/ui/request-post'
 import Storage from '../../library/ui/storage'
-import Reg from '../../library/inc/reg'
 /* UI组件 */
 import wmMain from '../../components/main'
 import wmForm from '../../components/form'
 import wmFormItem from '../../components/form/item'
 import wmInput from '../../components/form/input'
+import wmRadio from '../../components/form/radio'
+import wmDate from '../../components/form/date'
 import wmButton from '../../components/form/button'
+import wmImg from '../../components/img'
+import wmImgUpload from '../../components/img/upload'
 
 export default {
-  components: {wmMain,wmForm,wmFormItem,wmInput,wmButton},
+  components: {wmMain,wmForm,wmFormItem,wmInput,wmRadio,wmDate,wmButton,wmImg,wmImgUpload},
   data(){
     return {
       store: this.$store.state,
-      form:{passwd:'', passwd1:'', passwd2:''},
+      form: {img:'',nickname:'',name:'',gender:'男',birthday:'',position:''},
+      gender: [{name:'男',val:'男'},{name:'女',val:'女'}],
+      upload: {
+        url:'Userinfo/upImg',
+        param:{token:Storage.getItem('token')}
+      },
     }
   },
   activated(){
     // 动作菜单-获取
+    this.store.action.name = 'UserInfo';
     this.store.action.url = '';
     this.store.action.menus = '';
+    // 加载数据
+    if(Storage.getItem('token')) this.loadData();
   },
   methods:{
 
-    /* 提交表单 */
-    onSubmit(){
-      const passwd = this.form.passwd;
-      const passwd1 = this.form.passwd1;
-      const passwd2 = this.form.passwd2;
-      // 验证
-      let reg_passwd = Reg('passwd',passwd);
-      let reg_passwd1 = Reg('passwd',passwd1);
-      if(reg_passwd!=true){
-        return Toast('原'+reg_passwd);
-      }else if(reg_passwd1!=true){
-        return Toast('新'+reg_passwd1);
-      }else if(passwd1!=passwd2){
-        return Toast('两次密码不一致！');
-      }else if(passwd==passwd1){
-        return Toast('不能与原密码相同！');
-      }
-      // 提交
+    /* 加载数据 */
+    loadData(){
       const load = Loading();
-      Post(
-        'Userpasswd/edit',
-        {token:Storage.getItem('token'), passwd:passwd, passwd1:passwd1},
-      (res)=>{
+      Post('Userinfo/list',{token:Storage.getItem('token')},(res)=>{
         load.clear();
         const d = res.data;
-        if(d.code==0){
-          // 重置表单
-          this.form.passwd = '';
-          this.form.passwd1 = '';
-          this.form.passwd2 = '';
-          // 退出登录
-          this.store.isLogin = false;
-          this.store.uInfo = {};
-          Storage.setItem('token','');
-        }
+        if(d.code!=0) return Toast(d.msg);
+        else this.form = d.list;
+      });
+    },
+
+    /* 提交表单 */
+    onSubmit(){
+      const data = JSON.stringify(this.form);
+      const load = Loading();
+      Post('Userinfo/edit',{token:Storage.getItem('token'),data:data},(res)=>{
+        load.clear();
+        const d = res.data;
+        if(d.code==0) this.store.uInfo = d.uinfo;
         return Toast(d.msg);
       });
+    },
+
+    /* 上传头像 */
+    upImg(res){
+      if(res.code==0){
+        this.form.img = res.img;
+        this.store.uInfo.img = res.img;
+      }
+      return Toast(res.msg);
     }
 
   },

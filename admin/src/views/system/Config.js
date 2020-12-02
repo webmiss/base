@@ -27,6 +27,7 @@ export default {
   },
   activated(){
     // 动作菜单-获取
+    this.store.action.name = 'SysConfig';
     this.store.action.url = '';
     this.store.action.menus = '';
     // 加载数据

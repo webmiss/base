@@ -56,10 +56,10 @@ export default {
     },
 
     /* 触发事件 */
-    openAction(type){
-      this.store.action.type = type;
+    openAction(val){
+      this.store.action.action = val;
       // 重置
-      setTimeout(()=>{ this.store.action.type = ''; },1000);
+      setTimeout(()=>{ this.store.action.action = ''; },1000);
     }
 
   }

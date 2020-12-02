@@ -35,7 +35,11 @@ export default {
   },
   computed: {
     // 动作菜单-监听
-    actionType(){ return this.$store.state.action.type; }
+    actionType(){
+      const name = this.store.action.name;
+      const action = this.store.action.action;
+      return name=='SysFileManage'&&action?action:false;
+    }
   },
   watch:{
     // 动作菜单-点击
@@ -65,6 +69,7 @@ export default {
   },
   activated(){
     // 动作菜单-获取
+    this.store.action.name = 'SysFileManage';
     this.store.action.url = 'SysFileManage';
     this.store.action.menus = [
       {name:'新建文件夹', action:'mkdir', ico:''},
