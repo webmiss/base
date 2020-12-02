@@ -24,8 +24,7 @@ if [ "$s" == "serve" ]; then
   python $index
 # 启动
 elif [ "$s" == "start" ]; then
-  echo $config
-  # uwsgi --ini $c &
+  uwsgi --ini $c &
 # 重启
 elif [ "$s" == "restart" ]; then
   ps -aux | grep uwsgi | grep -v grep | awk {'print $2'} | xargs kill
