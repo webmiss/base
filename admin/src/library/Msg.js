@@ -14,14 +14,16 @@ export default {
 
   /* 消息 */
   msg(socket,d){
+    console.log(d);
     // 阅读
-    const voice = Storage.getItem('voice');
-    Notify(d.data.title,d.data.content,voice?true:false);
+    // const voice = Storage.getItem('voice');
+    // Notify(d.data.title,d.data.content,voice?true:false);
   },
 
   /* 通知 */
   notify(socket,d){
     console.log(socket,d);
+    socket.send(JSON.stringify({type:'notify'}));
   },
 
 }

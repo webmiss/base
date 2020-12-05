@@ -12,10 +12,11 @@ use \Swoole\Coroutine\Http\Client;
 class SocketTask extends Base{
 
   /* 属性 */
-  private $suid = '1';        // 系统消息ID
-  private $uid = '';         // 用户ID
-  private $fd_name = '';     // 缓存:SocketFD
-  private $uid_name = '';    // 缓存:用户ID
+  private $suid = '0';      //系统消息ID
+  private $uid = '';        //用户ID
+  private $token = [];      //Token
+  private $fd_name = '';    // 缓存:SocketFD
+  private $uid_name = '';   // 缓存:用户ID
 
   /* 构造函数 */
   function initialize(){
@@ -24,18 +25,13 @@ class SocketTask extends Base{
   }
 
   /* 客户端 */
-  function sendAction($data=''){
-    // 参数
-    $data = json_decode($data);
-    if(empty($data)) exit('必须数组!');
-    // 系统Token
-    $token = $this->config->key;
-    // 链接
-    $client = new Client('127.0.0.1',$this->config->socket_port);
+  function sendAction($type='admin',$data=''){
+    $token = Env::$key;
+    $client = new Client(Env::$socket_ip,Env::$socket_port);
     // 协程
-    go(function () use ($client,$token,$data) {
-      $res = $client->upgrade('/?token='.$token);
-      if($res) return $client->push(json_encode($data));
+    go(function () use ($client,$type,$token,$data) {
+      $res = $client->upgrade('/?type='.$type.'&token='.$token);
+      if($res) return $client->push($data);
     });
   }
 
@@ -51,14 +47,22 @@ class SocketTask extends Base{
       // Token
       $token = $request->get['token']??'';
       if(empty($token)) return $this->errer($server,$request->fd,'Socket参数错误!');
-      // 验证
+      // 类型
+      $res = [];
       $type = $request->get['type']??'';
       if($type=='admin') $res = AdminToken::socket($token);
       elseif($type=='api') $res = ApiToken::socket($token);
       else return $this->errer($server,$request->fd,'Socket参数错误!');
+      // 验证
       if($res['state'] || $token==Env::$key){
         // 用户ID
-        $this->uid = $res['data']->uid??$this->suid;
+        if($token==Env::$key){
+          $this->uid = $this->suid;
+          $this->token = (object)['uid'=>$this->suid];
+        }else{
+          $this->uid = $res['data']->uid;
+          $this->token = $res['data'];
+        }
         // 记录FD
         Redis::run()->hSet($this->fd_name,$request->fd,$this->uid);
         Redis::run()->hSet($this->uid_name,$this->uid,$request->fd);
@@ -76,8 +80,9 @@ class SocketTask extends Base{
     });
     // 消息
     $server->on('message',function($server,$frame) {
+      $fds = Redis::run()->hGetAll($this->uid_name);
       $msg = new Msg();
-      $msg->router($server, $frame);
+      $msg->router($fds,$server,$frame->fd,$frame->data,$this->token);
     });
     // 启动
     $server->start();

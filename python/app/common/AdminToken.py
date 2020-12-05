@@ -13,6 +13,18 @@ from app.model.UserRole import UserRole
 
 class AdminToken(Base):
 
+  # 验证-Socket
+  def socket(token) :
+    # 验证Token
+    res = Safety.decode(token)
+    if res==None : return {'state':False,'msg':'Token验证失败!'}
+    name = Env.admin_token_prefix+str(res['uid'])
+    # 是否超时
+    time = Redis.run().ttl(name)
+    if time<=0 : return {'state':False,'msg':'Token已超时!'}
+    res['n_time'] = time
+    return {'state':True,'data':res}
+
   # 验证&数据
   def verify(self) :
     # 获取Token
