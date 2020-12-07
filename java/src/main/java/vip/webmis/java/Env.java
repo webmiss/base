@@ -16,6 +16,10 @@ public class Env {
   public static final String api_token_prefix = "ApiToken_";  //前缀
   public static final int api_token_time = 7*24*3600;  //有效时长
   public static final boolean api_token_auto = true;  //自动续期
+  /* Socket */
+  public static final String socket_name = "Socket_";  //缓存名称
+  public static final String socket_ip = "127.0.0.1";  //IP地址
+  public static final int socket_port = 9000;  //端口
 
   /* 数据库 */
   public static HashMap<String,Object> db() {

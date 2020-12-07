@@ -9,7 +9,7 @@ if(lag && lag.name=='python'){
   socket = 'wss://demo-python.webmis.vip/wss';
 }else if(lag && lag.name=='java'){
   baseUrl = 'https://demo-java.webmis.vip/';
-  socket = 'wss://demo-java.webmis.vip/wss';
+  socket = 'wss://demo-java.webmis.vip/websocket';
 }else{
   baseUrl = 'https://demo-api.webmis.vip/';
   socket = 'wss://demo-api.webmis.vip/wss';

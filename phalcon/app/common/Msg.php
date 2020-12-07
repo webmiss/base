@@ -12,6 +12,7 @@ class Msg extends Base {
     // 参数
     $this->fds = $fds;
     $this->token = $token;
+    // 数据
     $data = json_decode($msg);
     if(!is_object($data)) $server->push($fd, self::getJSON(['code'=>400,'msg'=>'格式错误!']));
     // 消息

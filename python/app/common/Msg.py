@@ -12,6 +12,7 @@ class Msg(Base) :
     # 参数
     self.__fds = fds
     self.__token = token
+    # 数据
     data = Inc.json_decode(msg)
     if not data : await socket.send(self.getJSON({'code':4000,'msg':'格式错误!'}))
     # 消息

@@ -12,6 +12,34 @@ import vip.webmis.java.model.UserRole;
 
 public class AdminToken extends Base {
 
+  /* 验证-Socket */
+  public static HashMap<String, Object> socket(String token){
+    HashMap<String, Object> res;
+    // 验证Token
+    HashMap<String, Object> data = Safety.decode(token);
+    if(data==null || data.isEmpty()){
+      res = new HashMap<String, Object>();
+      res.put("state",false);
+      res.put("msg","Token验证失败!");
+      return res;
+    }
+    String name = Env.admin_token_prefix+String.valueOf(data.get("uid"));
+    // 是否超时
+    Long time = Redis.run().ttl(name);
+    if(time <= 0){
+      res = new HashMap<String, Object>();
+      res.put("state",false);
+      res.put("msg","Token已超时!");
+      return res;
+    }
+    data.put("n_time", time);
+    // 返回
+    res = new HashMap<String, Object>();
+    res.put("state",true);
+    res.put("data",data);
+    return res;
+  }
+
   /* 验证&数据 */
   public static HashMap<String, Object> verify(String token) throws Exception {
     // 验证Token

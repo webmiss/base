@@ -9,10 +9,10 @@ import websockets
 
 class SocketTask(Base) :
 
-  fds = {}    #Socket链接
-  suid = '0'  #系统消息ID
-  uid = ''    #用户ID
-  token = ''  #Token
+  __fds = {}    #Socket链接
+  __suid = '0'  #系统消息ID
+  __uid = ''    #用户ID
+  __token = ''  #Token
 
   # 客户端
   def sendAction(self,type='admin',data='') :
@@ -33,9 +33,9 @@ class SocketTask(Base) :
   # 链接
   async def open(self,server,path) :
     # 清理
-    uids = list(set(self.fds.keys()))
+    uids = list(set(self.__fds.keys()))
     for k in uids :
-      if self.fds[k].closed : self.fds.pop(k)
+      if self.__fds[k].closed : self.__fds.pop(k)
     # 参数
     param = self.__getParam(path)
     token = param['token'] if 'token' in param.keys() else ''
@@ -49,16 +49,16 @@ class SocketTask(Base) :
     if res['state'] or token==Env.key :
       # 用户ID
       if token==Env.key :
-        self.uid = str(self.suid)
-        self.token = {'uid':self.suid}
+        self.__token = {'uid':self.__suid}
+        self.__uid = str(self.__suid)
       else :
-        self.uid = str(res['data']['uid'])
-        self.token = res['data']
+        self.__token = res['data']
+        self.__uid = str(self.__token['uid'])
       # 记录FD
-      self.fds[self.uid] = server
+      self.__fds[self.__uid] = server
       # 消息
       async for msg in server:
-        await Msg().router(self.fds,server,msg,self.token)
+        await Msg().router(self.__fds,server,msg,self.__token)
     else : return await self.__errer(server,res['msg'])
 
   # 获取参数
