@@ -1,7 +1,6 @@
 package vip.webmis.java.tasks;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +27,8 @@ import vip.webmis.java.common.Msg;
 @ServerEndpoint("/websocket")
 public class WebSocket extends Base {
 
-  private Session session;
-  private static ConcurrentHashMap<String, WebSocket> __fds = new ConcurrentHashMap<>();
+  private static ConcurrentHashMap<String, WebSocket> __socket = new ConcurrentHashMap<>();
+  private static ConcurrentHashMap<String, Session> __fds = new ConcurrentHashMap<>();
   private static String __suid = "0"; //系统消息ID
   private static String __uid = "0"; //用户ID
   private static JSONObject __token = null; //Token
@@ -37,17 +36,27 @@ public class WebSocket extends Base {
   /* 链接 */
   @OnOpen
   public void onOpen(Session session) {
-    this.session = session;
-    HashMap<String, Object> res=null;
+    // 验证
+    verify(session);
+    // 记录FD
+    if(__token!=null && !__token.isEmpty()){
+      __socket.put(__token.get("uid").toString(),this);
+      __fds.put(__token.get("uid").toString(),session);
+    }
+  }
+  // 验证
+  private void verify(Session session){
+    HashMap<String, Object> res = null;
     // 参数
     Map<String, List<String>> param = session.getRequestParameterMap();
     String token = param.containsKey("token")?param.get("token").get(0):"";
-    if(token.equals("")) __error(this, "Socket参数错误!");
+    if(token.equals("")) __error(session, "Socket参数错误!");
     // 类型
     String type = param.containsKey("type")?param.get("type").get(0):"";
     if(type.equals("admin")) res = AdminToken.socket(token);
     else if(type.equals("api"))res = ApiToken.socket(token);
-    else __error(this, "Socket参数错误!");
+    else __error(session, "Socket参数错误!");
+    
     // 验证
     if(res.get("state").equals(true) || token.equals(Env.key)){
       // 用户ID
@@ -59,45 +68,35 @@ public class WebSocket extends Base {
         __token = JSON.parseObject(JSON.toJSONString(res.get("data")));
         __uid = __token.get("uid").toString();
       }
-      // 记录FD
-      __fds.put(__token.get("uid").toString(),this);
     }else{
-      __error(this,res.get("msg").toString());
+      __error(session,res.get("msg").toString());
     }
   }
   // 错误信息
-  private void __error(WebSocket server, String msg) {
+  private void __error(Session server, String msg) {
     try {
       HashMap<String,Object> res = new HashMap<String,Object>();
       res.put("code",400);
       res.put("msg",msg);
-      server.session.getBasicRemote().sendText(getJSON(res));
-      server.session.close();
+      server.getBasicRemote().sendText(getJSON(res));
+      server.close();
     } catch (IOException e) {}
   }
 
   /* 关闭 */
   @OnClose
   public void onClose() {
+    __socket.remove(__uid);
     __fds.remove(__uid);
   }
 
   /* 消息 */
   @OnMessage
-  public void onMessage(String message) {
-    Msg.router(__fds,this,message,__token);
-  }
-
-  /* 发送 */
-  public void send(String uid, HashMap<String,Object> msg){
-    List<String> uids = Arrays.asList(uid.split(","));
-    for(String id : uids){
-      try {
-        if(__fds.containsKey(id)) __fds.get(id).session.getBasicRemote().sendText(getJSON(msg));
-      } catch (IOException e) {
-        System.out.println(e.getMessage());
-      }
-    }
+  public void onMessage(String message, Session session) throws IOException {
+    // 验证
+    verify(session);
+    // 路由
+    Msg.router(__fds,session,message,__token);
   }
   
 }

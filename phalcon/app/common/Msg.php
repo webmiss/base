@@ -18,7 +18,7 @@ class Msg extends Base {
     // 消息
     elseif($data->type=='msg') $this->msg($server,$fd,$data);
     // 心跳
-    else $server->push($fd,self::getJSON(['code'=>0,'msg'=>'成功']));
+    else $server->push($fd,self::getJSON(['type'=>'','code'=>0,'msg'=>'成功']));
   }
 
   /* 消息 */

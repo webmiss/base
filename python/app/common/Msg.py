@@ -18,7 +18,7 @@ class Msg(Base) :
     # 消息
     elif data['type']=='msg' : await self.msg(socket,data)
     # 心跳
-    else : await socket.send(self.getJSON({'code':0,'msg':'成功'}))
+    else : await socket.send(self.getJSON({'type':'','code':0,'msg':'成功'}))
 
   # 消息
   async def msg(self,socket,data) :

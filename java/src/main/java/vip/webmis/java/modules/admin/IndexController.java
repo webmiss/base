@@ -3,6 +3,7 @@ package vip.webmis.java.modules.admin;
 import vip.webmis.java.Env;
 import vip.webmis.java.common.Base;
 import vip.webmis.java.model.SysConfig;
+import vip.webmis.java.library.Socket;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +51,17 @@ public class IndexController extends Base {
     _res.put("msg", "成功");
     _res.put("list",list);
     return getJSON(_res);
+  }
+
+  /* WebSocket */
+  @RequestMapping("/socket")
+  String socket() {
+    HashMap<String,Object> msg = new HashMap<String,Object>();
+    msg.put("type","msg");
+    msg.put("uid","1");
+    msg.put("data","[]");
+    Socket.send("admin",msg);
+    return "";
   }
 
 }
