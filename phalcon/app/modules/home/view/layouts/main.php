@@ -4,7 +4,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="author" content="WebMIS" />
   <title><?php echo $WebTitle;?></title>
-  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32" />
+  <link rel="shortcut icon" href="/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="format-detection" content="telephone=no">
   <meta name="msapplication-tap-highlight" content="no">
