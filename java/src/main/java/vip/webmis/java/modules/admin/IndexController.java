@@ -59,7 +59,7 @@ public class IndexController extends Base {
     HashMap<String,Object> msg = new HashMap<String,Object>();
     msg.put("type","msg");
     msg.put("uid","1");
-    msg.put("data","[]");
+    msg.put("msg","Web方式");
     Socket.send("admin",msg);
     return "";
   }

@@ -27,11 +27,12 @@ class IndexController(Base) :
 
   # WebSocket
   def socket(self):
-    msg = {
-      'type': 'msg',
-      'uid': '1',
-      'data': [],
-    }
+    # 消息
+    msg = {'type': 'msg','uid': '1'}
+    # Web方式
+    msg['msg'] = 'Web方式'
     Socket().send('admin',msg)
+    # Cli方式
+    msg['msg'] = 'Cli方式'
     Socket().sendCli('admin',msg)
     return ''

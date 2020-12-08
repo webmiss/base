@@ -81,8 +81,7 @@ class SocketTask extends Base{
     // 消息
     $server->on('message',function($server,$frame) {
       $fds = Redis::run()->hGetAll($this->uid_name);
-      $msg = new Msg();
-      $msg->router($fds,$server,$frame->fd,$frame->data,$this->token);
+      Msg::router($fds,$server,$frame->fd,$frame->data,$this->token);
     });
     // 启动
     $server->start();

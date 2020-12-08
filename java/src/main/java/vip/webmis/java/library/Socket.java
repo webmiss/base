@@ -16,7 +16,7 @@ public class Socket extends WebSocketClient {
   /* 发送 */
   public static void send(String type, HashMap<String, Object> msg){
     try {
-      String url = "ws://"+Env.socket_ip+":"+Env.socket_port+"/websocket?type=admin&token="+Env.key;
+      String url = "ws://"+Env.socket_ip+":"+Env.socket_port+"/websocket?type="+type+"&token="+Env.key;
       Socket ws = new Socket(new URI(url));
       ws.connect();
       while (!ws.getReadyState().toString().equals("OPEN")) {

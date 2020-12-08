@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # 配置
-ip=127.0.0.1
-port=9010
-portDb=8080
+ip="127.0.0.1"
+port="9010"
+portDb="8080"
+cli="cli.php"
 s=$1
 
 # 帮助

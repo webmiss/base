@@ -4,33 +4,30 @@ namespace app\common;
 /* 消息类 */
 class Msg extends Base {
 
-  private $fds = '';
-  private $token = '';
+  private static $fds = '';
+  private static $token = '';
 
   /* 路由 */
-  function router($fds,$server,$fd,$msg,$token): void {
+  static function router($fds,$socket,$fd,$msg,$token): void {
     // 参数
-    $this->fds = $fds;
-    $this->token = $token;
+    self::$fds = $fds;
+    self::$token = $token;
     // 数据
     $data = json_decode($msg);
-    if(!is_object($data)) $server->push($fd, self::getJSON(['code'=>400,'msg'=>'格式错误!']));
+    if(!is_object($data)) $socket->push($fd, self::getJSON(['code'=>400,'msg'=>'格式错误!']));
     // 消息
-    elseif($data->type=='msg') $this->msg($server,$fd,$data);
+    elseif($data->type=='msg') self::msg($socket,$fd,$data);
     // 心跳
-    else $server->push($fd,self::getJSON(['type'=>'','code'=>0,'msg'=>'成功']));
+    else $socket->push($fd,self::getJSON(['type'=>'','code'=>0,'msg'=>'成功']));
   }
 
   /* 消息 */
-  function msg($server,$fd,$data){
-    # 服务器: php cli.php socket start
-    # 客户端: php cli.php socket send admin '{"type":"msg","uid":"1","data":[]}'
-    # WEB方式: http://localhost:9010/admin/index/socket
-    print_r(json_encode($this->token).' '.json_encode($data));
+  static function msg($socket,$fd,$data){
+    print_r(json_encode(self::$token).' '.json_encode($data)."\n");
     // 指定用户
-    if(isset($this->fds[$data->uid])){
-      $fd = $this->fds[$data->uid];
-      $server->push($fd,self::getJSON(['type'=>'msg','code'=>0,'msg'=>'消息']));
+    if(isset(self::$fds[$data->uid])){
+      $fd = self::$fds[$data->uid];
+      $socket->push($fd,self::getJSON(['type'=>'msg','code'=>0,'msg'=>$data->msg]));
     }
   }
 

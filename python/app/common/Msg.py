@@ -1,5 +1,6 @@
 from app.common.Base import Base
 from app.common.Inc import Inc
+import json
 
 # 消息类
 class Msg(Base) :
@@ -14,7 +15,9 @@ class Msg(Base) :
     self.__token = token
     # 数据
     data = Inc.json_decode(msg)
-    if not data : await socket.send(self.getJSON({'code':4000,'msg':'格式错误!'}))
+    if not data :
+      try : await socket.send(self.getJSON({'code':4000,'msg':'格式错误!'}))
+      except Exception as e: pass
     # 消息
     elif data['type']=='msg' : await self.msg(socket,data)
     # 心跳
@@ -22,11 +25,9 @@ class Msg(Base) :
 
   # 消息
   async def msg(self,socket,data) :
-    # 服务器: python cli.py socket start
-    # 客户端: python cli.py socket send admin '{"type":"msg","uid":"1","data":[]}'
     # 数据
     print(self.__token,data)
     # 指定用户
     if data['uid'] in self.__fds.keys() :
       server = self.__fds[data['uid']]
-      await server.send(self.getJSON({'type':'msg','code':0,'msg':'消息'}))
+      await server.send(self.getJSON({'type':'msg','code':0,'msg':data['msg']}))

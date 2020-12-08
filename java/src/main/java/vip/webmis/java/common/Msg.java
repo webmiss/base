@@ -51,7 +51,7 @@ public class Msg extends Base {
       res = new HashMap<String,Object>();
       res.put("type","msg");
       res.put("code",0);
-      res.put("msg","消息");
+      res.put("msg",data.get("msg"));
       __fds.get(data.get("uid")).getBasicRemote().sendText(JSON.toJSONString(res));
     }
   }
