@@ -1,6 +1,7 @@
+from app.Env import Env
 from app.common.Base import Base
 from app.model.SysConfig import SysConfig
-from app.Env import Env
+from app.library.Socket import Socket
 
 class IndexController(Base) :
 
@@ -23,3 +24,14 @@ class IndexController(Base) :
       else :
         list[val['name']] = val['val']
     return self.getJSON({'code':0,'list':list,'msg':'成功'})
+
+  # WebSocket
+  def socket(self):
+    msg = {
+      'type': 'msg',
+      'uid': '1',
+      'data': [],
+    }
+    Socket().send('admin',msg)
+    Socket().sendCli('admin',msg)
+    return ''

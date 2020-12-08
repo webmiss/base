@@ -12,7 +12,7 @@ class SocketTask(Base) :
   __fds = {}    #Socket链接
   __suid = '0'  #系统消息ID
   __uid = ''    #用户ID
-  __token = ''  #Token
+  __token = {}  #Token
 
   # 客户端
   def sendAction(self,type='admin',data='') :
@@ -49,16 +49,18 @@ class SocketTask(Base) :
     if res['state'] or token==Env.key :
       # 用户ID
       if token==Env.key :
-        self.__token = {'uid':self.__suid}
+        tmp = {'uid':self.__suid}
         self.__uid = str(self.__suid)
       else :
-        self.__token = res['data']
-        self.__uid = str(self.__token['uid'])
+        tmp = res['data']
+        self.__uid = str(tmp['uid'])
       # 记录FD
       self.__fds[self.__uid] = server
+      self.__token[self.__uid] = tmp
       # 消息
       async for msg in server:
-        await Msg().router(self.__fds,server,msg,self.__token)
+        uid = [k for k, v in self.__fds.items() if v == server][0]
+        await Msg().router(self.__fds,server,msg,self.__token[uid])
     else : return await self.__errer(server,res['msg'])
 
   # 获取参数

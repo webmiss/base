@@ -18,7 +18,7 @@ public class Env {
   public static final boolean api_token_auto = true;  //自动续期
   /* Socket */
   public static final String socket_name = "Socket_";  //缓存名称
-  public static final String socket_ip = "127.0.0.1";  //IP地址
+  public static final String socket_ip = "0.0.0.0";  //IP地址
   public static final int socket_port = 9000;  //端口
 
   /* 数据库 */

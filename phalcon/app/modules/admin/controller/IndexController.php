@@ -2,12 +2,13 @@
 
 namespace app\modules\admin\controller;
 
+use app\Env;
 use app\common\Base;
 use app\model\SysConfig;
-use app\Env;
+use app\library\Socket;
 
 /**
-* 网站：首页
+* 后台：首页
 */
 class IndexController extends Base{
 
@@ -47,6 +48,17 @@ class IndexController extends Base{
     }
     // 返回
     return self::getJSON(['code'=>0,'msg'=>'成功','list'=>$list]);
+  }
+
+  /* WebSocket */
+  public function socketAction(){
+    $msg = [
+      'type'=> 'msg',
+      'uid'=> '1',
+      'data'=> [],
+    ];
+    Socket::send('admin',$msg);
+    Socket::sendCli('admin',$msg);
   }
 
 }

@@ -23,6 +23,8 @@ class Env{
   static $socket_name = 'Socket_'; //缓存名称
   static $socket_ip = '0.0.0.0'; //IP地址
   static $socket_port = 9011; //端口
+  /* Cli */
+  static $cli = 'php ../cli.php';
 
   /* 数据库 */
   static function db() {

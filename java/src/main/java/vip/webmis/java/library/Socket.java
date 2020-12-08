@@ -17,18 +17,18 @@ public class Socket extends WebSocketClient {
   public static void send(String type, HashMap<String, Object> msg){
     try {
       String url = "ws://"+Env.socket_ip+":"+Env.socket_port+"/websocket?type=admin&token="+Env.key;
-      Socket clients = new Socket(new URI(url));
-      clients.connect();
-      while (!clients.getReadyState().toString().equals("OPEN")) {
+      Socket ws = new Socket(new URI(url));
+      ws.connect();
+      while (!ws.getReadyState().toString().equals("OPEN")) {
         Thread.sleep(300);
       }
-      clients.send(JSON.toJSONString(msg));
+      ws.send(JSON.toJSONString(msg));
     } catch (Exception e) {
 
     }
   }
 
-  /* 客户端 */
+  /* 构造函数 */
   public Socket(URI serverUri) {
     super(serverUri);
   }

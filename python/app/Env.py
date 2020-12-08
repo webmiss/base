@@ -18,7 +18,9 @@ class Env :
   # Socket
   socket_name = 'Socket_' #缓存名称
   socket_ip = '0.0.0.0' #IP地址
-  socket_port = 9011 #端口
+  socket_port = 5001 #端口
+  # Cli
+  cli = 'cd /xxx/python/ && python cli.py'
 
   # 数据库
   def db():

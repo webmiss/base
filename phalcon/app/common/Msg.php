@@ -25,6 +25,7 @@ class Msg extends Base {
   function msg($server,$fd,$data){
     # 服务器: php cli.php socket start
     # 客户端: php cli.php socket send admin '{"type":"msg","uid":"1","data":[]}'
+    # WEB方式: http://localhost:9010/admin/index/socket
     print_r(json_encode($this->token).' '.json_encode($data));
     // 指定用户
     if(isset($this->fds[$data->uid])){
