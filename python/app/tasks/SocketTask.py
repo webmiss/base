@@ -65,7 +65,8 @@ class SocketTask(Base) :
 
   # 获取参数
   def __getParam(self,path) :
-    path = path[2:]
+    arr = path.split('?')
+    path = arr[1] if len(arr)==2 else ''
     arr = path.split('&')
     param = {}
     for v in arr :

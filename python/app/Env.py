@@ -1,7 +1,7 @@
 # 配置
 class Env :
   
-  debug = False  #调试模式
+  debug = True  #调试模式
   devinfo = False  #调试信息
   exclude = ['api','admin','favicon.ico','upload']  #排除路由
   # 资源
