@@ -23,7 +23,7 @@ if [ "$s" == "serve" ]; then
   java -jar $jar
 # 打包
 elif [ "$s" == "build" ]; then
-  mvn package && rm "./$jar" && cp "target/$jar" ./
+  mvn package -DskipTests && rm "./$jar" && cp "target/$jar" ./
 # 启动
 elif [ "$s" == "start" ]; then
   nohup java -jar $jar >> log.txt &
