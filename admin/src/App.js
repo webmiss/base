@@ -212,7 +212,7 @@ export default {
     menuClick(pos){
       Storage.setItem('menusActive',JSON.stringify(pos));
       const obj = this.menus[pos[0]].children[pos[1]];
-      this.store.menuName = obj.title=='控制台'?'':obj.title;
+      this.store.menuName = obj.title;
       this.$router.push(obj.url);
     },
 
