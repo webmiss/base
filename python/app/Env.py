@@ -1,3 +1,5 @@
+import os
+
 # 配置
 class Env :
   
@@ -20,7 +22,7 @@ class Env :
   socket_ip = '0.0.0.0' #IP地址
   socket_port = 5001 #端口
   # Cli
-  cli = 'cd /xxx/python/ && python cli.py'
+  cli = 'cd '+os.path.abspath(os.path.dirname(__file__))+'/../ && python cli.py'
 
   # 数据库
   def db():
