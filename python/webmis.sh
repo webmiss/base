@@ -17,6 +17,8 @@ helpText(){
   echo "  stop          停止服务"
   echo "  socket        WebSocket-调试"
   echo "  socketStart   WebSocket-启动"
+  echo "  socketRestart WebSocket-重启"
+  echo "  socketStop    WebSocket-停止"
   echo "<args>"
   echo "  index         入口文件: $index"
   echo "  config        服务器配置: $config"
@@ -42,6 +44,13 @@ elif [ "$s" == "socket" ]; then
 # Socket[start]
 elif [ "$s" == "socketStart" ]; then
   nohup python $cli socket start &
+# Socket[restart]
+elif [ "$s" == "socketRestart" ]; then
+  ps -aux | grep "$cli socket" | grep -v grep | awk {'print $2'} | xargs kill
+  nohup php $cli socket start &
+# Socket[stop]
+elif [ "$s" == "socketStop" ]; then
+  ps -aux | grep "$cli socket" | grep -v grep | awk {'print $2'} | xargs kill
 else
   helpText
 fi

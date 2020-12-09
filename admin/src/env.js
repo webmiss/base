@@ -62,7 +62,7 @@ export default {
   },
   /* Socket */
   socket: {
-    start: false, // 启动
+    start: true, // 启动
     server: socket, // 链接地址
     time: 5000, //间隔
   },
