@@ -57,11 +57,11 @@ class AdminToken extends Base {
   static function perm(string $uid): array {
     $perm = UserPerm::findFirst(['uid='.$uid,'columns'=>'perm,role']);
     if(!$perm) self::error('没有分配权限!');
-    if($perm->role!='0') $perm=UserRole::findFirst(['id='.$perm->role,'columns'=>'perm']);
+    if($perm->role!='') $perm=UserRole::findFirst(['id='.$perm->role,'columns'=>'perm']);
     // 拆分
     $permAll = [];
     $permStr = $perm->perm;
-    $arr = explode(' ',$permStr);
+    $arr = !empty($permStr)?explode(' ',$permStr):[];
     foreach($arr as $val){
       $s = explode(':',$val);
       $permAll[$s[0]] = $s[1];

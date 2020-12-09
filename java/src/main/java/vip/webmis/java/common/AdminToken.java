@@ -73,7 +73,7 @@ public class AdminToken extends Base {
     m1.columns("perm,role");
     HashMap<String, Object> perm = m1.findFirst();
     if(perm.isEmpty()) error("没有分配权限!");
-    if(!perm.get("role").equals("0")){
+    if(!perm.get("role").equals("")){
       UserRole m2 = new UserRole();
       m2.where("id="+perm.get("role").toString());
       m2.columns("perm");
@@ -82,8 +82,9 @@ public class AdminToken extends Base {
     // 拆分
     HashMap<String, Object> permAll = new HashMap<String, Object>();
     String permStr = (String)perm.get("perm");
-    String[] arr = permStr.split(" ");
+    String[] arr = permStr.equals("")?new String[0]:permStr.split(" ");
     for(String val : arr){
+      System.out.println(val);
       String[] s = val.split(":");
       permAll.put(String.valueOf(s[0]),s[1]);
     }

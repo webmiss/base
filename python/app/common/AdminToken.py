@@ -61,14 +61,14 @@ class AdminToken(Base):
     m1.columns('perm,role')
     perm = m1.findFirst()
     if len(perm)==0 : self.error('没有分配权限!')
-    if perm['role']!='0' :
+    if perm['role']!='' :
       m2 = UserRole()
       m2.where('id='+str(perm['role']))
       m2.columns('perm')
     # 拆分
     permAll = {}
     permStr = perm['perm']
-    arr = permStr.split(' ')
+    arr = [] if not permStr else permStr.split(' ')
     for val in arr :
       s = val.split(':')
       permAll[str(s[0])] = s[1]
