@@ -4,6 +4,7 @@
 index="web.py"
 config="web.ini"
 cli="cli.py"
+package="flask flask_cors PyJWT redis wheel DBUtils pymysql websockets websocket-client"
 s=$1
 
 # 帮助
@@ -12,6 +13,7 @@ helpText(){
   echo "  ./webmis.sh <command>"
   echo "<command>"
   echo "  serve         运行"
+  echo "  install       安装依赖包: $package"
   echo "  start         服务器端启动"
   echo "  restart       重启服务: 中断进程并且重新启动"
   echo "  stop          停止服务"
@@ -28,6 +30,13 @@ helpText(){
 # 运行
 if [ "$s" == "serve" ]; then
   python $index
+# 安装
+elif [ "$s" == "install" ]; then
+  {
+    sudo pip install $package
+  } || {
+    pip install $package
+  }
 # 启动
 elif [ "$s" == "start" ]; then
   uwsgi --ini $c &

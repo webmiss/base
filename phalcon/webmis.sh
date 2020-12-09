@@ -48,4 +48,3 @@ elif [ "$s" == "stop" ]; then
 else
   helpText
 fi
-
