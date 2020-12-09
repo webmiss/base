@@ -84,7 +84,6 @@ public class AdminToken extends Base {
     String permStr = (String)perm.get("perm");
     String[] arr = permStr.equals("")?new String[0]:permStr.split(" ");
     for(String val : arr){
-      System.out.println(val);
       String[] s = val.split(":");
       permAll.put(String.valueOf(s[0]),s[1]);
     }
