@@ -43,7 +43,8 @@
         </td>
         <td>
           <wm-button v-if="val.perm" type="danger" size="medium" @click="permData(val.uid,val.perm)">私有</wm-button>
-          <wm-button v-else size="medium" @click="permData(val.uid,val.perm)">角色</wm-button>
+          <wm-button v-else-if="val.role" size="medium" @click="permData(val.uid,val.perm)">角色</wm-button>
+          <wm-button v-else type="info" size="medium" @click="permData(val.uid,val.perm)">分配</wm-button>
         </td>
         <td>
           <wm-button v-if="val.nickname" type="info" size="medium" @click="infoData(val)">{{ val.nickname }}</wm-button>
