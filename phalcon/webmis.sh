@@ -13,6 +13,7 @@ helpText(){
   echo "  ./webmis.sh <command>"
   echo "<command>"
   echo "  serve         运行"
+  echo "  install       已安装模块"
   echo "  adminer       数据库管理工具"
   echo "  socket        WebSocket-调试"
   echo "  socketStart   WebSocket-启动"
@@ -26,6 +27,9 @@ helpText(){
 # 运行
 if [ "$s" == "serve" ]; then
   cd public && php -S $ip:$port
+# 安装
+elif [ "$s" == "install" ]; then
+  php -m
 # 数据库工具
 elif [ "$s" == "adminer" ]; then
   php -S $ip:$portDb adminer.php
