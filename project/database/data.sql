@@ -149,8 +149,8 @@ CREATE TABLE `user_perm` (
   PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限表';
 
-INSERT INTO `user_perm` (`uid`, `utime`, `perm`, `role`, `state_admin`, `state_app`) VALUES
-(1,	'2020-05-22 18:10:48',	'1:0 2:0 3:0 4:1 5:1 6:1 7:1 8:31 9:31 10:1 11:31 12:31 13:31',	'0',	'1',	'0');
+INSERT INTO `user_perm` (`uid`, `state_admin`, `state_app`, `utime`, `role`, `perm`) VALUES
+(1,	'1',	'0',	'2020-05-22 18:10:48',	'',	'1:0 2:0 3:0 4:1 5:1 6:1 7:1 8:31 9:31 10:1 11:31 12:31 13:31');
 
 DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role` (
