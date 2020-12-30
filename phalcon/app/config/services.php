@@ -1,6 +1,7 @@
 <?php
 
 use app\Env;
+use Phalcon\Filter\FilterFactory;
 use Phalcon\Http\Request;
 use Phalcon\Http\Response;
 
@@ -41,7 +42,9 @@ $di->set('modelsMetadata', function() {
 * 注册：过滤
 */
 $di->set('filter', function() {
-  return new Phalcon\Filter();
+  $factory = new FilterFactory();
+  $locator = $factory->newInstance();
+  return $locator;
 });
 
 /**
