@@ -4,7 +4,7 @@ import os
 class Env :
   
   debug = True  #调试模式
-  devinfo = False  #调试信息
+  devinfo = True  #调试信息
   exclude = ['api','admin','favicon.ico','upload']  #排除路由
   # 资源
   base_url = 'https://demo-python.webmis.vip/' #根目录
