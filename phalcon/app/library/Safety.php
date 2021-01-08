@@ -52,7 +52,7 @@ class Safety{
   }
 
   /* 解密-Base64 */
-  static function decode(string $token=''): ?object {
+  static function decode($token=''): ?object {
     $token = str_replace('_','+',$token);
     try{
       $crypt = new Crypt();
