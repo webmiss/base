@@ -24,7 +24,7 @@ public class Env {
   /* 数据库 */
   public static HashMap<String,Object> db() {
     HashMap<String,Object> conf = new HashMap<String,Object>();
-    conf.put("jdbc","mysql://121.37.10.103:3306/data?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai"); //类型
+    conf.put("jdbc","mysql://154.91.144.171:3306/data?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai"); //类型
     conf.put("user","webmis");  //用户名
     conf.put("password","e4b99adec618e653400966be536c45f8");  //密码
     conf.put("driver","com.mysql.cj.jdbc.Driver");  //驱动

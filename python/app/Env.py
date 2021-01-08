@@ -36,7 +36,7 @@ class Env :
       'blocking': True, #是否阻塞等待
       'maxusage': True, #重复使用次数
       # 连接配置
-      'host': '121.37.10.103', #主机
+      'host': '154.91.144.171', #主机
       'port': 3306, #端口
       'user': 'webmis', #用户名
       'password': 'e4b99adec618e653400966be536c45f8', #密码
