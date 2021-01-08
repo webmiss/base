@@ -39,7 +39,7 @@ elif [ "$s" == "install" ]; then
   }
 # 启动
 elif [ "$s" == "start" ]; then
-  uwsgi --ini $c &
+  uwsgi --ini $config &
 # 重启
 elif [ "$s" == "restart" ]; then
   ps -aux | grep uwsgi | grep -v grep | awk {'print $2'} | xargs kill
