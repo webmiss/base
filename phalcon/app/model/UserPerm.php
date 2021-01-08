@@ -4,7 +4,7 @@ namespace app\model;
 /* 权限表 */
 class UserPerm extends Model {
 
-  protected $uid;
+  public $uid;
   protected $utime;
 
   /* 构造函数 */
