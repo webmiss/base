@@ -11,8 +11,8 @@ if(lag && lag.name=='python'){
   baseUrl = 'https://demo-java.webmis.vip/';
   socket = 'wss://demo-java.webmis.vip/websocket';
 }else{
-  baseUrl = 'https://demo-api.webmis.vip/';
-  socket = 'wss://demo-api.webmis.vip/wss';
+  baseUrl = 'https://demo-php.webmis.vip/';
+  socket = 'wss://demo-php.webmis.vip/wss';
 }
 
 export default {
