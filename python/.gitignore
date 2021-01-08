@@ -1,5 +1,4 @@
 *__pycache__
-server/web.log
 server/web.sock
 upload
 # app/Env.py
