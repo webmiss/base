@@ -8,12 +8,12 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "axios": "^0.20.0",
+    "@antv/f2": "^3.8.1",
+    "axios": "^0.21.1",
+    "babel-plugin-import": "^1.13.3",
     "core-js": "^3.6.5",
-    "vue": "^3.0.0-0",
-    "vue-pickers": "^2.5.3",
+    "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
-    "vue-swipe": "^2.4.0",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
@@ -22,7 +22,7 @@
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0-0",
+    "@vue/compiler-sfc": "^3.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0-0"
