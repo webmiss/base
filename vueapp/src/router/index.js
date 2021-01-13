@@ -1,9 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 /* 路由 */
 const routes = [
-  {path:'/', name:'index', meta:{keepAlive:true}, component:()=>import('../views/Index.vue')},
-  {path:'/refresh', name:'Refresh', meta:{keepAlive:false}, component:()=>import('../views/Refresh.vue')},
-  {path:'/demo', name:'Demo', meta:{keepAlive:false}, component:()=>import('../views/demo/Demo.vue')},
+  {path:'/', name:'index', component:()=>import('../views/Index.vue')},
+  {path:'/refresh', name:'Refresh', component:()=>import('../views/Refresh.vue')},
+  {path:'/demo', name:'Demo', component:()=>import('../views/demo/Demo.vue')},
 ]
 /* 配置 */
 const router = createRouter({

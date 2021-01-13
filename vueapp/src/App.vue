@@ -15,11 +15,11 @@
     <!-- 更新APP End -->
     <!-- 页面 -->
     <router-view v-slot="{ Component }">
-      <keep-alive :max="keepAlive">
-        <transition :name="transitionName">
-          <component :is="Component" class="view" :class="mode=='dark'?'view_dark':''" />
-        </transition>
-      </keep-alive>
+      <transition :name="transitionName">
+        <keep-alive :include="store.keepAlive">
+          <component :is="Component" class="view" />
+        </keep-alive>
+      </transition>
     </router-view>
     <!-- 页面 End -->
   </div>

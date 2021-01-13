@@ -11,6 +11,8 @@ export default createStore({
     uMsg: {scroll:null, group:[],num:''}, // 消息
     uNotify: {},  // 通知
     scan: null, // 摄像头
+    /* 缓存路由 */
+    keepAlive: ['Index'],
   },
   mutations: {
   },

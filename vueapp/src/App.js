@@ -9,7 +9,7 @@ import PlusReady from './library/plus/plus-ready'
 export default {
   data(){
     return {
-      keepAlive: 10,
+      store: this.$store.state,
       // 切换动画
       transitionName: '',
       // 更新APP

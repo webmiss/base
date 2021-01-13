@@ -4,6 +4,7 @@ import WmTabbar from '@/components/tabbar'
 import PageView from '@/components/page-view'
 
 export default {
+  name: 'Index',
   components: {WmTabbar,PageView},
   data(){
     return {
