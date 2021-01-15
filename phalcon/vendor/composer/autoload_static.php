@@ -6,7 +6,15 @@ namespace Composer\Autoload;
 
 class ComposerStaticInitc155f15d42940d7ef080134e3a851143
 {
+    public static $files = array (
+        'a9ed0d27b5a698798a89181429f162c5' => __DIR__ . '/..' . '/khanamiryan/qrcode-detector-decoder/lib/Common/customFunctions.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
+        'Z' => 
+        array (
+            'Zxing\\' => 6,
+        ),
         'W' => 
         array (
             'WebSocket\\' => 10,
@@ -22,6 +30,10 @@ class ComposerStaticInitc155f15d42940d7ef080134e3a851143
     );
 
     public static $prefixDirsPsr4 = array (
+        'Zxing\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/khanamiryan/qrcode-detector-decoder/lib',
+        ),
         'WebSocket\\' => 
         array (
             0 => __DIR__ . '/..' . '/textalk/websocket/lib',

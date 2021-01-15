@@ -1,5 +1,15 @@
 <?php
 
+
+
+
+
+
+
+
+
+
+
 namespace Composer;
 
 use Composer\Semver\VersionParser;
@@ -19,11 +29,21 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '2ccb28867d163161450eabbdde92683333ac73bf',
+    'reference' => '79b4d5664946faee377505929e9af7387c42f383',
     'name' => 'webmiss/phalcon',
   ),
   'versions' => 
   array (
+    'khanamiryan/qrcode-detector-decoder' => 
+    array (
+      'pretty_version' => 'dev-master',
+      'version' => 'dev-master',
+      'aliases' => 
+      array (
+        0 => '9999999-dev',
+      ),
+      'reference' => '07fceefb79d895e858e52921afb9c1433d2f3d5e',
+    ),
     'psr/log' => 
     array (
       'pretty_version' => 'dev-master',
@@ -59,7 +79,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '2ccb28867d163161450eabbdde92683333ac73bf',
+      'reference' => '79b4d5664946faee377505929e9af7387c42f383',
     ),
   ),
 );
