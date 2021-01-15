@@ -18,8 +18,8 @@
 
 <script>
 /* Swiper */
-import Swiper from '../../library/swiper/swiper-bundle.min.js'
-import '../../library/swiper/swiper-bundle.min.css'
+import Swiper from '@/library/ui/swiper-bundle.min.js'
+import '@/library/ui/swiper-bundle.min.css'
 export default {
   name: 'Swiper',
   props: {
