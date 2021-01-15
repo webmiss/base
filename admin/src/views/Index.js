@@ -1,8 +1,11 @@
 /* UI组件 */
 import wmMain from '@/components/main'
+/* ElementUI */
+import { ElButton } from 'element-plus';
+import '@/assets/themes/button.css'
 
 export default {
-  components: {wmMain},
+  components: {wmMain,ElButton},
   data(){
     return {
       store: this.$store.state,
