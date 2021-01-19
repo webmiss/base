@@ -2,14 +2,14 @@
 <div ref="Scroll" class="wm-scroll_wrapper">
   <div :class="scrollX?'wm-scroll_content':''">
     <!-- 下拉动画 -->
-    <div class="wm-scroll_load_down" :style="{height: loading+'px',lineHeight: loading+'px',top: '-'+loading+'px',color: upperColor}">
-      <wm-loading v-show="isPullDown" class="wm-scroll_loading" type="load1" :color="loadingColor"></wm-loading>
+    <div v-if="isUpper" class="wm-scroll_load_down" :style="{height: loading+'px',lineHeight: loading+'px',top: '-'+loading+'px',color: upperColor}">
+      <wm-loading v-show="isPullDown" class="wm-scroll_loading" :theme="loadingTheme" :color="loadingColor"></wm-loading>
       <span v-show="!isPullDown">{{upperText}}</span>
     </div>
     <!-- 内容 -->
     <slot></slot>
     <!-- 上拉动画 -->
-    <div v-show="isPullUp" class="wm-scroll_load_up" :style="{height: loading+'px',lineHeight: loading+'px',color: lowerColor}">
+    <div v-show="isLower && isPullUp" class="wm-scroll_load_up" :style="{height: loading+'px',lineHeight: loading+'px',color: lowerColor}">
       {{lowerText}}
     </div>
   </div>
@@ -25,7 +25,7 @@
 </style>
 
 <script>
-import wmLoading from '../loading/load1'
+import wmLoading from '../loading'
 import BScroll from '@better-scroll/core'
 import PullDown from '@better-scroll/pull-down'
 import Pullup from '@better-scroll/pull-up'
@@ -41,6 +41,7 @@ export default {
     startX: {type: Number, default: 0},  //初始化位置-横轴
     startY: {type: Number, default: 0},  //初始化位置-纵轴
     loading: {type: Number, default: 48},  //Loading高度
+    loadingTheme: {type: String, default: 'flow'},  //样式: flow、swing、circle
     loadingColor: {type: String, default: '#6FB737'},  //Loading颜色
     upper: {type: Number, default: 64},  //顶部距离
     lower: {type: Number, default: 80},  //底部距离
@@ -48,6 +49,8 @@ export default {
     lowerText: {type: String, default: '正在加载'},  //加载文本
     upperColor: {type: String, default: '#999'},  //刷新颜色
     lowerColor: {type: String, default: '#999'},  //加载颜色
+    isUpper: {type: Boolean, default: true}, //是否下拉
+    isLower: {type: Boolean, default: true},  //是否上拉
   },
   data(){
     return {
@@ -70,23 +73,25 @@ export default {
     init(){
       // 配置
       this.bscroll = new BScroll(this.$refs.Scroll, {
+        click: true,
+        tap: true,
         probeType: 3,
-        pullDownRefresh: {
+        pullDownRefresh: this.isUpper?{
           threshold: this.upper,
           stop: this.loading,
-        },
-        pullUpLoad: {
+        }:false,
+        pullUpLoad: this.isLower?{
           threshold: this.lower,
-        },
+        }:false,
         startX: this.startX,
         startY: this.startY,
         scrollX: this.scrollX,
         scrollY: this.scrollY,
       });
       // 下拉
-      this.bscroll.on('pullingDown', this.pullingDown);
+      if(this.isUpper) this.bscroll.on('pullingDown', this.pullingDown);
       // 上拉
-      this.bscroll.on('pullingUp', this.pullingUp);
+      if(this.isLower) this.bscroll.on('pullingUp', this.pullingUp);
       // 滚动
       this.bscroll.on('scroll', this.scroll);
     },
