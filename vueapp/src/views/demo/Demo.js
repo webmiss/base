@@ -40,8 +40,8 @@ export default {
     /* 下拉刷新 */
     reFresh(res){
       console.log('刷新',res);
-      this.lists = this.getData(8);
       setTimeout(()=>{
+        this.lists = this.getData(8);
         this.$refs.DemoScroll.pullDownFinish();
       },3000);
     },
@@ -49,9 +49,11 @@ export default {
     /* 上拉加载 */
     upLoad(d){
       console.log('加载',d);
-      let data = this.getData(10);
-      for(let i in data) this.lists.push(data[i]);
-      this.$refs.DemoScroll.pullUpFinish();
+      setTimeout(()=>{
+        let data = this.getData(10);
+        for(let i in data) this.lists.push(data[i]);
+        this.$refs.DemoScroll.pullUpFinish();
+      },3000);
     },
 
     /* 滚动 */
