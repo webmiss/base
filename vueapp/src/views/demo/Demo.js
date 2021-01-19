@@ -2,11 +2,12 @@ import Env from '../../env'
 import Back from '../../library/ui/ui-back'
 import NavigateTo from '../../library/ui/ui-navigate-to'
 /* 组件 */
+import wmTouch from '@/components/touch'
 import PageView from '@/components/page-view'
 import WmScrollView from '@/components/scroll-view'
 
 export default {
-  components: {PageView,WmScrollView},
+  components: {wmTouch,PageView,WmScrollView},
   data(){
     return {
       Env: Env,
@@ -40,7 +41,9 @@ export default {
     reFresh(res){
       console.log('刷新',res);
       this.lists = this.getData(8);
-      this.$refs.DemoScroll.pullDownFinish();
+      setTimeout(()=>{
+        this.$refs.DemoScroll.pullDownFinish();
+      },3000);
     },
 
     /* 上拉加载 */

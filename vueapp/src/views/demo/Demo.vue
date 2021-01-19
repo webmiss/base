@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <wm-touch @swipe="back">
     <page-view :immersed="false" :bgColor="'#ffffff'">
       <template #left><i class="back ui ui_left" @click="back('left')"></i></template>
       <template #title>Demo</template>
       <!-- 滑动 -->
       <template #body>
-        <wm-scroll-view class="demo" ref="DemoScroll" @swipe="back" @down="reFresh" @up="upLoad" @scroll="scroll">
+        <wm-scroll-view class="demo" ref="DemoScroll" @down="reFresh" @up="upLoad" @scroll="scroll">
           <!-- 内容 -->
           <div class="item" v-for="(val,key) in lists" :key="key">{{val.name}}</div>
           <!-- 内容 -->
@@ -13,7 +13,7 @@
       </template>
       <!-- 滑动 End -->
     </page-view>
-  </div>
+  </wm-touch>
 </template>
 
 <style scoped>
