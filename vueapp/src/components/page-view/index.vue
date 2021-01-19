@@ -25,7 +25,7 @@
 
 <style scoped>
 .page_view_html{width: 100%; height: 100%;}
-.page_view_header{user-select: none; position: fixed; z-index: 999; width: 100%; box-shadow: 0 1px 0 #F8F8F8;}
+.page_view_header{user-select: none; position: fixed; z-index: 999; width: 100%;}
 .page_view_title{height: 100%; font-size: 16px; text-align: center;}
 .page_view_left{position: absolute; left: 16px; font-size: 14px;}
 .page_view_right{position: absolute; right: 16px;}
