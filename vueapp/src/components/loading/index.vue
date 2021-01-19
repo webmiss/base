@@ -26,41 +26,41 @@
     <div class="sk-circle11 sk-child"></div>
     <div class="sk-circle12 sk-child"></div>
   </div>
+  <!-- Wave -->
+  <div v-else-if="theme=='wave'" class="wm-load_wave">
+    <div class="rect1" :style="{backgroundColor: color}"></div>
+    <div class="rect2" :style="{backgroundColor: color}"></div>
+    <div class="rect3" :style="{backgroundColor: color}"></div>
+    <div class="rect4" :style="{backgroundColor: color}"></div>
+    <div class="rect5" :style="{backgroundColor: color}"></div>
+  </div>
 </div>
 </template>
 
 <style scoped>
 .wm-load{display: inline-block;}
+
 /* Flow */
-.wm-load_flow {
-  width: 60px; height: 45px; text-align: center;
-}
+.wm-load_flow { width: 60px; height: 45px; text-align: center; }
 .wm-load_flow > div {
   width: 12px; height: 12px; border-radius: 100%; display: inline-block;
   -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
   animation: sk-bouncedelay 1.4s infinite ease-in-out both;
 }
-.wm-load_flow .bounce1,.wm-load_flow .bounce2,.wm-load_flow .bounce3{
-  margin: 0 1px;
-}
-.wm-load_flow .bounce1 {
-  -webkit-animation-delay: -0.32s; animation-delay: -0.32s;
-}
+.wm-load_flow .bounce1,.wm-load_flow .bounce2,.wm-load_flow .bounce3{ margin: 0 1px; }
+.wm-load_flow .bounce1 { -webkit-animation-delay: -0.32s; animation-delay: -0.32s; }
 .wm-load_flow .bounce2 {
   -webkit-animation-delay: -0.16s; animation-delay: -0.16s;
 }
 @-webkit-keyframes sk-bouncedelay {
-  0%,
-  80%,
-  100% { -webkit-transform: scale(0) }
+  0%, 80%, 100% { -webkit-transform: scale(0) }
   40% { -webkit-transform: scale(1.0) }
 }
 @keyframes sk-bouncedelay {
-  0%,
-  80%,
-  100% { -webkit-transform: scale(0); transform: scale(0); }
+  0%, 80%, 100% { -webkit-transform: scale(0); transform: scale(0); }
   40% { -webkit-transform: scale(1.0); transform: scale(1.0); }
 }
+
 /* Swing */
 .wm-load_swing {
   margin: 100px auto; width: 24px; height: 24px; position: relative; text-align: center;
@@ -72,28 +72,21 @@
   -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
   animation: sk-bounce 2.0s infinite ease-in-out;
 }
-.dot2 {
-  top: auto; bottom: 0;
-  -webkit-animation-delay: -1.0s;
-  animation-delay: -1.0s;
-}
-
+.dot2 { top: auto; bottom: 0; -webkit-animation-delay: -1.0s; animation-delay: -1.0s; }
 @-webkit-keyframes sk-rotate { 100% { -webkit-transform: rotate(360deg) }}
 @keyframes sk-rotate { 100% { transform: rotate(360deg); -webkit-transform: rotate(360deg) }}
-
 @-webkit-keyframes sk-bounce {
   0%, 100% { -webkit-transform: scale(0.0) }
   50% { -webkit-transform: scale(1.0) }
 }
-
 @keyframes sk-bounce {
   0%, 100% { transform: scale(0.0); -webkit-transform: scale(0.0); }
   50% { transform: scale(1.0); -webkit-transform: scale(1.0); }
 }
 
 /* Circle */
-.wm-load_circle {position: relative; width: 32px; height: 32px;}
-.wm-load_circle .sk-child {position: absolute; width: 80%; height: 80%; left: 0; top: 0;}
+.wm-load_circle { position: relative; width: 32px; height: 32px; }
+.wm-load_circle .sk-child { position: absolute; width: 80%; height: 80%; left: 0; top: 0; }
 .wm-load_circle .sk-child:before {
   width: 20%; height: 20%; content: ''; display: block; margin: 0 auto; background-color: #6FB737; border-radius: 50%;
   -webkit-animation: sk-circleBounceDelay 1.2s infinite ease-in-out both;
@@ -129,13 +122,33 @@
   0%, 80%, 100% { -webkit-transform: scale(0); transform: scale(0); }
   40% { -webkit-transform: scale(1); transform: scale(1); }
 }
+
+/* Wave */
+.wm-load_wave { width: 48px; height: 32px; text-align: center; }
+.wm-load_wave > div {
+  width: 4px; height: 80%; display: inline-block; margin: 0 1px;
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+.wm-load_wave .rect2 { -webkit-animation-delay: -1.1s; animation-delay: -1.1s; }
+.wm-load_wave .rect3 { -webkit-animation-delay: -1.0s; animation-delay: -1.0s; }
+.wm-load_wave .rect4 { -webkit-animation-delay: -0.9s; animation-delay: -0.9s; }
+.wm-load_wave .rect5 { -webkit-animation-delay: -0.8s; animation-delay: -0.8s; }
+@-webkit-keyframes sk-stretchdelay {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+  20% { -webkit-transform: scaleY(1.0) }
+}
+@keyframes sk-stretchdelay {
+  0%, 40%, 100% { transform: scaleY(0.4); -webkit-transform: scaleY(0.4); }
+  20% { transform: scaleY(1.0); -webkit-transform: scaleY(1.0); }
+}
 </style>
 
 <script>
 export default {
   name: 'Loading',
   props: {
-    theme: {type: String, default: 'flow'}, //样式: flow、swing、circle
+    theme: {type: String, default: 'flow'}, //样式: flow、swing、circle、wave
     color: {type: String, default: '#6FB737'},  //颜色
   },
 }
