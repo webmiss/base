@@ -91,6 +91,7 @@ export default {
     getNum(){
       this.total = this.$refs.Swiper.querySelectorAll('.wm-swipe_item').length;
       if(this.slide.loop) this.total -= 2;
+      return this.total;
     },
 
     /* 上一页 */
