@@ -43,7 +43,7 @@ export default {
     reFresh(res){
       console.log('刷新',res);
       setTimeout(()=>{
-        this.lists = this.getData(8);
+        this.lists = this.getData(6);
         this.$refs.DemoScroll.pullDownFinish();
       },3000);
     },
