@@ -3,11 +3,13 @@ import Back from '../../library/ui/ui-back'
 import NavigateTo from '../../library/ui/ui-navigate-to'
 /* 组件 */
 import wmTouch from '@/components/touch'
-import PageView from '@/components/page-view'
-import WmScrollView from '@/components/scroll-view'
+import wmPageView from '@/components/page-view'
+import wmScrollView from '@/components/scroll-view'
+import wmSwipe from '@/components/swipe'
+import wmSwipeItem from '@/components/swipe/item'
 
 export default {
-  components: {wmTouch,PageView,WmScrollView},
+  components: {wmTouch,wmPageView,wmScrollView,wmSwipe,wmSwipeItem},
   data(){
     return {
       Env: Env,
