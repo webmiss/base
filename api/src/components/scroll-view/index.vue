@@ -1,251 +1,150 @@
 <template>
-<div class="wm-scroll_html">
-  <!-- 左拉/下拉 -->
-  <div ref="upper" v-show="upperLoad" class="wm-scroll_load_body" :style="{backgroundColor:upperBg}">
-    <div class="wm-scroll_load">
-      <i :class="upperIcon" :style="{color:upperColor}"></i>
+<div ref="Scroll" class="wm-scroll_wrapper">
+  <div :class="scrollX?'wm-scroll_content':''">
+    <!-- 下拉动画 -->
+    <div v-if="isUpper" class="wm-scroll_load_down" :style="{height: loading+'px',lineHeight: loading+'px',top: '-'+loading+'px',color: upperColor}">
+      <wm-loading v-show="isPullDown" class="wm-scroll_loading" :theme="loadingTheme" :color="loadingColor"></wm-loading>
+      <span v-show="!isPullDown">{{upperText}}</span>
     </div>
-  </div>
-  <!-- 滑动内容 -->
-  <div ref="html" class="wm-scroll_view" :class="scrollX?isMobile?'wm-scroll_view_x':'wm-scroll_view_y':!isMobile?'wm-scroll_view_y':''" @touchstart="start" @touchmove="move" @touchend="end">
+    <!-- 内容 -->
     <slot></slot>
+    <!-- 上拉动画 -->
+    <div v-show="isLower && isPullUp" class="wm-scroll_load_up" :style="{height: loading+'px',lineHeight: loading+'px',color: lowerColor}">
+      {{lowerText}}
+    </div>
   </div>
 </div>
 </template>
 
 <style scoped>
-.wm-scroll_html{position: relative; overflow: hidden;}
-.wm-scroll_view{position: relative; overflow: hidden; width: 100%; height: 100%;}
-/* 滚动条 */
-.wm-scroll_view_x::-webkit-scrollbar{display:none}
-.wm-scroll_view_y::-webkit-scrollbar{width: 8px;}
-.wm-scroll_view_y::-webkit-scrollbar-thumb{border-radius: 4px; background: transparent;}
-.wm-scroll_view_y:hover::-webkit-scrollbar-thumb{background: rgba(136,136,136,0.4);}
-.wm-scroll_view_y:hover::-webkit-scrollbar-track{background: rgba(136,136,136,0.1);}
-/* Loading */
-.wm-scroll_load_body{position: absolute; overflow: hidden; z-index: 1; opacity: 0;}
-@keyframes loading { 0% {transform: rotate(0deg);} 50% {transform: rotate(180deg);} 100% {transform: rotate(360deg);} }
-.wm-scroll_load{position: absolute; width: 30px; height: 30px; line-height: 30px; margin: -15px 0 0 -15px; text-align: center; left: 50%; top: 50%; transform: translate(-50%,-50%); animation: loading 2s linear 0s infinite;}
-.wm-scroll_load i{font-size: 22px; color: #6FB737;}
+.wm-scroll_wrapper{overflow: hidden;}
+.wm-scroll_content{position: relative; display: inline-block; height: 100%; white-space: nowrap;}
+.wm-scroll_loading{position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);}
+.wm-scroll_load_down{position: absolute; width: 100%; text-align: center;}
+.wm-scroll_load_up{text-align: center;}
 </style>
 
 <script>
-import IsMobile from '@/library/inc/is-mobile'
+import wmLoading from '../loading'
+import BScroll from '@better-scroll/core'
+import PullDown from '@better-scroll/pull-down'
+import Pullup from '@better-scroll/pull-up'
+import ScrollBar from '@better-scroll/scroll-bar'
+BScroll.use(PullDown).use(Pullup).use(ScrollBar);
+
 export default {
-  name: 'ScrollView',
+  name: 'Scroll',
+  components: {wmLoading},
   props: {
-    isScroll: {type: Boolean, default: true},
-    scrollX: {type: Boolean, default: false},
-    scrollY: {type: Boolean, default: true},
-    upper: {type: Number, default: 64},
-    lowerBoundary: {type: Number, default: 50},
-    upperLoad: {type: Boolean, default: true},
-    upperIcon: {type: String, default: 'ui ui_loading'},
-    upperBg: {type: String, default: ''},
-    upperColor: {type: String, default: ''},
-    limit: {type: Number, default: 120},
+    probeType: {type: Number, default: 3},  //派发Scroll事件: 0不派发、1间隔(手指)、2一直派发(手指)、3全部派发
+    scrollX: {type: Boolean, default: false}, //滚动-横向
+    scrollY: {type: Boolean, default: true},  //滚动-纵向
+    startX: {type: Number, default: 0},  //初始化位置-横轴
+    startY: {type: Number, default: 0},  //初始化位置-纵轴
+    loading: {type: Number, default: 48},  //Loading高度
+    loadingTheme: {type: String, default: 'flow'},  //样式: flow、swing、circle、wave
+    loadingColor: {type: String, default: '#6FB737'},  //Loading颜色
+    upper: {type: Number, default: 64},  //顶部距离
+    lower: {type: Number, default: 80},  //底部距离
+    upperText: {type: String, default: '已刷新'},  //刷新文本
+    lowerText: {type: String, default: '正在加载'},  //加载文本
+    upperColor: {type: String, default: '#999'},  //刷新颜色
+    lowerColor: {type: String, default: '#999'},  //加载颜色
+    isUpper: {type: Boolean, default: true}, //是否下拉
+    isLower: {type: Boolean, default: true},  //是否上拉
   },
   data(){
     return {
-      isMobile: true, //是否手机
-      sp: 'y', //滑动方向
-      html: {w:0,h:0},  //容器
-      body: {w:0,h:0,x:0,y:0},  //内容
-      refUpper: {}, //左上内容
-      refHtml: {}, //中间内容
-      cubicBezier: '0.25,0.46,0.45,0.94', //动画
+      bscroll: null,
+      isPullDown: true,
+      isPullUp: false,
+      result: {x:0,y:0},
     }
   },
   mounted(){
-    /* 是否手机 */
-    this.isMobile = IsMobile();
-    /* 滑动方向 */
-    this.sp = this.scrollX?'x':'y';
-    /* 加载动画 */
-    this.refUpper = this.$refs.upper;
-    /* 对象 */
-    this.refHtml = this.$refs.html;
-    /* 默认值 */
-    if(this.sp=='x'){
-      // 左
-      this.refUpper.style.left = 0;
-      this.refUpper.style.width = `${this.upper}px`;
-      this.refUpper.style.height = '100%';
-      this.refUpper.style.transform = `translate(-${this.upper}px,0)`;
-      // 中
-      this.refHtml.style.overflowX = 'auto';
-    }else{
-      // 上
-      this.refUpper.style.top = 0;
-      this.refUpper.style.width = '100%';
-      this.refUpper.style.height = `${this.upper}px`;
-      this.refUpper.style.transform = `translate(0,-${this.upper}px)`;
-      // 中
-      this.refHtml.style.overflowY = 'auto';
-    }
-    /* 监听内容变化 */
-    this.refHtml.addEventListener('scroll',this.scroll);
+    // 初始化
+    this.init();
+  },
+  beforeUnmount(){
+    this.bscroll.destroy();
   },
   methods:{
 
-    /* 返回 */
-    res(){
-      return {
-        x: this.body.x,
-        y: this.body.y,
-        w: this.body.w,
-        h: this.body.h,
-        boxW: this.html.w,
-        boxH: this.html.h,
-      }
+    /* 初始化 */
+    init(){
+      // 配置
+      this.bscroll = new BScroll(this.$refs.Scroll, {
+        click: true,
+        tap: true,
+        probeType: 3,
+        pullDownRefresh: this.isUpper?{
+          threshold: this.upper,
+          stop: this.loading,
+        }:false,
+        pullUpLoad: this.isLower?{
+          threshold: this.lower,
+        }:false,
+        scrollbar: {
+          fade: false,
+          interactive: true,
+        },
+        startX: this.startX,
+        startY: this.startY,
+        scrollX: this.scrollX,
+        scrollY: this.scrollY,
+      });
+      // 下拉
+      if(this.isUpper) this.bscroll.on('pullingDown', this.pullingDown);
+      // 上拉
+      if(this.isLower) this.bscroll.on('pullingUp', this.pullingUp);
+      // 滚动
+      this.bscroll.on('scroll', this.scroll);
     },
 
-    /* 重置 */
-    refresh(){
-      // 容器-宽高
-      this.html.w = this.refHtml.offsetWidth;
-      this.html.h = this.refHtml.offsetHeight;
-      // 内容-宽高
-      this.body.w = this.refHtml.scrollWidth;
-      this.body.h = this.refHtml.scrollHeight;
-      // 滑动范围
-      this.body.min = 0;
-      this.body.max = this.body[this.sp=='x'?'w':'h']-this.html[this.sp=='x'?'w':'h']-this.lowerBoundary;
+    /* 下拉 */
+    pullingDown(){
+      this.$emit('down',this.result);
     },
-
-    /* 开始 */
-    start(e){
-      let touch = e.touches?e.touches[0]:e;
-      this.movePage = {x:0,y:0};
-      this.tmpPage = {x:0,y:0};
-      this.startPage = {x:touch.clientX,y:touch.clientY};
-      // 控制事件
-      this.isUpper = false;
-      this.isLower = true;
-      // 重置
+    /* 下拉-完成 */
+    pullDownFinish(){
+      this.isPullDown = false;
+      this.bscroll.finishPullDown();
       this.refresh();
-      // 开启滑动
-      this.scrollEnabled('auto');
+      setTimeout(()=>{
+        this.isPullDown = true;
+      },400);
     },
 
-    /* 移动 */
-    move(e){
-      if(!this.isScroll) return false;
-      // 开始
-      const touch = e.touches?e.touches[0]:e;
-      this.movePage = {
-        x: parseInt(touch.clientX-this.startPage.x),
-        y: parseInt(touch.clientY-this.startPage.y),
-      }
-      // 移动-距离
-      this.tmpPage[this.sp] = this.movePage[this.sp];
-      if(this.body[this.sp]<=0 && this.tmpPage[this.sp]>0){
-        this.isUpper = true;
-        if(this.isMobile) this.scrollEnabled('hidden');
-        // 控制上限
-        let x = this.upper-this.tmpPage[this.sp];
-        if(x<0) this.tmpPage[this.sp] = this.upper;
-        // 值变化
-        if(this.tmpPage[this.sp]!=this.tmpUpper){
-          this.tmpUpper = this.tmpPage[this.sp];
-          // 加载
-          this._translateUpper(x>0?x:0,200);
-          // 位置
-          this.translate(this.tmpPage[this.sp],200);
-          // 事件
-          if(this.sp=='x'){
-            this.body.x = -this.tmpPage[this.sp];
-            this.body.y = 0;
-            this.$emit('scroll',this.res());
-          }else{
-            this.body.x = 0;
-            this.body.y = -this.tmpPage[this.sp];
-            this.$emit('scroll',this.res());
-          }
-        }
-      }else if(this.body[this.sp]>0 && this.tmpPage[this.sp]<0 && this.body[this.sp]>=this.body.max){
-        // 事件-加载
-        if(this.isLower){
-          this.isLower = false;
-          this.$emit(this.sp=='x'?'right':'up',this.res());
-        }
-      }
+    /* 上拉 */
+    pullingUp(){
+      this.isPullUp = true;
+      this.refresh();
+      this.$emit('up',this.result);
     },
-    /* 结束 */
-    end(e){
-      // 控制上限
-      if(this.isUpper){
-        // 重置
-        this.isUpper = false;
-        this._translateUpper(this.upper,400);
-        this.translate(0,400);
-        this.scrollEnabled('auto');
-        // 事件
-        if(this.sp=='x'){
-          this.body.x = 0;
-          this.body.y = 0;
-          this.$emit('scroll',this.res());
-          if(this.tmpPage[this.sp]>=this.upper) this.$emit('left',this.res());
-        }else{
-          this.body.x = 0;
-          this.body.y = 0;
-          this.$emit('scroll',this.res());
-          if(this.tmpPage[this.sp]>=this.upper) this.$emit('down',this.res());
-        }
-      }
-      // 滑动方向
-      const ratio = Math.abs(this.movePage.x/this.movePage.y) || 0;
-      if(ratio>1 && this.movePage.x>this.limit){
-        this.$emit('swipe','left');
-      }else if(ratio>1 && this.movePage.x<-this.limit){
-        this.$emit('swipe','right');
-      }else if(ratio<1 && this.movePage.y>this.limit){
-        this.$emit('swipe','down');
-      }else if(ratio<1 && this.movePage.y<-this.limit){
-        this.$emit('swipe','up');
-      }
+    /* 上拉-完成 */
+    pullUpFinish(){
+      this.isPullUp = false;
+      this.bscroll.finishPullUp();
+      this.refresh();
     },
 
-    /* 滑动事件 */
-    scroll(){
-      this.body.x = this.refHtml.scrollLeft;
-      this.body.y = this.refHtml.scrollTop;
-      // 事件-滑动
-      this.$emit('scroll',this.res());
-      // 事件-加载
-      if(this.isLower && this.tmpPage[this.sp]<0 && this.body[this.sp]>=this.body.max){
-        this.isLower = false;
-        this.$emit(this.sp=='x'?'right':'up',this.res());
-      }
+    /* 滚动 */
+    scroll(res){
+      this.result.x = res.x;
+      this.result.y = -res.y;
+      this.$emit('scroll',this.result);
     },
 
-    /* 滚动-位置 */
-    translate(n,time){
-      this.refHtml.style.transitionDuration = `${time}ms`;
-      this.refHtml.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
-      if(this.sp=='x'){
-        this.refHtml.style.paddingLeft = `${n}px`;
-        // this.refHtml.style.width = `calc(100% - ${n}px)`;
-      }else{
-        this.refHtml.style.paddingTop = `${n}px`;
-        // this.refHtml.style.height = `calc(100% - ${n}px)`;
-      }
-    },
-    
-    /* 加载-左/上 */
-    _translateUpper(n,time){
-      this.refUpper.style.opacity = (100-n/this.upper*100)/100;
-      this.refUpper.style.transitionDuration = `${time}ms`;
-      this.refUpper.style.transitionTimingFunction = `cubic-bezier(${this.cubicBezier})`;
-      if(this.sp=='x') this.refUpper.style.transform = `translate(-${n}px,0)`;
-      else this.refUpper.style.transform = `translate(0,-${n}px)`;
+    /* 刷新 */
+    refresh(){
+      this.$nextTick(() => {
+        this.bscroll.refresh();
+      })
     },
 
-    /* 滑动状态 */
-    scrollEnabled(state){
-      state = state || 'auto';
-      if(this.sp=='x') this.refHtml.style.overflowX = state;
-      else this.refHtml.style.overflowY = state;
+    /* 位置 */
+    scrollTo(x,y,time){
+      this.bscroll.scrollTo(x,y,time);
     },
 
   }

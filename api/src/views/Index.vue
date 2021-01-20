@@ -21,7 +21,7 @@
         </div>
         <!-- Menus -->
         <div class="menus">
-          <scroll-view :upperLoad="false" :lowerLoad="false" style="height: 100%;">
+          <scroll-view style="height: 100%;" ref="menusScroll" :isUpper="false" :isLower="false">
             <wm-menu v-show="!search.val" ref="Menus" :data="menus" :defaultActive="menusActive" @select="menuClick"></wm-menu>
             <ul v-if="search.val && search.data.length>0" class="sea_list">
               <li v-for="(val,key) in search.data" :key="key" @click="request=val.data">{{val.title}}</li>
@@ -57,19 +57,18 @@
         </ul>
         <!-- Content -->
         <div class="body_right_ct">
-          <!-- param -->
-          <div class="ct" v-show="result.type=='param'">
-            <wm-form class="max_width">
+          <scroll-view class="result_body" ref="resultScroll" :isUpper="false" :isLower="false">
+            <!-- 表单 -->
+            <wm-form v-if="result.type=='param'" class="max_width">
               <wm-form-item v-for="(val,key) in request.param" :key="key" :label="val.key">
-                <wm-input :value="val.val" @update:value="val.val=$event" :placeholder="val.text" />
+                <wm-input :value="val.val" @update:value="val.val=$event" :placeholder="val.text" :title="val.text" />
               </wm-form-item>
             </wm-form>
-          </div>
-          <!-- Data -->
-          <div class="ct" v-show="result.type=='data'">
-            <wm-json-format :json="result.response"></wm-json-format>
-          </div>
+            <!-- 结果 -->
+            <wm-json-format v-if="result.type=='data'" :json="result.response"></wm-json-format>
+          </scroll-view>
         </div>
+        <!-- Content End -->
       </div>
       <!-- Right End -->
     </div>
@@ -95,7 +94,7 @@
 /* Left */
 .body_left{position: relative; width: 240px; box-shadow: 1px 0 0 #F2F2F2;}
 .body_left .search{height: 40px; padding: 16px; border-bottom: #F2F2F2 1px solid;}
-.body_left .menus{position: absolute; width: 100%; height: calc(100% - 112px);}
+.body_left .menus{overflow: hidden; position: absolute; width: 100%; height: calc(100% - 112px);}
 .body_left .copy{position: absolute; width: 100%; bottom: 0; line-height: 40px; font-size: 12px; text-align: center; color: #999;}
 
 .sea_list{overflow: hidden;}
@@ -106,7 +105,7 @@
 .sea_null{line-height: 72px; text-align: center; color: #999;}
 
 /* right */
-.body_right{width: calc(100% - 256px);}
+.body_right{width: calc(100% - 256px); height: 100%;}
 .body_right .request{height: 40px; padding: 16px 0; border-bottom: #F2F2F2 1px solid;}
 .body_right .request .flex_left{width: 100%;}
 .body_right .method{height: 32px; padding: 8px 0;}
@@ -115,8 +114,8 @@
 .body_right .type a{position: absolute; width: 100%; height: 100%; text-align: center; color: #999; border-bottom: #F2F2F2 4px solid; border-radius: 4px 4px 0 0;}
 .body_right .type a:hover{color: #595;}
 .body_right .type .active{border-color: #595; color: #595;}
-.body_right_ct{overflow: auto; height: calc(100% - 165px);}
-.body_right_ct .ct{padding: 16px 0;}
+.body_right_ct{height: calc(100% - 200px); padding: 16px 0;}
+.result_body{overflow: hidden; height: 100%;}
 .max_width{max-width: 640px;}
 </style>
 

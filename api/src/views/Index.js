@@ -47,6 +47,10 @@ export default {
     setTimeout(()=>{
       obj.titleClick(this.menusActive[0]);
       obj.menuClick(this.menusActive);
+      // 重置高度
+      setTimeout(()=>{
+        this.$refs.menusScroll.refresh();
+      },400);
     },400);
   },
   methods:{
@@ -67,6 +71,7 @@ export default {
         }
       }
       this.search.data = data;
+      this.$refs.menusScroll.refresh();
     },
 
     /* 点击菜单 */
@@ -82,6 +87,7 @@ export default {
       Storage.setItem('apiMenusActive',JSON.stringify(pos));
       // 重置结果
       this.result.response = 'result > ';
+      this.$refs.resultScroll.refresh();
     },
 
     /* 发送请求 */
@@ -98,47 +104,39 @@ export default {
       if(this.request.method=='get'){
         Get(url,data,res=>{
           load.clear();
-          const d=res.data;
-          Toast(d.msg);
-          this.result.type = 'data';
-          return this.result.response=d;
+          this.setResult(res);
         },err=>this.result.response=err);
       }else if(this.request.method=='post'){
         Post(url,data,res=>{
           load.clear();
-          const d=res.data;
-          Toast(d.msg);
-          this.result.type = 'data';
-          return this.result.response=d;
+          this.setResult(res);
         },err=>this.result.response=err);
       }else if(this.request.method=='put'){
         Put(url,data,res=>{
           load.clear();
-          const d=res.data;
-          Toast(d.msg);
-          this.result.type = 'data';
-          return this.result.response=d;
+          this.setResult(res);
         },err=>this.result.response=err);
       }else if(this.request.method=='delete'){
         Delete(url,data,res=>{
           load.clear();
-          const d=res.data;
-          Toast(d.msg);
-          this.result.type = 'data';
-          return this.result.response=d;
+          this.setResult(res);
         },err=>this.result.response=err);
       }else if(this.request.method=='request'){
         Request(url,data,res=>{
           load.clear();
-          const d=res.data;
-          Toast(d.msg);
-          this.result.type = 'data';
-          return this.result.response=d;
+          this.setResult(res);
         },err=>this.result.response=err);
       }
     },
 
-    
+    /* 请求结果 */
+    setResult(res){
+      const d=res.data;
+      Toast(d.msg);
+      this.result.type = 'data';
+      this.result.response=d;
+      this.$refs.resultScroll.refresh();
+    },
 
   }
 }
