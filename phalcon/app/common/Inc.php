@@ -15,18 +15,18 @@ class Inc{
     ],$param);
     // 方式
     if($param['type']=='json'){
-      $header[] = 'Content-Type: application/json; charset=utf-8';
-      $data = json_encode($param['data'],JSON_UNESCAPED_UNICODE);
+      $param['header'][] = 'Content-Type: application/json; charset=utf-8';
+      $param['data'] = json_encode($param['data'],JSON_UNESCAPED_UNICODE);
     }
     // Curl
     $curl = curl_init();
-    curl_setopt($curl, CURLOPT_HTTPHEADER,$header);
+    curl_setopt($curl, CURLOPT_HTTPHEADER,$param['header']);
     curl_setopt($curl, CURLOPT_URL, $param['url']);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($curl, CURLOPT_POST, 1);
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
-    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $param['data']);
     $res = curl_exec($curl);
     curl_close($curl);
     return $param['type']=='xml'?$res:json_decode($res);
