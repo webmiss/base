@@ -26,6 +26,7 @@
 </style>
 
 <script>
+import Env from '@/env.js'
 import wmLoading from '../loading'
 import BScroll from '@better-scroll/core'
 import PullDown from '@better-scroll/pull-down'
@@ -47,15 +48,17 @@ export default {
     startY: {type: Number, default: 0},  //初始化位置-纵轴
     loading: {type: Number, default: 48},  //Loading高度
     loadingTheme: {type: String, default: 'flow'},  //样式: flow、swing、circle、wave
-    loadingColor: {type: String, default: '#6FB737'},  //Loading颜色
+    loadingColor: {type: String, default: Env.themes.primary},  //Loading颜色
     upper: {type: Number, default: 64},  //顶部距离
     lower: {type: Number, default: 80},  //底部距离
     upperText: {type: String, default: '已刷新'},  //刷新文本
     lowerText: {type: String, default: '正在加载'},  //加载文本
-    upperColor: {type: String, default: '#999'},  //刷新颜色
-    lowerColor: {type: String, default: '#999'},  //加载颜色
+    upperColor: {type: String, default: Env.themes.text2},  //刷新颜色
+    lowerColor: {type: String, default: Env.themes.text2},  //加载颜色
     isUpper: {type: Boolean, default: true}, //是否下拉
     isLower: {type: Boolean, default: true},  //是否上拉
+    scrollbar: {type: Object, default: {fade: false, interactive: true}},  //滚动条
+    preventDefault: {type: Boolean, default: true},  //允许浏览器复制
   },
   data(){
     return {
@@ -81,7 +84,8 @@ export default {
         click: true,
         tap: true,
         mouseWheel: true,
-        probeType: 3,
+        probeType: this.probeType,
+        preventDefault: this.preventDefault,
         observeDOM: true,
         observeImage: true,
         pullDownRefresh: this.isUpper?{
@@ -91,10 +95,7 @@ export default {
         pullUpLoad: this.isLower?{
           threshold: this.lower,
         }:false,
-        scrollbar: {
-          fade: false,
-          interactive: true,
-        },
+        scrollbar: this.scrollbar,
         startX: this.startX,
         startY: this.startY,
         scrollX: this.scrollX,
