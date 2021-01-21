@@ -18,8 +18,8 @@
 
 <style scoped>
 .wm-scroll_wrapper{overflow: hidden;}
-.wm-scroll_content_x{position: relative; display: inline-block; min-width: calc(100% + 1px); height: 100%; white-space: nowrap;}
-.wm-scroll_content_y{width: inherit; min-height: calc(100% + 1px);}
+.wm-scroll_content_x{position: relative; display: inline-block; min-width: 100%; height: 100%; white-space: nowrap;}
+.wm-scroll_content_y{width: inherit; min-height: 100%;}
 .wm-scroll_loading{position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);}
 .wm-scroll_load_down{position: absolute; width: 100%; text-align: center;}
 .wm-scroll_load_up{text-align: center;}
