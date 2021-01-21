@@ -30,7 +30,8 @@ import BScroll from '@better-scroll/core'
 import PullDown from '@better-scroll/pull-down'
 import Pullup from '@better-scroll/pull-up'
 import ScrollBar from '@better-scroll/scroll-bar'
-BScroll.use(PullDown).use(Pullup).use(ScrollBar);
+import MouseWheel from '@better-scroll/mouse-wheel'
+BScroll.use(PullDown).use(Pullup).use(ScrollBar).use(MouseWheel);
 
 export default {
   name: 'Scroll',
@@ -76,6 +77,7 @@ export default {
       this.bscroll = new BScroll(this.$refs.Scroll, {
         click: true,
         tap: true,
+        mouseWheel: true,
         probeType: 3,
         pullDownRefresh: this.isUpper?{
           threshold: this.upper,
