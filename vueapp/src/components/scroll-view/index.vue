@@ -29,7 +29,8 @@ import wmLoading from '../loading'
 import BScroll from '@better-scroll/core'
 import PullDown from '@better-scroll/pull-down'
 import Pullup from '@better-scroll/pull-up'
-BScroll.use(PullDown).use(Pullup);
+import ObserveDOM from '@better-scroll/observe-dom'
+BScroll.use(PullDown).use(Pullup).use(ObserveDOM);
 
 export default {
   name: 'Scroll',
@@ -76,6 +77,7 @@ export default {
         click: true,
         tap: true,
         probeType: 3,
+        observeDOM: true,
         pullDownRefresh: this.isUpper?{
           threshold: this.upper,
           stop: this.loading,
