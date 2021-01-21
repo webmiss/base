@@ -57,7 +57,7 @@
         </ul>
         <!-- Content -->
         <div class="body_right_ct">
-          <scroll-view class="result_body" ref="resultScroll" :isUpper="false" :isLower="false">
+          <scroll-view class="result_body" ref="resultScroll" :isUpper="false" :isLower="false" :preventDefault="false">
             <!-- 表单 -->
             <wm-form v-if="result.type=='param'" class="max_width">
               <wm-form-item v-for="(val,key) in request.param" :key="key" :label="val.key">
