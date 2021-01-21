@@ -11,6 +11,7 @@
     "@better-scroll/core": "^2.1.1",
     "@better-scroll/mouse-wheel": "^2.1.1",
     "@better-scroll/observe-dom": "^2.1.1",
+    "@better-scroll/observe-image": "^2.1.1",
     "@better-scroll/pull-down": "^2.1.1",
     "@better-scroll/pull-up": "^2.1.1",
     "@better-scroll/scroll-bar": "^2.1.1",

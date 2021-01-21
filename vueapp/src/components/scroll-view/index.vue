@@ -1,6 +1,6 @@
 <template>
 <div ref="Scroll" class="wm-scroll_wrapper">
-  <div :class="scrollX?'wm-scroll_content':''">
+  <div :class="scrollX?'wm-scroll_content_x':'wm-scroll_content_y'">
     <!-- 下拉动画 -->
     <div v-if="isUpper" class="wm-scroll_load_down" :style="{height: loading+'px',lineHeight: loading+'px',top: '-'+loading+'px',color: upperColor}">
       <wm-loading v-show="isPullDown" class="wm-scroll_loading" :theme="loadingTheme" :color="loadingColor"></wm-loading>
@@ -18,7 +18,8 @@
 
 <style scoped>
 .wm-scroll_wrapper{overflow: hidden;}
-.wm-scroll_content{position: relative; display: inline-block; height: 100%; white-space: nowrap;}
+.wm-scroll_content_x{position: relative; display: inline-block; min-width: calc(100% + 1px); height: 100%; white-space: nowrap;}
+.wm-scroll_content_y{width: inherit; min-height: calc(100% + 1px);}
 .wm-scroll_loading{position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);}
 .wm-scroll_load_down{position: absolute; width: 100%; text-align: center;}
 .wm-scroll_load_up{text-align: center;}
@@ -30,7 +31,8 @@ import BScroll from '@better-scroll/core'
 import PullDown from '@better-scroll/pull-down'
 import Pullup from '@better-scroll/pull-up'
 import ObserveDOM from '@better-scroll/observe-dom'
-BScroll.use(PullDown).use(Pullup).use(ObserveDOM);
+import ObserveImage from '@better-scroll/observe-image'
+BScroll.use(PullDown).use(Pullup).use(ObserveDOM).use(ObserveImage);
 
 export default {
   name: 'Scroll',
@@ -78,6 +80,7 @@ export default {
         tap: true,
         probeType: 3,
         observeDOM: true,
+        observeImage: true,
         pullDownRefresh: this.isUpper?{
           threshold: this.upper,
           stop: this.loading,
