@@ -29,9 +29,10 @@ import wmLoading from '../loading'
 import BScroll from '@better-scroll/core'
 import PullDown from '@better-scroll/pull-down'
 import Pullup from '@better-scroll/pull-up'
+import ObserveDOM from '@better-scroll/observe-dom'
 import ScrollBar from '@better-scroll/scroll-bar'
 import MouseWheel from '@better-scroll/mouse-wheel'
-BScroll.use(PullDown).use(Pullup).use(ScrollBar).use(MouseWheel);
+BScroll.use(PullDown).use(Pullup).use(ObserveDOM).use(ScrollBar).use(MouseWheel);
 
 export default {
   name: 'Scroll',
@@ -79,6 +80,7 @@ export default {
         tap: true,
         mouseWheel: true,
         probeType: 3,
+        observeDOM: true,
         pullDownRefresh: this.isUpper?{
           threshold: this.upper,
           stop: this.loading,
