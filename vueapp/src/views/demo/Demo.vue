@@ -3,8 +3,10 @@
     <wm-page-view :immersed="false" :bgColor="'#ffffff'">
       <template #left><i class="back ui ui_left" @click="back('left')"></i></template>
       <template #title>Demo</template>
-      <!-- 滑动 -->
       <template #body>
+        <!-- Picker -->
+        <wm-picker :show="demo.show" @update:show="demo.show=$event" :data="pickData" :defaultIndex="[0,1,2]" @confirm="pickConfirm"></wm-picker>
+        <!-- 滑动 -->
         <wm-scroll-view class="demo" ref="DemoScroll" @down="reFresh" @up="upLoad" @scroll="scroll">
           <!-- Swiper -->
           <wm-swipe class="swipe">
@@ -12,12 +14,17 @@
             <wm-swipe-item class="swipe_item">Page2</wm-swipe-item>
             <wm-swipe-item class="swipe_item">Page3</wm-swipe-item>
           </wm-swipe>
+          <!-- Picker -->
+          <div>
+            <button @click="demo.show=true">选择区域</button>
+            <span>{{pickHtml}}</span>
+          </div>
           <!-- 内容 -->
           <div class="item" v-for="(val,key) in lists" :key="key">{{val.name}}</div>
           <!-- 内容 -->
         </wm-scroll-view>
+        <!-- 滑动 End -->
       </template>
-      <!-- 滑动 End -->
     </wm-page-view>
   </wm-touch>
 </template>
