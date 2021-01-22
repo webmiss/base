@@ -43,7 +43,7 @@
 /* Flow */
 .wm-load_flow { width: 60px; height: 45px; text-align: center; }
 .wm-load_flow > div {
-  width: 12px; height: 12px; border-radius: 100%; display: inline-block;
+  width: 10px; height: 10px; border-radius: 100%; display: inline-block;
   -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
   animation: sk-bouncedelay 1.4s infinite ease-in-out both;
 }
