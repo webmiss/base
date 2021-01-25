@@ -34,7 +34,6 @@ export default {
   },
   data(){
     return {
-      primary: Env.themes.primary,
       pickerData: [],
       defaultIndex: [0,0,0],
     }
