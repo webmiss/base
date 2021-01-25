@@ -13,15 +13,13 @@
 </template>
 
 <style scoped>
-
 </style>
 
 <script>
-import Env from '@/env.js'
 import wmPicker from './index'
 
 export default {
-  name: 'Picker',
+  name: 'PickerDate',
   components: {wmPicker},
   props: {
     show: {type: Boolean, default: false},  //是否显示
@@ -42,9 +40,6 @@ export default {
     show(val){
       if(val) this.init();
     }
-  },
-  activated(){
-    console.log('Date');
   },
   methods:{
 
@@ -138,7 +133,6 @@ export default {
           }
         }
       }
-      // console.log(this.default);
     },
 
     /* 获取天数 */

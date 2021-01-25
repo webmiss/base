@@ -11,14 +11,16 @@ import wmSwipe from '@/components/swipe'
 import wmSwipeItem from '@/components/swipe/item'
 import wmPicker from '@/components/picker'
 import wmPickerDate from '@/components/picker/date'
+import wmChartLine from '@/components/chart/line'
 
 export default {
-  components: {wmTouch,wmPageView,wmScrollView,wmSwipe,wmSwipeItem,wmPicker,wmPickerDate},
+  components: {wmTouch,wmPageView,wmScrollView,wmSwipe,wmSwipeItem,wmPicker,wmPickerDate,wmChartLine},
   data(){
     return {
       Env: Env,
       city: {show: false, data: []},
       date: {show: false},
+      chartData: {line: [],},
       lists: [],
     }
   },
@@ -27,6 +29,33 @@ export default {
   mounted(){
     // 高德地图
     LoadHtml(['https://webapi.amap.com/maps?v=1.4.15&key=$key&plugin=AMap.Riding'],'js',true);
+    // 折线图
+    this.chartData.line = [
+      {type: '收入', label:'1月', value:50},
+      {type: '支出', label:'1月', value:10},
+      {type: '收入', label:'2月', value:20},
+      {type: '支出', label:'2月', value:30},
+      {type: '收入', label:'3月', value:36},
+      {type: '支出', label:'3月', value:10},
+      {type: '收入', label:'4月', value:82},
+      {type: '支出', label:'4月', value:20},
+      {type: '收入', label:'5月', value:32},
+      {type: '支出', label:'5月', value:49},
+      {type: '收入', label:'6月', value:48},
+      {type: '支出', label:'6月', value:59},
+      {type: '收入', label:'7月', value:92},
+      {type: '支出', label:'7月', value:60},
+      {type: '收入', label:'8月', value:73},
+      {type: '支出', label:'8月', value:70},
+      {type: '收入', label:'9月', value:85},
+      {type: '支出', label:'9月', value:39},
+      {type: '收入', label:'10月', value:62},
+      {type: '支出', label:'10月', value:94},
+      {type: '收入', label:'11月', value:68},
+      {type: '支出', label:'11月', value:36},
+      {type: '收入', label:'12月', value:52},
+      {type: '支出', label:'12月', value:70},
+    ];
     // 城市区域
     this.city.data = [
       {label: '云南',value: 'yn', children:[
