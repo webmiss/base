@@ -2,8 +2,8 @@
 <wm-popup ref="Popup" position="bottom" :show="show" @update:show="_updateShow" :bgClose="false">
   <div class="wm-picker" @touchmove.prevent>
     <div class="wm-picker_title">
-      <div class="wm-picker_cancel" @click="cancel">{{cancelText}}</div>
-      <div class="wm-picker_confirm" @click="confirm" :style="{color: primary}">{{confirmText}}</div>
+      <div class="wm-picker_cancel" @click="_cancel">{{cancelText}}</div>
+      <div class="wm-picker_confirm" @click="_confirm" :style="{color: primary}">{{confirmText}}</div>
       <h2>{{title}}</h2>
     </div>
     <div class="wm-picker_content">
@@ -167,12 +167,12 @@ export default {
       clearTimeout(this.setTimeout);
       this.setTimeout = setTimeout(()=>{
         this.oldIndex = this.wheel.map(wheel=>wheel.getSelectedIndex());
-        this.$emit('change',this.result());
+        this.$emit('change',this._result());
       },300);
     },
 
     /* 结果 */
-    result(){
+    _result(){
       const res = {index:[],data:[]};
       res.index = this.wheel.map(wheel=>wheel.getSelectedIndex());
       for(let i in res.index) res.data.push(this.pickerData[i][res.index[i]]);
@@ -180,15 +180,15 @@ export default {
     },
 
     /* 确定 */
-    confirm(){
+    _confirm(){
       this.$refs.Popup.close();
-      this.$emit('confirm',this.result());
+      this.$emit('confirm',this._result());
     },
 
     /* 取消 */
-    cancel(){
+    _cancel(){
       this.$refs.Popup.close();
-      this.$emit('cancel',this.result());
+      this.$emit('cancel',this._result());
     },
 
     /* 刷新 */

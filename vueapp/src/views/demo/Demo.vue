@@ -5,7 +5,8 @@
       <template #title>Demo</template>
       <template #body>
         <!-- Picker -->
-        <wm-picker :show="demo.show" @update:show="demo.show=$event" :data="pickData" :defaultIndex="[0,1,2]" @confirm="pickConfirm"></wm-picker>
+        <wm-picker :show="city.show" @update:show="city.show=$event" :data="city.data" :defaultIndex="[0,1,2]" @confirm="cityConfirm"></wm-picker>
+        <wm-picker-date :show="date.show" @update:show="date.show=$event" :default="[2020,10,5]" @confirm="dateConfirm"></wm-picker-date>
         <!-- 滑动 -->
         <wm-scroll-view class="demo" ref="DemoScroll" @down="reFresh" @up="upLoad" @scroll="scroll">
           <!-- Swiper -->
@@ -16,12 +17,11 @@
           </wm-swipe>
           <!-- Picker -->
           <div>
-            <button @click="demo.show=true">选择区域</button>
-            <span>{{pickHtml}}</span>
+            <button @click="city.show=true">选择区域</button>
+            <button @click="date.show=true">选择日期</button>
           </div>
-          <!-- 内容 -->
+          <!-- Lists -->
           <div class="item" v-for="(val,key) in lists" :key="key">{{val.name}}</div>
-          <!-- 内容 -->
         </wm-scroll-view>
         <!-- 滑动 End -->
       </template>

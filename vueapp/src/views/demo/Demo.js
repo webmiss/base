@@ -1,5 +1,6 @@
 import Env from '../../env'
 import Back from '../../library/ui/ui-back'
+import Toast from '../../library/ui/ui-toast'
 import NavigateTo from '../../library/ui/ui-navigate-to'
 import LoadHtml from '../../library/inc/html-load'
 /* 组件 */
@@ -9,25 +10,25 @@ import wmScrollView from '@/components/scroll-view'
 import wmSwipe from '@/components/swipe'
 import wmSwipeItem from '@/components/swipe/item'
 import wmPicker from '@/components/picker'
+import wmPickerDate from '@/components/picker/date'
 
 export default {
-  components: {wmTouch,wmPageView,wmScrollView,wmSwipe,wmSwipeItem,wmPicker},
+  components: {wmTouch,wmPageView,wmScrollView,wmSwipe,wmSwipeItem,wmPicker,wmPickerDate},
   data(){
     return {
       Env: Env,
+      city: {show: false, data: []},
+      date: {show: false},
       lists: [],
-      demo: {show: false},
-      pickHtml: '',
-      pickData: [],
     }
   },
   computed:{
   },
   mounted(){
+    // 高德地图
     LoadHtml(['https://webapi.amap.com/maps?v=1.4.15&key=$key&plugin=AMap.Riding'],'js',true);
-    this.lists = this._getData(3);
-    this.$refs.DemoScroll.refresh();
-    this.pickData = [
+    // 城市区域
+    this.city.data = [
       {label: '云南',value: 'yn', children:[
         {label: '昆明市',value: 'km', children:[
           {label: '五华区',value: 'wh'},
@@ -52,6 +53,9 @@ export default {
         ]},
       ]},
     ];
+    // 列表
+    this.lists = this._getData(3);
+    this.$refs.DemoScroll.refresh();
   },
   beforeUnmount(){
     // 页面销毁
@@ -101,10 +105,18 @@ export default {
       return data;
     },
 
-    /* 选择器 */
-    pickConfirm(res){
-      this.pickHtml = '';
-      for(let i in res.data) this.pickHtml += res.data[i].label+' > ';
+    /* 选择区域 */
+    cityConfirm(res){
+      let html = '';
+      for(let i in res.data) html += res.data[i].label+' > ';
+      Toast(html);
+    },
+
+    /* 选择日期 */
+    dateConfirm(res){
+      let html = '';
+      for(let i in res.data) html += res.data[i].label+' ';
+      Toast(html);
     }
 
   }
