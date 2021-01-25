@@ -1,7 +1,9 @@
 <template>
 <div v-show="show">
-  <div ref="PopupBG" class="wm-popup_bg" :style="{backgroundColor:'rgba(0,0,0,'+opacity+')'}" @click="clickBG()"></div>
-  <div ref="PopupBody" class="wm-popup_body" :style="{backgroundColor:bgColor}"><slot></slot></div>
+  <div ref="PopupBG" class="wm-popup_bg" :style="{backgroundColor:'rgba(0,0,0,'+opacity+')'}" @click="_clickBG()"></div>
+  <div ref="PopupBody" class="wm-popup_body" :style="{backgroundColor:bgColor}">
+    <slot></slot>
+  </div>
 </div>
 </template>
 
@@ -17,14 +19,14 @@ export default {
   props: {
     show: {type: Boolean, default: false},  //是否显示
     position: {type: String, default: 'center'},  //位置
-    opacity: {type: Number, default: 0.7},  //背景透明度
+    opacity: {type: Number, default: 0.4},  //背景透明度
     bgColor: {type: String, default: ''}, //内容背景颜色
     bgClose: {type: Boolean, default: true},  //点击背景关闭
     time: {type: Number, default: 400},  //动画时间
   },
   watch:{
     show(val){
-      if(val) this.animation(val);
+      if(val) this._animation(val);
     }
   },
   mounted(){
@@ -71,7 +73,7 @@ export default {
     },
 
     /* 显示 */
-    showBody(){
+    _showBody(){
       const bg = this.$refs.PopupBG.style;
       const body = this.$refs.PopupBody.style;
       // 动画
@@ -96,7 +98,7 @@ export default {
     },
 
     /* 隐藏 */
-    hideBody(){
+    _hideBody(){
       const bg = this.$refs.PopupBG.style;
       const body = this.$refs.PopupBody.style;
       // 动画
@@ -121,19 +123,19 @@ export default {
     },
 
     /* 控制动画 */
-    animation(show){
-      if(show) setTimeout(()=>{ this.showBody(); },300);
-      else this.hideBody();
+    _animation(show){
+      if(show) setTimeout(()=>{ this._showBody(); },300);
+      else this._hideBody();
     },
 
     /* 点击背景 */
-    clickBG(){
-      if(this.bgClose) this.animation(false);
+    _clickBG(){
+      if(this.bgClose) this._animation(false);
     },
 
     /* 关闭 */
     close(){
-      this.animation(false);
+      this._animation(false);
     },
 
   }
