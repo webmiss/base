@@ -1,16 +1,16 @@
 <template>
   <div id="app">
     <!-- 更新APP -->
-    <div v-if="update.show" class="update_body" :style="{backgroundColor: upDateColor.bg}">
+    <div v-if="update.show" class="update_body" :style="{backgroundColor: updateCfg.bg}">
       <div class="update_ct verticalCenter">
-        <div class="logo" :style="{backgroundColor: upDateColor.logoBg}"><div></div></div>
-        <div class="loading" :style="{backgroundImage: 'linear-gradient(to right, '+upDateColor.loading+', '+upDateColor.loading+' '+update.loading+', '+upDateColor.loaded+' '+update.loading+', '+upDateColor.loaded+' 100%)'}"></div>
-        <div class="load_msg" :style="{color:upDateColor.msgColor}">{{update.msg}}</div>
+        <div class="logo" :style="{backgroundColor: updateCfg.logoBg}"><div></div></div>
+        <div class="loading" :style="{backgroundImage: 'linear-gradient(to right, '+updateCfg.loading+', '+updateCfg.loading+' '+update.loading+', '+updateCfg.loaded+' '+update.loading+', '+updateCfg.loaded+' 100%)'}"></div>
+        <div class="load_msg" :style="{color:updateCfg.msgColor}">{{update.msg}}</div>
         <div class="load_button">
-          <button class="Button" v-if="update.down" @click="updateDown()" :style="{color:upDateColor.butColor,backgroundColor:upDateColor.butBg,}">{{upDateColor.butText}}</button>
+          <button class="Button" v-if="update.down" @click="updateDown()" :style="{color:updateCfg.butColor,backgroundColor:updateCfg.butBg,}">{{updateCfg.butText}}</button>
         </div>
       </div>
-      <div class="update_logo" :style="{color:upDateColor.copy}"><h1>{{$config.title}}</h1><h2>{{$config.copy}}</h2></div>
+      <div class="update_logo" :style="{color:updateCfg.copy}"><h1>{{updateTitle}}</h1><h2>{{updateCopy}}</h2></div>
     </div>
     <!-- 更新APP End -->
     <!-- 页面 -->

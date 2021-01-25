@@ -14,7 +14,9 @@ export default {
       transitionName: '',
       // 更新APP
       update: {show:false, os:'', down:false, loading:'0%', msg:'检测更新', file:'', total:0},
-      upDateColor: Env.update,
+      updateCfg: Env.update,
+      updateTitle: Env.title,
+      updateCopy: Env.copy,
       // 新消息
       msgInterval: null,
     }
