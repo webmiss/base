@@ -21,11 +21,11 @@
 .wm-swipe_wrapper{overflow: hidden; height: inherit;}
 .wm-swipe_content{height: inherit;}
 .wm-swipe_dots{position: absolute;}
-.wm-swipe_dots div{width: 8px; height: 8px; border-radius: 50%; background-color: #FFF;}
-.wm-swipe_dots .active{border-radius: 4px;}
+.wm-swipe_dots div{width: 6px; height: 6px; border-radius: 50%; background-color: #FFF;}
+.wm-swipe_dots .active{border-radius: 3px;}
 .wm-swipe_dots.dotX{bottom: 4px; left: 50%; transform: translateX(-50%);}
 .wm-swipe_dots.dotX div{display: inline-block; margin: 0 4px;}
-.wm-swipe_dots.dotX .active{width: 16px;}
+.wm-swipe_dots.dotX .active{width: 12px;}
 .wm-swipe_dots.dotY{right: 4px; top: 50%; transform: translateY(-50%);}
 .wm-swipe_dots.dotY div{margin: 4px 0;}
 .wm-swipe_dots.dotY .active{height: 16px;}
@@ -90,7 +90,7 @@ export default {
     /* 获取总数 */
     getNum(){
       this.total = this.$refs.Swiper.querySelectorAll('.wm-swipe_item').length;
-      if(this.slide.loop) this.total -= 2;
+      if(this.total>1 && this.slide.loop) this.total -= 2;
       return this.total;
     },
 

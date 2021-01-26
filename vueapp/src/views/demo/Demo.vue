@@ -12,13 +12,13 @@
           <!-- Swiper -->
           <wm-swipe class="swipe">
             <wm-swipe-item class="swipe_item">
-              <wm-chart-line :data="chartData.line"></wm-chart-line>
+              <wm-chart-line :data="chartData.line" unit="元" :isDot="false"></wm-chart-line>
             </wm-swipe-item>
             <wm-swipe-item class="swipe_item">
-              <wm-chart-line :data="chartData.line"></wm-chart-line>
+              <wm-chart-interval :data="chartData.interval" unit="元"></wm-chart-interval>
             </wm-swipe-item>
             <wm-swipe-item class="swipe_item">
-              <wm-chart-line :data="chartData.line"></wm-chart-line>
+              <wm-chart-pie :data="chartData.pie" unit="元"></wm-chart-pie>
             </wm-swipe-item>
           </wm-swipe>
           <!-- Picker -->
@@ -26,8 +26,6 @@
             <button @click="city.show=true">选择区域</button>
             <button @click="date.show=true">选择日期</button>
           </div>
-          <!-- Chart -->
-          
           <!-- Lists -->
           <div class="item" v-for="(val,key) in lists" :key="key">{{val.name}}</div>
         </wm-scroll-view>
@@ -41,7 +39,7 @@
 .demo{height: 100%;}
 .item{padding: 0 15px; line-height: 60px; border: #F2F4F8 1px solid; box-sizing: border-box;}
 .swipe{width: 100%; height: 48vmin; background-color: #F2F4F8;}
-.swipe_item{height: 100%; height: 48vmin; line-height: 48vmin; text-align: center;}
+.swipe_item{height: 100%; height: 48vmin; text-align: center;}
 </style>
 
 <script src="./Demo.js"></script>

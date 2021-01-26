@@ -11,16 +11,22 @@ import wmSwipe from '@/components/swipe'
 import wmSwipeItem from '@/components/swipe/item'
 import wmPicker from '@/components/picker'
 import wmPickerDate from '@/components/picker/date'
+/* 图表 */
 import wmChartLine from '@/components/chart/line'
+import wmChartInterval from '@/components/chart/interval'
+import wmChartPie from '@/components/chart/pie'
 
 export default {
-  components: {wmTouch,wmPageView,wmScrollView,wmSwipe,wmSwipeItem,wmPicker,wmPickerDate,wmChartLine},
+  components: {
+    wmTouch,wmPageView,wmScrollView,wmSwipe,wmSwipeItem,wmPicker,wmPickerDate,
+    wmChartLine,wmChartInterval,wmChartPie
+  },
   data(){
     return {
       Env: Env,
       city: {show: false, data: []},
       date: {show: false},
-      chartData: {line: [],},
+      chartData: {line: [], interval:[]},
       lists: [],
     }
   },
@@ -55,6 +61,28 @@ export default {
       {type: '支出', label:'11月', value:36},
       {type: '收入', label:'12月', value:52},
       {type: '支出', label:'12月', value:70},
+    ];
+    // 折线图
+    this.chartData.interval = [
+      {type: '收入', label:'1月', value:50},
+      {type: '支出', label:'1月', value:10},
+      {type: '收入', label:'2月', value:20},
+      {type: '支出', label:'2月', value:30},
+      {type: '收入', label:'3月', value:36},
+      {type: '支出', label:'3月', value:46},
+      {type: '收入', label:'4月', value:82},
+      {type: '支出', label:'4月', value:20},
+      {type: '收入', label:'5月', value:32},
+      {type: '支出', label:'5月', value:49},
+      {type: '收入', label:'6月', value:48},
+      {type: '支出', label:'6月', value:59},
+    ];
+    // 饼状图
+    this.chartData.pie = [
+      {type: '1', label:'手机', value:0.60},
+      {type: '1', label:'笔记本', value:0.20},
+      {type: '1', label:'家具', value:0.16},
+      {type: '1', label:'其他', value:0.04},
     ];
     // 城市区域
     this.city.data = [
