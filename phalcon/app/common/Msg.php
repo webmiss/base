@@ -4,31 +4,26 @@ namespace app\common;
 /* 消息类 */
 class Msg extends Base {
 
-  private static $fds = '';
+  private static $clients = null;
   private static $token = '';
 
   /* 路由 */
-  static function router($fds,$socket,$fd,$msg,$token): void {
+  static function router($clients,$socket,$msg,$token): void {
     // 参数
-    self::$fds = $fds;
+    self::$clients = $clients;
     self::$token = $token;
     // 数据
     $data = json_decode($msg);
-    if(!is_object($data)) $socket->push($fd, self::getJSON(['code'=>400,'msg'=>'格式错误!']));
+    if(!is_object($data)) $socket->send(self::getJSON(['code'=>400,'msg'=>'格式错误!']));
     // 消息
-    elseif($data->type=='msg') self::msg($socket,$fd,$data);
+    elseif($data->type=='msg') self::msg($socket,$data);
     // 心跳
-    else $socket->push($fd,self::getJSON(['type'=>'','code'=>0,'msg'=>'成功']));
+    else $socket->send(self::getJSON(['type'=>'','code'=>0,'msg'=>'成功']));
   }
 
   /* 消息 */
-  static function msg($socket,$fd,$data){
+  static function msg($socket,$data){
     print_r(json_encode(self::$token).' '.json_encode($data)."\n");
-    // 指定用户
-    if(isset(self::$fds[$data->uid])){
-      $fd = self::$fds[$data->uid];
-      $socket->push($fd,self::getJSON(['type'=>'msg','code'=>0,'msg'=>$data->msg]));
-    }
   }
 
 }

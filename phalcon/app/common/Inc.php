@@ -4,7 +4,7 @@ namespace app\common;
 /* 公共类 */
 class Inc{
 
-  /* Curl-Post */
+  /* Curl */
   static function curlPost($param=[]){
     // 参数
     $param = array_merge([
@@ -30,6 +30,21 @@ class Inc{
     $res = curl_exec($curl);
     curl_close($curl);
     return $param['type']=='xml'?$res:json_decode($res);
+  }
+
+  /* url转Array */
+  static function urlToArray($url){
+    if(empty($url)) return null;
+    $arr = explode('?',$url);
+    $url = count($arr)>1?$arr[1]:$arr[0];
+    // 参数
+    $data = [];
+    $arr = explode('&',$url);
+    foreach($arr as $v1){
+      $tmp = explode('=',$v1);
+      $data[$tmp[0]] = trim($tmp[1]);
+    }
+    return $data;
   }
 
 }
