@@ -174,7 +174,7 @@ class SysUserController extends Base{
     $uid = trim($this->request->get('uid','String'));
     $type = trim($this->request->get('type','String'));
     $state = trim($this->request->get('state','String'));
-    if(empty($uid) || empty($start)) return self::getJSON(['code'=>4000,'msg'=>'参数错误!']);
+    if(empty($uid) || empty($state)) return self::getJSON(['code'=>4000,'msg'=>'参数错误!']);
     // 管理员
     if($uid=='1') return self::getJSON(['code'=>4000,'msg'=>'禁止修改系统管理员!']);
     // 更改
