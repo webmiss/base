@@ -29,7 +29,7 @@ if [ "$s" == "serve" ]; then
   cd public && php -S $ip:$port
 # 安装
 elif [ "$s" == "install" ]; then
-  composer install
+  rm -fr composer.lock && composer install
 # 数据库工具
 elif [ "$s" == "adminer" ]; then
   php -S $ip:$portDb adminer.php
