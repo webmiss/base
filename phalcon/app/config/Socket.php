@@ -34,11 +34,10 @@ class Socket implements MessageComponentInterface {
   /* 关闭 */
   function onClose(ConnectionInterface $conn) {
     $this->clients->detach($conn);
-    echo '退出: '.$conn->resourceId."\n";
   }
   /* 错误 */
   function onError(ConnectionInterface $conn, \Exception $e) {
-    $conn->close();
+    return $conn->close();
   }
 
   /* 验证 */
