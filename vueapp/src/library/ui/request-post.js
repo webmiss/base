@@ -1,6 +1,8 @@
 import Env from '../../env.js'
 import axios from 'axios'
 
+axios.defaults.timeout = 10000; //网络超时
+
 /* Post请求 */
 export default (url,data,success,fail,config)=>{
   const str = url.substr(0,4);
