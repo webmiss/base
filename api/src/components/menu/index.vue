@@ -15,7 +15,7 @@
         <div :id="'list_'+k1" class="wm-menu_list">
           <div v-for="(v2,k2) in v1.children" :key="k2">
             <!-- 标题 -->
-            <div @click="_titleClick([k1,k2])" class="wm-menu_title left16" :class="!v2.children&&active==k1+'_'+k2?'active':''" :style="{height: height+'px', lineHeight: height+'px'}">
+            <div @click="_titleClick([k1,k2])" class="wm-menu_title left24" :class="!v2.children&&active==k1+'_'+k2?'active':''" :style="{height: height+'px', lineHeight: height+'px'}">
               <i v-if="v2.icon" :class="v2.icon" :style="{color: v2.children?textColor:''}"></i>
               <h2 :style="{color: v2.children?textColor:''}">{{v2.label}}</h2>
               <span v-if="v2.children">
@@ -27,7 +27,7 @@
               <div :id="'list_'+k1+'_'+k2" class="wm-menu_list">
                 <div v-for="(v3,k3) in v2.children" :key="k3">
                   <!-- 标题 -->
-                  <div @click="_titleClick([k1,k2,k3])" class="wm-menu_title left24" :class="!v3.children&&active==k1+'_'+k2+'_'+k3?'active':''" :style="{height: height+'px', lineHeight: height+'px'}">
+                  <div @click="_titleClick([k1,k2,k3])" class="wm-menu_title left32" :class="!v3.children&&active==k1+'_'+k2+'_'+k3?'active':''" :style="{height: height+'px', lineHeight: height+'px'}">
                     <i v-if="v3.icon" :class="v3.icon" :style="{color: v3.children?textColor:''}"></i>
                     <h2 :style="{color: v3.children?textColor:''}">{{v3.label}}</h2>
                     <span v-if="v3.children">
@@ -52,6 +52,7 @@
 .wm-menu .left16{padding-left: 16px;}
 .wm-menu .left24{padding-left: 24px;}
 .wm-menu .left32{padding-left: 32px;}
+.wm-menu .left56{padding-left: 56px;}
 .wm-menu .arrow{position: absolute; width: 6px; height: 6px; border: #CCC 2px solid; border-top: none; border-right: none; left: 50%; top: 50%; transform: translate(-50%,-50%) rotate(-45deg); transition-duration: .4s;}
 .wm-menu .active{background-color: #595; color: #FFF;}
 .wm-menu .active:hover{background-color: #595; color: #FFF;}
