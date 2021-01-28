@@ -22,9 +22,9 @@
         <!-- Menus -->
         <div class="menus">
           <scroll-view style="height: 100%;" ref="menusScroll" :isUpper="false" :isLower="false">
-            <wm-menu v-show="!search.val" ref="Menus" :data="menus" :defaultActive="menusActive" @select="menuClick"></wm-menu>
+            <wm-menu v-show="!search.val" ref="Menus" :data="menus" @active="menuClick"></wm-menu>
             <ul v-if="search.val && search.data.length>0" class="sea_list">
-              <li v-for="(val,key) in search.data" :key="key" @click="request=val.data">{{val.title}}</li>
+              <li v-for="(val,key) in search.data" :key="key" @click="request=val.value">{{val.label}}</li>
             </ul>
             <div v-else-if="search.val" class="sea_null">暂无结果</div>
           </scroll-view>

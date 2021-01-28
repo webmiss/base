@@ -25,8 +25,7 @@ export default {
       config: Env,
       search: {val:'',data:[]},
       // 左侧菜单
-      menus: Menus(),
-      menusActive: [0,0],
+      menus: [],
       // 请求数据
       request: {},
       method: [
@@ -41,17 +40,7 @@ export default {
     }
   },
   mounted(){
-    // 默认菜单
-    const obj = this.$refs.Menus;
-    this.menusActive = Storage.getItem('apiMenusActive')?JSON.parse(Storage.getItem('apiMenusActive')):[0,0];
-    setTimeout(()=>{
-      obj.titleClick(this.menusActive[0]);
-      obj.menuClick(this.menusActive);
-      // 重置高度
-      setTimeout(()=>{
-        this.$refs.menusScroll.refresh();
-      },400);
-    },400);
+    this.menus = Menus();
   },
   methods:{
 
@@ -64,9 +53,29 @@ export default {
       // 数据
       let data = [];
       for(let x in this.menus){
+        // 一级
+        if(!this.menus[x].children){
+          if(reg.test(this.menus[x].label)){
+            data.push({label: this.menus[x].label, value: this.menus[x].value});
+          }
+          continue;
+        }
+        // 二级
         for(let y in this.menus[x].children){
-          if(reg.test(this.menus[x].children[y].title)){
-            data.push(this.menus[x].children[y]);
+          if(!this.menus[x].children[y].children){
+            if(reg.test(this.menus[x].children[y].label)){
+              data.push({label: this.menus[x].children[y].label, value: this.menus[x].children[y].value});
+            }
+            continue;
+          }
+          // 三级
+          for(let z in this.menus[x].children[y].children){
+            if(!this.menus[x].children[y].children[z].children){
+              if(reg.test(this.menus[x].children[y].children[z].label)){
+                data.push({label: this.menus[x].children[y].children[z].label, value: this.menus[x].children[y].children[z].value});
+              }
+              continue;
+            }
           }
         }
       }
@@ -75,19 +84,14 @@ export default {
     },
 
     /* 点击菜单 */
-    menuClick(pos){
-      // 请求数据
-      const data = this.menus[pos[0]].children[pos[1]].data;
-      this.request = data;
+    menuClick(pos,value){
+      this.request = value;
       // Url自适应宽度
       const n = this.request.url.length;
       const urlObj = document.getElementById('requestUrl').style;
       urlObj.width = n*8+'px';
-      // 保存位置
-      Storage.setItem('apiMenusActive',JSON.stringify(pos));
       // 重置结果
       this.result.response = 'result > ';
-      this.$refs.resultScroll.refresh();
     },
 
     /* 发送请求 */
