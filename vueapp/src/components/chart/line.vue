@@ -34,6 +34,7 @@ export default {
       // 对象
       if(!this.chart) this.chart = new F2.Chart({id: this.$refs.chart, pixelRatio: window.devicePixelRatio});
       // 数据
+      this.chart.clear();
       this.chart.source(this.data);
       // 显示
       this.chart.tooltip({
