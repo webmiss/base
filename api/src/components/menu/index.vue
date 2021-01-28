@@ -111,13 +111,13 @@ export default {
       let list = document.getElementById('list'+id);
       this.$emit('select',pos);
       // 选中
-      if(pos.length==1 && !this.menuData[pos[0]].children){
+      if(pos.length==1 && this.menuData[pos[0]] && !this.menuData[pos[0]].children){
         this._checked(id,pos);
         this.$emit('active',pos,this.menuData[pos[0]].value);
-      }else if(pos.length==2 && !this.menuData[pos[0]].children[pos[1]].children){
+      }else if(pos.length==2 && this.menuData[pos[0]] && this.menuData[pos[0]].children[pos[1]] && !this.menuData[pos[0]].children[pos[1]].children){
         this._checked(id,pos);
         this.$emit('active',pos,this.menuData[pos[0]].children[pos[1]].value);
-      }else if(pos.length==3 && !this.menuData[pos[0]].children[pos[1]].children[pos[2]].children){
+      }else if(pos.length==3 && this.menuData[pos[0]] && this.menuData[pos[0]].children[pos[1]] && this.menuData[pos[0]].children[pos[1]].children[pos[2]] && !this.menuData[pos[0]].children[pos[1]].children[pos[2]].children){
         this._checked(id,pos);
         this.$emit('active',pos,this.menuData[pos[0]].children[pos[1]].children[pos[2]].value);
       }
