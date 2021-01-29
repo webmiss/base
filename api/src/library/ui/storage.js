@@ -8,6 +8,10 @@ export default {
   getItem(key){
     return window.localStorage.getItem(key);
   },
+  /* 删除 */
+  removeItem(key){
+    return window.localStorage.removeItem(key);
+  },
   /* 清除 */
   clear(){
     return window.localStorage.clear();
