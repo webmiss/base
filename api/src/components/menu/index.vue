@@ -112,15 +112,19 @@ export default {
       let list = document.getElementById('list'+id);
       this.$emit('select',pos);
       // 选中
+      let data = null;
       if(pos.length==1 && this.menuData[pos[0]] && !this.menuData[pos[0]].children){
         this._checked(id,pos);
-        this.$emit('active',pos,this.menuData[pos[0]].value);
+        data = this.menuData[pos[0]];
+        this.$emit('active',pos,data.value,data.label);
       }else if(pos.length==2 && this.menuData[pos[0]] && this.menuData[pos[0]].children[pos[1]] && !this.menuData[pos[0]].children[pos[1]].children){
         this._checked(id,pos);
-        this.$emit('active',pos,this.menuData[pos[0]].children[pos[1]].value);
+        data = this.menuData[pos[0]].children[pos[1]];
+        this.$emit('active',pos,data.value,data.label);
       }else if(pos.length==3 && this.menuData[pos[0]] && this.menuData[pos[0]].children[pos[1]] && this.menuData[pos[0]].children[pos[1]].children[pos[2]] && !this.menuData[pos[0]].children[pos[1]].children[pos[2]].children){
         this._checked(id,pos);
-        this.$emit('active',pos,this.menuData[pos[0]].children[pos[1]].children[pos[2]].value);
+        data = this.menuData[pos[0]].children[pos[1]].children[pos[2]];
+        this.$emit('active',pos,data.value,data.label);
       }
       // 动画
       if(!list) return false;
@@ -132,11 +136,15 @@ export default {
         list.style.height = 'auto';
       }
     },
-
     /* 选中 */
     _checked(id,pos){
       this.active = id.substr(1,id.length);
       if(this.isSave) Storage.setItem('wmMenusActive',JSON.stringify(pos));
+    },
+
+    /* 清除 */
+    clear(){
+      Storage.removeItem('wmMenusActive');
     },
 
   }
