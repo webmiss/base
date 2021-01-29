@@ -8,13 +8,14 @@ const _isInclude = (name,type)=>{
 }
 
 /* 加载Css和JS */
-export default (files,type,reload)=>{
+export default (files,reload,type)=>{
   let ext = '';
   let isLoad = false;
   reload = reload || false;
   for(let i=0; i<files.length;i++){
+    // 是否存在
     isLoad = _isInclude(files[i],type);
-    if(isLoad && reload) isLoad=true;
+    if(reload) isLoad=false;
     ext = files[i].split('.');
     // JS
     if(ext[ext.length-1]=='js' || type=='js'){

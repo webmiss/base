@@ -34,7 +34,7 @@ export default {
   },
   mounted(){
     // 高德地图
-    LoadHtml(['https://webapi.amap.com/maps?v=1.4.15&key=$key&plugin=AMap.Riding'],'js',true);
+    LoadHtml(['https://webapi.amap.com/maps?v=1.4.15&key=$key&plugin=AMap.Riding'],true,'js');
     // 折线图
     this.chartData.line = [
       {type: '收入', label:'1月', value:50},
