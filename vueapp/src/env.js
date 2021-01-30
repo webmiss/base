@@ -3,13 +3,15 @@ const title = 'WebMIS-VueAPP';
 const baseUrl = 'https://demo-api.webmis.vip/';
 const socket = 'wss://demo-api.webmis.vip/wss';
 
-export default {
+module.exports = {
   dev: false, //开发模式
   title: title, //应用名称
+  keywords: 'WebMIS,Vue混合型APP',
+  description: 'WebMIS全栈开发基础框架.技术,PHP,Python,SpringBoot,Phalcon,Flutter,NodeJS,Vue,Swoole,Redis,API',
   version: '1.0.0', //应用版本
   baseUrl: baseUrl, //数据地址
   apiUrl: baseUrl+'api/', //数据接口地址
-  copy: 'Copyright © WebMIS.VIP 2020',  //版权信息
+  copy: 'Copyright © WebMIS.VIP 2021',  //版权信息
   /* 主题 */
   themes: {
     primary: '#6FB737', //主色

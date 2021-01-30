@@ -1,5 +1,7 @@
-export default {
+module.exports = {
   title: 'WebMIS API', // 应用名称
+  keywords: 'WebMIS,Vue接口工具',
+  description: 'WebMIS全栈开发基础框架.技术,PHP,Python,SpringBoot,Phalcon,Flutter,NodeJS,Vue,Swoole,Redis,API',
   version: '1.0.0', // 应用版本
   apiUrl: 'https://demo-php.webmis.vip/api/',  // 数据接口地址
   copy: 'Copyright © WebMIS.vip 2021',  // 版权信息

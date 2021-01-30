@@ -15,13 +15,15 @@ if(lag && lag.name=='python'){
   socket = 'wss://demo-php.webmis.vip/wss';
 }
 
-export default {
+module.exports = {
   dev: false, // 是否开发模式
   title: title, // 应用名称
+  keywords: 'WebMIS,Vue后台框架',
+  description: 'WebMIS全栈开发基础框架.技术,PHP,Python,SpringBoot,Phalcon,Flutter,NodeJS,Vue,Swoole,Redis,API',
   version: '1.0.0', // 应用版本
   baseUrl: baseUrl, // 数据地址
   apiUrl: baseUrl+'admin/', // 数据接口地址
-  copy: 'Copyright © WebMIS.vip 2020',  // 版权信息
+  copy: 'Copyright © WebMIS.vip 2021',  // 版权信息
   /* 主题 */
   themes: {
     primary: '#6FB737', //主色
