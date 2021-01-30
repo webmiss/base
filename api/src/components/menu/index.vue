@@ -72,7 +72,7 @@ export default {
   name: 'Menu',
   props: {
     data: {type: Array, default: []}, //数据: [{icon:'',label:'标题',value:'',children:[]}]
-    defaultIndex: {type: Array, default: [0,0,0]},  //默认选择
+    defaultIndex: {type: Array, default: []},  //默认选择
     isSave: {type: Boolean, default: true},  //是否记录位置
     height: {type: Number, default: 40},  //高度
     textColor: {type: String, default: Env.themes.text1}, //颜色
@@ -81,26 +81,32 @@ export default {
     return {
       menuData: [],
       active: '',
+      arrowStyle: ['translate(-50%,-50%) rotate(-45deg)','translate(-50%,-50%) rotate(135deg)'],
+      listStyle: ['0px','auto'],
     }
   },
   watch:{
     data(){
       this.init();
-    }
+      this.reset();
+    },
+    defaultIndex(val){
+      this._titleClick(val);
+      setTimeout(()=>{ this._activeMenu(val); },400);
+    },
   },
   methods:{
 
     /* 初始化 */
     init(){
       this.menuData = this.data;
-      setTimeout(()=>{
+      // 获取保存
+      if(this.isSave){
         let index = [];
         const active = Storage.getItem('wmMenusActive')?JSON.parse(Storage.getItem('wmMenusActive')):this.defaultIndex;
-        for(let i in active){
-          index.push(active[i]);
-          this._titleClick(index);
-        }
-      },400);
+        this._titleClick(active);
+        setTimeout(()=>{ this._activeMenu(active); },400);
+      }
     },
 
     /* 展开菜单 */
@@ -129,11 +135,11 @@ export default {
       // 动画
       if(!list) return false;
       if(list.style.height=='auto'){
-        arrow.style.transform = 'translate(-50%,-50%) rotate(-45deg)';
-        list.style.height = '0px';
+        arrow.style.transform = this.arrowStyle[0];
+        list.style.height = this.listStyle[0];
       }else{
-        arrow.style.transform = 'translate(-50%,-50%) rotate(135deg)';
-        list.style.height = 'auto';
+        arrow.style.transform = this.arrowStyle[1];
+        list.style.height = this.listStyle[1];
       }
     },
     /* 选中 */
@@ -141,10 +147,41 @@ export default {
       this.active = id.substr(1,id.length);
       if(this.isSave) Storage.setItem('wmMenusActive',JSON.stringify(pos));
     },
+    /* 默认菜单 */
+    _activeMenu(pos){
+      let id = '';
+      for(let i in pos){
+        id += '_'+pos[i];
+        this._setStyle(id,1);
+      }
+    },
+    /* 设置样式 */
+    _setStyle(id,n){
+      const arrow = document.getElementById('arrow'+id);
+      const list = document.getElementById('list'+id);
+      if(arrow) arrow.style.transform = this.arrowStyle[n];
+      if(list) list.style.height = this.listStyle[n];
+    },
+
+    /* 重置 */
+    reset(){
+      const data = this.menuData;
+      for(let x in data){
+        this._setStyle('_'+x,0);
+        for(let y in data[x].children){
+          this._setStyle('_'+x+'_'+y,0);
+          for(let z in data[x].children[y].children){
+            this._setStyle('_'+x+'_'+y+'_'+z,0);
+          }
+        }
+      }
+    },
 
     /* 清除 */
     clear(){
       Storage.removeItem('wmMenusActive');
+      this._titleClick(this.defaultIndex);
+      this.active = '';
     },
 
   }
