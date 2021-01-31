@@ -29,7 +29,7 @@
 /* Content */
 .html_body{padding-top: 56px; height: calc(100% - 56px); background-color: #24292E;}
 .html_body .body{position: relative; width: 100%; height: calc(100% - 40px);}
-.html_body_bg{position: absolute; width: 100%; height: 100%; mask-image: url(../img/bg.svg); -webkit-mask-image: url(../img/bg.svg); background-color: #000;}
+.html_body_bg{position: absolute; width: 100%; height: 100%; mask-image: url(../img/bg.svg); -webkit-mask-image: url(../img/bg.svg); background-color: rgba(0,0,0,0.4);}
 .html_body_ct{position: relative; overflow: hidden; width: 100%; height: 100%; background-color: #F2F4F8; border-radius: 4px;}
 
 /* 响应式布局 */

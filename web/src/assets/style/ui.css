@@ -29,6 +29,15 @@ h3{font-size: 16px; font-weight: 500;}
 .bLine{text-align: center; color: #999; line-height: 50px;}
 .bLine::before{content: '我是有底线的';}
 .hide{display: none;}
+.mask{
+  mask-position: center;
+  -webkit-mask-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-size: contain;
+  -webkit-mask-size: contain;
+  background-color: #666;
+}
 
 /* 布局 */
 .flex{display: flex; justify-content: space-between; flex-wrap: wrap;}

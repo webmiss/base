@@ -19,6 +19,7 @@
   </div>
   <!-- 内容 -->
   <div class="html_body">
+    <div class="mask html_body_bg"></div>
     <!-- 客服 -->
     <ul class="ser_body">
       <li>
