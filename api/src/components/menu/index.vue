@@ -65,10 +65,11 @@
 .wm-menu_list{overflow: hidden; height: 0px; transition-duration: .4s;}
 </style>
 
-<script>
-import Env from '@/env.js'
-import Storage from '@/library/ui/storage'
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+import Env from '../../env'
+import Storage from '../../library/ui/storage'
+export default defineComponent({
   name: 'Menu',
   props: {
     data: {type: Array, default: []}, //数据: [{icon:'',label:'标题',value:'',children:[]}]
@@ -78,12 +79,11 @@ export default {
     textColor: {type: String, default: Env.themes.text1}, //颜色
   },
   data(){
-    return {
-      menuData: [],
-      active: '',
-      arrowStyle: ['translate(-50%,-50%) rotate(-45deg)','translate(-50%,-50%) rotate(135deg)'],
-      listStyle: ['0px','auto'],
-    }
+    const menuData: Array<any> = [];
+    const active: string = '';
+    const arrowStyle: string[] = ['translate(-50%,-50%) rotate(-45deg)','translate(-50%,-50%) rotate(135deg)'];
+    const listStyle: string[] = ['0px','auto'];
+    return {menuData, active, arrowStyle, listStyle,}
   },
   watch:{
     data(){
@@ -99,18 +99,19 @@ export default {
 
     /* 初始化 */
     init(){
-      this.menuData = this.data;
+      this.menuData = <Array<any>>this.data;
       // 获取保存
       if(this.isSave){
-        let index = [];
-        const active = Storage.getItem('wmMenusActive')?JSON.parse(Storage.getItem('wmMenusActive')):this.defaultIndex;
+        let active: number[] = [];
+        let pos = Storage.getItem('wmMenusActive');
+        active = pos?JSON.parse(pos):this.defaultIndex;
         this._titleClick(active);
         setTimeout(()=>{ this._activeMenu(active); },400);
       }
     },
 
     /* 展开菜单 */
-    _titleClick(pos){
+    _titleClick(pos: number[]){
       // 位置
       let id = '';
       for(let i in pos) id += '_'+pos[i];
@@ -133,30 +134,27 @@ export default {
         this.$emit('active',pos,data.value,data.label);
       }
       // 动画
-      if(!list) return false;
-      if(list.style.height=='auto'){
-        arrow.style.transform = this.arrowStyle[0];
-        list.style.height = this.listStyle[0];
+      if(list && list.style.height=='auto'){
+        this._setStyle(id,0);
       }else{
-        arrow.style.transform = this.arrowStyle[1];
-        list.style.height = this.listStyle[1];
+        this._setStyle(id,1);
       }
     },
     /* 选中 */
-    _checked(id,pos){
+    _checked(id: string, pos: number[]){
       this.active = id.substr(1,id.length);
       if(this.isSave) Storage.setItem('wmMenusActive',JSON.stringify(pos));
     },
     /* 默认菜单 */
-    _activeMenu(pos){
-      let id = '';
-      for(let i in pos){
-        id += '_'+pos[i];
+    _activeMenu(pos: number[]){
+      let id: string = '';
+      for(let val of pos){
+        id += '_'+val;
         this._setStyle(id,1);
       }
     },
     /* 设置样式 */
-    _setStyle(id,n){
+    _setStyle(id: string, n: number){
       const arrow = document.getElementById('arrow'+id);
       const list = document.getElementById('list'+id);
       if(arrow) arrow.style.transform = this.arrowStyle[n];
@@ -180,10 +178,10 @@ export default {
     /* 清除 */
     clear(){
       Storage.removeItem('wmMenusActive');
-      this._titleClick(this.defaultIndex);
+      this._titleClick(<number[]>this.defaultIndex);
       this.active = '';
     },
 
   }
-}
+});
 </script>

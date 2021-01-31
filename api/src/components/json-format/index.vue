@@ -17,20 +17,21 @@
 .wm-json_format_dark .null{color: #C92C2C;}
 </style>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+export default defineComponent({
   name: 'JsonFormat',
   props: {
-    json: '', //数据: String || Object
+    json: null, //数据: Object
     effect: {type: String, default: 'plain'}, //样式: plain、dark
   },
   methods:{
 
     /* 初始化 */
-    formatJson(json){
+    formatJson(json: any){
       if (typeof json!=="string") json = JSON.stringify(json, undefined, 2);
       json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g,'>');
-      return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+      return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match: any) {
         let cls = 'number';
         if(/^"/.test(match)){
           cls = /:$/.test(match)?'key':'string';
@@ -44,5 +45,5 @@ export default {
     },
 
   },
-}
+});
 </script>

@@ -18,8 +18,9 @@
 .wm-radio_item .active::after{content: ""; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 4px; height: 4px; background-color: #FFF; border-radius: 50%;}
 </style>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+export default defineComponent({
   name: 'Radio',
   props: {
     data: {type: Array, default: []}, //数据: [{name:'男',val:'男'},{name:'女',val:'女'}]
@@ -36,14 +37,15 @@ export default {
   methods:{
 
     /* 点击 */
-    radioClick(val){
-      for(let i in this.data){
-        this.data[i].checked = false;
+    radioClick(val: string){
+      let v: any;
+      for(v of this.data){
+        v.checked = false;
         // 勾选
-        if(this.data[i].val==val) this.data[i].checked = true;
+        if(v.val==val) v.checked = true;
       }
     },
 
   },
-}
+});
 </script>

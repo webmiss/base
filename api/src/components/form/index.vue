@@ -7,8 +7,9 @@
 <style scoped>
 </style>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+export default defineComponent({
   name: 'Form',
   props: {
     labelWidth: {type: String, default: '90px'},
@@ -23,9 +24,9 @@ export default {
     /* 初始化 */
     init(){
       // 设置宽度
-      const form = this.$refs.form;
-      const label = form.getElementsByTagName('label');
-      const body = form.getElementsByClassName('wm-form_item_body');
+      const form: any = this.$refs.form;
+      const label: any = form.getElementsByTagName('label');
+      const body: any = form.getElementsByClassName('wm-form_item_body');
       for(let i=0; i<label.length; i++){
         label[i].style.width = this.labelWidth;
         body[i].style.marginLeft = this.labelWidth;
@@ -34,5 +35,5 @@ export default {
     },
 
   },
-}
+});
 </script>

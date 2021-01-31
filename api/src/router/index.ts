@@ -1,7 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router'
-
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 /* 路由 */
-const routes = [
+const routes: Array<RouteRecordRaw> = [
   {path:'/', name:'index', component:()=>import('../views/Index.vue')},
   {path:'/refresh', name:'Refresh', component:()=>import('../views/Refresh.vue')},
 ]

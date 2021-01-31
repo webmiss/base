@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-  <router-view></router-view>
+  <router-view />
 </div>
 </template>
 
@@ -21,4 +21,4 @@
 @import url('./assets/style/app.css');
 </style>
 
-<script src="./App.js"></script>
+<script lang="ts" src="./App.ts"></script>

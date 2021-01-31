@@ -22,6 +22,14 @@ elif [ "$s" == "install" ]; then
 # 打包
 elif [ "$s" == "build" ]; then
   yarn build
+# 预览
+elif [ "$s" == "http" ]; then
+  {
+    http-server ./dist
+  } || {
+    yarn global add http-server
+    http-server ./dist
+  }
 else
   helpText
 fi

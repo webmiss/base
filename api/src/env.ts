@@ -1,11 +1,10 @@
-module.exports = {
+export default {
   title: 'WebMIS API', // 应用名称
-  keywords: 'WebMIS,Vue接口工具',
-  description: 'WebMIS全栈开发基础框架.技术,PHP,Python,SpringBoot,Phalcon,Flutter,NodeJS,Vue,Swoole,Redis,API',
   version: '1.0.0', // 应用版本
-  apiUrl: 'https://demo-php.webmis.vip/api/',  // 数据接口地址
+  apiUrl: 'https://demo-php.webmis.vip/api/',  // 数据接口
   copy: 'Copyright © WebMIS.vip 2021',  // 版权信息
-  token: '', //Token
+  /* Token */
+  token: '',
   /* 主题 */
   themes: {
     primary: '#6FB737', //主色
@@ -25,9 +24,11 @@ module.exports = {
     border4: '#F2F4F8', //四级边框
   },
   /* 请求 */
-  request:{
+  request: {
     headers: {
-      "Content-Type":"application/x-www-form-urlencoded"  // 表单方式
+      "Content-Type": "application/x-www-form-urlencoded"  // 表单方式
     },
+    responseType: 'json', //返回类型
+    timeout: 10000, //超时设置
   },
 }

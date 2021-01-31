@@ -8,11 +8,12 @@
 .wm-form_title{line-height: 40px; font-weight: 500; color: #666;}
 </style>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+export default defineComponent({
   name: 'FormTitle',
   props: {
     fontSize: {type: String, default: '15px'},
   },
-}
+});
 </script>

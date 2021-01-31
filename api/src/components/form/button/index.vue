@@ -10,8 +10,9 @@
 .wm-button:disabled{background-color: #999;}
 </style>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+export default defineComponent({
   name: 'Botton',
   props: {
     type: {type: String, default: 'primary'}, //类型: primary、info、warning、danger
@@ -20,8 +21,7 @@ export default {
     disabled: {type: Boolean, default: false},  //是否禁用
   },
   data(){
-    return {
-      color: {
+    const color: object = {
         primary:{
           plain:['#C2E7B0','#F0F9EB','#6FB737'],
           dark:['#595','#595','#FFF'],
@@ -38,42 +38,42 @@ export default {
           plain:['#FBC4C4','#FEF0F0','#F56C6C'],
           dark:['#F56C6C','#F56C6C','#FFF'],
         },
-      },
-    }
+      };
+    return {color};
   },
   mounted(){
-    const box = this.$refs.Button.style;
-    const color = this.color[this.type][this.effect];
+    const box: any = this.$refs.Button;
+    const color = (this.color as any)[this.type][this.effect];
     // 颜色
-    box.borderColor = color[0];
-    box.backgroundColor = color[1];
-    box.color = color[2];
+    box.style.borderColor = color[0];
+    box.style.backgroundColor = color[1];
+    box.style.color = color[2];
     // 大小
     if(this.size=='default'){
-       box.height = '40px';
-       box.lineHeight = '40px';
-       box.fontSize = '14px';
-       box.padding = '0 24px';
+       box.style.height = '40px';
+       box.style.lineHeight = '40px';
+       box.style.fontSize = '14px';
+       box.style.padding = '0 24px';
     }else if(this.size=='medium'){
-       box.height = '30px';
-       box.lineHeight = '30px';
-       box.fontSize = '13px';
-       box.padding = '0 16px';
+       box.style.height = '30px';
+       box.style.lineHeight = '30px';
+       box.style.fontSize = '13px';
+       box.style.padding = '0 16px';
     }else if(this.size=='mini'){
-       box.height = '24px';
-       box.lineHeight = '24px';
-       box.fontSize = '12px';
-       box.padding = '0 8px';
+       box.style.height = '24px';
+       box.style.lineHeight = '24px';
+       box.style.fontSize = '12px';
+       box.style.padding = '0 8px';
     }
   },
   methods:{
 
     /* 透明度 */
-    opacity(val){
-      const box = this.$refs.Button.style;
-      box.opacity = val;
+    opacity(val: number){
+      const box: any = this.$refs.Button;
+      box.style.opacity = val;
     },
 
   },
-}
+});
 </script>

@@ -25,9 +25,11 @@
 .wm-scroll_load_up{text-align: center;}
 </style>
 
-<script>
-import Env from '@/env.js'
-import wmLoading from '../loading'
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+import Env from '../../env'
+import wmLoading from '../loading/index.vue'
 import BScroll from '@better-scroll/core'
 import PullDown from '@better-scroll/pull-down'
 import Pullup from '@better-scroll/pull-up'
@@ -37,7 +39,7 @@ import ScrollBar from '@better-scroll/scroll-bar'
 import MouseWheel from '@better-scroll/mouse-wheel'
 BScroll.use(PullDown).use(Pullup).use(ObserveDOM).use(ObserveImage).use(ScrollBar).use(MouseWheel);
 
-export default {
+export default defineComponent({
   name: 'Scroll',
   components: {wmLoading},
   props: {
@@ -61,26 +63,25 @@ export default {
     preventDefault: {type: Boolean, default: true},  //允许浏览器复制
   },
   data(){
-    return {
-      bscroll: null,
-      isPullDown: true,
-      isPullUp: false,
-      result: {x:0,y:0},
-    }
+    const bscroll: any = null;
+    const isPullDown: boolean = true;
+    const isPullUp: boolean = false;
+    const result: any = {x:0,y:0};
+    return {bscroll, isPullDown, isPullUp, result,};
   },
   mounted(){
     // 初始化
     this.init();
   },
   beforeUnmount(){
-    this.bscroll.destroy();
+    (this.bscroll as any).destroy();
   },
   methods:{
 
     /* 初始化 */
     init(){
       // 配置
-      this.bscroll = new BScroll(this.$refs.Scroll, {
+      const config: object = {
         click: true,
         tap: true,
         mouseWheel: true,
@@ -100,7 +101,9 @@ export default {
         startY: this.startY,
         scrollX: this.scrollX,
         scrollY: this.scrollY,
-      });
+      }
+      let obj: any = this.$refs.Scroll;
+      this.bscroll = new BScroll(obj, config);
       // 下拉
       if(this.isUpper) this.bscroll.on('pullingDown', this.pullingDown);
       // 上拉
@@ -137,7 +140,7 @@ export default {
     },
 
     /* 滚动 */
-    scroll(res){
+    scroll(res: any){
       this.result.x = res.x;
       this.result.y = -res.y;
       this.$emit('scroll',this.result);
@@ -151,10 +154,10 @@ export default {
     },
 
     /* 位置 */
-    scrollTo(x,y,time){
+    scrollTo(x: number,y: number, time: number){
       this.bscroll.scrollTo(x,y,time);
     },
 
   }
-}
+});
 </script>

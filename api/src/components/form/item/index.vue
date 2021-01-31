@@ -13,21 +13,21 @@
 .wm-form_item_body{margin-left: 80px;}
 </style>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+export default defineComponent({
   name: 'FormItem',
   props: {
     type: {type: String, default: 'label'},
     label: {type: String, default: ''},
   },
   data(){
-    return {
-      margin: '',
-    }
+    const margin: string = '';
+    return {margin};
   },
   mounted(){
     if(this.type=='label') this.margin = '8px 0';
     else if(this.type=='botton') this.margin = '24px 0';
   },
-}
+});
 </script>

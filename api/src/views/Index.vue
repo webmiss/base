@@ -119,4 +119,4 @@
 .max_width{max-width: 640px;}
 </style>
 
-<script src="./Index.js"></script>
+<script lang="ts" src="./Index.ts"></script>
