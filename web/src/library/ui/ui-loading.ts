@@ -1,6 +1,5 @@
 /* UI-加载 */
-export default (time,alpha)=>{
-  alpha = alpha || 0.1;
+export default (time: number = 10000, alpha: number = 0.1)=>{
   // 清理
   let load = document.getElementsByClassName('wm-ui_load')[0];
   if(load) document.body.removeChild(load);
@@ -12,7 +11,6 @@ export default (time,alpha)=>{
   // 追加
   document.body.appendChild(obj);
   // 10秒后清除
-  time = time || 10000;
   const loadingTime = setTimeout(()=>{
     load = document.getElementsByClassName('wm-ui_load')[0];
     if(load) document.body.removeChild(load);

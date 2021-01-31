@@ -1,7 +1,7 @@
 /* UI-提示 */
-export default (text,time)=>{
+export default (text: string='提示', time: number = 3000)=>{
   // 创建对象
-  let obj = document.createElement('div');
+  let obj: HTMLDivElement = document.createElement('div');
   obj.setAttribute('class','wm-ui_toast');
   obj.innerHTML = '<span>'+text+'</span>';
   // 追加
@@ -12,7 +12,6 @@ export default (text,time)=>{
     obj.style.top = '10%';
   },100);
   // 3秒消失
-  time = time || 3000;
   setTimeout(()=>{
     document.body.removeChild(obj);
   },time);

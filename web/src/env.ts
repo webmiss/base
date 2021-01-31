@@ -22,9 +22,11 @@ export default {
     border4: '#F2F4F8', //四级边框
   },
   /* 请求 */
-  request:{
+  request: {
     headers: {
-      "Content-Type":"application/x-www-form-urlencoded"  // 表单方式
+      "Content-Type": "application/x-www-form-urlencoded"  // 表单方式
     },
+    responseType: 'json', //返回类型
+    timeout: 10000, //超时设置
   },
 }
