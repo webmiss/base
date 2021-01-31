@@ -1,0 +1,7 @@
+*{margin: 0; padding: 0;}
+.doc_html{overflow: hidden; line-height: 24px; font-size: 14px;}
+.doc_html h1{padding: 16px 0; font-size: 1.8em; font-weight: 600; text-align: center;}
+.doc_html h2{padding: 16px 0 8px; font-size: 1.5em; font-weight: 600;}
+.doc_html ul{list-style: initial; list-style-position: inside;}
+.doc_html ul li{padding-left: 16px;}
+.doc_html pre{overflow: hidden; margin: 8px 0; height: auto; padding: 16px; background-color: #F2F4F8; border-radius: 4px; border: #E2E4E8 1px solid;}
