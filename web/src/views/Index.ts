@@ -8,10 +8,9 @@ import wmPopup from '@/components/popup/index.vue'
 export default defineComponent({
   components: {wmPopup},
   data(){
-    return {
-      apiUrl: Env.apiUrl,
-      code: {show: false,img: ''},
-    }
+    const apiUrl: string = Env.apiUrl;
+    const code: any = {show: false,img: ''};
+    return {apiUrl, code,}
   },
   mounted(){
   },
