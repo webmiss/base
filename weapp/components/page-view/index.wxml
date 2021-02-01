@@ -5,7 +5,7 @@
       <slot name="left"></slot>
     </view>
     <!-- Right -->
-    <view class="page_view_right flex center" style="right: calc(100% - 80px)">
+    <view class="page_view_right flex center" style="right: 112px">
       <slot name="right"></slot>
     </view>
     <!-- Title -->

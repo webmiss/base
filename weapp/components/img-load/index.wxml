@@ -1,0 +1,12 @@
+<view wx:if="{{url}}" class="before-pack" style="width:{{width}};height:{{height?height:0}};padding-top:{{height?0:width}};border-radius:{{radius}};box-shadow:{{shadow}};border:{{border}}; background:url({{(errorFlag?logoImg:'')}}) no-repeat center {{bgColor}}; background-size:{{logoSize}}">
+  <!-- 加载中 -->
+  <view wx:if="{{!finishLoadFlag}}" class="{{!errorFlag?'errorFlagA':'errorFlagB'}}" style="width:{{width}};background-color:{{bgColor}};border-radius:{{radius}}">
+    <view class="ui-loading" style="width:{{loadSize}};padding-top:{{loadSize}}" wx:if="{{!errorFlag}}"></view>
+  </view>
+  <!-- 加载成功 -->
+  <view wx:else class="originImg" style="background-image:url({{url}});width:{{width}};height:{{height}};border-radius:{{radius}}" ></view>
+  <!-- 是否加载成功 -->
+  <image src="{{url}}" style="opacity: 0; width: 0; height: 0; -moz-user-select: none; -webkit-user-select: none; -ms-user-select: none; -khtml-user-select: none; user-select: none;" bindload="finishLoad" binderror="errorLoad" />
+</view>
+<view wx:else class="before-pack" style="width:{{width}};height:{{height?height:0}};padding-top:{{height?0:width}};border-radius:{{radius}};box-shadow:{{shadow}};border:{{border}}; background:url({{logoImg}}) no-repeat center {{bgColor}}; background-size:{{logoSize}}"></view>
+
