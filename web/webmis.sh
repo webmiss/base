@@ -11,6 +11,7 @@ helpText(){
   echo "  serve         运行: yarn serve"
   echo "  install       安装依赖包: yarn install"
   echo "  build         打包: yarn build"
+  echo "  http          预览: http-server ./dist"
 }
 
 # 运行

@@ -1,7 +1,12 @@
+/* 开发 */
+// const apiUrl: string = 'http://localhost:9010/';
+/* 正式 */
+const apiUrl: string = 'http://demo-php.webmis.vip/';
+
 export default {
   title: 'WebMIS 全栈开发基础框架', // 应用名称
   version: '1.0.0', // 应用版本
-  apiUrl: 'http://webmis.vip/',  // 数据接口
+  apiUrl: apiUrl,  // 数据接口
   copy: 'Copyright © WebMIS.vip 2021',  // 版权信息
   /* 主题 */
   themes: {

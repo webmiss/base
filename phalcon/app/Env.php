@@ -28,7 +28,7 @@ class Env{
 
   /* 数据库 */
   static function db() {
-    $conf = [
+    return [
       'adapter'=> 'Mysql',  //类型
       'host'=> '154.91.144.171', //主机
       'port'=> 3306,  //端口
@@ -38,18 +38,24 @@ class Env{
       'charset'=> 'utf8', //编码
       'persistent'=> true, //持久链接
     ];
-    return $conf;
   }
 
   /* 缓存数据库 */
   static function redis() {
-    $conf = [
+    return [
       'host'=> '127.0.0.1', //主机
       'port'=> 6379,  //端口
       'password'=> '',  //密码
       'db'=> 0, //硬盘
     ];
-    return $conf;
+  }
+
+  /* 百度AI */
+  static function baidu() {
+    return [
+      'appKey'=> 'fFu2i5oNALIrRQ1KAhAvV5v5', //Key
+      'appSecret'=> 'AQsHFNfgugbGErIdu7Dwxap6Pvreiu0z', //Key
+    ];
   }
 
 }

@@ -2,18 +2,12 @@
 namespace app\modules\api\controller;
 
 use app\common\Base;
-use app\library\Code;
 
 class IndexController extends Base{
 
   /* 首页 */
   function indexAction(){
-    return self::getJSON(['code'=>0,'msg'=>'Api']);
-  }
-
-  /* 错误代码 */
-  function allCodeAction(){
-    return self::getJSON(['code'=>0,'list'=>Code::get('all')]);
+    return self::getJSON(['code'=>0, 'msg'=>'Api']);
   }
 
   /* APP更新 */

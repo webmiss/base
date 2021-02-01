@@ -10,7 +10,9 @@ define('BASE_PATH', __DIR__);
 define('APP_PATH', BASE_PATH . '/app');
 
 // Composer
-require BASE_PATH.'/vendor/autoload.php';
+$load = BASE_PATH.'/vendor/autoload.php';
+if(!is_file($load)) die('安装依赖包: composer install');
+require $load;
 
 try {
   // 注册堆栈框架
