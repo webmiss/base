@@ -1,6 +1,0 @@
-<view class="tabar_body">
-  <view class="tabar_item {{active==0?'tabar_item_active':''}}" onTap="navClick" data-n="0">
-    <text class="icons icon_home"></text>
-    <view class="name">首页</view>
-  </view>
-</view>

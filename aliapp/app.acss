@@ -1,7 +1,0 @@
-
-/* 字体图标 */
-@import './assets/style/icon.acss';
-/* UI */
-@import './assets/style/ui.acss';
-/* APP */
-@import './assets/style/app.acss';

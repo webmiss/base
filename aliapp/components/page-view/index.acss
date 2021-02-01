@@ -1,6 +1,0 @@
-.page_view_html{position: absolute; background-color: #F2F2F2; width: 100%; height: 100%;}
-.page_view_header{position: absolute; z-index: 999; width: 100%;}
-.page_view_title{height: 100%; font-size: 16px; text-align: center;}
-.page_view_left{position: absolute; left: 10px; font-size: 14px;}
-.page_view_right{position: absolute; right: 10px;}
-.page_view_body{height: 100%;}
