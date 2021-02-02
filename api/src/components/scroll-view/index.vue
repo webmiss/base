@@ -154,7 +154,7 @@ export default defineComponent({
     },
 
     /* 位置 */
-    scrollTo(x: number,y: number, time: number){
+    scrollTo(x: number=0, y: number=0, time?: number){
       this.bscroll.scrollTo(x,y,time);
     },
 

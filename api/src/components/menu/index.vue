@@ -115,8 +115,6 @@ export default defineComponent({
       // 位置
       let id = '';
       for(let i in pos) id += '_'+pos[i];
-      let arrow = document.getElementById('arrow'+id);
-      let list = document.getElementById('list'+id);
       this.$emit('select',pos);
       // 选中
       let data = null;
@@ -134,6 +132,7 @@ export default defineComponent({
         this.$emit('active',pos,data.value,data.label);
       }
       // 动画
+      let list = document.getElementById('list'+id);
       if(list && list.style.height=='auto'){
         this._setStyle(id,0);
       }else{
