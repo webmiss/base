@@ -26,9 +26,11 @@ elif [ "$s" == "build" ]; then
 # 预览
 elif [ "$s" == "http" ]; then
   {
+    yarn build
     http-server ./dist
   } || {
     yarn global add http-server
+    yarn build
     http-server ./dist
   }
 else
