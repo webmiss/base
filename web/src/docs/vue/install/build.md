@@ -62,7 +62,7 @@ keytool -v -list -keystore appName.keystore
 
 ## iOS
 - [苹果开发者中心](https://developer.apple.com/)
-- 无苹果电脑可参考 Linux > [VirtualBox-MacOS](/docs/linux/archlinux/macos)
+- 无苹果电脑可参考 Linux > [VirtualBox-MacOS](/docs/linux/shell/macos)
 
 ### 1) P12证书
 - 钥匙串访问 > 证书助理 > 从证书颁发结构请求证书 > 储存到本地

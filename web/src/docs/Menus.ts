@@ -65,10 +65,15 @@ export default {
       {label:'Linux文档', children:[
         {label: 'Shell基础', value: 'docs/linux/shell/index'},
         {label: 'SSL免费证书', value: 'docs/linux/shell/ssl'},
+        {label: 'VBox安装MacOS', value: 'docs/linux/shell/macos'},
       ]},
       {label:'CentOS', children:[
         {label: '基础配置', value: 'docs/linux/centos/config'},
         {label: 'LNMP环境', value: 'docs/linux/centos/lnmp'},
+      ]},
+      {label:'ArchLinux', children:[
+        {label: '安装&配置', value: 'docs/linux/archlinux/install'},
+        {label: 'GNOME3桌面', value: 'docs/linux/archlinux/gnome'},
       ]},
     ];
   },
