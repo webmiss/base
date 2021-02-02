@@ -1,9 +1,9 @@
 ## 一、打包
-#### Bash方式
+#### Bash命令
 ```bash
 ./webmis.sh build
 ```
-#### Yarn方式
+#### Yarn命令
 ```bash
 yarn build
 ```
@@ -14,11 +14,11 @@ yarn build
 <br/>
 
 ## 二、本地预览
-#### Bash方式
+#### Bash命令
 ```bash
 ./webmis.sh http
 ```
-#### Yarn方式
+#### Yarn命令
 ```bash
 # 安装
 yarn global add http-server

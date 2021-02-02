@@ -26,7 +26,7 @@ vue -V
 
 ## Windows
 #### 1) 安装Git
-- 下载 [Git](https://git-scm.com/download/win)
+- 下载: [Git](https://git-scm.com/download/win)
 - 安装: 64位版 > 重启系统
 - VsCode: "ctrl+`" > "终端" > "powershell" > "选择默认 shell" > "Git Bash" > 重启
 - 终端输入: "cmd" 和 "bash" 可相互切换

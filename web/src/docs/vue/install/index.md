@@ -5,13 +5,17 @@
 - Api(接口工具)：[https://demo-api.webmis.vip](https://demo-api.webmis.vip)
 - Admin(后台管理)：[https://demo-admin.webmis.vip](https://demo-admin.webmis.vip)
 
+<br/>
+
 ## 一、下载
 ```bash
 git clone https://github.com/webmiss/base
 ```
 
+<br/>
+
 ## 二、运行
-#### Bash方式
+#### Bash命令
 ```bash
 # 依赖包
 ./webmis.sh install
@@ -19,7 +23,7 @@ git clone https://github.com/webmiss/base
 ./webmis.sh serve
 ```
 
-#### Yarn方式
+#### Yarn命令
 ```bash
 # 依赖包
 yarn install
