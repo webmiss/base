@@ -1,7 +1,7 @@
 /* 开发 */
-// const apiUrl: string = 'http://localhost:9010/';
+const apiUrl: string = 'http://localhost:9010/';
 /* 正式 */
-const apiUrl: string = 'http://demo-php.webmis.vip/';
+// const apiUrl: string = 'http://demo-php.webmis.vip/';
 
 export default {
   title: 'WebMIS 全栈开发基础框架', // 应用名称

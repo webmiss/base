@@ -1,23 +1,30 @@
-# 安装
-```html
-<wm-swipe class="swipe">
-  <wm-swipe-item class="swipe_item">
-    <wm-chart-line :data="chartData.line" unit="元" :isDot="false"></wm-chart-line>
-  </wm-swipe-item>
-  <wm-swipe-item class="swipe_item">
-    <wm-chart-interval :data="chartData.interval" unit="元"></wm-chart-interval>
-  </wm-swipe-item>
-  <wm-swipe-item class="swipe_item">
-    <wm-chart-pie :data="chartData.pie" unit="元"></wm-chart-pie>
-  </wm-swipe-item>
-</wm-swipe>
-```
+# WebMIS 基础框架
+采用 Vue3 + TypeScript 开发，包括Web(网站)、VueApp(H5+混合型APP)、Api(接口调试工具)、Admin(后台管理)，运用模块化开发思路，封装基础UI组件
+- Web(文档)：[https://webmis.vip](https://webmis.vip)
+- App(H5+混合型APP)：[https://demo-app.webmis.vip](https://demo-app.webmis.vip)
+- Api(接口工具)：[https://demo-api.webmis.vip](https://demo-api.webmis.vip)
+- Admin(后台管理)：[https://demo-admin.webmis.vip](https://demo-admin.webmis.vip)
 
-```php
-<?php
-echo 123;
-```
-
+## 一、下载
 ```bash
-git clone http://
+git clone https://github.com/webmiss/base
 ```
+
+## 二、安装
+### Bash
+```bash
+# 依赖包
+./webmis.sh install
+# 运行
+./webmis.sh serve
+```
+
+### Yarn
+```bash
+# 依赖包
+yarn install
+# 运行
+yarn serve
+```
+
+<br/><br/><br/>
