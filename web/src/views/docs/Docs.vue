@@ -20,7 +20,7 @@
       </div>
       <!-- Html -->
       <div class="doc_ct_html">
-        <wm-scroll-view class="doc_ct" :isUpper="false" :isLower="false" :preventDefault="false">
+        <wm-scroll-view ref="docScroll" class="doc_ct" :isUpper="false" :isLower="false" :preventDefault="false">
           <div id="Print" class="doc_html" v-html="docHtml"></div>
         </wm-scroll-view>
       </div>

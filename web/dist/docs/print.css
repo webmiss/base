@@ -3,6 +3,7 @@
 .doc_html h1{padding: 24px 0 16px; font-size: 2em; font-weight: 600; text-align: center;}
 .doc_html h2{padding: 16px 0 8px; font-size: 1.6em; font-weight: 600;}
 .doc_html h3{padding: 8px 0 8px; font-size: 1.4em; font-weight: bold;}
+.doc_html h4{padding: 4px 0 4px; font-size: 1.2em; font-weight: bold;}
 .doc_html ul{list-style: initial; list-style-position: inside;}
 .doc_html ul li{padding-left: 16px;}
 .doc_html p{padding: 8px 0;}

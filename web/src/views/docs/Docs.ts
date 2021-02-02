@@ -24,8 +24,6 @@ export default defineComponent({
     $route(to,from){
       if(this.$route.params.m1!=this.Nav){
         // 重置
-        // this.$refs.docMenu.clear();
-        // this.menuIndex = [0,0];
         this.init(true);
       };
     }
@@ -75,10 +73,14 @@ export default defineComponent({
       NavigateTo(this,'/'+vaule);
       // 打开文件
       try {
+        this.docHtml = '';
         this.docHtml = Marked(require(`@/${vaule}.md`));
       } catch (e) {
         this.docHtml = '没有文件!';
       }
+      // 恢复位置
+      const scroll: any = this.$refs.docScroll;
+      scroll.scrollTo(0,0,400);
       // 隐藏菜单
       let lm: any = this.$refs.leftMenus;
       if(lm.style.display=='block') this.showMenus();
