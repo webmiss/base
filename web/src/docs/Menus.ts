@@ -64,6 +64,11 @@ export default {
     return [
       {label:'Linux文档', children:[
         {label: 'Shell基础', value: 'docs/linux/shell/index'},
+        {label: 'SSL免费证书', value: 'docs/linux/shell/ssl'},
+      ]},
+      {label:'CentOS', children:[
+        {label: '基础配置', value: 'docs/linux/centos/config'},
+        {label: 'LNMP环境', value: 'docs/linux/centos/lnmp'},
       ]},
     ];
   },

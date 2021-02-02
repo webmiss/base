@@ -37,27 +37,27 @@ export default defineComponent({
     init(reset?: boolean){
       this.Nav = <string>this.$route.params.m1;
       if(this.Nav=='vue'){
-        this.position[1] = 'Vue >';
+        this.position[1] = 'Vue > ';
         this.menuData = Menus.vue();
         if(reset) this.menuIndex = [0,1];
       }else if(this.Nav=='flutter'){
-        this.position[1] = 'Flutter >';
+        this.position[1] = 'Flutter > ';
         this.menuData = Menus.flutter();
         if(reset) this.menuIndex = [0,1];
       }else if(this.Nav=='phalcon'){
-        this.position[1] = 'Phalcon >';
+        this.position[1] = 'Phalcon > ';
         this.menuData = Menus.phalcon();
         if(reset) this.menuIndex = [0,1];
       }else if(this.Nav=='python'){
-        this.position[1] = 'Python >';
+        this.position[1] = 'Python > ';
         this.menuData = Menus.python();
         if(reset) this.menuIndex = [0,1];
       }else if(this.Nav=='java'){
-        this.position[1] = 'Java >';
+        this.position[1] = 'Java > ';
         this.menuData = Menus.java();
         if(reset) this.menuIndex = [0,1];
       }else if(this.Nav=='linux'){
-        this.position[1] = 'Linux >';
+        this.position[1] = 'Linux > ';
         this.menuData = Menus.linux();
         if(reset) this.menuIndex = [0,0];
       }else{
