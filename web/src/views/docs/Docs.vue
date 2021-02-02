@@ -8,7 +8,7 @@
     <div ref="leftMenusBG" class="doc_menu_bg" @click="showMenus()"></div>
     <div ref="leftMenus" class="doc_menu_body">
       <wm-scroll-view class="doc_menu" :isUpper="false" :isLower="false">
-        <wm-menu ref="docMenu" :data="menuData" :defaultIndex="menuIndex" @active="activeMenus"></wm-menu>
+        <wm-menu ref="docMenu" height="36" :data="menuData" :defaultIndex="menuIndex" @active="activeMenus"></wm-menu>
       </wm-scroll-view>
     </div>
     <!-- 菜单 End -->

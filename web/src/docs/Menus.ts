@@ -74,6 +74,7 @@ export default {
       {label:'ArchLinux', children:[
         {label: '安装&配置', value: 'docs/linux/archlinux/install'},
         {label: 'GNOME3桌面', value: 'docs/linux/archlinux/gnome'},
+        {label: 'Nginx+PHP+MariaDB', value: 'docs/linux/archlinux/lnmp'},
       ]},
     ];
   },
