@@ -13,8 +13,9 @@
 .wm-popup_body{opacity: 0;}
 </style>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
   name: 'Popup',
   props: {
     show: {type: Boolean, default: false},  //是否显示
@@ -25,7 +26,7 @@ export default {
     time: {type: Number, default: 400},  //动画时间
   },
   watch:{
-    show(val){
+    show(val: boolean){
       if(val) this._animation(val);
     }
   },
@@ -36,62 +37,62 @@ export default {
 
     /* 初始化 */
     init(){
-      const bg = this.$refs.PopupBG.style;
-      const body = this.$refs.PopupBody.style;
+      const bg: any = this.$refs.PopupBG;
+      const body: any = this.$refs.PopupBody;
       // 默认值
-      bg.opacity = 0;
+      bg.style.opacity = 0;
       if(this.position=='left'){
-        body.height = '110%';
-        body.left = 0;
-        body.top = 0;
-        body.opacity = 1;
-        body.transform = 'translate(-110%,0)';
+        body.style.height = '110%';
+        body.style.left = 0;
+        body.style.top = 0;
+        body.style.opacity = 1;
+        body.style.transform = 'translate(-110%,0)';
       }else if(this.position=='right'){
-        body.height = '100%';
-        body.right = 0;
-        body.top = 0;
-        body.opacity = 1;
-        body.transform = 'translate(110%,0)';
+        body.style.height = '100%';
+        body.style.right = 0;
+        body.style.top = 0;
+        body.style.opacity = 1;
+        body.style.transform = 'translate(110%,0)';
       }else if(this.position=='top'){
-        body.width = '100%';
-        body.left = 0;
-        body.top = 0;
-        body.opacity = 1;
-        body.transform = 'translate(0,-110%)';
+        body.style.width = '100%';
+        body.style.left = 0;
+        body.style.top = 0;
+        body.style.opacity = 1;
+        body.style.transform = 'translate(0,-110%)';
       }else if(this.position=='bottom'){
-        body.width = '100%';
-        body.left = 0;
-        body.bottom = 0;
-        body.opacity = 1;
-        body.transform = 'translate(0,110%)';
+        body.style.width = '100%';
+        body.style.left = 0;
+        body.style.bottom = 0;
+        body.style.opacity = 1;
+        body.style.transform = 'translate(0,110%)';
       }else{
-        body.left = '50%';
-        body.top = '30%';
-        body.opacity = 0;
-        body.transform = 'translate(-50%,-50%)';
+        body.style.left = '50%';
+        body.style.top = '30%';
+        body.style.opacity = 0;
+        body.style.transform = 'translate(-50%,-50%)';
       }
     },
 
     /* 显示 */
     _showBody(){
-      const bg = this.$refs.PopupBG.style;
-      const body = this.$refs.PopupBody.style;
+      const bg: any = this.$refs.PopupBG;
+      const body: any = this.$refs.PopupBody;
       // 动画
-      bg.transitionDuration = this.time+'ms';
-      body.transitionDuration = this.time+'ms';
+      bg.style.transitionDuration = this.time+'ms';
+      body.style.transitionDuration = this.time+'ms';
       // 属性
-      bg.opacity = 1;
+      bg.style.opacity = 1;
       if(this.position=='left'){
-        body.transform = 'translate(-1px,0)';
+        body.style.transform = 'translate(-1px,0)';
       }else if(this.position=='right'){
-        body.transform = 'translate(1px,0)';
+        body.style.transform = 'translate(1px,0)';
       }else if(this.position=='top'){
-        body.transform = 'translate(0,-1px)';
+        body.style.transform = 'translate(0,-1px)';
       }else if(this.position=='bottom'){
-        body.transform = 'translate(0,1px)';
+        body.style.transform = 'translate(0,1px)';
       }else{
-        body.opacity = 1;
-        body.top = '50%';
+        body.style.opacity = 1;
+        body.style.top = '50%';
       }
       // 更新状态
       setTimeout(()=>{ this.$emit('update:show',true); },this.time);
@@ -99,31 +100,31 @@ export default {
 
     /* 隐藏 */
     _hideBody(){
-      const bg = this.$refs.PopupBG.style;
-      const body = this.$refs.PopupBody.style;
+      const bg: any = this.$refs.PopupBG;
+      const body: any = this.$refs.PopupBody;
       // 动画
-      bg.transitionDuration = this.time+'ms';
-      body.transitionDuration = this.time+'ms';
+      bg.style.transitionDuration = this.time+'ms';
+      body.style.transitionDuration = this.time+'ms';
       // 属性
-      bg.opacity = 0;
+      bg.style.opacity = 0;
       if(this.position=='left'){
-        body.transform = 'translate(-110%,0)';
+        body.style.transform = 'translate(-110%,0)';
       }else if(this.position=='right'){
-        body.transform = 'translate(110%,0)';
+        body.style.transform = 'translate(110%,0)';
       }else if(this.position=='top'){
-        body.transform = 'translate(0,-110%)';
+        body.style.transform = 'translate(0,-110%)';
       }else if(this.position=='bottom'){
-        body.transform = 'translate(0,110%)';
+        body.style.transform = 'translate(0,110%)';
       }else{
-        body.opacity = 0;
-        body.top = '30%'
+        body.style.opacity = 0;
+        body.style.top = '30%'
       }
       // 更新状态
       setTimeout(()=>{ if(this.show) this.$emit('update:show',false); },this.time);
     },
 
     /* 控制动画 */
-    _animation(show){
+    _animation(show: boolean){
       if(show) setTimeout(()=>{ this._showBody(); },300);
       else this._hideBody();
     },
@@ -139,5 +140,5 @@ export default {
     },
 
   }
-}
+});
 </script>

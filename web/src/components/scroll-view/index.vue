@@ -27,7 +27,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-
 import Env from '../../env'
 import wmLoading from '../loading/index.vue'
 import BScroll from '@better-scroll/core'
