@@ -116,7 +116,6 @@ export default defineComponent({
 
     /* 展开菜单 */
     _titleClick(pos: number[]){
-      console.log('pos',pos);
       // 位置
       let id = '';
       for(let i in pos) id += '_'+pos[i];
