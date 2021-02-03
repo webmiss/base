@@ -1,10 +1,12 @@
 import { defineComponent } from 'vue';
-import Menus from '../../docs/Menus'
-import NavigateTo from '../../library/ui/ui-navigate-to'
-import LoadHtml from '../../library/inc/html-load'
-/* 组件 */
-import WmScrollView from '../../components/scroll-view/index.vue'
-import wmMenu from '../../components/menu/index.vue'
+/* 菜单 */
+import Menus from '@/docs/Menus'
+/* JS组件 */
+import NavigateTo from '@/library/ui/ui-navigate-to'
+import LoadHtml from '@/library/inc/html-load'
+/* UI组件 */
+import WmScrollView from '@/components/scroll-view/index.vue'
+import wmMenu from '@/components/menu/index.vue'
 
 /* Markdown */
 import Marked from 'marked'

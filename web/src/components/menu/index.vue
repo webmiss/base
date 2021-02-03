@@ -95,6 +95,10 @@ export default defineComponent({
       setTimeout(()=>{ this._activeMenu(val); },400);
     },
   },
+  mounted(){
+    // 清理
+    Storage.removeItem('wmMenusActive');
+  },
   methods:{
 
     /* 初始化 */
@@ -112,6 +116,7 @@ export default defineComponent({
 
     /* 展开菜单 */
     _titleClick(pos: number[]){
+      console.log('pos',pos);
       // 位置
       let id = '';
       for(let i in pos) id += '_'+pos[i];
