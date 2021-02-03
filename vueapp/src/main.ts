@@ -6,10 +6,8 @@ import store from './store'
 /* 用户点击播放问题 */
 document.body.ontouchstart = ()=>{
   try{
-    document.addEventListener("plusready",(res)=>{
-      // @ts-ignore
-      if(plus.os.name != 'iOS') document.createElement('audio');
-    },false);
+    // @ts-ignore
+    if(plus.os.name != 'iOS') document.createElement('audio');
   }catch(e){
     document.createElement('audio');
   }

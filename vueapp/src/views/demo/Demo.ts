@@ -1,21 +1,21 @@
 import { defineComponent } from 'vue';
 import Env from '@/env'
-import Back from '../../library/ui/ui-back'
-import Toast from '../../library/ui/ui-toast'
-import NavigateTo from '../../library/ui/ui-navigate-to'
-import LoadHtml from '../../library/inc/html-load'
+import Back from '@/library/ui/ui-back'
+import Toast from '@/library/ui/ui-toast'
+import NavigateTo from '@/library/ui/ui-navigate-to'
+import LoadHtml from '@/library/inc/html-load'
 /* 组件 */
-import wmTouch from '@/components/touch'
-import wmPageView from '@/components/page-view'
-import wmScrollView from '@/components/scroll-view'
-import wmSwipe from '@/components/swipe'
-import wmSwipeItem from '@/components/swipe/item'
-import wmPicker from '@/components/picker'
-import wmPickerDate from '@/components/picker/date'
+import wmTouch from '@/components/touch/index.vue'
+import wmPageView from '@/components/page-view/index.vue'
+import wmScrollView from '@/components/scroll-view/index.vue'
+import wmSwipe from '@/components/swipe/index.vue'
+import wmSwipeItem from '@/components/swipe/item/index.vue'
+import wmPicker from '@/components/picker/index.vue'
+import wmPickerDate from '@/components/picker/date.vue'
 /* 图表 */
-import wmChartLine from '@/components/chart/line'
-import wmChartInterval from '@/components/chart/interval'
-import wmChartPie from '@/components/chart/pie'
+import wmChartLine from '@/components/chart/line.vue'
+import wmChartInterval from '@/components/chart/interval.vue'
+import wmChartPie from '@/components/chart/pie.vue'
 
 export default defineComponent({
   components: {
@@ -23,13 +23,11 @@ export default defineComponent({
     wmChartLine,wmChartInterval,wmChartPie
   },
   data(){
-    return {
-      Env: Env,
-      city: {show: false, data: []},
-      date: {show: false},
-      chartData: {line: [], interval:[]},
-      lists: [],
-    }
+    const city: any = {show: false, data: []};
+    const date: any = {show: false};
+    const chartData: any = {line: [], interval:[]};
+    const lists: any = [];
+    return {city,date,chartData,lists}
   },
   computed:{
   },
@@ -113,7 +111,7 @@ export default defineComponent({
     ];
     // 列表
     this.lists = this._getData(3);
-    this.$refs.DemoScroll.refresh();
+    (this.$refs.DemoScroll as any).refresh();
   },
   beforeUnmount(){
     // 页面销毁
@@ -121,57 +119,50 @@ export default defineComponent({
   methods:{
 
     /* 返回 */
-    back(res){
-      if(res=='left') return Back(this,1);
-    },
-
-    /* 导航 */
-    openUrl(url,parm,login){
-      login = login || false;
-      if(login && !this.$store.state.isLogin) return NavigateTo(this,'/sys/login');
-      else return NavigateTo(this,url,parm);
+    back(res: any){
+      if(res=='left') return Back(1);
     },
 
     /* 下拉刷新 */
-    reFresh(res){
+    reFresh(res: any){
       console.log('刷新',res);
       setTimeout(()=>{
         this.lists = this._getData(6);
-        this.$refs.DemoScroll.pullDownFinish();
+        (this.$refs.DemoScroll as any).pullDownFinish();
       },3000);
     },
 
     /* 上拉加载 */
-    upLoad(d){
+    upLoad(d: any){
       console.log('加载',d);
       setTimeout(()=>{
         let data = this._getData(10);
         for(let i in data) this.lists.push(data[i]);
-        this.$refs.DemoScroll.pullUpFinish();
+        (this.$refs.DemoScroll as any).pullUpFinish();
       },3000);
     },
 
     /* 滚动 */
-    scroll(res){
+    scroll(res: any){
       // console.log(res);
     },
 
     /* 数据 */
-    _getData(n){
+    _getData(n: number){
       let data = [];
       for(let i=0; i<n; i++) data.push({name:'Test'+(i+1)});
       return data;
     },
 
     /* 选择区域 */
-    cityConfirm(res){
+    cityConfirm(res: any){
       let html = '';
       for(let i in res.data) html += res.data[i].label+' > ';
       Toast(html);
     },
 
     /* 选择日期 */
-    dateConfirm(res){
+    dateConfirm(res: any){
       let html = '';
       for(let i in res.data) html += res.data[i].label+' ';
       Toast(html);

@@ -3,26 +3,28 @@ import { useStore } from 'vuex';
 /* JS组件 */
 import NavigateTo from '@/library/ui/ui-navigate-to'
 /* UI组件 */
-// import WmTabbar from '@/components/tabbar'
-// import PageView from '@/components/page-view'
+import WmTabbar from '@/components/tabbar/index.vue'
+import WmTabbarPage from '@/components/tabbar/page.vue'
+/* 页面 */
+import HomeIndex from './home/Index.vue'
+import HomeCode from './home/Code.vue'
+import HomeMe from './home/Me.vue'
 
 export default defineComponent({
-  // components: {WmTabbar,PageView},
+  name: 'Home',
+  components: {WmTabbar,WmTabbarPage,HomeIndex,HomeCode,HomeMe},
   data(){
     // 状态
     const store: any = useStore();
     const state: any = store.state;
     // 导航
-    const tabBar: Object = {active:0};
+    const tabBar: any = {
+      active: 1,
+      menus: [{lable: 'Demo', icon: 'icons icon_code'},{lable: '首页', icon: 'icons icon_home'},{lable: '我的', icon: 'icons icon_me'}],
+    };
     return {state,tabBar};
   },
-  computed:{
-    // @ts-ignore
-    mode(){ return this.state.mode; },
-  },
   mounted(){
-    // 调试深色模式
-    // setTimeout(()=>{ this.state.mode='dark'; },3000);
   },
   activated(){
   },
@@ -30,7 +32,7 @@ export default defineComponent({
 
     /* 切换导航 */
     navTab(index: number){
-      console.log(index);
+      this.tabBar.active = index;
     },
 
     /* 打开路由 */

@@ -7,7 +7,7 @@ export default createStore({
     socket: null, //Socket
     scan: null, //摄像头
     /* 缓存路由 */
-    keepAlive: ['Index'],
+    keepAlive: ['Home'],
     
     // mode: 'light',  // 模式: light、dark
     // statusBarHeight: 0, // 状态栏

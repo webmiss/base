@@ -2,8 +2,9 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 
 /* 路由 */
 const routes: Array<RouteRecordRaw> = [
-  {path:'/', name:'index', component:()=>import('../views/Index.vue')},
+  {path:'/', name:'home', component:()=>import('../views/Home.vue')},
   {path:'/refresh', name:'Refresh', component:()=>import('../views/Refresh.vue')},
+  {path:'/demo', name:'Demo', meta:{keepAlive:false}, component:()=>import('../views/demo/Demo.vue')},
 ]
 
 /* 配置 */
