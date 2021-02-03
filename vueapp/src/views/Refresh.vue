@@ -1,7 +1,8 @@
 <template>
 </template>
 <script>
-export default {
+import { defineComponent } from 'vue';
+export default defineComponent({
   beforeRouteEnter(to, from, next){
     next(vm=>{
       vm.$router.replace(from.path);
@@ -9,5 +10,5 @@ export default {
   },
   mounted(){
   },
-}
+});
 </script>

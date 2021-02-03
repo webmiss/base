@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 
 /* 路由 */
 const routes: Array<RouteRecordRaw> = [
@@ -8,8 +8,14 @@ const routes: Array<RouteRecordRaw> = [
 
 /* 配置 */
 const router: any = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHashHistory(process.env.BASE_URL),
   routes
 })
+
+/* 返回上级 */
+router.goBack = function(num: number){
+  this.isBack = true;
+  this.go(num);
+}
 
 export default router

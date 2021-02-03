@@ -16,7 +16,7 @@
     <!-- 页面 -->
     <router-view v-slot="{ Component }">
       <transition :name="transitionName">
-        <keep-alive :include="store.keepAlive">
+        <keep-alive :include="state.keepAlive">
           <component :is="Component" class="view" />
         </keep-alive>
       </transition>
@@ -38,7 +38,6 @@
 @import url('./assets/style/app.css');
 </style>
 <style scoped>
-
 /* 更新 */
 .update_body{position: absolute; z-index: 999; width: 100%; height: 100%}
 .update_logo{position: fixed; width: 100%; left: 0; bottom: 15px; line-height: 20px; text-align: center; padding: 10px 0;}
@@ -51,7 +50,6 @@
 .update_ct .load_msg{color: #FFF; text-align: center; padding: 8px 0; font-size: 14px;}
 .update_ct .load_button{text-align: center; padding-top: 16px;}
 .update_ct .load_button button{width: auto; height: 36px; line-height: 36px; padding: 0 20px; font-size: 14px;}
-
 </style>
 
-<script src="./App.js"></script>
+<script lang="ts" src="./App.ts"></script>

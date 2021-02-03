@@ -42,4 +42,4 @@
 .swipe_item{height: 100%; height: 48vmin; text-align: center;}
 </style>
 
-<script src="./Demo.js"></script>
+<script lang="ts" src="./Demo.ts"></script>

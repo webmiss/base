@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+
 /* 路由 */
 const routes: Array<RouteRecordRaw> = [
   {path:'/', name:'index', component:()=>import('../views/Index.vue')},
@@ -7,7 +8,7 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 /* 配置 */
-const router = createRouter({
+const router: any = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })

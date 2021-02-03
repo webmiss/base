@@ -144,13 +144,14 @@
 }
 </style>
 
-<script>
-import Env from '@/env.js'
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+import Env from '../../env'
+export default defineComponent({
   name: 'Loading',
   props: {
     theme: {type: String, default: 'flow'}, //样式: flow、swing、circle、wave
     color: {type: String, default: Env.themes.primary},  //颜色
   },
-}
+});
 </script>
