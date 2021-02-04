@@ -35,7 +35,7 @@ i{font-style: normal;}
 .back_dark.icons{color: #FFF;}
 
 /* 切换动画 */
-.view{position: fixed; z-index: 0; width:100%; height: 100%; background-color: #FFF; box-shadow: 0 0 2px rgba(0,0,0,.1); animation-duration: 400ms; animation-timing-function: cubic-bezier(0.165,0.84,0.44,1);}
+.view{position: absolute; z-index: 0; width:100%; height: 100%; background-color: #FFF; box-shadow: 0 0 2px rgba(0,0,0,.1); animation-duration: 400ms; animation-timing-function: cubic-bezier(0.165,0.84,0.44,1);}
 @keyframes left-fold-in { 0% {z-index: 1; opacity: 0;} 100% {z-index: 1; opacity: 1;} }
 @keyframes left-fold-out { 0% {z-index: 0; opacity: 1;} 100% {z-index: 0; opacity: 0;} }
 @keyframes right-fold-in { 0% {z-index: 0; opacity: 0;} 100% {z-index: 0; opacity: 1;} }
