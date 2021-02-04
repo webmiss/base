@@ -7,4 +7,4 @@
 <style scoped>
 </style>
 
-<script src="./Demo.js"></script>
+<script lang="ts" src="./Demo.ts"></script>

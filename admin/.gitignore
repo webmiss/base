@@ -1,9 +1,7 @@
-# src/env.js
-# dist
-yarn.lock
-node_modules
-
 .DS_Store
+node_modules
+yarn.lock
+# /dist
 
 # local env files
 .env.local

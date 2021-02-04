@@ -1,128 +1,58 @@
 <template>
-<div id="app">
+  <div id="app">
 
-  <!-- Update -->
-  <div v-if="update.show" class="update_body" :style="{backgroundColor: upDateColor.bg}">
-    <div class="update_ct">
-      <div class="logo" :style="{backgroundColor: upDateColor.logoBg}">
-        <div></div>
+    <!-- 更新APP -->
+    <div v-if="update.show" class="update_body" :style="{backgroundColor: updateCfg.bg}">
+      <div class="update_ct verticalCenter">
+        <div class="logo" :style="{backgroundColor: updateCfg.logoBg}"><div></div></div>
+        <div class="loading" :style="{backgroundImage: 'linear-gradient(to right, '+updateCfg.loading+', '+updateCfg.loading+' '+update.loading+', '+updateCfg.loaded+' '+update.loading+', '+updateCfg.loaded+' 100%)'}"></div>
+        <div class="load_msg" :style="{color:updateCfg.msgColor}">{{update.msg}}</div>
+        <div class="load_button">
+          <button class="Button" v-if="update.down" @click="updateDown()" :style="{color:updateCfg.butColor,backgroundColor:updateCfg.butBg,}">{{updateCfg.butText}}</button>
+        </div>
       </div>
-      <div class="loading" :style="{backgroundImage: 'linear-gradient(to right, '+upDateColor.loading+', '+upDateColor.loading+' '+update.loading+', '+upDateColor.loaded+' '+update.loading+', '+upDateColor.loaded+' 100%)'}"></div>
-      <div class="load_msg" :style="{color:upDateColor.msgColor}">{{update.msg}}</div>
-      <div class="load_button">
-        <wm-button v-if="update.down" size="medium" @click="updateDown()">{{upDateColor.butText}}</wm-button>
-      </div>
+      <div class="update_logo" :style="{color:updateCfg.copy}"><h1>{{updateTitle}}</h1><h2>{{updateCopy}}</h2></div>
     </div>
-    <div class="update_logo" :style="{color:upDateColor.copy}">
-      <h1>{{env.title}}</h1>
-      <h2>{{env.copy}}</h2>
-    </div>
+    <!-- 更新APP End -->
+
+    <!-- 页面 -->
+    <router-view v-slot="{ Component }">
+      <transition :name="transitionName">
+        <keep-alive :include="state.keepAlive">
+          <component :is="Component" class="view" />
+        </keep-alive>
+      </transition>
+    </router-view>
+    <!-- 页面 End -->
+
   </div>
-  <!-- Update End -->
-
-  <!-- Login -->
-  <div v-show="store.isLogin===false" class="login_bg bgImg bgcover" :style="{backgroundImage:'url('+(store.system.login_bg?store.system.login_bg:'')+')'}">
-    <div class="login_body">
-      <div class="login_logo flex_center">
-        <div class="bgImg" :style="{backgroundImage:'url('+(store.system.logo?store.system.logo:require('./assets/logo.svg'))+')'}"></div>
-        <h2 class="nowrap">{{store.system.title}}</h2>
-      </div>
-      <div class="login_ct">
-        <div class="login_type">
-        <wm-popover type="bottom" effect="dark" width="180px">
-          <template #body>
-            <ul class="login_type_list">
-              <template v-for="(val,index) in language">
-                <li :key="index" v-if="language[languageNum].val!=val.val" @click="platform(index)" >{{val.val}}</li>
-              </template>
-            </ul>
-          </template>
-          <template #reference>
-            <div class="login_type_title">&lt; {{language[languageNum].val}} &gt;</div>
-          </template>
-        </wm-popover>
-        </div>
-        <h3>会员登录</h3>
-        <div class="login_input">
-          <wm-input :value="login.uname" @update:value="login.uname=$event" placeholder="用户名/手机/邮箱" />
-        </div>
-        <div class="login_input">
-          <wm-input :value="login.passwd" @update:value="login.passwd=$event" type="password" placeholder="密码" />
-        </div>
-        <div class="login_input">
-          <wm-button @click="loginSub()" :disabled="login.dis">{{login.subText}}</wm-button>
-        </div>
-      </div>
-      <div class="login_copy nowrap">&copy; {{store.system.copy}}&nbsp;&nbsp;版本：{{env.version}}</div>
-    </div>
-  </div>
-  <!-- Login End -->
-
-  <!-- Main -->
-  <div class="app_body flex" v-show="store.isLogin===true" :style="{paddingTop:store.statusBarHeight}">
-    <!-- Left -->
-    <div class="app_left">
-      <scroll-view :upperLoad="false" :lowerLoad="false" style="height: 100%;">
-        <!-- 用户信息 -->
-        <div class="app_user">
-          <div class="img">
-            <div v-if="store.uInfo.img" class="bgImg" :style="{backgroundImage:'url('+store.uInfo.img+')'}"></div>
-            <div v-else class="bgImg tu"></div>
-          </div>
-          <div class="info nowrap">
-            {{store.uInfo.nickname || '昵称'}}({{store.uInfo.name || '姓名'}})
-          </div>
-        </div>
-        <!-- 菜单 -->
-        <wm-menu ref="Menus" effect="dark" :data="menus" :defaultActive="menusActive" @select="menuClick"></wm-menu>
-        <!-- 登录状态 -->
-        <div class="app_login nowrap">
-          <span class="config">{{store.uInfo.uname}}</span>&gt;
-          <span class="logout" @click="logout()">退出</span>
-        </div>
-      </scroll-view>
-    </div>
-    <!-- Left End -->
-    <!-- Right -->
-    <div class="app_right">
-      <scroll-view  class="app_top" :upperLoad="false" :lowerLoad="false" :scroll-x="true">
-        <wm-action :url="store.action.url" :menus="store.action.menus"></wm-action>
-      </scroll-view>
-      <div class="app_main">
-        <router-view v-slot="{ Component }">
-          <keep-alive>
-            <component :is="Component" />
-          </keep-alive>
-        </router-view>
-      </div>
-      <div class="app_copy">
-        所属：{{store.system.title}}&nbsp;&nbsp;&copy; {{store.system.copy}}&nbsp;&nbsp;版本：{{env.version}}
-      </div>
-    </div>
-    <!-- Right End -->
-  </div>
-  <!-- Main End -->
-
-</div>
 </template>
 
 <style>
 /* 表单缩放问题 */
 @media only screen and (min-device-width : 320px) and (max-device-width : 1024px) {
-  select:focus,
-  textarea:focus,
-  input:focus {font-size: 16px !important;}
+  select:focus, textarea:focus, input:focus { font-size: 16px !important; }
 }
 /* 字体图标 */
 @import url('./assets/style/icon.css');
 /* UI */
 @import url('./assets/style/ui.css');
-/* Main */
-@import url('./assets/style/main.css');
-</style>
-<style scoped>
 /* APP */
 @import url('./assets/style/app.css');
 </style>
+<style scoped>
+/* 更新 */
+.update_body{position: absolute; z-index: 999; width: 100%; height: 100%}
+.update_logo{position: fixed; width: 100%; left: 0; bottom: 15px; line-height: 20px; text-align: center; padding: 10px 0;}
+.update_logo h1{font-size: 16px;}
+.update_logo h2{font-size: 10px; font-weight: normal;}
+.update_ct{width: 220px;}
+.update_ct .logo{width: 100px; height: 100px; margin: 0px auto 20px; border-radius: 50%;}
+.update_ct .logo div{height: 100%; background: url('./assets/logo.svg') no-repeat center; background-size: 65%;}
+.update_ct .loading{height: 4px; background: none;}
+.update_ct .load_msg{color: #FFF; text-align: center; padding: 8px 0; font-size: 14px;}
+.update_ct .load_button{text-align: center; padding-top: 16px;}
+.update_ct .load_button button{width: auto; height: 36px; line-height: 36px; padding: 0 20px; font-size: 14px;}
+</style>
 
-<script src="./App.js"></script>
+<script lang="ts" src="./App.ts"></script>
