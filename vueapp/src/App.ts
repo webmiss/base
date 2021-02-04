@@ -20,9 +20,8 @@ export default defineComponent({
     // 更新APP
     const update: any = {show:false, os:'', down:false, loading:'0%', msg:'检测更新', file:'', total:0};
     const updateCfg: any = Env.update;
-    const updateTitle: string = Env.title;
-    const updateCopy: string = Env.copy;
-    return {state,router,transitionName,update,updateCfg,updateTitle,updateCopy}
+    const updateText: object = {title: Env.title, copy: Env.copy};
+    return {state,router,transitionName,update,updateCfg,updateText}
   },
   watch:{
     $route(to,from){
