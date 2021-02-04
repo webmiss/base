@@ -116,7 +116,7 @@ export default defineComponent({
       }
     },
     // 菜单数据
-    _loadPickerData(newIndex: any, oldIndex: any=[]){
+    _loadPickerData(newIndex: any, oldIndex?: any){
       let data: any = [];
       let menu: any = [];
       if(!oldIndex){
