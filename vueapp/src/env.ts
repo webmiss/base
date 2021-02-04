@@ -1,10 +1,10 @@
 /* 开发 */
-const baseUrl = 'http://localhost:9010/';
-const socket = 'ws://localhost:9011/';
+// const baseUrl = 'http://localhost:9010/';
+// const socket = 'ws://localhost:9011/';
 
 /* 正式 */
-// const baseUrl = 'https://demo-php.webmis.vip/';
-// const socket = 'wss://demo-php.webmis.vip/wss';
+const baseUrl = 'https://demo-php.webmis.vip/';
+const socket = 'wss://demo-php.webmis.vip/wss';
 
 export default {
   title: 'WebMIS VueAPP', // 应用名称
