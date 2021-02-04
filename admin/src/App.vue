@@ -11,9 +11,47 @@
           <button class="Button" v-if="update.down" @click="updateDown()" :style="{color:updateCfg.butColor,backgroundColor:updateCfg.butBg,}">{{updateCfg.butText}}</button>
         </div>
       </div>
-      <div class="update_logo" :style="{color:updateCfg.copy}"><h1>{{updateText.title}}</h1><h2>{{updateText.copy}}</h2></div>
+      <div class="update_logo" :style="{color:updateCfg.copy}"><h1>{{info.title}}</h1><h2>{{info.copy}}</h2></div>
     </div>
     <!-- 更新APP End -->
+
+    <!-- Login -->
+    <div v-show="state.isLogin===false" class="login_bg bgImg bgcover" :style="{backgroundImage:'url('+(state.system.login_bg?state.system.login_bg:'')+')'}">
+      <div class="login_body">
+        <div class="login_logo flex_center">
+          <div class="bgImg" :style="{backgroundImage:'url('+(state.system.logo?state.system.logo:require('./assets/logo.svg'))+')'}"></div>
+          <h2 class="nowrap">{{state.system.title}}</h2>
+        </div>
+        <div class="login_ct">
+          <div class="login_type">
+          <wm-popover type="bottom" effect="dark" width="180px">
+            <template #body>
+              <ul class="login_type_list">
+                <template v-for="(val,index) in language">
+                  <li :key="index" v-if="language[languageNum].val!=val.val" @click="platform(index)" >{{val.val}}</li>
+                </template>
+              </ul>
+            </template>
+            <template #reference>
+              <div class="login_type_title">&lt; {{language[languageNum].val}} &gt;</div>
+            </template>
+          </wm-popover>
+          </div>
+          <h3>会员登录</h3>
+          <div class="login_input">
+            <wm-input :value="login.uname" @update:value="login.uname=$event" placeholder="用户名/手机/邮箱" />
+          </div>
+          <div class="login_input">
+            <wm-input :value="login.passwd" @update:value="login.passwd=$event" type="password" placeholder="密码" />
+          </div>
+          <div class="login_input">
+            <wm-button @click="loginSub()" :disabled="login.dis">{{login.subText}}</wm-button>
+          </div>
+        </div>
+        <div class="login_copy nowrap">&copy; {{state.system.copy}}&nbsp;&nbsp;版本：{{info.version}}</div>
+      </div>
+    </div>
+    <!-- Login End -->
 
     <!-- 页面 -->
     <router-view v-slot="{ Component }">

@@ -18,8 +18,8 @@
 
 <style scoped>
 .wm-scroll_wrapper{overflow: hidden;}
-.wm-scroll_content_x{position: relative; display: inline-block; min-width: calc(100% + 1px); height: 100%; white-space: nowrap;}
-.wm-scroll_content_y{width: inherit; min-height: calc(100% + 1px);}
+.wm-scroll_content_x{position: relative; display: inline-block; min-width: 100%; height: 100%; white-space: nowrap;}
+.wm-scroll_content_y{width: inherit; min-height: 100%;}
 .wm-scroll_loading{position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);}
 .wm-scroll_load_down{position: absolute; width: 100%; text-align: center;}
 .wm-scroll_load_up{text-align: center;}
@@ -35,7 +35,9 @@ import PullDown from '@better-scroll/pull-down'
 import Pullup from '@better-scroll/pull-up'
 import ObserveDOM from '@better-scroll/observe-dom'
 import ObserveImage from '@better-scroll/observe-image'
-BScroll.use(PullDown).use(Pullup).use(ObserveDOM).use(ObserveImage);
+import ScrollBar from '@better-scroll/scroll-bar'
+import MouseWheel from '@better-scroll/mouse-wheel'
+BScroll.use(PullDown).use(Pullup).use(ObserveDOM).use(ObserveImage).use(ScrollBar).use(MouseWheel);
 
 export default defineComponent({
   name: 'Scroll',
@@ -82,6 +84,7 @@ export default defineComponent({
       const config: object = {
         click: true,
         tap: true,
+        mouseWheel: true,
         probeType: this.probeType,
         preventDefault: this.preventDefault,
         observeDOM: true,
@@ -93,6 +96,7 @@ export default defineComponent({
         pullUpLoad: this.isLower?{
           threshold: this.lower,
         }:false,
+        scrollbar: this.scrollbar,
         startX: this.startX,
         startY: this.startY,
         scrollX: this.scrollX,

@@ -1,7 +1,7 @@
-import Toast from '../ui/ui-toast.js'
+import Toast from '../ui/ui-toast'
 
 /* 正则验证 */
-export default (name,val,isMsg)=>{
+export default (name: string, val: any, isMsg?: boolean)=>{
   isMsg = isMsg || false;
   let isRight=false;
   let msg='';

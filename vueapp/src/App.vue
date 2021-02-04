@@ -10,7 +10,7 @@
           <button class="Button" v-if="update.down" @click="updateDown()" :style="{color:updateCfg.butColor,backgroundColor:updateCfg.butBg,}">{{updateCfg.butText}}</button>
         </div>
       </div>
-      <div class="update_logo" :style="{color:updateCfg.copy}"><h1>{{updateText.title}}</h1><h2>{{updateText.copy}}</h2></div>
+      <div class="update_logo" :style="{color:updateCfg.copy}"><h1>{{info.title}}</h1><h2>{{info.copy}}</h2></div>
     </div>
     <!-- 更新APP End -->
     <!-- 页面 -->

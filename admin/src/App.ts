@@ -2,15 +2,25 @@ import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
 import Env from './env'
 import Start from '@/library/Start'
-
+/* JS组件 */
 import Toast from '@/library/ui/ui-toast'
 import Post from '@/library/ui/request-post'
 import VersionDiff from '@/library/inc/version-diff'
 import PlusReady from '@/library/plus/plus-ready'
+import Loading from '@/library/ui/ui-loading'
+import Storage from '@/library/ui/storage'
+import Reg from '@/library/inc/reg'
+/* UI组件 */
+import wmScrollView from '@/components/scroll-view/index.vue'
+import wmMenu from '@/components/menu/index.vue'
+import wmInput from '@/components/form/input/index.vue'
+import wmButton from '@/components/form/button/index.vue'
+import wmPopover from '@/components/popover/index.vue'
+import wmAction from '@/components/action/index.vue'
 
 export default defineComponent({
   name: 'APP',
-  components: {},
+  components: {wmScrollView,wmMenu,wmInput,wmButton,wmPopover,wmAction},
   data(){
     const store: any = useStore();
     const state: any = store.state;
@@ -21,7 +31,21 @@ export default defineComponent({
     const update: any = {show:false, os:'', down:false, loading:'0%', msg:'检测更新', file:'', total:0};
     const updateCfg: any = Env.update;
     const updateText: object = {title: Env.title, copy: Env.copy};
-    return {state,router,transitionName,update,updateCfg,updateText}
+    // 信息
+    const info: any = {title: Env.title, version: Env.version, copy: Env.copy};
+    // 登录数据
+    const login: any = {uname:'',passwd:'',subText:'登 录',dis:false};
+    // 语言
+    const languageNum: number = 0;
+    const language: any = [
+      {name:'php',val:'PHP7( Phalcon4 )'},
+      {name:'python',val:'Python3( Flask )'},
+      {name:'java',val:'Java( SpringBoot )'},
+    ];
+    // 左侧菜单
+    const menus: any = [];
+    const menusActive: any = [0,0];
+    return {state,router,transitionName,update,updateCfg,info,login,languageNum,language,menus,menusActive}
   },
   watch:{
     $route(to,from){
@@ -40,6 +64,12 @@ export default defineComponent({
     setTimeout(()=>{ Start.init(); },400);
     /* 检测更新 */
     if(Env.update.start) this.isUpdate();
+    // 用户名
+    this.login.uname = Storage.getItem('uname');
+    // 默认语言
+    this.setLanguage(); 
+    // Enter事件
+    this._enter();
   },
   methods:{
 
@@ -110,6 +140,99 @@ export default defineComponent({
           if (complete >= 100) this.update.msg = '下载完成，安装并重启';
         });
       }
+    },
+
+    /* 切换语言 */
+    platform(index: number){
+      let data = this.language[index];
+      data.index = index;
+      Storage.setItem('platform',JSON.stringify(data));
+      window.location.href = '';
+    },
+    setLanguage(){
+      const lag: any = Storage.getItem('platform');
+      const lagData: any = lag?JSON.parse(lag):this.language[0];
+      this.languageNum = lagData.index || 0;
+    },
+
+    /* 登录 */
+    loginSub(){
+      // 验证
+      let uname = this.login.uname;
+      let passwd = this.login.passwd;
+      let reg_passwd = Reg('passwd',passwd);
+      if(Reg('uname',uname)!==true && Reg('email',uname)!==true && Reg('tel',uname)!==true) return Toast('请输入帐号/手机/邮箱');
+      else if(reg_passwd!==true) return Toast(reg_passwd);
+      // 提交
+      this.login.subText = '正在登录';
+      this.login.dis = true;
+      const load = Loading();
+      Post('user/login',{uname:uname,passwd:passwd},(res: any)=>{
+        load.clear();
+        this.login.subText = '登 录';
+        this.login.dis = false;
+        const d: any = res.data;
+        if(d.code==0){
+          this.state.isLogin = true;
+          this.state.uInfo = d.uinfo;
+          Storage.setItem('token',d.token);
+          Storage.setItem('uname',d.uinfo.uname);
+          Storage.setItem('uinfo',JSON.stringify(d.uinfo));
+          // 用户菜单
+          this.getMenus();
+          // 刷新路由
+          this.$router.replace({path:'/refresh'});
+        }else{
+          this.state.isLogin = false;
+          this.state.uInfo = {};
+          Storage.setItem('token','');
+          Toast(d.msg);
+        }
+      },()=>{
+        load.clear();
+        Toast('网络加载失败!');
+        this.login.subText = '登 录';
+        this.login.dis = false;
+      });
+    },
+    /* 退出 */
+    logout(){
+      this.state.isLogin = false;
+      this.state.uInfo = {};
+      Storage.setItem('token','');
+      this.login.passwd = '';
+    },
+    /* Enter登录 */
+    _enter(){
+      document.onkeydown = (event)=>{
+        let e = event || window.event || arguments.callee.caller.arguments[0];
+        if(e && e.keyCode==13 && !this.state.isLogin) this.loginSub();
+      }
+    },
+
+    /* 用户菜单 */
+    getMenus(){
+      Post('Sysmenus/getMenus',{token:Storage.getItem('token')},(res: any)=>{
+        let d = res.data;
+        if(d.code==0){
+          this.menus = d.menus;
+          // 默认菜单
+          // this.menusActive = Storage.getItem('menusActive')?JSON.parse(Storage.getItem('menusActive')):[0,0];
+          // const obj: any = this.$refs.Menus;
+          // setTimeout(()=>{
+          //   obj.titleClick(this.menusActive[0]);
+          //   obj.menuClick(this.menusActive);
+          // },400);
+        }
+      });
+    },
+    /* 点击菜单 */
+    menuClick(pos: any){
+      console.log(pos);
+      // Storage.setItem('menusActive',JSON.stringify(pos));
+      // const obj = this.menus[pos[0]].children[pos[1]];
+      // this.state.menuName = obj.title;
+      // this.$router.push(obj.url);
     },
 
   }
