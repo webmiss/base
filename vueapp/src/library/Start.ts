@@ -12,7 +12,7 @@ import Socket from '@/library/Socket'
 
 /* 启动设置 */
 const state: any = null;
-const tokenInterval: number = 0;
+const tokenInterval: any = null;
 export default {
 
   state,

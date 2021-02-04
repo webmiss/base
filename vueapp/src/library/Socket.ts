@@ -6,8 +6,8 @@ import Msg from './Msg'
 
 /* Socket */
 const state: any = null;
-const socketInterval: number = 0;
-const heartbeatInterval: number = 0;
+const socketInterval: any = null;
+const heartbeatInterval: any = null;
 export default {
 
   state,

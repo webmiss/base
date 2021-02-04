@@ -6,16 +6,16 @@ const platform: string = Storage.getItem('platform') || '';
 const lag: any = platform?JSON.parse(platform):'';
 let baseUrl: string, socket: string;
 if(lag && lag.name=='python'){
-  // const baseUrl = 'http://localhost:9010/';
-  // const socket = 'ws://localhost:9011/';
   baseUrl = 'https://demo-python.webmis.vip/';
   socket = 'wss://demo-python.webmis.vip/wss';
 }else if(lag && lag.name=='java'){
   baseUrl = 'https://demo-java.webmis.vip/';
   socket = 'wss://demo-java.webmis.vip/websocket';
 }else{
-  baseUrl = 'https://demo-php.webmis.vip/';
-  socket = 'wss://demo-php.webmis.vip/wss';
+  baseUrl = 'http://localhost:9010/';
+  socket = 'ws://localhost:9011/';
+  // baseUrl = 'https://demo-php.webmis.vip/';
+  // socket = 'wss://demo-php.webmis.vip/wss';
 }
 
 /* 配置 */

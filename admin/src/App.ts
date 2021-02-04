@@ -10,6 +10,7 @@ import PlusReady from '@/library/plus/plus-ready'
 import Loading from '@/library/ui/ui-loading'
 import Storage from '@/library/ui/storage'
 import Reg from '@/library/inc/reg'
+import NavigateTo from '@/library/ui/ui-navigate-to'
 /* UI组件 */
 import wmScrollView from '@/components/scroll-view/index.vue'
 import wmMenu from '@/components/menu/index.vue'
@@ -230,23 +231,12 @@ export default defineComponent({
         let d = res.data;
         if(d.code==0){
           this.menus = d.menus;
-          // 默认菜单
-          // this.menusActive = Storage.getItem('menusActive')?JSON.parse(Storage.getItem('menusActive')):[0,0];
-          // const obj: any = this.$refs.Menus;
-          // setTimeout(()=>{
-          //   obj.titleClick(this.menusActive[0]);
-          //   obj.menuClick(this.menusActive);
-          // },400);
         }
       });
     },
     /* 点击菜单 */
     menuClick(pos: any, value: string){
-      console.log(pos,value);
-      // Storage.setItem('menusActive',JSON.stringify(pos));
-      // const obj = this.menus[pos[0]].children[pos[1]];
-      // this.state.menuName = obj.title;
-      // this.$router.push(obj.url);
+      NavigateTo(value);
     },
 
   }
