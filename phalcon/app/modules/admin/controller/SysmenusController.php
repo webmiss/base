@@ -148,8 +148,10 @@ class SysMenusController extends Base {
     $M = isset(self::$menus[$fid])?self::$menus[$fid]:[];
 		foreach($M as $val){
       if(isset(self::$permAll[$val['id']])){
-        $val['children'] = self::_getMenu($val['id']);
-        $data[] = $val;
+        $tmp = ['icon'=>$val['ico'], 'label'=>$val['title'], 'value'=>$val['url']];
+        $menu = self::_getMenu($val['id']);
+        if(!empty($menu)) $tmp['children'] = $menu;
+        $data[] = $tmp;
       }
 		}
 		return $data;

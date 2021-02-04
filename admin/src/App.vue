@@ -53,15 +53,55 @@
     </div>
     <!-- Login End -->
 
-    <!-- 页面 -->
-    <router-view v-slot="{ Component }">
-      <transition :name="transitionName">
-        <keep-alive :include="state.keepAlive">
-          <component :is="Component" class="view" />
-        </keep-alive>
-      </transition>
-    </router-view>
-    <!-- 页面 End -->
+    <!-- Main -->
+  <div class="app_body flex" v-show="state.isLogin===true" :style="{paddingTop: state.statusHeight}">
+    <!-- Left -->
+    <div class="app_left">
+      <wm-scroll-view style="height: 100%;" ref="menusScroll" :isUpper="false" :isLower="false">
+        <!-- 用户信息 -->
+        <div class="app_user">
+          <div class="img">
+            <div v-if="state.uInfo.img" class="bgImg" :style="{backgroundImage:'url('+state.uInfo.img+')'}"></div>
+            <div v-else class="bgImg tu"></div>
+          </div>
+          <div class="info nowrap">
+            {{state.uInfo.nickname || '昵称'}}({{state.uInfo.name || '姓名'}})
+          </div>
+        </div>
+        <!-- 菜单 -->
+        <wm-menu class="app_menus" ref="Menus" :height="36" textColor="#A2A4A8" :data="menus" :defaultIndex="menusActive" @active="menuClick"></wm-menu>
+        <!-- 登录信息 -->
+        <div class="app_login nowrap">
+          <span class="config">{{state.uInfo.uname}}</span>&gt;
+          <span class="logout" @click="logout()">退出</span>
+        </div>
+      </wm-scroll-view>
+    </div>
+    <!-- Left End -->
+    <!-- Right -->
+    <div class="app_right">
+      <div class="app_top">TOP</div>
+      <div class="app_main">
+        <!-- 页面 -->
+        <router-view v-slot="{ Component }">
+          <transition :name="transitionName">
+            <keep-alive :include="state.keepAlive">
+              <component :is="Component" class="view" />
+            </keep-alive>
+          </transition>
+        </router-view>
+        <!-- 页面 End -->
+      </div>
+      <div class="app_copy">
+        所属：{{state.system.title}}&nbsp;&nbsp;&copy; {{state.system.copy}}&nbsp;&nbsp;版本：{{info.version}}
+      </div>
+    </div>
+    <!-- Right End -->
+  </div>
+  <!-- Main End -->
+
+
+    
 
   </div>
 </template>

@@ -66,10 +66,14 @@ export default defineComponent({
     if(Env.update.start) this.isUpdate();
     // 用户名
     this.login.uname = Storage.getItem('uname');
+    // 系统信息
+    this.getConfig();
     // 默认语言
     this.setLanguage(); 
     // Enter事件
     this._enter();
+    // 获取菜单
+    if(Storage.getItem('token')) this.getMenus();
   },
   methods:{
 
@@ -155,6 +159,16 @@ export default defineComponent({
       this.languageNum = lagData.index || 0;
     },
 
+    /* 系统信息 */
+    getConfig(){
+      Post('index/getConfig',{},(res: any)=>{
+        const d = res.data;
+        if(d.code==0) this.state.system = d.list;
+      },()=>{
+        Toast('网络加载失败!');
+      });
+    },
+
     /* 登录 */
     loginSub(){
       // 验证
@@ -227,8 +241,8 @@ export default defineComponent({
       });
     },
     /* 点击菜单 */
-    menuClick(pos: any){
-      console.log(pos);
+    menuClick(pos: any, value: string){
+      console.log(pos,value);
       // Storage.setItem('menusActive',JSON.stringify(pos));
       // const obj = this.menus[pos[0]].children[pos[1]];
       // this.state.menuName = obj.title;
