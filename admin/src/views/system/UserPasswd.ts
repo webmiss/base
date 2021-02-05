@@ -1,29 +1,32 @@
+import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
 /* JS组件 */
-import Loading from '../../library/ui/ui-loading'
-import Toast from '../../library/ui/ui-toast'
-import Post from '../../library/ui/request-post'
-import Storage from '../../library/ui/storage'
-import Reg from '../../library/inc/reg'
+import Loading from '@/library/ui/ui-loading'
+import Toast from '@/library/ui/ui-toast'
+import Post from '@/library/ui/request-post'
+import Storage from '@/library/ui/storage'
+import Reg from '@/library/inc/reg'
 /* UI组件 */
-import wmMain from '../../components/main'
-import wmForm from '../../components/form'
-import wmFormItem from '../../components/form/item'
-import wmInput from '../../components/form/input'
-import wmButton from '../../components/form/button'
+import wmMain from '@/components/main/index.vue'
+import wmForm from '@/components/form/index.vue'
+import wmFormItem from '@/components/form/item/index.vue'
+import wmInput from '@/components/form/input/index.vue'
+import wmButton from '@/components/form/button/index.vue'
 
-export default {
+export default defineComponent({
   components: {wmMain,wmForm,wmFormItem,wmInput,wmButton},
   data(){
-    return {
-      store: this.$store.state,
-      form:{passwd:'', passwd1:'', passwd2:''},
-    }
+    // 状态
+    const store: any = useStore();
+    const state: any = store.state;
+    // 表单
+    const form: any = {
+      passwd1: '',
+      passwd2: '',
+    };
+    return {state,form}
   },
-  activated(){
-    // 动作菜单-获取
-    this.store.action.name = 'UserPasswd';
-    this.store.action.url = '';
-    this.store.action.menus = '';
+  mounted(){
   },
   methods:{
 
@@ -49,7 +52,7 @@ export default {
       Post(
         'Userpasswd/edit',
         {token:Storage.getItem('token'), passwd:passwd, passwd1:passwd1},
-      (res)=>{
+      (res: any)=>{
         load.clear();
         const d = res.data;
         if(d.code==0){
@@ -58,8 +61,8 @@ export default {
           this.form.passwd1 = '';
           this.form.passwd2 = '';
           // 退出登录
-          this.store.isLogin = false;
-          this.store.uInfo = {};
+          this.state.isLogin = false;
+          this.state.uInfo = {};
           Storage.setItem('token','');
         }
         return Toast(d.msg);
@@ -67,4 +70,4 @@ export default {
     }
 
   },
-}
+});

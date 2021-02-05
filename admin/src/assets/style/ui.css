@@ -9,8 +9,12 @@ body{
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
 }
+ul{list-style: none;}
 img{vertical-align: top;}
 i{font-style: normal;}
+h1{font-size: 20px; font-weight: 500;}
+h2{font-size: 18px; font-weight: 500;}
+h3{font-size: 16px; font-weight: 500;}
 
 /* 公共 */
 .html{height: 100%;}

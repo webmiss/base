@@ -22,19 +22,17 @@ export default defineComponent({
     // 状态
     const store: any = useStore();
     const state: any = store.state;
+    // 表单
     const form: any = {img:'',nickname:'',name:'',gender:'男',birthday:'',position:''};
     const gender: any = [{name:'男',val:'男'},{name:'女',val:'女'}];
+    // 上传
     const upload: any = {
       url:'Userinfo/upImg',
       param:{token:Storage.getItem('token')}
     };
     return {state,form,gender,upload}
   },
-  activated(){
-    // 动作菜单-获取
-    this.state.action.name = 'UserInfo';
-    this.state.action.url = '';
-    this.state.action.menus = '';
+  mounted(){
     // 加载数据
     if(Storage.getItem('token')) this.loadData();
   },
@@ -48,7 +46,7 @@ export default defineComponent({
         const d = res.data;
         if(d.code!=0) return Toast(d.msg);
         else this.form = d.list;
-      });
+      },()=>{ Toast('网络加载失败!'); });
     },
 
     /* 提交表单 */

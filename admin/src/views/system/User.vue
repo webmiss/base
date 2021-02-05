@@ -151,4 +151,4 @@
 .form{padding-right: 24px;}
 </style>
 
-<script src="./User.js"></script>
+<script lang="ts" src="./User.ts"></script>

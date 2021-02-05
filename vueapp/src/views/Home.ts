@@ -38,9 +38,9 @@ export default defineComponent({
     /* 打开路由 */
     openUrl(url: string, login: boolean){
       login = login || false;
-      NavigateTo(this,'/demo');
-      if(login && !this.state.isLogin) return NavigateTo(this,'/user/login');
-      else return NavigateTo(this,url);
+      NavigateTo('/demo');
+      if(login && !this.state.isLogin) return NavigateTo('/user/login');
+      else return NavigateTo(url);
     },
 
   }

@@ -3,7 +3,7 @@
     <template v-if="action.length>0" >
       <div class="item" v-for="(val,key) in action" :key="key" @click="openAction(val.action)">{{val.name}}</div>
     </template>
-    <div class="wm-action_title">{{store.menuName || store.system.title}}</div>
+    <div class="wm-action_title">{{state.menuName || state.system.title}}</div>
   </div>
 </template>
 
@@ -45,12 +45,15 @@ export default defineComponent({
     getAction(url: string){
       this.action = [];
       if(!url || !Storage.getItem('token')) return false;
-      Post('Sysmenusaction/getAction',{token:Storage.getItem('token'),url:url},(res: any)=>{
+      Post('Sysmenusaction/getAction',{
+        token:Storage.getItem('token'),
+        url:url
+      },(res: any)=>{
         const d = res.data;
         if(d.code==0){
           this.action = d.action;
           // 追加菜单
-          if(this.menus) for(let i in this.menus) this.action.push(this.menus[i]);
+          for(let i in this.menus) this.action.push(this.menus[i]);
         }else{
           Toast(d.msg);
         }
@@ -59,9 +62,9 @@ export default defineComponent({
 
     /* 触发事件 */
     openAction(val: string){
-      this.state.action.action = val;
+      this.state.action.active = val;
       // 重置
-      setTimeout(()=>{ this.state.action.action = ''; },1000);
+      setTimeout(()=>{ this.state.action.active = ''; },1000);
     }
 
   }

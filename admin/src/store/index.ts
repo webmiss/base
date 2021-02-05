@@ -13,7 +13,7 @@ export default createStore({
     socket: null, //Socket
     /* 菜单 */
     menuName: '',  //用户菜单
-    action: {name:'',url:'',action:'',width:'',menus:''}, //动作菜单
+    action: {url:'',active:'',menus:[]}, //动作菜单
     /* 缓存路由 */
     keepAlive: ['Home'],
   },

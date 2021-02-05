@@ -21,4 +21,4 @@
 .max_width{max-width: 400px;}
 </style>
 
-<script src="./UserPasswd.js"></script>
+<script lang="ts" src="./UserPasswd.ts"></script>

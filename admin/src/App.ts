@@ -235,8 +235,12 @@ export default defineComponent({
       });
     },
     /* 点击菜单 */
-    menuClick(pos: any, value: string){
+    menuClick(pos: number[], value: string, label: string){
       NavigateTo(value);
+      // 默认动作菜单
+      this.state.menuName = label;
+      this.state.action.url = '';
+      this.state.action.menus = [];
     },
 
   }

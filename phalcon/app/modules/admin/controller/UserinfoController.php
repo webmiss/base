@@ -84,7 +84,6 @@ class UserInfoController extends Base{
       $img = isset($model->img)?$model->img:'';
       // 保存
       $model->img = self::$imgDir.$res['filename'];
-      $model->utime = date('YmdHis');
       if($model->save()){
         // 清理头像
         if(is_file($img)) unlink($img);
