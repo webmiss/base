@@ -1,44 +1,47 @@
+import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
 /* JS组件 */
-import Loading from '../../library/ui/ui-loading'
-import Toast from '../../library/ui/ui-toast'
-import Post from '../../library/ui/request-post'
-import Storage from '../../library/ui/storage'
-import DownBlob from '../../library/inc/down-blob'
+import Loading from '@/library/ui/ui-loading'
+import Toast from '@/library/ui/ui-toast'
+import Post from '@/library/ui/request-post'
+import Storage from '@/library/ui/storage'
+import DownBlob from '@/library/inc/down-blob'
 /* UI组件 */
-import wmRow from '@/components/main/row'
-import wmDialog from '@/components/dialog'
-import wmForm from '../../components/form'
-import wmFormItem from '../../components/form/item'
-import wmInput from '../../components/form/input'
-import wmButton from '../../components/form/button'
-import wmUploader from '../../components/uploader'
-import wmImgView from '../../components/img/view'
+import wmRow from '@/components/main/row/index.vue'
+import wmDialog from '@/components/dialog/index.vue'
+import wmForm from '@/components/form/index.vue'
+import wmFormItem from '@/components/form/item/index.vue'
+import wmInput from '@/components/form/input/index.vue'
+import wmButton from '@/components/form/button/index.vue'
+import wmUploader from '@/components/uploader/index.vue'
+import wmImgView from '@/components/img/view/index.vue'
 
-export default {
+/* 文件管理 */
+export default defineComponent({
   components: {wmRow,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmUploader,wmImgView},
   data(){
-    return {
-      store: this.$store.state,
-      // 信息
-      info: {url:'', path:'/', loaded:'0%'},
-      // 列表、新建、重命名、上传、下载、打包、删除
-      lists: {url:'', folder:[], files:[], dirNum:0, fileNum:0, size:'0KB'},
-      folder: {show:false, form:{name:''}},
-      rename: {show:false, form:{rename:'', name:''}},
-      upload: {url:'Sysfilemanage/upFile', param:{}},
-      down: {show:false,filename:''},
-      zip: {show:false, form:{name:'', files:[]}},
-      del: {show:false, data:[]},
-      // 图片预览
-      imgView:{show: false, imgs:[], index: 0},
-    }
+    // 状态
+    const store: any = useStore();
+    const state: any = store.state;
+    // 信息
+    const info: any = {url:'', path:'/', loaded:'0%'};
+    // 列表、新建、重命名、上传、下载、打包、删除
+    const lists: any = {url:'', folder:[], files:[], dirNum:0, fileNum:0, size:'0KB'};
+    const folder: any = {show:false, form:{name:''}};
+    const rename: any = {show:false, form:{rename:'', name:''}};
+    const upload: any = {url:'Sysfilemanage/upFile', param:{}};
+    const down: any = {show:false,filename:''};
+    const zip: any = {show:false, form:{name:'', files:[]}};
+    const del: any = {show:false, data:[]};
+    // 图片预览
+    const imgView: any = {show: false, imgs:[], index: 0};
+    return {state, info, lists, folder, rename, upload, down, zip, del, imgView};
   },
   computed: {
     // 动作菜单-监听
     actionType(){
-      const name = this.store.action.name;
-      const action = this.store.action.action;
-      return name=='SysFileManage'&&action?action:false;
+      const active: any = this.state.action.active;
+      return active;
     }
   },
   watch:{
@@ -57,21 +60,20 @@ export default {
         this.rename.form.name = names[0];
       }else if(val=='upload'){
         this.upload.param = {token: Storage.getItem('token'), path: this.info.path};
-        const obj = this.$refs.Uploader;
+        const obj: any = this.$refs.Uploader;
         obj.upload();
       }else if(val=='remove'){
-        const names = this.getCheckName();
+        const names: any = this.getCheckName();
         if(!names) return ;
         this.del.show = true;
         this.del.data = names;
       }
     }
   },
-  activated(){
+  mounted(){
     // 动作菜单-获取
-    this.store.action.name = 'SysFileManage';
-    this.store.action.url = 'SysFileManage';
-    this.store.action.menus = [
+    this.state.action.url = 'SysFileManage';
+    this.state.action.menus = [
       {name:'新建文件夹', action:'mkdir', ico:''},
       {name:'重命名', action:'rename', ico:''},
       {name:'上传', action:'upload', ico:''},
@@ -86,7 +88,10 @@ export default {
     /* 加载数据 */
     loadData(){
       const load = Loading();
-      Post('Sysfilemanage/list',{token:Storage.getItem('token'),path:this.info.path},(res)=>{
+      Post('Sysfilemanage/list',{
+        token: Storage.getItem('token'),
+        path: this.info.path
+      },(res: any)=>{
         load.clear();
         const d = res.data;
         if(d.code==0){
@@ -108,7 +113,7 @@ export default {
 
     /* 返回 */
     backDir(){
-      const data = this.info.path.split("/").filter(d=>d);
+      const data: any = this.info.path.split("/").filter((d: any)=>d);
       if(data.length<=1){
         this.info.path = '/';
       }else{
@@ -144,7 +149,7 @@ export default {
     },
 
     /* 上传 */
-    upProgress(event){
+    upProgress(event: any){
       let complete = (event.loaded/event.total*100 | 0);
       if(complete<100){
         this.info.loaded = complete+'%';
@@ -173,14 +178,14 @@ export default {
     },
 
     /* 打开文件夹 */
-    openFolder(name){
+    openFolder(name: string){
       this.info.path += name+'/';
       // 加载数据
       this.loadData();
     },
 
     /* 打开文件 */
-    openFile(filename){
+    openFile(filename: string){
       const ext = this.getType(filename);
       // 是否图片
       if(this.isImg(ext)){
@@ -200,7 +205,7 @@ export default {
         }
         // 图片预览
         this.imgView.show = true;
-        this.$refs.imgShow.open(imgs,index);
+        (this.$refs.imgShow as any).open(imgs,index);
       }else{
         this.down.show = true;
         this.down.filename = filename;
@@ -208,14 +213,14 @@ export default {
     },
 
     /* 是否图片 */
-    isImg(ext){
+    isImg(ext: string){
       const arr = ['png','jpg','jpeg','gif','svg'];
       const index = arr.indexOf(ext);
       return index>=0?true:false;
     },
 
     /* 是否存在 */
-    isExist(name){
+    isExist(name: string){
       if(!name){ Toast('请填写名称'); return false; }
       // 文件夹、文件
       let res = true;
@@ -252,17 +257,17 @@ export default {
     },
 
     /* 获取后缀 */
-    getType(filename){
+    getType(filename: string){
       const index1 = filename.lastIndexOf('.')+1;
       const index2 = filename.length;
       return filename.substring(index1,index2);
     },
 
     /* 提交数据 */
-    subAjax(action,parameter,callback,config){
+    subAjax(action: string, parameter: any, callback?: any, config?: any){
       parameter.token = Storage.getItem('token');
       const load = Loading();
-      Post('Sysfilemanage/'+action,parameter,(res)=>{
+      Post('Sysfilemanage/'+action,parameter,(res: any)=>{
         load.clear();
         const d = res.data;
         // 回调
@@ -270,8 +275,8 @@ export default {
         // 结果
         if(d.msg) Toast(d.msg);
         if(d.code===0) this.loadData();
-      },(e)=>{},config);
+      },()=>{},config);
     },
 
   },
-}
+});

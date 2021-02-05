@@ -86,7 +86,7 @@ export default defineComponent({
       this.setImg(index);
       // 背景动画
       setTimeout(()=>{
-        let bg = this.$refs.ImgBG;
+        let bg: any = this.$refs.ImgBG;
         if(bg) bg.style.opacity = 1;
       },300);
       /* ESC */
@@ -110,7 +110,7 @@ export default defineComponent({
         this.$emit('update:show',false);
       },300);
       // 背景动画
-      let bg = this.$refs.ImgBG;
+      let bg: any = this.$refs.ImgBG;
       if(bg) bg.style.opacity = 0;
     },
 
@@ -122,7 +122,7 @@ export default defineComponent({
       this.info.name = this.imgs[this.index].name;
       this.info.size = this.imgs[this.index].size || '';
       // 动画
-      let obj = document.getElementById('img');
+      let obj: any = document.getElementById('img');
       if(obj){
         obj.style.opacity = '0';
         obj.style.width = '0';

@@ -141,4 +141,4 @@
 .file_img.bgImg{background-size: contain;}
 </style>
 
-<script src="./FileManage.js"></script>
+<script lang="ts" src="./FileManage.ts"></script>
