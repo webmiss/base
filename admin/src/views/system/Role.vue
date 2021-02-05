@@ -21,8 +21,8 @@
           </wm-popover>
         </td>
         <td>
-          <wm-button v-if="!val.perm" type="danger" size="medium" @click="permData(val.id,val.perm)">设置权限</wm-button>
-          <wm-button v-else size="medium" @click="permData(val.id,val.perm)">修改权限</wm-button>
+          <wm-button v-if="!val.perm" type="danger" height="32px" @click="permData(val.id,val.perm)">设置权限</wm-button>
+          <wm-button v-else height="32px" @click="permData(val.id,val.perm)">修改权限</wm-button>
         </td>
       </wm-table-tr>
     </wm-table>

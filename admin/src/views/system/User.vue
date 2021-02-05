@@ -42,13 +42,13 @@
           <wm-switch :value="val.state_app" @update:value="setState('state_app',$event,val.uid)"></wm-switch>
         </td>
         <td>
-          <wm-button v-if="val.perm" type="danger" size="medium" @click="permData(val.uid,val.perm)">私有</wm-button>
-          <wm-button v-else-if="val.role" size="medium" @click="permData(val.uid,val.perm)">角色</wm-button>
-          <wm-button v-else type="info" size="medium" @click="permData(val.uid,val.perm)">分配</wm-button>
+          <wm-button v-if="val.perm" type="danger" height="32px" @click="permData(val.uid,val.perm)">私有</wm-button>
+          <wm-button v-else-if="val.role" height="32px" @click="permData(val.uid,val.perm)">角色</wm-button>
+          <wm-button v-else type="info" height="32px" @click="permData(val.uid,val.perm)">分配</wm-button>
         </td>
         <td>
-          <wm-button v-if="val.nickname" type="info" size="medium" @click="infoData(val)">{{ val.nickname }}</wm-button>
-          <wm-button v-else type="info" size="medium" @click="infoData(val)">无</wm-button>
+          <wm-button v-if="val.nickname" type="info" height="32px" @click="infoData(val)">{{ val.nickname }}</wm-button>
+          <wm-button v-else type="info" height="32px" @click="infoData(val)">无</wm-button>
         </td>
       </wm-table-tr>
     </wm-table>
