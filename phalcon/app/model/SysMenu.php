@@ -6,13 +6,13 @@ use app\library\Safety;
 /* 系统菜单表 */
 class SysMenu extends Model {
 
-  protected $id;
-  protected $fid;
-  protected $title;
-  protected $url;
-  protected $perm;
-  protected $ctime;
-  protected $utime;
+  public $id;
+  public $fid;
+  public $title;
+  public $url;
+  public $perm;
+  public $ctime;
+  public $utime;
 
   /* 构造函数 */
   public function initialize(){

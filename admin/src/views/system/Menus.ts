@@ -1,43 +1,46 @@
+import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
 /* JS组件 */
-import Loading from '../../library/ui/ui-loading'
-import Toast from '../../library/ui/ui-toast'
-import Post from '../../library/ui/request-post'
-import Storage from '../../library/ui/storage'
+import Loading from '@/library/ui/ui-loading'
+import Toast from '@/library/ui/ui-toast'
+import Post from '@/library/ui/request-post'
+import Storage from '@/library/ui/storage'
 /* UI组件 */
-import wmMain from '../../components/main'
-import wmRow from '../../components/main/row'
-import wmTable from '../../components/table'
-import wmTableTitle from '../../components/table/title'
-import wmTableTr from '../../components/table/tr'
-import wmTag from '../../components/tag'
-import wmPopover from '../../components/popover'
-import wmDialog from '../../components/dialog'
-import wmForm from '../../components/form'
-import wmFormItem from '../../components/form/item'
-import wmInput from '../../components/form/input'
-import wmButton from '../../components/form/button'
-import wmPage from '../../components/page'
+import wmMain from '@/components/main/index.vue'
+import wmRow from '@/components/main/row/index.vue'
+import wmTable from '@/components/table/index.vue'
+import wmTableTitle from '@/components/table/title/index.vue'
+import wmTableTr from '@/components/table/tr/index.vue'
+import wmTag from '@/components/tag/index.vue'
+import wmPopover from '@/components/popover/index.vue'
+import wmDialog from '@/components/dialog/index.vue'
+import wmForm from '@/components/form/index.vue'
+import wmFormItem from '@/components/form/item/index.vue'
+import wmInput from '@/components/form/input/index.vue'
+import wmButton from '@/components/form/button/index.vue'
+import wmPage from '@/components/page/index.vue'
 
-/* 用户管理 */
-export default {
+/* 系统菜单 */
+export default defineComponent({
   components: {wmMain,wmRow,wmTable,wmTableTitle,wmTableTr,wmTag,wmPopover,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmPage},
   data(){
-    return {
-      store: this.$store.state,
-      page: {list:[], page:1, limit:10, total:0,},
-      // 搜索、添加、编辑、删除
-      sea: {show:false,form:{}},
-      add: {show:false,form:{}},
-      edit: {show:false,id:'',form:{}},
-      del: {show:false,ids:''},
-    }
+    // 状态
+    const store: any = useStore();
+    const state: any = store.state;
+    // 分页
+    const page: any = {list:[], page:1, limit:10, total:0};
+    // 搜索、添加、编辑、删除
+    const sea: any = {show:false, form:{}};
+    const add: any = {show:false, form:{}};
+    const edit: any = {show:false, id:'', form:{}};
+    const del: any = {show:false, ids:''};
+    return {state, page, sea, add, edit, del};
   },
   computed: {
     // 动作菜单-监听
     actionType(){
-      const name = this.store.action.name;
-      const action = this.store.action.action;
-      return name=='SysMenus'&&action?action:false;
+      const active: any = this.state.action.active;
+      return active;
     }
   },
   watch:{
@@ -57,15 +60,11 @@ export default {
       }
     }
   },
-  activated(){
+  mounted(){
     // 动作菜单-获取
-    this.store.action.name = 'SysMenus';
-    this.store.action.url = 'SysMenus';
-    this.store.action.menus = '';
+    this.state.action.url = 'SysMenus';
     // 加载数据
     if(Storage.getItem('token')) this.loadData();
-  },
-  mounted(){
   },
   methods:{
 
@@ -73,13 +72,13 @@ export default {
     loadData(){
       this.page.list = [];
       this.page.total = 0;
-      const load = Loading();
+      const load: any = Loading();
       Post('Sysmenus/list',{
         token: Storage.getItem('token'),
         page: this.page.page,
         limit: this.page.limit,
         data: JSON.stringify(this.sea.form)
-      },(res)=>{
+      },(res: any)=>{
         load.clear();
         const d = res.data;
         if(d.code==0){
@@ -90,7 +89,7 @@ export default {
     },
 
     /* 分页 */
-    subPage(page){
+    subPage(page: number){
       this.page.page = page;
       this.loadData();
     },
@@ -106,9 +105,12 @@ export default {
     subAdd(){
       this.add.show = false;
       // 提交
-      const data = JSON.stringify(this.add.form);
-      const load = Loading();
-      Post('Sysmenus/add',{token:Storage.getItem('token'),data:data},(res)=>{
+      const data: string = JSON.stringify(this.add.form);
+      const load: any = Loading();
+      Post('Sysmenus/add',{
+        token: Storage.getItem('token'),
+        data: data
+      },(res: any)=>{
         load.clear();
         const d = res.data;
         if(d.code===0) this.loadData();
@@ -118,8 +120,8 @@ export default {
 
     /* 编辑 */
     editData(){
-      const table = this.$refs.Table;
-      const row = table.getRow();
+      const table: any = this.$refs.Table;
+      const row: any = table.getRow();
       if(!row) return Toast('请选择数据!');
       this.edit.show = true;
       // 默认值
@@ -135,10 +137,14 @@ export default {
     subEdit(){
       this.edit.show = false;
       // 提交
-      const id = this.edit.id;
-      const data = JSON.stringify(this.edit.form);
-      const load = Loading();
-      Post('Sysmenus/edit',{token:Storage.getItem('token'),id:id,data:data},(res)=>{
+      const id: number = this.edit.id;
+      const data: string = JSON.stringify(this.edit.form);
+      const load: any = Loading();
+      Post('Sysmenus/edit',{
+        token: Storage.getItem('token'),
+        id: id,
+        data: data
+      },(res: any)=>{
         load.clear();
         const d = res.data;
         if(d.code===0) this.loadData();
@@ -148,8 +154,8 @@ export default {
 
     /* 删除 */
     delData(){
-      const table = this.$refs.Table;
-      const vals = table.getVals();
+      const table: any = this.$refs.Table;
+      const vals: any = table.getVals();
       if(!vals) return Toast('请选择数据!');
       this.del.show = true;
       this.del.ids = JSON.stringify(vals);
@@ -157,8 +163,11 @@ export default {
     subDel(){
       this.del.show = false;
       // 提交
-      const load = Loading();
-      Post('Sysmenus/delete',{token:Storage.getItem('token'),data:this.del.ids},(res)=>{
+      const load: any = Loading();
+      Post('Sysmenus/delete',{
+        token: Storage.getItem('token'),
+        data: this.del.ids
+      },(res: any)=>{
         load.clear();
         const d = res.data;
         if(d.code===0) this.loadData();
@@ -167,4 +176,4 @@ export default {
     },
 
   },
-}
+});

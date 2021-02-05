@@ -5,10 +5,10 @@ use app\library\Safety;
 
 class SysMenuAction extends Model{
 
-  protected $id;
-  protected $name;
-  protected $action;
-  protected $perm;
+  public $id;
+  public $name;
+  public $action;
+  public $perm;
 
   /* 构造函数 */
   public function initialize(){

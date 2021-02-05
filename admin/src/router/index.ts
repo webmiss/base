@@ -10,6 +10,10 @@ const routes: Array<RouteRecordRaw> = [
   {path:'/UserPasswd', name:'UserPasswd', component:()=>import('../views/system/UserPasswd.vue')},
   // 设置
   {path:'/SysUser', name:'SysUser', component:()=>import('../views/system/User.vue')},
+  {path:'/SysRole', name:'SysRole', component:()=>import('../views/system/Role.vue')},
+  {path:'/SysConfig', name:'SysConfig', component:()=>import('../views/system/Config.vue')},
+  {path:'/SysMenus', name:'SysMenus', component:()=>import('../views/system/Menus.vue')},
+  {path:'/SysMenusAction', name:'SysMenusAction', component:()=>import('../views/system/Action.vue')},
 ]
 
 /* 配置 */

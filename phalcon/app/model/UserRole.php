@@ -4,10 +4,10 @@ namespace app\model;
 /* 角色表 */
 class UserRole extends Model {
 
-  protected $id;
-  protected $role;
-  protected $ctime;
-  protected $utime;
+  public $id;
+  public $role;
+  public $ctime;
+  public $utime;
 
   /* 构造函数 */
   public function initialize(){

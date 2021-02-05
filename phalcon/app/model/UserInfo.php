@@ -5,8 +5,8 @@ namespace app\model;
 class UserInfo extends Model {
 
   public $uid;
-  protected $birthday;
-  protected $utime;
+  public $birthday;
+  public $utime;
   
   /* 构造函数 */
   public function initialize(){

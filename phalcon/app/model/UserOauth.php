@@ -3,7 +3,7 @@ namespace app\model;
 
 class UserOauth extends Model{
 
-  private $id;
+  public $id;
 
   /* 构造函数 */
   public function initialize(){

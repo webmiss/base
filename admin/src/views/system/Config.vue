@@ -31,4 +31,4 @@
 .max_width{max-width: 400px;}
 </style>
 
-<script src="./Config.js"></script>
+<script lang="ts" src="./Config.ts"></script>

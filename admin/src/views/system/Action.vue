@@ -95,4 +95,4 @@
 .form{padding-right: 24px;}
 </style>
 
-<script src="./Action.js"></script>
+<script lang="ts" src="./Action.ts"></script>

@@ -135,4 +135,4 @@
 .form{padding-right: 24px;}
 </style>
 
-<script src="./Menus.js"></script>
+<script lang="ts" src="./Menus.ts"></script>

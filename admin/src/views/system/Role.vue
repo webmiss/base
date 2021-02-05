@@ -21,8 +21,8 @@
           </wm-popover>
         </td>
         <td>
-          <wm-button v-if="!val.perm" type="danger" size="medium" @click="permData(val.uid,val.perm)">设置权限</wm-button>
-          <wm-button v-else size="medium" @click="permData(val.uid,val.perm)">修改权限</wm-button>
+          <wm-button v-if="!val.perm" type="danger" size="medium" @click="permData(val.id,val.perm)">设置权限</wm-button>
+          <wm-button v-else size="medium" @click="permData(val.id,val.perm)">修改权限</wm-button>
         </td>
       </wm-table-tr>
     </wm-table>
@@ -81,7 +81,7 @@
     <wm-dialog title="权限" width="420px" :show="perm.show" @update:show="perm.show=$event">
       <div>内容</div>
       <template #footer>
-        <wm-button @click="subInfo()">更 新</wm-button>
+        <wm-button @click="subPerm()">更 新</wm-button>
       </template>
     </wm-dialog>
     <!-- Perm End -->
@@ -94,4 +94,4 @@
 .form{padding-right: 24px;}
 </style>
 
-<script src="./Role.js"></script>
+<script lang="ts" src="./Role.ts"></script>

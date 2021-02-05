@@ -11,22 +11,18 @@ import wmRow from '@/components/main/row/index.vue'
 import wmTable from '@/components/table/index.vue'
 import wmTableTitle from '@/components/table/title/index.vue'
 import wmTableTr from '@/components/table/tr/index.vue'
-import wmImg from '@/components/img/index.vue'
 import wmTag from '@/components/tag/index.vue'
 import wmPopover from '@/components/popover/index.vue'
-import wmSwitch from '@/components/switch/index.vue'
 import wmDialog from '@/components/dialog/index.vue'
 import wmForm from '@/components/form/index.vue'
 import wmFormItem from '@/components/form/item/index.vue'
 import wmInput from '@/components/form/input/index.vue'
-import wmRadio from '@/components/form/radio/index.vue'
-import wmDate from '@/components/form/date/index.vue'
 import wmButton from '@/components/form/button/index.vue'
 import wmPage from '@/components/page/index.vue'
 
 /* 用户管理 */
 export default defineComponent({
-  components: {wmMain,wmRow,wmTable,wmTableTitle,wmTableTr,wmImg,wmTag,wmPopover,wmSwitch,wmDialog,wmForm,wmFormItem,wmInput,wmRadio,wmDate,wmButton,wmPage},
+  components: {wmMain,wmRow,wmTable,wmTableTitle,wmTableTr,wmTag,wmPopover,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmPage},
   data(){
     // 状态
     const store: any = useStore();
@@ -40,10 +36,7 @@ export default defineComponent({
     const del: any = {show:false, ids:''};
     // 权限
     const perm: any = {show:false, id:'', perm:''};
-    // 用户信息
-    const info: any = {show:false, id:'', form:{}};
-    const gender: any = [{name:'男', val:'男'},{name:'女', val:'女'}];
-    return {state, page, sea, add, edit, del, perm, info, gender};
+    return {state, page, sea, add, edit, del, perm}
   },
   computed: {
     // 动作菜单-监听
@@ -71,7 +64,7 @@ export default defineComponent({
   },
   mounted(){
     // 动作菜单-获取
-    this.state.action.url = 'SysUser';
+    this.state.action.url = 'SysRole';
     // 加载数据
     if(Storage.getItem('token')) this.loadData();
   },
@@ -82,7 +75,7 @@ export default defineComponent({
       this.page.list = [];
       this.page.total = 0;
       const load: any = Loading();
-      Post('Sysuser/list',{
+      Post('Sysrole/list',{
         token: Storage.getItem('token'),
         page: this.page.page,
         limit: this.page.limit,
@@ -116,9 +109,9 @@ export default defineComponent({
       // 提交
       const data: string = JSON.stringify(this.add.form);
       const load: any = Loading();
-      Post('Sysuser/add',{
+      Post('Sysrole/add',{
         token: Storage.getItem('token'),
-        data: data
+        data:data
       },(res: any)=>{
         load.clear();
         const d = res.data;
@@ -130,23 +123,22 @@ export default defineComponent({
     /* 编辑 */
     editData(){
       const table: any = this.$refs.Table;
-      const row: any = table.getRow('uid');
+      const row: any = table.getRow();
       if(!row) return Toast('请选择数据!');
       this.edit.show = true;
       // 默认值
-      this.edit.uid = row.uid;
-      this.edit.form.tel = row.tel;
-      this.edit.form.passwd = '';
+      this.edit.id = row.id;
+      this.edit.form.role = row.role;
     },
     subEdit(){
       this.edit.show = false;
       // 提交
-      const uid: number = this.edit.uid;
+      const id: number = this.edit.id;
       const data: string = JSON.stringify(this.edit.form);
       const load: any = Loading();
-      Post('Sysuser/edit',{
+      Post('Sysrole/edit',{
         token: Storage.getItem('token'),
-        uid: uid,
+        id: id,
         data: data
       },(res: any)=>{
         load.clear();
@@ -168,7 +160,7 @@ export default defineComponent({
       this.del.show = false;
       // 提交
       const load = Loading();
-      Post('Sysuser/delete',{
+      Post('Sysrole/delete',{
         token: Storage.getItem('token'),
         data: this.del.ids
       },(res: any)=>{
@@ -179,59 +171,13 @@ export default defineComponent({
       });
     },
 
-    /* 状态 */
-    setState(type: string, val: boolean, uid: string){
-      const state = val?'1':'0';
-      const load = Loading();
-      Post('Sysuser/state',{
-        token: Storage.getItem('token'),
-        uid: uid,
-        type: type,
-        state: state
-      },(res: any)=>{
-        load.clear();
-        const d = res.data;
-        if(d.code!==0) val=val
-        return Toast(d.msg);
-      });
-    },
-
     /* 权限 */
-    permData(uid: string, perm: string){
+    permData(id: string, perm: any){
       this.perm.show = true;
-      console.log(uid,perm);
+      console.log(id,perm);
     },
     subPerm(){
-
-    },
-
-    /* 用户信息 */
-    infoData(row: any){
-      this.info.show = true;
-      // 默认值
-      this.info.uid = row.uid;
-      this.info.form.nickname = row.nickname || '';
-      this.info.form.name = row.name || '';
-      this.info.form.gender = row.gender || '';
-      this.info.form.birthday = row.birthday || '';
-      this.info.form.position = row.position || '';
-    },
-    subInfo(){
-      this.info.show = false;
-      // 提交
-      const uid = this.info.uid;
-      const data = JSON.stringify(this.info.form);
-      const load = Loading();
-      Post('Sysuser/info',{
-        token: Storage.getItem('token'),
-        uid: uid,
-        data: data
-      },(res: any)=>{
-        load.clear();
-        const d = res.data;
-        if(d.code===0) this.loadData();
-        return Toast(d.msg);
-      });
+      this.perm.show = false;
     },
 
   },

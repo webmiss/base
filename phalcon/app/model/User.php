@@ -7,12 +7,12 @@ use app\library\Safety;
 class User extends Model{
 
   public $id;
-  protected $uname;
-  protected $tel;
-  protected $email;
-  protected $password;
-  protected $rtime;
-  protected $utime;
+  public $uname;
+  public $tel;
+  public $email;
+  public $password;
+  public $rtime;
+  public $utime;
 
   /* 构造函数 */
   function initialize(){

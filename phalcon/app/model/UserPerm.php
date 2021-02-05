@@ -5,7 +5,7 @@ namespace app\model;
 class UserPerm extends Model {
 
   public $uid;
-  protected $utime;
+  public $utime;
 
   /* 构造函数 */
   public function initialize(){

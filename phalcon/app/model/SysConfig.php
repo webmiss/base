@@ -5,7 +5,7 @@ namespace app\model;
 /* 系统配置表 */
 class SysConfig extends Model {
 
-  private $id;
+  public $id;
   public $title;
   public $name;
   public $ctime;
