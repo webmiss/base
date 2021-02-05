@@ -162,10 +162,13 @@ export default defineComponent({
 
     /* 系统信息 */
     getConfig(){
+      const load = Loading();
       Post('index/getConfig',{},(res: any)=>{
+        load.clear();
         const d = res.data;
         if(d.code==0) this.state.system = d.list;
       },()=>{
+        load.clear();
         Toast('网络加载失败!');
       });
     },
@@ -232,6 +235,8 @@ export default defineComponent({
         if(d.code==0){
           this.menus = d.menus;
         }
+      },()=>{
+        Toast('获取菜单失败!');
       });
     },
     /* 点击菜单 */
