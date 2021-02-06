@@ -12,7 +12,7 @@
         <td width="80">权限</td>
         <td>个人信息</td>
       </wm-table-title>
-      <wm-table-tr v-for="(val,key) in page.list" :key="key" :value="val.uid">
+      <wm-table-tr v-for="(val,key) in page.list" :key="key" :value="val.uid+''">
         <td>
           <wm-img width="40px" height="40px" radius="50%" icoSize="24px" :url="val.img" :title="val.uid"></wm-img>
         </td>

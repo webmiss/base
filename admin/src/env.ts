@@ -6,11 +6,15 @@ const platform: string = Storage.getItem('platform') || '';
 const lag: any = platform?JSON.parse(platform):'';
 let baseUrl: string, socket: string;
 if(lag && lag.name=='python'){
-  baseUrl = 'https://demo-python.webmis.vip/';
-  socket = 'wss://demo-python.webmis.vip/wss';
+  baseUrl = 'http://localhost:5000/';
+  socket = 'ws://localhost:5001/';
+  // baseUrl = 'https://demo-python.webmis.vip/';
+  // socket = 'wss://demo-python.webmis.vip/wss';
 }else if(lag && lag.name=='java'){
-  baseUrl = 'https://demo-java.webmis.vip/';
-  socket = 'wss://demo-java.webmis.vip/websocket';
+  baseUrl = 'http://localhost:9000/';
+  socket = 'ws://localhost:9000/websocket';
+  // baseUrl = 'https://demo-java.webmis.vip/';
+  // socket = 'wss://demo-java.webmis.vip/websocket';
 }else{
   // baseUrl = 'http://localhost:9010/';
   // socket = 'ws://localhost:9011/';
@@ -78,7 +82,7 @@ export default {
     start: true,  //Token验证
     api: 'user/token',  //验证接口
     uinfo: 'uinfo', //用户信息
-    time: 10000, //间隔时间
+    time: 30000, //间隔时间
   },
   /* 高德地图 */
   amap: {

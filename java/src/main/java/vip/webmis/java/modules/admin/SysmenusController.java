@@ -220,12 +220,19 @@ public class SysmenusController extends Base {
   /* 递归菜单 */
   private static ArrayList<JSONObject> _getMenu(String fid){
     ArrayList<JSONObject> data = new ArrayList<JSONObject>();
+    ArrayList<JSONObject> menu = null;
+    JSONObject tmp = null;
     JSONArray M = menus.containsKey(fid)?JSON.parseArray(JSON.toJSONString(menus.get(fid))):JSON.parseArray(JSON.toJSONString(data));
     for( Object val : M) {
       JSONObject now = JSON.parseObject(JSON.toJSONString(val));
       if(permAll.containsKey(String.valueOf(now.get("id")))){
-        now.put("children", _getMenu(String.valueOf(now.get("id"))));
-        data.add(now);
+        tmp = new JSONObject();
+        tmp.put("icon",now.get("ico"));
+        tmp.put("label",now.get("title"));
+        tmp.put("value",now.get("url"));
+        menu = _getMenu(String.valueOf(now.get("id")));
+        if(menu.size()>0) tmp.put("children",menu);
+        data.add(tmp);
       }
     }
     return data;

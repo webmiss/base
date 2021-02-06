@@ -8,7 +8,7 @@
         <td width="40">权限</td>
         <td>图标</td>
       </wm-table-title>
-      <wm-table-tr v-for="(val,key) in page.list" :key="key" :value="val.id">
+      <wm-table-tr v-for="(val,key) in page.list" :key="key" :value="val.id+''">
         <td>{{ val.name }}</td>
         <td>{{ val.action }}</td>
         <td>{{ val.perm }}</td>

@@ -24,7 +24,7 @@ class Safety:
   def encode(param={}):
     try :
       token = jwt.encode(param, Env.key, algorithm='HS256')
-      return token
+      return bytes.decode(token)
     except Exception as e :
       return None
 

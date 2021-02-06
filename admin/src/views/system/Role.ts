@@ -172,7 +172,7 @@ export default defineComponent({
     },
 
     /* 权限 */
-    permData(id: string, perm: any){
+    permData(id: number, perm: any){
       this.perm.show = true;
       console.log(id,perm);
     },

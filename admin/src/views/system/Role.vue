@@ -7,7 +7,7 @@
         <td width="120">名称</td>
         <td>操作</td>
       </wm-table-title>
-      <wm-table-tr v-for="(val,key) in page.list" :key="key" :value="val.id">
+      <wm-table-tr v-for="(val,key) in page.list" :key="key" :value="val.id+''">
         <td>{{ val.id }}</td>
         <td>
           <wm-popover type="bottom" effect="dark" width="180px">

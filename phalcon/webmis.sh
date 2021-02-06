@@ -3,7 +3,7 @@
 # 配置
 ip="127.0.0.1"
 port="9010"
-portDb="8080"
+portDb="8888"
 cli="cli.php"
 s=$1
 

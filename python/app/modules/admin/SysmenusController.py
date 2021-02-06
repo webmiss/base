@@ -134,6 +134,8 @@ class SysmenusController(Base) :
     M = self.menus[str(fid)] if str(fid) in self.menus else []
     for val in M :
       if str(val['id']) in self.permAll.keys() :
-        val['children'] = self._getMenu(val['id'])
-        data += [val]
+        tmp = {'icon':val['ico'],'label':val['title'],'value':val['url']}
+        menu = self._getMenu(val['id'])
+        if len(menu)>0 : tmp['children']=menu
+        data += [tmp]
     return data

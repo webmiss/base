@@ -30,6 +30,7 @@ class Env{
   static function db() {
     return [
       'adapter'=> 'Mysql',  //类型
+      // 'host'=> '127.0.0.1', //主机
       'host'=> '154.91.144.171', //主机
       'port'=> 3306,  //端口
       'username'=> 'webmis',  //用户名

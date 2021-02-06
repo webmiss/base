@@ -13,7 +13,7 @@
         <td width="60">排序</td>
         <td>备注</td>
       </wm-table-title>
-      <wm-table-tr v-for="(val,key) in page.list" :key="key" :value="val.id">
+      <wm-table-tr v-for="(val,key) in page.list" :key="key" :value="val.id+''">
         <td>{{ val.id }}</td>
         <td>{{ val.fid }}</td>
         <td>

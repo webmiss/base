@@ -23,8 +23,10 @@ public class Env {
 
   /* 数据库 */
   public static HashMap<String,Object> db() {
+    // String host = "127.0.0.1";  //主机
+    String host = "154.91.144.171";  //主机
     HashMap<String,Object> conf = new HashMap<String,Object>();
-    conf.put("jdbc","mysql://154.91.144.171:3306/data?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai"); //类型
+    conf.put("jdbc","mysql://"+host+":3306/data?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai"); //类型
     conf.put("user","webmis");  //用户名
     conf.put("password","e4b99adec618e653400966be536c45f8");  //密码
     conf.put("driver","com.mysql.cj.jdbc.Driver");  //驱动
