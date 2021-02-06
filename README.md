@@ -10,7 +10,7 @@ Docs：[https://webmis.vip](https://webmis.vip)
 
 <br/>
 
-# Deme
+# Demo
 - Web(文档)：[https://webmis.vip](https://webmis.vip)
 - App(H5+混合型APP)：[https://demo-app.webmis.vip](https://demo-app.webmis.vip)
 - Api(接口工具)：[https://demo-api.webmis.vip](https://demo-api.webmis.vip)
