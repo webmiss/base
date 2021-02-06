@@ -7,7 +7,7 @@ module.exports = {
     config.plugin('html').tap(args => {
       args[0].title = 'WebMIS 全栈开发基础框架'
       args[0].keywords = 'WebMIS,全栈开发基础框架'
-      args[0].description = 'WebMIS全栈开发基础框架.技术,PHP,Python,SpringBoot,Phalcon,Flutter,NodeJS,Vue,Swoole,Redis,API'
+      args[0].description = 'WebMIS全栈开发基础框架.技术,PHP,Python,SpringBoot,Phalcon,Flutter,NodeJS,Vue,Socket,Redis,API'
       return args
     })
     // 加载Markdown文件

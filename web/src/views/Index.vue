@@ -5,7 +5,7 @@
       <h1>WebMIS</h1>
       <div class="index_key">
         全栈开发基础框架.技术<br>
-        PHP / Python / SpringBoot / Phalcon / Flutter / NodeJS / Vue / Swoole / Redis / API
+        PHP / Python / SpringBoot / Phalcon / Flutter / NodeJS / Vue / Socket / Redis / API
       </div>
       <div class="index_an">
         <a class="an1" @click="openUrl('/docs/vue/install/index')">文档</a>
