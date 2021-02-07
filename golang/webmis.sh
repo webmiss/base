@@ -29,6 +29,9 @@ elif [ "$s" == "build" ]; then
 # 预览
 elif [ "$s" == "http" ]; then
   ./$name
+# 启动
+elif [ "$s" == "start" ]; then
+  nohup ./$name &
 else
   helpText
 fi
