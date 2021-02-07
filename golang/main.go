@@ -4,7 +4,7 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 
-	// "golang/app"
+	"golang/app"
 	"golang/app/config"
 	"golang/app/modules/admin"
 	"golang/app/modules/api"
@@ -20,7 +20,8 @@ func main() {
 	mvc.Configure(obj.Party("/api"), _api)
 	mvc.Configure(obj.Party("/admin"), _admin)
 	// 运行
-	obj.Listen(":9010")
+	cfg := app.Env()
+	obj.Listen(":" + cfg["port"])
 }
 
 /* WEB */
