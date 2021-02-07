@@ -1,18 +1,12 @@
 # CentOS 服务器
 
-## 打包
-```bash
-# Bash命令
-./webmis.sh build
-# Go命令
-go build
-```
-
 ## 安装Go
 ```bash
-dnf install go
+dnf install golang -y
 # 安装依赖包
 cd /xxx/golang && ./webmis.sh install
+# 打包
+./webmis.sh build
 # 启动
 ./webmis.sh start
 ```
@@ -23,7 +17,7 @@ chmod +x /etc/rc.d/rc.local
 # 编辑文件
 vi /etc/rc.d/rc.local
 ```
-- cd /xxx/python/ && ./webmis.sh start
+- cd /xxx/golang/ && ./webmis.sh start
 
 <br/>
 

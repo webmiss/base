@@ -13,6 +13,11 @@ sudo pacman -S go
 go version
 ```
 
+#### 3) 国内镜像
+```bash
+go env -w GOPROXY=https://goproxy.cn
+```
+
 ## Windows
 #### 1) 安装Git
 - 下载: [Git](https://git-scm.com/download/win)
