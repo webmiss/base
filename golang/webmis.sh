@@ -12,7 +12,7 @@ helpText(){
   echo "<command>"
   echo "  serve         运行: go run $index"
   echo "  install       安装依赖包: go get -v"
-  echo "  build         打包: yarn build"
+  echo "  build         打包: go build"
   echo "  http          预览: ./$name"
 }
 

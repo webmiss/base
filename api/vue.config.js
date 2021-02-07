@@ -7,7 +7,7 @@ module.exports = {
     config.plugin('html').tap(args => {
       args[0].title = 'WebMIS API'
       args[0].keywords = 'WebMIS,Vue接口工具'
-      args[0].description = 'WebMIS全栈开发基础框架.技术,PHP,Python,SpringBoot,Phalcon,Flutter,NodeJS,Vue,Socket,Redis,API'
+      args[0].description = 'WebMIS全栈开发基础框架.技术,PHP,Python,SpringBoot,Iris,Phalcon,Flutter,NodeJS,Vue,Socket,Redis,API'
       return args
     })
   }

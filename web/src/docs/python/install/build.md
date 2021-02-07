@@ -1,6 +1,6 @@
 # CentOS 服务器
 
-## 安装Pytho3
+## 安装Python3
 ```bash
 # Python3
 dnf install python3-devel

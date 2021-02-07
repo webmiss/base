@@ -58,6 +58,10 @@ export default defineComponent({
         this.position[1] = 'Java > ';
         this.menuData = Menus.java();
         if(reset) this.menuIndex = [0,1];
+      }else if(this.Nav=='go'){
+        this.position[1] = 'Go > ';
+        this.menuData = Menus.go();
+        if(reset) this.menuIndex = [0,1];
       }else if(this.Nav=='linux'){
         this.position[1] = 'Linux > ';
         this.menuData = Menus.linux();

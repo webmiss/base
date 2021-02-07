@@ -59,6 +59,17 @@ export default {
     ];
   },
 
+  /* Go */
+  go(){
+    return [
+      {label:'Go项目', children:[
+        {label: '开发环境', value: 'docs/go/install/install'},
+        {label: '安装&运行', value: 'docs/go/install/index'},
+        {label: '打包&发布', value: 'docs/go/install/build'},
+      ]},
+    ];
+  },
+
   /* Linux */
   linux(){
     return [
