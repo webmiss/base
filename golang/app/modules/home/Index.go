@@ -1,6 +1,8 @@
 package home
 
 import (
+	"golang/app/model"
+
 	"github.com/kataras/iris/v12"
 )
 
@@ -17,8 +19,14 @@ func params(ctx iris.Context) {
 	}
 }
 
+type Result struct {
+	uid   int
+	title string
+}
+
 /* 首页 */
 func index(ctx iris.Context) {
-	// panic("出错了!")
-	ctx.JSON(iris.Map{"code": 0, "msg": "Web"})
+	result := map[string]interface{}{}
+	(&model.Demo{}).Init().Find().Scan(&result)
+	ctx.JSON(iris.Map{"code": 0, "msg": "Web", "data": result})
 }
