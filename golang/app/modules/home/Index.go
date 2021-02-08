@@ -26,7 +26,7 @@ type Result struct {
 
 /* 首页 */
 func index(ctx iris.Context) {
-	result := map[string]interface{}{}
-	(&model.Demo{}).Init().Find().Scan(&result)
-	ctx.JSON(iris.Map{"code": 0, "msg": "Web", "data": result})
+	data := []map[string]interface{}{}
+	(&model.Demo{}).Init().Find().Scan(&data)
+	ctx.JSON(iris.Map{"code": 0, "msg": "Web", "data": data})
 }
