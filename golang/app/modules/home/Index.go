@@ -26,7 +26,12 @@ type Result struct {
 
 /* 首页 */
 func index(ctx iris.Context) {
-	data := []map[string]interface{}{}
-	(&model.Demo{}).Init().Find().Scan(&data)
-	ctx.JSON(iris.Map{"code": 0, "msg": "Web", "data": data})
+	// 查询
+	model := (&model.Demo{}).Init().Select()
+	model.Where("title LIKE ?", "测%")
+	// 数据
+	res := []map[string]interface{}{}
+	model.Find(&res)
+	// 返回
+	ctx.JSON(iris.Map{"code": 0, "msg": "Web", "data": res})
 }

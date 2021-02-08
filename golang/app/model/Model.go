@@ -9,8 +9,8 @@ import (
 
 /* 数据库 */
 type Model struct {
-	Conn  *gorm.DB //连接
-	Table string   //数据表
+	_conn  *gorm.DB //连接
+	_table string   //数据表
 }
 
 /* 链接 */
@@ -21,34 +21,30 @@ func (m *Model) _connect() {
 	if err != nil {
 		panic(err)
 	}
-	m.Conn = db
+	m._conn = db
 }
 
 /* 设置数据表 */
-func (m *Model) setTable(table string) {
-	m.Table = table
+func (db *Model) setTable(table string) *Model {
+	db._table = table
+	return db
 }
 
 /* 模型 */
 func (m *Model) Db() *gorm.DB {
 	// 连接
-	if m.Conn == nil {
+	if m._conn == nil {
 		m._connect()
 	}
-	return m.Conn
+	return m._conn
 }
 
-type Result struct {
-	uid   int
-	title string
-}
-
-/* 查询-多条 */
-func (db *Model) Find() *gorm.DB {
+/* 查询 */
+func (db *Model) Select() *gorm.DB {
 	// 连接
-	if db.Conn == nil {
+	if db._conn == nil {
 		db._connect()
 	}
-	row := db.Conn.Raw("SELECT uid,title from test")
-	return row
+	rows := db._conn.Table(db._table)
+	return rows
 }
