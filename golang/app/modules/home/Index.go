@@ -19,5 +19,6 @@ func params(ctx iris.Context) {
 
 /* 首页 */
 func index(ctx iris.Context) {
+	// panic("出错了!")
 	ctx.JSON(iris.Map{"code": 0, "msg": "Web"})
 }

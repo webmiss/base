@@ -33,4 +33,9 @@ Docs：[https://webmis.vip](https://webmis.vip)
 - 前端-API( [https://demo-java.webmis.vip/api/](https://demo-java.webmis.vip/api/index) )
 - 后台-API( [https://demo-java.webmis.vip/admin/](https://demo-java.webmis.vip/admin/index) )
 
+#### Go
+- 网站-API( [https://demo-go.webmis.vip/](https://demo-go.webmis.vip/) )
+- 前端-API( [https://demo-go.webmis.vip/api/](https://demo-go.webmis.vip/api/index) )
+- 后台-API( [https://demo-go.webmis.vip/admin/](https://demo-go.webmis.vip/admin/index) )
+
 <br/><br/>

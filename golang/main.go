@@ -2,6 +2,9 @@ package main
 
 import (
 	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/middleware/logger"
+
+	// "github.com/kataras/iris/v12/middleware/recover"
 	"github.com/kataras/iris/v12/mvc"
 
 	"golang/app"
@@ -14,14 +17,18 @@ import (
 /* 构造函数 */
 func main() {
 	obj := iris.New()
-	obj.Use(config.Cors)
+	cfg := app.Env()        //配置
+	obj.Use(config.Cors)    //允许跨域请求
+	obj.Use(config.Recover) //异常捕捉
+	if cfg["debug"] == "true1" {
+		obj.Use(logger.New()) //终端请求信息
+	}
 	// HMVC
 	mvc.Configure(obj.Party("/"), _web)
 	mvc.Configure(obj.Party("/api"), _api)
 	mvc.Configure(obj.Party("/admin"), _admin)
 	// 运行
-	cfg := app.Env()
-	obj.Listen(":" + cfg["port"])
+	obj.Listen(":"+cfg["port"], iris.WithoutBodyConsumptionOnUnmarshal)
 }
 
 /* WEB */

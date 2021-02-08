@@ -10,4 +10,5 @@ require (
 	github.com/nats-io/nats-server/v2 v2.1.9 // indirect
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	github.com/yudai/pp v2.0.1+incompatible // indirect
+	gorm.io/gorm v1.20.12 // indirect
 )
