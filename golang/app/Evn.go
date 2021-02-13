@@ -24,3 +24,15 @@ func Mysql() map[string]string {
 		"charset":  "utf8mb4",                          //编码
 	}
 }
+
+/* 缓存数据库 */
+func Redis() map[string]string {
+	return map[string]string{
+		"host":     "127.0.0.1", //主机
+		"port":     "6379",      //端口
+		"password": "",          //密码
+		"db":       "0",         //硬盘
+		"min":      "2",         //空闲数
+		"max":      "10",        //最大数
+	}
+}
