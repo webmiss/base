@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"golang/app/library"
 	"golang/app/model"
+	"time"
 
 	"github.com/kataras/iris/v12"
 )
@@ -44,6 +45,16 @@ func index(ctx iris.Context) {
 	fmt.Println("Test", exist, test, string(test), exp, ttl)
 	// time.Sleep(time.Second * 1)
 	redis.Close()
+	// Token
+	jwt := (&library.Safety{})
+	data := map[string]interface{}{
+		"uid":    1,
+		"uname":  "webmis",
+		"l_time": time.Now().Unix(),
+	}
+	token, _ := jwt.Encode(data)
+	resData, _ := jwt.Decode(token)
+	fmt.Println(token, resData)
 	// 返回
 	ctx.JSON(iris.Map{"code": 0, "msg": "Web", "data": res})
 }
