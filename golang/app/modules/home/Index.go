@@ -2,9 +2,9 @@ package home
 
 import (
 	"fmt"
-	"golang/app/library"
-	"golang/app/model"
 	"time"
+	"webmis/app/library"
+	"webmis/app/model"
 
 	"github.com/kataras/iris/v12"
 )

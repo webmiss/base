@@ -1,7 +1,7 @@
 package router
 
 import (
-	"golang/app/modules/api"
+	"webmis/app/modules/api"
 
 	"github.com/kataras/iris/v12/mvc"
 )

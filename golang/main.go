@@ -5,9 +5,9 @@ import (
 	"github.com/kataras/iris/v12/middleware/logger"
 	"github.com/kataras/iris/v12/mvc"
 
-	"golang/app"
-	"golang/app/config"
-	"golang/app/router"
+	"webmis/app"
+	"webmis/app/config"
+	"webmis/app/router"
 )
 
 /* 构造函数 */

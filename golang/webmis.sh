@@ -2,7 +2,7 @@
 
 # 配置
 s=$1
-name='golang'
+name='webmis'
 index='main.go'
 
 # 帮助

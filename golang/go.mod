@@ -1,4 +1,4 @@
-module golang
+module webmis
 
 go 1.15
 

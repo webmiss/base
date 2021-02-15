@@ -1,7 +1,7 @@
 package model
 
 import (
-	"golang/app"
+	"webmis/app"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

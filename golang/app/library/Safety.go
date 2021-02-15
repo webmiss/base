@@ -1,7 +1,7 @@
 package library
 
 import (
-	"golang/app"
+	"webmis/app"
 
 	"github.com/dgrijalva/jwt-go"
 )
