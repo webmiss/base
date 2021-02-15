@@ -14,6 +14,9 @@ helpText(){
   echo "  install       安装依赖包: go get -v"
   echo "  build         打包: go build"
   echo "  http          预览: ./$name"
+  echo "  start         启动"
+  echo "  restart       重启"
+  echo "  stop          停止"
 }
 
 # 运行
@@ -32,6 +35,13 @@ elif [ "$s" == "http" ]; then
 # 启动
 elif [ "$s" == "start" ]; then
   nohup ./$name &
+# 重启
+elif [ "$s" == "restart" ]; then
+  ps -aux | grep ./$name | grep -v grep | awk {'print $2'} | xargs kill
+  nohup ./$name &
+# 停止
+elif [ "$s" == "stop" ]; then
+  ps -aux | grep ./$name | grep -v grep | awk {'print $2'} | xargs kill
 else
   helpText
 fi
