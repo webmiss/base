@@ -155,7 +155,7 @@ export default defineComponent({
         this.info.loaded = complete+'%';
       }else{
         this.info.loaded = '0%';
-        this.loadData();
+        setTimeout(()=>{ this.loadData(); },1000);
       }
     },
 
