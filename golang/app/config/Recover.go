@@ -18,7 +18,6 @@ func Recover(ctx iris.Context) {
 			ctx.JSON(iris.Map{"code": 5000, "msg": msg})
 			ctx.StatusCode(500)
 			ctx.StopExecution()
-			println("错误信息:" + msg)
 		}
 	}()
 	ctx.Next()

@@ -1,9 +1,6 @@
 package home
 
 import (
-	"fmt"
-	"time"
-	"webmis/app/library"
 	"webmis/app/model"
 
 	"github.com/kataras/iris/v12"
@@ -30,31 +27,32 @@ type Result struct {
 /* 首页 */
 func index(ctx iris.Context) {
 	// 查询
-	model := (&model.Demo{}).Init().Select()
-	model.Where("title LIKE ?", "测%")
+	(&model.Demo{}).Init().Select()
+	// println(model)
+	// model.Where("title LIKE ?", "测%")
 	// 数据
-	res := []map[string]interface{}{}
-	model.Find(&res)
+	// res := []map[string]interface{}{}
+	// model.Find(&res)
 	// 缓存
-	redis := (&library.Redis{}).Run()
-	redis.Set("test", 123.23)
-	exist, _ := redis.Exist("test")
-	exp, _ := redis.Expire("test", 30)
-	ttl, _ := redis.Ttl("test")
-	test, _ := redis.Get("test")
-	fmt.Println("Test", exist, test, string(test), exp, ttl)
+	// redis := (&library.Redis{}).Run()
+	// redis.Set("test", 123.23)
+	// exist, _ := redis.Exist("test")
+	// exp, _ := redis.Expire("test", 30)
+	// ttl, _ := redis.Ttl("test")
+	// test, _ := redis.Get("test")
+	// fmt.Println("Test", exist, test, string(test), exp, ttl)
 	// time.Sleep(time.Second * 1)
-	redis.Close()
+	// redis.Close()
 	// Token
-	jwt := (&library.Safety{})
-	data := map[string]interface{}{
-		"uid":    1,
-		"uname":  "webmis",
-		"l_time": time.Now().Unix(),
-	}
-	token, _ := jwt.Encode(data)
-	resData, _ := jwt.Decode(token)
-	fmt.Println(token, resData)
+	// jwt := (&library.Safety{})
+	// data := map[string]interface{}{
+	// 	"uid":    1,
+	// 	"uname":  "webmis",
+	// 	"l_time": time.Now().Unix(),
+	// }
+	// token, _ := jwt.Encode(data)
+	// resData, _ := jwt.Decode(token)
+	// fmt.Println(token, resData)
 	// 返回
-	ctx.JSON(iris.Map{"code": 0, "msg": "Web", "data": res})
+	ctx.JSON(iris.Map{"code": 0, "msg": "Web", "data": "res"})
 }

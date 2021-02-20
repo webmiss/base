@@ -13,16 +13,20 @@ func Env() map[string]string {
 }
 
 /* 数据库 */
-func Mysql() map[string]string {
-	return map[string]string{
-		// "host": "127.0.0.1", //主机
-		"host":     "154.91.144.171",                   //主机
-		"port":     "3306",                             //端口
-		"user":     "webmis",                           //用户名
-		"password": "e4b99adec618e653400966be536c45f8", //密码
-		"db":       "data",                             //数据库名
-		"charset":  "utf8mb4",                          //编码
-	}
+func Mysql() map[string]interface{} {
+	cfg := make(map[string]interface{})
+	// cfg["host"] = "154.91.144.171"                       //主机
+	cfg["host"] = "127.0.0.1"                            //主机
+	cfg["type"] = "mysql"                                //类型
+	cfg["port"] = "3306"                                 //端口
+	cfg["user"] = "webmis"                               //用户名
+	cfg["password"] = "e4b99adec618e653400966be536c45f8" //密码
+	cfg["db"] = "data"                                   //数据库名
+	cfg["charset"] = "utf8mb4"                           //编码
+	cfg["min"] = 200                                     //空闲数
+	cfg["max"] = 300                                     //最大数
+	cfg["time"] = 3                                      //最大空闲时间
+	return cfg
 }
 
 /* 缓存数据库 */
