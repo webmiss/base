@@ -1,9 +1,8 @@
 package library
 
 import (
-	"strconv"
 	"time"
-	"webmis/app"
+	"webmis/app/config"
 
 	redigo "github.com/gomodule/redigo/redis"
 )
@@ -16,28 +15,26 @@ type Redis struct {
 
 func (c *Redis) Run() *Redis {
 	if c.Pool == nil {
-		cfg := app.Redis() //配置
-		min, _ := strconv.Atoi(cfg["min"])
-		max, _ := strconv.Atoi(cfg["max"])
+		cfg := (&config.Redis{}) //配置
 		pool := &redigo.Pool{
-			MaxIdle:     min,              //空闲数
-			MaxActive:   max,              //最大数
+			MaxIdle:     cfg.Min,          //空闲数
+			MaxActive:   cfg.Max,          //最大数
 			IdleTimeout: 10 * time.Second, //空闲超时(秒)
 			Wait:        true,             //超过最大连接数: true 等待 false 报错
 			Dial: func() (redigo.Conn, error) {
-				c, err := redigo.Dial("tcp", cfg["host"]+":"+cfg["port"])
+				c, err := redigo.Dial("tcp", cfg.Host+":"+cfg.Port)
 				if err != nil {
 					panic(err)
 				}
 				// 密码
-				if cfg["password"] != "" {
-					if _, err := c.Do("AUTH", cfg["password"]); err != nil {
+				if cfg.Password != "" {
+					if _, err := c.Do("AUTH", cfg.Password); err != nil {
 						c.Close()
 						panic(err)
 					}
 				}
 				// 硬盘
-				if _, err := c.Do("SELECT", cfg["db"]); err != nil {
+				if _, err := c.Do("SELECT", cfg.Db); err != nil {
 					c.Close()
 					panic(err)
 				}

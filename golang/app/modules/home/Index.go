@@ -1,6 +1,7 @@
 package home
 
 import (
+	"fmt"
 	"webmis/app/model"
 
 	"github.com/kataras/iris/v12"
@@ -27,8 +28,14 @@ type Result struct {
 /* 首页 */
 func index(ctx iris.Context) {
 	// 查询
-	(&model.Demo{}).Init().Select()
-	// println(model)
+	demo := (&model.Demo{}).Init()
+	data, err := demo.Find()
+	fmt.Println(data, err)
+	// bind := map[string]interface{}{
+	// 	"uid": 12,
+	// }
+	// demo.Where("uid=2", bind)
+	// data := demo.Find()
 	// model.Where("title LIKE ?", "测%")
 	// 数据
 	// res := []map[string]interface{}{}
@@ -54,5 +61,5 @@ func index(ctx iris.Context) {
 	// resData, _ := jwt.Decode(token)
 	// fmt.Println(token, resData)
 	// 返回
-	ctx.JSON(iris.Map{"code": 0, "msg": "Web", "data": "res"})
+	ctx.JSON(iris.Map{"code": 0, "msg": "Web", "data": data})
 }
