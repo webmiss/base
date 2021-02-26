@@ -3,7 +3,6 @@
 # 配置
 ip="127.0.0.1"
 port="9010"
-portDb="8888"
 cli="cli.php"
 s=$1
 
@@ -12,9 +11,8 @@ helpText(){
   echo "用法:"
   echo "  ./cmd.sh <command>"
   echo "<command>"
-  echo "  serve         运行"
-  echo "  install       已安装模块"
-  echo "  adminer       数据库管理工具"
+  echo "  serve         运行: php -S $ip:$port"
+  echo "  install       依赖包: composer install"
   echo "  socket        WebSocket-调试"
   echo "  socketStart   WebSocket-启动"
   echo "  socketRestart WebSocket-重启"
@@ -30,9 +28,6 @@ if [ "$s" == "serve" ]; then
 # 安装
 elif [ "$s" == "install" ]; then
   rm -fr composer.lock && composer install
-# 数据库工具
-elif [ "$s" == "adminer" ]; then
-  php -S $ip:$portDb adminer.php
 # Socket
 elif [ "$s" == "socket" ]; then
   php $cli socket start
