@@ -29,7 +29,7 @@ func (db *Demo) SelectRow() []interface{} {
 }
 ```
 
-### 查询-多条、单条
+### 多条、单条
 ```go
 func (db *Demo) FindRow() []interface{} {
 	db.Columns("uid", "title", "ctime")
