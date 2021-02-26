@@ -10,7 +10,7 @@ s=$1
 # 帮助
 helpText(){
   echo "用法:"
-  echo "  ./webmis.sh <command>"
+  echo "  ./cmd.sh <command>"
   echo "<command>"
   echo "  serve         运行"
   echo "  install       安装依赖包: $package"

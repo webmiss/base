@@ -10,7 +10,8 @@
         <span @click="openUrl('/docs/phalcon/install/index')" class="item" :class="$route.params.m1=='phalcon'?'active':''">Phalcon</span>
         <span @click="openUrl('/docs/python/install/index')" class="item" :class="$route.params.m1=='python'?'active':''">Python</span>
         <span @click="openUrl('/docs/java/install/index')" class="item" :class="$route.params.m1=='java'?'active':''">SpringBoot</span>
-        <span @click="openUrl('/docs/go/install/index')" class="item" :class="$route.params.m1=='go'?'active':''">Iris</span>
+        <span @click="openUrl('/docs/iris/install/index')" class="item" :class="$route.params.m1=='iris'?'active':''">Iris</span>
+        <span @click="openUrl('/docs/gin/install/index')" class="item" :class="$route.params.m1=='gin'?'active':''">Gin</span>
         <span @click="openUrl('/docs/linux/install/index')" class="item" :class="$route.params.m1=='linux'?'active':''">Linux</span>
       </wm-scroll-view>
       <a href="https://github.com/webmiss/base" class="top_github">

@@ -59,13 +59,24 @@ export default {
     ];
   },
 
-  /* Go */
-  go(){
+  /* Iris */
+  iris(){
     return [
-      {label:'Go项目', children:[
-        {label: '开发环境', value: 'docs/go/install/install'},
-        {label: '安装&运行', value: 'docs/go/install/index'},
-        {label: '打包&发布', value: 'docs/go/install/build'},
+      {label:'Iris项目', children:[
+        {label: '开发环境', value: 'docs/iris/install/install'},
+        {label: '安装&运行', value: 'docs/iris/install/index'},
+        {label: '打包&发布', value: 'docs/iris/install/build'},
+      ]},
+    ];
+  },
+
+  /* Gin */
+  gin(){
+    return [
+      {label:'Gin项目', children:[
+        {label: '开发环境', value: 'docs/gin/install/install'},
+        {label: '安装&运行', value: 'docs/gin/install/index'},
+        {label: '打包&发布', value: 'docs/gin/install/build'},
       ]},
     ];
   },

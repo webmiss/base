@@ -4,11 +4,11 @@
 ```bash
 dnf install golang -y
 # 安装依赖包
-cd /xxx/golang && ./webmis.sh install
+cd /xxx/golang && ./cmd.sh install
 # 打包
-./webmis.sh build
+./cmd.sh build
 # 启动
-./webmis.sh start
+./cmd.sh start
 ```
 **开机启动**
 ```bash
@@ -17,7 +17,7 @@ chmod +x /etc/rc.d/rc.local
 # 编辑文件
 vi /etc/rc.d/rc.local
 ```
-- cd /xxx/golang/ && ./webmis.sh start
+- cd /xxx/golang/ && ./cmd.sh start
 
 <br/>
 

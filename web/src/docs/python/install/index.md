@@ -22,9 +22,9 @@ git clone https://github.com/webmiss/base
 #### Bash命令
 ```bash
 # 依赖包
-./webmis.sh install
+./cmd.sh install
 # 运行
-./webmis.sh serve
+./cmd.sh serve
 ```
 
 #### Python命令

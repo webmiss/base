@@ -1,8 +1,8 @@
-# WebMIS-Golang
+# WebMIS-Iris
 采用Go + Iris开发，包括HMVC模块化管理、Token验证、Redis缓存等
-- 网站-API( [https://demo-go.webmis.vip/](https://demo-go.webmis.vip/) )
-- 前端-API( [https://demo-go.webmis.vip/api/](https://demo-go.webmis.vip/api/index) )
-- 后台-API( [https://demo-go.webmis.vip/admin/](https://demo-go.webmis.vip/admin/index) )
+- 网站-API( [https://demo-iris.webmis.vip/](https://demo-iris.webmis.vip/) )
+- 前端-API( [https://demo-iris.webmis.vip/api/](https://demo-iris.webmis.vip/api/index) )
+- 后台-API( [https://demo-iris.webmis.vip/admin/](https://demo-iris.webmis.vip/admin/index) )
 
 <br/>
 
@@ -10,7 +10,7 @@
 ```bash
 git clone https://github.com/webmiss/base
 ```
-- WebMIS-Base > golang
+- WebMIS-Base > iris
 - 网站根目录: public下创建upload目录，修改权限为777
 - 数据库: project/database/data.sql
 - 修改密码: user表password字段，md5加密即可
@@ -22,11 +22,11 @@ git clone https://github.com/webmiss/base
 #### Bash命令
 ```bash
 # 依赖包
-./webmis.sh install
+./cmd.sh install
 # 运行
-./webmis.sh serve
+./cmd.sh serve
 # 打包
-./webmis.sh build
+./cmd.sh build
 ```
 
 #### Go命令
