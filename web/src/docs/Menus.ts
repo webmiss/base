@@ -78,6 +78,15 @@ export default {
         {label: '安装&运行', value: 'docs/gin/install/index'},
         {label: '打包&发布', value: 'docs/gin/install/build'},
       ]},
+      {label:'ORM 数据库', children:[
+        {label: '模型 Model', value: 'docs/gin/db/model'},
+        {label: '查询 Select', value: 'docs/gin/db/select'},
+        {label: '插入 Insert', value: 'docs/gin/db/insert'},
+        {label: '更新 Update', value: 'docs/gin/db/update'},
+        {label: '删除 Delete', value: 'docs/gin/db/delete'},
+        {label: '连表 Join', value: 'docs/gin/db/join'},
+        {label: '事务 Commit', value: 'docs/gin/db/commit'},
+      ]},
     ];
   },
 

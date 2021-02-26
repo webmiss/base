@@ -13,6 +13,7 @@ type MySql struct {
 	Time     int64
 }
 
+/* 数据库配置 */
 func (cfg *MySql) Config() *MySql {
 	cfg.Driver = "mysql"                              //类型
 	cfg.Host = "127.0.0.1"                            //主机

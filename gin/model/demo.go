@@ -1,9 +1,8 @@
-package models
+package model
 
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	util "webmis/library"
 )
 
@@ -34,11 +33,8 @@ func (db *Demo) SelectRow() []interface{} {
 	// rows, _ := db.FindList()	//返回执行结构
 	sql, args := db.SelectSql() //返回Sql语句、参数值
 	// 执行
-	rows, err := db.Conn().Query(sql, args...)
+	rows, _ := db.Conn().Query(sql, args...)
 	defer rows.Close()
-	if err != nil {
-		log.Fatal(err)
-	}
 	// 合成数据
 	list := Columns{}
 	columns, _ := rows.Columns()
