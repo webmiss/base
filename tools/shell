@@ -11,7 +11,7 @@ s=$1
 # 帮助
 helpText(){
   echo "用法:"
-  echo "  ./cmd.sh <command>"
+  echo "  ./shell <command>"
   echo "<command>"
   echo "  adminer7       数据库管理工具: 7777"
   echo "  adminer8       数据库管理工具: 8888"

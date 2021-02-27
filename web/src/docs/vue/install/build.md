@@ -1,7 +1,7 @@
 ## 一、打包
 #### Bash命令
 ```bash
-./cmd.sh build
+./shell build
 ```
 #### Yarn命令
 ```bash
@@ -16,7 +16,7 @@ yarn build
 ## 二、本地预览
 #### Bash命令
 ```bash
-./cmd.sh http
+./shell http
 ```
 #### Yarn命令
 ```bash

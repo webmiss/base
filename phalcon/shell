@@ -9,7 +9,7 @@ s=$1
 # 帮助
 helpText(){
   echo "用法:"
-  echo "  ./cmd.sh <command>"
+  echo "  ./shell <command>"
   echo "<command>"
   echo "  serve         运行: php -S $ip:$port"
   echo "  install       依赖包: composer install"

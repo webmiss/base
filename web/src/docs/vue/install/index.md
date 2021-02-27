@@ -18,9 +18,9 @@ git clone https://github.com/webmiss/base
 #### Bash命令
 ```bash
 # 依赖包
-./cmd.sh install
+./shell install
 # 运行
-./cmd.sh serve
+./shell serve
 ```
 
 #### Yarn命令
