@@ -5,6 +5,7 @@ import (
 	"webmis/config"
 	"webmis/router"
 
+	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,6 +19,7 @@ func main() {
 	}
 	// 路由
 	r := gin.Default()
+	r.Use(gzip.Gzip(gzip.DefaultCompression))
 	router.Web(r)
 	router.Api(r)
 	router.Admin(r)
