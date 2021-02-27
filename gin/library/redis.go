@@ -2,7 +2,7 @@ package library
 
 import (
 	"time"
-	"webmis/app/config"
+	"webmis/config"
 
 	redigo "github.com/gomodule/redigo/redis"
 )
@@ -15,7 +15,7 @@ type Redis struct {
 
 func (c *Redis) Run() *Redis {
 	if c.Pool == nil {
-		cfg := (&config.Redis{}) //配置
+		cfg := (&config.Redis{}).Config() //配置
 		pool := &redigo.Pool{
 			MaxIdle:     cfg.Min,          //空闲数
 			MaxActive:   cfg.Max,          //最大数

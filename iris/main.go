@@ -3,26 +3,23 @@ package main
 import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/logger"
-	"github.com/kataras/iris/v12/mvc"
 
-	"webmis/app"
-	"webmis/app/config"
-	"webmis/app/router"
+	"webmis/config"
+	"webmis/router"
 )
 
-/* 构造函数 */
 func main() {
-	obj := iris.New()
-	cfg := app.Env()        //配置
-	obj.Use(config.Cors)    //允许跨域请求
-	obj.Use(config.Recover) //异常捕捉
-	if cfg["debug"] == "true1" {
-		obj.Use(logger.New()) //终端请求信息
+	app := iris.New()
+	cfg := (&config.Env{}).Config() //配置
+	app.Use(config.Cors)            //允许跨域请求
+	// app.Use(config.Recover)         //异常捕捉
+	if cfg.Mode == "debug" {
+		app.Use(logger.New()) //终端请求信息
 	}
-	// HMVC
-	mvc.Configure(obj.Party("/"), router.Web)
-	mvc.Configure(obj.Party("/api"), router.Api)
-	mvc.Configure(obj.Party("/admin"), router.Admin)
+	// 路由
+	router.Web(app)
+	router.Api(app)
+	router.Admin(app)
 	// 运行
-	obj.Listen(":"+cfg["port"], iris.WithoutBodyConsumptionOnUnmarshal)
+	app.Listen(cfg.Host + ":" + cfg.Port)
 }

@@ -1,45 +1,17 @@
 package home
 
 import (
-	"fmt"
-	"webmis/app/model"
+	"webmis/model"
 
 	"github.com/kataras/iris/v12"
 )
 
-type IndexController struct {
-	// a string
-}
-
-func (c *IndexController) Get(ctx iris.Context)  { params(ctx) }
-func (c *IndexController) Post(ctx iris.Context) { params(ctx) }
-func params(ctx iris.Context) {
-	a := ctx.Params().Get("action")
-	if a == "" || a == "index" {
-		index(ctx)
-	}
-}
-
-type Result struct {
-	uid   int
-	title string
-}
-
 /* 首页 */
-func index(ctx iris.Context) {
+func Index(ctx iris.Context) {
 	// 查询
 	demo := (&model.Demo{}).Init()
-	data, err := demo.Find()
-	fmt.Println(data, err)
-	// bind := map[string]interface{}{
-	// 	"uid": 12,
-	// }
-	// demo.Where("uid=2", bind)
-	// data := demo.Find()
-	// model.Where("title LIKE ?", "测%")
-	// 数据
-	// res := []map[string]interface{}{}
-	// model.Find(&res)
+	data := demo.SelectRow()
+	demo.Close()
 	// 缓存
 	// redis := (&library.Redis{}).Run()
 	// redis.Set("test", 123.23)
@@ -48,7 +20,6 @@ func index(ctx iris.Context) {
 	// ttl, _ := redis.Ttl("test")
 	// test, _ := redis.Get("test")
 	// fmt.Println("Test", exist, test, string(test), exp, ttl)
-	// time.Sleep(time.Second * 1)
 	// redis.Close()
 	// Token
 	// jwt := (&library.Safety{})
