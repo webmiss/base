@@ -1,4 +1,4 @@
-package web
+package home
 
 import (
 	"webmis/model"

@@ -11,7 +11,6 @@ import (
 func main() {
 	app := iris.New()
 	cfg := (&config.Env{}).Config() //配置
-	app.Use(config.Cors)            //允许跨域请求
 	// app.Use(config.Recover)         //异常捕捉
 	if cfg.Mode == "debug" {
 		app.Use(logger.New()) //终端请求信息
