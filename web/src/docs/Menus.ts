@@ -96,6 +96,9 @@ export default {
         {label: '连表 Join', value: 'docs/gin/db/join'},
         {label: '事务 Commit', value: 'docs/gin/db/commit'},
       ]},
+      {label:'Library 类库', children:[
+        {label: '事件流 Kafka', value: 'docs/gin/library/kafka'},
+      ]},
     ];
   },
 
