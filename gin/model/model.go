@@ -7,8 +7,6 @@ import (
 	"time"
 	"webmis/config"
 
-	"log"
-
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -35,7 +33,7 @@ func (m *Model) connect() *sql.DB {
 	source := cfg.User + ":" + cfg.Password + "@(" + cfg.Host + ":" + cfg.Port + ")/" + cfg.Database + "?charset=" + cfg.Charset + "&parseTime=true&loc=Local"
 	db, err := sql.Open(cfg.Driver, source)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("数据库连接失败:", err)
 		return nil
 	}
 	// 数据池
@@ -68,7 +66,7 @@ func (db *Model) Query(sql string, args []interface{}) (*sql.Rows, error) {
 	if sql != "" {
 		rows, err := db.Conn().Query(sql, args...)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
 		}
 		return rows, err
 	} else {
@@ -83,7 +81,7 @@ func (db *Model) Exec(sql string, args []interface{}) (sql.Result, error) {
 		rows, err := db.Conn().Exec(sql, args...)
 		db.args = make([]interface{}, 0, 10)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
 		}
 		return rows, err
 	} else {

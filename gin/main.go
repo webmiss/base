@@ -19,7 +19,8 @@ func main() {
 	}
 	// 路由
 	r := gin.Default()
-	r.Use(gzip.Gzip(gzip.DefaultCompression))
+	r.Use(gzip.Gzip(gzip.DefaultCompression)) //压缩
+	r.Use(gin.Recovery())                     //处理异常
 	router.Web(r)
 	router.Api(r)
 	router.Admin(r)

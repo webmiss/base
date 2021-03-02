@@ -15,14 +15,15 @@ type Kafka struct {
 }
 
 /* 连接 */
-func (this *Kafka) Conn(topic string, partition int) *Kafka {
+func (this *Kafka) Conn(topic string, partition int) (*Kafka, error) {
 	cfg := (&config.Kafka{}).Config()
 	conn, err := kafka.DialLeader(context.Background(), cfg.Type, cfg.Host+":"+cfg.Port, topic, partition)
 	if err != nil {
-		log.Fatal("failed to dial leader:", err)
+		fmt.Println("Kafka连接失败:", err)
+		return nil, err
 	}
 	this.conn = conn
-	return this
+	return this, err
 }
 
 /* 关闭 */
@@ -38,6 +39,7 @@ func (this *Kafka) TopicList() {
 	conn, err := kafka.Dial(cfg.Type, cfg.Host+":"+cfg.Port)
 	if err != nil {
 		fmt.Println(err.Error())
+		return
 	}
 	defer conn.Close()
 	// 读取分区
