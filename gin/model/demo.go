@@ -3,7 +3,7 @@ package model
 import (
 	"database/sql"
 	"fmt"
-	"webmis/library"
+	"webmis/util"
 )
 
 type Demo struct {
@@ -12,9 +12,9 @@ type Demo struct {
 
 /* 字段 */
 type Columns struct {
-	Uid   int              `json:"uid"`
-	Title string           `json:"title_rename"`
-	Ctime library.JsonTime `json:"ctime"`
+	Uid   int           `json:"uid"`
+	Title string        `json:"title_rename"`
+	Ctime util.JsonTime `json:"ctime"`
 }
 
 /* 初始化 */

@@ -1865,3 +1865,6 @@
 [2021-03-01 20:34:39,390] INFO Broker and topic stats closed (kafka.server.BrokerTopicStats)
 [2021-03-01 20:34:39,391] INFO App info kafka.server for 0 unregistered (org.apache.kafka.common.utils.AppInfoParser)
 [2021-03-01 20:34:39,391] INFO [KafkaServer id=0] shut down completed (kafka.server.KafkaServer)
+参数: api exncY0uztzqYa2xh53VfXnORzPdJA58eMNZCLuHGZTa00buKYBwXwgnm7t7E_goyNJX_0EjKp1SfSiIsfoOBkS1Sk3e1ceWPtq4=
+参数: api exncY0uztzqYa2xh53VfXnORzPdJA58eMNZCLuHGZTa00buKYBwXwgnm7t7E_goyNJX_0EjKp1SfSiIsfoOBkS1Sk3e1ceWPtq4=
+signal: interrupt

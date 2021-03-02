@@ -2,7 +2,7 @@
   <div
     ref="Switch"
     class="wm-switch"
-    @click="$emit('update:value',value=!value);switchClick();"
+    @click="$emit('update:value',!value);switchClick();"
   >
     <div ref="SwitchCursor" class="wm-switch_cursor"></div>
   </div>

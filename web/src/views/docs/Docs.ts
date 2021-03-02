@@ -58,10 +58,6 @@ export default defineComponent({
         this.position[1] = 'Java > ';
         this.menuData = Menus.java();
         if(reset) this.menuIndex = [0,1];
-      }else if(this.Nav=='iris'){
-        this.position[1] = 'Iris > ';
-        this.menuData = Menus.iris();
-        if(reset) this.menuIndex = [0,1];
       }else if(this.Nav=='gin'){
         this.position[1] = 'Gin > ';
         this.menuData = Menus.gin();

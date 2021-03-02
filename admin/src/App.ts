@@ -42,6 +42,7 @@ export default defineComponent({
       {name:'php',val:'PHP7( Phalcon4 )'},
       {name:'python',val:'Python3( Flask )'},
       {name:'java',val:'Java( SpringBoot )'},
+      {name:'go',val:'GoLang( Gin )'},
     ];
     // 左侧菜单
     const menus: any = [];

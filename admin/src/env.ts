@@ -15,6 +15,11 @@ if(lag && lag.name=='python'){
   // socket = 'ws://localhost:9000/websocket';
   baseUrl = 'https://demo-java.webmis.vip/';
   socket = 'wss://demo-java.webmis.vip/websocket';
+}else if(lag && lag.name=='go'){
+  baseUrl = 'http://localhost:9020/';
+  socket = 'ws://localhost:9021/websocket';
+  // baseUrl = 'https://demo-go.webmis.vip/';
+  // socket = 'wss://demo-go.webmis.vip/websocket';
 }else{
   // baseUrl = 'http://localhost:9010/';
   // socket = 'ws://localhost:9011/';
@@ -92,7 +97,7 @@ export default {
   /* Socket */
   socket: {
     type: 'api',
-    start: false, //启动
+    start: true, //启动
     server: socket, //链接地址
     time: 3000, //重连时间
     heartbeat: 10000, //心跳检测时间

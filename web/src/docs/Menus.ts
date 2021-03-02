@@ -59,26 +59,6 @@ export default {
     ];
   },
 
-  /* Iris */
-  iris(){
-    return [
-      {label:'Iris项目', children:[
-        {label: '开发环境', value: 'docs/iris/install/install'},
-        {label: '安装&运行', value: 'docs/iris/install/index'},
-        {label: '打包&发布', value: 'docs/iris/install/build'},
-      ]},
-      {label:'ORM 数据库', children:[
-        {label: '模型 Model', value: 'docs/gin/db/model'},
-        {label: '查询 Select', value: 'docs/gin/db/select'},
-        {label: '插入 Insert', value: 'docs/gin/db/insert'},
-        {label: '更新 Update', value: 'docs/gin/db/update'},
-        {label: '删除 Delete', value: 'docs/gin/db/delete'},
-        {label: '连表 Join', value: 'docs/gin/db/join'},
-        {label: '事务 Commit', value: 'docs/gin/db/commit'},
-      ]},
-    ];
-  },
-
   /* Gin */
   gin(){
     return [
@@ -98,6 +78,7 @@ export default {
       ]},
       {label:'Library 类库', children:[
         {label: '事件流 Kafka', value: 'docs/gin/library/kafka'},
+        {label: '通信 WebSocket', value: 'docs/gin/library/socket'},
       ]},
     ];
   },
@@ -109,6 +90,7 @@ export default {
         {label: 'Shell基础', value: 'docs/linux/shell/index'},
         {label: 'SSL免费证书', value: 'docs/linux/shell/ssl'},
         {label: 'VBox安装MacOS', value: 'docs/linux/shell/macos'},
+        {label: 'Docker 容器', value: 'docs/linux/shell/docker'},
       ]},
       {label:'CentOS', children:[
         {label: '基础配置', value: 'docs/linux/centos/config'},
