@@ -90,19 +90,19 @@ elif [ "$s" == "socketStart" ]; then
   nohup go run cli/socket/index.go &
 # ZooKeeper-运行
 elif [ "$s" == "zookeeper" ]; then
-  $kafka/zookeeper-server-start.sh config/zookeeper.properties
+  $kafka/zookeeper-server-start.sh config/zookeeper_server.properties
 # ZooKeeper-启动
 elif [ "$s" == "zookeeperStart" ]; then
-  nohup $kafka/zookeeper-server-start.sh config/zookeeper.properties &
+  nohup $kafka/zookeeper-server-start.sh config/zookeeper_server.properties &
 # ZooKeeper-停止
 elif [ "$s" == "zookeeperStop" ]; then
   $kafka/zookeeper-server-stop.sh
 # Kafka-运行
 elif [ "$s" == "kafka" ]; then
-  $kafka/kafka-server-start.sh config/kafka.properties
+  $kafka/kafka-server-start.sh config/kafka_server.properties
 # Kafka-启动
 elif [ "$s" == "kafkaStart" ]; then
-  nohup $kafka/kafka-server-start.sh config/kafka.properties &
+  nohup $kafka/kafka-server-start.sh config/kafka_server.properties &
 # Kafka-停止
 elif [ "$s" == "kafkaStop" ]; then
   $kafka/kafka-server-stop.sh
