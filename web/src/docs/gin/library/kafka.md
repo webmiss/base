@@ -68,7 +68,7 @@ exec $base_dir/kafka-run-class.sh -Djava.security.auth.login.config=$base_dir/..
 base_dir=$(dirname $0)
 exec $base_dir/kafka-run-class.sh -Djava.security.auth.login.config=$base_dir/../config/kafka_consumer_jaas.conf kafka.tools.ConsoleConsumer "$@"
 ```
-### 3) 修改 /opt/kafka/bin/kafka-console-producer.sh
+### 3) 授权
 ```bash
 # exec $(dirname $0)/kafka-run-class.sh kafka.tools.ConsoleProducer "$@"
 exec $(dirname $0)/kafka-run-class.sh -Djava.security.auth.login.config=$base_dir/../config/kafka_producer_jaas.conf kafka.tools.ConsoleProducer "$@"

@@ -13,6 +13,8 @@ topicPort=9092                #kafka-主题-端口
 topicName='logs'              #kafka-主题-名称
 topicPartitions=4             #kafka-主题-分区
 topicTime=86400000            #kafka-主题-数据存储时间
+producer='producer'           #kafka-生产者-用户名
+consumer='consumer'           #kafka-消费者-用户名
 
 # 帮助
 helpText(){
@@ -53,6 +55,10 @@ helpText(){
   echo "    topicPartitions       分区: $topicPartitions"
   echo "    topicClear            清除数据: $topicName"
   echo "    topicDelete           删除: $topicName"
+  echo ""
+  echo "    topicAclsAdd          授权-添加: $topicName"
+  echo "    topicAclsList         授权-查看: $topicName"
+  echo "    topicAclsRemove       授权-取消: $topicName"
   echo ""
   echo "    topicProducer         写入事件: $topicName"
   echo "    topicConsumer         阅读事件: $topicName"
@@ -127,9 +133,20 @@ elif [ "$s" == "topicClear" ]; then
 # Kafka-主题-删除
 elif [ "$s" == "topicDelete" ]; then
   $kafka/kafka-topics.sh --delete --zookeeper $zookeeperHost:$zookeeperPort --topic $topicName && rm -fr $kafkaLog
+# Kafka-授权-添加
+elif [ "$s" == "topicAclsAdd" ]; then
+  $kafka/kafka-acls.sh --authorizer kafka.security.auth.SimpleAclAuthorizer --authorizer-properties zookeeper.connect=$zookeeperHost:$zookeeperPort --add --allow-principal User:$producer --operation Write --topic $topicName
+  $kafka/kafka-acls.sh --authorizer kafka.security.auth.SimpleAclAuthorizer --authorizer-properties zookeeper.connect=$zookeeperHost:$zookeeperPort --add --allow-principal User:$consumer --operation Read --topic $topicName
+# Kafka-授权-查看
+elif [ "$s" == "topicAclsList" ]; then
+  $kafka/kafka-acls.sh --authorizer kafka.security.auth.SimpleAclAuthorizer --authorizer-properties zookeeper.connect=$zookeeperHost:$zookeeperPort --list
+# Kafka-授权-删除
+elif [ "$s" == "topicAclsRemove" ]; then
+  $kafka/kafka-acls.sh --authorizer kafka.security.auth.SimpleAclAuthorizer --authorizer-properties zookeeper.connect=$zookeeperHost:$zookeeperPort --remove --allow-principal User:$producer --operation Write --topic $topicName
+  $kafka/kafka-acls.sh --authorizer kafka.security.auth.SimpleAclAuthorizer --authorizer-properties zookeeper.connect=$zookeeperHost:$zookeeperPort --remove --allow-principal User:$consumer --operation Read --topic $topicName
 # Kafka-写入事件
 elif [ "$s" == "topicProducer" ]; then
-  $kafka/kafka-console-producer.sh --topic $topicName --bootstrap-server $topicHost:$topicPort
+  $kafka/kafka-console-producer.sh --topic $topicName --bootstrap-server $topicHost:$topicPort --producer.config config/kafka_producer.properties
 # Kafka-阅读事件
 elif [ "$s" == "topicConsumer" ]; then
   $kafka/kafka-console-consumer.sh --topic $topicName --from-beginning --bootstrap-server $topicHost:$topicPort --consumer.config config/kafka_consumer.properties
