@@ -46,13 +46,25 @@ func (this *Logs) InfoMap(data map[string]interface{}) {
 func (this *Logs) Success(text ...string) {
 	this.Send("logs", 1, text...)
 }
+func (this *Logs) SuccessMap(data map[string]interface{}) {
+	str, _ := json.Marshal(data)
+	this.Success(string(str))
+}
 
 /* 警告 */
 func (this *Logs) Warning(text ...string) {
 	this.Send("logs", 2, text...)
 }
+func (this *Logs) WarningMap(data map[string]interface{}) {
+	str, _ := json.Marshal(data)
+	this.Warning(string(str))
+}
 
 /* 错误 */
 func (this *Logs) Error(text ...string) {
 	this.Send("logs", 3, text...)
+}
+func (this *Logs) ErrorMap(data map[string]interface{}) {
+	str, _ := json.Marshal(data)
+	this.Error(string(str))
 }

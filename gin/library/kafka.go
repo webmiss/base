@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 	"webmis/config"
 
@@ -76,6 +77,7 @@ func (this *Kafka) Consumer(topic string, partition int) *kafka.Reader {
 	cfg := (&config.Kafka{}).Config()
 	r := kafka.NewReader(kafka.ReaderConfig{
 		Brokers:        []string{cfg.Host + ":" + cfg.Port},
+		GroupID:        topic + "-" + strconv.Itoa(partition),
 		Topic:          topic,
 		Partition:      partition,
 		MinBytes:       10e3, // 10KB

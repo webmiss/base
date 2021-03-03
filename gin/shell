@@ -2,17 +2,17 @@
 
 # 配置
 s=$1
-name='webmis'
-index='main.go'
-kafka='/opt/kafka/bin'
-kafkaLog='/tmp/kafka-logs'
-zookeeperHost='localhost'
-zookeeperPort=2181
-topicName='logs'
-topicPartitions=4
-topicHost='localhost'
-topicPort=9092
-topicTime=10000
+name='webmis'                 #项目名称
+index='main.go'               #入口文件
+zookeeperHost='localhost'     #zookeeper-主机
+zookeeperPort=2181            #zookeeper-端口
+kafka='/opt/kafka/bin'        #kafka-脚本
+kafkaLog='/tmp/kafka-logs'    #kafka-缓存
+topicHost='localhost'         #kafka-主题-主机
+topicPort=9092                #kafka-主题-端口
+topicName='logs'              #kafka-主题-名称
+topicPartitions=4             #kafka-主题-分区
+topicTime=86400000            #kafka-主题-数据存储时间
 
 # 帮助
 helpText(){
@@ -132,7 +132,7 @@ elif [ "$s" == "topicProducer" ]; then
   $kafka/kafka-console-producer.sh --topic $topicName --bootstrap-server $topicHost:$topicPort
 # Kafka-阅读事件
 elif [ "$s" == "topicConsumer" ]; then
-  $kafka/kafka-console-consumer.sh --topic $topicName --from-beginning --bootstrap-server $topicHost:$topicPort
+  $kafka/kafka-console-consumer.sh --topic $topicName --from-beginning --bootstrap-server $topicHost:$topicPort --consumer.config config/kafka_consumer.properties
 else
   helpText
 fi
