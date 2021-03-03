@@ -19,7 +19,7 @@ func (this *Kafka) Conn(topic string, partition int) (*Kafka, error) {
 	cfg := (&config.Kafka{}).Config()
 	conn, err := kafka.DialLeader(context.Background(), cfg.Type, cfg.Host+":"+cfg.Port, topic, partition)
 	if err != nil {
-		fmt.Println("Kafka连接失败:", err)
+		fmt.Println("[Kafka] Conn:", err)
 		return nil, err
 	}
 	this.conn = conn
@@ -28,8 +28,11 @@ func (this *Kafka) Conn(topic string, partition int) (*Kafka, error) {
 
 /* 关闭 */
 func (this *Kafka) Close() {
+	if this.conn == nil {
+		return
+	}
 	if err := this.conn.Close(); err != nil {
-		log.Fatal("failed to close writer:", err)
+		fmt.Println("[Kafka] Close:", err)
 	}
 }
 

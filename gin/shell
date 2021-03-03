@@ -9,7 +9,7 @@ kafkaLog='/tmp/kafka-logs'
 zookeeperHost='localhost'
 zookeeperPort=2181
 topicName='logs'
-topicPartitions=1
+topicPartitions=4
 topicHost='localhost'
 topicPort=9092
 topicTime=10000
@@ -53,6 +53,7 @@ helpText(){
   echo "    topicPartitions       分区: $topicPartitions"
   echo "    topicClear            清除数据: $topicName"
   echo "    topicDelete           删除: $topicName"
+  echo ""
   echo "    topicProducer         写入事件: $topicName"
   echo "    topicConsumer         阅读事件: $topicName"
   echo ""

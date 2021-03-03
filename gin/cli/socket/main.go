@@ -3,7 +3,7 @@ package main
 import (
 	"io/ioutil"
 	"webmis/config"
-	"webmis/library"
+	"webmis/service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,7 +16,7 @@ func main() {
 	cfg := (&config.Socket{}).Config()
 	r := gin.Default()
 	r.GET(cfg.Url, func(c *gin.Context) {
-		library.Socket(c)
+		service.Socket(c)
 	})
 	r.Run(cfg.Host + ":" + cfg.Port)
 }

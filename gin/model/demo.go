@@ -33,12 +33,15 @@ func (db *Demo) SelectRow() []interface{} {
 	// rows, _ := db.FindList()	//返回执行结构
 	sql, args := db.SelectSql() //返回Sql语句、参数值
 	// 执行
-	rows, _ := db.Conn().Query(sql, args...)
+	rows, _ := db.Query(sql, args)
+	if rows == nil {
+		return nil
+	}
 	defer rows.Close()
 	// 合成数据
-	list := Columns{}
 	// columns, _ := rows.Columns()
 	// fmt.Println(columns)
+	list := Columns{}
 	data := make([]interface{}, 0, 10)
 	for rows.Next() {
 		rows.Scan(&list.Uid, &list.Title, &list.Ctime)

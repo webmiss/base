@@ -33,7 +33,13 @@ func (m *Model) connect() *sql.DB {
 	source := cfg.User + ":" + cfg.Password + "@(" + cfg.Host + ":" + cfg.Port + ")/" + cfg.Database + "?charset=" + cfg.Charset + "&parseTime=true&loc=Local"
 	db, err := sql.Open(cfg.Driver, source)
 	if err != nil {
-		fmt.Println("数据库连接失败:", err)
+		fmt.Println("[Model] Conn:", err)
+		return nil
+	}
+	// 是否成功
+	if err := db.Ping(); err != nil {
+		db.Close()
+		fmt.Println("[Model] Ping:", err)
 		return nil
 	}
 	// 数据池
@@ -45,8 +51,11 @@ func (m *Model) connect() *sql.DB {
 
 /* 关闭 */
 func (db *Model) Close() {
-	if db != nil {
-		db.conn.Close()
+	if db.conn != nil {
+		if err := db.conn.Close(); err != nil {
+			fmt.Println("[Model] Close:", err)
+		}
+		db.conn = nil
 	}
 }
 
@@ -63,31 +72,37 @@ func (db *Model) Conn() *sql.DB {
 
 /* 查询 */
 func (db *Model) Query(sql string, args []interface{}) (*sql.Rows, error) {
-	if sql != "" {
-		rows, err := db.Conn().Query(sql, args...)
-		if err != nil {
-			fmt.Println(err)
-		}
-		return rows, err
-	} else {
-		fmt.Println("Model[Query]: SQL不能为空!")
+	if sql == "" {
+		fmt.Println("[Model] Query: SQL不能为空!")
 		return nil, nil
 	}
+	if db.conn == nil {
+		fmt.Println("[Model] Conn: 没有连接数据库!")
+		return nil, nil
+	}
+	rows, err := db.Conn().Query(sql, args...)
+	if err != nil {
+		fmt.Println("[Model] Query:", err)
+	}
+	return rows, err
 }
 
 /* 执行 */
 func (db *Model) Exec(sql string, args []interface{}) (sql.Result, error) {
-	if sql != "" {
-		rows, err := db.Conn().Exec(sql, args...)
-		db.args = make([]interface{}, 0, 10)
-		if err != nil {
-			fmt.Println(err)
-		}
-		return rows, err
-	} else {
-		fmt.Println("Model[Exec]: SQL不能为空!")
+	if sql == "" {
+		fmt.Println("[Model] Exec: SQL不能为空!")
 		return nil, nil
 	}
+	if db.conn == nil {
+		fmt.Println("[Model] Conn: 没有连接数据库!")
+		return nil, nil
+	}
+	rows, err := db.Conn().Exec(sql, args...)
+	db.args = make([]interface{}, 0, 10)
+	if err != nil {
+		fmt.Println("[Model] Exec:", err)
+	}
+	return rows, err
 }
 
 /* 获取-SQL */
@@ -101,6 +116,7 @@ func (db *Model) Table(table ...string) *Model {
 	for _, v := range table {
 		db.table += v
 	}
+	db.Conn()
 	return db
 }
 
