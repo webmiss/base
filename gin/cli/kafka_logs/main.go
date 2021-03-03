@@ -6,7 +6,6 @@ import (
 	"os"
 	"time"
 	"webmis/library"
-	"webmis/util"
 )
 
 func main() {
@@ -20,7 +19,7 @@ func main() {
 		if err != nil {
 			break
 		}
-		fmt.Printf("message at offset %d: %s = %s\n", m.Offset, string(m.Key), string(m.Value))
+		// 保存
 		write(string(m.Value))
 	}
 	if err := r.Close(); err != nil {
@@ -32,10 +31,10 @@ func main() {
 func write(text string) {
 	// 时间
 	now := time.Now()
-	year := util.Strval(now.Year())
-	month := util.Strval(now.Month())
-	day := util.Strval(now.Day())
-	ctime := time.Now().Format("15:04:05")
+	year := now.Format("2006")
+	month := now.Format("01")
+	day := now.Format("02")
+	ctime := now.Format("2006-01-02 15:04:05")
 	// 目录
 	dir := "public/logs/" + year + "/" + month + "/"
 	err := os.MkdirAll(dir, 0766)
