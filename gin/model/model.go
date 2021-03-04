@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 	"webmis/config"
+	"webmis/service"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -33,13 +34,13 @@ func (m *Model) connect() *sql.DB {
 	source := cfg.User + ":" + cfg.Password + "@(" + cfg.Host + ":" + cfg.Port + ")/" + cfg.Database + "?charset=" + cfg.Charset + "&parseTime=true&loc=Local"
 	db, err := sql.Open(cfg.Driver, source)
 	if err != nil {
-		fmt.Println("[Model] Conn:", err)
+		(&service.Logs{}).Error(err)
 		return nil
 	}
 	// 是否成功
 	if err := db.Ping(); err != nil {
 		db.Close()
-		fmt.Println("[Model] Ping:", err)
+		(&service.Logs{}).Error(err)
 		return nil
 	}
 	// 数据池
@@ -53,7 +54,7 @@ func (m *Model) connect() *sql.DB {
 func (db *Model) Close() {
 	if db.conn != nil {
 		if err := db.conn.Close(); err != nil {
-			fmt.Println("[Model] Close:", err)
+			(&service.Logs{}).Error(err)
 		}
 		db.conn = nil
 	}
@@ -82,7 +83,7 @@ func (db *Model) Query(sql string, args []interface{}) (*sql.Rows, error) {
 	}
 	rows, err := db.Conn().Query(sql, args...)
 	if err != nil {
-		fmt.Println("[Model] Query:", err)
+		(&service.Logs{}).Error(err)
 	}
 	return rows, err
 }
@@ -100,7 +101,7 @@ func (db *Model) Exec(sql string, args []interface{}) (sql.Result, error) {
 	rows, err := db.Conn().Exec(sql, args...)
 	db.args = make([]interface{}, 0, 10)
 	if err != nil {
-		fmt.Println("[Model] Exec:", err)
+		(&service.Logs{}).Error(err)
 	}
 	return rows, err
 }
