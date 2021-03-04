@@ -50,8 +50,8 @@ go get github.com/segmentio/kafka-go
 # 日志
 (&service.Logs{}).Log("日志")
 # 其它
-(&service.Logs{}).Info("成功")
-(&service.Logs{}).Warn("警告")
+(&service.Logs{}).Info("信息")
+(&service.Logs{}).Action("操作")
 (&service.Logs{}).Error("错误")
 ```
 **消费者**
