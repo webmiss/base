@@ -13,6 +13,6 @@ func Index(c *gin.Context) {
 	// demo.Close()
 	// 日志
 	(&util.Logs{}).Info("日志")
-	(&util.Logs{}).InfoMap(gin.H{"type": "msg", "data": 1})
+	// (&util.Logs{}).InfoMap(gin.H{"type": "msg", "data": 1})
 	c.JSON(200, gin.H{"code": 0, "msg": "Web", "data": "data"})
 }

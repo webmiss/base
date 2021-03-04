@@ -23,7 +23,7 @@ func main() {
 		}
 		// 保存
 		res := write(string(m.Value))
-		fmt.Println("Logs:", string(m.Value), res)
+		// fmt.Println("Logs:", string(m.Value), res)
 		if res == true {
 			if err := r.CommitMessages(ctx, m); err != nil {
 				fmt.Println("[Logs] Commit:", err)

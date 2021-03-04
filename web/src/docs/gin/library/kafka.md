@@ -10,70 +10,17 @@ mv kafka_2.13-2.7.0 /opt/kafka
 ****
 
 ## 认证方式
-### 一、服务器
-#### 1) 添加 /opt/kafka/config/zookeeper_server_jaas.conf
+**不建议使用**，可以使用防火墙限制IP访问方式
 ```bash
-Server {
-    org.apache.kafka.common.security.plain.PlainLoginModule required
-    username="admin"
-    password="vip.webmis.kafka";
-};
+# 允许
+firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="192.168.0.200" port protocol="tcp" port="9092" accept"
+# 禁止
+firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="192.168.0.200" port protocol="tcp" port="9092" reject"
+# 查看
+firewall-cmd --zone=public --list-rich-rules
+# 生效
+firewall-cmd --reload
 ```
-#### 2) 追加 /opt/kafka/bin/zookeeper-server-start.sh
-```bash
-export KAFKA_OPTS="-Djava.security.auth.login.config=$base_dir/../config/zookeeper_server_jaas.conf"
-```
-#### 3) 添加 /opt/kafka/config/kafka_server_jaas.conf
-```bash
-KafkaServer {
-    org.apache.kafka.common.security.plain.PlainLoginModule required
-    username="admin"
-    password="vip.webmis.kafka"
-    user_admin="vip.webmis.kafka"
-    user_producer="vip.webmis.producer"
-    user_consumer="vip.webmis.consumer";
-};
-```
-#### 4) 修改 /opt/kafka/bin/kafka-server-start.sh
-```bash
-# exec $base_dir/kafka-run-class.sh $EXTRA_ARGS kafka.Kafka "$@"
-exec $base_dir/kafka-run-class.sh $EXTRA_ARGS -Djava.security.auth.login.config=$base_dir/../config/kafka_server_jaas.conf kafka.Kafka "$@"
-```
-### 二、客户端
-### 1) 生产者 /opt/kafka/config/kafka_producer_jaas.conf
-```bash
-KafkaClient {
-	org.apache.kafka.common.security.plain.PlainLoginModule required
-	username="producer"
-	password="vip.webmis.producer";
-};
-```
-### 消费者 /opt/kafka/config/kafka_consumer_jaas.conf
-```bash
-KafkaClient {
-	org.apache.kafka.common.security.plain.PlainLoginModule required
-	username="consumer"
-	password="vip.webmis.consumer";
-};
-```
-### 2) 修改 /opt/kafka/bin/kafka-console-producer.sh
-```bash
-# exec $(dirname $0)/kafka-run-class.sh kafka.tools.ConsoleProducer "$@"
-base_dir=$(dirname $0)
-exec $base_dir/kafka-run-class.sh -Djava.security.auth.login.config=$base_dir/../config/kafka_producer_jaas.conf kafka.tools.ConsoleProducer "$@"
-```
-### 修改 /opt/kafka/bin/kafka-console-consumer.sh
-```bash
-# exec $(dirname $0)/kafka-run-class.sh kafka.tools.ConsoleConsumer "$@"
-base_dir=$(dirname $0)
-exec $base_dir/kafka-run-class.sh -Djava.security.auth.login.config=$base_dir/../config/kafka_consumer_jaas.conf kafka.tools.ConsoleConsumer "$@"
-```
-### 3) 授权
-```bash
-# exec $(dirname $0)/kafka-run-class.sh kafka.tools.ConsoleProducer "$@"
-exec $(dirname $0)/kafka-run-class.sh -Djava.security.auth.login.config=$base_dir/../config/kafka_producer_jaas.conf kafka.tools.ConsoleProducer "$@"
-```
-
 
 ## 服务端
 ```bash

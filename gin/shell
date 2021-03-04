@@ -56,10 +56,6 @@ helpText(){
   echo "    topicClear            清除数据: $topicName"
   echo "    topicDelete           删除: $topicName"
   echo ""
-  echo "    topicAclsAdd          授权-添加: $topicName"
-  echo "    topicAclsList         授权-查看: $topicName"
-  echo "    topicAclsRemove       授权-取消: $topicName"
-  echo ""
   echo "    topicProducer         写入事件: $topicName"
   echo "    topicConsumer         阅读事件: $topicName"
   echo ""
@@ -96,19 +92,19 @@ elif [ "$s" == "socketStart" ]; then
   nohup go run cli/socket/index.go &
 # ZooKeeper-运行
 elif [ "$s" == "zookeeper" ]; then
-  $kafka/zookeeper-server-start.sh config/zookeeper_server.properties
+  $kafka/zookeeper-server-start.sh $kafka/../config/zookeeper.properties
 # ZooKeeper-启动
 elif [ "$s" == "zookeeperStart" ]; then
-  nohup $kafka/zookeeper-server-start.sh config/zookeeper_server.properties &
+  nohup $kafka/zookeeper-server-start.sh $kafka/../config/zookeeper.properties &
 # ZooKeeper-停止
 elif [ "$s" == "zookeeperStop" ]; then
   $kafka/zookeeper-server-stop.sh
 # Kafka-运行
 elif [ "$s" == "kafka" ]; then
-  $kafka/kafka-server-start.sh config/kafka_server.properties
+  $kafka/kafka-server-start.sh $kafka/../config/server.properties
 # Kafka-启动
 elif [ "$s" == "kafkaStart" ]; then
-  nohup $kafka/kafka-server-start.sh config/kafka_server.properties &
+  nohup $kafka/kafka-server-start.sh $kafka/../config/server.properties &
 # Kafka-停止
 elif [ "$s" == "kafkaStop" ]; then
   $kafka/kafka-server-stop.sh
@@ -133,23 +129,12 @@ elif [ "$s" == "topicClear" ]; then
 # Kafka-主题-删除
 elif [ "$s" == "topicDelete" ]; then
   $kafka/kafka-topics.sh --delete --zookeeper $zookeeperHost:$zookeeperPort --topic $topicName && rm -fr $kafkaLog
-# Kafka-授权-添加
-elif [ "$s" == "topicAclsAdd" ]; then
-  $kafka/kafka-acls.sh --authorizer kafka.security.auth.SimpleAclAuthorizer --authorizer-properties zookeeper.connect=$zookeeperHost:$zookeeperPort --add --allow-principal User:$producer --operation Write --topic $topicName
-  $kafka/kafka-acls.sh --authorizer kafka.security.auth.SimpleAclAuthorizer --authorizer-properties zookeeper.connect=$zookeeperHost:$zookeeperPort --add --allow-principal User:$consumer --operation Read --topic $topicName
-# Kafka-授权-查看
-elif [ "$s" == "topicAclsList" ]; then
-  $kafka/kafka-acls.sh --authorizer kafka.security.auth.SimpleAclAuthorizer --authorizer-properties zookeeper.connect=$zookeeperHost:$zookeeperPort --list
-# Kafka-授权-删除
-elif [ "$s" == "topicAclsRemove" ]; then
-  $kafka/kafka-acls.sh --authorizer kafka.security.auth.SimpleAclAuthorizer --authorizer-properties zookeeper.connect=$zookeeperHost:$zookeeperPort --remove --allow-principal User:$producer --operation Write --topic $topicName
-  $kafka/kafka-acls.sh --authorizer kafka.security.auth.SimpleAclAuthorizer --authorizer-properties zookeeper.connect=$zookeeperHost:$zookeeperPort --remove --allow-principal User:$consumer --operation Read --topic $topicName
 # Kafka-写入事件
 elif [ "$s" == "topicProducer" ]; then
-  $kafka/kafka-console-producer.sh --topic $topicName --bootstrap-server $topicHost:$topicPort --producer.config config/kafka_producer.properties
+  $kafka/kafka-console-producer.sh --topic $topicName --bootstrap-server $topicHost:$topicPort --producer.config $kafka/../config/producer.properties
 # Kafka-阅读事件
 elif [ "$s" == "topicConsumer" ]; then
-  $kafka/kafka-console-consumer.sh --topic $topicName --from-beginning --bootstrap-server $topicHost:$topicPort --consumer.config config/kafka_consumer.properties
+  $kafka/kafka-console-consumer.sh --topic $topicName --from-beginning --bootstrap-server $topicHost:$topicPort --consumer.config $kafka/../config/consumer.properties
 else
   helpText
 fi
