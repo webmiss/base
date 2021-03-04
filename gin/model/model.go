@@ -7,6 +7,7 @@ import (
 	"time"
 	"webmis/config"
 	"webmis/service"
+	"webmis/util"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -250,11 +251,11 @@ func (db *Model) FindFirst() (*sql.Rows, error) {
 }
 
 /* 获取查询结果 */
-func (db *Model) findDataOne(rows *sql.Rows) interface{} {
-	res := db.findDataAll(rows)
+func (db *Model) FindDataOne(rows *sql.Rows) interface{} {
+	res := db.FindDataAll(rows)
 	return res[0]
 }
-func (db *Model) findDataAll(rows *sql.Rows) []interface{} {
+func (db *Model) FindDataAll(rows *sql.Rows) []interface{} {
 	// 字段长度
 	columns, _ := rows.Columns()
 	key := make([]interface{}, len(columns))
@@ -270,8 +271,7 @@ func (db *Model) findDataAll(rows *sql.Rows) []interface{} {
 		tmp := make(map[string]interface{})
 		for k, v := range val {
 			if v != nil {
-				// tmp[columns[k]] = string(v.([]byte))
-				tmp[columns[k]] = v
+				tmp[columns[k]] = util.Strval(v)
 			} else {
 				tmp[columns[k]] = ""
 			}

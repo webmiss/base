@@ -13,8 +13,10 @@ func Admin(r *gin.Engine) {
 	g.Use(middleware.Cors())
 	{
 		// 首页
-		g.GET("", admin.Index)
-		g.GET("index", admin.Index)
-		g.POST("index/getConfig", admin.GetConfig)
+		g.GET("", (&admin.Home{}).Index)
+		g.GET("index", (&admin.Home{}).Index)
+		g.POST("index/getConfig", (&admin.Home{}).GetConfig)
+		// 登录
+		g.POST("user/login", (&admin.User{}).Login)
 	}
 }
