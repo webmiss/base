@@ -2,7 +2,6 @@ package library
 
 import (
 	"fmt"
-	"time"
 	"webmis/config"
 
 	"github.com/segmentio/kafka-go"
@@ -12,16 +11,14 @@ type Kafka struct {
 }
 
 /* 消费者 */
-func (this *Kafka) Consumer(topic string, partition int) *kafka.Reader {
+func (this *Kafka) Consumer(topic string) *kafka.Reader {
 	cfg := (&config.Kafka{}).Config()
 	r := kafka.NewReader(kafka.ReaderConfig{
-		Brokers:        []string{cfg.Host + ":" + cfg.Port},
-		GroupID:        topic,
-		Topic:          topic,
-		Partition:      partition,
-		MinBytes:       10e3, // 10KB
-		MaxBytes:       10e6, // 10MB
-		CommitInterval: time.Second,
+		Brokers:  []string{cfg.Host + ":" + cfg.Port},
+		GroupID:  "Group_" + topic,
+		Topic:    topic,
+		MinBytes: 10e3, // 10KB
+		MaxBytes: 10e6, // 10MB
 	})
 	return r
 }

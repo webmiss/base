@@ -3,6 +3,7 @@ package main
 import (
 	"io/ioutil"
 	"webmis/config"
+	"webmis/middleware"
 	"webmis/router"
 
 	"github.com/gin-contrib/gzip"
@@ -21,6 +22,9 @@ func main() {
 	r := gin.Default()
 	r.Use(gzip.Gzip(gzip.DefaultCompression)) //压缩
 	r.Use(gin.Recovery())                     //处理异常
+	// 日志
+	r.Use(middleware.Logs())
+	// Mvc
 	router.Web(r)
 	router.Api(r)
 	router.Admin(r)
