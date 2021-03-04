@@ -57,10 +57,10 @@ func (this *Logs) Info(content interface{}) {
 	go this.Send("logs", 1, str)
 }
 
-/* 警告 */
-func (this *Logs) Warn(content interface{}) {
+/* 操作 */
+func (this *Logs) Action(content interface{}) {
 	str, _ := json.Marshal(gin.H{
-		"type": "warn",
+		"type": "action",
 		"data": content,
 	})
 	go this.Send("logs", 2, str)
