@@ -32,7 +32,10 @@ func (this *Logs) Conn(topic string, partition int) bool {
 /* 发送 */
 func (this *Logs) Send(topic string, partition int, text []byte) {
 	if this.Conn(topic, partition) != true {
-		fmt.Println("[Logs] Fail:", string(text))
+		cfg := (&config.Kafka{}).Config()
+		if cfg.Log {
+			fmt.Println("[Logs] Fail:", string(text))
+		}
 		return
 	}
 	this.conn.WriteMessages(kafka.Message{Value: text})
