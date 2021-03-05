@@ -8,6 +8,7 @@ use Router\Admin;
 use Config\Cors;
 
 define('BASE_PATH', __DIR__);
+define('STDERR',fopen('php://stderr', 'a'));
 
 // Composer
 $load = BASE_PATH.'/vendor/autoload.php';
@@ -19,6 +20,7 @@ $loader = new Loader();
 $loader->registerNamespaces([
   'Base'=> BASE_PATH.'/base/',
   'Config'=> BASE_PATH.'/config/',
+  'Model'=> BASE_PATH.'/model/',
   'Router'=> BASE_PATH.'/router/',
   'App\Home'=> BASE_PATH.'/modules/home/',
   'App\Api'=> BASE_PATH.'/modules/api/',

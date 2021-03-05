@@ -15,7 +15,6 @@ import (
 /* 数据库 */
 type Model struct {
 	conn    *sql.DB       //连接
-	bind    []interface{} //过滤
 	sql     string        //SQL
 	table   string        //数据表
 	columns string        //字段
@@ -30,7 +29,13 @@ type Model struct {
 }
 
 /* 链接数据库 */
-func (m *Model) connect() *sql.DB {
+func (this *Model) Conn() *sql.DB {
+	// 默认值
+	this.args = make([]interface{}, 0, 10)
+	if this.conn != nil {
+		return this.conn
+	}
+	// 连接
 	cfg := (&config.MySql{}).Config()
 	source := cfg.User + ":" + cfg.Password + "@(" + cfg.Host + ":" + cfg.Port + ")/" + cfg.Database + "?charset=" + cfg.Charset + "&parseTime=true&loc=Local"
 	db, err := sql.Open(cfg.Driver, source)
@@ -59,17 +64,6 @@ func (db *Model) Close() {
 		}
 		db.conn = nil
 	}
-}
-
-/* 连接 */
-func (db *Model) Conn() *sql.DB {
-	// 连接
-	if db.conn == nil {
-		db.conn = db.connect()
-	}
-	// 默认值
-	db.args = make([]interface{}, 0, 10)
-	return db.conn
 }
 
 /* 查询 */
@@ -204,9 +198,7 @@ func (db *Model) Page(page int, limit int) *Model {
 	return db
 }
 
-/*
-* 生成查询SQL语句
- */
+/* 查询-SQL */
 func (db *Model) SelectSql() (string, []interface{}) {
 	if db.table == "" || db.columns == "" {
 		fmt.Println("Model[Select]: 数据表、字段不能为空!")
