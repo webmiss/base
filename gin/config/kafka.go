@@ -9,7 +9,7 @@ type Kafka struct {
 
 /* 配置 */
 func (cfg *Kafka) Config() *Kafka {
-	cfg.Log = true         //显示日志
+	cfg.Log = false        //显示日志
 	cfg.Type = "tcp"       //类型
 	cfg.Host = "localhost" //主机
 	cfg.Port = "9092"      //端口

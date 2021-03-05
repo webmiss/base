@@ -4,8 +4,8 @@ type SysConfig struct {
 	Model
 }
 
-/* 初始化 */
-func (db *SysConfig) Init() *SysConfig {
-	db.Table("sys_config")
-	return db
+/* 系统配置表 */
+func (this *SysConfig) Init() *SysConfig {
+	this.Table("sys_config")
+	return this
 }
