@@ -25,7 +25,7 @@ func main() {
 	// 日志
 	r.Use(middleware.Logs())
 	// Mvc
-	router.Web(r)
+	router.Home(r)
 	router.Api(r)
 	router.Admin(r)
 	// 运行

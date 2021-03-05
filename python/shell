@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # 配置
-index="web.py"
-config="web.ini"
+index="main.py"
+config="server.ini"
 cli="cli.py"
 package="flask flask_cors PyJWT redis wheel DBUtils pymysql websockets websocket-client"
 s=$1
