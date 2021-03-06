@@ -8,14 +8,15 @@ class Index extends Base {
 
   /* 首页 */
   static function Index() {
+    // 查询
     $demo = new User();
     $demo->Columns('uid','title');
-    $demo->Where('title LIKE ?','%事物%');
-    $data = $demo->Find();
-    self::print($data);
-    // list($sql, $args) = $demo->SelectSql();
-    // self::print($sql, $args);
-    return self::getJSON(['code'=>0, 'msg'=>'Web']);
+    $demo->Where('title LIKE ?','%事务%');
+    $data = $demo->FindFirst();
+    // 添加
+    $demo->Values(['uid'=>null,'title'=>'添加']);
+    $demo->Insert();
+    return self::getJSON(['code'=>0, 'msg'=>'Web', 'data'=>$data]);
   }
 
 }

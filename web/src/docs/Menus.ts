@@ -34,6 +34,18 @@ export default {
         {label: '安装&运行', value: 'docs/phalcon/install/index'},
         {label: '打包&发布', value: 'docs/phalcon/install/build'},
       ]},
+      {label:'ORM 数据库', children:[
+        {label: '模型 Model', value: 'docs/phalcon/db/model'},
+        {label: '查询 Select', value: 'docs/phalcon/db/select'},
+        {label: '插入 Insert', value: 'docs/phalcon/db/insert'},
+        {label: '更新 Update', value: 'docs/phalcon/db/update'},
+        {label: '删除 Delete', value: 'docs/phalcon/db/delete'},
+        {label: '连表 Join', value: 'docs/phalcon/db/join'},
+        {label: '事务 Commit', value: 'docs/phalcon/db/commit'},
+      ]},
+      {label:'Library 类库', children:[
+        {label: '通信 WebSocket', value: 'docs/phalcon/library/socket'},
+      ]},
     ];
   },
 

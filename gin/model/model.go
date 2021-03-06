@@ -276,8 +276,8 @@ func (db *Model) FindDataAll(rows *sql.Rows) []interface{} {
 
 /* 添加-数据 */
 func (db *Model) Values(data map[string]interface{}) *Model {
-	db.args = make([]interface{}, 0, 10)
 	keys, vals := "", ""
+	db.args = make([]interface{}, 0, 10)
 	for k, v := range data {
 		keys += k + ", "
 		vals += "?, "

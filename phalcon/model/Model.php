@@ -48,8 +48,24 @@ class Model extends Base {
       return null;
     }
     self::Conn();
-    
+    self::print($sql, $args);
     return self::$conn->query($sql, $args);
+  }
+
+  /* 执行 */
+  static function Exec(string $sql, array $args=[]): bool {
+    if(empty($sql)){
+      self::print('[Model] Exec: SQL不能为空!');
+      return false;
+    }
+    self::Conn();
+    self::print($sql, $args);
+    $res = self::$conn->execute($sql, $args);
+    if($res != true){
+      self::print('[Model] Exec: '+$sql);
+      return false;
+    }
+    return $res;
   }
 
   /* 获取-SQL */
@@ -125,14 +141,58 @@ class Model extends Base {
     if(self::$limit != ''){
       self::$sql .= ' LIMIT '.self::$limit;
     }
-    return [self::$sql, self::$args];
+    $args = self::$args;
+    self::$args = [];
+    return [self::$sql, $args];
+  }
+  /* 查询-多条 */
+  static function Find(): array {
+    list($sql, $args) = self::SelectSql();
+    $res = self::Conn()->fetchAll($sql, 2, $args);
+    return $res;
+  }
+  /* 查询-单条 */
+  static function FindFirst(): array {
+    self::$limit = '0,1';
+    list($sql, $args) = self::SelectSql();
+    $res = self::Conn()->fetchOne($sql, 2, $args);
+    return $res;
   }
 
-  /* 查询-多条 */
-  static function Find(): ?array {
-    list($sql, $args) = self::SelectSql();
-    $res = self::Query($sql, $args);
-    return $res?$res->fetchAll():null;
+  /* 添加-数据 */
+  static function Values(array $data) {
+    list($keys, $vals) = ['', ''];
+    self::$args = [];
+    foreach($data as $k=>$v){
+      $keys .= $k.', ';
+		  $vals .= '?, ';
+      self::$args[] = $v;
+    }
+    if(!empty($data)){
+      $keys = rtrim($keys, ', ');
+      $vals = rtrim($vals, ', ');
+    }
+    self::$keys = $keys;
+    self::$values = $vals;
   }
+  /* 添加-SQL */
+  static function InsertSql(): ?array {
+    if(self::$table=='' || self::$keys=='' || self::$values==''){
+      self::print('Model[Insert]: 数据表、数据不能为空!');
+      return null;
+    }
+    self::$sql = 'INSERT INTO `' . self::$table . '`(' . self::$keys . ') values(' . self::$values . ')';
+    $args = self::$args;
+    self::$args = [];
+    return [self::$sql, $args];
+  }
+  /* 添加-执行 */
+  static function Insert(): int {
+    list($sql, $args) = self::InsertSql();
+    $res = self::Exec($sql, $args);
+    return $res?self::$conn->lastInsertId():0;
+  }
+
+  
 
 }

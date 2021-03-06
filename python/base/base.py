@@ -4,7 +4,7 @@ from flask import request
 class Base :
 
   # 返回JSON
-  def getJSON(self,data=''):
+  def getJSON(self, data=''):
     return json.dumps(data)
 
   # 调试信息

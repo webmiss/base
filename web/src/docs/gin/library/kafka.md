@@ -7,7 +7,6 @@ tar -xzf kafka_2.13-2.7.0.tgz
 # 移动到Opt目录
 mv kafka_2.13-2.7.0 /opt/kafka
 ```
-****
 
 <br/>
 
