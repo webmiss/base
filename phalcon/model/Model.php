@@ -63,7 +63,7 @@ class Model extends Base {
     self::Print($sql, $args);
     $res = self::$conn->execute($sql, $args);
     if($res != true){
-      self::Print('[Model] Exec: '+$sql);
+      self::Print('[Model] Exec:', $sql);
       return false;
     }
     return $res;
@@ -80,19 +80,19 @@ class Model extends Base {
   }
   /* 关联-INNER */
   static function Join(string $table, string $on): void {
-    self::$table += ' INNER JOIN ' + $table + ' ON ' + $on;
+    self::$table .= ' INNER JOIN ' . $table . ' ON ' . $on;
   }
   /* 关联-LEFT */
   static function LeftJoin(string $table, string $on): void {
-    self::$table += ' LEFT JOIN ' + $table + ' ON ' + $on;
+    self::$table .= ' LEFT JOIN ' . $table . ' ON ' . $on;
   }
   /* 关联-RIGHT */
   static function RightJoin(string $table, string $on): void {
-    self::$table += ' RIGHT JOIN ' + $table + ' ON ' + $on;
+    self::$table .= ' RIGHT JOIN ' . $table . ' ON ' . $on;
   }
   /* 关联-FULL */
   static function FullJoin(string $table, string $on): void {
-    self::$table += ' FULL JOIN ' + $table + ' ON ' + $on;
+    self::$table .= ' FULL JOIN ' . $table . ' ON ' . $on;
   }
   /* 字段 */
   static function Columns(...$columns): void {
@@ -105,7 +105,7 @@ class Model extends Base {
   }
   /* 限制 */
   static function Limit(int $start, int $limit): void {
-    self::$limit = $start+','+$limit;
+    self::$limit = $start.','.$limit;
   }
   /* 排序 */
   static function Order(...$order): void {
@@ -119,7 +119,7 @@ class Model extends Base {
   /* 分页 */
   static function Page(int $page, int $limit): void {
     $start = ($page - 1) * $limit;
-    self::$limit = $start + ',' + $limit;
+    self::$limit = $start . ',' . $limit;
   }
 
   /* 查询-SQL */

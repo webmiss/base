@@ -1,6 +1,7 @@
 <?php
 namespace config;
 
+/* 数据库配置 */
 class Db {
 
   static $Driver = 'Mysql';                               //类型
