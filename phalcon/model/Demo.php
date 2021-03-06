@@ -1,11 +1,9 @@
-### 创建模型
-**model/Demo.php**
-```php
 <?php
 namespace model;
 
 use Model\Model;
 
+/* 测试表 */
 class Demo extends Model {
 
   /* 构造函数 */
@@ -14,10 +12,3 @@ class Demo extends Model {
   }
 
 }
-```
-
-### 使用
-```php
-use Model\Demo;
-$demo = new Demo();
-```

@@ -44,25 +44,26 @@ class Model extends Base {
   /* 查询 */
   static function Query(string $sql, array $args=[]) {
     if(empty($sql)){
-      self::print('[Model] Query: SQL不能为空!');
+      self::Print('[Model] Query: SQL不能为空!');
       return null;
     }
+    // 连接
     self::Conn();
-    self::print($sql, $args);
+    self::Print($sql, $args);
     return self::$conn->query($sql, $args);
   }
 
   /* 执行 */
   static function Exec(string $sql, array $args=[]): bool {
     if(empty($sql)){
-      self::print('[Model] Exec: SQL不能为空!');
+      self::Print('[Model] Exec: SQL不能为空!');
       return false;
     }
     self::Conn();
-    self::print($sql, $args);
+    self::Print($sql, $args);
     $res = self::$conn->execute($sql, $args);
     if($res != true){
-      self::print('[Model] Exec: '+$sql);
+      self::Print('[Model] Exec: '+$sql);
       return false;
     }
     return $res;
@@ -79,19 +80,19 @@ class Model extends Base {
   }
   /* 关联-INNER */
   static function Join(string $table, string $on): void {
-    self::$table += " INNER JOIN " + $table + " ON " + $on;
+    self::$table += ' INNER JOIN ' + $table + ' ON ' + $on;
   }
   /* 关联-LEFT */
   static function LeftJoin(string $table, string $on): void {
-    self::$table += " LEFT JOIN " + $table + " ON " + $on;
+    self::$table += ' LEFT JOIN ' + $table + ' ON ' + $on;
   }
   /* 关联-RIGHT */
   static function RightJoin(string $table, string $on): void {
-    self::$table += " RIGHT JOIN " + $table + " ON " + $on;
+    self::$table += ' RIGHT JOIN ' + $table + ' ON ' + $on;
   }
   /* 关联-FULL */
   static function FullJoin(string $table, string $on): void {
-    self::$table += " FULL JOIN " + $table + " ON " + $on;
+    self::$table += ' FULL JOIN ' + $table + ' ON ' + $on;
   }
   /* 字段 */
   static function Columns(...$columns): void {
@@ -122,24 +123,28 @@ class Model extends Base {
   }
 
   /* 查询-SQL */
-  static function SelectSql(): ?array {
+  static function SelectSql(): array {
     if(self::$table=='' || self::$columns==''){
-      self::print('Model[Select]: 数据表、字段不能为空!');
-      return null;
+      self::Print('Model[Select]: 数据表、字段不能为空!');
+      return ['', []];
     }
     // 合成
     self::$sql = 'SELECT '.self::$columns.' FROM '.self::$table;
     if(self::$where != ''){
       self::$sql .= ' WHERE '.self::$where;
+      self::$where = '';
     }
     if(self::$order != ''){
       self::$sql .= ' ORDER BY '.self::$order;
+      self::$order = '';
     }
     if(self::$group != ''){
       self::$sql .= ' GROUP BY '.self::$group;
+      self::$group = '';
     }
     if(self::$limit != ''){
       self::$sql .= ' LIMIT '.self::$limit;
+      self::$limit = '';
     }
     $args = self::$args;
     self::$args = [];
@@ -178,7 +183,7 @@ class Model extends Base {
   /* 添加-SQL */
   static function InsertSql(): ?array {
     if(self::$table=='' || self::$keys=='' || self::$values==''){
-      self::print('Model[Insert]: 数据表、数据不能为空!');
+      self::Print('Model[Insert]: 数据表、数据不能为空!');
       return null;
     }
     self::$sql = 'INSERT INTO `' . self::$table . '`(' . self::$keys . ') values(' . self::$values . ')';

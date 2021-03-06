@@ -16,6 +16,7 @@ app.register_blueprint(Home, url_prefix="")
 app.register_blueprint(Api, url_prefix="/api")
 app.register_blueprint(Admin, url_prefix="/admin")
 
+
 # 运行
 if __name__ == '__main__':
   if(Env.Debug): app.run(host=Env.Host,port=Env.Port)

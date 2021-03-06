@@ -19,7 +19,8 @@ func (this Home) GetConfig(c *gin.Context) {
 	config := (&model.SysConfig{}).Init()
 	config.Where("name in (?,?,?,?)", "title", "copy", "logo", "login_bg")
 	config.Columns("name", "val")
-	rows, _ := config.Find()
+	sql, args := config.SelectSql()
+	rows, _ := config.Query(sql, args)
 	list := make(map[string]interface{})
 	// 数据
 	var name string

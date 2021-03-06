@@ -57,6 +57,18 @@ export default {
         {label: '安装&运行', value: 'docs/python/install/index'},
         {label: '打包&发布', value: 'docs/python/install/build'},
       ]},
+      {label:'ORM 数据库', children:[
+        {label: '模型 Model', value: 'docs/python/db/model'},
+        {label: '查询 Select', value: 'docs/python/db/select'},
+        {label: '插入 Insert', value: 'docs/python/db/insert'},
+        {label: '更新 Update', value: 'docs/python/db/update'},
+        {label: '删除 Delete', value: 'docs/python/db/delete'},
+        {label: '连表 Join', value: 'docs/python/db/join'},
+        {label: '事务 Commit', value: 'docs/python/db/commit'},
+      ]},
+      {label:'Library 类库', children:[
+        {label: '通信 WebSocket', value: 'docs/python/library/socket'},
+      ]},
     ];
   },
 
@@ -103,6 +115,7 @@ export default {
         {label: 'SSL免费证书', value: 'docs/linux/shell/ssl'},
         {label: 'VBox安装MacOS', value: 'docs/linux/shell/macos'},
         {label: 'Docker 容器', value: 'docs/linux/shell/docker'},
+        {label: 'MariaDB 数据库', value: 'docs/linux/shell/mariadb'},
       ]},
       {label:'CentOS', children:[
         {label: '基础配置', value: 'docs/linux/centos/config'},

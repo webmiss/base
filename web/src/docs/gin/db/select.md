@@ -1,48 +1,38 @@
-### 查询SQL
+### 执行SQL
 ```go
-type Columns struct {
-	Uid   int           `json:"uid"`
-	Title string        `json:"title_rename"`
-	Ctime util.JsonTime `json:"ctime"`
-}
-func (db *Demo) SelectRow() []interface{} {
-	// SQL
-	db.Columns("uid", "title", "ctime")
-	db.Where("uid>? OR title=?", 1, "测试")
-	db.Limit(0, 2)
-	db.Order("uid DESC")
-	// rows, _ := db.FindList()	//返回执行结构
-	sql, args := db.SelectSql() //返回Sql语句、参数值
+func Index(c *gin.Context) {
+	// 查询
+	demo := (&model.Demo{}).Init()
+	demo.Columns("uid", "title")
+	demo.Where("title LIKE ?", "%事务%")
 	// 执行
-	rows, _ := db.Conn().Query(sql, args...)
-	defer rows.Close()
-	// 合成数据
-	list := Columns{}
-	columns, _ := rows.Columns()
-	fmt.Println(columns)
-	data := make([]interface{}, 0, 10)
+	sql, args := demo.SelectSql()
+	rows, _ := demo.Query(sql, args)
+	// 数据
+	var uid int
+	var title string
+	data := make([]map[string]interface{}, 0, 10)
 	for rows.Next() {
-		rows.Scan(&list.Uid, &list.Title, &list.Ctime)
-		data = append(data, list)
+		rows.Scan(&uid, &title)
+		tmp := map[string]interface{}{
+			"uid":   uid,
+			"title": title,
+		}
+		data = append(data, tmp)
 	}
-	return data
+	// 返回
+	c.JSON(200, gin.H{"code": 0, "msg": "Web", "data": data})
 }
 ```
 
-### 多条、单条
+### 多条
 ```go
-func (db *Demo) FindRow() []interface{} {
-	db.Columns("uid", "title", "ctime")
-	rows, _ := db.Find()
-	defer rows.Close()
-	// 合成数据
-	data := db.findDataAll(rows)
-	// 单条
-	// rows, err := db.FindOne()
-	// data := db.findDataOne(rows)
-	fmt.Println(data)
-	return data
-}
+demo.Find()
+```
+
+### 单条
+```go
+demo.FindFirst()
 ```
 
 ### 获取SQL

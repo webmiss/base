@@ -3,6 +3,10 @@ from flask import request
 
 class Base :
 
+  # 输出到控制台
+  def Print(self, *content) :
+    print(*content)
+
   # 返回JSON
   def getJSON(self, data=''):
     return json.dumps(data)

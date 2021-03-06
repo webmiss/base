@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 	"time"
+	"webmis/base"
 	"webmis/config"
 	"webmis/service"
 	"webmis/util"
@@ -14,6 +15,7 @@ import (
 
 /* 数据库 */
 type Model struct {
+	base.Base
 	conn    *sql.DB       //连接
 	sql     string        //SQL
 	table   string        //数据表
@@ -29,11 +31,11 @@ type Model struct {
 }
 
 /* 链接数据库 */
-func (this *Model) Conn() *sql.DB {
+func (self *Model) Conn() *sql.DB {
 	// 默认值
-	this.args = make([]interface{}, 0, 10)
-	if this.conn != nil {
-		return this.conn
+	self.args = make([]interface{}, 0, 10)
+	if self.conn != nil {
+		return self.conn
 	}
 	// 连接
 	cfg := (&config.MySql{}).Config()
@@ -41,12 +43,14 @@ func (this *Model) Conn() *sql.DB {
 	db, err := sql.Open(cfg.Driver, source)
 	if err != nil {
 		(&service.Logs{}).Error(err)
+		self.Print("[Model] Conn:", err)
 		return nil
 	}
 	// 是否成功
 	if err := db.Ping(); err != nil {
 		db.Close()
 		(&service.Logs{}).Error(err)
+		self.Print("[Model] Conn:", err)
 		return nil
 	}
 	// 数据池
@@ -67,35 +71,38 @@ func (db *Model) Close() {
 }
 
 /* 查询 */
-func (db *Model) Query(sql string, args []interface{}) (*sql.Rows, error) {
+func (self *Model) Query(sql string, args []interface{}) (*sql.Rows, error) {
 	if sql == "" {
-		fmt.Println("[Model] Query: SQL不能为空!")
+		self.Print("[Model] Query: SQL不能为空!")
 		return nil, nil
 	}
-	if db.conn == nil {
-		fmt.Println("[Model] Conn: 没有连接数据库!")
+	self.conn = self.Conn()
+	if self.conn == nil {
 		return nil, nil
 	}
-	rows, err := db.Conn().Query(sql, args...)
+	rows, err := self.conn.Query(sql, args...)
 	if err != nil {
+		self.Print("[Model] Query:", sql)
 		(&service.Logs{}).Error(err)
+		defer rows.Close()
 	}
 	return rows, err
 }
 
 /* 执行 */
-func (db *Model) Exec(sql string, args []interface{}) (sql.Result, error) {
+func (self *Model) Exec(sql string, args []interface{}) (sql.Result, error) {
 	if sql == "" {
 		fmt.Println("[Model] Exec: SQL不能为空!")
 		return nil, nil
 	}
-	if db.conn == nil {
-		fmt.Println("[Model] Conn: 没有连接数据库!")
+	self.conn = self.Conn()
+	if self.conn == nil {
 		return nil, nil
 	}
-	rows, err := db.Conn().Exec(sql, args...)
-	db.args = make([]interface{}, 0, 10)
+	rows, err := self.conn.Exec(sql, args...)
+	self.args = make([]interface{}, 0, 10)
 	if err != nil {
+		self.Print("[Model] Query:", sql)
 		(&service.Logs{}).Error(err)
 	}
 	return rows, err
@@ -228,18 +235,24 @@ func (db *Model) SelectSql() (string, []interface{}) {
 }
 
 /* 查询-多条 */
-func (db *Model) Find() (*sql.Rows, error) {
+func (db *Model) Find() []interface{} {
 	sql, args := db.SelectSql()
-	rows, err := db.Query(sql, args)
-	return rows, err
+	rows, _ := db.Query(sql, args)
+	if rows == nil {
+		return nil
+	}
+	return db.FindDataAll(rows)
 }
 
 /* 查询-单条 */
-func (db *Model) FindFirst() (*sql.Rows, error) {
+func (db *Model) FindFirst() interface{} {
 	db.limit = "0,1"
 	sql, args := db.SelectSql()
-	rows, err := db.Query(sql, args)
-	return rows, err
+	rows, _ := db.Query(sql, args)
+	if rows == nil {
+		return nil
+	}
+	return db.FindDataOne(rows)
 }
 
 /* 获取查询结果 */

@@ -1,8 +1,5 @@
-from base.base import Base
-from model.demo import Demo
-
-class Index(Base) :
-
+### 执行SQL
+```python
   # 首页
   def index(self):
     # 查询
@@ -16,3 +13,19 @@ class Index(Base) :
     data = cs.fetchall()
     # 返回
     return self.getJSON({'code':0,'msg':'Web', 'data':data})
+```
+
+### 多条
+```python
+demo.Find()
+```
+
+### 单条
+```python
+demo.FindFirst()
+```
+
+### 获取SQL
+```python
+demo.SelectSql()
+```

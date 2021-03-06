@@ -1,9 +1,8 @@
 from model.model import Model
 
-
-# 用户表
-class User(Model) :
+# 测试表
+class Demo(Model) :
 
   # 构造函数
   def __init__(self):
-    self.Table('user')
+    self.Table('test')
