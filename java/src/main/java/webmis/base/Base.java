@@ -7,7 +7,7 @@ import com.alibaba.fastjson.JSON;
 public class Base {
 
   /* 输出到控制台 */
-  static protected void Print(Object... content) {
+  protected void Print(Object content) {
     System.out.println(content);
   }
 

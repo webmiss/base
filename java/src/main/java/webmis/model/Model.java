@@ -1,11 +1,13 @@
 package webmis.model;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.alibaba.druid.pool.DruidDataSource;
 
 import webmis.base.Base;
 import webmis.config.Db;
@@ -13,57 +15,60 @@ import webmis.config.Db;
 /* 数据库 */
 public class Model extends Base {
 
-  private static DruidDataSource _source = null;    //数据源
-  private static Connection _conn = null;           //链接
-  private static String _sql = "";                  //SQL
-  private static String _table = "";                //数据表
-  private static String _columns = "";              //字段
-  private static String _where = "";                //条件
-  private static String _group = "";                //分组
-  private static String _order = "";                //排序
-  private static String _limit = "";                //限制
-  private static String _args = "";                 //参数
-  private static String _keys = "";                 //新增-名
-  private static String _values = "";               //新增-值
-  private static String _data = "";                 //更新-数据
+  private final String _url = "jdbc:mysql://"+Db.Host+":"+Db.Port+"/"+Db.Database+"?characterEncoding="+Db.Charset+"&useSSL=false&serverTimezone=Asia/Shanghai";
+  private Connection _conn = null;           //链接
+  private String _sql = "";                  //SQL
+  private String _table = "";                //数据表
+  private String _columns = "";              //字段
+  private String _where = "";                //条件
+  private String _group = "";                //分组
+  private String _order = "";                //排序
+  private String _limit = "";                //限制
+  private PreparedStatement _bind = null;    //参数
+  private String _keys = "";                 //新增-名
+  private String _values = "";               //新增-值
+  private String _data = "";                 //更新-数据
 
   /* 链接数据库 */
   public Connection Conn() {
     try {
-      if(_source==null){
-        _source = new DruidDataSource();
-        _source.setUrl("jdbc:mysql://"+Db.Host+":"+Db.Port+"/"+Db.Database+"?characterEncoding="+Db.Charset+"&useSSL=false&serverTimezone=Asia/Shanghai");
-        _source.setUsername(Db.User);
-        _source.setPassword(Db.Password);
-        _source.setDriverClassName(Db.Driver);
-        // 数据池
-        _source.setInitialSize(Db.Min);
-        _source.setMaxActive(Db.Max);
-        _source.setTimeBetweenEvictionRunsMillis(10000);  //空闲检测(毫秒)
-        _source.setMaxWait(30000);  //等待超时(毫秒)
-        // 防止过期
-        _source.setValidationQuery("SELECT 1");
-        _source.setTestWhileIdle(true);
-        _source.setTestOnBorrow(true);
-        _source.setTestOnReturn(true);
-      }
-      return _source.getConnection();
-    } catch (Exception e) {
-      System.out.println("[Model] Conn:"+e.getMessage());
-      return _conn;
+      if(_conn != null && !_conn.isClosed()) return _conn;
+      _conn = DriverManager.getConnection(_url, Db.User, Db.Password);
+    } catch (SQLException e) {
+      Print("[Model] Conn:"+e.getMessage());
+    }
+    return _conn;
+  }
+
+  /* 关闭 */
+  public void Close() {
+    try {
+      _conn.close();
+    } catch (SQLException e) {
+      Print("[Model] Close:"+e.getMessage());
     }
   }
 
-  /* 查询 */
-  public PreparedStatement Query(String sql){
+  /* 过滤 */
+  public PreparedStatement Bind(String sql) {
     // 连接
     _conn = Conn();
-    if(_conn == null) return null;
     try {
-      PreparedStatement ps = _conn.prepareStatement(sql);
-      return ps;
+      _bind = _conn.prepareStatement(sql);
     } catch (SQLException e) {
-      System.out.println("[Model] Query:"+e.getMessage());
+      Print("[Model] Bind:"+e.getMessage());
+    }
+    return _bind;
+  }
+
+  /* 查询 */
+  public ResultSet Query(PreparedStatement pst){
+    ResultSet rs;
+    try {
+      rs = pst.executeQuery();
+      return rs;
+    } catch (SQLException e) {
+      Print("[Model] Query:"+e.getMessage());
       return null;
     }
   }
@@ -135,7 +140,7 @@ public class Model extends Base {
   /* 查询-SQL */
   public String SelectSql() {
     if(_table.equals("") || _columns.equals("")){
-      System.out.println("Model[Select]: 数据表、字段不能为空!");
+      Print("[Model] Select: 数据表、字段不能为空!");
       return "";
     }
     // 合成
@@ -159,14 +164,40 @@ public class Model extends Base {
     return _sql;
   }
   /* 查询-多条 */
-  public void Find() {
-    String sql = SelectSql();
-    PreparedStatement ps = Query(sql);
-
-    // System.out.println(sql);
-    this.Print(sql);
-    Print(ps);
-    System.out.println(ps);
+  public ArrayList<HashMap<String,Object>> Find(PreparedStatement pst) {
+    return FindDataAll(pst);
+  }
+  /* 查询-单条 */
+  public HashMap<String,Object> FindFirst(PreparedStatement pst) {
+    HashMap<String,Object> res = new HashMap<String,Object>();
+    ArrayList<HashMap<String,Object>> data = FindDataAll(pst);
+    if(data.size()>0) return data.get(0);
+    return res;
+  }
+  /* 获取查询结果 */
+  public ArrayList<HashMap<String,Object>> FindDataAll(PreparedStatement pst) {
+    ArrayList<HashMap<String,Object>> res = new ArrayList<HashMap<String,Object>>();
+    HashMap<String,Object> tmp ;
+    ResultSetMetaData data;
+    int num = 0;
+    try {
+      ResultSet rs = pst.executeQuery();
+      data = rs.getMetaData();
+      int n = data.getColumnCount();
+      while (rs.next()) {
+        tmp = new HashMap<String,Object>();
+        for (int i = 1; i<=n; i++) tmp.put(data.getColumnLabel(i), rs.getObject(i));
+        res.add(tmp);
+        num++;
+      }
+      // 释放
+      rs.close();
+      pst.close();
+      // _conn.close();
+    } catch (SQLException e) {
+      Print("[Model] Find: "+e.getMessage());
+    }
+    return res;
   }
 
 }

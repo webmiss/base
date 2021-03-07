@@ -13,21 +13,21 @@ import (
 func main() {
 	// 配置
 	cfg := (&config.Env{}).Config()
+	app := gin.Default()
 	// 模式
 	gin.SetMode(cfg.Mode)
 	if gin.Mode() == gin.ReleaseMode {
 		gin.DefaultWriter = ioutil.Discard //禁止控制台输出
+		app.Use(middleware.Logs())         //访问日志
 	}
 	// 路由
-	r := gin.Default()
-	r.Use(gzip.Gzip(gzip.DefaultCompression)) //压缩
-	r.Use(gin.Recovery())                     //处理异常
-	// 日志
-	r.Use(middleware.Logs())
+
+	app.Use(gzip.Gzip(gzip.DefaultCompression)) //压缩
+	app.Use(gin.Recovery())                     //处理异常
 	// Mvc
-	router.Home(r)
-	router.Api(r)
-	router.Admin(r)
+	router.Home(app)
+	router.Api(app)
+	router.Admin(app)
 	// 运行
-	r.Run(cfg.Host + ":" + cfg.Port)
+	app.Run(cfg.Host + ":" + cfg.Port)
 }

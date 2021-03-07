@@ -61,12 +61,12 @@ func (self *Model) Conn() *sql.DB {
 }
 
 /* 关闭 */
-func (db *Model) Close() {
-	if db.conn != nil {
-		if err := db.conn.Close(); err != nil {
+func (self *Model) Close() {
+	if self.conn != nil {
+		if err := self.conn.Close(); err != nil {
 			(&service.Logs{}).Error(err)
 		}
-		db.conn = nil
+		self.conn = nil
 	}
 }
 
@@ -109,158 +109,147 @@ func (self *Model) Exec(sql string, args []interface{}) (sql.Result, error) {
 }
 
 /* 获取-SQL */
-func (db *Model) GetSql() string {
-	return db.sql
+func (self *Model) GetSql() string {
+	return self.sql
 }
 
 /* 表 */
-func (db *Model) Table(table ...string) *Model {
-	db.table = ""
+func (self *Model) Table(table ...string) {
+	self.table = ""
 	for _, v := range table {
-		db.table += v
+		self.table += v
 	}
-	db.Conn()
-	return db
+	self.Conn()
 }
 
 /* 关联-INNER */
-func (db *Model) Join(table string, on string) *Model {
-	db.table += " INNER JOIN " + table + " ON " + on
-	return db
+func (self *Model) Join(table string, on string) {
+	self.table += " INNER JOIN " + table + " ON " + on
 }
 
 /* 关联-LEFT */
-func (db *Model) LeftJoin(table string, on string) *Model {
-	db.table += " LEFT JOIN " + table + " ON " + on
-	return db
+func (self *Model) LeftJoin(table string, on string) {
+	self.table += " LEFT JOIN " + table + " ON " + on
 }
 
 /* 关联-RIGHT */
-func (db *Model) RightJoin(table string, on string) *Model {
-	db.table += " RIGHT JOIN " + table + " ON " + on
-	return db
+func (self *Model) RightJoin(table string, on string) {
+	self.table += " RIGHT JOIN " + table + " ON " + on
 }
 
 /* 关联-FULL */
-func (db *Model) FullJoin(table string, on string) *Model {
-	db.table += " FULL JOIN " + table + " ON " + on
-	return db
+func (self *Model) FullJoin(table string, on string) {
+	self.table += " FULL JOIN " + table + " ON " + on
 }
 
 /* 字段 */
-func (db *Model) Columns(columns ...string) *Model {
-	db.columns = ""
+func (self *Model) Columns(columns ...string) {
+	self.columns = ""
 	for _, v := range columns {
-		db.columns += v + ", "
+		self.columns += v + ", "
 	}
-	if db.columns != "" {
-		db.columns = db.columns[:len(db.columns)-2]
+	if self.columns != "" {
+		self.columns = self.columns[:len(self.columns)-2]
 	}
-	return db
 }
 
 /* 条件 */
-func (db *Model) Where(where string, values ...interface{}) *Model {
-	db.where = where
+func (self *Model) Where(where string, values ...interface{}) {
+	self.where = where
 	for _, v := range values {
-		db.args = append(db.args, v)
+		self.args = append(self.args, v)
 	}
-	return db
 }
 
 /* 限制 */
-func (db *Model) Limit(start int, limit int) *Model {
-	db.limit = strconv.Itoa(start) + "," + strconv.Itoa(limit)
-	return db
+func (self *Model) Limit(start int, limit int) {
+	self.limit = strconv.Itoa(start) + "," + strconv.Itoa(limit)
 }
 
 /* 排序 */
-func (db *Model) Order(order ...string) *Model {
-	db.order = ""
+func (self *Model) Order(order ...string) {
+	self.order = ""
 	for _, v := range order {
-		db.order += v + ","
+		self.order += v + ","
 	}
-	if db.order != "" {
-		db.order = db.order[:len(db.order)-1]
+	if self.order != "" {
+		self.order = self.order[:len(self.order)-1]
 	}
-	return db
 }
 
 /* 分组 */
-func (db *Model) Group(group ...string) *Model {
-	db.order = ""
+func (self *Model) Group(group ...string) {
+	self.order = ""
 	for _, v := range group {
-		db.group += v + ","
+		self.group += v + ","
 	}
-	if db.group != "" {
-		db.group = db.group[:len(db.group)-1]
+	if self.group != "" {
+		self.group = self.group[:len(self.group)-1]
 	}
-	return db
 }
 
 /* 分页 */
-func (db *Model) Page(page int, limit int) *Model {
+func (self *Model) Page(page int, limit int) {
 	start := (page - 1) * limit
-	db.limit = strconv.Itoa(start) + "," + strconv.Itoa(limit)
-	return db
+	self.limit = strconv.Itoa(start) + "," + strconv.Itoa(limit)
 }
 
 /* 查询-SQL */
-func (db *Model) SelectSql() (string, []interface{}) {
-	if db.table == "" || db.columns == "" {
-		fmt.Println("Model[Select]: 数据表、字段不能为空!")
+func (self *Model) SelectSql() (string, []interface{}) {
+	if self.table == "" || self.columns == "" {
+		self.Print("[Model] Select: 数据表、字段不能为空!")
 		return "", nil
 	}
 	// 合成
-	db.sql = "SELECT " + db.columns + " FROM " + db.table
-	if db.where != "" {
-		db.sql += " WHERE " + db.where
-		db.where = ""
+	self.sql = "SELECT " + self.columns + " FROM " + self.table
+	if self.where != "" {
+		self.sql += " WHERE " + self.where
+		self.where = ""
 	}
-	if db.order != "" {
-		db.sql += " ORDER BY " + db.order
-		db.order = ""
+	if self.order != "" {
+		self.sql += " ORDER BY " + self.order
+		self.order = ""
 	}
-	if db.group != "" {
-		db.sql += " GROUP BY " + db.group
-		db.group = ""
+	if self.group != "" {
+		self.sql += " GROUP BY " + self.group
+		self.group = ""
 	}
-	if db.limit != "" {
-		db.sql += " LIMIT " + db.limit
-		db.limit = ""
+	if self.limit != "" {
+		self.sql += " LIMIT " + self.limit
+		self.limit = ""
 	}
-	args := db.args
-	db.args = make([]interface{}, 0, 10)
-	return db.sql, args
+	args := self.args
+	self.args = make([]interface{}, 0, 10)
+	return self.sql, args
 }
 
 /* 查询-多条 */
-func (db *Model) Find() []interface{} {
-	sql, args := db.SelectSql()
-	rows, _ := db.Query(sql, args)
+func (self *Model) Find() []interface{} {
+	sql, args := self.SelectSql()
+	rows, _ := self.Query(sql, args)
 	if rows == nil {
 		return nil
 	}
-	return db.FindDataAll(rows)
+	return self.FindDataAll(rows)
 }
 
 /* 查询-单条 */
-func (db *Model) FindFirst() interface{} {
-	db.limit = "0,1"
-	sql, args := db.SelectSql()
-	rows, _ := db.Query(sql, args)
+func (self *Model) FindFirst() interface{} {
+	self.limit = "0,1"
+	sql, args := self.SelectSql()
+	rows, _ := self.Query(sql, args)
 	if rows == nil {
 		return nil
 	}
-	return db.FindDataOne(rows)
+	return self.FindDataOne(rows)
 }
 
 /* 获取查询结果 */
-func (db *Model) FindDataOne(rows *sql.Rows) interface{} {
-	res := db.FindDataAll(rows)
+func (self *Model) FindDataOne(rows *sql.Rows) interface{} {
+	res := self.FindDataAll(rows)
 	return res[0]
 }
-func (db *Model) FindDataAll(rows *sql.Rows) []interface{} {
+func (self *Model) FindDataAll(rows *sql.Rows) []interface{} {
 	// 字段长度
 	columns, _ := rows.Columns()
 	key := make([]interface{}, len(columns))
@@ -288,91 +277,89 @@ func (db *Model) FindDataAll(rows *sql.Rows) []interface{} {
 }
 
 /* 添加-数据 */
-func (db *Model) Values(data map[string]interface{}) *Model {
+func (self *Model) Values(data map[string]interface{}) {
 	keys, vals := "", ""
-	db.args = make([]interface{}, 0, 10)
+	self.args = make([]interface{}, 0, 10)
 	for k, v := range data {
 		keys += k + ", "
 		vals += "?, "
-		db.args = append(db.args, v)
+		self.args = append(self.args, v)
 	}
 	if len(data) > 0 {
 		keys = keys[:len(keys)-2]
 		vals = vals[:len(vals)-2]
 	}
-	db.keys = keys
-	db.values = vals
-	return db
+	self.keys = keys
+	self.values = vals
 }
 
 /* 添加-SQL */
-func (db *Model) InsertSql() (string, []interface{}) {
-	if db.table == "" || db.keys == "" || db.values == "" {
-		fmt.Println("Model[Insert]: 数据表、数据不能为空!")
+func (self *Model) InsertSql() (string, []interface{}) {
+	if self.table == "" || self.keys == "" || self.values == "" {
+		fmt.Println("[Model] Insert: 数据表、数据不能为空!")
 		return "", nil
 	}
-	db.sql = "INSERT INTO `" + db.table + "`(" + db.keys + ") values(" + db.values + ")"
-	args := db.args
-	db.args = make([]interface{}, 0, 10)
-	return db.sql, args
+	self.sql = "INSERT INTO `" + self.table + "`(" + self.keys + ") values(" + self.values + ")"
+	args := self.args
+	self.args = make([]interface{}, 0, 10)
+	return self.sql, args
 }
 
 /* 添加-执行 */
-func (db *Model) Insert() (sql.Result, error) {
-	sql, args := db.InsertSql()
-	rows, err := db.Exec(sql, args)
+func (self *Model) Insert() (sql.Result, error) {
+	sql, args := self.InsertSql()
+	rows, err := self.Exec(sql, args)
 	return rows, err
 }
 
 /* 更新-数据 */
-func (db *Model) Set(data map[string]interface{}) *Model {
-	db.args = make([]interface{}, 0, 10)
+func (self *Model) Set(data map[string]interface{}) {
+	self.args = make([]interface{}, 0, 10)
 	vals := ""
 	for k, v := range data {
 		vals += k + "=?, "
-		db.args = append(db.args, v)
+		self.args = append(self.args, v)
 	}
 	if len(data) > 0 {
 		vals = vals[:len(vals)-2]
 	}
-	db.data = vals
-	return db
+	self.data = vals
 }
 
 /* 更新-SQL */
-func (db *Model) UpdateSql() (string, []interface{}) {
-	if db.table == "" || db.data == "" || db.where == "" {
-		fmt.Println("Model[Update]: 数据表、数据、条件不能为空!")
+func (self *Model) UpdateSql() (string, []interface{}) {
+	if self.table == "" || self.data == "" || self.where == "" {
+		self.Print("[Model] Update: 数据表、数据、条件不能为空!")
 		return "", nil
 	}
-	db.sql = "UPDATE `" + db.table + "` SET " + db.data + " WHERE " + db.where
-	args := db.args
-	db.args = make([]interface{}, 0, 10)
-	return db.sql, args
+	self.sql = "UPDATE `" + self.table + "` SET " + self.data + " WHERE " + self.where
+	args := self.args
+	self.args = make([]interface{}, 0, 10)
+	return self.sql, args
 }
 
 /* 更新-执行 */
-func (db *Model) Update() (sql.Result, error) {
-	sql, args := db.UpdateSql()
-	rows, err := db.Exec(sql, args)
+func (self *Model) Update() (sql.Result, error) {
+	sql, args := self.UpdateSql()
+	rows, err := self.Exec(sql, args)
 	return rows, err
 }
 
 /* 删除-SQL */
-func (db *Model) DeleteSql() (string, []interface{}) {
-	if db.table == "" || db.where == "" {
-		fmt.Println("Model[Delete]: 数据表、条件不能为空!")
+func (self *Model) DeleteSql() (string, []interface{}) {
+	if self.table == "" || self.where == "" {
+		self.Print("[Model] Delete: 数据表、条件不能为空!")
 		return "", nil
 	}
-	db.sql = "DELETE FROM `" + db.table + "` WHERE " + db.where
-	args := db.args
-	db.args = make([]interface{}, 0, 10)
-	return db.sql, args
+	self.sql = "DELETE FROM `" + self.table + "` WHERE " + self.where
+	args := self.args
+	self.args = make([]interface{}, 0, 10)
+	return self.sql, args
 }
 
 /* 删除-执行 */
-func (db *Model) Delete() (sql.Result, error) {
-	sql, args := db.DeleteSql()
-	rows, err := db.Exec(sql, args)
+func (self *Model) Delete() (sql.Result, error) {
+	sql, args := self.DeleteSql()
+	rows, err := self.Exec(sql, args)
 	return rows, err
 }

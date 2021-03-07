@@ -63,50 +63,39 @@ class Model(Base) :
   # 表
   def Table(self, table: str) :
     self.__table = table
-    return self
   # 关联-INNER
   def Join(self, table: str, on : str) :
     self.__table += ' INNER JOIN ' + table + ' ON ' + on
-    return self
   # 关联-LEFT
   def LeftJoin(self, table: str, on : str) :
     self.__table += ' LEFT JOIN ' + table + ' ON ' + on
-    return self
   # 关联-RIGHT
   def RightJoin(self, table: str, on : str) :
     self.__table += ' RIGHT JOIN ' + table + ' ON ' + on
-    return self
   # 关联-FULL
   def FullJoin(self, table: str, on : str) :
     self.__table += ' FULL JOIN ' + table + ' ON ' + on
-    return self
   # 字段
   def Columns(self, *columns) :
     self.__columns = ','.join(columns)
-    return self
   # 条件
   def Where(self, where: str, *values) :
     self.__where = where
     self.__args += values
-    return self
   # 排序
   def Limit(self, start: int, limit: int) :
     self.__limit = str(start)+','+str(limit)
-    return self
   # 排序
   def Order(self, *order) :
     self.__order = ','.join(order)
-    return self
   # 分组
   def Group(self, *group) :
     self.__group = ','.join(group)
-    return self
 
   # 分页
   def Page(self, page: int, limit: int) :
     start = (page - 1) * limit
     self.__limit = str(start) + ',' + str(limit)
-    return self
 
   # 查询-SQL
   def SelectSql(self) :

@@ -80,6 +80,18 @@ export default {
         {label: '安装&运行', value: 'docs/java/install/index'},
         {label: '打包&发布', value: 'docs/java/install/build'},
       ]},
+      {label:'ORM 数据库', children:[
+        {label: '模型 Model', value: 'docs/java/db/model'},
+        {label: '查询 Select', value: 'docs/java/db/select'},
+        {label: '插入 Insert', value: 'docs/java/db/insert'},
+        {label: '更新 Update', value: 'docs/java/db/update'},
+        {label: '删除 Delete', value: 'docs/java/db/delete'},
+        {label: '连表 Join', value: 'docs/java/db/join'},
+        {label: '事务 Commit', value: 'docs/java/db/commit'},
+      ]},
+      {label:'Library 类库', children:[
+        {label: '通信 WebSocket', value: 'docs/java/library/socket'},
+      ]},
     ];
   },
 

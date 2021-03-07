@@ -12,9 +12,7 @@ class Index extends Base {
     $demo = new Demo();
     $demo->Columns('uid','title');
     $demo->Where('title LIKE ?','%事务%');
-    list($sql, $args) = $demo->SelectSql();
-    $query = $demo->Query($sql, $args);
-    $data = $query->fetchAll();
+    $data = $demo->FindFirst();
     // 添加
     // $demo->Values(['uid'=>null,'title'=>'添加']);
     // $demo->Insert();
