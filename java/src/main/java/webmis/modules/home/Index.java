@@ -21,6 +21,7 @@ public class Index extends Base{
   /* 首页 */
   @RequestMapping("")
   String index() throws SQLException{
+    HashMap<String,Object> data = null;
     // 查询
     Demo demo = new Demo();
     demo.Columns("uid", "title");
@@ -29,12 +30,12 @@ public class Index extends Base{
     String sql = demo.SelectSql();
     // 参数
     PreparedStatement pst = demo.Bind(sql);
-    pst.setString(1, "%事务%");
-    // 数据
-    // ArrayList<HashMap<String,Object>> data = demo.Find(pst);
-    HashMap<String,Object> data = demo.FindFirst(pst);
-    // 关闭
-    demo.Close();
+    if(pst != null){
+      pst.setString(1, "%事务%");
+      data = demo.FindFirst(pst);
+      // 关闭
+      demo.Close();
+    }
     // 返回数据
     HashMap<String,Object> res = new HashMap<String,Object>();
     res.put("code",0);

@@ -52,7 +52,7 @@ public class Model extends Base {
   /* 过滤 */
   public PreparedStatement Bind(String sql) {
     // 连接
-    _conn = Conn();
+    if(Conn()==null) return _bind;
     try {
       _bind = _conn.prepareStatement(sql);
     } catch (SQLException e) {

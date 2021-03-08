@@ -54,7 +54,7 @@ class Model(Base) :
       print('[Model] Query: SQL不能为空!')
       return None
     # 连接
-    self.Conn(False)
+    if self.Conn(False) == None : return None, 0
     # 游标
     cs = self.__conn.cursor(cursor=pymysql.cursors.DictCursor)
     num = cs.execute(sql, *args)
@@ -132,6 +132,7 @@ class Model(Base) :
   def FindFirst(self) :
     sql, args = self.SelectSql()
     cs, num = self.Query(sql, args)
+    if cs == None : return None
     res = cs.fetchone()
     cs.close()
     return res

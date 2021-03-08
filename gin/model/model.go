@@ -2,6 +2,7 @@ package model
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"strconv"
 	"time"
@@ -30,27 +31,26 @@ type Model struct {
 }
 
 /* 链接数据库 */
-func (self *Model) Conn() *sql.DB {
+func (self *Model) Conn() (*sql.DB, error) {
 	// 是否连接
 	if self.conn != nil {
-		return self.conn
+		return self.conn, nil
 	}
 	// 连接
 	cfg := (&config.MySql{}).Config()
 	source := cfg.User + ":" + cfg.Password + "@(" + cfg.Host + ":" + cfg.Port + ")/" + cfg.Database + "?charset=" + cfg.Charset + "&parseTime=true&loc=Local"
-	db, _ := sql.Open(cfg.Driver, source)
+	self.conn, _ = sql.Open(cfg.Driver, source)
 	// 是否成功
-	if err := db.Ping(); err != nil {
+	if err := self.conn.Ping(); err != nil {
 		self.Print("[Model] Conn:", err)
 		self.LogsErr(err)
-		return nil
+		return nil, err
 	}
 	// 数据池
-	self.conn = db
 	self.conn.SetMaxIdleConns(cfg.Min)
 	self.conn.SetMaxOpenConns(cfg.Max)
 	self.conn.SetConnMaxLifetime(time.Second * time.Duration(cfg.Time))
-	return self.conn
+	return self.conn, nil
 }
 
 /* 关闭 */
@@ -66,12 +66,13 @@ func (self *Model) Close() {
 /* 查询 */
 func (self *Model) Query(sql string, args []interface{}) (*sql.Rows, error) {
 	if sql == "" {
-		self.Print("[Model] Query: SQL不能为空!")
-		return nil, nil
+		err := "SQL不能为空!"
+		self.Print("[Model] Query:", err)
+		return nil, errors.New(err)
 	}
 	// 是否连接
-	if conn := self.Conn(); conn == nil {
-		return nil, nil
+	if _, err := self.Conn(); err != nil {
+		return nil, err
 	}
 	rows, err := self.conn.Query(sql, args...)
 	if err != nil {
@@ -85,12 +86,13 @@ func (self *Model) Query(sql string, args []interface{}) (*sql.Rows, error) {
 /* 执行 */
 func (self *Model) Exec(sql string, args []interface{}) (sql.Result, error) {
 	if sql == "" {
-		fmt.Println("[Model] Exec: SQL不能为空!")
-		return nil, nil
+		err := "SQL不能为空!"
+		self.Print("[Model] Exec:", err)
+		return nil, errors.New(err)
 	}
 	// 是否连接
-	if conn := self.Conn(); conn == nil {
-		return nil, nil
+	if _, err := self.Conn(); err != nil {
+		return nil, err
 	}
 	rows, err := self.conn.Exec(sql, args...)
 	self.args = make([]interface{}, 0, 10)
@@ -112,7 +114,6 @@ func (self *Model) Table(table ...string) {
 	for _, v := range table {
 		self.table += v
 	}
-	self.Conn()
 }
 
 /* 关联-INNER */
@@ -190,7 +191,8 @@ func (self *Model) Page(page int, limit int) {
 /* 查询-SQL */
 func (self *Model) SelectSql() (string, []interface{}) {
 	if self.table == "" || self.columns == "" {
-		self.Print("[Model] Select: 数据表、字段不能为空!")
+		err := "数据表、字段不能为空!"
+		self.Print("[Model] Select:", err)
 		return "", nil
 	}
 	// 合成
