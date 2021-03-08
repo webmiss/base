@@ -1,18 +1,14 @@
 ### 插入
-```go
-func (db *Demo) InsertRow() int64 {
-	var uid sql.NullInt64
-	db.Values(map[string]interface{}{
-		"uid":   uid,
-		"title": "添加",
-	})
-	rows, _ := db.Insert()
-	id, _ := rows.LastInsertId()
-	return id
-}
+```php
+use Model\Demo;
+
+$demo = new Demo();
+$demo->Values(['uid'=>null,'title'=>'添加']);
+$id = $demo->Insert();
+self::Print($id);
 ```
 
 ### 获取SQL
-```go
-db.InsertSql()
+```php
+list($sql, $args) = $demo->InsertSql()
 ```

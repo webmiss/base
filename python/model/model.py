@@ -52,12 +52,26 @@ class Model(Base) :
   def Query(self, sql: str, args: tuple = ()) :
     if sql == '' :
       print('[Model] Query: SQL不能为空!')
-      return None
+      return None, 0
     # 连接
     if self.Conn(False) == None : return None, 0
     # 游标
     cs = self.__conn.cursor(cursor=pymysql.cursors.DictCursor)
     num = cs.execute(sql, *args)
+    return cs, num
+  
+  # 执行
+  def Exec(self, sql: str, args: tuple = ()) :
+    if sql == '' :
+      print('[Model] Exec: SQL不能为空!')
+      return None, 0
+    # 连接
+    if self.Conn(False) == None : return None, 0
+    # 游标
+    cs = self.__conn.cursor()
+    self.Print(sql, args, *args)
+    num = cs.execute(sql, args)
+    self.__conn.commit()
     return cs, num
 
   # 表
@@ -119,15 +133,14 @@ class Model(Base) :
     args = self.__args
     self.__args = ()
     return self.__sql,args
-
   # 查询-多条
   def Find(self) :
     sql, args = self.SelectSql()
     cs, num = self.Query(sql, args)
+    if cs == None : return None
     res = cs.fetchall()
     cs.close()
     return res
-
   #查询-单条
   def FindFirst(self) :
     sql, args = self.SelectSql()
@@ -136,4 +149,32 @@ class Model(Base) :
     res = cs.fetchone()
     cs.close()
     return res
-  
+
+  # 添加-数据
+  def Values(self, data: dict = {}) :
+    keys, vals = '', ''
+    self.__args = ()
+    for k,v in data.items() :
+      keys += k+', '
+      vals += '%s, '
+      self.__args += (v,)
+    if len(data)>0 :
+      keys = keys[:-2]
+      vals = vals[:-2]
+    self.__keys = keys
+    self.__values = vals
+  # 添加-SQL
+  def InsertSql(self) :
+    if self.__table=='' or self.__keys=='' or self.__values=='' :
+      self.Print('Model[Insert]: 数据表、数据不能为空!')
+      return None
+    self.__sql = 'INSERT INTO `' + self.__table + '`(' + self.__keys + ') values(' + self.__values + ')'
+    args = self.__args
+    self.__args = ()
+    return self.__sql, args
+  # 添加-执行
+  def Insert(self) :
+    sql, args = self.InsertSql()
+    cs, num = self.Exec(sql, args)
+    if cs == None : return None
+    self.Print(cs, num, cs.lastrowid)
