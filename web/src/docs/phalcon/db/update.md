@@ -1,16 +1,15 @@
 ### 更新
-```go
-func (db *Demo) UpdateRow() bool {
-	db.Set(map[string]interface{}{
-		"title": "更新1",
-	})
-	db.Where("uid=?", 1)
-	db.Update()
-	return true
-}
+```php
+use Model\Demo;
+
+$demo = new Demo();
+$demo->Set(['title'=>'PHP-更新']);
+$demo->Where('uid=?', $id);
+$num = $demo->Update();
+self::Print($num);
 ```
 
-### 获取SQL
-```go
-db.UpdateSql()
+### 生成SQL
+```php
+list($sql, $args) = $demo->UpdateSql()
 ```

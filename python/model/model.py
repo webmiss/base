@@ -69,7 +69,6 @@ class Model(Base) :
     if self.Conn(False) == None : return None, 0
     # 游标
     cs = self.__conn.cursor()
-    self.Print(sql, args, *args)
     num = cs.execute(sql, args)
     self.__conn.commit()
     return cs, num
@@ -113,8 +112,11 @@ class Model(Base) :
 
   # 查询-SQL
   def SelectSql(self) :
-    if self.__table=='' or self.__columns=='' :
-      print('[Model] Select: 数据表、字段不能为空!')
+    if self.__table=='' :
+      print('[Model] Select: 表不能为空!')
+      return '', ()
+    if self.__columns=='' :
+      print('[Model] Select: 字段不能为空!')
       return '', ()
     # 合成
     self.__sql = 'SELECT '+self.__columns+' FROM '+self.__table
@@ -160,15 +162,15 @@ class Model(Base) :
       keys += k+', '
       vals += '%s, '
       self.__args += (v,)
-    if len(data)>0 :
-      keys = keys[:-2]
-      vals = vals[:-2]
-    self.__keys = keys
-    self.__values = vals
+    self.__keys = keys[:-2] if len(keys)>0 else ''
+    self.__values = vals[:-2] if len(vals)>0 else ''
   # 添加-SQL
   def InsertSql(self) :
-    if self.__table=='' or self.__keys=='' or self.__values=='' :
-      self.Print('Model[Insert]: 数据表、数据不能为空!')
+    if self.__table=='' :
+      self.Print('Model[Insert]: 表不能为空!')
+      return '', None
+    if self.__keys=='' or self.__values=='' :
+      self.Print('Model[Insert]: 数据不能为空!')
       return '', None
     self.__sql = 'INSERT INTO `' + self.__table + '`(' + self.__keys + ') values(' + self.__values + ')'
     args = self.__args
@@ -183,3 +185,61 @@ class Model(Base) :
     id = cs.lastrowid
     cs.close()
     return id
+
+  # 更新-数据
+  def Set(self, data: dict) :
+    vals = ''
+    self.__args = ()
+    for k,v in data.items() :
+      vals += k + '=%s, '
+      self.__args += (v,)
+    self.__data = vals[:-2] if len(vals)>0 else ''
+  # 更新-SQL
+  def UpdateSql(self) :
+    if self.__table=='' :
+      self.Print('Model[Update]: 表不能为空!')
+      return '', None
+    if self.__data=='' :
+      self.Print('Model[Update]: 数据不能为空!')
+      return '', None
+    if self.__where=='' :
+      self.Print('Model[Update]: 条件不能为空!')
+      return '', None
+    self.__sql = 'UPDATE `' + self.__table + '` SET ' + self.__data + ' WHERE ' + self.__where
+    args = self.__args
+    # 重置
+    self.__where = ''
+    self.__args = ()
+    return self.__sql, args
+  # 更新-执行
+  def Update(self) :
+    sql, args = self.UpdateSql()
+    if(sql=='') : return 0
+    cs, num = self.Exec(sql, args)
+    if cs == None : return None
+    cs.close()
+    return num
+
+  # 删除-SQL
+  def DeleteSql(self) :
+    if self.__table=='' :
+      self.Print('Model[Delete]: 表不能为空!')
+      return '', None
+    if self.__where=='' :
+      self.Print('Model[Delete]: 条件不能为空!')
+      return '', None
+    self.__sql = 'DELETE FROM `' + self.__table + '` WHERE ' + self.__where
+    args = self.__args
+    # 重置
+    self.__where = ''
+    self.__args = ()
+    return self.__sql, args
+  # 删除-执行
+  def Delete(self) :
+    sql, args = self.DeleteSql()
+    if(sql=='') : return 0
+    cs, num = self.Exec(sql, args)
+    if cs == None : return None
+    cs.close()
+    return num
+    

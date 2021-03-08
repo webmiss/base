@@ -30,15 +30,15 @@ func Index(c *gin.Context) {
 
 ### 多条
 ```go
-demo.Find()
+data := demo.Find()
 ```
 
 ### 单条
 ```go
-demo.FindFirst()
+data := demo.FindFirst()
 ```
 
-### 获取SQL
+### 生成SQL
 ```go
-db.SelectSql()
+sql,_ := db.SelectSql()
 ```

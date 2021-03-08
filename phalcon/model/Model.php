@@ -120,8 +120,12 @@ class Model extends Base {
 
   /* 查询-SQL */
   static function SelectSql(): array {
-    if(self::$table=='' || self::$columns==''){
-      self::Print('Model[Select]: 数据表、字段不能为空!');
+    if(self::$table==''){
+      self::Print('Model[Select]: 表不能为空!');
+      return ['', self::$args];
+    }
+    if(self::$columns==''){
+      self::Print('Model[Select]: 字段不能为空!');
       return ['', self::$args];
     }
     // 合成
@@ -171,13 +175,17 @@ class Model extends Base {
 		  $vals .= '?, ';
       self::$args[] = $v;
     }
-    self::$keys = empty($keys)?rtrim($keys, ', '):'';
-    self::$values = empty($vals)?rtrim($vals, ', '):'';
+    self::$keys = !empty($keys)?rtrim($keys, ', '):'';
+    self::$values = !empty($vals)?rtrim($vals, ', '):'';
   }
   /* 添加-SQL */
   static function InsertSql(): ?array {
-    if(self::$table=='' || self::$keys=='' || self::$values==''){
-      self::Print('[Model] Insert: 数据表、数据不能为空!');
+    if(self::$table==''){
+      self::Print('[Model] Insert: 表不能为空!');
+      return ['',self::$args];
+    }
+    if(self::$keys=='' || self::$values==''){
+      self::Print('[Model] Insert: 数据不能为空!');
       return ['',self::$args];
     }
     self::$sql = 'INSERT INTO `' . self::$table . '`(' . self::$keys . ') values(' . self::$values . ')';
@@ -186,13 +194,76 @@ class Model extends Base {
     return [self::$sql, $args];
   }
   /* 添加-执行 */
-  static function Insert(): int {
+  static function Insert(): ?int {
     list($sql, $args) = self::InsertSql();
-    if(empty($sql)) return 0;
+    if(empty($sql)) return null;
     $res = self::Exec($sql, $args);
-    return $res?self::$conn->lastInsertId():0;
+    return $res?self::$conn->lastInsertId():null;
   }
 
-  
+  /* 更新-数据 */
+  static function Set(array $data = []): void {
+    $vals = '';
+    self::$args = [];
+    foreach($data as $k=>$v){
+      $vals .= $k . '=?, ';
+      self::$args[] = $v;
+    }
+    self::$data = !empty($vals)?rtrim($vals, ', '):'';
+  }
+  /* 更新-SQL */
+  static function UpdateSql(): array {
+    if(self::$table == ''){
+      self::Print('[Model] Update: 表不能为空!');
+      return ['', null];
+    }
+    if(self::$data == ''){
+      self::Print('[Model] Update: 数据不能为空!');
+      return ['', null];
+    }
+    if(self::$where == ''){
+      self::Print('[Model] Update: 条件不能为空!');
+      return ['', null];
+    }
+    self::$sql = 'UPDATE `' . self::$table . '` SET ' . self::$data . ' WHERE ' . self::$where;
+    $args = self::$args;
+    // 重置
+    self::$where = '';
+    self::$args = [];
+    return [self::$sql, $args];
+  }
+  /* 更新-执行 */
+  static function Update(): ?int {
+    list($sql, $args) = self::UpdateSql();
+    if(empty($sql)) return null;
+    $res = self::Exec($sql, $args);
+    return $res?self::$conn->affectedRows():null;
+  }
+
+  /* 删除-SQL */
+  static function DeleteSql(): array {
+    if(self::$table == ''){
+      self::Print('[Model] Delete: 表不能为空!');
+      return ['', null];
+    }
+    if(self::$where == ''){
+      self::Print('[Model] Delete: 条件不能为空!');
+      return ['', null];
+    }
+    self::$sql = 'DELETE FROM `' . self::$table . '` WHERE ' . self::$where;
+    $args = self::$args;
+    // 重置
+    self::$where = '';
+    self::$args = [];
+    return [self::$sql, $args];
+  }
+
+  /* 删除-执行 */
+  static function Delete() {
+    list($sql, $args) = self::DeleteSql();
+    if(empty($sql)) return null;
+    $res = self::Exec($sql, $args);
+    return $res?self::$conn->affectedRows():null;
+  }
 
 }

@@ -25,7 +25,7 @@ $demo->Find();
 $demo->FindFirst();
 ```
 
-### 获取SQL
+### 生成SQL
 ```php
 list($sql, $args) = $demo->SelectSql();
 ```

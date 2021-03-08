@@ -17,15 +17,15 @@
 
 ### 多条
 ```python
-demo.Find()
+data = demo.Find()
 ```
 
 ### 单条
 ```python
-demo.FindFirst()
+data = demo.FindFirst()
 ```
 
-### 获取SQL
+### 生成SQL
 ```python
-demo.SelectSql()
+sql, args = demo.SelectSql()
 ```

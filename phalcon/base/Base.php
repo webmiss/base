@@ -6,6 +6,12 @@ use Config\Cors;
 
 class Base {
 
+  /* 返回JSON */
+  static protected function GetJSON($data=''){
+    Cors::Init();
+    return json_encode($data);
+  }
+
   /* 输出到控制台 */
   static public function Print(...$content): void {
     foreach($content as $val){
@@ -19,22 +25,9 @@ class Base {
     else $val = (string)$val;
     return $val;
   }
-    
-  /* 返回JSON */
-  static protected function getJSON($data=''){
-    Cors::Init();
-    return json_encode($data);
-  }
-
-  /* 调试信息 */
-  static protected function bug($data='',$next=false){
-    $res = self::getJSON($data);
-    print_r($data);
-    if($next==false) self::error($res);
-  }
 
   /* 异常错误 */
-  static protected function error($msg){
+  static protected function Error($msg){
     throw new \InvalidArgumentException($msg);
   }
   

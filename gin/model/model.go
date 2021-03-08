@@ -339,6 +339,8 @@ func (self *Model) UpdateSql() (string, []interface{}) {
 	}
 	self.sql = "UPDATE `" + self.table + "` SET " + self.data + " WHERE " + self.where
 	args := self.args
+	// 重置
+	self.where = ""
 	self.args = make([]interface{}, 0, 10)
 	return self.sql, args
 }
@@ -346,6 +348,9 @@ func (self *Model) UpdateSql() (string, []interface{}) {
 /* 更新-执行 */
 func (self *Model) Update() (sql.Result, error) {
 	sql, args := self.UpdateSql()
+	if sql == "" {
+		return nil, nil
+	}
 	rows, err := self.Exec(sql, args)
 	return rows, err
 }
@@ -358,6 +363,8 @@ func (self *Model) DeleteSql() (string, []interface{}) {
 	}
 	self.sql = "DELETE FROM `" + self.table + "` WHERE " + self.where
 	args := self.args
+	// 重置
+	self.where = ""
 	self.args = make([]interface{}, 0, 10)
 	return self.sql, args
 }
@@ -365,6 +372,9 @@ func (self *Model) DeleteSql() (string, []interface{}) {
 /* 删除-执行 */
 func (self *Model) Delete() (sql.Result, error) {
 	sql, args := self.DeleteSql()
+	if sql == "" {
+		return nil, nil
+	}
 	rows, err := self.Exec(sql, args)
 	return rows, err
 }

@@ -44,6 +44,7 @@ public class Index extends Base{
       pst.setString(2, "Java-添加");
       // 执行
       id = demo.Insert(pst);
+      Print(id);
     }
     // 关闭
     demo.Close();
@@ -52,7 +53,7 @@ public class Index extends Base{
     res.put("code",0);
     res.put("msg","Web");
     res.put("data",data);
-    return getJSON(res);
+    return GetJSON(res);
   }
   
 }

@@ -36,15 +36,15 @@ String index() throws SQLException{
 
 ### 多条
 ```java
-demo.Find(pst);
+ArrayList<HashMap<String,Object>> data = demo.Find(pst);
 ```
 
 ### 单条
 ```java
-demo.FindFirst(pst);
+HashMap<String,Object> data = demo.FindFirst(pst);
 ```
 
-### 获取SQL
+### 生成SQL
 ```java
-demo.SelectSql();
+String sql = demo.SelectSql();
 ```

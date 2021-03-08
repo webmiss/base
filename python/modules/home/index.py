@@ -14,5 +14,14 @@ class Index(Base) :
     demo.Values({'uid': None, 'title':'添加'})
     id = demo.Insert()
     self.Print(id)
+    # 更新
+    demo.Set({'title':'Python-更新'})
+    demo.Where('uid=%s', id)
+    num = demo.Update()
+    self.Print(num)
+    # 删除
+    demo.Where('uid=%s', id)
+    num = demo.Delete()
+    self.Print(num)
     # 返回
     return self.getJSON({'code':0,'msg':'Web', 'data':data})

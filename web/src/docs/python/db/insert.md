@@ -8,7 +8,7 @@ id = demo.Insert()
 self.Print(id)
 ```
 
-### 获取SQL
+### 生成SQL
 ```python
 demo = Demo()
 sql, args = demo.InsertSql()

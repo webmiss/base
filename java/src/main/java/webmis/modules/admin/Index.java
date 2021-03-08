@@ -20,7 +20,7 @@ public class Index extends Base {
     HashMap<String,Object> data = new HashMap<String,Object>();
     data.put("code",0);
     data.put("msg","Admin");
-    return getJSON(data);
+    return GetJSON(data);
   }
   
 }
