@@ -30,7 +30,7 @@ String index() throws SQLException{
   res.put("code",0);
   res.put("msg","Web");
   res.put("data",data);
-  return getJSON(res);
+  return GetJSON(res);
 }
 ```
 

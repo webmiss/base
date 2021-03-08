@@ -2,7 +2,6 @@
 ```java
 import webmis.model.Demo;
 
-int id = 0;
 Demo demo = new Demo();
 demo.Values("uid","title");
 String sql = demo.InsertSql();
@@ -12,7 +11,7 @@ if(pst != null){
   pst.setNull(1, 0);
   pst.setString(2, "Java-添加");
   // 执行
-  id = demo.Insert(pst);
+  int id = demo.Insert(pst);
 }
 // 关闭
 demo.Close();

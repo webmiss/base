@@ -8,7 +8,7 @@ class Base :
     print(*content)
 
   # 返回JSON
-  def getJSON(self, data=''):
+  def GetJSON(self, data=''):
     return json.dumps(data)
 
   # 调试信息

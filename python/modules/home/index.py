@@ -5,4 +5,4 @@ class Index(Base) :
   # 首页
   def index(self):
     # 返回
-    return self.getJSON({'code':0,'msg':'Web'})
+    return self.GetJSON({'code':0,'msg':'Web'})
