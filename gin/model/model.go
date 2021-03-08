@@ -190,9 +190,12 @@ func (self *Model) Page(page int, limit int) {
 
 /* 查询-SQL */
 func (self *Model) SelectSql() (string, []interface{}) {
-	if self.table == "" || self.columns == "" {
-		err := "数据表、字段不能为空!"
-		self.Print("[Model] Select:", err)
+	if self.table == "" {
+		self.Print("[Model] Select: 表不能为空!")
+		return "", nil
+	}
+	if self.columns == "" {
+		self.Print("[Model] Select: 字段不能为空!")
 		return "", nil
 	}
 	// 合成
@@ -296,12 +299,19 @@ func (self *Model) Values(data map[string]interface{}) {
 
 /* 添加-SQL */
 func (self *Model) InsertSql() (string, []interface{}) {
-	if self.table == "" || self.keys == "" || self.values == "" {
-		fmt.Println("[Model] Insert: 数据表、数据不能为空!")
+	if self.table == "" {
+		fmt.Println("[Model] Insert: 表不能为空!")
+		return "", nil
+	}
+	if self.keys == "" || self.values == "" {
+		fmt.Println("[Model] Insert: 数据不能为空!")
 		return "", nil
 	}
 	self.sql = "INSERT INTO `" + self.table + "`(" + self.keys + ") values(" + self.values + ")"
 	args := self.args
+	// 重置
+	self.keys = ""
+	self.values = ""
 	self.args = make([]interface{}, 0, 10)
 	return self.sql, args
 }
@@ -312,8 +322,14 @@ func (self *Model) Insert() int64 {
 	if sql == "" {
 		return 0
 	}
-	rows, _ := self.Exec(sql, args)
-	id, _ := rows.LastInsertId()
+	rows, err := self.Exec(sql, args)
+	if err != nil {
+		return 0
+	}
+	id, err := rows.LastInsertId()
+	if err != nil {
+		return 0
+	}
 	return id
 }
 
@@ -333,32 +349,52 @@ func (self *Model) Set(data map[string]interface{}) {
 
 /* 更新-SQL */
 func (self *Model) UpdateSql() (string, []interface{}) {
-	if self.table == "" || self.data == "" || self.where == "" {
-		self.Print("[Model] Update: 数据表、数据、条件不能为空!")
+	if self.table == "" {
+		self.Print("[Model] Update: 表不能为空!")
+		return "", nil
+	}
+	if self.data == "" {
+		self.Print("[Model] Update: 数据不能为空!")
+		return "", nil
+	}
+	if self.where == "" {
+		self.Print("[Model] Update: 条件不能为空!")
 		return "", nil
 	}
 	self.sql = "UPDATE `" + self.table + "` SET " + self.data + " WHERE " + self.where
 	args := self.args
 	// 重置
+	self.data = ""
 	self.where = ""
 	self.args = make([]interface{}, 0, 10)
 	return self.sql, args
 }
 
 /* 更新-执行 */
-func (self *Model) Update() (sql.Result, error) {
+func (self *Model) Update() int64 {
 	sql, args := self.UpdateSql()
 	if sql == "" {
-		return nil, nil
+		return 0
 	}
 	rows, err := self.Exec(sql, args)
-	return rows, err
+	if err != nil {
+		return 0
+	}
+	num, err := rows.RowsAffected()
+	if err != nil {
+		return 0
+	}
+	return num
 }
 
 /* 删除-SQL */
 func (self *Model) DeleteSql() (string, []interface{}) {
-	if self.table == "" || self.where == "" {
-		self.Print("[Model] Delete: 数据表、条件不能为空!")
+	if self.table == "" {
+		self.Print("[Model] Delete: 表不能为空!")
+		return "", nil
+	}
+	if self.where == "" {
+		self.Print("[Model] Delete: 条件不能为空!")
 		return "", nil
 	}
 	self.sql = "DELETE FROM `" + self.table + "` WHERE " + self.where
@@ -370,11 +406,18 @@ func (self *Model) DeleteSql() (string, []interface{}) {
 }
 
 /* 删除-执行 */
-func (self *Model) Delete() (sql.Result, error) {
+func (self *Model) Delete() int64 {
 	sql, args := self.DeleteSql()
 	if sql == "" {
-		return nil, nil
+		return 0
 	}
 	rows, err := self.Exec(sql, args)
-	return rows, err
+	if err != nil {
+		return 0
+	}
+	num, err := rows.RowsAffected()
+	if err != nil {
+		return 0
+	}
+	return num
 }

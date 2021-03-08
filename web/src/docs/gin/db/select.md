@@ -40,5 +40,5 @@ data := demo.FindFirst()
 
 ### 生成SQL
 ```go
-sql,_ := db.SelectSql()
+sql,args := db.SelectSql()
 ```

@@ -17,12 +17,12 @@ static function Index() {
 
 ### 多条
 ```php
-$demo->Find();
+$data = $demo->Find();
 ```
 
 ### 单条
 ```php
-$demo->FindFirst();
+$data = $demo->FindFirst();
 ```
 
 ### 生成SQL

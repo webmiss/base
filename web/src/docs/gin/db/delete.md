@@ -1,13 +1,14 @@
 ### 删除
 ```go
-func (db *Demo) DeleteRow() bool {
-	db.Where("uid>?", 1)
-	db.Delete()
-	return true
-}
+demo := (&model.Demo{}).Init()
+demo.Where("uid=?", id)
+num := demo.Delete()
+self.Print(num)
+// 关闭
+demo.Close()
 ```
 
-### 获取SQL
+### 生成SQL
 ```go
-db.DeleteSql()
+sql,args := db.DeleteSql()
 ```

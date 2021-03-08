@@ -249,10 +249,66 @@ public class Model extends Base {
       return "";
     }
     _sql = "INSERT INTO `" + _table + "`(" + _keys + ") values(" + _values + ")";
+    // 重置
+    _keys = "";
+    _values = "";
     return _sql;
   }
   /* 添加-执行 */
   public int Insert(PreparedStatement pst) {
+    return Exec(pst);
+  }
+
+  /* 更新-数据 */
+  public void Set(String... columns) {
+    String vals = "";
+    for(int i=0; i<columns.length; i++){
+      vals += columns[i] + "=?, ";
+    }
+    _data = vals.length()>0?vals.substring(0,vals.length()-2):"";
+  }
+  /* 更新-SQL */
+  public String UpdateSql() {
+    if(_table.equals("")){
+      Print("[Model] Update: 表不能为空!");
+      return "";
+    }
+    if(_data.equals("")){
+      Print("[Model] Update: 数据不能为空!");
+      return "";
+    }
+    if(_where.equals("")){
+      Print("[Model] Update: 条件不能为空!");
+      return "";
+    }
+    _sql = "UPDATE `" + _table + "` SET " + _data + " WHERE " + _where;
+    // 重置
+    _data = "";
+    _where = "";
+    return _sql;
+  }
+  /* 更新-执行 */
+  public int Update(PreparedStatement pst) {
+    return Exec(pst);
+  }
+
+  /* 删除-SQL */
+  public String DeleteSql() {
+    if(_table.equals("")){
+      Print("[Model] Delete: 表不能为空!");
+      return "";
+    }
+    if(_where.equals("")){
+      Print("[Model] Delete: 条件不能为空!");
+      return "";
+    }
+    _sql = "DELETE FROM `" + _table + "` WHERE " + _where;
+    // 重置
+    _where = "";
+    return _sql;
+  }
+  /* 删除-执行 */
+  public int Delete(PreparedStatement pst) {
     return Exec(pst);
   }
 

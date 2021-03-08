@@ -1,16 +1,17 @@
 ### 更新
 ```go
-func (db *Demo) UpdateRow() bool {
-	db.Set(map[string]interface{}{
-		"title": "更新1",
-	})
-	db.Where("uid=?", 1)
-	db.Update()
-	return true
-}
+demo := (&model.Demo{}).Init()
+demo.Set(map[string]interface{}{
+  "title": "Go-更新",
+})
+demo.Where("uid=?", id)
+num := demo.Update()
+self.Print(num)
+// 关闭
+demo.Close()
 ```
 
-### 获取SQL
+### 生成SQL
 ```go
-db.UpdateSql()
+sql,args := db.UpdateSql()
 ```

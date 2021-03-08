@@ -190,6 +190,9 @@ class Model extends Base {
     }
     self::$sql = 'INSERT INTO `' . self::$table . '`(' . self::$keys . ') values(' . self::$values . ')';
     $args = self::$args;
+    // 重置
+    self::$keys = '';
+    self::$values = '';
     self::$args = [];
     return [self::$sql, $args];
   }
@@ -228,6 +231,7 @@ class Model extends Base {
     self::$sql = 'UPDATE `' . self::$table . '` SET ' . self::$data . ' WHERE ' . self::$where;
     $args = self::$args;
     // 重置
+    self::$data = '';
     self::$where = '';
     self::$args = [];
     return [self::$sql, $args];

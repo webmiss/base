@@ -173,6 +173,9 @@ class Model(Base) :
       self.Print('Model[Insert]: 数据不能为空!')
       return '', None
     self.__sql = 'INSERT INTO `' + self.__table + '`(' + self.__keys + ') values(' + self.__values + ')'
+    # 重置
+    self.__keys = ''
+    self.__values = ''
     args = self.__args
     self.__args = ()
     return self.__sql, args
@@ -208,6 +211,7 @@ class Model(Base) :
     self.__sql = 'UPDATE `' + self.__table + '` SET ' + self.__data + ' WHERE ' + self.__where
     args = self.__args
     # 重置
+    self.__data = ''
     self.__where = ''
     self.__args = ()
     return self.__sql, args

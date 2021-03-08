@@ -18,7 +18,7 @@ if(pst != null){
 demo.Close();
 ```
 
-### 获取SQL
-```go
-db.InsertSql()
+### 生成SQL
+```java
+String sql = db.InsertSql()
 ```

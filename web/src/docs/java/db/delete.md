@@ -1,13 +1,19 @@
 ### 删除
-```go
-func (db *Demo) DeleteRow() bool {
-	db.Where("uid>?", 1)
-	db.Delete()
-	return true
+```java
+int num;
+demo.Where("uid=?");
+String sql = demo.DeleteSql();
+PreparedStatement pst = !sql.equals("")?demo.Bind("delete", sql):null;
+if(pst != null){
+  pst.setInt(1, id);
+  num = demo.Delete(pst);
+  Print(num);
 }
+// 关闭
+demo.Close();
 ```
 
-### 获取SQL
-```go
-db.DeleteSql()
+### 生成SQL
+```java
+String sql = db.DeleteSql()
 ```
