@@ -8,6 +8,7 @@ func Index(c *gin.Context) {
 	// 执行
 	sql, args := demo.SelectSql()
 	rows, _ := demo.Query(sql, args)
+	defer rows.close()
 	// 数据
 	var uid int
 	var title string
@@ -20,6 +21,8 @@ func Index(c *gin.Context) {
 		}
 		data = append(data, tmp)
 	}
+	// 关闭
+	demo.Close()
 	// 返回
 	c.JSON(200, gin.H{"code": 0, "msg": "Web", "data": data})
 }

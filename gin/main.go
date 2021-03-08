@@ -20,11 +20,9 @@ func main() {
 		gin.DefaultWriter = ioutil.Discard //禁止控制台输出
 		app.Use(middleware.Logs())         //访问日志
 	}
-	// 路由
-
 	app.Use(gzip.Gzip(gzip.DefaultCompression)) //压缩
 	app.Use(gin.Recovery())                     //处理异常
-	// Mvc
+	// 路由
 	router.Home(app)
 	router.Api(app)
 	router.Admin(app)

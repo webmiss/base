@@ -7,7 +7,6 @@ import (
 	"time"
 	"webmis/base"
 	"webmis/config"
-	"webmis/service"
 	"webmis/util"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -32,41 +31,35 @@ type Model struct {
 
 /* 链接数据库 */
 func (self *Model) Conn() *sql.DB {
-	// 默认值
-	self.args = make([]interface{}, 0, 10)
+	// 是否连接
 	if self.conn != nil {
 		return self.conn
 	}
 	// 连接
 	cfg := (&config.MySql{}).Config()
 	source := cfg.User + ":" + cfg.Password + "@(" + cfg.Host + ":" + cfg.Port + ")/" + cfg.Database + "?charset=" + cfg.Charset + "&parseTime=true&loc=Local"
-	db, err := sql.Open(cfg.Driver, source)
-	if err != nil {
-		(&service.Logs{}).Error(err)
-		self.Print("[Model] Conn:", err)
-		return nil
-	}
+	db, _ := sql.Open(cfg.Driver, source)
 	// 是否成功
 	if err := db.Ping(); err != nil {
-		db.Close()
-		(&service.Logs{}).Error(err)
 		self.Print("[Model] Conn:", err)
+		self.LogsErr(err)
 		return nil
 	}
 	// 数据池
-	db.SetMaxIdleConns(cfg.Min)
-	db.SetMaxOpenConns(cfg.Max)
-	db.SetConnMaxLifetime(time.Second * time.Duration(cfg.Time))
-	return db
+	self.conn = db
+	self.conn.SetMaxIdleConns(cfg.Min)
+	self.conn.SetMaxOpenConns(cfg.Max)
+	self.conn.SetConnMaxLifetime(time.Second * time.Duration(cfg.Time))
+	return self.conn
 }
 
 /* 关闭 */
 func (self *Model) Close() {
 	if self.conn != nil {
 		if err := self.conn.Close(); err != nil {
-			(&service.Logs{}).Error(err)
+			self.Print("[Model] Close:", err)
+			self.LogsErr(err)
 		}
-		self.conn = nil
 	}
 }
 
@@ -76,14 +69,14 @@ func (self *Model) Query(sql string, args []interface{}) (*sql.Rows, error) {
 		self.Print("[Model] Query: SQL不能为空!")
 		return nil, nil
 	}
-	self.conn = self.Conn()
-	if self.conn == nil {
+	// 是否连接
+	if conn := self.Conn(); conn == nil {
 		return nil, nil
 	}
 	rows, err := self.conn.Query(sql, args...)
 	if err != nil {
 		self.Print("[Model] Query:", sql)
-		(&service.Logs{}).Error(err)
+		self.LogsErr(err)
 		defer rows.Close()
 	}
 	return rows, err
@@ -95,15 +88,15 @@ func (self *Model) Exec(sql string, args []interface{}) (sql.Result, error) {
 		fmt.Println("[Model] Exec: SQL不能为空!")
 		return nil, nil
 	}
-	self.conn = self.Conn()
-	if self.conn == nil {
+	// 是否连接
+	if conn := self.Conn(); conn == nil {
 		return nil, nil
 	}
 	rows, err := self.conn.Exec(sql, args...)
 	self.args = make([]interface{}, 0, 10)
 	if err != nil {
 		self.Print("[Model] Query:", sql)
-		(&service.Logs{}).Error(err)
+		self.LogsErr(err)
 	}
 	return rows, err
 }

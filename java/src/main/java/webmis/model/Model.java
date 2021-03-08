@@ -193,7 +193,6 @@ public class Model extends Base {
       // 释放
       rs.close();
       pst.close();
-      // _conn.close();
     } catch (SQLException e) {
       Print("[Model] Find: "+e.getMessage());
     }
