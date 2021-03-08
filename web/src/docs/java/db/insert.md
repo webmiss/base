@@ -1,15 +1,21 @@
 ### 插入
-```go
-func (db *Demo) InsertRow() int64 {
-	var uid sql.NullInt64
-	db.Values(map[string]interface{}{
-		"uid":   uid,
-		"title": "添加",
-	})
-	rows, _ := db.Insert()
-	id, _ := rows.LastInsertId()
-	return id
+```java
+import webmis.model.Demo;
+
+int id = 0;
+Demo demo = new Demo();
+demo.Values("uid","title");
+String sql = demo.InsertSql();
+// 参数
+PreparedStatement pst = !sql.equals("")?demo.Bind("insert", sql):null;
+if(pst != null){
+  pst.setNull(1, 0);
+  pst.setString(2, "Java-添加");
+  // 执行
+  id = demo.Insert(pst);
 }
+// 关闭
+demo.Close();
 ```
 
 ### 获取SQL

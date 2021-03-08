@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,6 +18,7 @@ public class Model extends Base {
 
   private final String _url = "jdbc:mysql://"+Db.Host+":"+Db.Port+"/"+Db.Database+"?characterEncoding="+Db.Charset+"&useSSL=false&serverTimezone=Asia/Shanghai";
   private Connection _conn = null;           //链接
+  private String _type = "";                 //类型: select、insert、update、delete
   private String _sql = "";                  //SQL
   private String _table = "";                //数据表
   private String _columns = "";              //字段
@@ -43,18 +45,23 @@ public class Model extends Base {
   /* 关闭 */
   public void Close() {
     try {
-      _conn.close();
+      if(_conn != null && !_conn.isClosed()) _conn.close();
     } catch (SQLException e) {
       Print("[Model] Close:"+e.getMessage());
     }
   }
 
   /* 过滤 */
-  public PreparedStatement Bind(String sql) {
+  public PreparedStatement Bind(String type, String sql) {
+    _type = type;
     // 连接
     if(Conn()==null) return _bind;
     try {
-      _bind = _conn.prepareStatement(sql);
+      if(_type.equals("insert")){
+        _bind = _conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+      }else{
+        _bind = _conn.prepareStatement(sql);
+      }
     } catch (SQLException e) {
       Print("[Model] Bind:"+e.getMessage());
     }
@@ -71,6 +78,21 @@ public class Model extends Base {
       Print("[Model] Query:"+e.getMessage());
       return null;
     }
+  }
+
+  /* 执行 */
+  public int Exec(PreparedStatement pst){
+    int num = 0;
+    try {
+      num = pst.executeUpdate();
+      if(_type.equals("insert")){
+        ResultSet rs = pst.getGeneratedKeys();
+        num = rs.next()?rs.getInt(1):0;
+      }
+    } catch (SQLException e) {
+      Print("[Model] Exec:"+e.getMessage());
+    }
+    return num;
   }
 
   /* 获取-SQL */
@@ -104,7 +126,7 @@ public class Model extends Base {
     for(int i=0; i<columns.length; i++){
       _columns += columns[i] + ", ";
     }
-    _columns = _columns.substring(0,_columns.length()-2);
+    _columns = _columns.length()>0?_columns.substring(0,_columns.length()-2):"";
   }
   /* 条件 */
   public void Where(String where) {
@@ -197,6 +219,31 @@ public class Model extends Base {
       Print("[Model] Find: "+e.getMessage());
     }
     return res;
+  }
+
+  /* 添加-数据 */
+  public void Values(String... columns) {
+    String keys = "";
+    String vals = "";
+    for(int i=0; i<columns.length; i++){
+      keys += columns[i] + ", ";
+      vals += "?, ";
+    }
+    _keys = keys.length()>0?keys.substring(0,keys.length()-2):"";
+    _values = vals.length()>0?vals.substring(0,vals.length()-2):"";
+  }
+  /* 添加-SQL */
+  public String InsertSql() {
+    if(_table.equals("") || _keys.equals("") || _values.equals("")){
+      Print("[Model] Insert: 数据表、数据不能为空!");
+      return "";
+    }
+    _sql = "INSERT INTO `" + _table + "`(" + _keys + ") values(" + _values + ")";
+    return _sql;
+  }
+  /* 添加-执行 */
+  public int Insert(PreparedStatement pst) {
+    return Exec(pst);
   }
 
 }

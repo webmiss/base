@@ -9,7 +9,7 @@ String index() throws SQLException{
   demo.Where("title LIKE ?");
   String sql = demo.SelectSql();
   // 参数
-  PreparedStatement pst = demo.Bind(sql);
+  PreparedStatement pst = !sql.equals("")?demo.Bind("select", sql):null;
   if(pst != null){
     pst.setString(1, "%事务%");
     // 数据
@@ -22,9 +22,9 @@ String index() throws SQLException{
       tmp.put("title", rs.getString(2));
       data.add(tmp);
     }
-    // 关闭
-    demo.Close();
   }
+  // 关闭
+  demo.Close();
   // 返回数据
   HashMap<String,Object> res = new HashMap<String,Object>();
   res.put("code",0);

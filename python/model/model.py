@@ -114,7 +114,7 @@ class Model(Base) :
   # 查询-SQL
   def SelectSql(self) :
     if self.__table=='' or self.__columns=='' :
-      print('Model[Select]: 数据表、字段不能为空!')
+      print('[Model] Select: 数据表、字段不能为空!')
       return '', ()
     # 合成
     self.__sql = 'SELECT '+self.__columns+' FROM '+self.__table
@@ -136,6 +136,7 @@ class Model(Base) :
   # 查询-多条
   def Find(self) :
     sql, args = self.SelectSql()
+    if(sql=='') : return []
     cs, num = self.Query(sql, args)
     if cs == None : return None
     res = cs.fetchall()
@@ -144,6 +145,7 @@ class Model(Base) :
   #查询-单条
   def FindFirst(self) :
     sql, args = self.SelectSql()
+    if(sql=='') : return {}
     cs, num = self.Query(sql, args)
     if cs == None : return None
     res = cs.fetchone()
@@ -167,7 +169,7 @@ class Model(Base) :
   def InsertSql(self) :
     if self.__table=='' or self.__keys=='' or self.__values=='' :
       self.Print('Model[Insert]: 数据表、数据不能为空!')
-      return None
+      return '', None
     self.__sql = 'INSERT INTO `' + self.__table + '`(' + self.__keys + ') values(' + self.__values + ')'
     args = self.__args
     self.__args = ()
@@ -175,6 +177,9 @@ class Model(Base) :
   # 添加-执行
   def Insert(self) :
     sql, args = self.InsertSql()
+    if(sql=='') : return 0
     cs, num = self.Exec(sql, args)
     if cs == None : return None
-    self.Print(cs, num, cs.lastrowid)
+    id = cs.lastrowid
+    cs.close()
+    return id

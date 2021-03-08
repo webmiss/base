@@ -221,6 +221,9 @@ func (self *Model) SelectSql() (string, []interface{}) {
 /* 查询-多条 */
 func (self *Model) Find() []interface{} {
 	sql, args := self.SelectSql()
+	if sql == "" {
+		return nil
+	}
 	rows, _ := self.Query(sql, args)
 	if rows == nil {
 		return nil
@@ -232,6 +235,9 @@ func (self *Model) Find() []interface{} {
 func (self *Model) FindFirst() interface{} {
 	self.limit = "0,1"
 	sql, args := self.SelectSql()
+	if sql == "" {
+		return nil
+	}
 	rows, _ := self.Query(sql, args)
 	if rows == nil {
 		return nil
@@ -301,10 +307,14 @@ func (self *Model) InsertSql() (string, []interface{}) {
 }
 
 /* 添加-执行 */
-func (self *Model) Insert() (sql.Result, error) {
+func (self *Model) Insert() int64 {
 	sql, args := self.InsertSql()
-	rows, err := self.Exec(sql, args)
-	return rows, err
+	if sql == "" {
+		return 0
+	}
+	rows, _ := self.Exec(sql, args)
+	id, _ := rows.LastInsertId()
+	return id
 }
 
 /* 更新-数据 */

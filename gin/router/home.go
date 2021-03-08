@@ -13,7 +13,7 @@ func Home(r *gin.Engine) {
 	g.Use(middleware.Cors())
 	{
 		// 首页
-		g.GET("/", home.Index)
-		g.GET("index", home.Index)
+		g.GET("/", (&home.Index{}).Index)
+		g.GET("index", (&home.Index{}).Index)
 	}
 }

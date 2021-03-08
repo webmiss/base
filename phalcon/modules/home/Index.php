@@ -12,11 +12,11 @@ class Index extends Base {
     $demo = new Demo();
     $demo->Columns('uid','title');
     $demo->Where('title LIKE ?','%事务%');
-    $data = $demo->FindFirst();
+    $data = $demo->Find();
     // 添加
     $demo->Values(['uid'=>null,'title'=>'添加']);
     $id = $demo->Insert();
-    self::Print($id);
+    // self::Print($id);
     return self::getJSON(['code'=>0, 'msg'=>'Web', 'data'=>$data]);
   }
 

@@ -48,9 +48,9 @@ class Model extends Base {
       return null;
     }
     // 连接
-    self::Conn();
-    self::Print($sql, $args);
-    return self::$conn->query($sql, $args);
+    if(empty(self::Conn())) return false;
+    $res = self::$conn->query($sql, $args);
+    return $res;
   }
 
   /* 执行 */
@@ -59,13 +59,9 @@ class Model extends Base {
       self::Print('[Model] Exec: SQL不能为空!');
       return false;
     }
-    self::Conn();
-    self::Print($sql, $args);
+    // 连接
+    if(empty(self::Conn())) return false;
     $res = self::$conn->execute($sql, $args);
-    if($res != true){
-      self::Print('[Model] Exec:', $sql);
-      return false;
-    }
     return $res;
   }
 
@@ -126,7 +122,7 @@ class Model extends Base {
   static function SelectSql(): array {
     if(self::$table=='' || self::$columns==''){
       self::Print('Model[Select]: 数据表、字段不能为空!');
-      return ['', []];
+      return ['', self::$args];
     }
     // 合成
     self::$sql = 'SELECT '.self::$columns.' FROM '.self::$table;
@@ -153,6 +149,7 @@ class Model extends Base {
   /* 查询-多条 */
   static function Find(): array {
     list($sql, $args) = self::SelectSql();
+    if(empty(self::Conn()) || empty($sql)) return [];
     $res = self::Conn()->fetchAll($sql, 2, $args);
     return $res;
   }
@@ -160,6 +157,7 @@ class Model extends Base {
   static function FindFirst(): array {
     self::$limit = '0,1';
     list($sql, $args) = self::SelectSql();
+    if(empty(self::Conn()) || empty($sql)) return [];
     $res = self::Conn()->fetchOne($sql, 2, $args);
     return $res;
   }
@@ -173,18 +171,14 @@ class Model extends Base {
 		  $vals .= '?, ';
       self::$args[] = $v;
     }
-    if(!empty($data)){
-      $keys = rtrim($keys, ', ');
-      $vals = rtrim($vals, ', ');
-    }
-    self::$keys = $keys;
-    self::$values = $vals;
+    self::$keys = empty($keys)?rtrim($keys, ', '):'';
+    self::$values = empty($vals)?rtrim($vals, ', '):'';
   }
   /* 添加-SQL */
   static function InsertSql(): ?array {
     if(self::$table=='' || self::$keys=='' || self::$values==''){
-      self::Print('Model[Insert]: 数据表、数据不能为空!');
-      return null;
+      self::Print('[Model] Insert: 数据表、数据不能为空!');
+      return ['',self::$args];
     }
     self::$sql = 'INSERT INTO `' . self::$table . '`(' . self::$keys . ') values(' . self::$values . ')';
     $args = self::$args;
@@ -194,6 +188,7 @@ class Model extends Base {
   /* 添加-执行 */
   static function Insert(): int {
     list($sql, $args) = self::InsertSql();
+    if(empty($sql)) return 0;
     $res = self::Exec($sql, $args);
     return $res?self::$conn->lastInsertId():0;
   }
