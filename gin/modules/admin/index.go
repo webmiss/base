@@ -26,6 +26,7 @@ func (self Index) GetConfig(c *gin.Context) {
 	config.Columns("name", "val")
 	sql, args := config.SelectSql()
 	rows, _ := config.Query(sql, args)
+	defer rows.Close()
 	list := make(map[string]interface{})
 	// 数据
 	var name string
