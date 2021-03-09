@@ -13,7 +13,7 @@ func Api(r *gin.Engine) {
 	g.Use(middleware.Cors())
 	{
 		// 首页
-		g.GET("", api.Index)
-		g.GET("index", api.Index)
+		g.GET("", (&api.Index{}).Index)
+		g.GET("index", (&api.Index{}).Index)
 	}
 }

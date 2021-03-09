@@ -1,20 +1,25 @@
 package admin
 
 import (
+	"webmis/base"
+	"webmis/config"
 	"webmis/model"
 
 	"github.com/gin-gonic/gin"
 )
 
-type Home struct{}
+type Index struct {
+	base.Base
+	config.Env
+}
 
 /* 首页 */
-func (this Home) Index(c *gin.Context) {
-	c.JSON(200, gin.H{"code": 0, "msg": "Admin"})
+func (self Index) Index(c *gin.Context) {
+	self.GetJSON(c, gin.H{"code": 0, "msg": "Admin"})
 }
 
 /* 系统配置 */
-func (this Home) GetConfig(c *gin.Context) {
+func (self Index) GetConfig(c *gin.Context) {
 	// 查询
 	config := (&model.SysConfig{}).Init()
 	config.Where("name in (?,?,?,?)", "title", "copy", "logo", "login_bg")
@@ -27,8 +32,17 @@ func (this Home) GetConfig(c *gin.Context) {
 	var val string
 	for rows.Next() {
 		rows.Scan(&name, &val)
-		list[name] = val
+		if name == "logo" || name == "login_bg" {
+			if val != "" {
+				list[name] = self.BaseUrl + val
+			} else {
+				list[name] = ""
+			}
+			list[name] = val
+		} else {
+			list[name] = val
+		}
 	}
 	// 返回
-	c.JSON(200, gin.H{"code": 0, "msg": "成功", "list": list})
+	self.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list})
 }

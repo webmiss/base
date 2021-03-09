@@ -1,7 +1,15 @@
 package api
 
-import "github.com/gin-gonic/gin"
+import (
+	"webmis/base"
 
-func Index(c *gin.Context) {
+	"github.com/gin-gonic/gin"
+)
+
+type Index struct {
+	base.Base
+}
+
+func (self Index) Index(c *gin.Context) {
 	c.JSON(200, gin.H{"code": 0, "msg": "Api"})
 }
