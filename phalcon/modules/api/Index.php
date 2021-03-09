@@ -1,5 +1,5 @@
 <?php
-namespace app\api;
+namespace App\Api;
 
 use Base\Base;
 

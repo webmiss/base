@@ -1,5 +1,5 @@
 <?php
-namespace model;
+namespace Model;
 
 use Model\Model;
 

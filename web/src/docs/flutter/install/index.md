@@ -5,7 +5,7 @@
 
 ## 一、下载
 ```bash
-git clone https://github.com/webmiss/base
+git clone https://github.com/webmiss/base.git --depth=1
 ```
 - WebMIS-Base > flutter
 

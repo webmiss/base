@@ -1,5 +1,5 @@
 <?php
-namespace config;
+namespace Config;
 
 /* 公共配置 */
 class Env {

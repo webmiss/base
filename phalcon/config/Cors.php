@@ -1,5 +1,5 @@
 <?php
-namespace config;
+namespace Config;
 
 /* 允许跨域请求 */
 class Cors{

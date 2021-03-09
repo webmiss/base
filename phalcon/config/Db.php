@@ -1,5 +1,5 @@
 <?php
-namespace config;
+namespace Config;
 
 /* 数据库配置 */
 class Db {

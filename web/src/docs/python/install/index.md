@@ -8,7 +8,7 @@
 
 ## 一、下载
 ```bash
-git clone https://github.com/webmiss/base
+git clone https://github.com/webmiss/base.git --depth=1
 ```
 - WebMIS-Base > python
 - 网站根目录: public下创建upload目录，修改权限为777

@@ -1,5 +1,5 @@
 <?php
-namespace app\admin;
+namespace App\Admin;
 
 use Base\Base;
 use Config\Env;

@@ -1,5 +1,5 @@
 <?php
-namespace model;
+namespace Model;
 
 use Base\Base;
 use Config\Db;

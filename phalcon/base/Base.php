@@ -1,6 +1,6 @@
 <?php
 
-namespace base;
+namespace Base;
 
 use Config\Cors;
 

@@ -1,5 +1,5 @@
 <?php
-namespace router;
+namespace Router;
 
 use App\Api\Index;
 

@@ -20,6 +20,7 @@ $loader = new Loader();
 $loader->registerNamespaces([
   'Base'=> BASE_PATH.'/base/',
   'Config'=> BASE_PATH.'/config/',
+  'Library'=> BASE_PATH.'/library/',
   'Model'=> BASE_PATH.'/model/',
   'Router'=> BASE_PATH.'/router/',
   'App\Home'=> BASE_PATH.'/modules/home/',

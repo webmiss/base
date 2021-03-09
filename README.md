@@ -3,7 +3,7 @@
 
 #### 下载
 ```bash
-git clone https://github.com/webmiss/base
+git clone https://github.com/webmiss/base.git --depth=1
 ```
 #### 文档
 Docs：[https://webmis.vip](https://webmis.vip)
