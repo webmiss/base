@@ -5,7 +5,8 @@ type SysConfig struct {
 }
 
 /* 系统配置表 */
-func (this *SysConfig) Init() *SysConfig {
-	this.Table("sys_config")
-	return this
+func (self *SysConfig) Init() *SysConfig {
+	self.Db("")
+	self.Table("sys_config")
+	return self
 }

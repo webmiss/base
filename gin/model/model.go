@@ -18,6 +18,7 @@ type Model struct {
 	base.Base
 	conn    *sql.DB       //连接
 	sql     string        //SQL
+	db      string        //数据库
 	table   string        //数据表
 	columns string        //字段
 	where   string        //条件
@@ -32,13 +33,13 @@ type Model struct {
 
 /* 链接数据库 */
 func (self *Model) Conn() (*sql.DB, error) {
-	// 是否连接
-	if self.conn != nil {
-		return self.conn, nil
-	}
 	// 连接
 	cfg := (&config.MySql{}).Config()
-	source := cfg.User + ":" + cfg.Password + "@(" + cfg.Host + ":" + cfg.Port + ")/" + cfg.Database + "?charset=" + cfg.Charset + "&parseTime=true&loc=Local"
+	db := cfg.Database
+	if self.db != "" {
+		db = self.db
+	}
+	source := cfg.User + ":" + cfg.Password + "@(" + cfg.Host + ":" + cfg.Port + ")/" + db + "?charset=" + cfg.Charset + "&parseTime=true&loc=Local"
 	self.conn, _ = sql.Open(cfg.Driver, source)
 	// 是否成功
 	if err := self.conn.Ping(); err != nil {
@@ -108,12 +109,14 @@ func (self *Model) GetSql() string {
 	return self.sql
 }
 
+/* 数据库 */
+func (self *Model) Db(database string) {
+	self.db = database
+}
+
 /* 表 */
-func (self *Model) Table(table ...string) {
-	self.table = ""
-	for _, v := range table {
-		self.table += v
-	}
+func (self *Model) Table(table string) {
+	self.table = table
 }
 
 /* 关联-INNER */

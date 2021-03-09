@@ -6,7 +6,8 @@ type Demo struct {
 }
 
 /* 构造函数 */
-func (this *Demo) Init() *Demo {
-	this.Table("test")
-	return this
+func (self *Demo) Init() *Demo {
+	self.Db("")
+	self.Table("test")
+	return self
 }

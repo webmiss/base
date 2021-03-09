@@ -6,7 +6,8 @@ type User struct {
 }
 
 /* 构造函数 */
-func (this *User) Init() *User {
-	this.Table("user")
-	return this
+func (self *User) Init() *User {
+	self.Db("")
+	self.Table("user")
+	return self
 }

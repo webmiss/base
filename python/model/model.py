@@ -6,18 +6,19 @@ from config.db import Db
 # 数据库
 class Model(Base) :
 
-  __conn = None          #连接
-  __sql: str = ''        #SQL
-  __table: str = ''      #数据表
-  __columns: str = ''    #字段
-  __where: str = ''      #条件
-  __group: str = ''      #分组
-  __order: str = ''      #排序
-  __limit: str = ''      #限制
-  __args: tuple = ()      #参数
-  __keys: str = ''       #新增-名
-  __values: str = ''     #新增-值
-  __data: str = ''       #更新-数据
+  __conn = None               #连接
+  __sql: str = ''             #SQL
+  __db: str = ''              #数据库
+  __table: str = ''           #数据表
+  __columns: str = ''         #字段
+  __where: str = ''           #条件
+  __group: str = ''           #分组
+  __order: str = ''           #排序
+  __limit: str = ''           #限制
+  __args: tuple = ()          #参数
+  __keys: str = ''            #新增-名
+  __values: str = ''          #新增-值
+  __data: str = ''            #更新-数据
 
 
   # 链接数据库
@@ -26,7 +27,7 @@ class Model(Base) :
       'host': Db.Host,
       'port': Db.Port,
       'user': Db.User,
-      'db': Db.Database,
+      'db': self.__db if self.__db!='' else Db.Database,
       'charset': Db.Charset,
     }
     try :
@@ -73,6 +74,9 @@ class Model(Base) :
     self.__conn.commit()
     return cs, num
 
+  # 数据库
+  def Db(self, database: str) :
+    self.__db = database
   # 表
   def Table(self, table: str) :
     self.__table = table

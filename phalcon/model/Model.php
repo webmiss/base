@@ -7,29 +7,29 @@ use Config\Db;
 /* 数据库 */
 class Model extends Base {
 
-  private static $conn = null;    //连接
-  private static $sql = '';       //SQL
-  private static $table = '';     //数据表
-  private static $columns = '';   //字段
-  private static $where = '';     //条件
-  private static $group = '';     //分组
-  private static $order = '';     //排序
-  private static $limit = '';     //限制
-  private static $args = [];      //参数
-  private static $keys = '';      //新增-名
-  private static $values = '';    //新增-值
-  private static $data = '';      //更新-数据
+  private static $conn = null;          //连接
+  private static $sql = '';             //SQL
+  private static $db = '';              //数据库
+  private static $table = '';           //数据表
+  private static $columns = '';         //字段
+  private static $where = '';           //条件
+  private static $group = '';           //分组
+  private static $order = '';           //排序
+  private static $limit = '';           //限制
+  private static $args = [];            //参数
+  private static $keys = '';            //新增-名
+  private static $values = '';          //新增-值
+  private static $data = '';            //更新-数据
 
   /* 链接数据库 */
   static function Conn(): object {
-    if(self::$conn) return self::$conn;
     // 参数
     $params = [
       'host'=> Db::$Host,
       'port'=> Db::$Port,
       'username'=> Db::$User,
       'password'=> Db::$Password,
-      'dbname'=> Db::$Database,
+      'dbname'=> self::$db!=''?self::$db:Db::$Database,
       'charset'=> Db::$Charset,
       'persistent'=> Db::$Persistent,
     ];
@@ -70,6 +70,10 @@ class Model extends Base {
     return self::$sql;
   }
 
+  /* 数据库 */
+  static function Db(string $database): void {
+    self::$db = $database;
+  }
   /* 表 */
   static function Table(string $table): void {
     self::$table = $table;

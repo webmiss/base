@@ -16,10 +16,10 @@ import webmis.config.Db;
 /* 数据库 */
 public class Model extends Base {
 
-  private final String _url = "jdbc:mysql://"+Db.Host+":"+Db.Port+"/"+Db.Database+"?characterEncoding="+Db.Charset+"&useSSL=false&serverTimezone=Asia/Shanghai";
   private Connection _conn = null;           //链接
   private String _type = "";                 //类型: select、insert、update、delete
   private String _sql = "";                  //SQL
+  private String _db = "";                   //数据库
   private String _table = "";                //数据表
   private String _columns = "";              //字段
   private String _where = "";                //条件
@@ -35,8 +35,9 @@ public class Model extends Base {
   /* 链接数据库 */
   public Connection Conn() {
     try {
-      if(_conn != null && !_conn.isClosed()) return _conn;
-      _conn = DriverManager.getConnection(_url, Db.User, Db.Password);
+      String db = !_db.equals("")?_db:Db.Database;
+      String url = "jdbc:mysql://"+Db.Host+":"+Db.Port+"/"+db+"?characterEncoding="+Db.Charset+"&useSSL=false&serverTimezone=Asia/Shanghai";
+      _conn = DriverManager.getConnection(url, Db.User, Db.Password);
     } catch (SQLException e) {
       Print("[Model] Conn:"+e.getMessage());
     }
@@ -54,6 +55,7 @@ public class Model extends Base {
 
   /* 过滤 */
   public PreparedStatement Bind(String type, String sql) {
+    // 类型
     _type = type;
     // 连接
     if(Conn()==null) return _bind;
@@ -101,6 +103,10 @@ public class Model extends Base {
     return _sql;
   }
 
+  /* 数据库 */
+  public void Db(String database) {
+    _db = database;
+  }
   /* 表 */
   public void Table(String table) {
     _table = table;
