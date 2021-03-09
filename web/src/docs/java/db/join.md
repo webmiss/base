@@ -1,22 +1,23 @@
 ### 连表
-```go
-func (db *Demo) Join() {
-	db.Table("test1 as a")
-	db.LeftJoin("test2 as b", "a.id=b.uid")
-	db.Columns("a.title", "b.name")
-	sql, args := db.SelectSql()
-	fmt.Println(sql, args)
-}
+```java
+import webmis.model.Demo;
+
+Demo demo = new Demo();
+demo.Table("test1 as a");
+demo.LeftJoin("test2 as b", "a.id=b.uid");
+demo.Columns("a.title", "b.name");
+String sql = demo.SelectSql();
+Print(sql);
 ```
 
 ### 其他
-```go
+```java
 // INNER JOIN 
-db.Join()
+demo.Join()
 // LEFT JOIN
-db.LeftJoin()
+demo.LeftJoin()
 // RIGHT JOIN
-db.RightJoin()
+demo.RightJoin()
 // FULL JOIN
-db.FullJoin()
+demo.FullJoin()
 ```

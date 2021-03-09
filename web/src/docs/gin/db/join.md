@@ -1,12 +1,13 @@
 ### 连表
 ```go
-func (db *Demo) Join() {
-	db.Table("test1 as a")
-	db.LeftJoin("test2 as b", "a.id=b.uid")
-	db.Columns("a.title", "b.name")
-	sql, args := db.SelectSql()
-	fmt.Println(sql, args)
-}
+import "webmis/model"
+
+demo := (&model.Demo{}).Init()
+demo.Table("test1 as a")
+demo.LeftJoin("test2 as b", "a.id=b.uid")
+demo.Columns("a.title", "b.name")
+sql, args := demo.SelectSql()
+self.Print(sql, args)
 ```
 
 ### 其他
