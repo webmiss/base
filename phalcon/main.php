@@ -1,7 +1,7 @@
 <?php
-
 use Phalcon\Loader;
 use Phalcon\Mvc\Micro;
+
 use Router\Home;
 use Router\Api;
 use Router\Admin;
@@ -10,12 +10,12 @@ use Config\Cors;
 define('BASE_PATH', __DIR__);
 define('STDERR',fopen('php://stderr', 'a'));
 
-// Composer
+/* Composer */
 $load = BASE_PATH.'/vendor/autoload.php';
 if(!is_file($load)) die('安装依赖包: composer install');
 require $load;
 
-// 注册命名空间
+/* 命名空间 */
 $loader = new Loader();
 $loader->registerNamespaces([
   'Base'=> BASE_PATH.'/base/',
@@ -29,10 +29,10 @@ $loader->registerNamespaces([
 ]);
 $loader->register();
 
-// 配置
+/* 注册 */
 $app = new Micro();
 
-// 路由
+// 路由 
 Home::Init($app);
 Api::Init($app);
 Admin::Init($app);

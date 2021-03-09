@@ -13,7 +13,7 @@ class Index extends Base {
   }
 
   /* 系统配置 */
-  static function getConfig() {
+  static function GetConfig() {
     $config = new SysConfig();
     $config->Columns('name','val');
     $config->Where('name in ("title","copy","logo","login_bg")');

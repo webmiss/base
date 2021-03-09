@@ -12,7 +12,7 @@ class Index extends Base {
   }
 
   /* 二维码 */
-  static function qrcode($type=''){
+  static function Qrcode($type=''){
     // 内容
     $text = '';
     if($type=='docs') $text = 'https://webmis.vip/';
