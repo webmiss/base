@@ -9,11 +9,11 @@ String index() throws SQLException{
   demo.Where("title LIKE ?");
   String sql = demo.SelectSql();
   // 参数
-  PreparedStatement pst = !sql.equals("")?demo.Bind("select", sql):null;
-  if(pst != null){
-    pst.setString(1, "%事务%");
+  PreparedStatement ps = !sql.equals("")?demo.Bind("select", sql):null;
+  if(ps != null){
+    ps.setString(1, "%事务%");
     // 数据
-    ResultSet rs = demo.Query(pst);
+    ResultSet rs = demo.Query(ps);
     data = new ArrayList<HashMap<String,Object>>();
     HashMap<String,Object> tmp;
     while (rs.next()) {
@@ -36,12 +36,12 @@ String index() throws SQLException{
 
 ### 多条
 ```java
-ArrayList<HashMap<String,Object>> data = demo.Find(pst);
+ArrayList<HashMap<String,Object>> data = demo.Find(ps);
 ```
 
 ### 单条
 ```java
-HashMap<String,Object> data = demo.FindFirst(pst);
+HashMap<String,Object> data = demo.FindFirst(ps);
 ```
 
 ### 生成SQL

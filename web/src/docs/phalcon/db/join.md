@@ -13,11 +13,11 @@ self::Print($sql, $args);
 ### 其他
 ```php
 // INNER JOIN 
-$demo->Join()
+$demo->Join();
 // LEFT JOIN
-$demo->LeftJoin()
+$demo->LeftJoin();
 // RIGHT JOIN
-$demo->RightJoin()
+$demo->RightJoin();
 // FULL JOIN
-$demo->FullJoin()
+$demo->FullJoin();
 ```

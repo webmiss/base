@@ -1,6 +1,5 @@
 package webmis.modules.home;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,7 @@ public class Index extends Base{
 
   /* 首页 */
   @RequestMapping("")
-  String index() throws SQLException{
+  String index() {
     // 返回数据
     HashMap<String,Object> res = new HashMap<String,Object>();
     res.put("code",0);

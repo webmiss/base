@@ -1,47 +1,28 @@
 ### 事务
-```go
-func (db *Demo) Commit() {
-	// 开始
-	tx, err := db.Conn().Begin()
-	if err != nil {
-		fmt.Println("开始: ", err)
-	}
-	// SQL1
-	var uid sql.NullInt64
-	db.Values(map[string]interface{}{
-		"uid":   uid,
-		"title": "事务",
-	})
-	sql1, args1 := db.InsertSql()
-	_, err = tx.Exec(sql1, args1...)
-	if err != nil {
-		tx.Rollback()
-		fmt.Println("事务1: ", err)
-	}
-	// SQL2
-	db.Set(map[string]interface{}{
-		"title": "事务Update",
-	})
-	db.Where("uid=?", 1)
-	sql2, args2 := db.UpdateSql()
-	_, err = tx.Exec(sql2, args2...)
-	if err != nil {
-		tx.Rollback()
-		fmt.Println("事务2: ", err)
-	}
-	// SQL3
-	db.Where("uid=?", 1)
-	sql3, args3 := db.DeleteSql()
-	_, err = tx.Exec(sql3, args3...)
-	if err != nil {
-		tx.Rollback()
-		fmt.Println("事务3: ", err)
-	}
-	// 提交
-	err = tx.Commit()
-	if err != nil {
-		tx.Rollback()
-		fmt.Println("事务提交: ", err)
-	}
+```php
+use Model\Model;
+use Model\Demo;
+
+$model = Model::Conn();
+try {
+  // 开始
+  $model->begin();
+  $demo = new Demo();
+  // SQL1
+  $demo->Values(['uid'=>null,'title'=>'PHP-事件']);
+  list($sql, $args) = $demo->InsertSql();
+  $model->execute($sql, $args);
+  $id = $model->lastInsertId();
+  self::Print($sql, $args, $id);
+  // SQL2
+  $demo->Where('uid=?', $id);
+  list($sql, $args) = $demo->DeleteSql();
+  $model->execute($sql, $args);
+  $num = $model->affectedRows();
+  self::Print($sql, $args, $num);
+  // 提交
+  $model->commit();
+} catch (\Exception $e) {
+  $model->rollback();
 }
 ```

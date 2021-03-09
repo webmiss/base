@@ -5,10 +5,10 @@ import webmis.model.Demo;
 Demo demo = new Demo();
 demo.Where("uid=?");
 String sql = demo.DeleteSql();
-PreparedStatement pst = !sql.equals("")?demo.Bind("delete", sql):null;
-if(pst != null){
-  pst.setInt(1, id);
-  int num = demo.Delete(pst);
+PreparedStatement ps = !sql.equals("")?demo.Bind("delete", sql):null;
+if(ps != null){
+  ps.setInt(1, id);
+  int num = demo.Delete(ps);
   Print(num);
 }
 // 关闭

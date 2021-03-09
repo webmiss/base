@@ -70,10 +70,10 @@ public class Model extends Base {
   }
 
   /* 查询 */
-  public ResultSet Query(PreparedStatement pst){
+  public ResultSet Query(PreparedStatement ps){
     ResultSet rs;
     try {
-      rs = pst.executeQuery();
+      rs = ps.executeQuery();
       return rs;
     } catch (SQLException e) {
       Print("[Model] Query:"+e.getMessage());
@@ -82,12 +82,12 @@ public class Model extends Base {
   }
 
   /* 执行 */
-  public int Exec(PreparedStatement pst){
+  public int Exec(PreparedStatement ps){
     int num = 0;
     try {
-      num = pst.executeUpdate();
+      num = ps.executeUpdate();
       if(_type.equals("insert")){
-        ResultSet rs = pst.getGeneratedKeys();
+        ResultSet rs = ps.getGeneratedKeys();
         num = rs.next()?rs.getInt(1):0;
       }
     } catch (SQLException e) {
@@ -191,24 +191,24 @@ public class Model extends Base {
     return _sql;
   }
   /* 查询-多条 */
-  public ArrayList<HashMap<String,Object>> Find(PreparedStatement pst) {
-    return FindDataAll(pst);
+  public ArrayList<HashMap<String,Object>> Find(PreparedStatement ps) {
+    return FindDataAll(ps);
   }
   /* 查询-单条 */
-  public HashMap<String,Object> FindFirst(PreparedStatement pst) {
+  public HashMap<String,Object> FindFirst(PreparedStatement ps) {
     HashMap<String,Object> res = new HashMap<String,Object>();
-    ArrayList<HashMap<String,Object>> data = FindDataAll(pst);
+    ArrayList<HashMap<String,Object>> data = FindDataAll(ps);
     if(data.size()>0) return data.get(0);
     return res;
   }
   /* 获取查询结果 */
-  public ArrayList<HashMap<String,Object>> FindDataAll(PreparedStatement pst) {
+  public ArrayList<HashMap<String,Object>> FindDataAll(PreparedStatement ps) {
     ArrayList<HashMap<String,Object>> res = new ArrayList<HashMap<String,Object>>();
     HashMap<String,Object> tmp ;
     ResultSetMetaData data;
     int num = 0;
     try {
-      ResultSet rs = pst.executeQuery();
+      ResultSet rs = ps.executeQuery();
       data = rs.getMetaData();
       int n = data.getColumnCount();
       while (rs.next()) {
@@ -220,7 +220,7 @@ public class Model extends Base {
       _num = num;
       // 释放
       rs.close();
-      pst.close();
+      ps.close();
     } catch (SQLException e) {
       Print("[Model] Find: "+e.getMessage());
     }
@@ -255,8 +255,8 @@ public class Model extends Base {
     return _sql;
   }
   /* 添加-执行 */
-  public int Insert(PreparedStatement pst) {
-    return Exec(pst);
+  public int Insert(PreparedStatement ps) {
+    return Exec(ps);
   }
 
   /* 更新-数据 */
@@ -288,8 +288,8 @@ public class Model extends Base {
     return _sql;
   }
   /* 更新-执行 */
-  public int Update(PreparedStatement pst) {
-    return Exec(pst);
+  public int Update(PreparedStatement ps) {
+    return Exec(ps);
   }
 
   /* 删除-SQL */
@@ -308,8 +308,8 @@ public class Model extends Base {
     return _sql;
   }
   /* 删除-执行 */
-  public int Delete(PreparedStatement pst) {
-    return Exec(pst);
+  public int Delete(PreparedStatement ps) {
+    return Exec(ps);
   }
 
 }
