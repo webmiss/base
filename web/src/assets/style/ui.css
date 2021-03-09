@@ -1,6 +1,6 @@
 /* 初始化 */
 *{margin: 0; padding: 0;}
-html,body,#app{height: 100%;}
+html,body,#app{height: 100%; overflow: hidden;}
 body{overflow: hidden;}
 a{cursor: pointer; color: #595; text-decoration: none;}
 a:hover{color: #FF6600;}
