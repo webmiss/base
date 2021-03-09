@@ -1,8 +1,6 @@
 <?php
 namespace Model;
 
-use Model\Model;
-
 /* 测试表 */
 class Demo extends Model {
 

@@ -2,9 +2,7 @@
 **model/Demo.php**
 ```php
 <?php
-namespace model;
-
-use Model\Model;
+namespace Model;
 
 class Demo extends Model {
 

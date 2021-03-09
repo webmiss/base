@@ -1,8 +1,6 @@
 <?php
 namespace Model;
 
-use Model\Model;
-
 /* 用户表 */
 class User extends Model {
 

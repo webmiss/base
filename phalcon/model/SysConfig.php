@@ -1,8 +1,6 @@
 <?php
 namespace Model;
 
-use Model\Model;
-
 /* 系统配置表 */
 class SysConfig extends Model {
 
