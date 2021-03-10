@@ -3,11 +3,16 @@ namespace App\Home;
 
 use Base\Base;
 use Library\Qrcode;
+use Library\Redis;
 
 class Index extends Base {
 
   /* 首页 */
   static function Index() {
+    Redis::Set('test', 'Test');
+    Redis::Expire('test', 10);
+    $res = Redis::Get('test');
+    self::Print('Test:', $res, Redis::Ttl('test'), Redis::StrLen('test'));
     return self::GetJSON(['code'=>0, 'msg'=>'Web']);
   }
 

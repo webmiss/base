@@ -155,19 +155,18 @@ class Model extends Base {
     return [self::$sql, $args];
   }
   /* 查询-多条 */
-  static function Find(): array {
+  static function Find() {
     list($sql, $args) = self::SelectSql();
     if(empty(self::Conn()) || empty($sql)) return [];
-    $res = self::Conn()->fetchAll($sql, 2, $args);
-    return $res;
+    return self::$conn->fetchAll($sql, 2, $args);
   }
   /* 查询-单条 */
-  static function FindFirst(): array {
+  static function FindFirst() {
+    $res = [];
     self::$limit = '0,1';
     list($sql, $args) = self::SelectSql();
-    if(empty(self::Conn()) || empty($sql)) return [];
-    $res = self::Conn()->fetchOne($sql, 2, $args);
-    return $res;
+    if(empty(self::Conn()) || empty($sql)) return $res;
+    return self::$conn->fetchOne($sql, 2, $args);
   }
 
   /* 添加-数据 */

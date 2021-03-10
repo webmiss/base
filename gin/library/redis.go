@@ -58,14 +58,14 @@ func (r Redis) Close() {
 }
 
 /* 添加 */
-func (r Redis) Set(name string, v interface{}) (bool, error) {
-	res, err := redigo.Bool(r.Conn.Do("SET", name, v))
+func (r Redis) Set(key string, val interface{}) (bool, error) {
+	res, err := redigo.Bool(r.Conn.Do("SET", key, val))
 	return res, err
 }
 
 /* 获取 */
-func (r Redis) Get(name string) ([]byte, error) {
-	res, err := redigo.Bytes(r.Conn.Do("Get", name))
+func (r Redis) Get(key string) ([]byte, error) {
+	res, err := redigo.Bytes(r.Conn.Do("Get", key))
 	return res, err
 }
 
@@ -76,32 +76,32 @@ func (r Redis) Del(keys ...interface{}) (bool, error) {
 }
 
 /* 是否存在 */
-func (r Redis) Exist(name string) (bool, error) {
-	res, err := redigo.Bool(r.Conn.Do("EXISTS", name))
+func (r Redis) Exist(key string) (bool, error) {
+	res, err := redigo.Bool(r.Conn.Do("EXISTS", key))
 	return res, err
 }
 
 /* 设置过期时间(秒) */
-func (r Redis) Expire(name string, lifeTime int64) (bool, error) {
-	res, err := redigo.Bool(r.Conn.Do("EXPIRE", name, lifeTime))
+func (r Redis) Expire(key string, ttl int64) (bool, error) {
+	res, err := redigo.Bool(r.Conn.Do("EXPIRE", key, ttl))
 	return res, err
 }
 
 /* 获取过期时间(秒) */
-func (r Redis) Ttl(name string) (int64, error) {
-	res, err := redigo.Int64(r.Conn.Do("TTL", name))
+func (r Redis) Ttl(key string) (int64, error) {
+	res, err := redigo.Int64(r.Conn.Do("TTL", key))
 	return res, err
 }
 
 /* 获取长度 */
-func (r Redis) StrLen(name string) (int, error) {
-	res, err := redigo.Int(r.Conn.Do("STRLEN", name))
+func (r Redis) StrLen(key string) (int, error) {
+	res, err := redigo.Int(r.Conn.Do("STRLEN", key))
 	return res, err
 }
 
 /* 哈希(Hash)-添加 */
-func (r Redis) HSet(name string, key string, v interface{}) (bool, error) {
-	res, err := redigo.Bool(r.Conn.Do("HSET", name, key, v))
+func (r Redis) HSet(name string, key string, val interface{}) (bool, error) {
+	res, err := redigo.Bool(r.Conn.Do("HSET", name, key, val))
 	return res, err
 }
 func (r Redis) HMSet(name string, obj interface{}) (bool, error) {
@@ -111,7 +111,7 @@ func (r Redis) HMSet(name string, obj interface{}) (bool, error) {
 
 /* 哈希(Hash)-获取 */
 func (r Redis) HGet(name string, key string) ([]byte, error) {
-	res, err := redigo.Bytes(r.Conn.Do("Get", name, key))
+	res, err := redigo.Bytes(r.Conn.Do("HGet", name, key))
 	return res, err
 }
 func (r Redis) HMget(name string, keys ...string) ([]interface{}, error) {

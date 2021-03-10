@@ -3,13 +3,24 @@
 namespace Base;
 
 use Config\Cors;
+use Error;
 
 class Base {
 
   /* 返回JSON */
-  static protected function GetJSON($data=''){
+  static protected function GetJSON(array $data=[]): string {
     Cors::Init();
     return json_encode($data);
+  }
+
+  /* Get参数 */
+  static protected function Get(string $name) {
+    return isset($_GET[$name])?$_GET[$name]:'';
+  }
+
+  /* Post参数 */
+  static protected function Post(string $name) {
+    return isset($_POST[$name])?$_POST[$name]:'';
   }
 
   /* 输出到控制台 */
@@ -27,7 +38,7 @@ class Base {
   }
 
   /* 异常错误 */
-  static protected function Error($msg){
+  static protected function Error($msg) {
     throw new \InvalidArgumentException($msg);
   }
   

@@ -7,5 +7,6 @@ class Admin {
     // 首页
     $app->get('/admin', 'App\Admin\Index::Index');
     $app->post('/admin/index/getConfig', 'App\Admin\Index::GetConfig');
+    $app->post('/admin/user/login', 'App\Admin\User::Login');
   }
 }
