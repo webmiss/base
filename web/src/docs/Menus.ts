@@ -68,6 +68,7 @@ export default {
         {label: '事务 Commit', value: 'docs/python/db/commit'},
       ]},
       {label:'Library 类库', children:[
+        {label: '缓存 Redis', value: 'docs/python/library/redis'},
         {label: '通信 WebSocket', value: 'docs/python/library/socket'},
       ]},
     ];

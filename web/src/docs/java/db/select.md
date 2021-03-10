@@ -9,19 +9,17 @@ String index() throws SQLException{
   demo.Where("title LIKE ?");
   String sql = demo.SelectSql();
   // 参数
-  PreparedStatement ps = !sql.equals("")?demo.Bind("select", sql):null;
-  if(ps != null){
-    ps.setString(1, "%事务%");
-    // 数据
-    ResultSet rs = demo.Query(ps);
-    data = new ArrayList<HashMap<String,Object>>();
-    HashMap<String,Object> tmp;
-    while (rs.next()) {
-      tmp = new HashMap<String,Object>();
-      tmp.put("uid", rs.getInt(1));
-      tmp.put("title", rs.getString(2));
-      data.add(tmp);
-    }
+  PreparedStatement ps = demo.Bind("select", sql);
+  ps.setString(1, "%事务%");
+  // 数据
+  ResultSet rs = demo.Query(ps);
+  data = new ArrayList<HashMap<String,Object>>();
+  HashMap<String,Object> tmp;
+  while (rs.next()) {
+    tmp = new HashMap<String,Object>();
+    tmp.put("uid", rs.getInt(1));
+    tmp.put("title", rs.getString(2));
+    data.add(tmp);
   }
   // 关闭
   demo.Close();

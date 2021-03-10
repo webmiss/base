@@ -4,8 +4,7 @@ from library.safety import Safety
 from model.user import User as UserModel
 from service.admin_token import AdminToken
 
-from util.md5 import md5
-from util.date import date
+from util.util import Util
 
 class User(Base):
 
@@ -26,7 +25,7 @@ class User(Base):
     model.LeftJoin('user_perm AS c', 'a.id=c.uid')
     model.Where(
       '(a.uname=%s OR a.tel=%s OR a.email=%s) AND a.password=%s',
-      uname, uname, uname, md5(passwd)
+      uname, uname, uname, Util.md5(passwd)
     )
     model.Columns('a.id', 'a.state', 'b.position', 'b.nickname', 'b.name', 'b.gender', 'b.birthday', 'b.img', 'c.state_admin')
     data = model.FindFirst()
@@ -34,10 +33,10 @@ class User(Base):
     if not data : return self.GetJSON({'code':4000, 'msg':'帐号或密码错误!'})
     # 是否禁用
     if data['state']!='1' : return self.GetJSON({'code':4000, 'msg':'该用户已被禁用!'})
-    elif data['state_admin']!='1' : return self.GetJSON({'code':4000, 'msg':'该用户不允许登录!'})
+    if data['state_admin']!='1' : return self.GetJSON({'code':4000, 'msg':'该用户不允许登录!'})
     # 登录时间
     model.Table('user')
-    model.Set({'ltime': date('%Y%m%d%H%M%S')})
+    model.Set({'ltime': Util.date('%Y%m%d%H%M%S')})
     model.Where('id=%s', data['id'])
     model.Update()
     # 关闭

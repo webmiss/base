@@ -54,9 +54,12 @@ public class Model extends Base {
   }
 
   /* 过滤 */
-  public PreparedStatement Bind(String type, String sql) {
+  public PreparedStatement Bind(String sql) {
+    return Bind(sql, false);
+  }
+  public PreparedStatement Bind(String sql, Boolean insert) {
     // 类型
-    _type = type;
+    _type = insert?"insert":"";
     // 连接
     if(Conn()==null) return _bind;
     try {
@@ -205,7 +208,7 @@ public class Model extends Base {
     HashMap<String,Object> res = new HashMap<String,Object>();
     ArrayList<HashMap<String,Object>> data = FindDataAll(ps);
     if(data.size()>0) return data.get(0);
-    return res;
+     return res;
   }
   /* 获取查询结果 */
   public ArrayList<HashMap<String,Object>> FindDataAll(PreparedStatement ps) {

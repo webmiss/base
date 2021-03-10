@@ -36,7 +36,7 @@ public class Index extends Base {
     config.Columns("name","val");
     config.Where("name in (\"title\",\"copy\",\"logo\",\"login_bg\")");
     String sql = config.SelectSql();
-    PreparedStatement ps = config.Bind("select", sql);
+    PreparedStatement ps = config.Bind(sql);
     ResultSet rs = config.Query(ps);
     // 数据
     HashMap<String,Object> list = new HashMap<String,Object>();

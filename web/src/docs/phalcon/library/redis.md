@@ -14,6 +14,10 @@ Redis::Set(string $key, string $val);
 ```php
 Redis::Get(string $key);
 ```
+**Get-删除**
+```php
+Redis::Del(string ...$key);
+```
 **Exist-是否存在**
 ```php
 Redis::Exist(string $key);
@@ -34,23 +38,23 @@ Redis::StrLen(string $key);
 ## 哈希(Hash)
 **HSet-添加**
 ```php
-Redis::HSet(string $name, string $key, $val)
-Redis::HMSet(string $name, array $obj)
+Redis::HSet(string $name, string $key, $val);
+Redis::HMSet(string $name, array $obj);
 ```
 **HGet-获取**
 ```php
-Redis::HGet(string $name, string $key)
-Redis::HMGet(string $name, string $key)
+Redis::HGet(string $name, string $key);
+Redis::HMGet(string $name, string $key);
 ```
 **Hdel-删除**
 ```php
-Redis::HDel(string $name, string $key)
+Redis::HDel(string $name, string $key);
 ```
 **HExist-是否存在**
 ```php
-Redis::HExist(string $name, string $key)
+Redis::HExist(string $name, string $key);
 ```
 **HLen-Key个数**
 ```php
-Redis::HLen(string $name)
+Redis::HLen(string $name);
 ```
