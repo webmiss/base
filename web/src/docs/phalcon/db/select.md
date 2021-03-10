@@ -10,6 +10,8 @@ static function Index() {
 	$query = $demo->Query($sql, $args);
 	// 数据
 	$data = $query->fetchAll();
+	// 关闭
+  $demo->Close();
 	// 返回
 	return self::getJSON(['code'=>0, 'msg'=>'Web', 'data'=>$data]);
 }

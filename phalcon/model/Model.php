@@ -41,6 +41,11 @@ class Model extends Base {
     return self::$conn;
   }
 
+  /* 关闭 */
+  static function Close() {
+    if(self::$conn) self::$conn->close();
+  }
+
   /* 查询 */
   static function Query(string $sql, array $args=[]) {
     if(empty($sql)){
@@ -156,13 +161,14 @@ class Model extends Base {
   }
   /* 查询-多条 */
   static function Find() {
+    $res = null;
     list($sql, $args) = self::SelectSql();
-    if(empty(self::Conn()) || empty($sql)) return [];
+    if(empty(self::Conn()) || empty($sql)) return $res;
     return self::$conn->fetchAll($sql, 2, $args);
   }
   /* 查询-单条 */
   static function FindFirst() {
-    $res = [];
+    $res = null;
     self::$limit = '0,1';
     list($sql, $args) = self::SelectSql();
     if(empty(self::Conn()) || empty($sql)) return $res;

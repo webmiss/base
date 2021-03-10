@@ -11,6 +11,8 @@
     cs, num = demo.Query(sql, args)
     # 数据
     data = cs.fetchall()
+    # 关闭
+    demo.Close()
     # 返回
     return self.getJSON({'code':0,'msg':'Web', 'data':data})
 ```

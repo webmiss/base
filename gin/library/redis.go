@@ -114,7 +114,7 @@ func (r Redis) HGet(name string, key string) ([]byte, error) {
 	res, err := redigo.Bytes(r.Conn.Do("HGet", name, key))
 	return res, err
 }
-func (r Redis) HMget(name string, keys ...string) ([]interface{}, error) {
+func (r Redis) HMGet(name string, keys ...string) ([]interface{}, error) {
 	args := []interface{}{name}
 	for _, field := range keys {
 		args = append(args, field)
@@ -124,7 +124,7 @@ func (r Redis) HMget(name string, keys ...string) ([]interface{}, error) {
 }
 
 /* 哈希(Hash)-删除 */
-func (r Redis) Hdel(name string, key string) (bool, error) {
+func (r Redis) HDel(name string, key string) (bool, error) {
 	res, err := redigo.Bool(r.Conn.Do("HDEL", name, key))
 	return res, err
 }

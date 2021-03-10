@@ -7,7 +7,7 @@ from router.admin import Admin
 
 # 配置
 app = Flask(__name__)
-app.debug=Env.Debug
+app.debug=Env.debug
 # 允许跨域
 flask_cors.CORS(app)
 
@@ -19,4 +19,4 @@ app.register_blueprint(Admin, url_prefix="/admin")
 
 # 运行
 if __name__ == '__main__':
-  if(Env.Debug): app.run(host=Env.Host,port=Env.Port)
+  if(Env.debug): app.run(host=Env.host,port=Env.port)

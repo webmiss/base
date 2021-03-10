@@ -44,6 +44,7 @@ export default {
         {label: '事务 Commit', value: 'docs/phalcon/db/commit'},
       ]},
       {label:'Library 类库', children:[
+        {label: '缓存 Redis', value: 'docs/phalcon/library/redis'},
         {label: '通信 WebSocket', value: 'docs/phalcon/library/socket'},
       ]},
     ];

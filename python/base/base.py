@@ -3,21 +3,25 @@ from flask import request
 
 class Base :
 
-  # 输出到控制台
-  def Print(self, *content) :
-    print(*content)
-
   # 返回JSON
   def GetJSON(self, data=''):
     return json.dumps(data)
 
-  # 调试信息
-  def bug(self,data,next=False):
-    print(data)
-    if(next==False): self.error('%s'%(data))
+  # Get参数
+  def Get(self, name: str):
+    return request.args.get(name)
+
+  # Post参数
+  def Post(self, name: str):
+    val = request.form.get(name)
+    return val if val else ''
+
+  # 输出到控制台
+  def Print(self, *content) :
+    print(*content)
 
   # 异常错误
-  def error(self,msg=''):
+  def Error(self, msg: str =''):
     print(msg)
     raise Exception(msg)
 

@@ -24,18 +24,6 @@ class Safety {
     return preg_match('/'.$reg.'/',$val)?true:false;
   }
 
-  /* 加密-字符串 */
-	static function key(string $str): string {
-		return md5($str.Env::$key);
-	}
-	/* 加密-数组 */
-	static function keyArray(array $param=[]): string {
-		ksort($param);
-		reset($param);
-		$param['sign'] = Env::$key;
-		return md5(http_build_query($param));
-	}
-
   /* 加密-Base64 */
   static function encode(array $param=[]): ?string {
     $text = is_array($param)?json_encode($param):$param;

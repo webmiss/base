@@ -22,32 +22,36 @@ class Model(Base) :
 
 
   # 链接数据库
-  def Conn(self, pool=True) :
+  def Conn(self, pool=False) :
     cfg = {
-      'host': Db.Host,
-      'port': Db.Port,
-      'user': Db.User,
-      'db': self.__db if self.__db!='' else Db.Database,
-      'charset': Db.Charset,
+      'host': Db.host,
+      'port': Db.port,
+      'user': Db.user,
+      'db': self.__db if self.__db!='' else Db.database,
+      'charset': Db.charset,
     }
     try :
       if pool :
-        cfg['password'] = Db.Password
+        cfg['password'] = Db.password
         # 数据池
-        cfg['mincached'] = Db.Min
-        cfg['maxcached'] = Db.Max
-        cfg['maxconnections'] = Db.Max
+        cfg['mincached'] = Db.min
+        cfg['maxcached'] = Db.max
+        cfg['maxconnections'] = Db.max
         cfg['blocking'] = True  #是否阻塞等待
         cfg['maxusage'] = True  #重复使用次数
         pool = PooledDB(creator=Db.Driver, **cfg)
         self.__conn = pool.connection()
       else :
-        cfg['passwd'] = Db.Password
+        cfg['passwd'] = Db.password
         self.__conn = pymysql.Connect(**cfg)
       return self.__conn
     except Exception as e :
       print('[Model] Conn:', e)
       return None
+
+  # 关闭
+  def Close(self) :
+    if self.__conn : self.__conn.close()
 
   # 查询
   def Query(self, sql: str, args: tuple = ()) :
@@ -55,11 +59,15 @@ class Model(Base) :
       print('[Model] Query: SQL不能为空!')
       return None, 0
     # 连接
-    if self.Conn(False) == None : return None, 0
+    if self.Conn() == None : return None, 0
     # 游标
-    cs = self.__conn.cursor(cursor=pymysql.cursors.DictCursor)
-    num = cs.execute(sql, *args)
-    return cs, num
+    try :
+      cs = self.__conn.cursor(cursor=pymysql.cursors.DictCursor)
+      num = cs.execute(sql, args)
+      return cs, num
+    except Exception as e :
+      self.Print('[Model] Query:', e)
+      return None, 0
   
   # 执行
   def Exec(self, sql: str, args: tuple = ()) :
@@ -67,12 +75,20 @@ class Model(Base) :
       print('[Model] Exec: SQL不能为空!')
       return None, 0
     # 连接
-    if self.Conn(False) == None : return None, 0
+    if self.Conn() == None : return None, 0
     # 游标
-    cs = self.__conn.cursor()
-    num = cs.execute(sql, args)
-    self.__conn.commit()
-    return cs, num
+    try :
+      cs = self.__conn.cursor()
+      num = cs.execute(sql, args)
+      self.__conn.commit()
+      return cs, num
+    except Exception as e :
+      self.Print('[Model] Exec:', e)
+      return None, 0
+
+  # 获取-SQL
+  def GetSql(self):
+    return self.__sql
 
   # 数据库
   def Db(self, database: str) :
@@ -141,19 +157,21 @@ class Model(Base) :
     return self.__sql,args
   # 查询-多条
   def Find(self) :
+    res = None
     sql, args = self.SelectSql()
-    if(sql=='') : return []
+    if(sql=='') : return res
     cs, num = self.Query(sql, args)
-    if cs == None : return None
+    if not cs : return res
     res = cs.fetchall()
     cs.close()
     return res
   #查询-单条
   def FindFirst(self) :
+    res = None
     sql, args = self.SelectSql()
-    if(sql=='') : return {}
+    if(sql=='') : return res
     cs, num = self.Query(sql, args)
-    if cs == None : return None
+    if not cs : return res
     res = cs.fetchone()
     cs.close()
     return res
