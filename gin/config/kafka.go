@@ -1,5 +1,6 @@
 package config
 
+// Kafka :Kafka配置
 type Kafka struct {
 	Log  bool
 	Type string
@@ -7,7 +8,7 @@ type Kafka struct {
 	Port string
 }
 
-/* 配置 */
+// Config :获取
 func (cfg *Kafka) Config() *Kafka {
 	cfg.Log = false        //显示日志
 	cfg.Type = "tcp"       //类型

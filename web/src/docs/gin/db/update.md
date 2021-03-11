@@ -1,6 +1,8 @@
 ### 更新
 ```go
-demo := (&model.Demo{}).Init()
+import "webmis/model"
+// 对象
+demo := (&model.Demo{}).New()
 demo.Set(map[string]interface{}{
   "title": "Go-更新",
 })

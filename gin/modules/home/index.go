@@ -6,12 +6,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Index :Web
 type Index struct {
 	base.Base
 }
 
 /* 首页 */
-func (self *Index) Index(c *gin.Context) {
+func (r *Index) Index(c *gin.Context) {
 	// 返回
-	self.GetJSON(c, gin.H{"code": 0, "msg": "Web"})
+	r.GetJSON(c, gin.H{"code": 0, "msg": "Web"})
 }

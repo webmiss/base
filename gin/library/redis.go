@@ -7,12 +7,13 @@ import (
 	redigo "github.com/gomodule/redigo/redis"
 )
 
-/* 缓存数据库 */
+// Redis :缓存数据库
 type Redis struct {
 	Pool *redigo.Pool
 	Conn redigo.Conn
 }
 
+// Run :创建
 func (c *Redis) Run() *Redis {
 	if c.Pool == nil {
 		cfg := (&config.Redis{}).Config() //配置
@@ -51,92 +52,96 @@ func (c *Redis) Run() *Redis {
 	return c
 }
 
-/* 关闭 */
-func (r Redis) Close() {
-	r.Conn.Close()
+// Close :关闭
+func (c Redis) Close() {
+	c.Conn.Close()
 	// r.Pool.Close()
 }
 
-/* 添加 */
-func (r Redis) Set(key string, val interface{}) (bool, error) {
-	res, err := redigo.Bool(r.Conn.Do("SET", key, val))
+// Set :添加
+func (c Redis) Set(key string, val interface{}) (bool, error) {
+	res, err := redigo.Bool(c.Conn.Do("SET", key, val))
 	return res, err
 }
 
-/* 获取 */
-func (r Redis) Get(key string) ([]byte, error) {
-	res, err := redigo.Bytes(r.Conn.Do("Get", key))
+// Get :获取
+func (c Redis) Get(key string) ([]byte, error) {
+	res, err := redigo.Bytes(c.Conn.Do("Get", key))
 	return res, err
 }
 
-/* 删除 */
-func (r Redis) Del(keys ...interface{}) (bool, error) {
-	res, err := redigo.Bool(r.Conn.Do("DEL", keys...))
+// Del :删除
+func (c Redis) Del(keys ...interface{}) (bool, error) {
+	res, err := redigo.Bool(c.Conn.Do("DEL", keys...))
 	return res, err
 }
 
-/* 是否存在 */
-func (r Redis) Exist(key string) (bool, error) {
-	res, err := redigo.Bool(r.Conn.Do("EXISTS", key))
+// Exist :是否存在
+func (c Redis) Exist(key string) (bool, error) {
+	res, err := redigo.Bool(c.Conn.Do("EXISTS", key))
 	return res, err
 }
 
-/* 设置过期时间(秒) */
-func (r Redis) Expire(key string, ttl int64) (bool, error) {
-	res, err := redigo.Bool(r.Conn.Do("EXPIRE", key, ttl))
+// Expire :设置过期时间(秒)
+func (c Redis) Expire(key string, ttl int64) (bool, error) {
+	res, err := redigo.Bool(c.Conn.Do("EXPIRE", key, ttl))
 	return res, err
 }
 
-/* 获取过期时间(秒) */
-func (r Redis) Ttl(key string) (int64, error) {
-	res, err := redigo.Int64(r.Conn.Do("TTL", key))
+// TTL :获取过期时间(秒)
+func (c Redis) TTL(key string) (int64, error) {
+	res, err := redigo.Int64(c.Conn.Do("TTL", key))
 	return res, err
 }
 
-/* 获取长度 */
-func (r Redis) StrLen(key string) (int, error) {
-	res, err := redigo.Int(r.Conn.Do("STRLEN", key))
+// StrLen :获取长度
+func (c Redis) StrLen(key string) (int, error) {
+	res, err := redigo.Int(c.Conn.Do("STRLEN", key))
 	return res, err
 }
 
-/* 哈希(Hash)-添加 */
-func (r Redis) HSet(name string, key string, val interface{}) (bool, error) {
-	res, err := redigo.Bool(r.Conn.Do("HSET", name, key, val))
-	return res, err
-}
-func (r Redis) HMSet(name string, obj interface{}) (bool, error) {
-	res, err := redigo.Bool(r.Conn.Do("HSET", redigo.Args{}.Add(name).AddFlat(&obj)...))
+// HSet :哈希(Hash)-添加
+func (c Redis) HSet(name string, key string, val interface{}) (bool, error) {
+	res, err := redigo.Bool(c.Conn.Do("HSET", name, key, val))
 	return res, err
 }
 
-/* 哈希(Hash)-获取 */
-func (r Redis) HGet(name string, key string) ([]byte, error) {
-	res, err := redigo.Bytes(r.Conn.Do("HGet", name, key))
+// HMSet :哈希(Hash)-添加
+func (c Redis) HMSet(name string, obj interface{}) (bool, error) {
+	res, err := redigo.Bool(c.Conn.Do("HSET", redigo.Args{}.Add(name).AddFlat(&obj)...))
 	return res, err
 }
-func (r Redis) HMGet(name string, keys ...string) ([]interface{}, error) {
+
+// HGet :哈希(Hash)-获取
+func (c Redis) HGet(name string, key string) ([]byte, error) {
+	res, err := redigo.Bytes(c.Conn.Do("HGet", name, key))
+	return res, err
+}
+
+// HMGet :哈希(Hash)-获取
+func (c Redis) HMGet(name string, keys ...string) ([]interface{}, error) {
 	args := []interface{}{name}
 	for _, field := range keys {
 		args = append(args, field)
 	}
-	res, err := redigo.Values(r.Conn.Do("HMGET", args))
+	res, err := redigo.Values(c.Conn.Do("HMGET", args))
 	return res, err
 }
 
-/* 哈希(Hash)-删除 */
-func (r Redis) HDel(name string, key string) (bool, error) {
-	res, err := redigo.Bool(r.Conn.Do("HDEL", name, key))
+// HDel :哈希(Hash)-删除
+func (c Redis) HDel(name string, key string) (bool, error) {
+	res, err := redigo.Bool(c.Conn.Do("HDEL", name, key))
 	return res, err
 }
 
-/* 哈希(Hash)-是否存在 */
-func (r Redis) HExist(name string, key string) (bool, error) {
-	res, err := redigo.Bool(r.Conn.Do("HEXISTS", name, key))
+// HExist :哈希(Hash)-是否存在
+func (c Redis) HExist(name string, key string) (bool, error) {
+	res, err := redigo.Bool(c.Conn.Do("HEXISTS", name, key))
 	return res, err
 }
 
-/* 哈希(Hash)-Key个数 */
-func (r Redis) HLen(name string) (int, error) {
-	res, err := redigo.Int(r.Conn.Do("HLEN", name))
+// HLen :哈希(Hash)-Key个数
+func (c Redis) HLen(name string) (int, error) {
+	res, err := redigo.Int(c.Conn.Do("HLEN", name))
 	return res, err
 }

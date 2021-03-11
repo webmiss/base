@@ -2,7 +2,7 @@
 ```go
 func Index(c *gin.Context) {
 	// 查询
-	demo := (&model.Demo{}).Init()
+	demo := (&model.Demo{}).New()
 	demo.Columns("uid", "title")
 	demo.Where("title LIKE ?", "%事务%")
 	// 执行

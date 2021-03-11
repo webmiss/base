@@ -1,6 +1,8 @@
 ### 插入
 ```go
-demo := (&model.Demo{}).Init()
+import "webmis/model"
+// 对象
+demo := (&model.Demo{}).New()
 demo.Values(map[string]interface{}{
   "uid":   nil,
   "title": "Go-添加",

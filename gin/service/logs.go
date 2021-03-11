@@ -10,13 +10,14 @@ import (
 	"github.com/segmentio/kafka-go"
 )
 
+// Logs :日志
 type Logs struct {
 	conn *kafka.Conn
 }
 
-/* 连接 */
-func (this *Logs) Conn(topic string, partition int) bool {
-	if this.conn != nil {
+// Conn :连接
+func (l *Logs) Conn(topic string, partition int) bool {
+	if l.conn != nil {
 		return true
 	}
 	cfg := (&config.Kafka{}).Config()
@@ -25,55 +26,55 @@ func (this *Logs) Conn(topic string, partition int) bool {
 		fmt.Println("[Kafka] Conn:", err)
 		return false
 	}
-	this.conn = conn
+	l.conn = conn
 	return true
 }
 
-/* 发送 */
-func (this *Logs) Send(topic string, partition int, text []byte) {
-	if this.Conn(topic, partition) != true {
+// Send :发送
+func (l *Logs) Send(topic string, partition int, text []byte) {
+	if l.Conn(topic, partition) != true {
 		cfg := (&config.Kafka{}).Config()
 		if cfg.Log {
 			fmt.Println("[Logs] Fail:", string(text))
 		}
 		return
 	}
-	this.conn.WriteMessages(kafka.Message{Value: text})
-	defer this.conn.Close()
+	l.conn.WriteMessages(kafka.Message{Value: text})
+	defer l.conn.Close()
 }
 
-/* 日志 */
-func (this *Logs) Log(content interface{}) {
+// Log :记录日志
+func (l *Logs) Log(content interface{}) {
 	str, _ := json.Marshal(gin.H{
 		"type": "log",
 		"data": content,
 	})
-	go this.Send("logs", 0, str)
+	go l.Send("logs", 0, str)
 }
 
-/* 信息 */
-func (this *Logs) Info(content interface{}) {
+// Info :记录信息
+func (l *Logs) Info(content interface{}) {
 	str, _ := json.Marshal(gin.H{
 		"type": "info",
 		"data": content,
 	})
-	go this.Send("logs", 1, str)
+	go l.Send("logs", 1, str)
 }
 
-/* 操作 */
-func (this *Logs) Action(content interface{}) {
+// Action :记录操作
+func (l *Logs) Action(content interface{}) {
 	str, _ := json.Marshal(gin.H{
 		"type": "action",
 		"data": content,
 	})
-	go this.Send("logs", 2, str)
+	go l.Send("logs", 2, str)
 }
 
-/* 错误 */
-func (this *Logs) Error(content interface{}) {
+// Error :记录错误
+func (l *Logs) Error(content interface{}) {
 	str, _ := json.Marshal(gin.H{
 		"type": "error",
 		"data": content,
 	})
-	go this.Send("logs", 3, str)
+	go l.Send("logs", 3, str)
 }

@@ -1,8 +1,8 @@
 ### 事务
 ```go
 import "webmis/model"
-
-demo := (&model.Demo{}).Init()
+// 对象
+demo := (&model.Demo{}).New()
 conn, _ := demo.Conn()
 // 开始
 tx, _ := conn.Begin()

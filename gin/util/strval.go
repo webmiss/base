@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-/* Interface 转 String */
+// Strval :Interface 转 String
 func Strval(value interface{}) string {
 	var key string
 	if value == nil {

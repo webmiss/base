@@ -8,23 +8,25 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Index :后台接口
 type Index struct {
 	base.Base
 	config.Env
 }
 
-/* 首页 */
-func (self Index) Index(c *gin.Context) {
-	self.GetJSON(c, gin.H{"code": 0, "msg": "Admin"})
+// Index :首页
+func (r Index) Index(c *gin.Context) {
+	r.GetJSON(c, gin.H{"code": 0, "msg": "Admin"})
 }
 
-/* 系统配置 */
-func (self Index) GetConfig(c *gin.Context) {
+// GetConfig :系统配置
+func (r Index) GetConfig(c *gin.Context) {
 	// 查询
-	config := (&model.SysConfig{}).Init()
+	config := (&model.SysConfig{}).New()
+	r.Print(config)
 	config.Where("name in (?,?,?,?)", "title", "copy", "logo", "login_bg")
 	config.Columns("name", "val")
-	sql, args := config.SelectSql()
+	sql, args := config.SelectSQL()
 	rows, _ := config.Query(sql, args)
 	defer rows.Close()
 	list := make(map[string]interface{})
@@ -35,7 +37,7 @@ func (self Index) GetConfig(c *gin.Context) {
 		rows.Scan(&name, &val)
 		if name == "logo" || name == "login_bg" {
 			if val != "" {
-				list[name] = self.BaseUrl + val
+				list[name] = r.BaseURL + val
 			} else {
 				list[name] = ""
 			}
@@ -47,5 +49,5 @@ func (self Index) GetConfig(c *gin.Context) {
 	// 关闭
 	config.Close()
 	// 返回
-	self.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list})
+	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list})
 }

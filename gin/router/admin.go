@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Admin :路由
 func Admin(r *gin.Engine) {
 	g := r.Group("admin")
 	// 允许跨域

@@ -7,11 +7,11 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-/* 安全验证类 */
+// Safety :验证类
 type Safety struct{}
 
-/* 正则-公共 */
-func (this Safety) IsRight(name string, val string) bool {
+// IsRight :正则-公共
+func (s Safety) IsRight(name string, val string) bool {
 	data := map[string]string{
 		"uname":  "^[a-zA-Z][a-zA-Z0-9\\_\\@\\-\\*\\&]{3,15}$",
 		"passwd": "^[a-zA-Z0-9|_|@|-|*|&]{6,16}$",
@@ -23,14 +23,14 @@ func (this Safety) IsRight(name string, val string) bool {
 	return res
 }
 
-/* 正则-验证 */
-func (this Safety) Test(reg string, val string) bool {
+// Test :正则-验证
+func (s Safety) Test(reg string, val string) bool {
 	res, _ := regexp.MatchString(reg, val)
 	return res
 }
 
-/* 加密-JWT */
-func (this Safety) Encode(param map[string]interface{}) (string, error) {
+// Encode :加密-JWT
+func (s Safety) Encode(param map[string]interface{}) (string, error) {
 	cfg := (&config.Env{}).Config() //配置
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := make(jwt.MapClaims)
@@ -42,8 +42,8 @@ func (this Safety) Encode(param map[string]interface{}) (string, error) {
 	return res, err
 }
 
-/* 加密-JWT */
-func (this Safety) Decode(token string) (interface{}, error) {
+// Decode :解密-JWT
+func (s Safety) Decode(token string) (interface{}, error) {
 	cfg := (&config.Env{}).Config() //配置
 	res, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -53,7 +53,6 @@ func (this Safety) Decode(token string) (interface{}, error) {
 	})
 	if claims, ok := res.Claims.(jwt.MapClaims); ok && res.Valid {
 		return claims, err
-	} else {
-		return "", nil
 	}
+	return nil, nil
 }

@@ -13,7 +13,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-/* 数据库 */
+// Model :数据库
 type Model struct {
 	base.Base
 	conn    *sql.DB       //连接
@@ -31,232 +31,241 @@ type Model struct {
 	data    string        //更新-数据
 }
 
-/* 链接数据库 */
-func (self *Model) Conn() (*sql.DB, error) {
+// Run :构造函数
+func (m *Model) Run() *sql.DB {
 	// 连接
-	cfg := (&config.MySql{}).Config()
+	cfg := (&config.MySQL{}).Config()
 	db := cfg.Database
-	if self.db != "" {
-		db = self.db
+	if m.db != "" {
+		db = m.db
 	}
 	source := cfg.User + ":" + cfg.Password + "@(" + cfg.Host + ":" + cfg.Port + ")/" + db + "?charset=" + cfg.Charset + "&parseTime=true&loc=Local"
-	self.conn, _ = sql.Open(cfg.Driver, source)
+	m.conn, _ = sql.Open(cfg.Driver, source)
 	// 是否成功
-	if err := self.conn.Ping(); err != nil {
-		self.Print("[Model] Conn:", err)
-		self.LogsErr(err)
-		return nil, err
+	if err := m.conn.Ping(); err != nil {
+		m.Print("[Model] Conn:", err)
+		return nil
 	}
 	// 数据池
-	self.conn.SetMaxIdleConns(cfg.Min)
-	self.conn.SetMaxOpenConns(cfg.Max)
-	self.conn.SetConnMaxLifetime(time.Second * time.Duration(cfg.Time))
-	return self.conn, nil
+	m.conn.SetMaxIdleConns(cfg.Min)
+	m.conn.SetMaxOpenConns(cfg.Max)
+	m.conn.SetConnMaxLifetime(time.Second * time.Duration(cfg.Time))
+	// m.Print("连接", m.conn)
+	return m.conn
 }
 
-/* 关闭 */
-func (self *Model) Close() {
-	if self.conn != nil {
-		if err := self.conn.Close(); err != nil {
-			self.Print("[Model] Close:", err)
-			self.LogsErr(err)
+// Conn 链接
+func (m *Model) Conn() *sql.DB {
+	return m.conn
+}
+
+// Close 关闭
+func (m *Model) Close() {
+	if m.conn != nil {
+		// m.Print("关闭", m.conn)
+		if err := m.conn.Close(); err != nil {
+			m.Print("[Model] Close:", err)
 		}
 	}
 }
 
-/* 查询 */
-func (self *Model) Query(sql string, args []interface{}) (*sql.Rows, error) {
+// Query :查询
+func (m *Model) Query(sql string, args []interface{}) (*sql.Rows, error) {
 	if sql == "" {
 		err := "SQL不能为空!"
-		self.Print("[Model] Query:", err)
+		m.Print("[Model] Query:", err)
 		return nil, errors.New(err)
 	}
 	// 是否连接
-	if _, err := self.Conn(); err != nil {
-		return nil, err
+	if m.conn == nil {
+		return nil, nil
 	}
-	rows, err := self.conn.Query(sql, args...)
+	rows, err := m.conn.Query(sql, args...)
 	if err != nil {
-		self.Print("[Model] Query:", sql)
-		self.LogsErr(err)
-		defer rows.Close()
+		m.Print("[Model] Query:", sql, err)
+		return nil, err
 	}
 	return rows, err
 }
 
-/* 执行 */
-func (self *Model) Exec(sql string, args []interface{}) (sql.Result, error) {
+// Exec :执行
+func (m *Model) Exec(sql string, args []interface{}) (sql.Result, error) {
 	if sql == "" {
 		err := "SQL不能为空!"
-		self.Print("[Model] Exec:", err)
+		m.Print("[Model] Exec:", err)
 		return nil, errors.New(err)
 	}
 	// 是否连接
-	if _, err := self.Conn(); err != nil {
-		return nil, err
+	if m.conn == nil {
+		return nil, nil
 	}
-	rows, err := self.conn.Exec(sql, args...)
-	self.args = make([]interface{}, 0, 10)
+	rows, err := m.conn.Exec(sql, args...)
+	m.args = make([]interface{}, 0, 10)
 	if err != nil {
-		self.Print("[Model] Query:", sql)
-		self.LogsErr(err)
+		m.Print("[Model] Exec:", sql, err)
+		return nil, err
 	}
 	return rows, err
 }
 
-/* 获取-SQL */
-func (self *Model) GetSql() string {
-	return self.sql
+// GetSQL :获取-SQL
+func (m *Model) GetSQL() string {
+	return m.sql
 }
 
-/* 数据库 */
-func (self *Model) Db(database string) {
-	self.db = database
+// Db :数据库
+func (m *Model) Db(database string) {
+	m.db = database
 }
 
-/* 表 */
-func (self *Model) Table(table string) {
-	self.table = table
+// Table :表
+func (m *Model) Table(table string) {
+	m.table = table
 }
 
-/* 关联-INNER */
-func (self *Model) Join(table string, on string) {
-	self.table += " INNER JOIN " + table + " ON " + on
+// Join :关联-INNER
+func (m *Model) Join(table string, on string) {
+	m.table += " INNER JOIN " + table + " ON " + on
 }
 
-/* 关联-LEFT */
-func (self *Model) LeftJoin(table string, on string) {
-	self.table += " LEFT JOIN " + table + " ON " + on
+// LeftJoin :关联-LEFT
+func (m *Model) LeftJoin(table string, on string) {
+	m.table += " LEFT JOIN " + table + " ON " + on
 }
 
-/* 关联-RIGHT */
-func (self *Model) RightJoin(table string, on string) {
-	self.table += " RIGHT JOIN " + table + " ON " + on
+// RightJoin :关联-RIGHT
+func (m *Model) RightJoin(table string, on string) {
+	m.table += " RIGHT JOIN " + table + " ON " + on
 }
 
-/* 关联-FULL */
-func (self *Model) FullJoin(table string, on string) {
-	self.table += " FULL JOIN " + table + " ON " + on
+// FullJoin :关联-FULL
+func (m *Model) FullJoin(table string, on string) {
+	m.table += " FULL JOIN " + table + " ON " + on
 }
 
-/* 字段 */
-func (self *Model) Columns(columns ...string) {
-	self.columns = ""
+// Columns :字段
+func (m *Model) Columns(columns ...string) {
+	m.columns = ""
 	for _, v := range columns {
-		self.columns += v + ", "
+		m.columns += v + ", "
 	}
-	if self.columns != "" {
-		self.columns = self.columns[:len(self.columns)-2]
+	if m.columns != "" {
+		m.columns = m.columns[:len(m.columns)-2]
 	}
 }
 
-/* 条件 */
-func (self *Model) Where(where string, values ...interface{}) {
-	self.where = where
+// Where :条件
+func (m *Model) Where(where string, values ...interface{}) {
+	m.where = where
 	for _, v := range values {
-		self.args = append(self.args, v)
+		m.args = append(m.args, v)
 	}
 }
 
-/* 限制 */
-func (self *Model) Limit(start int, limit int) {
-	self.limit = strconv.Itoa(start) + "," + strconv.Itoa(limit)
+// Limit :限制
+func (m *Model) Limit(start int, limit int) {
+	m.limit = strconv.Itoa(start) + "," + strconv.Itoa(limit)
 }
 
-/* 排序 */
-func (self *Model) Order(order ...string) {
-	self.order = ""
+// Order :排序
+func (m *Model) Order(order ...string) {
+	m.order = ""
 	for _, v := range order {
-		self.order += v + ","
+		m.order += v + ","
 	}
-	if self.order != "" {
-		self.order = self.order[:len(self.order)-1]
+	if m.order != "" {
+		m.order = m.order[:len(m.order)-1]
 	}
 }
 
-/* 分组 */
-func (self *Model) Group(group ...string) {
-	self.order = ""
+// Group :分组
+func (m *Model) Group(group ...string) {
+	m.order = ""
 	for _, v := range group {
-		self.group += v + ","
+		m.group += v + ","
 	}
-	if self.group != "" {
-		self.group = self.group[:len(self.group)-1]
+	if m.group != "" {
+		m.group = m.group[:len(m.group)-1]
 	}
 }
 
-/* 分页 */
-func (self *Model) Page(page int, limit int) {
+// Page :分页
+func (m *Model) Page(page int, limit int) {
 	start := (page - 1) * limit
-	self.limit = strconv.Itoa(start) + "," + strconv.Itoa(limit)
+	m.limit = strconv.Itoa(start) + "," + strconv.Itoa(limit)
 }
 
-/* 查询-SQL */
-func (self *Model) SelectSql() (string, []interface{}) {
-	if self.table == "" {
-		self.Print("[Model] Select: 表不能为空!")
+// SelectSQL :查询-SQL
+func (m *Model) SelectSQL() (string, []interface{}) {
+	if m.table == "" {
+		m.Print("[Model] Select: 表不能为空!")
 		return "", nil
 	}
-	if self.columns == "" {
-		self.Print("[Model] Select: 字段不能为空!")
+	if m.columns == "" {
+		m.Print("[Model] Select: 字段不能为空!")
 		return "", nil
 	}
 	// 合成
-	self.sql = "SELECT " + self.columns + " FROM " + self.table
-	if self.where != "" {
-		self.sql += " WHERE " + self.where
-		self.where = ""
+	m.sql = "SELECT " + m.columns + " FROM " + m.table
+	if m.where != "" {
+		m.sql += " WHERE " + m.where
+		m.where = ""
 	}
-	if self.order != "" {
-		self.sql += " ORDER BY " + self.order
-		self.order = ""
+	if m.order != "" {
+		m.sql += " ORDER BY " + m.order
+		m.order = ""
 	}
-	if self.group != "" {
-		self.sql += " GROUP BY " + self.group
-		self.group = ""
+	if m.group != "" {
+		m.sql += " GROUP BY " + m.group
+		m.group = ""
 	}
-	if self.limit != "" {
-		self.sql += " LIMIT " + self.limit
-		self.limit = ""
+	if m.limit != "" {
+		m.sql += " LIMIT " + m.limit
+		m.limit = ""
 	}
-	args := self.args
-	self.args = make([]interface{}, 0, 10)
-	return self.sql, args
+	args := m.args
+	m.args = make([]interface{}, 0, 10)
+	return m.sql, args
 }
 
-/* 查询-多条 */
-func (self *Model) Find() []interface{} {
-	sql, args := self.SelectSql()
+// Find :查询-多条
+func (m *Model) Find() []map[string]interface{} {
+	sql, args := m.SelectSQL()
 	if sql == "" {
 		return nil
 	}
-	rows, _ := self.Query(sql, args)
+	rows, _ := m.Query(sql, args)
 	if rows == nil {
 		return nil
 	}
-	return self.FindDataAll(rows)
+	return m.FindDataAll(rows)
 }
 
-/* 查询-单条 */
-func (self *Model) FindFirst() interface{} {
-	self.limit = "0,1"
-	sql, args := self.SelectSql()
+// FindFirst :查询-单条
+func (m *Model) FindFirst() map[string]interface{} {
+	m.limit = "0,1"
+	sql, args := m.SelectSQL()
 	if sql == "" {
 		return nil
 	}
-	rows, _ := self.Query(sql, args)
+	rows, _ := m.Query(sql, args)
 	if rows == nil {
 		return nil
 	}
-	return self.FindDataOne(rows)
+	return m.FindDataOne(rows)
 }
 
-/* 获取查询结果 */
-func (self *Model) FindDataOne(rows *sql.Rows) interface{} {
-	res := self.FindDataAll(rows)
+// FindDataOne :获取查询结果-单条
+func (m *Model) FindDataOne(rows *sql.Rows) map[string]interface{} {
+	res := m.FindDataAll(rows)
+	if len(res) == 0 {
+		return nil
+	}
 	return res[0]
 }
-func (self *Model) FindDataAll(rows *sql.Rows) []interface{} {
+
+// FindDataAll :获取查询结果-多条
+func (m *Model) FindDataAll(rows *sql.Rows) []map[string]interface{} {
 	// 字段长度
 	columns, _ := rows.Columns()
 	key := make([]interface{}, len(columns))
@@ -266,7 +275,7 @@ func (self *Model) FindDataAll(rows *sql.Rows) []interface{} {
 	}
 	// 数据处理
 	var i int = 0
-	res := make([]interface{}, 0, 10)
+	res := make([]map[string]interface{}, 0, 10)
 	for rows.Next() {
 		rows.Scan(key...)
 		tmp := make(map[string]interface{})
@@ -283,49 +292,49 @@ func (self *Model) FindDataAll(rows *sql.Rows) []interface{} {
 	return res
 }
 
-/* 添加-数据 */
-func (self *Model) Values(data map[string]interface{}) {
+// Values :添加-数据
+func (m *Model) Values(data map[string]interface{}) {
 	keys, vals := "", ""
-	self.args = make([]interface{}, 0, 10)
+	m.args = make([]interface{}, 0, 10)
 	for k, v := range data {
 		keys += k + ", "
 		vals += "?, "
-		self.args = append(self.args, v)
+		m.args = append(m.args, v)
 	}
 	if len(data) > 0 {
 		keys = keys[:len(keys)-2]
 		vals = vals[:len(vals)-2]
 	}
-	self.keys = keys
-	self.values = vals
+	m.keys = keys
+	m.values = vals
 }
 
-/* 添加-SQL */
-func (self *Model) InsertSql() (string, []interface{}) {
-	if self.table == "" {
+// InsertSQL :添加-SQL
+func (m *Model) InsertSQL() (string, []interface{}) {
+	if m.table == "" {
 		fmt.Println("[Model] Insert: 表不能为空!")
 		return "", nil
 	}
-	if self.keys == "" || self.values == "" {
+	if m.keys == "" || m.values == "" {
 		fmt.Println("[Model] Insert: 数据不能为空!")
 		return "", nil
 	}
-	self.sql = "INSERT INTO `" + self.table + "`(" + self.keys + ") values(" + self.values + ")"
-	args := self.args
+	m.sql = "INSERT INTO `" + m.table + "`(" + m.keys + ") values(" + m.values + ")"
+	args := m.args
 	// 重置
-	self.keys = ""
-	self.values = ""
-	self.args = make([]interface{}, 0, 10)
-	return self.sql, args
+	m.keys = ""
+	m.values = ""
+	m.args = make([]interface{}, 0, 10)
+	return m.sql, args
 }
 
-/* 添加-执行 */
-func (self *Model) Insert() int64 {
-	sql, args := self.InsertSql()
+// Insert :添加-执行
+func (m *Model) Insert() int64 {
+	sql, args := m.InsertSQL()
 	if sql == "" {
 		return 0
 	}
-	rows, err := self.Exec(sql, args)
+	rows, err := m.Exec(sql, args)
 	if err != nil {
 		return 0
 	}
@@ -336,50 +345,50 @@ func (self *Model) Insert() int64 {
 	return id
 }
 
-/* 更新-数据 */
-func (self *Model) Set(data map[string]interface{}) {
-	self.args = make([]interface{}, 0, 10)
+// Set :更新-数据
+func (m *Model) Set(data map[string]interface{}) {
+	m.args = make([]interface{}, 0, 10)
 	vals := ""
 	for k, v := range data {
 		vals += k + "=?, "
-		self.args = append(self.args, v)
+		m.args = append(m.args, v)
 	}
 	if len(data) > 0 {
 		vals = vals[:len(vals)-2]
 	}
-	self.data = vals
+	m.data = vals
 }
 
-/* 更新-SQL */
-func (self *Model) UpdateSql() (string, []interface{}) {
-	if self.table == "" {
-		self.Print("[Model] Update: 表不能为空!")
+// UpdateSQL :更新-SQL
+func (m *Model) UpdateSQL() (string, []interface{}) {
+	if m.table == "" {
+		m.Print("[Model] Update: 表不能为空!")
 		return "", nil
 	}
-	if self.data == "" {
-		self.Print("[Model] Update: 数据不能为空!")
+	if m.data == "" {
+		m.Print("[Model] Update: 数据不能为空!")
 		return "", nil
 	}
-	if self.where == "" {
-		self.Print("[Model] Update: 条件不能为空!")
+	if m.where == "" {
+		m.Print("[Model] Update: 条件不能为空!")
 		return "", nil
 	}
-	self.sql = "UPDATE `" + self.table + "` SET " + self.data + " WHERE " + self.where
-	args := self.args
+	m.sql = "UPDATE `" + m.table + "` SET " + m.data + " WHERE " + m.where
+	args := m.args
 	// 重置
-	self.data = ""
-	self.where = ""
-	self.args = make([]interface{}, 0, 10)
-	return self.sql, args
+	m.data = ""
+	m.where = ""
+	m.args = make([]interface{}, 0, 10)
+	return m.sql, args
 }
 
-/* 更新-执行 */
-func (self *Model) Update() int64 {
-	sql, args := self.UpdateSql()
+// Update :更新-执行
+func (m *Model) Update() int64 {
+	sql, args := m.UpdateSQL()
 	if sql == "" {
 		return 0
 	}
-	rows, err := self.Exec(sql, args)
+	rows, err := m.Exec(sql, args)
 	if err != nil {
 		return 0
 	}
@@ -390,31 +399,31 @@ func (self *Model) Update() int64 {
 	return num
 }
 
-/* 删除-SQL */
-func (self *Model) DeleteSql() (string, []interface{}) {
-	if self.table == "" {
-		self.Print("[Model] Delete: 表不能为空!")
+// DeleteSQL :删除-SQL
+func (m *Model) DeleteSQL() (string, []interface{}) {
+	if m.table == "" {
+		m.Print("[Model] Delete: 表不能为空!")
 		return "", nil
 	}
-	if self.where == "" {
-		self.Print("[Model] Delete: 条件不能为空!")
+	if m.where == "" {
+		m.Print("[Model] Delete: 条件不能为空!")
 		return "", nil
 	}
-	self.sql = "DELETE FROM `" + self.table + "` WHERE " + self.where
-	args := self.args
+	m.sql = "DELETE FROM `" + m.table + "` WHERE " + m.where
+	args := m.args
 	// 重置
-	self.where = ""
-	self.args = make([]interface{}, 0, 10)
-	return self.sql, args
+	m.where = ""
+	m.args = make([]interface{}, 0, 10)
+	return m.sql, args
 }
 
-/* 删除-执行 */
-func (self *Model) Delete() int64 {
-	sql, args := self.DeleteSql()
+// Delete :删除-执行
+func (m *Model) Delete() int64 {
+	sql, args := m.DeleteSQL()
 	if sql == "" {
 		return 0
 	}
-	rows, err := self.Exec(sql, args)
+	rows, err := m.Exec(sql, args)
 	if err != nil {
 		return 0
 	}

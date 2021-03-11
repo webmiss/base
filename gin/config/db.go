@@ -1,6 +1,7 @@
 package config
 
-type MySql struct {
+// MySQL :数据库配置
+type MySQL struct {
 	Driver   string
 	Host     string
 	Port     string
@@ -13,8 +14,8 @@ type MySql struct {
 	Time     int64
 }
 
-/* 数据库配置 */
-func (cfg *MySql) Config() *MySql {
+// Config :数据库配置
+func (cfg *MySQL) Config() *MySQL {
 	cfg.Driver = "mysql"                              //类型
 	cfg.Host = "127.0.0.1"                            //主机
 	cfg.Port = "3306"                                 //端口

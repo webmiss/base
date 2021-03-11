@@ -24,7 +24,7 @@ func main() {
 	app.Use(gin.Recovery())                     //处理异常
 	// 路由
 	router.Home(app)
-	router.Api(app)
+	router.API(app)
 	router.Admin(app)
 	// 运行
 	app.Run(cfg.Host + ":" + cfg.Port)

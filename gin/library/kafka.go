@@ -7,11 +7,12 @@ import (
 	"github.com/segmentio/kafka-go"
 )
 
+// Kafka :客户端
 type Kafka struct {
 }
 
-/* 消费者 */
-func (this *Kafka) Consumer(topic string) *kafka.Reader {
+// Consumer :消费者
+func (k *Kafka) Consumer(topic string) *kafka.Reader {
 	cfg := (&config.Kafka{}).Config()
 	r := kafka.NewReader(kafka.ReaderConfig{
 		Brokers:  []string{cfg.Host + ":" + cfg.Port},
@@ -23,8 +24,8 @@ func (this *Kafka) Consumer(topic string) *kafka.Reader {
 	return r
 }
 
-/* 主题列表 */
-func (this *Kafka) TopicList() {
+// TopicList :主题列表
+func (k *Kafka) TopicList() {
 	cfg := (&config.Kafka{}).Config()
 	conn, err := kafka.Dial(cfg.Type, cfg.Host+":"+cfg.Port)
 	if err != nil {

@@ -1,12 +1,14 @@
 package model
 
+// SysConfig :系统配置表
 type SysConfig struct {
 	Model
 }
 
-/* 系统配置表 */
-func (self *SysConfig) Init() *SysConfig {
-	self.Db("")
-	self.Table("sys_config")
-	return self
+// New :构造函数
+func (m *SysConfig) New() *SysConfig {
+	m.Db("")
+	m.Table("sys_config")
+	m.Run()
+	return m
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-/* 访问日志 */
+// Logs :访问日志
 func Logs() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		(&service.Logs{}).Log(gin.H{

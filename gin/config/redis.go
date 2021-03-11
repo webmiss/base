@@ -1,5 +1,6 @@
 package config
 
+// Redis :Redis配置
 type Redis struct {
 	Host     string
 	Port     string
@@ -10,6 +11,7 @@ type Redis struct {
 	Time     int64
 }
 
+// Config :获取
 func (r *Redis) Config() *Redis {
 	r.Host = "127.0.0.1" //主机
 	r.Port = "6379"      //端口

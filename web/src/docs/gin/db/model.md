@@ -8,9 +8,10 @@ type Demo struct {
 }
 
 /* 构造函数 */
-func (self *Demo) Init() *Demo {
+func (self *Demo) New() *Demo {
 	self.Db("")
 	self.Table("test")
+	self.Run()
 	return self
 }
 ```

@@ -10,7 +10,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-/* 启动 */
+// Socket :通信
 func Socket(c *gin.Context) {
 	// 验证
 	tp := c.Query("type")

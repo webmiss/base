@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Home :路由
 func Home(r *gin.Engine) {
 	g := r.Group("")
 	// 允许跨域

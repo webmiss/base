@@ -5,10 +5,11 @@ import (
 	"time"
 )
 
-type JsonTime time.Time
+// JSONTime :插件
+type JSONTime time.Time
 
-/* 格式化JsonTime */
-func (this JsonTime) MarshalJSON() ([]byte, error) {
-	var stamp = fmt.Sprintf("\"%s\"", time.Time(this).Format("2006-01-02 15:04:05"))
+// MarshalJSON :格式化JsonTime
+func (u JSONTime) MarshalJSON() ([]byte, error) {
+	var stamp = fmt.Sprintf("\"%s\"", time.Time(u).Format("2006-01-02 15:04:05"))
 	return []byte(stamp), nil
 }

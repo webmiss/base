@@ -16,30 +16,29 @@ import webmis.config.Db;
 /* 数据库 */
 public class Model extends Base {
 
-  private Connection _conn = null;           //链接
-  private String _type = "";                 //类型: select、insert、update、delete
-  private String _sql = "";                  //SQL
-  private String _db = "";                   //数据库
-  private String _table = "";                //数据表
-  private String _columns = "";              //字段
-  private String _where = "";                //条件
-  private String _group = "";                //分组
-  private String _order = "";                //排序
-  private String _limit = "";                //限制
-  private PreparedStatement _bind = null;    //参数
-  private String _keys = "";                 //新增-名
-  private String _values = "";               //新增-值
-  private String _data = "";                 //更新-数据
-  private int _num = 0;                      //统计条数
+  private Connection _conn = null;            //链接
+  private String _type = "";                  //类型: select、insert、update、delete
+  private String _sql = "";                   //SQL
+  private String _db = "";                          //数据库
+  private String _table = "";                       //数据表
+  private String _columns = "";                     //字段
+  private String _where = "";                       //条件
+  private String _group = "";                       //分组
+  private String _order = "";                       //排序
+  private String _limit = "";                       //限制
+  private PreparedStatement _bind = null;           //参数
+  private String _keys = "";                        //新增-名
+  private String _values = "";                      //新增-值
+  private String _data = "";                        //更新-数据
+  private int _num = 0;                             //统计条数
 
   /* 构造函数 */
   public Model() {
+    String db = !_db.equals("")?_db:Db.database;
+    String url = "jdbc:mysql://"+Db.host+":"+Db.port+"/"+db+"?characterEncoding="+Db.charset+"&useSSL=false&serverTimezone=Asia/Shanghai";
     try {
-      // 创建连接
-      String db = !_db.equals("")?_db:Db.database;
-      String url = "jdbc:mysql://"+Db.host+":"+Db.port+"/"+db+"?characterEncoding="+Db.charset+"&useSSL=false&serverTimezone=Asia/Shanghai";
       _conn = DriverManager.getConnection(url, Db.user, Db.password);
-    } catch (SQLException e) {
+    } catch (Exception e) {
       Print("[Model] Conn:"+e.getMessage());
     }
   }

@@ -33,7 +33,7 @@ func main() {
 	}
 }
 
-/* 记录 */
+// 写入
 func write(text []byte) bool {
 	// 数据
 	data := map[string]interface{}{}

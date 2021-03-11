@@ -15,7 +15,7 @@ func main() {
 	// 路由
 	cfg := (&config.Socket{}).Config()
 	r := gin.Default()
-	r.GET(cfg.Url, func(c *gin.Context) {
+	r.GET(cfg.URL, func(c *gin.Context) {
 		service.Socket(c)
 	})
 	r.Run(cfg.Host + ":" + cfg.Port)

@@ -1,13 +1,14 @@
 package model
 
-/* 测试表 */
+// Demo 测试表
 type Demo struct {
 	Model
 }
 
-/* 构造函数 */
-func (self *Demo) Init() *Demo {
-	self.Db("")
-	self.Table("test")
-	return self
+// New 构造函数
+func (m *Demo) New() *Demo {
+	m.Db("")
+	m.Table("test")
+	m.Run()
+	return m
 }
