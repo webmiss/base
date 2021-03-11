@@ -32,22 +32,27 @@ public class Model extends Base {
   private String _data = "";                 //更新-数据
   private int _num = 0;                      //统计条数
 
-  /* 链接数据库 */
-  public Connection Conn() {
+  /* 构造函数 */
+  public Model() {
     try {
+      // 创建连接
       String db = !_db.equals("")?_db:Db.database;
       String url = "jdbc:mysql://"+Db.host+":"+Db.port+"/"+db+"?characterEncoding="+Db.charset+"&useSSL=false&serverTimezone=Asia/Shanghai";
       _conn = DriverManager.getConnection(url, Db.user, Db.password);
     } catch (SQLException e) {
       Print("[Model] Conn:"+e.getMessage());
     }
+  }
+
+  /* 链接 */
+  public Connection Conn() {
     return _conn;
   }
 
   /* 关闭 */
   public void Close() {
     try {
-      if(_conn != null && !_conn.isClosed()) _conn.close();
+      _conn.close();
     } catch (SQLException e) {
       Print("[Model] Close:"+e.getMessage());
     }
@@ -61,7 +66,7 @@ public class Model extends Base {
     // 类型
     _type = insert?"insert":"";
     // 连接
-    if(Conn()==null) return _bind;
+    if(_conn==null) return _bind;
     try {
       if(_type.equals("insert")){
         _bind = _conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

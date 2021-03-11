@@ -20,9 +20,8 @@ class Model(Base) :
   __values: str = ''          #新增-值
   __data: str = ''            #更新-数据
 
-
-  # 链接数据库
-  def Conn(self, pool=False) :
+  # 构造函数
+  def __init__(self, pool=False):
     cfg = {
       'host': Db.host,
       'port': Db.port,
@@ -39,7 +38,7 @@ class Model(Base) :
         cfg['maxconnections'] = Db.max
         cfg['blocking'] = True  #是否阻塞等待
         cfg['maxusage'] = True  #重复使用次数
-        pool = PooledDB(creator=Db.Driver, **cfg)
+        pool = PooledDB(creator=Db.driver, **cfg)
         self.__conn = pool.connection()
       else :
         cfg['passwd'] = Db.password
@@ -48,6 +47,10 @@ class Model(Base) :
     except Exception as e :
       print('[Model] Conn:', e)
       return None
+
+  # 链接
+  def Conn(self):
+    return self.__conn
 
   # 关闭
   def Close(self) :
@@ -59,7 +62,7 @@ class Model(Base) :
       print('[Model] Query: SQL不能为空!')
       return None, 0
     # 连接
-    if self.Conn() == None : return None, 0
+    if not self.__conn : return None, 0
     # 游标
     try :
       cs = self.__conn.cursor(cursor=pymysql.cursors.DictCursor)
@@ -75,7 +78,7 @@ class Model(Base) :
       print('[Model] Exec: SQL不能为空!')
       return None, 0
     # 连接
-    if self.Conn() == None : return None, 0
+    if not self.__conn : return None, 0
     # 游标
     try :
       cs = self.__conn.cursor()

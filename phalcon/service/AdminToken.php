@@ -1,12 +1,13 @@
 <?php
 namespace Service;
 
+use Base\Base;
 use Config\Env;
 use Library\Safety;
 use Library\Redis;
 
 /* 后台Token */
-class AdminToken {
+class AdminToken extends Base {
 
   /* 生成 */
   static function create(array $data): ?string {
@@ -14,8 +15,10 @@ class AdminToken {
     $token = Safety::encode($data);
     // 缓存
     $key = Env::$admin_token_prefix.$data['uid'];
-    Redis::Set($key, '1');
-    Redis::Expire($key, Env::$admin_token_time);
+    $redis = new Redis();
+    $redis->Set($key, '1');
+    $redis->Expire($key, Env::$admin_token_time);
+    $redis->Close();
     return $token;
   }
 

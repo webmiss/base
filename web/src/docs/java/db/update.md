@@ -1,7 +1,7 @@
 ### 更新
 ```java
 import webmis.model.Demo;
-
+// 对象
 Demo demo = new Demo();
 demo.Set("title");
 demo.Where("uid=?");

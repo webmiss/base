@@ -17,8 +17,10 @@ public class AdminToken extends Base {
     String token = Safety.encode(data);
     // 缓存
     String key = Env.admin_token_prefix+String.valueOf(data.get("uid"));
-    Redis.Set(key, "1");
-    Redis.Expire(key, Env.admin_token_time);
+    Redis redis = new Redis();
+    redis.Set(key, "1");
+    redis.Expire(key, Env.admin_token_time);
+    redis.Close();
     return token;
   }
   

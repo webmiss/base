@@ -22,6 +22,8 @@ try:
   self.Print(sql, args, num)
   # 提交
   model.commit()
+  # 关闭
+  model.close()
 except Exception as e:
   model.rollback()
 ```

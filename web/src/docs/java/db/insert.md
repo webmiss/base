@@ -1,7 +1,7 @@
 ### 插入
 ```java
 import webmis.model.Demo;
-
+// 对象
 Demo demo = new Demo();
 demo.Values("uid","title");
 String sql = demo.InsertSql();

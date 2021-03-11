@@ -1,7 +1,7 @@
 ### 删除
 ```java
 import webmis.model.Demo;
-
+// 对象
 Demo demo = new Demo();
 demo.Where("uid=?");
 String sql = demo.DeleteSql();

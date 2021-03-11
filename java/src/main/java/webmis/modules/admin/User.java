@@ -80,10 +80,12 @@ public class User extends Base {
     ps.setString(1, Util.date("yyyy-MM-dd HH:mm:ss"));
     ps.setString(2, data.get("id").toString());
     model.Update(ps);
+    // 关闭
+    model.Close();
     // 返回
     res = new HashMap<String,Object>();
-    res.put("code",0);
-    res.put("msg","成功");
+    res.put("code", 10);
+    res.put("msg", "成功");
     // Token
     HashMap<String, Object> token = new HashMap<String, Object>();
     token.put("uid", data.get("id").toString());
@@ -91,14 +93,14 @@ public class User extends Base {
     res.put("token", AdminToken.create(token));
     // 用户信息
     HashMap<String,Object> uinfo = new HashMap<String,Object>();
-    uinfo.put("uid",data.get("id"));
-    uinfo.put("uname",uname);
-    uinfo.put("position",data.get("position"));
-    uinfo.put("nickname",data.get("nickname"));
-    uinfo.put("name",data.get("name"));
-    uinfo.put("gender",data.get("gender"));
-    uinfo.put("img",!data.get("img").equals("")?Env.base_url+(String)data.get("img"):"");
-    res.put("uinfo",uinfo);
+    uinfo.put("uid", data.get("id"));
+    uinfo.put("uname", uname);
+    uinfo.put("position", data.get("position"));
+    uinfo.put("nickname", data.get("nickname"));
+    uinfo.put("name", data.get("name"));
+    uinfo.put("gender", data.get("gender"));
+    uinfo.put("img", !data.get("img").equals("")?Env.base_url+(String)data.get("img"):"");
+    res.put("uinfo", uinfo);
     return GetJSON(res);
   }
 

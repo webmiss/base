@@ -13,7 +13,9 @@ class AdminToken:
     token = Safety.encode(data)
     # 缓存
     key = Env.admin_token_prefix+str(data['uid'])
-    Redis().Set(key, '1')
-    Redis().Expire(key, Env.admin_token_time)
+    redis = Redis()
+    redis.Set(key, '1')
+    redis.Expire(key, Env.admin_token_time)
+    redis.Close()
     return token
     

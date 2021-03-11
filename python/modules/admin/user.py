@@ -43,7 +43,7 @@ class User(Base):
     model.Close()
     # 返回
     return self.GetJSON({
-      'code': 0,
+      'code': 10,
       'msg': '成功',
       'token': AdminToken().create({'uid':str(data['id']), 'uname':uname}),
       'uinfo': {

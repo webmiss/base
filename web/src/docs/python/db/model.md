@@ -8,6 +8,7 @@ class Demo(Model) :
 
   # 构造函数
   def __init__(self):
+    super().__init__()
     self.Db('')
     self.Table('test')
 ```
@@ -15,5 +16,8 @@ class Demo(Model) :
 ### 使用
 ```python
 from model.demo import Demo
+# 对象
 demo = Demo()
+# 关闭
+demo.Close()
 ```

@@ -7,29 +7,29 @@ use Config\Db;
 /* 数据库 */
 class Model extends Base {
 
-  private static $conn = null;          //连接
-  private static $sql = '';             //SQL
-  private static $db = '';              //数据库
-  private static $table = '';           //数据表
-  private static $columns = '';         //字段
-  private static $where = '';           //条件
-  private static $group = '';           //分组
-  private static $order = '';           //排序
-  private static $limit = '';           //限制
-  private static $args = [];            //参数
-  private static $keys = '';            //新增-名
-  private static $values = '';          //新增-值
-  private static $data = '';            //更新-数据
+  private $conn = null;          //连接
+  private $sql = '';             //SQL
+  private $db = '';              //数据库
+  private $table = '';           //数据表
+  private $columns = '';         //字段
+  private $where = '';           //条件
+  private $group = '';           //分组
+  private $order = '';           //排序
+  private $limit = '';           //限制
+  private $args = [];            //参数
+  private $keys = '';            //新增-名
+  private $values = '';          //新增-值
+  private $data = '';            //更新-数据
 
-  /* 链接数据库 */
-  static function Conn(): object {
+  /* 构造函数 */
+  function __construct() {
     // 参数
     $params = [
       'host'=> Db::$Host,
       'port'=> Db::$Port,
       'username'=> Db::$User,
       'password'=> Db::$Password,
-      'dbname'=> self::$db!=''?self::$db:Db::$Database,
+      'dbname'=> $this->db!=''?$this->db:Db::$Database,
       'charset'=> Db::$Charset,
       'persistent'=> Db::$Persistent,
     ];
@@ -37,246 +37,250 @@ class Model extends Base {
     if (Db::$Driver == 'Postgresql') unset($params['charset']);
     // 命名空间
     $class = 'Phalcon\Db\Adapter\Pdo\\'.Db::$Driver;
-    self::$conn = new $class($params);
-    return self::$conn;
+    $this->conn = new $class($params);
+  }
+
+  /* 链接 */
+  function Conn(): object {
+    return $this->conn;
   }
 
   /* 关闭 */
-  static function Close() {
-    if(self::$conn) self::$conn->close();
+  function Close() {
+    if($this->conn) $this->conn->close();
   }
 
   /* 查询 */
-  static function Query(string $sql, array $args=[]) {
+  function Query(string $sql, array $args=[]) {
     if(empty($sql)){
-      self::Print('[Model] Query: SQL不能为空!');
+      $this->Print('[Model] Query: SQL不能为空!');
       return null;
     }
     // 连接
-    if(empty(self::Conn())) return false;
-    $res = self::$conn->query($sql, $args);
+    if(!$this->conn) return false;
+    $res = $this->conn->query($sql, $args);
     return $res;
   }
 
   /* 执行 */
-  static function Exec(string $sql, array $args=[]): bool {
+  function Exec(string $sql, array $args=[]): bool {
     if(empty($sql)){
-      self::Print('[Model] Exec: SQL不能为空!');
+      $this->Print('[Model] Exec: SQL不能为空!');
       return false;
     }
     // 连接
-    if(empty(self::Conn())) return false;
-    $res = self::$conn->execute($sql, $args);
+    if(!$this->conn) return false;
+    $res = $this->conn->execute($sql, $args);
     return $res;
   }
 
   /* 获取-SQL */
-  static function GetSql() : string {
-    return self::$sql;
+  function GetSql() : string {
+    return $this->sql;
   }
 
   /* 数据库 */
-  static function Db(string $database): void {
-    self::$db = $database;
+  function Db(string $database): void {
+    $this->db = $database;
   }
   /* 表 */
-  static function Table(string $table): void {
-    self::$table = $table;
+  function Table(string $table): void {
+    $this->table = $table;
   }
   /* 关联-INNER */
-  static function Join(string $table, string $on): void {
-    self::$table .= ' INNER JOIN ' . $table . ' ON ' . $on;
+  function Join(string $table, string $on): void {
+    $this->table .= ' INNER JOIN ' . $table . ' ON ' . $on;
   }
   /* 关联-LEFT */
-  static function LeftJoin(string $table, string $on): void {
-    self::$table .= ' LEFT JOIN ' . $table . ' ON ' . $on;
+  function LeftJoin(string $table, string $on): void {
+    $this->table .= ' LEFT JOIN ' . $table . ' ON ' . $on;
   }
   /* 关联-RIGHT */
-  static function RightJoin(string $table, string $on): void {
-    self::$table .= ' RIGHT JOIN ' . $table . ' ON ' . $on;
+  function RightJoin(string $table, string $on): void {
+    $this->table .= ' RIGHT JOIN ' . $table . ' ON ' . $on;
   }
   /* 关联-FULL */
-  static function FullJoin(string $table, string $on): void {
-    self::$table .= ' FULL JOIN ' . $table . ' ON ' . $on;
+  function FullJoin(string $table, string $on): void {
+    $this->table .= ' FULL JOIN ' . $table . ' ON ' . $on;
   }
   /* 字段 */
-  static function Columns(...$columns): void {
-    self::$columns = implode(',', $columns);
+  function Columns(...$columns): void {
+    $this->columns = implode(',', $columns);
   }
   /* 条件 */
-  static function Where(string $where, ...$values): void {
-    self::$where = $where;
-    self::$args = array_merge(self::$args, $values);
+  function Where(string $where, ...$values): void {
+    $this->where = $where;
+    $this->args = array_merge($this->args, $values);
   }
   /* 限制 */
-  static function Limit(int $start, int $limit): void {
-    self::$limit = $start.','.$limit;
+  function Limit(int $start, int $limit): void {
+    $this->limit = $start.','.$limit;
   }
   /* 排序 */
-  static function Order(...$order): void {
-    self::$order = implode(',', $order);
+  function Order(...$order): void {
+    $this->order = implode(',', $order);
   }
   /* 分组 */
-  static function Group(...$group): void {
-    self::$group = implode(',', $group);
+  function Group(...$group): void {
+    $this->group = implode(',', $group);
   }
 
   /* 分页 */
-  static function Page(int $page, int $limit): void {
+  function Page(int $page, int $limit): void {
     $start = ($page - 1) * $limit;
-    self::$limit = $start . ',' . $limit;
+    $this->limit = $start . ',' . $limit;
   }
 
   /* 查询-SQL */
-  static function SelectSql(): array {
-    if(self::$table==''){
-      self::Print('Model[Select]: 表不能为空!');
-      return ['', self::$args];
+  function SelectSql(): array {
+    if($this->table==''){
+      $this->Print('Model[Select]: 表不能为空!');
+      return ['', $this->args];
     }
-    if(self::$columns==''){
-      self::Print('Model[Select]: 字段不能为空!');
-      return ['', self::$args];
+    if($this->columns==''){
+      $this->Print('Model[Select]: 字段不能为空!');
+      return ['', $this->args];
     }
     // 合成
-    self::$sql = 'SELECT '.self::$columns.' FROM '.self::$table;
-    if(self::$where != ''){
-      self::$sql .= ' WHERE '.self::$where;
-      self::$where = '';
+    $this->sql = 'SELECT '.$this->columns.' FROM '.$this->table;
+    if($this->where != ''){
+      $this->sql .= ' WHERE '.$this->where;
+      $this->where = '';
     }
-    if(self::$order != ''){
-      self::$sql .= ' ORDER BY '.self::$order;
-      self::$order = '';
+    if($this->order != ''){
+      $this->sql .= ' ORDER BY '.$this->order;
+      $this->order = '';
     }
-    if(self::$group != ''){
-      self::$sql .= ' GROUP BY '.self::$group;
-      self::$group = '';
+    if($this->group != ''){
+      $this->sql .= ' GROUP BY '.$this->group;
+      $this->group = '';
     }
-    if(self::$limit != ''){
-      self::$sql .= ' LIMIT '.self::$limit;
-      self::$limit = '';
+    if($this->limit != ''){
+      $this->sql .= ' LIMIT '.$this->limit;
+      $this->limit = '';
     }
-    $args = self::$args;
-    self::$args = [];
-    return [self::$sql, $args];
+    $args = $this->args;
+    $this->args = [];
+    return [$this->sql, $args];
   }
   /* 查询-多条 */
-  static function Find() {
+  function Find() {
     $res = null;
-    list($sql, $args) = self::SelectSql();
-    if(empty(self::Conn()) || empty($sql)) return $res;
-    return self::$conn->fetchAll($sql, 2, $args);
+    list($sql, $args) = $this->SelectSql();
+    if(!$this->conn || empty($sql)) return $res;
+    return $this->conn->fetchAll($sql, 2, $args);
   }
   /* 查询-单条 */
-  static function FindFirst() {
+  function FindFirst() {
     $res = null;
-    self::$limit = '0,1';
-    list($sql, $args) = self::SelectSql();
-    if(empty(self::Conn()) || empty($sql)) return $res;
-    return self::$conn->fetchOne($sql, 2, $args);
+    $this->limit = '0,1';
+    list($sql, $args) = $this->SelectSql();
+    if(!$this->conn || empty($sql)) return $res;
+    return $this->conn->fetchOne($sql, 2, $args);
   }
 
   /* 添加-数据 */
-  static function Values(array $data) {
+  function Values(array $data) {
     list($keys, $vals) = ['', ''];
-    self::$args = [];
+    $this->args = [];
     foreach($data as $k=>$v){
       $keys .= $k.', ';
 		  $vals .= '?, ';
-      self::$args[] = $v;
+      $this->args[] = $v;
     }
-    self::$keys = !empty($keys)?rtrim($keys, ', '):'';
-    self::$values = !empty($vals)?rtrim($vals, ', '):'';
+    $this->keys = !empty($keys)?rtrim($keys, ', '):'';
+    $this->values = !empty($vals)?rtrim($vals, ', '):'';
   }
   /* 添加-SQL */
-  static function InsertSql(): ?array {
-    if(self::$table==''){
-      self::Print('[Model] Insert: 表不能为空!');
-      return ['',self::$args];
+  function InsertSql(): ?array {
+    if($this->table==''){
+      $this->Print('[Model] Insert: 表不能为空!');
+      return ['',$this->args];
     }
-    if(self::$keys=='' || self::$values==''){
-      self::Print('[Model] Insert: 数据不能为空!');
-      return ['',self::$args];
+    if($this->keys=='' || $this->values==''){
+      $this->Print('[Model] Insert: 数据不能为空!');
+      return ['',$this->args];
     }
-    self::$sql = 'INSERT INTO `' . self::$table . '`(' . self::$keys . ') values(' . self::$values . ')';
-    $args = self::$args;
+    $this->sql = 'INSERT INTO `' . $this->table . '`(' . $this->keys . ') values(' . $this->values . ')';
+    $args = $this->args;
     // 重置
-    self::$keys = '';
-    self::$values = '';
-    self::$args = [];
-    return [self::$sql, $args];
+    $this->keys = '';
+    $this->values = '';
+    $this->args = [];
+    return [$this->sql, $args];
   }
   /* 添加-执行 */
-  static function Insert(): ?int {
-    list($sql, $args) = self::InsertSql();
+  function Insert(): ?int {
+    list($sql, $args) = $this->InsertSql();
     if(empty($sql)) return null;
-    $res = self::Exec($sql, $args);
-    return $res?self::$conn->lastInsertId():null;
+    $res = $this->Exec($sql, $args);
+    return $res?$this->conn->lastInsertId():null;
   }
 
   /* 更新-数据 */
-  static function Set(array $data = []): void {
+  function Set(array $data = []): void {
     $vals = '';
-    self::$args = [];
+    $this->args = [];
     foreach($data as $k=>$v){
       $vals .= $k . '=?, ';
-      self::$args[] = $v;
+      $this->args[] = $v;
     }
-    self::$data = !empty($vals)?rtrim($vals, ', '):'';
+    $this->data = !empty($vals)?rtrim($vals, ', '):'';
   }
   /* 更新-SQL */
-  static function UpdateSql(): array {
-    if(self::$table == ''){
-      self::Print('[Model] Update: 表不能为空!');
+  function UpdateSql(): array {
+    if($this->table == ''){
+      $this->Print('[Model] Update: 表不能为空!');
       return ['', null];
     }
-    if(self::$data == ''){
-      self::Print('[Model] Update: 数据不能为空!');
+    if($this->data == ''){
+      $this->Print('[Model] Update: 数据不能为空!');
       return ['', null];
     }
-    if(self::$where == ''){
-      self::Print('[Model] Update: 条件不能为空!');
+    if($this->where == ''){
+      $this->Print('[Model] Update: 条件不能为空!');
       return ['', null];
     }
-    self::$sql = 'UPDATE `' . self::$table . '` SET ' . self::$data . ' WHERE ' . self::$where;
-    $args = self::$args;
+    $this->sql = 'UPDATE ' . $this->table . ' SET ' . $this->data . ' WHERE ' . $this->where;
+    $args = $this->args;
     // 重置
-    self::$data = '';
-    self::$where = '';
-    self::$args = [];
-    return [self::$sql, $args];
+    $this->data = '';
+    $this->where = '';
+    $this->args = [];
+    return [$this->sql, $args];
   }
   /* 更新-执行 */
-  static function Update(): ?int {
-    list($sql, $args) = self::UpdateSql();
+  function Update(): ?int {
+    list($sql, $args) = $this->UpdateSql();
     if(empty($sql)) return null;
-    $res = self::Exec($sql, $args);
-    return $res?self::$conn->affectedRows():null;
+    $res = $this->Exec($sql, $args);
+    return $res?$this->conn->affectedRows():null;
   }
 
   /* 删除-SQL */
-  static function DeleteSql(): array {
-    if(self::$table == ''){
-      self::Print('[Model] Delete: 表不能为空!');
+  function DeleteSql(): array {
+    if($this->table == ''){
+      $this->Print('[Model] Delete: 表不能为空!');
       return ['', null];
     }
-    if(self::$where == ''){
-      self::Print('[Model] Delete: 条件不能为空!');
+    if($this->where == ''){
+      $this->Print('[Model] Delete: 条件不能为空!');
       return ['', null];
     }
-    self::$sql = 'DELETE FROM `' . self::$table . '` WHERE ' . self::$where;
-    $args = self::$args;
+    $this->sql = 'DELETE FROM `' . $this->table . '` WHERE ' . $this->where;
+    $args = $this->args;
     // 重置
-    self::$where = '';
-    self::$args = [];
-    return [self::$sql, $args];
+    $this->where = '';
+    $this->args = [];
+    return [$this->sql, $args];
   }
 
   /* 删除-执行 */
-  static function Delete() {
-    list($sql, $args) = self::DeleteSql();
+  function Delete() {
+    list($sql, $args) = $this->DeleteSql();
     if(empty($sql)) return null;
-    $res = self::Exec($sql, $args);
-    return $res?self::$conn->affectedRows():null;
+    $res = $this->Exec($sql, $args);
+    return $res?$this->conn->affectedRows():null;
   }
 
 }

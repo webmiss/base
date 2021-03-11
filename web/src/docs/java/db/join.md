@@ -1,13 +1,15 @@
 ### 连表
 ```java
 import webmis.model.Demo;
-
+// 对象
 Demo demo = new Demo();
 demo.Table("test1 as a");
 demo.LeftJoin("test2 as b", "a.id=b.uid");
 demo.Columns("a.title", "b.name");
 String sql = demo.SelectSql();
 Print(sql);
+// 关闭
+demo.Close();
 ```
 
 ### 其他

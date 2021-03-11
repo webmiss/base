@@ -46,7 +46,7 @@ class User extends Base {
     $model->Close();
     // 返回
     return self::GetJSON([
-      'code'=> 0,
+      'code'=> 10,
       'msg'=> '成功',
       'token'=> AdminToken::create(['uid'=>$data['id'], 'uname'=>$uname]),
       'uinfo'=>[

@@ -1,60 +1,64 @@
 ## Redis 使用
 ```php
 use Library\Redis;
+// 对象
+$redis = new Redis();
+// 关闭
+$redis->Close();
 ```
 **Conn-连接**
 ```php
-Redis::Conn();
+$redis->Conn();
 ```
 **Set-添加**
 ```php
-Redis::Set(string $key, string $val);
+$redis->Set(string $key, string $val);
 ```
 **Get-获取**
 ```php
-Redis::Get(string $key);
+$redis->Get(string $key);
 ```
 **Get-删除**
 ```php
-Redis::Del(string ...$key);
+$redis->Del(string ...$key);
 ```
 **Exist-是否存在**
 ```php
-Redis::Exist(string $key);
+$redis->Exist(string $key);
 ```
 **设置过期时间(秒)**
 ```php
-Redis::Expire(string $key, int $ttl);
+$redis->Expire(string $key, int $ttl);
 ```
 **获取过期时间(秒)**
 ```php
-Redis::Ttl(string $key);
+$redis->Ttl(string $key);
 ```
 **获取长度**
 ```php
-Redis::StrLen(string $key);
+$redis->StrLen(string $key);
 ```
 
 ## 哈希(Hash)
 **HSet-添加**
 ```php
-Redis::HSet(string $name, string $key, $val);
-Redis::HMSet(string $name, array $obj);
+$redis->HSet(string $name, string $key, $val);
+$redis->HMSet(string $name, array $obj);
 ```
 **HGet-获取**
 ```php
-Redis::HGet(string $name, string $key);
-Redis::HMGet(string $name, string $key);
+$redis->HGet(string $name, string $key);
+$redis->HMGet(string $name, string $key);
 ```
 **Hdel-删除**
 ```php
-Redis::HDel(string $name, string $key);
+$redis->HDel(string $name, string $key);
 ```
 **HExist-是否存在**
 ```php
-Redis::HExist(string $name, string $key);
+$redis->HExist(string $name, string $key);
 ```
 **HLen-Key个数**
 ```php
-Redis::HLen(string $name);
+$redis->HLen(string $name);
 ```
