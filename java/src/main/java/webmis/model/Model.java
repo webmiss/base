@@ -35,9 +35,9 @@ public class Model extends Base {
   /* 链接数据库 */
   public Connection Conn() {
     try {
-      String db = !_db.equals("")?_db:Db.Database;
-      String url = "jdbc:mysql://"+Db.Host+":"+Db.Port+"/"+db+"?characterEncoding="+Db.Charset+"&useSSL=false&serverTimezone=Asia/Shanghai";
-      _conn = DriverManager.getConnection(url, Db.User, Db.Password);
+      String db = !_db.equals("")?_db:Db.database;
+      String url = "jdbc:mysql://"+Db.host+":"+Db.port+"/"+db+"?characterEncoding="+Db.charset+"&useSSL=false&serverTimezone=Asia/Shanghai";
+      _conn = DriverManager.getConnection(url, Db.user, Db.password);
     } catch (SQLException e) {
       Print("[Model] Conn:"+e.getMessage());
     }

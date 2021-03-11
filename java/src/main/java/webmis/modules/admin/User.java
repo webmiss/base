@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import webmis.base.Base;
 import webmis.config.Env;
 import webmis.library.Safety;
+import webmis.service.AdminToken;
 import webmis.util.Util;
 
 @RestController
@@ -77,13 +78,17 @@ public class User extends Base {
     sql = model.UpdateSql();
     ps = model.Bind(sql);
     ps.setString(1, Util.date("yyyy-MM-dd HH:mm:ss"));
+    ps.setString(2, data.get("id").toString());
     model.Update(ps);
     // 返回
     res = new HashMap<String,Object>();
-    res.put("code",10);
+    res.put("code",0);
     res.put("msg","成功");
     // Token
-    res.put("token","Token");
+    HashMap<String, Object> token = new HashMap<String, Object>();
+    token.put("uid", data.get("id").toString());
+    token.put("uname", uname);
+    res.put("token", AdminToken.create(token));
     // 用户信息
     HashMap<String,Object> uinfo = new HashMap<String,Object>();
     uinfo.put("uid",data.get("id"));

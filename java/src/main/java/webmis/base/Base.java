@@ -12,7 +12,7 @@ public class Base {
   }
 
   /* 输出到控制台 */
-  protected void Print(Object... content) {
+  static protected void Print(Object... content) {
     for(int i=0; i<content.length; i++){
       System.out.print(content[i]);
       System.out.print(" ");
