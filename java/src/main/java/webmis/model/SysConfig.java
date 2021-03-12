@@ -5,7 +5,7 @@ public class SysConfig extends Model {
 
   /* 构造函数 */
   public SysConfig() {
-    this.Db("");
+    super("");
     this.Table("sys_config");
   }
   

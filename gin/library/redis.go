@@ -1,6 +1,7 @@
 package library
 
 import (
+	"fmt"
 	"time"
 	"webmis/config"
 
@@ -9,139 +10,252 @@ import (
 
 // Redis :缓存数据库
 type Redis struct {
-	Pool *redigo.Pool
-	Conn redigo.Conn
+	pool *redigo.Pool
+	conn redigo.Conn
 }
 
-// Run :创建
-func (c *Redis) Run() *Redis {
-	if c.Pool == nil {
-		cfg := (&config.Redis{}).Config() //配置
-		pool := &redigo.Pool{
-			MaxIdle:     cfg.Min,          //空闲数
-			MaxActive:   cfg.Max,          //最大数
-			IdleTimeout: 10 * time.Second, //空闲超时(秒)
-			Wait:        true,             //超过最大连接数: true 等待 false 报错
-			Dial: func() (redigo.Conn, error) {
-				c, err := redigo.Dial("tcp", cfg.Host+":"+cfg.Port)
-				if err != nil {
-					panic(err)
+// Pool :数据池
+func (r *Redis) Pool() *redigo.Pool {
+	cfg := (&config.Redis{}).Config() //配置
+	return &redigo.Pool{
+		MaxIdle:         cfg.Min,  //空闲数
+		MaxActive:       cfg.Max,  //最大数
+		IdleTimeout:     cfg.Time, //空闲超时(秒)
+		MaxConnLifetime: cfg.Time, //最大连接时长(秒)
+		Wait:            true,     //超过最大连接数: true 等待 false 报错
+		// 连接
+		Dial: func() (redigo.Conn, error) {
+			conn, err := redigo.Dial(cfg.Driver, cfg.Host+":"+cfg.Port)
+			if err != nil {
+				fmt.Println("[Redis] Conn:", err)
+				return nil, err
+			}
+			// 密码
+			if cfg.Password != "" {
+				if _, err := conn.Do("AUTH", cfg.Password); err != nil {
+					conn.Close()
+					fmt.Println("[Redis] Conn:", err)
+					return nil, err
 				}
-				// 密码
-				if cfg.Password != "" {
-					if _, err := c.Do("AUTH", cfg.Password); err != nil {
-						c.Close()
-						panic(err)
-					}
-				}
-				// 硬盘
-				if _, err := c.Do("SELECT", cfg.Db); err != nil {
-					c.Close()
-					panic(err)
-				}
-				return c, err
-			},
-			TestOnBorrow: func(c redigo.Conn, t time.Time) error {
-				_, err := c.Do("PING")
-				panic(err)
-			},
-		}
-		c.Pool = pool
+			}
+			// 硬盘
+			if _, err := conn.Do("SELECT", cfg.Db); err != nil {
+				conn.Close()
+				fmt.Println("[Redis] Conn:", err)
+				return nil, err
+			}
+			return conn, err
+		},
+		// 检测
+		TestOnBorrow: func(c redigo.Conn, t time.Time) error {
+			if time.Since(t) < time.Minute {
+				return nil
+			}
+			_, err := c.Do("PING")
+			return err
+		},
 	}
-	c.Conn = c.Pool.Get()
-	return c
+}
+
+// New :创建
+func (r *Redis) New() *Redis {
+	r.pool = r.Pool()
+	r.conn = r.pool.Get()
+	return r
 }
 
 // Close :关闭
-func (c Redis) Close() {
-	c.Conn.Close()
-	// r.Pool.Close()
+func (r *Redis) Close() {
+	defer r.conn.Close()
+}
+
+// Conn :连接
+func (r *Redis) Conn() redigo.Conn {
+	return r.conn
 }
 
 // Set :添加
-func (c Redis) Set(key string, val interface{}) (bool, error) {
-	res, err := redigo.Bool(c.Conn.Do("SET", key, val))
-	return res, err
+func (r *Redis) Set(key string, val interface{}) []byte {
+	if r.conn.Err() != nil {
+		return nil
+	}
+	res, err := redigo.Bytes(r.conn.Do("SET", key, val))
+	if err != nil {
+		fmt.Println("[Redis] Set:", err)
+		return nil
+	}
+	return res
 }
 
 // Get :获取
-func (c Redis) Get(key string) ([]byte, error) {
-	res, err := redigo.Bytes(c.Conn.Do("Get", key))
-	return res, err
+func (r *Redis) Get(key string) []byte {
+	if r.conn.Err() != nil {
+		return nil
+	}
+	res, err := redigo.Bytes(r.conn.Do("Get", key))
+	if err != nil {
+		fmt.Println("[Redis] Get:", err)
+		return nil
+	}
+	return res
 }
 
 // Del :删除
-func (c Redis) Del(keys ...interface{}) (bool, error) {
-	res, err := redigo.Bool(c.Conn.Do("DEL", keys...))
-	return res, err
+func (r *Redis) Del(keys ...interface{}) bool {
+	if r.conn.Err() != nil {
+		return false
+	}
+	res, err := redigo.Bool(r.conn.Do("DEL", keys...))
+	if err != nil {
+		fmt.Println("[Redis] Del:", err)
+		return false
+	}
+	return res
 }
 
 // Exist :是否存在
-func (c Redis) Exist(key string) (bool, error) {
-	res, err := redigo.Bool(c.Conn.Do("EXISTS", key))
-	return res, err
+func (r *Redis) Exist(key string) bool {
+	if r.conn.Err() != nil {
+		return false
+	}
+	res, err := redigo.Bool(r.conn.Do("EXISTS", key))
+	if err != nil {
+		fmt.Println("[Redis] Exist:", err)
+		return false
+	}
+	return res
 }
 
 // Expire :设置过期时间(秒)
-func (c Redis) Expire(key string, ttl int64) (bool, error) {
-	res, err := redigo.Bool(c.Conn.Do("EXPIRE", key, ttl))
-	return res, err
+func (r *Redis) Expire(key string, ttl int64) int64 {
+	if r.conn.Err() != nil {
+		return 0
+	}
+	res, err := redigo.Int64(r.conn.Do("EXPIRE", key, ttl))
+	if err != nil {
+		fmt.Println("[Redis] Expire:", err)
+		return 0
+	}
+	return res
 }
 
 // TTL :获取过期时间(秒)
-func (c Redis) TTL(key string) (int64, error) {
-	res, err := redigo.Int64(c.Conn.Do("TTL", key))
-	return res, err
+func (r *Redis) TTL(key string) int64 {
+	if r.conn.Err() != nil {
+		return 0
+	}
+	res, err := redigo.Int64(r.conn.Do("TTL", key))
+	if err != nil {
+		fmt.Println("[Redis] TTL:", err)
+		return 0
+	}
+	return res
 }
 
 // StrLen :获取长度
-func (c Redis) StrLen(key string) (int, error) {
-	res, err := redigo.Int(c.Conn.Do("STRLEN", key))
-	return res, err
+func (r *Redis) StrLen(key string) int64 {
+	if r.conn.Err() != nil {
+		return 0
+	}
+	res, err := redigo.Int64(r.conn.Do("STRLEN", key))
+	if err != nil {
+		fmt.Println("[Redis] StrLen:", err)
+		return 0
+	}
+	return res
 }
 
 // HSet :哈希(Hash)-添加
-func (c Redis) HSet(name string, key string, val interface{}) (bool, error) {
-	res, err := redigo.Bool(c.Conn.Do("HSET", name, key, val))
-	return res, err
+func (r *Redis) HSet(name string, key string, val interface{}) int64 {
+	if r.conn.Err() != nil {
+		return 0
+	}
+	res, err := redigo.Int64(r.conn.Do("HSET", name, key, val))
+	if err != nil {
+		fmt.Println("[Redis] HSet:", err)
+		return 0
+	}
+	return res
 }
 
 // HMSet :哈希(Hash)-添加
-func (c Redis) HMSet(name string, obj interface{}) (bool, error) {
-	res, err := redigo.Bool(c.Conn.Do("HSET", redigo.Args{}.Add(name).AddFlat(&obj)...))
-	return res, err
+func (r *Redis) HMSet(name string, obj interface{}) int64 {
+	if r.conn.Err() != nil {
+		return 0
+	}
+	res, err := redigo.Int64(r.conn.Do("HMSET", redigo.Args{}.Add(name).AddFlat(&obj)...))
+	if err != nil {
+		fmt.Println("[Redis] HMSet:", err)
+		return 0
+	}
+	return res
 }
 
 // HGet :哈希(Hash)-获取
-func (c Redis) HGet(name string, key string) ([]byte, error) {
-	res, err := redigo.Bytes(c.Conn.Do("HGet", name, key))
-	return res, err
+func (r *Redis) HGet(name string, key string) []byte {
+	if r.conn.Err() != nil {
+		return nil
+	}
+	res, err := redigo.Bytes(r.conn.Do("HGET", name, key))
+	if err != nil {
+		fmt.Println("[Redis] HGet:", err)
+		return nil
+	}
+	return res
 }
 
 // HMGet :哈希(Hash)-获取
-func (c Redis) HMGet(name string, keys ...string) ([]interface{}, error) {
+func (r *Redis) HMGet(name string, keys ...string) []interface{} {
+	if r.conn.Err() != nil {
+		return nil
+	}
 	args := []interface{}{name}
 	for _, field := range keys {
 		args = append(args, field)
 	}
-	res, err := redigo.Values(c.Conn.Do("HMGET", args))
-	return res, err
+	res, err := redigo.Values(r.conn.Do("HMGET", args))
+	if err != nil {
+		fmt.Println("[Redis] HMGet:", err)
+		return nil
+	}
+	return res
 }
 
 // HDel :哈希(Hash)-删除
-func (c Redis) HDel(name string, key string) (bool, error) {
-	res, err := redigo.Bool(c.Conn.Do("HDEL", name, key))
-	return res, err
+func (r *Redis) HDel(name string, key ...string) int64 {
+	if r.conn.Err() != nil {
+		return 0
+	}
+	res, err := redigo.Int64(r.conn.Do("HDEL", name, key))
+	if err != nil {
+		fmt.Println("[Redis] HDel:", err)
+		return 0
+	}
+	return res
 }
 
 // HExist :哈希(Hash)-是否存在
-func (c Redis) HExist(name string, key string) (bool, error) {
-	res, err := redigo.Bool(c.Conn.Do("HEXISTS", name, key))
-	return res, err
+func (r *Redis) HExist(name string, key string) bool {
+	if r.conn.Err() != nil {
+		return false
+	}
+	res, err := redigo.Bool(r.conn.Do("HEXISTS", name, key))
+	if err != nil {
+		fmt.Println("[Redis] HExist:", err)
+		return false
+	}
+	return res
 }
 
 // HLen :哈希(Hash)-Key个数
-func (c Redis) HLen(name string) (int, error) {
-	res, err := redigo.Int(c.Conn.Do("HLEN", name))
-	return res, err
+func (r *Redis) HLen(name string) int64 {
+	if r.conn.Err() != nil {
+		return 0
+	}
+	res, err := redigo.Int64(r.conn.Do("HLEN", name))
+	if err != nil {
+		fmt.Println("[Redis] HLen:", err)
+		return 0
+	}
+	return res
 }

@@ -2,11 +2,9 @@ package model
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 	"strconv"
 	"time"
-	"webmis/base"
 	"webmis/config"
 	"webmis/util"
 
@@ -15,7 +13,6 @@ import (
 
 // Model :数据库
 type Model struct {
-	base.Base
 	conn    *sql.DB       //连接
 	sql     string        //SQL
 	db      string        //数据库
@@ -31,27 +28,28 @@ type Model struct {
 	data    string        //更新-数据
 }
 
-// Run :构造函数
-func (m *Model) Run() *sql.DB {
-	// 连接
+// Pool :数据库
+func (m *Model) Db(db string) *Model {
+	// 数据库
 	cfg := (&config.MySQL{}).Config()
-	db := cfg.Database
-	if m.db != "" {
-		db = m.db
+	m.db = cfg.Database
+	if db != "" {
+		m.db = db
 	}
-	source := cfg.User + ":" + cfg.Password + "@(" + cfg.Host + ":" + cfg.Port + ")/" + db + "?charset=" + cfg.Charset + "&parseTime=true&loc=Local"
-	m.conn, _ = sql.Open(cfg.Driver, source)
+	// 连接
+	source := cfg.User + ":" + cfg.Password + "@(" + cfg.Host + ":" + cfg.Port + ")/" + m.db + "?charset=" + cfg.Charset + "&parseTime=true&loc=Local"
+	conn, _ := sql.Open(cfg.Driver, source)
 	// 是否成功
-	if err := m.conn.Ping(); err != nil {
-		m.Print("[Model] Conn:", err)
+	if err := conn.Ping(); err != nil {
+		fmt.Println("[Model] Conn:", err)
 		return nil
 	}
 	// 数据池
-	m.conn.SetMaxIdleConns(cfg.Min)
-	m.conn.SetMaxOpenConns(cfg.Max)
-	m.conn.SetConnMaxLifetime(time.Second * time.Duration(cfg.Time))
-	// m.Print("连接", m.conn)
-	return m.conn
+	conn.SetMaxIdleConns(cfg.Min)
+	conn.SetMaxOpenConns(cfg.Max)
+	conn.SetConnMaxLifetime(time.Second * time.Duration(cfg.Time))
+	m.conn = conn
+	return m
 }
 
 // Conn 链接
@@ -62,60 +60,54 @@ func (m *Model) Conn() *sql.DB {
 // Close 关闭
 func (m *Model) Close() {
 	if m.conn != nil {
-		// m.Print("关闭", m.conn)
 		if err := m.conn.Close(); err != nil {
-			m.Print("[Model] Close:", err)
+			fmt.Println("[Model] Close:", err)
 		}
 	}
 }
 
 // Query :查询
-func (m *Model) Query(sql string, args []interface{}) (*sql.Rows, error) {
+func (m *Model) Query(sql string, args []interface{}) *sql.Rows {
 	if sql == "" {
-		err := "SQL不能为空!"
-		m.Print("[Model] Query:", err)
-		return nil, errors.New(err)
+		fmt.Println("[Model] Query: SQL不能为空!")
+		return nil
 	}
 	// 是否连接
 	if m.conn == nil {
-		return nil, nil
+		return nil
 	}
 	rows, err := m.conn.Query(sql, args...)
 	if err != nil {
-		m.Print("[Model] Query:", sql, err)
-		return nil, err
+		fmt.Println("[Model] Query:", err)
+		fmt.Println("[Model] SQL:", sql)
+		return nil
 	}
-	return rows, err
+	return rows
 }
 
 // Exec :执行
-func (m *Model) Exec(sql string, args []interface{}) (sql.Result, error) {
+func (m *Model) Exec(sql string, args []interface{}) sql.Result {
 	if sql == "" {
-		err := "SQL不能为空!"
-		m.Print("[Model] Exec:", err)
-		return nil, errors.New(err)
+		fmt.Println("[Model] Exec: SQL不能为空!")
+		return nil
 	}
 	// 是否连接
 	if m.conn == nil {
-		return nil, nil
+		return nil
 	}
 	rows, err := m.conn.Exec(sql, args...)
 	m.args = make([]interface{}, 0, 10)
 	if err != nil {
-		m.Print("[Model] Exec:", sql, err)
-		return nil, err
+		fmt.Println("[Model] Exec:", err)
+		fmt.Println("[Model] SQL:", sql)
+		return nil
 	}
-	return rows, err
+	return rows
 }
 
 // GetSQL :获取-SQL
 func (m *Model) GetSQL() string {
 	return m.sql
-}
-
-// Db :数据库
-func (m *Model) Db(database string) {
-	m.db = database
 }
 
 // Table :表
@@ -198,11 +190,11 @@ func (m *Model) Page(page int, limit int) {
 // SelectSQL :查询-SQL
 func (m *Model) SelectSQL() (string, []interface{}) {
 	if m.table == "" {
-		m.Print("[Model] Select: 表不能为空!")
+		fmt.Println("[Model] Select: 表不能为空!")
 		return "", nil
 	}
 	if m.columns == "" {
-		m.Print("[Model] Select: 字段不能为空!")
+		fmt.Println("[Model] Select: 字段不能为空!")
 		return "", nil
 	}
 	// 合成
@@ -234,7 +226,7 @@ func (m *Model) Find() []map[string]interface{} {
 	if sql == "" {
 		return nil
 	}
-	rows, _ := m.Query(sql, args)
+	rows := m.Query(sql, args)
 	if rows == nil {
 		return nil
 	}
@@ -248,7 +240,7 @@ func (m *Model) FindFirst() map[string]interface{} {
 	if sql == "" {
 		return nil
 	}
-	rows, _ := m.Query(sql, args)
+	rows := m.Query(sql, args)
 	if rows == nil {
 		return nil
 	}
@@ -334,8 +326,8 @@ func (m *Model) Insert() int64 {
 	if sql == "" {
 		return 0
 	}
-	rows, err := m.Exec(sql, args)
-	if err != nil {
+	rows := m.Exec(sql, args)
+	if rows == nil {
 		return 0
 	}
 	id, err := rows.LastInsertId()
@@ -362,15 +354,15 @@ func (m *Model) Set(data map[string]interface{}) {
 // UpdateSQL :更新-SQL
 func (m *Model) UpdateSQL() (string, []interface{}) {
 	if m.table == "" {
-		m.Print("[Model] Update: 表不能为空!")
+		fmt.Println("[Model] Update: 表不能为空!")
 		return "", nil
 	}
 	if m.data == "" {
-		m.Print("[Model] Update: 数据不能为空!")
+		fmt.Println("[Model] Update: 数据不能为空!")
 		return "", nil
 	}
 	if m.where == "" {
-		m.Print("[Model] Update: 条件不能为空!")
+		fmt.Println("[Model] Update: 条件不能为空!")
 		return "", nil
 	}
 	m.sql = "UPDATE `" + m.table + "` SET " + m.data + " WHERE " + m.where
@@ -388,8 +380,8 @@ func (m *Model) Update() int64 {
 	if sql == "" {
 		return 0
 	}
-	rows, err := m.Exec(sql, args)
-	if err != nil {
+	rows := m.Exec(sql, args)
+	if rows == nil {
 		return 0
 	}
 	num, err := rows.RowsAffected()
@@ -402,11 +394,11 @@ func (m *Model) Update() int64 {
 // DeleteSQL :删除-SQL
 func (m *Model) DeleteSQL() (string, []interface{}) {
 	if m.table == "" {
-		m.Print("[Model] Delete: 表不能为空!")
+		fmt.Println("[Model] Delete: 表不能为空!")
 		return "", nil
 	}
 	if m.where == "" {
-		m.Print("[Model] Delete: 条件不能为空!")
+		fmt.Println("[Model] Delete: 条件不能为空!")
 		return "", nil
 	}
 	m.sql = "DELETE FROM `" + m.table + "` WHERE " + m.where
@@ -423,8 +415,8 @@ func (m *Model) Delete() int64 {
 	if sql == "" {
 		return 0
 	}
-	rows, err := m.Exec(sql, args)
-	if err != nil {
+	rows := m.Exec(sql, args)
+	if rows == nil {
 		return 0
 	}
 	num, err := rows.RowsAffected()

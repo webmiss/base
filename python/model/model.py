@@ -1,10 +1,9 @@
 import pymysql
 from dbutils.pooled_db import PooledDB
-from base.base import Base
 from config.db import Db
 
 # 数据库
-class Model(Base) :
+class Model :
 
   __conn = None               #连接
   __sql: str = ''             #SQL
@@ -21,12 +20,16 @@ class Model(Base) :
   __data: str = ''            #更新-数据
 
   # 构造函数
-  def __init__(self, pool=False):
+  def __init__(self, db: str='' , pool: str=False):
+    self.Db(db, pool)
+
+  # 数据库
+  def Db(self, db: str='', pool: bool=False):
     cfg = {
       'host': Db.host,
       'port': Db.port,
       'user': Db.user,
-      'db': self.__db if self.__db!='' else Db.database,
+      'db': self.__db if db!='' else Db.database,
       'charset': Db.charset,
     }
     try :
@@ -69,7 +72,8 @@ class Model(Base) :
       num = cs.execute(sql, args)
       return cs, num
     except Exception as e :
-      self.Print('[Model] Query:', e)
+      print('[Model] Query:', e)
+      print('[Model] SQL:', sql)
       return None, 0
   
   # 执行
@@ -86,16 +90,14 @@ class Model(Base) :
       self.__conn.commit()
       return cs, num
     except Exception as e :
-      self.Print('[Model] Exec:', e)
+      print('[Model] Exec:', e)
+      print('[Model] SQL:', sql)
       return None, 0
 
   # 获取-SQL
   def GetSql(self):
     return self.__sql
 
-  # 数据库
-  def Db(self, database: str) :
-    self.__db = database
   # 表
   def Table(self, table: str) :
     self.__table = table
@@ -192,10 +194,10 @@ class Model(Base) :
   # 添加-SQL
   def InsertSql(self) :
     if self.__table=='' :
-      self.Print('Model[Insert]: 表不能为空!')
+      print('Model[Insert]: 表不能为空!')
       return '', None
     if self.__keys=='' or self.__values=='' :
-      self.Print('Model[Insert]: 数据不能为空!')
+      print('Model[Insert]: 数据不能为空!')
       return '', None
     self.__sql = 'INSERT INTO `' + self.__table + '`(' + self.__keys + ') values(' + self.__values + ')'
     # 重置
@@ -225,13 +227,13 @@ class Model(Base) :
   # 更新-SQL
   def UpdateSql(self) :
     if self.__table=='' :
-      self.Print('Model[Update]: 表不能为空!')
+      print('Model[Update]: 表不能为空!')
       return '', None
     if self.__data=='' :
-      self.Print('Model[Update]: 数据不能为空!')
+      print('Model[Update]: 数据不能为空!')
       return '', None
     if self.__where=='' :
-      self.Print('Model[Update]: 条件不能为空!')
+      print('Model[Update]: 条件不能为空!')
       return '', None
     self.__sql = 'UPDATE `' + self.__table + '` SET ' + self.__data + ' WHERE ' + self.__where
     args = self.__args
@@ -252,10 +254,10 @@ class Model(Base) :
   # 删除-SQL
   def DeleteSql(self) :
     if self.__table=='' :
-      self.Print('Model[Delete]: 表不能为空!')
+      print('Model[Delete]: 表不能为空!')
       return '', None
     if self.__where=='' :
-      self.Print('Model[Delete]: 条件不能为空!')
+      print('Model[Delete]: 条件不能为空!')
       return '', None
     self.__sql = 'DELETE FROM `' + self.__table + '` WHERE ' + self.__where
     args = self.__args

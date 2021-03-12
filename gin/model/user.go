@@ -9,6 +9,5 @@ type User struct {
 func (m *User) New() *User {
 	m.Db("")
 	m.Table("user")
-	m.Run()
 	return m
 }

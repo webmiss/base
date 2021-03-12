@@ -9,6 +9,5 @@ type SysConfig struct {
 func (m *SysConfig) New() *SysConfig {
 	m.Db("")
 	m.Table("sys_config")
-	m.Run()
 	return m
 }

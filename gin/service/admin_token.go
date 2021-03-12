@@ -1,13 +1,16 @@
 package service
 
 import (
+	"webmis/base"
 	"webmis/config"
 	"webmis/library"
 	"webmis/util"
 )
 
 // AdminToken :后台Token
-type AdminToken struct{}
+type AdminToken struct {
+	base.Base
+}
 
 // Create :生成
 func (s AdminToken) Create(data map[string]interface{}) string {
@@ -16,8 +19,9 @@ func (s AdminToken) Create(data map[string]interface{}) string {
 	// 缓存
 	env := (&config.Env{}).Config()
 	key := env.AdminTokenPrefix + data["uid"].(string)
-	redis := (&library.Redis{}).Run()
+	redis := (&library.Redis{}).New()
 	redis.Set(key, "1")
 	redis.Expire(key, env.AdminTokenTime)
+	redis.Close()
 	return token
 }

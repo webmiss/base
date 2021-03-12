@@ -22,7 +22,12 @@ class Model extends Base {
   private $data = '';            //更新-数据
 
   /* 构造函数 */
-  function __construct() {
+  function __construct(string $db='') {
+    $this->conn = $this->Db($db);
+  }
+
+  /* 数据库 */
+  function Db(string $db=''): object {
     // 参数
     $params = [
       'host'=> Db::$Host,
@@ -37,7 +42,7 @@ class Model extends Base {
     if (Db::$Driver == 'Postgresql') unset($params['charset']);
     // 命名空间
     $class = 'Phalcon\Db\Adapter\Pdo\\'.Db::$Driver;
-    $this->conn = new $class($params);
+    return new $class($params);
   }
 
   /* 链接 */
@@ -58,20 +63,30 @@ class Model extends Base {
     }
     // 连接
     if(!$this->conn) return false;
-    $res = $this->conn->query($sql, $args);
-    return $res;
+    try {
+      return $this->conn->query($sql, $args);
+    }catch (\Exception $e){
+      $this->Print('[Model] Query:', $e->getMessage());
+      $this->Print('[Model] SQL:', $sql);
+      return null;
+    }
   }
 
   /* 执行 */
-  function Exec(string $sql, array $args=[]): bool {
+  function Exec(string $sql, array $args=[]) {
     if(empty($sql)){
       $this->Print('[Model] Exec: SQL不能为空!');
       return false;
     }
     // 连接
     if(!$this->conn) return false;
-    $res = $this->conn->execute($sql, $args);
-    return $res;
+    try {
+      return $this->conn->execute($sql, $args);
+    }catch (\Exception $e){
+      $this->Print('[Model] Exec:', $e->getMessage());
+      $this->Print('[Model] SQL:', $sql);
+      return null;
+    }
   }
 
   /* 获取-SQL */
@@ -79,10 +94,6 @@ class Model extends Base {
     return $this->sql;
   }
 
-  /* 数据库 */
-  function Db(string $database): void {
-    $this->db = $database;
-  }
   /* 表 */
   function Table(string $table): void {
     $this->table = $table;

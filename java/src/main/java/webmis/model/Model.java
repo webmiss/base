@@ -33,14 +33,22 @@ public class Model extends Base {
   private int _num = 0;                             //统计条数
 
   /* 构造函数 */
-  public Model() {
-    String db = !_db.equals("")?_db:Db.database;
-    String url = "jdbc:mysql://"+Db.host+":"+Db.port+"/"+db+"?characterEncoding="+Db.charset+"&useSSL=false&serverTimezone=Asia/Shanghai";
+  public Model(String db) {
+    _conn = Db(db);
+  }
+
+  /* 数据库 */
+  public Connection Db(String db) {
+    _db = Db.database;
+    if(!db.equals("")) _db = db;
+    // 连接
     try {
+      String url = "jdbc:mysql://"+Db.host+":"+Db.port+"/"+_db+"?characterEncoding="+Db.charset+"&useSSL=false&serverTimezone=Asia/Shanghai";
       _conn = DriverManager.getConnection(url, Db.user, Db.password);
     } catch (Exception e) {
-      Print("[Model] Conn:"+e.getMessage());
+      Print("[Model] Conn:", e.getMessage());
     }
+    return _conn;
   }
 
   /* 链接 */
@@ -53,7 +61,7 @@ public class Model extends Base {
     try {
       _conn.close();
     } catch (SQLException e) {
-      Print("[Model] Close:"+e.getMessage());
+      Print("[Model] Close:", e.getMessage());
     }
   }
 
@@ -73,7 +81,7 @@ public class Model extends Base {
         _bind = _conn.prepareStatement(sql);
       }
     } catch (SQLException e) {
-      Print("[Model] Bind:"+e.getMessage());
+      Print("[Model] Bind:", e.getMessage());
     }
     return _bind;
   }
@@ -85,7 +93,8 @@ public class Model extends Base {
       rs = ps.executeQuery();
       return rs;
     } catch (SQLException e) {
-      Print("[Model] Query:"+e.getMessage());
+      Print("[Model] Query:", e.getMessage());
+      Print("[Model] SQL:", ps);
       return null;
     }
   }
@@ -100,7 +109,8 @@ public class Model extends Base {
         num = rs.next()?rs.getInt(1):0;
       }
     } catch (SQLException e) {
-      Print("[Model] Exec:"+e.getMessage());
+      Print("[Model] Exec:", e.getMessage());
+      Print("[Model] SQL:", ps);
     }
     return num;
   }
@@ -109,11 +119,7 @@ public class Model extends Base {
   public String GetSql() {
     return _sql;
   }
-
-  /* 数据库 */
-  public void Db(String database) {
-    _db = database;
-  }
+  
   /* 表 */
   public void Table(String table) {
     _table = table;
@@ -235,7 +241,7 @@ public class Model extends Base {
       rs.close();
       ps.close();
     } catch (SQLException e) {
-      Print("[Model] Find: "+e.getMessage());
+      Print("[Model] Find: ", e.getMessage());
     }
     return res;
   }

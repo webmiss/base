@@ -8,16 +8,18 @@ type Demo struct {
 }
 
 /* 构造函数 */
-func (self *Demo) New() *Demo {
-	self.Db("")
-	self.Table("test")
-	self.Run()
-	return self
+func (m *Demo) New() *Demo {
+	m.Db()
+	m.Table("test")
+	return m
 }
 ```
 
 ### 使用
 ```go
 import "webmis/model"
-demo := (&models.Demo{}).Init()
+// 对象
+demo := (&models.Demo{}).New()
+// 关闭
+demo.Close()
 ```

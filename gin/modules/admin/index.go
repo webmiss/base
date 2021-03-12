@@ -23,14 +23,15 @@ func (r Index) Index(c *gin.Context) {
 func (r Index) GetConfig(c *gin.Context) {
 	// 查询
 	config := (&model.SysConfig{}).New()
-	r.Print(config)
 	config.Where("name in (?,?,?,?)", "title", "copy", "logo", "login_bg")
 	config.Columns("name", "val")
 	sql, args := config.SelectSQL()
-	rows, _ := config.Query(sql, args)
-	defer rows.Close()
-	list := make(map[string]interface{})
+	rows := config.Query(sql, args)
+	if rows == nil {
+		return
+	}
 	// 数据
+	list := map[string]interface{}{}
 	var name string
 	var val string
 	for rows.Next() {
