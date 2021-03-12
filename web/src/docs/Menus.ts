@@ -115,6 +115,7 @@ export default {
         {label: '事务 Commit', value: 'docs/gin/db/commit'},
       ]},
       {label:'Library 类库', children:[
+        {label: '缓存 Redis', value: 'docs/gin/library/redis'},
         {label: '事件流 Kafka', value: 'docs/gin/library/kafka'},
         {label: '通信 WebSocket', value: 'docs/gin/library/socket'},
       ]},
