@@ -27,6 +27,7 @@ func (r Index) GetConfig(c *gin.Context) {
 	config.Columns("name", "val")
 	sql, args := config.SelectSQL()
 	rows := config.Query(sql, args)
+	defer rows.Close()
 	if rows == nil {
 		return
 	}
@@ -48,7 +49,7 @@ func (r Index) GetConfig(c *gin.Context) {
 		}
 	}
 	// 关闭
-	config.Close()
+	// config.Close()
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list})
 }

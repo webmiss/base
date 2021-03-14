@@ -7,7 +7,6 @@ type Demo struct {
 
 // New :构造函数
 func (m *Demo) New() *Demo {
-	m.Db("")
 	m.Table("test")
 	return m
 }

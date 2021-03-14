@@ -1,6 +1,6 @@
 -- Adminer 4.7.7 MySQL dump
 
-SET NAMES utf8;
+SET NAMES utf8mb4;
 SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
@@ -14,7 +14,7 @@ CREATE TABLE `sys_config` (
   `ctime` datetime DEFAULT NULL COMMENT '创建时间',
   `utime` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统配置';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统配置';
 
 INSERT INTO `sys_config` (`id`, `title`, `name`, `val`, `ctime`, `utime`) VALUES
 (1,	'LOGO',	'logo',	'',	NULL,	NULL),
@@ -36,7 +36,7 @@ CREATE TABLE `sys_menus` (
   `sort` tinyint(3) unsigned DEFAULT 0 COMMENT '排序',
   `remark` varchar(32) DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统菜单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统菜单';
 
 INSERT INTO `sys_menus` (`id`, `fid`, `title`, `url`, `perm`, `ico`, `ctime`, `utime`, `sort`, `remark`) VALUES
 (1,	0,	'首页',	'',	0,	'icons icon_home',	'2018-12-15 00:00:00',	'2020-05-26 10:49:37',	0,	''),
@@ -61,7 +61,7 @@ CREATE TABLE `sys_menus_action` (
   `perm` enum('1','2','4','8','16','32','64','128','256','512','1024','2048') NOT NULL DEFAULT '1' COMMENT '权限值',
   `ico` varchar(32) DEFAULT '' COMMENT '图标样式',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='动作菜单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='动作菜单';
 
 INSERT INTO `sys_menus_action` (`id`, `name`, `action`, `perm`, `ico`) VALUES
 (1,	'刷新',	'list',	'1',	'el-icon-refresh'),
@@ -86,7 +86,7 @@ CREATE TABLE `user` (
   `utime` datetime DEFAULT NULL COMMENT '更新时间',
   `state` enum('1','0') NOT NULL DEFAULT '1' COMMENT '状态(1正常,0禁用)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户帐号';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户帐号';
 
 INSERT INTO `user` (`id`, `uname`, `tel`, `email`, `password`, `rtime`, `ltime`, `utime`, `state`) VALUES
 (1,	'admin',	'',	'',	'e10adc3949ba59abbe56e057f20f883e',	'2018-12-15 00:00:00',	'2020-06-09 09:53:19',	'2020-06-09 09:53:19',	'1');
@@ -102,7 +102,7 @@ CREATE TABLE `user_info` (
   `birthday` date DEFAULT NULL COMMENT '生日',
   `img` varchar(64) NOT NULL DEFAULT '' COMMENT '头像',
   PRIMARY KEY (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户信息';
 
 INSERT INTO `user_info` (`uid`, `utime`, `nickname`, `position`, `name`, `gender`, `birthday`, `img`) VALUES
 (1,	NULL,	'WebMIS',	'系统开发',	'管理员',	'男',	'1984-12-17',	'');
@@ -120,7 +120,7 @@ CREATE TABLE `user_msg` (
   `title` varchar(16) NOT NULL DEFAULT '' COMMENT '标题',
   `content` varchar(300) NOT NULL DEFAULT '' COMMENT '内容',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户信息';
 
 
 SET NAMES utf8mb4;
@@ -147,7 +147,7 @@ CREATE TABLE `user_perm` (
   `role` varchar(6) DEFAULT '' COMMENT '角色权限',
   `perm` text DEFAULT '' COMMENT '专属权限',
   PRIMARY KEY (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
 
 INSERT INTO `user_perm` (`uid`, `state_admin`, `state_app`, `utime`, `role`, `perm`) VALUES
 (1,	'1',	'0',	'2020-05-22 18:10:48',	'',	'1:0 2:0 3:0 4:1 5:1 6:1 7:1 8:31 9:31 10:1 11:31 12:31 13:31');
@@ -160,7 +160,7 @@ CREATE TABLE `user_role` (
   `utime` datetime DEFAULT NULL COMMENT '更新时间',
   `perm` text DEFAULT NULL COMMENT '权限值',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色权限';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色权限';
 
 INSERT INTO `user_role` (`id`, `role`, `ctime`, `utime`, `perm`) VALUES
 (1,	'普通用户',	NULL,	NULL,	'1:0 3:0 4:1 5:1 6:1 14:1');

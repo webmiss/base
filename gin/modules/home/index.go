@@ -2,7 +2,7 @@ package home
 
 import (
 	"webmis/base"
-	"webmis/library"
+	"webmis/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,11 +14,16 @@ type Index struct {
 
 // Index :首页
 func (r *Index) Index(c *gin.Context) {
-	sub := "alice"
-	obj := "data1"
-	act := "read1"
-	param := (&library.CasBin{}).Verify(sub, obj, act)
-	r.Print(param)
+	demo := (&model.Demo{}).New()
+	demo.Columns("uid", "title")
+	data := demo.Find()
+	r.Print(data)
+	// db := config.DB
+	// r.Print(db, db.Ping())
+	// perm := (&library.CasBin{}).New()
+	// res := perm.Add("admin", "test2", "read")
+	// v := perm.Verify("admin", "test2", "read")
+	// r.Print(v)
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "Web"})
 }

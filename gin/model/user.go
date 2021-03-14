@@ -7,7 +7,6 @@ type User struct {
 
 // New :构造函数
 func (m *User) New() *User {
-	m.Db("")
 	m.Table("user")
 	return m
 }

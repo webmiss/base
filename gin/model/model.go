@@ -11,9 +11,10 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+var DB *sql.DB
+
 // Model :数据库
 type Model struct {
-	conn    *sql.DB       //连接
 	sql     string        //SQL
 	db      string        //数据库
 	table   string        //数据表
@@ -28,39 +29,26 @@ type Model struct {
 	data    string        //更新-数据
 }
 
-// Pool :数据库
-func (m *Model) Db(db string) *Model {
-	// 数据库
-	cfg := (&config.MySQL{}).Config()
-	m.db = cfg.Database
-	if db != "" {
-		m.db = db
-	}
+// DBPool :数据池
+func DBPool(cfg *config.MySQL) {
 	// 连接
-	source := cfg.User + ":" + cfg.Password + "@(" + cfg.Host + ":" + cfg.Port + ")/" + m.db + "?charset=" + cfg.Charset + "&parseTime=true&loc=Local"
-	conn, _ := sql.Open(cfg.Driver, source)
+	source := cfg.User + ":" + cfg.Password + "@(" + cfg.Host + ":" + cfg.Port + ")/" + cfg.Database + "?charset=" + cfg.Charset + "&parseTime=true&loc=Local"
+	DB, _ = sql.Open(cfg.Driver, source)
 	// 是否成功
-	if err := conn.Ping(); err != nil {
+	if err := DB.Ping(); err != nil {
 		fmt.Println("[Model] Conn:", err)
-		return nil
+		return
 	}
-	// 数据池
-	conn.SetMaxIdleConns(cfg.Min)
-	conn.SetMaxOpenConns(cfg.Max)
-	conn.SetConnMaxLifetime(time.Second * time.Duration(cfg.Time))
-	m.conn = conn
-	return m
+	// 配置
+	DB.SetMaxIdleConns(cfg.Min)
+	DB.SetMaxOpenConns(cfg.Max)
+	DB.SetConnMaxLifetime(time.Second * time.Duration(cfg.Time))
 }
 
-// Conn 链接
-func (m *Model) Conn() *sql.DB {
-	return m.conn
-}
-
-// Close 关闭
+// Close :关闭
 func (m *Model) Close() {
-	if m.conn != nil {
-		if err := m.conn.Close(); err != nil {
+	if DB != nil {
+		if err := DB.Close(); err != nil {
 			fmt.Println("[Model] Close:", err)
 		}
 	}
@@ -73,10 +61,10 @@ func (m *Model) Query(sql string, args []interface{}) *sql.Rows {
 		return nil
 	}
 	// 是否连接
-	if m.conn == nil {
+	if DB == nil {
 		return nil
 	}
-	rows, err := m.conn.Query(sql, args...)
+	rows, err := DB.Query(sql, args...)
 	if err != nil {
 		fmt.Println("[Model] Query:", err)
 		fmt.Println("[Model] SQL:", sql)
@@ -92,10 +80,10 @@ func (m *Model) Exec(sql string, args []interface{}) sql.Result {
 		return nil
 	}
 	// 是否连接
-	if m.conn == nil {
+	if DB == nil {
 		return nil
 	}
-	rows, err := m.conn.Exec(sql, args...)
+	rows, err := DB.Exec(sql, args...)
 	m.args = make([]interface{}, 0, 10)
 	if err != nil {
 		fmt.Println("[Model] Exec:", err)
@@ -281,6 +269,7 @@ func (m *Model) FindDataAll(rows *sql.Rows) []map[string]interface{} {
 		res = append(res, tmp)
 		i++
 	}
+	defer rows.Close()
 	return res
 }
 

@@ -23,7 +23,9 @@ func (l *Logs) Conn(topic string, partition int) bool {
 	cfg := (&config.Kafka{}).Config()
 	conn, err := kafka.DialLeader(context.Background(), cfg.Type, cfg.Host+":"+cfg.Port, topic, partition)
 	if err != nil {
-		fmt.Println("[Kafka] Conn:", err)
+		if cfg.Log {
+			fmt.Println("[Kafka] Conn:", err)
+		}
 		return false
 	}
 	l.conn = conn

@@ -14,17 +14,17 @@ type MySQL struct {
 	Time     int64
 }
 
-// Config :数据库配置
-func (cfg *MySQL) Config() *MySQL {
-	cfg.Driver = "mysql"                              //类型
-	cfg.Host = "127.0.0.1"                            //主机
-	cfg.Port = "3306"                                 //端口
-	cfg.User = "webmis"                               //账号
-	cfg.Password = "e4b99adec618e653400966be536c45f8" //密码
-	cfg.Database = "data"                             //数据库名
-	cfg.Charset = "utf8mb4"                           //编码
-	cfg.Min = 20                                      //空闲连接数
-	cfg.Max = 30                                      //最大连接数
-	cfg.Time = 30                                     //连接超时(秒)
-	return cfg
+// Default :默认数据库
+func (d *MySQL) Default() *MySQL {
+	d.Driver = "mysql"                              //类型
+	d.Host = "127.0.0.1"                            //主机
+	d.Port = "3306"                                 //端口
+	d.User = "webmis"                               //账号
+	d.Password = "e4b99adec618e653400966be536c45f8" //密码
+	d.Database = "data"                             //数据库名
+	d.Charset = "utf8mb4"                           //编码
+	d.Min = 20                                      //空闲连接数
+	d.Max = 30                                      //最大连接数
+	d.Time = 30                                     //连接超时(秒)
+	return d
 }
