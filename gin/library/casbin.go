@@ -7,28 +7,27 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// CasBin :权限控制
-type CasBin struct {
-	conn *casbin.Enforcer
-}
+var CasBinDB *casbin.Enforcer
 
-// New: 创建
-func (c *CasBin) New() *CasBin {
+// CasBin :权限控制
+type CasBin struct{}
+
+// CasBinPool: 连接
+func CasBinPool() {
 	e, err := casbin.NewEnforcer("config/casbin.conf", "config/casbin.csv")
 	if err != nil {
 		fmt.Println("[Casbin] Open:", err)
-		return nil
+		return
 	}
-	c.conn = e
-	return c
+	CasBinDB = e
 }
 
 // Verify :验证
 func (c *CasBin) Verify(sub string, obj string, act string) bool {
-	if c.conn == nil {
+	if CasBinDB == nil {
 		return false
 	}
-	res, err := c.conn.Enforce(sub, obj, act)
+	res, err := CasBinDB.Enforce(sub, obj, act)
 	fmt.Println(sub, obj, act)
 	if err != nil {
 		fmt.Println("[Casbin] Verify:", err)
@@ -39,24 +38,30 @@ func (c *CasBin) Verify(sub string, obj string, act string) bool {
 
 // Add :添加
 func (c *CasBin) Add(sub string, obj string, act string) bool {
-	if c.conn == nil {
+	if CasBinDB == nil {
 		return false
 	}
-	res, err := c.conn.AddPolicy(sub, obj, act)
+	res, err := CasBinDB.AddPolicy(sub, obj, act)
 	if err != nil {
 		fmt.Println("[Casbin] Add:", err)
+	}
+	if err := CasBinDB.SavePolicy(); err != nil {
+		fmt.Println("[Casbin] Save:", err)
 	}
 	return res
 }
 
 // Add :删除
 func (c *CasBin) Remove(sub string, obj string, act string) bool {
-	if c.conn == nil {
+	if CasBinDB == nil {
 		return false
 	}
-	res, err := c.conn.RemovePolicy(sub, obj, act)
+	res, err := CasBinDB.RemovePolicy(sub, obj, act)
 	if err != nil {
-		fmt.Println("[Casbin] Add:", err)
+		fmt.Println("[Casbin] Remove:", err)
+	}
+	if err := CasBinDB.SavePolicy(); err != nil {
+		fmt.Println("[Casbin] Save:", err)
 	}
 	return res
 }

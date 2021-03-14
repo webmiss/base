@@ -3,6 +3,7 @@ package main
 import (
 	"io/ioutil"
 	"webmis/config"
+	"webmis/library"
 	"webmis/middleware"
 	"webmis/model"
 	"webmis/router"
@@ -13,6 +14,8 @@ import (
 
 func init() {
 
+	// 权限
+	library.CasBinPool()
 	// 默认数据库
 	model.DBPool((&config.MySQL{}).Default())
 
