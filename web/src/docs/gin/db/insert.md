@@ -9,8 +9,6 @@ demo.Values(map[string]interface{}{
 })
 id := demo.Insert()
 self.Print(id)
-// 关闭
-demo.Close()
 ```
 
 ### 生成SQL

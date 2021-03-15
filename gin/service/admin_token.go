@@ -19,7 +19,7 @@ func (s AdminToken) Create(data map[string]interface{}) string {
 	// 缓存
 	env := (&config.Env{}).Config()
 	key := env.AdminTokenPrefix + data["uid"].(string)
-	redis := (&library.Redis{}).New()
+	redis := (&library.Redis{}).New("")
 	redis.Set(key, "1")
 	redis.Expire(key, env.AdminTokenTime)
 	redis.Close()

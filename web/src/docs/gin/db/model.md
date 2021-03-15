@@ -9,7 +9,7 @@ type Demo struct {
 
 /* 构造函数 */
 func (m *Demo) New() *Demo {
-	m.Db()
+	m.Conn("")
 	m.Table("test")
 	return m
 }
@@ -20,6 +20,4 @@ func (m *Demo) New() *Demo {
 import "webmis/model"
 // 对象
 demo := (&models.Demo{}).New()
-// 关闭
-demo.Close()
 ```

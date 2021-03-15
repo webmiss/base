@@ -48,8 +48,6 @@ func (r Index) GetConfig(c *gin.Context) {
 			list[name] = val
 		}
 	}
-	// 关闭
-	// config.Close()
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list})
 }

@@ -12,11 +12,12 @@ import (
 )
 
 var DB *sql.DB
+var DBOther *sql.DB
 
 // Model :数据库
 type Model struct {
+	conn    *sql.DB       //连接
 	sql     string        //SQL
-	db      string        //数据库
 	table   string        //数据表
 	columns string        //字段
 	where   string        //条件
@@ -30,27 +31,38 @@ type Model struct {
 }
 
 // DBPool :数据池
-func DBPool(cfg *config.MySQL) {
+func DBPool(db string) {
+	// 配置
+	cfg := (&config.MySQL{}).Default()
+	if db == "Other" {
+		cfg = (&config.MySQL{}).Default()
+	}
 	// 连接
 	source := cfg.User + ":" + cfg.Password + "@(" + cfg.Host + ":" + cfg.Port + ")/" + cfg.Database + "?charset=" + cfg.Charset + "&parseTime=true&loc=Local"
-	DB, _ = sql.Open(cfg.Driver, source)
+	pool, _ := sql.Open(cfg.Driver, source)
 	// 是否成功
-	if err := DB.Ping(); err != nil {
+	if err := pool.Ping(); err != nil {
 		fmt.Println("[Model] Conn:", err)
 		return
 	}
 	// 配置
-	DB.SetMaxIdleConns(cfg.Min)
-	DB.SetMaxOpenConns(cfg.Max)
-	DB.SetConnMaxLifetime(time.Second * time.Duration(cfg.Time))
+	pool.SetMaxIdleConns(cfg.Min)
+	pool.SetMaxOpenConns(cfg.Max)
+	pool.SetConnMaxLifetime(time.Second * time.Duration(cfg.Time))
+	// 多数据库
+	if db == "Other" {
+		DBOther = pool
+	} else {
+		DB = pool
+	}
 }
 
-// Close :关闭
-func (m *Model) Close() {
-	if DB != nil {
-		if err := DB.Close(); err != nil {
-			fmt.Println("[Model] Close:", err)
-		}
+// Conn :连接
+func (m *Model) Conn(db string) {
+	if db == "Other" {
+		m.conn = DBOther
+	} else {
+		m.conn = DB
 	}
 }
 
@@ -61,7 +73,7 @@ func (m *Model) Query(sql string, args []interface{}) *sql.Rows {
 		return nil
 	}
 	// 是否连接
-	if DB == nil {
+	if m.conn == nil {
 		return nil
 	}
 	rows, err := DB.Query(sql, args...)
@@ -80,7 +92,7 @@ func (m *Model) Exec(sql string, args []interface{}) sql.Result {
 		return nil
 	}
 	// 是否连接
-	if DB == nil {
+	if m.conn == nil {
 		return nil
 	}
 	rows, err := DB.Exec(sql, args...)

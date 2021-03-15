@@ -7,6 +7,7 @@ type SysConfig struct {
 
 // New :构造函数
 func (m *SysConfig) New() *SysConfig {
+	m.Conn("")
 	m.Table("sys_config")
 	return m
 }

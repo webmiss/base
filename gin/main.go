@@ -13,12 +13,12 @@ import (
 )
 
 func init() {
-
 	// 权限
 	library.CasBinPool()
 	// 默认数据库
-	model.DBPool((&config.MySQL{}).Default())
-
+	model.DBPool("")
+	// Redis数据库
+	library.RedisPool("")
 }
 
 func main() {

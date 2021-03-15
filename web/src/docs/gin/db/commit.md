@@ -29,6 +29,4 @@ num, _ := rows.RowsAffected()
 self.Print(sql, args, num)
 // 提交
 tx.Commit()
-// 关闭
-demo.Close()
 ```

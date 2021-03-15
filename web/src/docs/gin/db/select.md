@@ -21,8 +21,6 @@ func Index(c *gin.Context) {
 		}
 		data = append(data, tmp)
 	}
-	// 关闭
-	demo.Close()
 	// 返回
 	c.JSON(200, gin.H{"code": 0, "msg": "Web", "data": data})
 }

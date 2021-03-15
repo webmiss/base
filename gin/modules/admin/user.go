@@ -57,8 +57,6 @@ func (r User) Login(c *gin.Context) {
 	model.Set(map[string]interface{}{"ltime": (&util.Util{}).Date("2006-01-02 15:04:05")})
 	model.Where("id=?", data["id"])
 	model.Update()
-	// 关闭
-	model.Close()
 	// Token
 	token := (&service.AdminToken{}).Create(map[string]interface{}{
 		"uid":   data["id"],
