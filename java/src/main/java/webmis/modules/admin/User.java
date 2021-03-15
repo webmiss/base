@@ -80,8 +80,6 @@ public class User extends Base {
     ps.setString(1, Util.date("yyyy-MM-dd HH:mm:ss"));
     ps.setString(2, data.get("id").toString());
     model.Update(ps);
-    // 关闭
-    model.Close();
     // 返回
     res = new HashMap<String,Object>();
     res.put("code", 10);

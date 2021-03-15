@@ -1,7 +1,6 @@
 package webmis.model;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -10,16 +9,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.alibaba.druid.pool.DruidDataSource;
+
 import webmis.base.Base;
 import webmis.config.Db;
 
 /* 数据库 */
 public class Model extends Base {
 
-  private Connection _conn = null;            //链接
-  private String _type = "";                  //类型: select、insert、update、delete
-  private String _sql = "";                   //SQL
-  private String _db = "";                          //数据库
+  public static Connection DBDefault = null;        //默认数据库
+  public static Connection DBOther = null;          //其他数据库
+  private Connection _conn = null;                  //链接
+  private String _type = "";                        //类型: select、insert、update、delete
+  private String _sql = "";                         //SQL
   private String _table = "";                       //数据表
   private String _columns = "";                     //字段
   private String _where = "";                       //条件
@@ -34,35 +36,56 @@ public class Model extends Base {
 
   /* 构造函数 */
   public Model(String db) {
-    _conn = Db(db);
+    if(db.equals("other")){
+      _conn = DBOther;
+    }else{
+      _conn = DBDefault;
+    }
   }
 
-  /* 数据库 */
-  public Connection Db(String db) {
-    _db = Db.database;
-    if(!db.equals("")) _db = db;
-    // 连接
+  /* 数据池 */
+  public static void DBPool(String db) {
+    // 配置
+    HashMap<String, Object> cfg;
+    if(db=="other"){
+      cfg = Db.Default();
+    }else{
+      cfg = Db.Default();
+    }
     try {
-      String url = "jdbc:mysql://"+Db.host+":"+Db.port+"/"+_db+"?characterEncoding="+Db.charset+"&useSSL=false&serverTimezone=Asia/Shanghai";
-      _conn = DriverManager.getConnection(url, Db.user, Db.password);
+      // 数据池
+      DruidDataSource source = new DruidDataSource();
+      source.setUrl("jdbc:"+(String)cfg.get("jdbc"));
+      source.setUsername((String)cfg.get("user"));
+      source.setPassword((String)cfg.get("password"));
+      source.setDriverClassName((String)cfg.get("driver"));
+      source.setInitialSize((int)cfg.get("min"));
+      source.setMaxActive((int)cfg.get("max"));
+      // 防止过期
+      source.setValidationQuery("SELECT 1");
+      source.setTestWhileIdle(true);
+      source.setTestOnBorrow(true);
+      source.setTestOnReturn(true);
+      // 空闲检测(毫秒)
+      source.setTimeBetweenEvictionRunsMillis(60000);
+      // 等待超时(毫秒)
+      source.setMaxWait((int)cfg.get("time"));
+      // 多数据库
+      if(db=="other"){
+        DBOther = source.getConnection();
+      }else{
+        DBDefault = source.getConnection();
+      }
+      // 关闭
+      source.close();
     } catch (Exception e) {
       Print("[Model] Conn:", e.getMessage());
     }
-    return _conn;
   }
 
   /* 链接 */
   public Connection Conn() {
     return _conn;
-  }
-
-  /* 关闭 */
-  public void Close() {
-    try {
-      _conn.close();
-    } catch (SQLException e) {
-      Print("[Model] Close:", e.getMessage());
-    }
   }
 
   /* 过滤 */

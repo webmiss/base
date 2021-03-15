@@ -11,7 +11,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var DB *sql.DB
+var DBDefault *sql.DB
 var DBOther *sql.DB
 
 // Model :数据库
@@ -34,7 +34,7 @@ type Model struct {
 func DBPool(db string) {
 	// 配置
 	cfg := (&config.MySQL{}).Default()
-	if db == "Other" {
+	if db == "other" {
 		cfg = (&config.MySQL{}).Default()
 	}
 	// 连接
@@ -50,19 +50,19 @@ func DBPool(db string) {
 	pool.SetMaxOpenConns(cfg.Max)
 	pool.SetConnMaxLifetime(time.Second * time.Duration(cfg.Time))
 	// 多数据库
-	if db == "Other" {
+	if db == "other" {
 		DBOther = pool
 	} else {
-		DB = pool
+		DBDefault = pool
 	}
 }
 
 // Conn :连接
 func (m *Model) Conn(db string) {
-	if db == "Other" {
+	if db == "other" {
 		m.conn = DBOther
 	} else {
-		m.conn = DB
+		m.conn = DBDefault
 	}
 }
 
@@ -76,7 +76,7 @@ func (m *Model) Query(sql string, args []interface{}) *sql.Rows {
 	if m.conn == nil {
 		return nil
 	}
-	rows, err := DB.Query(sql, args...)
+	rows, err := m.conn.Query(sql, args...)
 	if err != nil {
 		fmt.Println("[Model] Query:", err)
 		fmt.Println("[Model] SQL:", sql)
@@ -95,7 +95,7 @@ func (m *Model) Exec(sql string, args []interface{}) sql.Result {
 	if m.conn == nil {
 		return nil
 	}
-	rows, err := DB.Exec(sql, args...)
+	rows, err := m.conn.Exec(sql, args...)
 	m.args = make([]interface{}, 0, 10)
 	if err != nil {
 		fmt.Println("[Model] Exec:", err)

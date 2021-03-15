@@ -53,8 +53,6 @@ public class Index extends Base {
         }
       }
     } catch (SQLException e) { }
-    // 关闭
-    config.Close();
     // 返回
     HashMap<String,Object> res = new HashMap<String,Object>();
     res.put("code", 0);
