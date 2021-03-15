@@ -15,8 +15,11 @@ type Kafka struct{}
 func (Kafka) Producer(topic string, partition int) *kafka.Conn {
 	cfg := (&config.Kafka{}).Config()
 	w, err := kafka.DialLeader(context.Background(), cfg.Type, cfg.Host+":"+cfg.Port, topic, partition)
-	if err != nil && cfg.Log {
-		fmt.Println("[Kafka] Conn:", err)
+	if err != nil {
+		if cfg.Log {
+			fmt.Println("[Kafka] Conn:", err)
+		}
+		return nil
 	}
 	return w
 }

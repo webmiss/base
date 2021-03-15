@@ -51,6 +51,9 @@ func (k Logs) Error(content string, err error) {
 
 // Writer :发送
 func (Logs) Writer(conn *kafka.Conn, text []byte) {
+	if conn == nil {
+		return
+	}
 	cfg := (&config.Kafka{}).Config()
 	_, err := conn.WriteMessages(kafka.Message{Value: text})
 	if err != nil && cfg.Log {
