@@ -11,8 +11,7 @@ import (
 )
 
 func main() {
-	kafka := (&library.Kafka{})
-	r := kafka.Consumer("logs")
+	r := (&library.Kafka{}).Consumer("logs")
 	defer r.Close()
 	// 配置
 	// r.SetOffset(100)	//开始读取
@@ -25,6 +24,7 @@ func main() {
 		}
 		// 保存
 		res := write(m.Value)
+		fmt.Println(m.Offset)
 		if res == true {
 			if err := r.CommitMessages(ctx, m); err != nil {
 				fmt.Println("[Logs] Commit:", err)

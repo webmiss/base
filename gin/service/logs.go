@@ -1,82 +1,60 @@
 package service
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"webmis/config"
+	"webmis/library"
 
 	"github.com/gin-gonic/gin"
 	"github.com/segmentio/kafka-go"
 )
 
 // Logs :日志
-type Logs struct {
-	conn *kafka.Conn
-}
+type Logs struct{}
 
-// Conn :连接
-func (l *Logs) Conn(topic string, partition int) bool {
-	if l.conn != nil {
-		return true
-	}
-	cfg := (&config.Kafka{}).Config()
-	conn, err := kafka.DialLeader(context.Background(), cfg.Type, cfg.Host+":"+cfg.Port, topic, partition)
-	if err != nil {
-		if cfg.Log {
-			fmt.Println("[Kafka] Conn:", err)
-		}
-		return false
-	}
-	l.conn = conn
-	return true
-}
-
-// Send :发送
-func (l *Logs) Send(topic string, partition int, text []byte) {
-	if l.Conn(topic, partition) != true {
-		cfg := (&config.Kafka{}).Config()
-		if cfg.Log {
-			fmt.Println("[Logs] Fail:", string(text))
-		}
-		return
-	}
-	l.conn.WriteMessages(kafka.Message{Value: text})
-	defer l.conn.Close()
-}
-
-// Log :记录日志
-func (l *Logs) Log(content interface{}) {
-	str, _ := json.Marshal(gin.H{
+// Log :访问日志
+func (k Logs) Log(content interface{}) {
+	text, _ := json.Marshal(gin.H{
 		"type": "log",
 		"data": content,
 	})
-	go l.Send("logs", 0, str)
+	go k.Writer((&library.Kafka{}).Producer("logs", 0), text)
 }
 
-// Info :记录信息
-func (l *Logs) Info(content interface{}) {
-	str, _ := json.Marshal(gin.H{
+// Info :信息日志
+func (k Logs) Info(content interface{}) {
+	text, _ := json.Marshal(gin.H{
 		"type": "info",
 		"data": content,
 	})
-	go l.Send("logs", 1, str)
+	go k.Writer((&library.Kafka{}).Producer("logs", 1), text)
 }
 
-// Action :记录操作
-func (l *Logs) Action(content interface{}) {
-	str, _ := json.Marshal(gin.H{
+// Action :操作日志
+func (k Logs) Action(content interface{}) {
+	text, _ := json.Marshal(gin.H{
 		"type": "action",
 		"data": content,
 	})
-	go l.Send("logs", 2, str)
+	go k.Writer((&library.Kafka{}).Producer("logs", 2), text)
 }
 
-// Error :记录错误
-func (l *Logs) Error(content interface{}) {
-	str, _ := json.Marshal(gin.H{
+// Error :错误日志
+func (k Logs) Error(content string, err error) {
+	text, _ := json.Marshal(gin.H{
 		"type": "error",
-		"data": content,
+		"data": fmt.Sprintf(content, err),
 	})
-	go l.Send("logs", 3, str)
+	go k.Writer((&library.Kafka{}).Producer("logs", 3), text)
+}
+
+// Writer :发送
+func (Logs) Writer(conn *kafka.Conn, text []byte) {
+	cfg := (&config.Kafka{}).Config()
+	_, err := conn.WriteMessages(kafka.Message{Value: text})
+	if err != nil && cfg.Log {
+		fmt.Println("[Logs] Writer:", err)
+		fmt.Println("[Logs] Writer:", string(text))
+	}
 }
