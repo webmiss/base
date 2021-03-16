@@ -19,6 +19,4 @@ public class Demo extends Model {
 import webmis.model.Demo;
 // 对象
 Demo demo = new Demo();
-// 关闭
-demo.close();
 ```

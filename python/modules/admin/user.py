@@ -39,11 +39,9 @@ class User(Base):
     model.Set({'ltime': Util.date('%Y%m%d%H%M%S')})
     model.Where('id=%s', data['id'])
     model.Update()
-    # 关闭
-    model.Close()
     # 返回
     return self.GetJSON({
-      'code': 10,
+      'code': 0,
       'msg': '成功',
       'token': AdminToken().create({'uid':str(data['id']), 'uname':uname}),
       'uinfo': {
@@ -56,3 +54,7 @@ class User(Base):
         'img': Env.base_url+data['img'] if data['img']!='' else '',
       }
     })
+
+  # Token验证
+  def token(self):
+    return self.GetJSON({'code':0,'msg':'成功'})

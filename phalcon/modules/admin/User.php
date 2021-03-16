@@ -42,11 +42,9 @@ class User extends Base {
     $model->Set(['ltime'=>date('YmdHis')]);
     $model->Where('id=?', $data['id']);
     $model->Update();
-    // 关闭
-    $model->Close();
     // 返回
     return self::GetJSON([
-      'code'=> 10,
+      'code'=> 0,
       'msg'=> '成功',
       'token'=> AdminToken::create(['uid'=>$data['id'], 'uname'=>$uname]),
       'uinfo'=>[
@@ -59,6 +57,11 @@ class User extends Base {
         'img'=> !empty($data['img'])?Env::$base_url.$data['img']:'',
       ],
     ]);
+  }
+
+  /* Token验证 */
+	static function Token(){
+    return self::GetJSON(['code'=>0, 'msg'=>'成功']);
   }
 
 }

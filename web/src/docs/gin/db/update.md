@@ -9,8 +9,6 @@ demo.Set(map[string]interface{}{
 demo.Where("uid=?", id)
 num := demo.Update()
 self.Print(num)
-// 关闭
-demo.Close()
 ```
 
 ### 生成SQL

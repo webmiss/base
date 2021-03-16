@@ -5,6 +5,9 @@ from config.db import Db
 # 数据库
 class Model :
 
+  DBDefault = None            #默认数据库
+  DBOther = None              #其他数据库
+
   __conn = None               #连接
   __sql: str = ''             #SQL
   __db: str = ''              #数据库
@@ -20,44 +23,24 @@ class Model :
   __data: str = ''            #更新-数据
 
   # 构造函数
-  def __init__(self, db: str='' , pool: str=False):
-    self.Db(db, pool)
+  def __init__(self, db: str=''):
+    if db=="other" : self.__conn = self.DBOther
+    else : self.__conn = self.DBDefault
 
-  # 数据库
-  def Db(self, db: str='', pool: bool=False):
-    cfg = {
-      'host': Db.host,
-      'port': Db.port,
-      'user': Db.user,
-      'db': self.__db if db!='' else Db.database,
-      'charset': Db.charset,
-    }
+  # 数据池
+  def DBPool(self, db: str=''):
+    if db=="other" : cfg = Db.Default()
+    else : cfg = Db.Default()
     try :
-      if pool :
-        cfg['password'] = Db.password
-        # 数据池
-        cfg['mincached'] = Db.min
-        cfg['maxcached'] = Db.max
-        cfg['maxconnections'] = Db.max
-        cfg['blocking'] = True  #是否阻塞等待
-        cfg['maxusage'] = True  #重复使用次数
-        pool = PooledDB(creator=Db.driver, **cfg)
-        self.__conn = pool.connection()
-      else :
-        cfg['passwd'] = Db.password
-        self.__conn = pymysql.Connect(**cfg)
-      return self.__conn
+      pool = PooledDB(**cfg)
+      if db=="other" : self.DBOther = pool.connection()
+      else : self.DBDefault = pool.connection()
     except Exception as e :
-      print('[Model] Conn:', e)
-      return None
+      print('[Model] Pool:', e)
 
   # 链接
   def Conn(self):
     return self.__conn
-
-  # 关闭
-  def Close(self) :
-    if self.__conn : self.__conn.close()
 
   # 查询
   def Query(self, sql: str, args: tuple = ()) :

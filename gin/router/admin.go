@@ -15,7 +15,6 @@ func Admin(r *gin.Engine) {
 	{
 		// 首页
 		g.GET("", (&admin.Index{}).Index)
-		g.GET("index", (&admin.Index{}).Index)
 		g.POST("index/getConfig", (&admin.Index{}).GetConfig)
 		// 登录
 		g.POST("user/login", (&admin.User{}).Login)

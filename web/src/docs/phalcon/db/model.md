@@ -20,6 +20,4 @@ class Demo extends Model {
 use Model\Demo;
 // 对象
 $demo = new Demo();
-// 关闭
-$demo->Close();
 ```

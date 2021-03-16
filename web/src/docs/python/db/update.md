@@ -7,8 +7,6 @@ demo.Set({'title':'Python-更新'})
 demo.Where('uid=%s', id)
 num = demo.Update()
 self.Print(num)
-# 关闭
-demo.Close()
 ```
 
 ### 生成SQL

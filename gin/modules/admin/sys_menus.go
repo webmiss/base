@@ -30,7 +30,7 @@ func (r *SysMenus) GetMenus(c *gin.Context) {
 		r.menus[fid] = append(r.menus[fid], val)
 	}
 	// 返回
-	c.JSON(200, gin.H{"code": 0, "menus": r._getMenu("0")})
+	r.GetJSON(c, gin.H{"code": 0, "menus": r._getMenu("0")})
 }
 
 // 递归菜单

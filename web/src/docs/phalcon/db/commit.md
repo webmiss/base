@@ -22,8 +22,6 @@ try {
   self::Print($sql, $args, $num);
   // 提交
   $model->commit();
-  // 关闭
-  $model->close();
 } catch (\Exception $e) {
   $model->rollback();
 }

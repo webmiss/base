@@ -6,8 +6,6 @@ demo = Demo()
 demo.Values({'uid': None, 'title':'添加'})
 id = demo.Insert()
 self.Print(id)
-# 关闭
-demo.Close()
 ```
 
 ### 生成SQL

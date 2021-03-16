@@ -17,6 +17,4 @@ class Demo(Model) :
 from model.demo import Demo
 # 对象
 demo = Demo()
-# 关闭
-demo.Close()
 ```

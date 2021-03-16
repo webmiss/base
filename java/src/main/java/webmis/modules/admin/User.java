@@ -104,7 +104,7 @@ public class User extends Base {
 
   /* Token验证 */
   @RequestMapping("user/token")
-  String getMenus() {
+  String Token() {
     HashMap<String,Object> res;
     // 返回
     res = new HashMap<String,Object>();

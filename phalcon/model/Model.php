@@ -50,11 +50,6 @@ class Model extends Base {
     return $this->conn;
   }
 
-  /* 关闭 */
-  function Close() {
-    if($this->conn) $this->conn->close();
-  }
-
   /* 查询 */
   function Query(string $sql, array $args=[]) {
     if(empty($sql)){

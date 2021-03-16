@@ -14,8 +14,6 @@ class Index(Base):
     config.Columns('name','val')
     config.Where('name in ("title","copy","logo","login_bg")')
     data = config.Find()
-    # 关闭
-    config.Close()
     # 数据
     list = {}
     for val in data :

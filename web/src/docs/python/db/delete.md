@@ -6,8 +6,6 @@ demo = Demo()
 demo.Where('uid=%s', id)
 num = demo.Delete()
 self.Print(num)
-# 关闭
-demo.Close()
 ```
 
 ### 生成SQL
