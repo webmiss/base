@@ -4,11 +4,12 @@ from model.sys_menu import SysMenu
 # 系统菜单
 class SysMenus(Base):
 
-  menus = {}
+  menus = None
 
   # 获取菜单
   def getMenus(self):
     # 全部菜单
+    self.menus = {}
     model = SysMenu()
     model.Columns('id', 'fid', 'title', 'url', 'ico')
     model.Order('sort DESC, id')

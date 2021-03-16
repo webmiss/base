@@ -24,17 +24,16 @@ class Model :
 
   # 构造函数
   def __init__(self, db: str=''):
-    if db=="other" : self.__conn = self.DBOther
-    else : self.__conn = self.DBDefault
+    if db=="other" : self.__conn = self.DBOther.connection()
+    else : self.__conn = self.DBDefault.connection()
 
   # 数据池
   def DBPool(self, db: str=''):
     if db=="other" : cfg = Db.Default()
     else : cfg = Db.Default()
     try :
-      pool = PooledDB(**cfg)
-      if db=="other" : self.DBOther = pool.connection()
-      else : self.DBDefault = pool.connection()
+      if db=="other" : self.DBOther = PooledDB(**cfg)
+      else : self.DBDefault = PooledDB(**cfg)
     except Exception as e :
       print('[Model] Pool:', e)
 
@@ -145,7 +144,7 @@ class Model :
     return self.__sql,args
   # 查询-多条
   def Find(self) :
-    res = None
+    res = []
     sql, args = self.SelectSql()
     if(sql=='') : return res
     cs, num = self.Query(sql, args)
@@ -155,7 +154,7 @@ class Model :
     return res
   #查询-单条
   def FindFirst(self) :
-    res = None
+    res = {}
     sql, args = self.SelectSql()
     if(sql=='') : return res
     cs, num = self.Query(sql, args)
