@@ -82,7 +82,7 @@ public class User extends Base {
     model.Update(ps);
     // 返回
     res = new HashMap<String,Object>();
-    res.put("code", 10);
+    res.put("code", 0);
     res.put("msg", "成功");
     // Token
     HashMap<String, Object> token = new HashMap<String, Object>();
@@ -99,6 +99,17 @@ public class User extends Base {
     uinfo.put("gender", data.get("gender"));
     uinfo.put("img", !data.get("img").equals("")?Env.base_url+(String)data.get("img"):"");
     res.put("uinfo", uinfo);
+    return GetJSON(res);
+  }
+
+  /* Token验证 */
+  @RequestMapping("user/token")
+  String getMenus() {
+    HashMap<String,Object> res;
+    // 返回
+    res = new HashMap<String,Object>();
+    res.put("code", 0);
+    res.put("msg", "成功");
     return GetJSON(res);
   }
 

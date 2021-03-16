@@ -13,8 +13,6 @@ import (
 )
 
 func init() {
-	// 权限
-	library.CasBinPool()
 	// 默认数据库
 	model.DBPool("")
 	// Redis数据库
@@ -32,7 +30,7 @@ func main() {
 	// APP
 	app := gin.Default()
 	app.Use(gzip.Gzip(gzip.DefaultCompression)) //压缩
-	app.Use(gin.Recovery())                     //处理异常
+	app.Use(middleware.Recovery)                //处理异常
 	app.Use(middleware.Logs())                  //访问日志
 	// 路由
 	router.Home(app)

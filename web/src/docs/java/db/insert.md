@@ -11,8 +11,6 @@ ps.setNull(1, 0);
 ps.setString(2, "Java-添加");
 // 执行
 int id = demo.Insert(ps);
-// 关闭
-demo.Close();
 ```
 
 ### 生成SQL

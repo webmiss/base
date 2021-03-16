@@ -11,6 +11,6 @@ type Socket struct {
 func (cfg *Socket) Config() *Socket {
 	cfg.URL = "/websocket" //地址
 	cfg.Host = "localhost" //主机
-	cfg.Port = "9021"      //端口
+	cfg.Port = "9031"      //端口
 	return cfg
 }

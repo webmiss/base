@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import webmis.base.Base;
-import webmis.library.Casbin;
 
 @RestController
 @Controller("Index")
@@ -17,9 +16,6 @@ public class Index extends Base{
   /* 首页 */
   @RequestMapping("")
   String index() {
-    Casbin casbin = new Casbin();
-    casbin.Add("admin", "java", "test");
-    Print(casbin.Verify("admin", "java1", "test"));
     // 返回数据
     HashMap<String,Object> res = new HashMap<String,Object>();
     res.put("code",0);

@@ -8,8 +8,6 @@ demo.LeftJoin("test2 as b", "a.id=b.uid");
 demo.Columns("a.title", "b.name");
 String sql = demo.SelectSql();
 Print(sql);
-// 关闭
-demo.Close();
 ```
 
 ### 其他

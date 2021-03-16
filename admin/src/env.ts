@@ -97,7 +97,7 @@ export default {
   /* Socket */
   socket: {
     type: 'api',
-    start: true, //启动
+    start: false, //启动
     server: socket, //链接地址
     time: 3000, //重连时间
     heartbeat: 10000, //心跳检测时间

@@ -11,8 +11,6 @@ ps.setString(1, "Java-更新");
 ps.setInt(2, id);
 int num = demo.Update(ps);
 Print(num);
-// 关闭
-demo.Close();
 ```
 
 ### 生成SQL

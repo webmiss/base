@@ -28,8 +28,6 @@ try {
   Print(ps, num);
   // 提交
   conn.commit();
-  // 关闭
-  conn.close();
 } catch (SQLException e) {
   conn.rollback();
 } finally {

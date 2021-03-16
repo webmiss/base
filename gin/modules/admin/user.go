@@ -73,5 +73,11 @@ func (r User) Login(c *gin.Context) {
 		"img":      (&util.Util{}).Img(data["img"]),
 	}
 	// 返回
-	c.JSON(200, gin.H{"code": 10, "msg": "成功", "token": token, "uinfo": user})
+	c.JSON(200, gin.H{"code": 0, "msg": "成功", "token": token, "uinfo": user})
+}
+
+// Token :验证
+func (r User) Token(c *gin.Context) {
+	// 返回
+	c.JSON(200, gin.H{"code": 0, "msg": "成功"})
 }
