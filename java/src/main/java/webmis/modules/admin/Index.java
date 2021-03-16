@@ -30,7 +30,7 @@ public class Index extends Base {
 
   /* 系统配置 */
   @RequestMapping("index/getConfig")
-  String getConfig(){
+  String GetConfig(){
     // 查询
     SysConfig config = new SysConfig();
     config.Columns("name","val");

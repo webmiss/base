@@ -7,7 +7,7 @@ class SysMenus(Base):
   menus = None
 
   # 获取菜单
-  def getMenus(self):
+  def GetMenus(self):
     # 全部菜单
     self.menus = {}
     model = SysMenu()

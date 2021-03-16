@@ -22,7 +22,7 @@ public class SysMenus extends Base {
 
   /* 获取菜单 */
   @RequestMapping("getMenus")
-  String getMenus() {
+  String GetMenus() {
     HashMap<String,Object> res;
     ArrayList<HashMap<String, Object>> tmp;
     // 全部菜单

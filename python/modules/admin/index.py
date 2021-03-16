@@ -5,11 +5,11 @@ from model.sys_config import SysConfig
 class Index(Base):
 
   # 首页
-  def index(self):
+  def Index(self):
     return self.GetJSON({'code':0,'msg':'Admin'})
 
   # 系统配置
-  def getConfig(self):
+  def GetConfig(self):
     config = SysConfig()
     config.Columns('name','val')
     config.Where('name in ("title","copy","logo","login_bg")')

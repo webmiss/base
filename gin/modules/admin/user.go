@@ -78,6 +78,9 @@ func (r User) Login(c *gin.Context) {
 
 // Token :验证
 func (r User) Token(c *gin.Context) {
+	token := c.PostForm("token")
+	uinfo := c.PostForm("uinfo")
+	r.Print(uinfo, token)
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
 }

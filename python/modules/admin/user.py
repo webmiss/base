@@ -9,7 +9,7 @@ from util.util import Util
 class User(Base):
 
   # 登录
-  def login(self):
+  def Login(self):
     uname = self.Post('uname')
     passwd = self.Post('passwd')
     # 验证用户名
@@ -56,5 +56,8 @@ class User(Base):
     })
 
   # Token验证
-  def token(self):
+  def Token(self):
+    token = self.Post('token')
+    uinfo = self.Post('uinfo')
+    self.Print(uinfo, token)
     return self.GetJSON({'code':0,'msg':'成功'})

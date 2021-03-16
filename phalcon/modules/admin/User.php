@@ -61,6 +61,9 @@ class User extends Base {
 
   /* Token验证 */
 	static function Token(){
+    $token = self::Post('token');
+    $uinfo = self::Post('uinfo');
+    self::Print($uinfo, $token);
     return self::GetJSON(['code'=>0, 'msg'=>'成功']);
   }
 
