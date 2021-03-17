@@ -31,6 +31,8 @@ func main() {
 	app := gin.Default()
 	app.Use(gzip.Gzip(gzip.DefaultCompression)) //压缩
 	app.Use(middleware.Recovery)                //处理异常
+	app.NoRoute(middleware.HandleNotFound)      //路由404
+	app.NoMethod(middleware.HandleNotFound)     //请求方式404
 	app.Use(middleware.Logs())                  //访问日志
 	// 路由
 	router.Home(app)

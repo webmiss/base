@@ -2,6 +2,7 @@ package admin
 
 import (
 	"webmis/base"
+	"webmis/config"
 	"webmis/library"
 	"webmis/model"
 	"webmis/service"
@@ -22,36 +23,46 @@ func (r User) Login(c *gin.Context) {
 	// 验证用户名
 	safety := (&library.Safety{})
 	if safety.IsRight("uname", uname) != true && safety.IsRight("tel", uname) != true && safety.IsRight("email", uname) != true {
-		c.JSON(200, gin.H{"code": 4000, "msg": "请输入用户名/手机/邮箱"})
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "请输入用户名/手机/邮箱"})
 		return
 	}
 	// 密码长度
 	if safety.IsRight("passwd", passwd) != true {
-		c.JSON(200, gin.H{"code": 4000, "msg": "请输入6~16位密码"})
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "请输入6~16位密码"})
 		return
 	}
 	// 查询
 	model := (&model.User{}).New()
 	model.Table("user AS a")
 	model.LeftJoin("user_info AS b", "a.id=b.uid")
-	model.LeftJoin("user_perm AS c", "a.id=c.uid")
+	model.LeftJoin("sys_perm AS c", "a.id=c.uid")
 	model.Where("(a.uname=? OR a.tel=? OR a.email=?) AND a.password=?", uname, uname, uname, (&util.Util{}).Md5(passwd))
-	model.Columns("a.id", "a.state", "b.position", "b.nickname", "b.name", "b.gender", "b.birthday", "b.img", "c.state_admin")
+	model.Columns("a.id", "a.state", "b.position", "b.nickname", "b.name", "b.gender", "b.birthday", "b.img", "c.role", "c.perm")
 	data := model.FindFirst()
 	// 是否存在
-	if data == nil {
-		c.JSON(200, gin.H{"code": 4000, "msg": "帐号或密码错误!"})
+	if len(data) == 0 {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "帐号或密码错误!"})
 		return
 	}
 	// 是否禁用
 	if data["state"] != "1" {
-		c.JSON(200, gin.H{"code": 4000, "msg": "该用户已被禁用!"})
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "该用户已被禁用!"})
 		return
 	}
-	if data["state_admin"] != "1" {
-		c.JSON(200, gin.H{"code": 4000, "msg": "该用户不允许登录!"})
+	perm := data["role"]
+	if data["perm"] != "" {
+		perm = data["perm"]
+	}
+	if perm == "" {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "该用户不允许登录!"})
 		return
 	}
+	env := (&config.Env{}).Config()
+	redis := (&library.Redis{}).New("")
+	key := env.AdminTokenPrefix + "_perm_" + data["id"].(string)
+	redis.Set(key, perm)
+	redis.Expire(key, env.AdminTokenTime)
+	redis.Close()
 	// 登录时间
 	model.Table("user")
 	model.Set(map[string]interface{}{"ltime": (&util.Util{}).Date("2006-01-02 15:04:05")})
@@ -78,9 +89,9 @@ func (r User) Login(c *gin.Context) {
 
 // Token :验证
 func (r User) Token(c *gin.Context) {
-	token := c.PostForm("token")
-	uinfo := c.PostForm("uinfo")
-	r.Print(uinfo, token)
+	// 验证
+	(&service.AdminToken{}).Verify(c.PostForm("token"), c.Request.RequestURI)
+	// uinfo := c.PostForm("uinfo")
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
 }

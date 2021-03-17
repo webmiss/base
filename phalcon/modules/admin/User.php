@@ -4,6 +4,7 @@ namespace App\Admin;
 use Base\Base;
 use Config\Env;
 use Library\Safety;
+use Library\Redis;
 use Service\AdminToken;
 use Model\User as UserModel;
 
@@ -25,18 +26,26 @@ class User extends Base {
     $model = new UserModel();
     $model->Table('user AS a');
     $model->LeftJoin('user_info AS b', 'a.id=b.uid');
-    $model->LeftJoin('user_perm AS c', 'a.id=c.uid');
-    $model->Columns('a.id', 'a.state', 'b.position', 'b.nickname', 'b.name', 'b.gender', 'b.birthday', 'b.img', 'c.state_admin');
+    $model->LeftJoin('sys_perm AS c', 'a.id=c.uid');
+    $model->Columns('a.id', 'a.state', 'b.position', 'b.nickname', 'b.name', 'b.gender', 'b.birthday', 'b.img', 'c.role', 'c.perm');
     $model->Where(
       '(a.uname=? OR a.tel=? OR a.email=?) AND a.password=?',
       $uname, $uname, $uname, md5($passwd)
     );
     $data = $model->FindFirst();
     // 是否存在
-    if(!$data) return self::GetJSON(['code'=>4000,'msg'=>'帐号或密码错误!']);
+    if(empty($data)) return self::GetJSON(['code'=>4000,'msg'=>'帐号或密码错误!']);
     // 是否禁用
     if($data['state']!='1') return self::GetJSON(['code'=>4000,'msg'=>'该用户已被禁用!']);
-    if($data['state_admin']!='1') return self::GetJSON(['code'=>4000,'msg'=>'该用户不允许登录!']);
+    // 权限
+    $perm = $data['role'];
+    if($data['perm']) $perm=$data['perm'];
+    if(!$perm) return self::GetJSON(['code'=>4000,'msg'=>'该用户不允许登录!']);
+    $redis = new Redis();
+    $key = Env::$admin_token_prefix.'_perm_'.$data['id'];
+    $redis->Set($key, $perm);
+    $redis->Expire($key, Env::$admin_token_time);
+    $redis->Close();
     // 登录时间
     $model->Table('user');
     $model->Set(['ltime'=>date('YmdHis')]);
@@ -44,6 +53,7 @@ class User extends Base {
     $model->Update();
     // 返回
     return self::GetJSON([
+      'perm'=> $perm,
       'code'=> 0,
       'msg'=> '成功',
       'token'=> AdminToken::create(['uid'=>$data['id'], 'uname'=>$uname]),
@@ -61,9 +71,12 @@ class User extends Base {
 
   /* Token验证 */
 	static function Token(){
-    $token = self::Post('token');
+    // 验证
+    list($v, $msg) = AdminToken::verify(self::Post('token'), $_SERVER['REQUEST_URI']);
+    if(!$v) return self::GetJSON(['code'=>4000, 'msg'=>$msg]);
+    // 参数
     $uinfo = self::Post('uinfo');
-    self::Print($uinfo, $token);
+    // self::Print($uinfo, $token);
     return self::GetJSON(['code'=>0, 'msg'=>'成功']);
   }
 

@@ -43,7 +43,7 @@ func (s Safety) Encode(param map[string]interface{}) (string, error) {
 }
 
 // Decode :解密-JWT
-func (s Safety) Decode(token string) (interface{}, error) {
+func (s Safety) Decode(token string) (jwt.MapClaims, error) {
 	cfg := (&config.Env{}).Config() //配置
 	res, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {

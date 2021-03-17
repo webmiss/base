@@ -174,7 +174,8 @@ class Model extends Base {
     $res = null;
     list($sql, $args) = $this->SelectSql();
     if(!$this->conn || empty($sql)) return $res;
-    return $this->conn->fetchAll($sql, 2, $args);
+    $res = $this->conn->fetchAll($sql, 2, $args);
+    return $res?$res:[];
   }
   /* 查询-单条 */
   function FindFirst() {
@@ -182,7 +183,8 @@ class Model extends Base {
     $this->limit = '0,1';
     list($sql, $args) = $this->SelectSql();
     if(!$this->conn || empty($sql)) return $res;
-    return $this->conn->fetchOne($sql, 2, $args);
+    $res = $this->conn->fetchOne($sql, 2, $args);
+    return $res?$res:[];
   }
 
   /* 添加-数据 */

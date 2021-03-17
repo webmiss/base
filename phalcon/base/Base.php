@@ -31,8 +31,8 @@ class Base {
     fwrite(STDERR,PHP_EOL);
   }
   static private function toString($val): string {
-    if(gettype($val)=='array') $val = json_encode($val);
-    elseif(gettype($val)=='object') $val = json_encode($val);
+    if(gettype($val)=='array') $val = json_encode($val, JSON_UNESCAPED_UNICODE);
+    elseif(gettype($val)=='object') $val = json_encode($val, JSON_UNESCAPED_UNICODE);
     else $val = (string)$val;
     return $val;
   }

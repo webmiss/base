@@ -18,7 +18,7 @@ import webmis.model.SysMenu;
 public class SysMenus extends Base {
 
   private static HashMap<String, ArrayList<HashMap<String, Object>>> menus = null;
-  private static HashMap<String, Object> permAll = null;
+  // private static HashMap<String, Object> permAll = null;
 
   /* 获取菜单 */
   @RequestMapping("getMenus")

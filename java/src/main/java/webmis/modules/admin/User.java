@@ -4,12 +4,15 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import webmis.base.Base;
 import webmis.config.Env;
+import webmis.library.Redis;
 import webmis.library.Safety;
 import webmis.service.AdminToken;
 import webmis.util.Util;
@@ -41,8 +44,8 @@ public class User extends Base {
     webmis.model.User model = new webmis.model.User();
     model.Table("user AS a");
     model.LeftJoin("user_info AS b", "a.id=b.uid");
-    model.LeftJoin("user_perm AS c", "a.id=c.uid");
-    model.Columns("a.id", "a.state", "b.position", "b.nickname", "b.name", "b.gender", "b.birthday", "b.img", "c.state_admin");
+    model.LeftJoin("sys_perm AS c", "a.id=c.uid");
+    model.Columns("a.id", "a.state", "b.position", "b.nickname", "b.name", "b.gender", "b.birthday", "b.img", "c.role", "c.perm");
     model.Where("(a.uname=? OR a.tel=? OR a.email=?) AND a.password=?");
     String sql = model.SelectSql();
     PreparedStatement ps = model.Bind(sql);
@@ -65,12 +68,20 @@ public class User extends Base {
       res.put("msg","该用户已被禁用!");
       return GetJSON(res);
     }
-    if(!data.get("state_admin").equals("1")){
+    // 权限
+    String perm = String.valueOf(data.get("role"));
+    if(!data.get("perm").equals("")) perm=String.valueOf(data.get("perm"));
+    if(perm.equals("")){
       res = new HashMap<String, Object>();
       res.put("code",4000);
       res.put("msg","该用户不允许登录!");
       return GetJSON(res);
     }
+    Redis redis = new Redis();
+    String key = Env.admin_token_prefix+"_perm_"+String.valueOf(data.get("id"));
+    redis.Set(key, perm);
+    redis.Expire(key, Env.admin_token_time);
+    redis.Close();
     // 登录时间
     model.Table("user");
     model.Set("ltime");
@@ -104,8 +115,11 @@ public class User extends Base {
 
   /* Token验证 */
   @RequestMapping("user/token")
-  String Token(String token, String uinfo) {
-    Print(uinfo, token);
+  String Token(HttpServletRequest request, String token, String uinfo) {
+    // 验证
+    String verify = AdminToken.verify(token, request.getRequestURI());
+    Print(verify, verify.equals("1"));
+    // 参数
     HashMap<String,Object> res;
     // 返回
     res = new HashMap<String,Object>();

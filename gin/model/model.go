@@ -222,27 +222,29 @@ func (m *Model) SelectSQL() (string, []interface{}) {
 
 // Find :查询-多条
 func (m *Model) Find() []map[string]interface{} {
+	res := []map[string]interface{}{}
 	sql, args := m.SelectSQL()
 	if sql == "" {
-		return nil
+		return res
 	}
 	rows := m.Query(sql, args)
 	if rows == nil {
-		return nil
+		return res
 	}
 	return m.FindDataAll(rows)
 }
 
 // FindFirst :查询-单条
 func (m *Model) FindFirst() map[string]interface{} {
+	res := map[string]interface{}{}
 	m.limit = "0,1"
 	sql, args := m.SelectSQL()
 	if sql == "" {
-		return nil
+		return res
 	}
 	rows := m.Query(sql, args)
 	if rows == nil {
-		return nil
+		return res
 	}
 	return m.FindDataOne(rows)
 }
@@ -251,7 +253,7 @@ func (m *Model) FindFirst() map[string]interface{} {
 func (m *Model) FindDataOne(rows *sql.Rows) map[string]interface{} {
 	res := m.FindDataAll(rows)
 	if len(res) == 0 {
-		return nil
+		return map[string]interface{}{}
 	}
 	return res[0]
 }

@@ -2,7 +2,10 @@ package webmis.util;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.DigestUtils;
@@ -36,6 +39,18 @@ public class Util {
       System.out.println("[File] Load: "+e.getMessage());
       return "";
     }
+  }
+
+  /* String to List */
+  public static ArrayList<String> explode(String delimiter, String string) {
+    ArrayList<String> res = (ArrayList<String>) Arrays.asList(string.split(delimiter));
+    return res;
+  }
+
+  /* List to String */
+  public static String implode(String glue, ArrayList<String> pieces) {
+    String res = String.join(glue, pieces);
+    return res;
   }
   
 }

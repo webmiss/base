@@ -1,9 +1,10 @@
+from flask import request
 from base.base import Base
 from config.env import Env
 from library.safety import Safety
+from library.redis import Redis
 from model.user import User as UserModel
 from service.admin_token import AdminToken
-
 from util.util import Util
 
 class User(Base):
@@ -22,18 +23,26 @@ class User(Base):
     model = UserModel()
     model.Table('user AS a')
     model.LeftJoin('user_info AS b', 'a.id=b.uid')
-    model.LeftJoin('user_perm AS c', 'a.id=c.uid')
+    model.LeftJoin('sys_perm AS c', 'a.id=c.uid')
     model.Where(
       '(a.uname=%s OR a.tel=%s OR a.email=%s) AND a.password=%s',
       uname, uname, uname, Util.md5(passwd)
     )
-    model.Columns('a.id', 'a.state', 'b.position', 'b.nickname', 'b.name', 'b.gender', 'b.birthday', 'b.img', 'c.state_admin')
+    model.Columns('a.id', 'a.state', 'b.position', 'b.nickname', 'b.name', 'b.gender', 'b.birthday', 'b.img', 'c.role', 'c.perm')
     data = model.FindFirst()
     # 是否存在
     if not data : return self.GetJSON({'code':4000, 'msg':'帐号或密码错误!'})
     # 是否禁用
     if data['state']!='1' : return self.GetJSON({'code':4000, 'msg':'该用户已被禁用!'})
-    if data['state_admin']!='1' : return self.GetJSON({'code':4000, 'msg':'该用户不允许登录!'})
+    # 权限
+    perm = data['role']
+    if data['perm'] : perm=data['perm']
+    if not perm : return self.GetJSON({'code':4000, 'msg':'该用户不允许登录!'})
+    redis = Redis()
+    key = Env.admin_token_prefix+'_perm_'+str(data['id'])
+    redis.Set(key, perm)
+    redis.Expire(key, Env.admin_token_time)
+    redis.Close()
     # 登录时间
     model.Table('user')
     model.Set({'ltime': Util.date('%Y%m%d%H%M%S')})
@@ -57,7 +66,9 @@ class User(Base):
 
   # Token验证
   def Token(self):
-    token = self.Post('token')
-    uinfo = self.Post('uinfo')
-    self.Print(uinfo, token)
+    # 验证
+    AdminToken().verify(self.Post('token'), request.path)
+    # 参数
+    # uinfo = self.Post('uinfo')
+    # self.Print(uinfo)
     return self.GetJSON({'code':0,'msg':'成功'})

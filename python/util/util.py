@@ -11,3 +11,11 @@ class Util:
   def date(format: str = '%Y-%m-%d %H:%M:%S', t: str = None):
     t = time.localtime(t)
     return time.strftime(format,t)
+
+  # String to List
+  def explode(delimiter: str, string: str):
+    return string.split(delimiter)
+
+  # List to String
+  def implode(glue: str, pieces: list):
+    return glue.join(pieces)
