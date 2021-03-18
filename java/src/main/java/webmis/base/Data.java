@@ -1,4 +1,4 @@
-package webmis.util;
+package webmis.base;
 
 import webmis.config.Env;
 

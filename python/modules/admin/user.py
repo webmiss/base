@@ -1,4 +1,5 @@
 from base.base import Base
+from base.data import Data
 from config.env import Env
 from library.safety import Safety
 from library.redis import Redis
@@ -6,7 +7,6 @@ from model.user import User as UserModel
 from model.user_info import UserInfo
 from service.admin_token import AdminToken
 from util.util import Util
-from util.data import Data
 
 from flask import request
 

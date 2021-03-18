@@ -2,13 +2,13 @@
 namespace App\Admin;
 
 use Base\Base;
+use Base\Data;
 use Config\Env;
 use Library\Safety;
 use Library\Redis;
 use Service\AdminToken;
 use Model\User as UserModel;
 use Model\UserInfo;
-use Util\Data;
 
 class User extends Base {
 

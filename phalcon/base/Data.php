@@ -1,5 +1,5 @@
 <?php
-namespace Util;
+namespace Base;
 
 use Base\Base;
 use Config\Env;

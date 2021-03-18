@@ -108,7 +108,7 @@ func (r User) Token(c *gin.Context) {
 	model.Where("uid=?", tData["uid"])
 	info := model.FindFirst()
 	info["uname"] = tData["uname"]
-	info["img"] = (&util.Data{}).Img(info["img"])
+	info["img"] = (&base.Data{}).Img(info["img"])
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "uinfo": info})
 }
