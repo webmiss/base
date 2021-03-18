@@ -116,11 +116,17 @@ public class User extends Base {
   /* Token验证 */
   @RequestMapping("user/token")
   String Token(HttpServletRequest request, String token, String uinfo) throws SQLException {
-    // 验证
-    String verify = AdminToken.verify(token, request.getRequestURI());
-    Print(verify, verify.equals("1"));
-    // 参数
     HashMap<String,Object> res;
+    // 验证
+    String msg = AdminToken.verify(token, request.getRequestURI());
+    if(!msg.equals("")){
+      res = new HashMap<String,Object>();
+      res.put("code", 4001);
+      res.put("msg", msg);
+      return GetJSON(res);
+    }
+    // 参数
+    Print(uinfo);
     // 返回
     res = new HashMap<String,Object>();
     res.put("code", 0);

@@ -1,7 +1,6 @@
 package service
 
 import (
-	"errors"
 	"strconv"
 	"webmis/base"
 	"webmis/config"
@@ -16,11 +15,11 @@ type AdminToken struct {
 }
 
 // Create :验证
-func (s AdminToken) Verify(token string, urlPerm string) (bool, error) {
+func (s AdminToken) Verify(token string, urlPerm string) string {
 	// Token
 	tData, _ := (&library.Safety{}).Decode(token)
 	if tData == nil {
-		return false, errors.New("Token验证失败!")
+		return "Token验证失败!"
 	}
 	// 续期Token
 	env := (&config.Env{}).Config()
@@ -32,7 +31,7 @@ func (s AdminToken) Verify(token string, urlPerm string) (bool, error) {
 	}
 	// URL权限
 	if urlPerm == "" {
-		return true, nil
+		return ""
 	}
 	arr := (&util.Util{}).Explode("/", urlPerm)
 	action := arr[len(arr)-1:][0]
@@ -43,18 +42,39 @@ func (s AdminToken) Verify(token string, urlPerm string) (bool, error) {
 	menu.Where("controller=?", controller)
 	menuData := menu.FindFirst()
 	if len(menuData) == 0 {
-		return false, errors.New("菜单验证无效!")
+		return "菜单验证无效!"
 	}
 	// 验证-菜单
 	id := menuData["id"].(string)
-	permArr := s.Perm(tData["uid"].(string))
-	actionVal, ok := permArr[id]
+	permData := s.Perm(tData["uid"].(string))
+	actionVal, ok := permData[id]
 	if !ok {
-		return false, errors.New("无权访问菜单!")
+		return "无权访问菜单!"
 	}
 	// 验证-动作
-	s.Print(permArr, action, actionVal)
-	return true, nil
+	permArr := []map[string]interface{}{}
+	(&util.Util{}).JsonDecode(menuData["action"].(string), &permArr)
+	var permVal int64
+	for _, val := range permArr {
+		if action == val["action"].(string) {
+			permVal, _ = strconv.ParseInt(util.Strval(val["perm"]), 10, 64)
+			break
+		}
+	}
+	if permVal == 0 {
+		return "动作验证无效!"
+	}
+	if actionVal&permVal == 0 {
+		return "无权访问动作!"
+	}
+	// 续期Perm
+	if env.AdminTokenAuto {
+		redis := (&library.Redis{}).New("")
+		key := env.AdminTokenPrefix + "_perm_" + tData["uid"].(string)
+		redis.Expire(key, env.AdminTokenTime)
+		redis.Close()
+	}
+	return ""
 }
 
 // Perm :权限数组

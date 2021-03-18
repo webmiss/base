@@ -3,10 +3,12 @@ package webmis.util;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.DigestUtils;
@@ -53,6 +55,19 @@ public class Util {
   public static String implode(String glue, ArrayList<String> pieces) {
     String res = String.join(glue, pieces);
     return res;
+  }
+
+  /* Array to String */
+  public static String json_encode(Dynamic<?> arr) {
+    return JSON.toJSONString(arr.getKey());
+  }
+
+  /* String to Array */
+  public static JSONObject json_decode(String str) {
+    try{ return JSON.parseObject(str); }catch (Exception e){ return new JSONObject(); }
+  }
+  public static JSONArray json_decode_array(String str) {
+    try{ return JSON.parseArray(str); }catch (Exception e){ return new JSONArray(); }
   }
   
 }

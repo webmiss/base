@@ -90,8 +90,13 @@ func (r User) Login(c *gin.Context) {
 // Token :验证
 func (r User) Token(c *gin.Context) {
 	// 验证
-	(&service.AdminToken{}).Verify(c.PostForm("token"), c.Request.RequestURI)
-	// uinfo := c.PostForm("uinfo")
+	msg := (&service.AdminToken{}).Verify(c.PostForm("token"), c.Request.RequestURI)
+	if msg != "" {
+		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
+		return
+	}
+	uinfo := c.PostForm("uinfo")
+	r.Print(uinfo)
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
 }

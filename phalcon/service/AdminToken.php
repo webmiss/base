@@ -11,10 +11,10 @@ use Model\SysMenu;
 class AdminToken extends Base {
 
   /* 验证 */
-  static function verify(string $token, string $urlPerm): array {
+  static function verify(string $token, string $urlPerm): string {
     // Token
     $tData = Safety::decode($token);
-    if(!$tData) return [false, 'Token验证失败!'];
+    if(!$tData) return 'Token验证失败!';
     // 续期Token
     if(Env::$admin_token_auto){
       $redis = new Redis();
@@ -23,7 +23,7 @@ class AdminToken extends Base {
       $redis->Close();
     }
     // URL权限
-    if($urlPerm=='') return [true, ''];
+    if($urlPerm=='') return '';
     $arr = explode('/', $urlPerm);
     $action = end($arr);
     array_pop($arr);
@@ -33,11 +33,11 @@ class AdminToken extends Base {
     $menu->Columns('id','action');
     $menu->Where('controller=?', $controller);
     $menuData = $menu->FindFirst();
-    if(empty($menuData)) return [false, '菜单验证无效!'];
+    if(empty($menuData)) return '菜单验证无效!';
     // 验证-菜单
     $id = (string)$menuData['id'];
     $permData = self::perm($tData->uid);
-    if(!isset($permData[$id])) return [false, '无权访问菜单!'];
+    if(!isset($permData[$id])) return '无权访问菜单!';
     // 验证-动作
     $actionVal = (int)$permData[$id];
     $permArr = json_decode($menuData['action']);
@@ -48,8 +48,8 @@ class AdminToken extends Base {
         break;
       }
     }
-    if($permVal==0) return [false, '验证动作无效!'];
-    if($actionVal&$permVal<=0) return [false, '无权访问动作!'];
+    if($permVal==0) return '动作验证无效!';
+    if($actionVal&$permVal==0) return '无权访问动作!';
     // 续期Perm
     if(Env::$admin_token_auto){
       $redis = new Redis();
@@ -57,7 +57,7 @@ class AdminToken extends Base {
       $redis->Expire($key, Env::$admin_token_time);
       $redis->Close();
     }
-    return [true, ''];
+    return '';
   }
   
   /* 权限数组 */

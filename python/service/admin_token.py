@@ -12,7 +12,7 @@ class AdminToken:
   def verify(self, token: str, urlPerm: str):
     # Token
     tData = Safety.decode(token)
-    if not tData : return False, 'Token验证失败!'
+    if not tData : return 'Token验证失败!'
     # 续期Token
     if Env.admin_token_auto :
       redis = Redis()
@@ -20,7 +20,7 @@ class AdminToken:
       redis.Expire(key, Env.admin_token_time)
       redis.Close()
     # URL权限
-    if urlPerm=='' : return True, ''
+    if urlPerm=='' : return ''
     arr = Util.explode('/', urlPerm)
     action = arr[-1:][0]
     controller = Util.implode('/', arr[:-1])
@@ -29,11 +29,11 @@ class AdminToken:
     menu.Columns('id', 'action')
     menu.Where('controller=%s', controller)
     menuData = menu.FindFirst()
-    if not menuData : return False, '菜单验证无效!'
+    if not menuData : return '菜单验证无效!'
     # 验证-菜单
     id = str(menuData['id'])
     permData = self.perm(tData['uid'])
-    if id not in permData.keys() : return False, '无权访问菜单!'
+    if id not in permData.keys() : return '无权访问菜单!'
     # 验证-动作
     actionVal = permData[id]
     permArr = Util.json_decode(menuData['action'])
@@ -42,8 +42,15 @@ class AdminToken:
       if action==val['action'] :
         permVal = int(val['perm'])
         break
-    print(permData)
-    print(actionVal, permVal)
+    if permVal == 0 : return '动作验证无效!'
+    if actionVal&permVal==0 : return '无权访问动作!'
+    # 续期Perm
+    if Env.admin_token_auto :
+      redis = Redis()
+      key = Env.admin_token_prefix+'_perm_'+tData['uid']
+      redis.Expire(key, Env.admin_token_time)
+      redis.Close()
+    return ''
 
   # 权限数组
   def perm(self, uid: str):

@@ -4,7 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+
+import com.alibaba.fastjson.JSONArray;
 
 import webmis.base.Base;
 import webmis.config.Env;
@@ -28,7 +29,7 @@ public class AdminToken extends Base {
       redis.Close();
     }
     // URL权限
-    if(urlPerm.equals("")) return "1";
+    if(urlPerm.equals("")) return "";
     ArrayList<String> arr = Util.explode("/", urlPerm);
     int index = arr.size()-1;
     String action = arr.get(index);
@@ -49,8 +50,17 @@ public class AdminToken extends Base {
     if(!permData.containsKey(id)) return "无权访问菜单!";
     // 验证-动作
     Integer actionVal = permData.get(id);
-    Print(permData, actionVal);
-    return "1";
+    JSONArray permArr = Util.json_decode_array(menuData.get("action").toString());
+    int permVal = 0;
+    for(int i=0; i<permArr.size(); i++){
+      if(permArr.getJSONObject(i).get("action").equals(action)){
+        permVal = Integer.valueOf(permArr.getJSONObject(i).get("perm").toString());
+        break;
+      }
+    }
+    if(permVal==0) return "动作验证无效!";
+    if((actionVal&permVal)==0) return "无权访问动作!";
+    return "";
   }
 
   /* 权限数组 */

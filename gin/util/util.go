@@ -3,6 +3,8 @@ package util
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"encoding/json"
+	"fmt"
 	"strings"
 	"time"
 	"webmis/config"
@@ -43,4 +45,18 @@ func (u Util) Explode(delimiter string, str string) []string {
 func (u Util) Implode(glue string, pieces []string) string {
 	res := strings.Join(pieces, glue)
 	return res
+}
+
+// JsonEncode :Array to []byte
+func (u Util) JsonEncode(arr interface{}) []byte {
+	res, _ := json.Marshal(arr)
+	return res
+}
+
+// JsonDecode :Array to []byte
+func (u Util) JsonDecode(str string, res interface{}) {
+	err := json.Unmarshal([]byte(str), &res)
+	if err != nil {
+		fmt.Println(err)
+	}
 }

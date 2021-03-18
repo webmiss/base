@@ -67,8 +67,9 @@ class User(Base):
   # Token验证
   def Token(self):
     # 验证
-    AdminToken().verify(self.Post('token'), request.path)
+    msg = AdminToken().verify(self.Post('token'), request.path)
+    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    # uinfo = self.Post('uinfo')
-    # self.Print(uinfo)
-    return self.GetJSON({'code':0,'msg':'成功'})
+    uinfo = self.Post('uinfo')
+    self.Print(uinfo)
+    return self.GetJSON({'code':0, 'msg':'成功'})

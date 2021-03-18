@@ -72,11 +72,11 @@ class User extends Base {
   /* Token验证 */
 	static function Token(){
     // 验证
-    list($v, $msg) = AdminToken::verify(self::Post('token'), $_SERVER['REQUEST_URI']);
-    if(!$v) return self::GetJSON(['code'=>4000, 'msg'=>$msg]);
+    $msg = AdminToken::verify(self::Post('token'), $_SERVER['REQUEST_URI']);
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $uinfo = self::Post('uinfo');
-    // self::Print($uinfo, $token);
+    self::Print($uinfo);
     return self::GetJSON(['code'=>0, 'msg'=>'成功']);
   }
 
