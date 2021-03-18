@@ -2,14 +2,20 @@
 namespace App\Admin;
 
 use Base\Base;
+use Service\AdminToken;
 use Model\SysMenu;
 
 class SysMenus extends Base {
 
   private static $menus = [];
+  private static $permAll = [];
 
   /* 获取菜单 */
   static function GetMenus() {
+    // 验证
+    $token = self::Post('token');
+    $msg = AdminToken::verify($token, '');
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 全部菜单
     $model = new SysMenu();
     $model->Columns('id', 'fid', 'title', 'url', 'ico');
@@ -19,6 +25,9 @@ class SysMenus extends Base {
       $fid = (string)$val['fid'];
       self::$menus[$fid][] = $val;
     }
+    // 全部权限
+    self::$permAll = AdminToken::perm($token);
+    self::Print(self::$permAll);
     // 返回
     return self::GetJSON(['code'=>0, 'msg'=>'成功', 'menus'=>self::_getMenu('0')]);
   }

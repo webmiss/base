@@ -23,12 +23,12 @@ func (s AdminToken) Verify(token string, urlPerm string) string {
 	if tData == nil {
 		return "Token验证失败!"
 	}
-	// 续期Token
+	// 续期
 	env := (&config.Env{}).Config()
 	if env.AdminTokenAuto {
 		redis := (&library.Redis{}).New("")
-		key := env.AdminTokenPrefix + "_token_" + tData["uid"].(string)
-		redis.Expire(key, env.AdminTokenTime)
+		redis.Expire(env.AdminTokenPrefix+"_token_"+tData["uid"].(string), env.AdminTokenTime)
+		redis.Expire(env.AdminTokenPrefix+"_perm_"+tData["uid"].(string), env.AdminTokenTime)
 		redis.Close()
 	}
 	// URL权限
@@ -68,13 +68,6 @@ func (s AdminToken) Verify(token string, urlPerm string) string {
 	}
 	if actionVal&permVal == 0 {
 		return "无权访问动作!"
-	}
-	// 续期Perm
-	if env.AdminTokenAuto {
-		redis := (&library.Redis{}).New("")
-		key := env.AdminTokenPrefix + "_perm_" + tData["uid"].(string)
-		redis.Expire(key, env.AdminTokenTime)
-		redis.Close()
 	}
 	return ""
 }

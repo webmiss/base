@@ -22,10 +22,11 @@ public class AdminToken extends Base {
     // Token
     HashMap<String, Object> tData = Safety.decode(token);
     if(tData==null) return "Token验证失败!";
+    // 续期
     if(Env.admin_token_auto){
       Redis redis = new Redis();
-      String key = Env.admin_token_prefix+"_token_"+String.valueOf(tData.get("uid"));
-      redis.Expire(key, Env.admin_token_time);
+      redis.Expire(Env.admin_token_prefix+"_token_"+String.valueOf(tData.get("uid")), Env.admin_token_time);
+      redis.Expire(Env.admin_token_prefix+"_perm_"+String.valueOf(tData.get("uid")), Env.admin_token_time);
       redis.Close();
     }
     // URL权限
