@@ -30,11 +30,16 @@ class AdminToken extends Base {
     $controller = implode('/', $arr);
     // 菜单
     $menu = new SysMenu();
-    $menu->Columns('id, action');
+    $menu->Columns('id','action');
     $menu->Where('controller=?', $controller);
     $menuData = $menu->FindFirst();
-    if(!$menuData) return [false, '验证菜单无效!'];
-    // 动作
+    if(empty($menuData)) return [false, '菜单验证无效!'];
+    // 验证-菜单
+    $id = (string)$menuData['id'];
+    $permData = self::perm($tData->uid);
+    if(!isset($permData[$id])) return [false, '无权访问菜单!'];
+    // 验证-动作
+    $actionVal = (int)$permData[$id];
     $permArr = json_decode($menuData['action']);
     $permVal = 0;
     foreach($permArr as $val){
@@ -44,10 +49,6 @@ class AdminToken extends Base {
       }
     }
     if($permVal==0) return [false, '验证动作无效!'];
-    // 验证
-    $permData = self::perm($tData->uid);
-    if(!isset($permData[$menuData['id']])) return [false, '无权访问菜单!'];
-    $actionVal = (int)$permData[$menuData['id']];
     if($actionVal&$permVal<=0) return [false, '无权访问动作!'];
     // 续期Perm
     if(Env::$admin_token_auto){

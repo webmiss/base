@@ -1,5 +1,6 @@
 import hashlib
 import time
+import json
 
 class Util:
 
@@ -19,3 +20,17 @@ class Util:
   # List to String
   def implode(glue: str, pieces: list):
     return glue.join(pieces)
+
+  # Array to String
+  def json_encode(arr):
+    try :
+      return json.dumps(arr)
+    except Exception as e :
+      return ''
+
+  # String to Array
+  def json_decode(str: str):
+    try :
+      return json.loads(str)
+    except Exception as e :
+      return []

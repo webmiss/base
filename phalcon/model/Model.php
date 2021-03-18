@@ -170,16 +170,16 @@ class Model extends Base {
     return [$this->sql, $args];
   }
   /* 查询-多条 */
-  function Find() {
-    $res = null;
+  function Find(): array {
+    $res = [];
     list($sql, $args) = $this->SelectSql();
     if(!$this->conn || empty($sql)) return $res;
     $res = $this->conn->fetchAll($sql, 2, $args);
     return $res?$res:[];
   }
   /* 查询-单条 */
-  function FindFirst() {
-    $res = null;
+  function FindFirst(): array {
+    $res = [];
     $this->limit = '0,1';
     list($sql, $args) = $this->SelectSql();
     if(!$this->conn || empty($sql)) return $res;

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -41,13 +42,14 @@ public class Util {
     }
   }
 
-  /* String to List */
+  /* String to ArrayList */
   public static ArrayList<String> explode(String delimiter, String string) {
-    ArrayList<String> res = (ArrayList<String>) Arrays.asList(string.split(delimiter));
-    return res;
+    ArrayList<String> list = new ArrayList<String>();
+    Collections.addAll(list, string.split(delimiter));
+    return list;
   }
 
-  /* List to String */
+  /* ArrayList to String */
   public static String implode(String glue, ArrayList<String> pieces) {
     String res = String.join(glue, pieces);
     return res;

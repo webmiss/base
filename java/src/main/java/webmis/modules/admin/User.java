@@ -115,7 +115,7 @@ public class User extends Base {
 
   /* Token验证 */
   @RequestMapping("user/token")
-  String Token(HttpServletRequest request, String token, String uinfo) {
+  String Token(HttpServletRequest request, String token, String uinfo) throws SQLException {
     // 验证
     String verify = AdminToken.verify(token, request.getRequestURI());
     Print(verify, verify.equals("1"));

@@ -3,6 +3,7 @@ package util
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"strings"
 	"time"
 	"webmis/config"
 )
@@ -30,4 +31,16 @@ func (u Util) Img(src interface{}) string {
 	}
 	env := (&config.Env{}).Config()
 	return env.BaseURL + src.(string)
+}
+
+// Explode :String to List
+func (u Util) Explode(delimiter string, str string) []string {
+	res := strings.Split(str, delimiter)
+	return res
+}
+
+// Implode :List to String
+func (u Util) Implode(glue string, pieces []string) string {
+	res := strings.Join(pieces, glue)
+	return res
 }
