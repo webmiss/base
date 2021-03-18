@@ -7,6 +7,8 @@ use Library\Safety;
 use Library\Redis;
 use Service\AdminToken;
 use Model\User as UserModel;
+use Model\UserInfo;
+use Util\Data;
 
 class User extends Base {
 
@@ -71,13 +73,22 @@ class User extends Base {
 
   /* Token验证 */
 	static function Token(){
-    // 验证
-    $msg = AdminToken::verify(self::Post('token'), $_SERVER['REQUEST_URI']);
+    // 验证 $_SERVER['REQUEST_URI']
+    $token = self::Post('token');
+    $msg = AdminToken::verify($token, '');
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $uinfo = self::Post('uinfo');
-    self::Print($uinfo);
-    return self::GetJSON(['code'=>0, 'msg'=>'成功']);
+    if($uinfo!='1') return self::GetJSON(['code'=>0, 'msg'=>'成功']);
+    // 用户信息
+    $tData = AdminToken::token($token);
+    $model = new UserInfo();
+    $model->Columns('nickname','position','name','img');
+    $model->Where('uid=?',$tData->uid);
+    $info = $model->FindFirst();
+    $info['uname'] = $tData->uname;
+    $info['img'] = Data::img($info['img']);
+    return self::GetJSON(['code'=>0, 'msg'=>'成功', 'uinfo'=>$info]);
   }
 
 }

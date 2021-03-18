@@ -7,6 +7,8 @@ import (
 	"webmis/library"
 	"webmis/model"
 	"webmis/util"
+
+	"github.com/dgrijalva/jwt-go"
 )
 
 // AdminToken :后台Token
@@ -107,4 +109,10 @@ func (s AdminToken) Create(data map[string]interface{}) string {
 	redis.Expire(key, env.AdminTokenTime)
 	redis.Close()
 	return token
+}
+
+// Token :获取
+func (s AdminToken) Token(token string) jwt.MapClaims {
+	data, _ := (&library.Safety{}).Decode(token)
+	return data
 }

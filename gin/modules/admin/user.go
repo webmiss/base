@@ -89,14 +89,26 @@ func (r User) Login(c *gin.Context) {
 
 // Token :验证
 func (r User) Token(c *gin.Context) {
-	// 验证
-	msg := (&service.AdminToken{}).Verify(c.PostForm("token"), c.Request.RequestURI)
+	// 验证 c.Request.RequestURI
+	token := c.PostForm("token")
+	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
 	uinfo := c.PostForm("uinfo")
-	r.Print(uinfo)
+	if uinfo != "1" {
+		r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
+		return
+	}
+	// 用户信息
+	tData := (&service.AdminToken{}).Token(token)
+	model := (&model.UserInfo{}).New()
+	model.Columns("nickname", "position", "name", "img")
+	model.Where("uid=?", tData["uid"])
+	info := model.FindFirst()
+	info["uname"] = tData["uname"]
+	info["img"] = (&util.Data{}).Img(info["img"])
 	// 返回
-	r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
+	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "uinfo": info})
 }

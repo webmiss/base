@@ -24,6 +24,7 @@ $loader->registerNamespaces([
   'Model'=> BASE_PATH.'/model/',
   'Router'=> BASE_PATH.'/router/',
   'Service'=> BASE_PATH.'/service/',
+  'Util'=> BASE_PATH.'/util/',
   'App\Home'=> BASE_PATH.'/modules/home/',
   'App\Api'=> BASE_PATH.'/modules/api/',
   'App\Admin'=> BASE_PATH.'/modules/admin/',

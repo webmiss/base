@@ -1,11 +1,14 @@
-from flask import request
 from base.base import Base
 from config.env import Env
 from library.safety import Safety
 from library.redis import Redis
 from model.user import User as UserModel
+from model.user_info import UserInfo
 from service.admin_token import AdminToken
 from util.util import Util
+from util.data import Data
+
+from flask import request
 
 class User(Base):
 
@@ -66,10 +69,19 @@ class User(Base):
 
   # Token验证
   def Token(self):
-    # 验证
-    msg = AdminToken().verify(self.Post('token'), request.path)
+    # 验证 request.path
+    token = self.Post('token')
+    msg = AdminToken().verify(token, '')
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     uinfo = self.Post('uinfo')
-    self.Print(uinfo)
-    return self.GetJSON({'code':0, 'msg':'成功'})
+    if uinfo!='1' : return self.GetJSON({'code':0, 'msg':'成功'})
+    # 用户信息
+    tData = AdminToken.token(token)
+    model = UserInfo()
+    model.Columns('nickname','position','name','img')
+    model.Where('uid=%s',tData['uid'])
+    info = model.FindFirst()
+    info['uname'] = tData['uname']
+    info['img'] = Data.img(info['img'])
+    return self.GetJSON({'code':0, 'msg':'成功', 'uinfo':info})

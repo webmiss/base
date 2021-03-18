@@ -14,7 +14,9 @@ import webmis.base.Base;
 import webmis.config.Env;
 import webmis.library.Redis;
 import webmis.library.Safety;
+import webmis.model.UserInfo;
 import webmis.service.AdminToken;
+import webmis.util.Data;
 import webmis.util.Util;
 
 @RestController
@@ -117,8 +119,8 @@ public class User extends Base {
   @RequestMapping("user/token")
   String Token(HttpServletRequest request, String token, String uinfo) throws SQLException {
     HashMap<String,Object> res;
-    // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    // 验证 request.getRequestURI()
+    String msg = AdminToken.verify(token, "");
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -126,11 +128,28 @@ public class User extends Base {
       return GetJSON(res);
     }
     // 参数
-    Print(uinfo);
+    if(!uinfo.equals("1")){
+      res = new HashMap<String,Object>();
+      res.put("code", 0);
+      res.put("msg", "成功");
+      return GetJSON(res);
+    }
+    // 用户信息
+    HashMap<String, Object> tData = AdminToken.token(token);
+    UserInfo model = new UserInfo();
+    model.Columns("nickname","position","name","img");
+    model.Where("uid=?");
+    String sql = model.SelectSql();
+    PreparedStatement ps = model.Bind(sql);
+    ps.setString(1, tData.get("uid").toString());
+    HashMap<String, Object> info = model.FindFirst(ps);
+    info.put("uname", tData.get("uname"));
+    info.put("img", Data.img(info.get("img")));
     // 返回
     res = new HashMap<String,Object>();
     res.put("code", 0);
     res.put("msg", "成功");
+    res.put("uinfo", info);
     return GetJSON(res);
   }
 

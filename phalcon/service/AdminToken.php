@@ -90,4 +90,9 @@ class AdminToken extends Base {
     return $token;
   }
 
+  /* 获取 */
+  static function token(string $token) {
+    return Safety::decode($token);
+  }
+
 }

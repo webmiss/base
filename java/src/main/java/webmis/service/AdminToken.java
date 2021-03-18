@@ -93,5 +93,10 @@ public class AdminToken extends Base {
     redis.Close();
     return token;
   }
+
+  /* 获取 */
+  public static HashMap<String, Object> token(String token) {
+    return Safety.decode(token);
+  }
   
 }

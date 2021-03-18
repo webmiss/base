@@ -2,6 +2,7 @@ import hashlib
 import time
 import json
 
+# 常用工具
 class Util:
 
   # Md5加密

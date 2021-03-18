@@ -79,3 +79,6 @@ class AdminToken:
     redis.Close()
     return token
     
+  # 获取
+  def token(token: str):
+    return Safety.decode(token)
