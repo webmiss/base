@@ -48,7 +48,7 @@ func (s AdminToken) Verify(token string, urlPerm string) string {
 	}
 	// 验证-菜单
 	id := menuData["id"].(string)
-	permData := s.Perm(tData["uid"].(string))
+	permData := s.Perm(token)
 	actionVal, ok := permData[id]
 	if !ok {
 		return "无权访问菜单!"
@@ -73,15 +73,20 @@ func (s AdminToken) Verify(token string, urlPerm string) string {
 }
 
 // Perm :权限数组
-func (s AdminToken) Perm(uid string) map[string]int64 {
+func (s AdminToken) Perm(token string) map[string]int64 {
+	permAll := map[string]int64{}
+	// Token
+	tData, _ := (&library.Safety{}).Decode(token)
+	if tData == nil {
+		return permAll
+	}
 	// 权限
 	env := (&config.Env{}).Config()
 	redis := (&library.Redis{}).New("")
-	key := env.AdminTokenPrefix + "_perm_" + uid
+	key := env.AdminTokenPrefix + "_perm_" + tData["uid"].(string)
 	permStr := string(redis.Get(key))
 	redis.Close()
 	// 拆分
-	permAll := map[string]int64{}
 	arr := (&util.Util{}).Explode(" ", permStr)
 	for _, val := range arr {
 		s := (&util.Util{}).Explode(":", val)

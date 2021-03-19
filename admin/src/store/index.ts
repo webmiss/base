@@ -12,8 +12,8 @@ export default createStore({
     geolocation: {}, // 定位
     socket: null, //Socket
     /* 菜单 */
-    menuName: '',  //用户菜单
-    action: {url:'',active:'',menus:[]}, //动作菜单
+    controller: '',
+    action: {title:'',active:'',menus:[]}, //动作菜单
     /* 缓存路由 */
     keepAlive: ['Home'],
   },

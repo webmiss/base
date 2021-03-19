@@ -241,12 +241,13 @@ export default defineComponent({
       });
     },
     /* 点击菜单 */
-    menuClick(pos: number[], value: string, label: string){
-      NavigateTo(value);
+    menuClick(pos: number[], value: any, label: string){
       // 默认动作菜单
-      this.state.menuName = label;
-      this.state.action.url = '';
-      this.state.action.menus = [];
+      this.state.action.title = label;
+      this.state.controller = value.controller;
+      this.state.action.menus = value.action;
+      // 跳转
+      NavigateTo(value.url);
     },
 
   }

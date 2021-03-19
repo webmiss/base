@@ -49,7 +49,7 @@ class AdminToken extends Base {
       }
     }
     if($permVal==0) return '动作验证无效!';
-    if($actionVal&$permVal==0) return '无权访问动作!';
+    if(($actionVal&$permVal)==0) return '无权访问动作!';
     return '';
   }
   

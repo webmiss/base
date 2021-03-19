@@ -60,7 +60,7 @@ export default defineComponent({
         this.loadData();
       }else if(val=='sea'){
         this.sea.show = true;
-      }else if(val=='add'){
+      }else if(val=='Add'){
         this.add.show = true;
       }else if(val=='edit'){
         this.editData();
@@ -70,8 +70,6 @@ export default defineComponent({
     }
   },
   mounted(){
-    // 动作菜单-获取
-    this.state.action.url = 'SysUser';
     // 加载数据
     if(Storage.getItem('token')) this.loadData();
   },

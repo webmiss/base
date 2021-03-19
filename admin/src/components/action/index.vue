@@ -1,9 +1,9 @@
 <template>
   <div class="wm-action">
-    <template v-if="action.length>0" >
-      <div class="item" v-for="(val,key) in action" :key="key" @click="openAction(val.action)">{{val.name}}</div>
+    <template v-if="state.action.menus.length>0" >
+      <div class="item" v-for="(val,key) in state.action.menus" :key="key" @click="openAction(val.action)">{{val.name}}</div>
     </template>
-    <div class="wm-action_title">{{state.menuName || state.system.title}}</div>
+    <div class="wm-action_title">{{state.action.title || state.system.title}}</div>
   </div>
 </template>
 
@@ -23,7 +23,6 @@ import Toast from '../../library/ui/ui-toast'
 export default defineComponent({
   name: 'Action',
   props: {
-    url: {type: String, default: ''},
     menus: {type: Array, default: []},
   },
   data(){
@@ -32,33 +31,7 @@ export default defineComponent({
     const action: any = [];
     return {state,action}
   },
-  watch:{
-    url(val){
-      this.getAction(this.url);
-    },
-  },
-  mounted(){
-  },
   methods:{
-
-    /* 动作菜单 */
-    getAction(url: string){
-      this.action = [];
-      if(!url || !Storage.getItem('token')) return false;
-      Post('Sysmenusaction/getAction',{
-        token:Storage.getItem('token'),
-        url:url
-      },(res: any)=>{
-        const d = res.data;
-        if(d.code==0){
-          this.action = d.action;
-          // 追加菜单
-          for(let i in this.menus) this.action.push(this.menus[i]);
-        }else{
-          Toast(d.msg);
-        }
-      });
-    },
 
     /* 触发事件 */
     openAction(val: string){

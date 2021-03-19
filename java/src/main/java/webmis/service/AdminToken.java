@@ -47,7 +47,7 @@ public class AdminToken extends Base {
     if(menuData.size()==0) return "菜单验证无效!";
     // 验证-菜单
     String id = menuData.get("id").toString();
-    HashMap<String, Integer> permData= perm(tData.get("uid").toString());
+    HashMap<String, Integer> permData= perm(token);
     if(!permData.containsKey(id)) return "无权访问菜单!";
     // 验证-动作
     Integer actionVal = permData.get(id);
@@ -65,14 +65,17 @@ public class AdminToken extends Base {
   }
 
   /* 权限数组 */
-  public static HashMap<String, Integer> perm(String uid) {
+  public static HashMap<String, Integer> perm(String token) {
+    HashMap<String, Integer> permAll = new HashMap<String, Integer>();
+    // Token
+    HashMap<String, Object> tData = Safety.decode(token);
+    if(tData==null) return permAll;
     // 权限
     Redis redis = new Redis();
-    String key = Env.admin_token_prefix+"_perm_"+uid;
+    String key = Env.admin_token_prefix+"_perm_"+tData.get("uid").toString();
     String permStr = redis.Get(key);
     redis.Close();
     // 拆分
-    HashMap<String, Integer> permAll = new HashMap<String, Integer>();
     ArrayList<String> arr = Util.explode(" ", permStr);
     ArrayList<String> s;
     for(String val : arr){
