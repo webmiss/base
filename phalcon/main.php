@@ -2,7 +2,7 @@
 use Phalcon\Loader;
 use Phalcon\Mvc\Micro;
 
-use Middleware\Cors;
+use Base\Base;
 use Router\Home;
 use Router\Api;
 use Router\Admin;
@@ -42,8 +42,8 @@ Admin::Init($app);
 
 // 运行
 try {
+  $app->notFound('Middleware\NotFound::Init');
   $app->handle($_SERVER["REQUEST_URI"]);
 }catch (\Exception $e){
-  Cors::Init();
-  echo json_encode(['code'=>5000,'msg'=>$e->getMessage()]);
+  echo Base::GetJSON(['code'=>500,'msg'=>$e->getMessage()]);
 }

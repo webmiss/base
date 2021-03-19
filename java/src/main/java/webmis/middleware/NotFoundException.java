@@ -22,7 +22,7 @@ public class NotFoundException implements ErrorController {
     response.setStatus(200);
     HashMap<String, Object> map = new HashMap<>();
     map.put("code", 404);
-    map.put("msg", "404 Not Found");
+    map.put("msg", "Not Found");
     return map;
   }
   

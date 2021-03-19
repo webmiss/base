@@ -14,7 +14,7 @@ public class MyExceptionHandler {
   Object handleException(Exception e, HttpServletResponse response){
     response.setStatus(200);
     HashMap<String, Object> map = new HashMap<>();
-    map.put("code", 5000);
+    map.put("code", 500);
     map.put("msg", e.getMessage());
     return map;
   }
