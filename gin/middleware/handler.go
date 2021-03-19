@@ -20,5 +20,5 @@ func Recovery(c *gin.Context) {
 
 // HandleNotFound :404
 func HandleNotFound(c *gin.Context) {
-	c.JSON(200, gin.H{"code": 404, "msg": "Not Found"})
+	c.JSON(200, gin.H{"code": 404, "msg": "404 Not Found"})
 }

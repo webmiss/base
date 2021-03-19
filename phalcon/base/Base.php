@@ -2,7 +2,7 @@
 
 namespace Base;
 
-use Config\Cors;
+use Middleware\Cors;
 use Error;
 
 class Base {

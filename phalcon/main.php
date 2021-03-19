@@ -2,10 +2,10 @@
 use Phalcon\Loader;
 use Phalcon\Mvc\Micro;
 
+use Middleware\Cors;
 use Router\Home;
 use Router\Api;
 use Router\Admin;
-use Config\Cors;
 
 define('BASE_PATH', __DIR__);
 define('STDERR',fopen('php://stderr', 'a'));
@@ -21,6 +21,7 @@ $loader->registerNamespaces([
   'Base'=> BASE_PATH.'/base/',
   'Config'=> BASE_PATH.'/config/',
   'Library'=> BASE_PATH.'/library/',
+  'Middleware'=> BASE_PATH.'/middleware/',
   'Model'=> BASE_PATH.'/model/',
   'Router'=> BASE_PATH.'/router/',
   'Service'=> BASE_PATH.'/service/',

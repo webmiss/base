@@ -1,7 +1,6 @@
 package router
 
 import (
-	"webmis/middleware"
 	"webmis/modules/api"
 
 	"github.com/gin-gonic/gin"
@@ -10,8 +9,6 @@ import (
 // API :路由
 func API(r *gin.Engine) {
 	g := r.Group("api")
-	// 允许跨域
-	g.Use(middleware.Cors())
 	{
 		// 首页
 		g.GET("", (&api.Index{}).Index)

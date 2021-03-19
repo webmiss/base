@@ -1,4 +1,6 @@
-from flask import Flask,request,make_response
+from flask import Flask
+from werkzeug.exceptions import HTTPException
+import json
 import flask_cors
 from config.env import Env
 from model.model import Model
@@ -11,6 +13,20 @@ app = Flask(__name__)
 app.debug=Env.debug
 # 允许跨域
 flask_cors.CORS(app)
+# 错误返回
+@app.errorhandler(HTTPException)
+def handle_exception(e):
+  response = e.get_response()
+  response.data = json.dumps({
+    "code": e.code,
+    "msg": e.name,
+    "err": e.description,
+  })
+  response.headers['Access-Control-Allow-Origin'] = '*'
+  response.headers['Access-Control-Allow-Methods'] = '*'
+  response.headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept'
+  response.content_type = "application/json"
+  return response, 200
 
 # 路由
 app.register_blueprint(Home, url_prefix="")

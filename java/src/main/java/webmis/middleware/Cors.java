@@ -1,4 +1,4 @@
-package webmis.config;
+package webmis.middleware;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +9,9 @@ import org.springframework.web.filter.CorsFilter;
 /* 允许跨域请求 */
 @Configuration
 public class Cors {
-    private CorsConfiguration buildConfig() {
+
+    /* 规则 */
+    public CorsConfiguration buildConfig() {
         CorsConfiguration cors = new CorsConfiguration();
         cors.addAllowedOrigin("*"); // 允许域名
         cors.addAllowedHeader("*"); // 允许任何头
