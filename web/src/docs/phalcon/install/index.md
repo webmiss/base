@@ -22,12 +22,12 @@ git clone https://github.com/webmiss/base.git --depth=1
 #### Bash命令
 ```bash
 # 依赖包
-./shell install
+./bash.sh install
 # 运行
-./shell serve
+./bash.sh serve
 # 数据库工具
 cd ../tools
-./shell adminer
+./bash.sh adminer7
 ```
 
 #### Cmd命令
@@ -38,7 +38,7 @@ cd ../tools
 .\cmd.bat serve
 # 数据库工具
 cd ../tools
-.\cmd.bat adminer
+.\cmd.bat adminer7
 ```
 
 <br/><br/>

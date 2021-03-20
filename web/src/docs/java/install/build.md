@@ -8,13 +8,13 @@ mvn package
 ## Bash命令
 ```bash
 # 打包
-./shell build
+./bash.sh build
 # 启动
-./shell start
+./bash.sh start
 # 重启
-./shell restart
+./bash.sh restart
 # 停止
-./shell stop
+./bash.sh stop
 ```
 **开机启动**
 ```bash
@@ -23,7 +23,7 @@ chmod +x /etc/rc.d/rc.local
 # 编辑文件
 vi /etc/rc.d/rc.local
 ```
-- cd /xxx/java/ && ./shell start
+- cd /xxx/java/ && ./bash.sh start
 
 <br/>
 

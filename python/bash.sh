@@ -1,42 +1,18 @@
 #!/bin/bash
 
 # 配置
+s=$1
 index="main.py"
 config="server.ini"
 cli="cli.py"
 package="flask flask_cors PyJWT redis wheel DBUtils pymysql websockets websocket-client"
-s=$1
-
-# 帮助
-helpText(){
-  echo "用法:"
-  echo "  ./shell <command>"
-  echo "<command>"
-  echo "  serve         运行"
-  echo "  install       安装依赖包: $package"
-  echo "  start         服务器端启动"
-  echo "  restart       重启服务: 中断进程并且重新启动"
-  echo "  stop          停止服务"
-  echo "  socket        WebSocket-调试"
-  echo "  socketStart   WebSocket-启动"
-  echo "  socketRestart WebSocket-重启"
-  echo "  socketStop    WebSocket-停止"
-  echo "<args>"
-  echo "  index         入口文件: $index"
-  echo "  config        服务器配置: $config"
-  echo "  cli           命令行: $cli"
-}
 
 # 运行
 if [ "$s" == "serve" ]; then
-  python $index
+  { python $index } || { echo "> 请安装'python'" }
 # 安装
 elif [ "$s" == "install" ]; then
-  {
-    sudo pip install $package
-  } || {
-    pip install $package
-  }
+  { sudo pip install $package } || { pip install $package } || { echo "> 请安装'pip'" }
 # 启动
 elif [ "$s" == "start" ]; then
   uwsgi --ini $config &
@@ -49,7 +25,7 @@ elif [ "$s" == "stop" ]; then
   ps -aux | grep uwsgi | grep -v grep | awk {'print $2'} | xargs kill
 # Socket
 elif [ "$s" == "socket" ]; then
-  python $cli socket start
+  { python $cli socket start } || { echo "> 请安装'python'" }
 # Socket[start]
 elif [ "$s" == "socketStart" ]; then
   nohup python $cli socket start &
@@ -61,6 +37,21 @@ elif [ "$s" == "socketRestart" ]; then
 elif [ "$s" == "socketStop" ]; then
   ps -aux | grep "$cli socket" | grep -v grep | awk {'print $2'} | xargs kill
 else
-  helpText
+  echo "----------------------------------------------------"
+  echo "[use] ./bash.sh <command>"
+  echo "----------------------------------------------------"
+  echo "<command>"
+  echo "  serve         运行"
+  echo "  install       安装依赖包: $package"
+  echo "<Server>"
+  echo "  start         启动: uwsgi --ini $config &"
+  echo "  restart       重启: 中断进程并且重新启动"
+  echo "  stop          停止"
+  echo "<Socket>"
+  echo "  socket        运行"
+  echo "  socketStart   启动"
+  echo "  socketRestart 重启"
+  echo "  socketStop    停止"
+  echo "----------------------------------------------------"
 fi
 

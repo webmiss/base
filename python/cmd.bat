@@ -3,19 +3,19 @@ CHCP 65001 >nul
 
 REM 配置
 set s=%1%
-set ip=127.0.0.1
-set port=9000
-set cli=cli.php
+set index=main.py
+set cli=cli.py
+set package=flask flask_cors PyJWT redis wheel DBUtils pymysql websockets websocket-client
 
 REM 运行
  if "%s%"=="serve" (
-  ( php -S %ip%:%port% -t public ) || ( echo ^> 请安装'php' )
+  ( python %index% ) || ( echo ^> 请安装'python' )
 REM 安装
 ) else if "%s%"=="install" (
-  ( del composer.lock 2>nul && composer install ) || ( echo ^> 请安装'composer' )
+  ( sudo pip install %package% ) || ( pip install %package% ) || ( echo ^> 请安装'pip' )
 REM Socket[start]
 ) else if "%s%"=="socket" (
-  ( php %cli% socket start ) || ( echo ^> 请安装'php' )
+  ( python %cli% socket start ) || ( echo ^> 请安装'python' )
 ) else (
   echo ----------------------------------------------------
   echo [use] cmd.bat ^<command^>
@@ -23,7 +23,7 @@ REM Socket[start]
   echo ^<command^>
   echo   serve         运行: php -S %ip%:%port% -t public
   echo   install       依赖包: composer install
-  echo ^<WebSocket^>
+  echo ^<Socket^>
   echo   socket        运行
   echo ----------------------------------------------------
 )

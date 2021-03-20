@@ -4,11 +4,11 @@
 ```bash
 dnf install golang -y
 # 安装依赖包
-cd /xxx/golang && ./shell install
+cd /xxx/golang && ./bash.sh install
 # 打包
-./shell build
+./bash.sh build
 # 启动
-./shell start
+./bash.sh start
 ```
 **开机启动**
 ```bash
@@ -17,7 +17,7 @@ chmod +x /etc/rc.d/rc.local
 # 编辑文件
 vi /etc/rc.d/rc.local
 ```
-- cd /xxx/golang/ && ./shell start
+- cd /xxx/golang/ && ./bash.sh start
 
 <br/>
 
