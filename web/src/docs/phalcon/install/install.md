@@ -52,9 +52,10 @@ systemctl start mysqld
 - 扩展目录: extension_dir = "D:/server/php/ext"
 - CMD: php -v
 **安装Composer**
+- [Composer](https://getcomposer.org/Composer-Setup.exe)
 ```bash
-php -r "copy('https://install.phpcomposer.com/installer', 'composer-setup.php');"
-php composer-setup.php
+# 国内镜像
+composer config -g repo.packagist composer https://packagist.phpcomposer.com
 ```
 
 #### 3) Phalcon框架

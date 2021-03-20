@@ -26,18 +26,19 @@ git clone https://github.com/webmiss/base.git --depth=1
 # 运行
 ./shell serve
 # 数据库工具
+cd ../tools
 ./shell adminer
 ```
 
-#### Php命令
+#### Cmd命令
 ```bash
 # 依赖包
-composer install
+.\cmd.bat install
 # 运行
-cd public
-php -S 127.0.0.1:9010
+.\cmd.bat serve
 # 数据库工具
-php -S 127.0.0.1:8080 adminer.php
+cd ../tools
+.\cmd.bat adminer
 ```
 
 <br/><br/>
