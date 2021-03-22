@@ -8,7 +8,7 @@ import Get from '@/library/ui/request-get'
 import Post from '@/library/ui/request-post'
 import Put from '@/library/ui/request-put'
 import Delete from '@/library/ui/request-delete'
-import Request from '@/library/ui/request-request'
+import Patch from '@/library/ui/request-patch'
 /* UI组件 */
 import ScrollView from '@/components/scroll-view/index.vue'
 import wmMenu from '@/components/menu/index.vue'
@@ -33,7 +33,7 @@ export default defineComponent({
       {name:'POST', val:'post'},
       {name:'PUT', val:'put'},
       {name:'DELETE', val:'delete'},
-      {name:'REQUEST', val:'request'},
+      {name:'PATCH', val:'patch'},
     ];
     // 结果
     const result: any = {type:'param',response:'result > '};
@@ -127,8 +127,8 @@ export default defineComponent({
           load.clear();
           this.setResult(res);
         },(err: any)=>this.result.response=err);
-      }else if(this.request.method=='request'){
-        Request(url,data,(res: any)=>{
+      }else if(this.request.method=='patch'){
+        Patch(url,data,(res: any)=>{
           load.clear();
           this.setResult(res);
         },(err: any)=>this.result.response=err);
