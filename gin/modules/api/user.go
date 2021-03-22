@@ -1,4 +1,4 @@
-package admin
+package api
 
 import (
 	"webmis/base"
@@ -35,8 +35,8 @@ func (r User) Login(c *gin.Context) {
 	model := (&model.User{}).New()
 	model.Table("user AS a")
 	model.LeftJoin("user_info AS b", "a.id=b.uid")
-	model.LeftJoin("sys_perm AS c", "a.id=c.uid")
-	model.LeftJoin("sys_role AS d", "c.role=d.id")
+	model.LeftJoin("api_perm AS c", "a.id=c.uid")
+	model.LeftJoin("api_role AS d", "c.role=d.id")
 	model.Where("(a.uname=? OR a.tel=? OR a.email=?) AND a.password=?", uname, uname, uname, (&util.Util{}).Md5(passwd))
 	model.Columns("a.id", "a.state", "b.position", "b.nickname", "b.name", "b.gender", "b.birthday", "b.img", "c.perm", "d.perm as role_perm")
 	data := model.FindFirst()
@@ -60,9 +60,9 @@ func (r User) Login(c *gin.Context) {
 	}
 	env := (&config.Env{}).Config()
 	redis := (&library.Redis{}).New("")
-	key := env.AdminTokenPrefix + "_perm_" + data["id"].(string)
+	key := env.ApiTokenPrefix + "_perm_" + data["id"].(string)
 	redis.Set(key, perm)
-	redis.Expire(key, env.AdminTokenTime)
+	redis.Expire(key, env.ApiTokenTime)
 	redis.Close()
 	// 登录时间
 	model.Table("user")
@@ -70,7 +70,7 @@ func (r User) Login(c *gin.Context) {
 	model.Where("id=?", data["id"])
 	model.Update()
 	// Token
-	token := (&service.AdminToken{}).Create(map[string]interface{}{
+	token := (&service.ApiToken{}).Create(map[string]interface{}{
 		"uid":   data["id"],
 		"uname": uname,
 	})
@@ -92,14 +92,14 @@ func (r User) Login(c *gin.Context) {
 func (r User) Token(c *gin.Context) {
 	// 验证
 	token := c.PostForm("token")
-	msg := (&service.AdminToken{}).Verify(token, "")
+	msg := (&service.ApiToken{}).Verify(token, "")
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
 	// 参数
 	uinfo := c.PostForm("uinfo")
-	tData := (&service.AdminToken{}).Token(token)
+	tData := (&service.ApiToken{}).Token(token)
 	if uinfo != "1" {
 		r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "token_time": tData["time"]})
 		return

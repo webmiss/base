@@ -63,7 +63,11 @@ elif [ "$s" == "stop" ]; then
   ps -aux | grep go-build | grep -v grep | awk {'print $2'} | xargs kill
 # Socket-运行
 elif [ "$s" == "socket" ]; then
-  { go run cli/socket/index.go } || { echo "> 请安装'go'" }
+  {
+    go run cli/socket/index.go
+  } || {
+    echo "> 请安装'go'"
+  }
 # Socket-启动
 elif [ "$s" == "socketStart" ]; then
   nohup go run cli/socket/index.go &

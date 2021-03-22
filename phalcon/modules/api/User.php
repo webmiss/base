@@ -1,12 +1,12 @@
 <?php
-namespace App\Admin;
+namespace App\Api;
 
 use Base\Base;
 use Base\Data;
 use Config\Env;
 use Library\Safety;
 use Library\Redis;
-use Service\AdminToken;
+use Service\ApiToken;
 use Model\User as UserModel;
 use Model\UserInfo;
 
@@ -17,8 +17,8 @@ class User extends Base {
     $uname = self::Post('uname');
     $passwd = self::Post('passwd');
     // 验证用户名
-    if(!Safety::isRight('uname',$uname) && !Safety::isRight('tel',$uname) && !Safety::isRight('email',$uname)){
-      return self::GetJSON(['code'=>4000, 'msg'=>'请输入用户名/手机/邮箱!']);
+    if(!Safety::isRight('tel',$uname)){
+      return self::GetJSON(['code'=>4000, 'msg'=>'请输手机号码!']);
     }
     // 密码长度
     if(!Safety::isRight('passwd',$passwd)){
@@ -28,8 +28,8 @@ class User extends Base {
     $model = new UserModel();
     $model->Table('user AS a');
     $model->LeftJoin('user_info AS b', 'a.id=b.uid');
-    $model->LeftJoin('sys_perm AS c', 'a.id=c.uid');
-    $model->LeftJoin('sys_role AS d', 'c.role=d.id');
+    $model->LeftJoin('api_perm AS c', 'a.id=c.uid');
+    $model->LeftJoin('api_role AS d', 'c.role=d.id');
     $model->Columns('a.id', 'a.state', 'b.position', 'b.nickname', 'b.name', 'b.gender', 'b.birthday', 'b.img', 'c.perm', 'd.perm as role_perm');
     $model->Where(
       '(a.uname=? OR a.tel=? OR a.email=?) AND a.password=?',
@@ -42,12 +42,13 @@ class User extends Base {
     if($data['state']!='1') return self::GetJSON(['code'=>4000,'msg'=>'该用户已被禁用!']);
     // 权限
     $perm = $data['role_perm'];
+    self::Print('Perm', $perm);
     if($data['perm']) $perm=$data['perm'];
     if(!$perm) return self::GetJSON(['code'=>4000,'msg'=>'该用户不允许登录!']);
     $redis = new Redis();
-    $key = Env::$admin_token_prefix.'_perm_'.$data['id'];
+    $key = Env::$api_token_prefix.'_perm_'.$data['id'];
     $redis->Set($key, $perm);
-    $redis->Expire($key, Env::$admin_token_time);
+    $redis->Expire($key, Env::$api_token_time);
     $redis->Close();
     // 登录时间
     $model->Table('user');
@@ -58,7 +59,7 @@ class User extends Base {
     return self::GetJSON([
       'code'=> 0,
       'msg'=> '成功',
-      'token'=> AdminToken::create(['uid'=>$data['id'], 'uname'=>$uname]),
+      'token'=> ApiToken::create(['uid'=>$data['id'], 'uname'=>$uname]),
       'uinfo'=>[
         'uid'=> $data['id'],
         'uname'=> $uname,
@@ -75,11 +76,11 @@ class User extends Base {
 	static function Token(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, '');
+    $msg = ApiToken::verify($token, '');
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $uinfo = self::Post('uinfo');
-    $tData = AdminToken::token($token);
+    $tData = ApiToken::token($token);
     if($uinfo!='1') return self::GetJSON(['code'=>0, 'msg'=>'成功', 'token_time'=>$tData->time]);
     // 用户信息
     $model = new UserInfo();

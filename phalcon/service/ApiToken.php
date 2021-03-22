@@ -5,10 +5,10 @@ use Base\Base;
 use Config\Env;
 use Library\Safety;
 use Library\Redis;
-use Model\SysMenu;
+use Model\ApiMenu;
 
 /* 后台Token */
-class AdminToken extends Base {
+class ApiToken extends Base {
 
   /* 验证 */
   static function verify(string $token, string $urlPerm): string {
@@ -17,10 +17,10 @@ class AdminToken extends Base {
     $tData = Safety::decode($token);
     if(!$tData) return 'Token验证失败!';
     // 续期
-    if(Env::$admin_token_auto){
+    if(Env::$api_token_auto){
       $redis = new Redis();
-      $redis->Expire(Env::$admin_token_prefix.'_token_'.$tData->uid, Env::$admin_token_time);
-      $redis->Expire(Env::$admin_token_prefix.'_perm_'.$tData->uid, Env::$admin_token_time);
+      $redis->Expire(Env::$api_token_prefix.'_token_'.$tData->uid, Env::$api_token_time);
+      $redis->Expire(Env::$api_token_prefix.'_perm_'.$tData->uid, Env::$api_token_time);
       $redis->Close();
     }
     // URL权限
@@ -30,7 +30,7 @@ class AdminToken extends Base {
     array_pop($arr);
     $controller = implode('/', $arr);
     // 菜单
-    $menu = new SysMenu();
+    $menu = new ApiMenu();
     $menu->Columns('id','action');
     $menu->Where('controller=?', $controller);
     $menuData = $menu->FindFirst();
@@ -49,6 +49,7 @@ class AdminToken extends Base {
         break;
       }
     }
+    self::Print($actionVal, $permVal);
     if(($actionVal&$permVal)==0) return '无权访问动作!';
     return '';
   }
@@ -61,7 +62,7 @@ class AdminToken extends Base {
     if(!$tData) return $permAll;
     // 权限
     $redis = new Redis();
-    $permStr = $redis->Gets(Env::$admin_token_prefix.'_perm_'.$tData->uid);
+    $permStr = $redis->Gets(Env::$api_token_prefix.'_perm_'.$tData->uid);
     $redis->Close();
     // 拆分
     $arr = !empty($permStr)?explode(' ',$permStr):[];
@@ -78,22 +79,22 @@ class AdminToken extends Base {
     $token = Safety::encode($data);
     // 缓存
     $redis = new Redis();
-    $key = Env::$admin_token_prefix.'_token_'.$data['uid'];
+    $key = Env::$api_token_prefix.'_token_'.$data['uid'];
     $redis->Set($key, '1');
-    $redis->Expire($key, Env::$admin_token_time);
+    $redis->Expire($key, Env::$api_token_time);
     $redis->Close();
     return $token;
   }
 
   /* 获取 */
-  static function token(string $token) {
-    $tData = Safety::decode($token);
-    if($tData){
+  static function token(string $token): ?object {
+    $token = Safety::decode($token);
+    if($token){
       $redis = new Redis();
-      $tData->time = $redis->Ttl(Env::$admin_token_prefix.'_token_'.$tData->uid);
+      $token->time = $redis->Ttl(Env::$api_token_prefix.'_token_'.$token->uid);
       $redis->Close();
     }
-    return $tData;
+    return $token;
   }
 
 }

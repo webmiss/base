@@ -16,11 +16,12 @@ public class Index extends Base {
   /* 首页 */
   @RequestMapping("")
   String index(){
-    // 返回数据
-    HashMap<String,Object> data = new HashMap<String,Object>();
-    data.put("code",0);
-    data.put("msg","Api");
-    return GetJSON(data);
+    HashMap<String,Object> res;
+    // 返回
+    res = new HashMap<String,Object>();
+    res.put("code",0);
+    res.put("msg","Api");
+    return GetJSON(res);
   }
   
 }

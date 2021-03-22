@@ -3,7 +3,7 @@ from base.data import Data
 from config.env import Env
 from library.safety import Safety
 from library.redis import Redis
-from service.admin_token import AdminToken
+from service.api_token import ApiToken
 from model.user import User as UserModel
 from model.user_info import UserInfo
 from util.util import Util
@@ -24,8 +24,8 @@ class User(Base):
     model = UserModel()
     model.Table('user AS a')
     model.LeftJoin('user_info AS b', 'a.id=b.uid')
-    model.LeftJoin('sys_perm AS c', 'a.id=c.uid')
-    model.LeftJoin('sys_role AS d', 'c.role=d.id')
+    model.LeftJoin('api_perm AS c', 'a.id=c.uid')
+    model.LeftJoin('api_role AS d', 'c.role=d.id')
     model.Where(
       '(a.uname=%s OR a.tel=%s OR a.email=%s) AND a.password=%s',
       uname, uname, uname, Util.md5(passwd)
@@ -41,9 +41,9 @@ class User(Base):
     if data['perm'] : perm=data['perm']
     if not perm : return self.GetJSON({'code':4000, 'msg':'该用户不允许登录!'})
     redis = Redis()
-    key = Env.admin_token_prefix+'_perm_'+str(data['id'])
+    key = Env.api_token_prefix+'_perm_'+str(data['id'])
     redis.Set(key, perm)
-    redis.Expire(key, Env.admin_token_time)
+    redis.Expire(key, Env.api_token_time)
     redis.Close()
     # 登录时间
     model.Table('user')
@@ -54,7 +54,7 @@ class User(Base):
     return self.GetJSON({
       'code': 0,
       'msg': '成功',
-      'token': AdminToken().create({'uid':str(data['id']), 'uname':uname}),
+      'token': ApiToken().create({'uid':str(data['id']), 'uname':uname}),
       'uinfo': {
         'uid': data['id'],
         'uname': uname,
@@ -68,13 +68,13 @@ class User(Base):
 
   # Token验证
   def Token(self):
-    # 验证 request.path
+    # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, '')
+    msg = ApiToken().verify(token, '')
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     uinfo = self.Post('uinfo')
-    tData = AdminToken.token(token)
+    tData = ApiToken.token(token)
     if uinfo!='1' : return self.GetJSON({'code':0, 'msg':'成功', 'token_time':tData['time']})
     # 用户信息
     model = UserInfo()

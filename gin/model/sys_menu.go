@@ -1,6 +1,6 @@
 package model
 
-// SysMenu :系统菜单表
+// SysMenu :系统菜单
 type SysMenu struct {
 	Model
 }

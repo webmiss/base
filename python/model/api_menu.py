@@ -1,9 +1,9 @@
 from model.model import Model
 
-# 系统菜单
-class SysMenu(Model) :
+# API菜单
+class ApiMenu(Model) :
 
   # 构造函数
   def __init__(self):
     super().__init__()
-    self.Table('sys_menus')
+    self.Table('api_menus')

@@ -81,7 +81,7 @@
 .body_right .wm-form_item_body{margin-left: 100px;}
 </style>
 <style scoped>
-.limit{overflow: hidden; max-width: 1280px; min-width: 768px; margin: 0 auto; padding: 0 16px;}
+.limit{overflow: hidden; max-width: 1920px; min-width: 768px; margin: 0 auto; padding: 0 16px;}
 /* Top */
 .top_body{height: 40px; line-height: 40px; padding: 8px 0; background-color: #24292E;}
 .top{color: #FFF;}

@@ -11,11 +11,11 @@ import webmis.base.Base;
 import webmis.config.Env;
 import webmis.library.Redis;
 import webmis.library.Safety;
-import webmis.model.SysMenu;
+import webmis.model.ApiMenu;
 import webmis.util.Util;
 
 /* 后台Token */
-public class AdminToken extends Base {
+public class ApiToken extends Base {
 
   /* 验证 */
   public static String verify(String token, String urlPerm) throws SQLException {
@@ -24,10 +24,10 @@ public class AdminToken extends Base {
     HashMap<String, Object> tData = Safety.decode(token);
     if(tData==null) return "Token验证失败!";
     // 续期
-    if(Env.admin_token_auto){
+    if(Env.api_token_auto){
       Redis redis = new Redis();
-      redis.Expire(Env.admin_token_prefix+"_token_"+String.valueOf(tData.get("uid")), Env.admin_token_time);
-      redis.Expire(Env.admin_token_prefix+"_perm_"+String.valueOf(tData.get("uid")), Env.admin_token_time);
+      redis.Expire(Env.api_token_prefix+"_token_"+String.valueOf(tData.get("uid")), Env.api_token_time);
+      redis.Expire(Env.api_token_prefix+"_perm_"+String.valueOf(tData.get("uid")), Env.api_token_time);
       redis.Close();
     }
     // URL权限
@@ -38,7 +38,7 @@ public class AdminToken extends Base {
     arr.remove(index);
     String controller = Util.implode("/", arr);
     // 菜单
-    SysMenu menu = new SysMenu();
+    ApiMenu menu = new ApiMenu();
     menu.Columns("id", "action");
     menu.Where("controller=?");
     String sql = menu.SelectSql();
@@ -72,7 +72,7 @@ public class AdminToken extends Base {
     if(tData==null) return permAll;
     // 权限
     Redis redis = new Redis();
-    String permStr = redis.Get(Env.admin_token_prefix+"_perm_"+tData.get("uid").toString());
+    String permStr = redis.Get(Env.api_token_prefix+"_perm_"+tData.get("uid").toString());
     redis.Close();
     // 拆分
     ArrayList<String> arr = Util.explode(" ", permStr);
@@ -90,9 +90,9 @@ public class AdminToken extends Base {
     String token = Safety.encode(data);
     // 缓存
     Redis redis = new Redis();
-    String key = Env.admin_token_prefix+"_token_"+String.valueOf(data.get("uid"));
+    String key = Env.api_token_prefix+"_token_"+String.valueOf(data.get("uid"));
     redis.Set(key, "1");
-    redis.Expire(key, Env.admin_token_time);
+    redis.Expire(key, Env.api_token_time);
     redis.Close();
     return token;
   }
@@ -102,7 +102,7 @@ public class AdminToken extends Base {
     HashMap<String, Object> tData = Safety.decode(token);
     if(tData!=null){
       Redis redis = new Redis();
-      tData.put("time", redis.Ttl(Env.admin_token_prefix+"_token_"+String.valueOf(tData.get("uid"))));
+      tData.put("time", redis.Ttl(Env.api_token_prefix+"_token_"+String.valueOf(tData.get("uid"))));
       redis.Close();
     }
     return tData;

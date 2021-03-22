@@ -1,4 +1,4 @@
-package webmis.modules.admin;
+package webmis.modules.api;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -16,12 +16,12 @@ import webmis.config.Env;
 import webmis.library.Redis;
 import webmis.library.Safety;
 import webmis.model.UserInfo;
-import webmis.service.AdminToken;
+import webmis.service.ApiToken;
 import webmis.util.Util;
 
 @RestController
-@Controller("AdminUser")
-@RequestMapping("/admin/user")
+@Controller("ApiUser")
+@RequestMapping("/api/user")
 public class User extends Base {
 
   /* 登录 */
@@ -46,8 +46,8 @@ public class User extends Base {
     webmis.model.User model = new webmis.model.User();
     model.Table("user AS a");
     model.LeftJoin("user_info AS b", "a.id=b.uid");
-    model.LeftJoin("sys_perm AS c", "a.id=c.uid");
-    model.LeftJoin("sys_role AS d", "c.role=d.id");
+    model.LeftJoin("api_perm AS c", "a.id=c.uid");
+    model.LeftJoin("api_role AS d", "c.role=d.id");
     model.Columns("a.id", "a.state", "b.position", "b.nickname", "b.name", "b.gender", "b.birthday", "b.img", "c.perm", "d.perm as role_perm");
     model.Where("(a.uname=? OR a.tel=? OR a.email=?) AND a.password=?");
     String sql = model.SelectSql();
@@ -81,9 +81,9 @@ public class User extends Base {
       return GetJSON(res);
     }
     Redis redis = new Redis();
-    String key = Env.admin_token_prefix+"_perm_"+String.valueOf(data.get("id"));
+    String key = Env.api_token_prefix+"_perm_"+String.valueOf(data.get("id"));
     redis.Set(key, perm);
-    redis.Expire(key, Env.admin_token_time);
+    redis.Expire(key, Env.api_token_time);
     redis.Close();
     // 登录时间
     model.Table("user");
@@ -102,7 +102,7 @@ public class User extends Base {
     HashMap<String, Object> token = new HashMap<String, Object>();
     token.put("uid", data.get("id").toString());
     token.put("uname", uname);
-    res.put("token", AdminToken.create(token));
+    res.put("token", ApiToken.create(token));
     // 用户信息
     HashMap<String,Object> uinfo = new HashMap<String,Object>();
     uinfo.put("uid", data.get("id"));
@@ -121,7 +121,7 @@ public class User extends Base {
   String Token(HttpServletRequest request, String token, String uinfo) throws SQLException {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, "");
+    String msg = ApiToken.verify(token, "");
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -129,7 +129,7 @@ public class User extends Base {
       return GetJSON(res);
     }
     // 参数
-    HashMap<String, Object> tData = AdminToken.token(token);
+    HashMap<String, Object> tData = ApiToken.token(token);
     if(!uinfo.equals("1")){
       res = new HashMap<String,Object>();
       res.put("code", 0);

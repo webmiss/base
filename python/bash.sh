@@ -35,7 +35,11 @@ elif [ "$s" == "stop" ]; then
   ps -aux | grep uwsgi | grep -v grep | awk {'print $2'} | xargs kill
 # Socket
 elif [ "$s" == "socket" ]; then
-  { python $cli socket start } || { echo "> 请安装'python'" }
+  {
+    python $cli socket start
+  } || {
+    echo "> 请安装'python'"
+  }
 # Socket[start]
 elif [ "$s" == "socketStart" ]; then
   nohup python $cli socket start &

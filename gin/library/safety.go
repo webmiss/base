@@ -44,13 +44,20 @@ func (s Safety) Encode(param map[string]interface{}) (string, error) {
 
 // Decode :解密-JWT
 func (s Safety) Decode(token string) (jwt.MapClaims, error) {
-	cfg := (&config.Env{}).Config() //配置
+	// 配置
+	cfg := (&config.Env{}).Config()
+	// 解析
 	res, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
+
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, nil
 		}
 		return []byte(cfg.Key), nil
 	})
+	if err != nil {
+		return nil, err
+	}
+	// 结果
 	if claims, ok := res.Claims.(jwt.MapClaims); ok && res.Valid {
 		return claims, err
 	}

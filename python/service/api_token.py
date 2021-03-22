@@ -3,10 +3,10 @@ from config.env import Env
 from library.safety import Safety
 from library.redis import Redis
 from util.util import Util
-from model.sys_menu import SysMenu
+from model.api_menu import ApiMenu
 
 # 后台Token
-class AdminToken:
+class ApiToken:
 
   # 验证
   def verify(self, token: str, urlPerm: str):
@@ -15,10 +15,10 @@ class AdminToken:
     tData = Safety.decode(token)
     if not tData : return 'Token验证失败!'
     # 续期
-    if Env.admin_token_auto :
+    if Env.api_token_auto :
       redis = Redis()
-      redis.Expire(Env.admin_token_prefix+'_token_'+tData['uid'], Env.admin_token_time)
-      redis.Expire(Env.admin_token_prefix+'_perm_'+tData['uid'], Env.admin_token_time)
+      redis.Expire(Env.api_token_prefix+'_token_'+tData['uid'], Env.api_token_time)
+      redis.Expire(Env.api_token_prefix+'_perm_'+tData['uid'], Env.api_token_time)
       redis.Close()
     # URL权限
     if urlPerm=='' : return ''
@@ -26,7 +26,7 @@ class AdminToken:
     action = arr[-1:][0]
     controller = Util.implode('/', arr[:-1])
     # 菜单
-    menu = SysMenu()
+    menu = ApiMenu()
     menu.Columns('id', 'action')
     menu.Where('controller=%s', controller)
     menuData = menu.FindFirst()
@@ -53,7 +53,7 @@ class AdminToken:
     if not tData : return 'Token验证失败!'
     # 权限
     redis = Redis()
-    permStr = redis.Get(Env.admin_token_prefix+'_perm_'+tData['uid'])
+    permStr = redis.Get(Env.api_token_prefix+'_perm_'+tData['uid'])
     redis.Close()
     # 拆分
     permAll = {}
@@ -69,9 +69,9 @@ class AdminToken:
     token = Safety.encode(data)
     # 缓存
     redis = Redis()
-    key = Env.admin_token_prefix+'_token_'+str(data['uid'])
+    key = Env.api_token_prefix+'_token_'+str(data['uid'])
     redis.Set(key, '1')
-    redis.Expire(key, Env.admin_token_time)
+    redis.Expire(key, Env.api_token_time)
     redis.Close()
     return token
     
@@ -80,6 +80,6 @@ class AdminToken:
     tData = Safety.decode(token)
     if tData :
       redis = Redis()
-      tData['time'] = redis.Ttl(Env.admin_token_prefix+'_token_'+tData['uid'])
+      tData['time'] = redis.Ttl(Env.api_token_prefix+'_token_'+tData['uid'])
       redis.Close()
     return tData

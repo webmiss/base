@@ -11,13 +11,13 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-// AdminToken :后台Token
-type AdminToken struct {
+// ApiToken :后台Token
+type ApiToken struct {
 	base.Base
 }
 
 // Create :验证
-func (s AdminToken) Verify(token string, urlPerm string) string {
+func (s ApiToken) Verify(token string, urlPerm string) string {
 	// Token
 	if token == "" {
 		return "Token不能为空!"
@@ -28,10 +28,10 @@ func (s AdminToken) Verify(token string, urlPerm string) string {
 	}
 	// 续期
 	env := (&config.Env{}).Config()
-	if env.AdminTokenAuto {
+	if env.ApiTokenAuto {
 		redis := (&library.Redis{}).New("")
-		redis.Expire(env.AdminTokenPrefix+"_token_"+tData["uid"].(string), env.AdminTokenTime)
-		redis.Expire(env.AdminTokenPrefix+"_perm_"+tData["uid"].(string), env.AdminTokenTime)
+		redis.Expire(env.ApiTokenPrefix+"_token_"+tData["uid"].(string), env.ApiTokenTime)
+		redis.Expire(env.ApiTokenPrefix+"_perm_"+tData["uid"].(string), env.ApiTokenTime)
 		redis.Close()
 	}
 	// URL权限
@@ -42,7 +42,7 @@ func (s AdminToken) Verify(token string, urlPerm string) string {
 	action := arr[len(arr)-1:][0]
 	controller := (&util.Util{}).Implode("/", arr[:len(arr)-1])
 	// 菜单
-	menu := (&model.SysMenu{}).New()
+	menu := (&model.ApiMenu{}).New()
 	menu.Columns("id", "action")
 	menu.Where("controller=?", controller)
 	menuData := menu.FindFirst()
@@ -73,7 +73,7 @@ func (s AdminToken) Verify(token string, urlPerm string) string {
 }
 
 // Perm :权限数组
-func (s AdminToken) Perm(token string) map[string]int64 {
+func (s ApiToken) Perm(token string) map[string]int64 {
 	permAll := map[string]int64{}
 	// Token
 	tData, _ := (&library.Safety{}).Decode(token)
@@ -83,7 +83,7 @@ func (s AdminToken) Perm(token string) map[string]int64 {
 	// 权限
 	env := (&config.Env{}).Config()
 	redis := (&library.Redis{}).New("")
-	permStr := string(redis.Get(env.AdminTokenPrefix + "_perm_" + tData["uid"].(string)))
+	permStr := string(redis.Get(env.ApiTokenPrefix + "_perm_" + tData["uid"].(string)))
 	redis.Close()
 	// 拆分
 	arr := (&util.Util{}).Explode(" ", permStr)
@@ -95,26 +95,26 @@ func (s AdminToken) Perm(token string) map[string]int64 {
 }
 
 // Create :生成
-func (s AdminToken) Create(data map[string]interface{}) string {
+func (s ApiToken) Create(data map[string]interface{}) string {
 	data["l_time"] = (&util.Util{}).Date("2006-01-02 15:04:05")
 	token, _ := (&library.Safety{}).Encode(data)
 	// 缓存
 	env := (&config.Env{}).Config()
 	redis := (&library.Redis{}).New("")
-	key := env.AdminTokenPrefix + "_token_" + data["uid"].(string)
+	key := env.ApiTokenPrefix + "_token_" + data["uid"].(string)
 	redis.Set(key, "1")
-	redis.Expire(key, env.AdminTokenTime)
+	redis.Expire(key, env.ApiTokenTime)
 	redis.Close()
 	return token
 }
 
 // Token :获取
-func (s AdminToken) Token(token string) jwt.MapClaims {
+func (s ApiToken) Token(token string) jwt.MapClaims {
 	tData, _ := (&library.Safety{}).Decode(token)
 	if tData != nil {
 		env := (&config.Env{}).Config()
 		redis := (&library.Redis{}).New("")
-		tData["time"] = redis.TTL(env.AdminTokenPrefix + "_token_" + tData["uid"].(string))
+		tData["time"] = redis.TTL(env.ApiTokenPrefix + "_token_" + tData["uid"].(string))
 		redis.Close()
 	}
 	return tData
