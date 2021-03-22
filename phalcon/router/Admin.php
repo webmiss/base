@@ -10,7 +10,11 @@ class Admin {
     // 登录
     $app->post('/admin/user/login', 'App\Admin\User::Login');
     $app->post('/admin/user/token', 'App\Admin\User::Token');
+    // 个人资料
+    $app->post('/admin/userinfo/list', 'App\Admin\UserInfo::List');
+    $app->post('/admin/userinfo/edit', 'App\Admin\UserInfo::Edit');
     // 系统菜单
     $app->post('/admin/Sysmenus/getMenus', 'App\Admin\SysMenus::GetMenus');
   }
+
 }

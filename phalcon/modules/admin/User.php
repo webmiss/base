@@ -7,7 +7,7 @@ use Config\Env;
 use Library\Safety;
 use Library\Redis;
 use Service\AdminToken;
-use Model\User as UserModel;
+use Model\User as UserM;
 use Model\UserInfo;
 
 class User extends Base {
@@ -25,7 +25,7 @@ class User extends Base {
       return self::GetJSON(['code'=>4000, 'msg'=>'请输入6~16位密码!']);
     }
     // 查询
-    $model = new UserModel();
+    $model = new UserM();
     $model->Table('user AS a');
     $model->LeftJoin('user_info AS b', 'a.id=b.uid');
     $model->LeftJoin('sys_perm AS c', 'a.id=c.uid');

@@ -41,7 +41,7 @@ export default defineComponent({
     /* 加载数据 */
     loadData(){
       const load = Loading();
-      Post('Userinfo/list',{token:Storage.getItem('token')},(res: any)=>{
+      Post('userinfo/list',{token:Storage.getItem('token')},(res: any)=>{
         load.clear();
         const d = res.data;
         if(d.code!=0) return Toast(d.msg);
@@ -53,7 +53,7 @@ export default defineComponent({
     onSubmit(){
       const data = JSON.stringify(this.form);
       const load = Loading();
-      Post('Userinfo/edit',{token:Storage.getItem('token'),data:data},(res: any)=>{
+      Post('userinfo/edit',{token:Storage.getItem('token'),data:data},(res: any)=>{
         load.clear();
         const d = res.data;
         if(d.code==0) this.state.uInfo = d.uinfo;

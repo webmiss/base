@@ -4,7 +4,7 @@ from config.env import Env
 from library.safety import Safety
 from library.redis import Redis
 from service.admin_token import AdminToken
-from model.user import User as UserModel
+from model.user import User as UserM
 from model.user_info import UserInfo
 from util.util import Util
 
@@ -21,7 +21,7 @@ class User(Base):
     if not Safety.isRight('passwd',passwd) :
       return self.GetJSON({'code':4000, 'msg':'请输入6~16位密码'})
     # 查询
-    model = UserModel()
+    model = UserM()
     model.Table('user AS a')
     model.LeftJoin('user_info AS b', 'a.id=b.uid')
     model.LeftJoin('sys_perm AS c', 'a.id=c.uid')

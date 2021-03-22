@@ -87,7 +87,7 @@ INSERT INTO `sys_menus` (`id`, `fid`, `title`, `ico`, `ctime`, `utime`, `sort`, 
 (2,	0,	'设置',	'icons icon_system',	NULL,	NULL,	0,	'',	'',	''),
 (3,	0,	'业务',	'icons icon_menu',	NULL,	NULL,	0,	'',	'',	''),
 (4,	1,	'控制台',	'icons icon_dasktop',	NULL,	NULL,	0,	'/',	'',	''),
-(5,	1,	'个人资料',	'icons icon_user_info',	NULL,	NULL,	0,	'UserInfo',	'',	''),
+(5,	1,	'个人资料',	'icons icon_user_info',	NULL,	NULL,	0,	'UserInfo',	'/admin/userinfo',	'[{\"type\":\"2\",\"name\":\"列表\",\"action\":\"list\",\"ico\":\"icon-list\",\"perm\":1},{\"type\":\"2\",\"name\":\"编辑\",\"action\":\"edit\",\"ico\":\"icon-add\",\"perm\":2}]'),
 (6,	1,	'修改密码',	'icons icon_user_passwd',	NULL,	NULL,	0,	'UserPasswd',	'',	''),
 (7,	2,	'文件目录',	'icons icon_sys_folder',	NULL,	NULL,	0,	'SysFileManage',	'',	''),
 (8,	2,	'用户管理',	'icons icon_sys_user',	NULL,	NULL,	0,	'SysUser',	'/admin/user',	'[{\"type\":\"1\",\"name\":\"列表\",\"action\":\"List\",\"ico\":\"icon-list\",\"perm\":1},{\"type\":\"1\",\"name\":\"添加\",\"action\":\"Add\",\"ico\":\"icon-add\",\"perm\":2},{\"type\":\"2\",\"name\":\"验证\",\"action\":\"token\",\"ico\":\"icon-add\",\"perm\":4}]'),
@@ -108,7 +108,7 @@ CREATE TABLE `sys_perm` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
 
 INSERT INTO `sys_perm` (`uid`, `utime`, `role`, `perm`) VALUES
-(1,	NULL,	'',	'1:0 2:0 3:0 4:1 5:1 7:1 8:2 9:31 10:1 11:31 12:31 13:31 14:31');
+(1,	NULL,	'',	'1:0 2:0 3:0 4:0 5:3 6:0 7:0 8:31 9:31 10:31 11:31 12:31 13:31 14:31');
 
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
