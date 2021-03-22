@@ -104,6 +104,7 @@ export default defineComponent({
       for(let i in param){
         data[param[i].key] = param[i].val;
       }
+      if(!url) return Toast('请求地址为空!');
       // 请求
       const load = Loading();
       if(this.request.method=='get'){

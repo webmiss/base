@@ -4,32 +4,37 @@ export default ()=>{
   return [
     {label:'公共接口', children:[
       {label:'首页',value:{
-        url: Env.apiUrl+'index/index', method: 'post',
-        param: [
-          {key:'token', val:Env.token, text:'Token（必填）'},
-          {key:'name', val:Env.token, text:'WebMIS'},
-        ]
+        url: Env.apiUrl+'', method: 'get',
+        param: []
       }},
-      {label:'分组', children:[
-        {label: '测试1',value:{
-          url: Env.apiUrl+'index/test', method: 'get',
+      {label:'会员', children:[
+        {label: '登录',value:{
+          url: Env.apiUrl+'user/login', method: 'post',
           param: [
-            {key:'test', val:'', text:'测试'},
+            {key:'uname', val:'15000000000', text:'手机号码'},
+            {key:'passwd', val:'123456', text:'密码'},
           ]
         }},
-        {label: '测试2',value:{
-          url: Env.apiUrl+'index/test', method: 'post',
+        {label: '获取用户信息',value:{
+          url: Env.apiUrl+'user/token', method: 'post',
           param: [
-            {key:'test', val:'', text:'测试'},
+            {key:'token', val:'', text:'Token'},
+            {key:'uinfo', val:'1', text:'验证: 0 用户信息: 1'},
           ]
         }},
       ]},
     ]},
-    {label:'业务', children:[
-      {label:'测试接口',value:{
-        url: Env.apiUrl+'test/test', method: 'put',
+    {label:'权限', children:[
+      {label:'验证Token',value:{
+        url: Env.apiUrl+'demo/token', method: 'post',
         param: [
-          {key:'test', val:'', text:'测试'},
+          {key:'token', val:'', text:'Token'},
+        ]
+      }},
+      {label:'验证Url',value:{
+        url: Env.apiUrl+'demo/perm', method: 'post',
+        param: [
+          {key:'token', val:'', text:'Token'},
         ]
       }},
     ]},

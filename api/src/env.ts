@@ -1,7 +1,8 @@
 export default {
-  title: 'WebMIS API', // 应用名称
-  version: '1.0.0', // 应用版本
-  apiUrl: 'https://demo-php.webmis.vip/api/',  // 数据接口
+  title: 'WebMIS API', //名称
+  version: '1.0.0', //版本
+  // apiUrl: 'https://demo-php.webmis.vip/api/',  //接口
+  apiUrl: 'http://localhost:9000/api/',  //接口
   copy: 'Copyright © WebMIS.vip 2021',  // 版权信息
   /* Token */
   token: '',
