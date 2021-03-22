@@ -5,16 +5,30 @@ s=$1
 
 # 运行
 if [ "$s" == "serve" ]; then
-  { yarn serve } || { echo "> 请安装'npm install -g yarn'" }
+  {
+    yarn serve
+  } || {
+    echo "> 请安装'npm install -g yarn'"
+  }
 # 安装
 elif [ "$s" == "install" ]; then
-  { yarn install } || { echo "> 请安装'npm install -g yarn'" }
+  {
+    yarn install
+  } || {
+    echo "> 请安装'npm install -g yarn'"
+  }
 # 打包
 elif [ "$s" == "build" ]; then
-  { yarn build } || { echo "> 请安装'npm install -g yarn'" }
+  {
+    yarn build
+  } || {
+    echo "> 请安装'npm install -g yarn'"
+  }
 # 预览
 elif [ "$s" == "http" ]; then
-  { http-server -v } && {
+  {
+    http-server -v
+  } && {
     yarn build
     http-server ./dist
   } || {

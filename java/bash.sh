@@ -6,13 +6,25 @@ jar="java-1.0.0.jar"
 
 # 运行
 if [ "$s" == "serve" ]; then
-  { java -jar $jar } || { echo "> 请安装'java'" }
+  {
+    java -jar $jar
+  } || {
+    echo "> 请安装'java'"
+  }
 # 安装
 elif [ "$s" == "install" ]; then
-  { mvn clean install -e -U -DskipTests } || { echo "> 请安装'mvn'" }
+  {
+    mvn clean install -e -U -DskipTests
+  } || {
+    echo "> 请安装'mvn'"
+  }
 # 打包
 elif [ "$s" == "build" ]; then
-  { mvn package -DskipTests && rm "./$jar" && cp "target/$jar" ./ } || { echo "> 请安装'mvn'" }
+  {
+    mvn package -DskipTests && rm "./$jar" && cp "target/$jar" ./
+  } || {
+    echo "> 请安装'mvn'"
+  }
 # 启动
 elif [ "$s" == "start" ]; then
   nohup java -jar $jar >> log.txt &

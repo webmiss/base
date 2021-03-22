@@ -9,10 +9,20 @@ package="flask flask_cors PyJWT redis wheel DBUtils pymysql websockets websocket
 
 # 运行
 if [ "$s" == "serve" ]; then
-  { python $index } || { echo "> 请安装'python'" }
+  {
+    python $index
+  } || {
+    echo "> 请安装'python'"
+  }
 # 安装
 elif [ "$s" == "install" ]; then
-  { sudo pip install $package } || { pip install $package } || { echo "> 请安装'pip'" }
+  {
+    sudo pip install $package
+  } || {
+    pip install $package
+  } || {
+    echo "> 请安装'pip'"
+  }
 # 启动
 elif [ "$s" == "start" ]; then
   uwsgi --ini $config &

@@ -5,13 +5,27 @@ s=$1
 
 # 运行
 if [ "$s" == "serve" ]; then
-  { flutter run } || { echo "> 请安装'flutter" }
+  {
+    flutter run
+  } || {
+    echo "> 请安装'flutter"
+  }
 # 安装
 elif [ "$s" == "install" ]; then
-  { flutter pub get } || { echo "> 请安装'flutter" }
+  {
+    flutter pub get
+  } || {
+    echo "> 请安装'flutter"
+  }
 # 打包
 elif [ "$s" == "build" ]; then
-  { flutter build apk } || { flutter build ios } || { echo "> 请安装'flutter" }
+  {
+    flutter build apk
+  } || {
+    flutter build ios
+  } || {
+    echo "> 请安装'flutter"
+  }
 else
   echo "----------------------------------------------------"
   echo "[use] ./bash.sh <command>"

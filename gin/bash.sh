@@ -18,19 +18,39 @@ consumer='consumer'           #kafka-消费者-用户名
 
 # 运行
 if [ "$s" == "serve" ]; then
-  { go run $index } || { echo "> 请安装'go'" }
+  {
+    go run $index
+  } || {
+    echo "> 请安装'go'"
+  }
 # 安装
 elif [ "$s" == "install" ]; then
-  { go clean --modcache && go get -v } || { echo "> 请安装'go'" }
+  {
+    go clean --modcache && go get -v
+  } || {
+    echo "> 请安装'go'"
+  }
 # 清理
 elif [ "$s" == "clear" ]; then
-  { go mod tidy } || { echo "> 请安装'go'" }
+  {
+    go mod tidy
+  } || {
+    echo "> 请安装'go'"
+  }
 # 打包
 elif [ "$s" == "build" ]; then
-  { go build } || { echo "> 请安装'go'" }
+  {
+    go build
+  } || {
+    echo "> 请安装'go'"
+  }
 # 预览
 elif [ "$s" == "http" ]; then
-  { ./$name } || { echo "> 请安装'go'" }
+  {
+    ./$name
+  } || {
+    echo "> 请安装'go'"
+  }
 # 启动
 elif [ "$s" == "start" ]; then
   nohup ./$name &

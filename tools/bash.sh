@@ -10,13 +10,25 @@ dbFile="adminer.php"
 
 # 数据库工具-7
 if [ "$s" == "adminer7" ]; then
-  php -S $ip:$dbPort7 $dbFile
+  {
+    php -S $ip:$dbPort7 $dbFile
+  } || {
+    echo "> 请安装'php'"
+  }
 # 数据库工具-8
 elif [ "$s" == "adminer8" ]; then
-  php -S $ip:$dbPort8 $nameDb
+  {
+    php -S $ip:$dbPort8 $nameDb
+  } || {
+    echo "> 请安装'php'"
+  }
 # 数据库工具-9
 elif [ "$s" == "adminer9" ]; then
-  php -S $ip:$dbPort9 $nameDb
+  {
+    php -S $ip:$dbPort9 $nameDb
+  } || {
+    echo "> 请安装'php'"
+  }
 else
   echo "----------------------------------------------------"
   echo "[use] ./bash.sh <command>"
