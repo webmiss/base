@@ -18,17 +18,21 @@ git clone https://github.com/webmiss/base.git --depth=1
 #### Bash命令
 ```bash
 # 依赖包
-./shell install
+./bash.sh install
 # 运行
-./shell serve
+./bash.sh serve
+# 打包
+./bash.sh build
 ```
 
-#### Yarn命令
+#### Cmd命令
 ```bash
 # 依赖包
-yarn install
+.\cmd.bat install
 # 运行
-yarn serve
+.\cmd.bat serve
+# 打包
+.\cmd.bat build
 ```
 
 <br/><br/>

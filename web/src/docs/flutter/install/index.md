@@ -15,17 +15,17 @@ git clone https://github.com/webmiss/base.git --depth=1
 #### Bash命令
 ```bash
 # 依赖包
-./shell install
+./bash.sh install
 # 运行
-./shell serve
+./bash.sh serve
 ```
 
-#### flutter命令
+#### Cmd命令
 ```bash
 # 依赖包
-flutter pub get
+.\cmd.bat install
 # 运行
-flutter run
+.\cmd.bat serve
 ```
 
 <br/><br/>

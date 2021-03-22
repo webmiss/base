@@ -22,21 +22,21 @@ git clone https://github.com/webmiss/base.git --depth=1
 #### Bash命令
 ```bash
 # 依赖包
-./shell install
+./bash.sh install
 # 运行
-./shell serve
+./bash.sh serve
 # 打包
-./shell build
+./bash.sh build
 ```
 
-#### Java命令
+#### Cmd命令
 ```bash
 # 依赖包
-mvn clean install -e -U -DskipTests
+.\cmd.bat install
 # 运行
-java -jar java-1.0.0.jar
+.\cmd.bat serve
 # 打包
-mvn package -DskipTests 
+.\cmd.bat build
 ```
 
 <br/><br/>

@@ -22,21 +22,21 @@ git clone https://github.com/webmiss/base.git --depth=1
 #### Bash命令
 ```bash
 # 依赖包
-./shell install
+./bash.sh install
 # 运行
-./shell serve
+./bash.sh serve
 # 打包
-./shell build
+./bash.sh build
 ```
 
-#### Go命令
+#### Cmd命令
 ```bash
 # 依赖包
-go get -v
+.\cmd.bat install
 # 运行
-go run main.go
+.\cmd.bat serve
 # 打包
- go build
+.\cmd.bat build
 ```
 
 <br/><br/>

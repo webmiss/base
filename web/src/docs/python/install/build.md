@@ -9,9 +9,9 @@ pip3 install uwsgi
 ln -s /usr/bin/python3 /usr/bin/python
 ln -s /usr/bin/pip3 /usr/bin/pip
 # 安装依赖包
-cd /xxx/python && ./shell install
+cd /xxx/python && ./bash.sh install
 # 启动
-./shell start
+./bash.sh start
 ```
 **开机启动**
 ```bash
@@ -20,7 +20,7 @@ chmod +x /etc/rc.d/rc.local
 # 编辑文件
 vi /etc/rc.d/rc.local
 ```
-- cd /xxx/python/ && ./shell start
+- cd /xxx/python/ && ./bash.sh start
 
 <br/>
 

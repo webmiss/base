@@ -22,17 +22,17 @@ git clone https://github.com/webmiss/base.git --depth=1
 #### Bash命令
 ```bash
 # 依赖包
-./shell install
+./bash.sh install
 # 运行
-./shell serve
+./bash.sh serve
 ```
 
-#### Python命令
+#### Cmd命令
 ```bash
 # 依赖包
-pip install flask flask_cors PyJWT redis wheel DBUtils pymysql websockets websocket-client
+.\cmd.bat install
 # 运行
-python web.py
+.\cmd.bat serve
 ```
 
 <br/><br/>
