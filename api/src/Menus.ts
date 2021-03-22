@@ -31,8 +31,14 @@ export default ()=>{
           {key:'token', val:'', text:'Token'},
         ]
       }},
-      {label:'验证Url',value:{
+      {label:'验证Url(有)',value:{
         url: Env.apiUrl+'demo/perm', method: 'post',
+        param: [
+          {key:'token', val:'', text:'Token'},
+        ]
+      }},
+      {label:'验证Url(无)',value:{
+        url: Env.apiUrl+'demo/list', method: 'post',
         param: [
           {key:'token', val:'', text:'Token'},
         ]
