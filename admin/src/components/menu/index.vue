@@ -3,7 +3,7 @@
     <!-- 一级菜单 -->
     <div v-for="(v1,k1) in menuData" :key="k1">
       <!-- 标题 -->
-      <div @click="_titleClick([k1])" class="wm-menu_title" :class="!v1.children&&active==k1?'active':''" :style="{height: height+'px', lineHeight: height+'px'}">
+      <div @click="_titleClick([k1])" class="wm-menu_title" :class="!v1.children&&active==k1?'active':''" :style="{height: (parseInt(height)+4)+'px', lineHeight: (parseInt(height)+4)+'px'}">
         <i v-if="v1.icon" :class="v1.icon" :style="{color: v1.children?textColor:''}"></i>
         <h2 :style="{color: v1.children?textColor:''}">{{v1.label}}</h2>
         <span v-if="v1.children">
@@ -75,7 +75,7 @@ export default defineComponent({
     data: {type: Array, default: []}, //数据: [{icon:'',label:'标题',value:'',children:[]}]
     defaultIndex: {type: Array, default: []},  //默认选择
     isSave: {type: Boolean, default: true},  //是否记录位置
-    height: {type: Number, default: 40},  //高度
+    height: {type: Number, default: 36},  //高度
     textColor: {type: String, default: Env.themes.text1}, //颜色
   },
   data(){

@@ -5,7 +5,7 @@
 </template>
 
 <style>
-.wm-json_format_plain{padding: 16px; background-color: #F4F6F8; color: #282B2E; border-radius: 4px;}
+.wm-json_format_plain{overflow-y: auto; padding: 16px; background-color: #F4F6F8; color: #282B2E; border-radius: 4px;}
 .wm-json_format_plain .key{color: #1990B8;}
 .wm-json_format_plain .string{color: #595;}
 .wm-json_format_plain .number{color: #CC7832;}
