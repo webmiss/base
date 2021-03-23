@@ -31,8 +31,11 @@ func (s AdminToken) Verify(token string, urlPerm string) string {
 	env := config.Env()
 	uid := tData["uid"].(string)
 	redis = (&library.Redis{}).New("")
-	redis.TTL(env.AdminTokenPrefix + "_token_" + uid)
+	time := redis.TTL(env.AdminTokenPrefix + "_token_" + uid)
 	redis.Close()
+	if time < 1 {
+		return "Token已过期!"
+	}
 	// 续期
 	if env.AdminTokenAuto {
 		redis = (&library.Redis{}).New("")

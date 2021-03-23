@@ -14,11 +14,17 @@ class AdminToken:
     if token=='' : return 'Token不能为空!'
     tData = Safety.decode(token)
     if not tData : return 'Token验证失败!'
+    # 是否过期
+    uid = str(tData['uid'])
+    redis = Redis()
+    time = redis.Ttl(Env.admin_token_prefix+'_token_'+uid)
+    redis.Close()
+    if time <1 : return 'Token已过期!'
     # 续期
     if Env.admin_token_auto :
       redis = Redis()
-      redis.Expire(Env.admin_token_prefix+'_token_'+tData['uid'], Env.admin_token_time)
-      redis.Expire(Env.admin_token_prefix+'_perm_'+tData['uid'], Env.admin_token_time)
+      redis.Expire(Env.admin_token_prefix+'_token_'+uid, Env.admin_token_time)
+      redis.Expire(Env.admin_token_prefix+'_perm_'+uid, Env.admin_token_time)
       redis.Close()
     # URL权限
     if urlPerm=='' : return ''

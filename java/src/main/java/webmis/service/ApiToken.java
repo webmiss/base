@@ -19,15 +19,22 @@ public class ApiToken extends Base {
 
   /* 验证 */
   public static String verify(String token, String urlPerm) throws SQLException {
+    Redis redis;
     // Token
     if(token.equals("")) return "Token不能为空!";
     HashMap<String, Object> tData = Safety.decode(token);
     if(tData==null) return "Token验证失败!";
+    // 是否过期
+    String uid = String.valueOf(tData.get("uid"));
+    redis = new Redis();
+    Long time = redis.Ttl(Env.api_token_prefix+"_token_"+uid);
+    redis.Close();
+    if(time<1) return "Token已过期!";
     // 续期
     if(Env.api_token_auto){
-      Redis redis = new Redis();
-      redis.Expire(Env.api_token_prefix+"_token_"+String.valueOf(tData.get("uid")), Env.api_token_time);
-      redis.Expire(Env.api_token_prefix+"_perm_"+String.valueOf(tData.get("uid")), Env.api_token_time);
+      redis = new Redis();
+      redis.Expire(Env.api_token_prefix+"_token_"+uid, Env.api_token_time);
+      redis.Expire(Env.api_token_prefix+"_perm_"+uid, Env.api_token_time);
       redis.Close();
     }
     // URL权限
