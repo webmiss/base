@@ -27,7 +27,7 @@ export default defineComponent({
     const gender: any = [{name:'男',val:'男'},{name:'女',val:'女'}];
     // 上传
     const upload: any = {
-      url:'Userinfo/upImg',
+      url:'userinfo/upimg',
       param:{token:Storage.getItem('token')}
     };
     return {state,form,gender,upload}

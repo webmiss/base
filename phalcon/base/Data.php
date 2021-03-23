@@ -8,7 +8,7 @@ use Config\Env;
 class Data extends Base {
 
   /* 图片地址 */
-  static function img(string $img): string {
+  static function Img(string $img): string {
     return $img?Env::$base_url.$img:'';
   }
 

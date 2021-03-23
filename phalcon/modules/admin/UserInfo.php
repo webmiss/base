@@ -2,8 +2,11 @@
 namespace App\Admin;
 
 use Base\Base;
+use Base\Data;
+use Library\Upload;
 use Service\AdminToken;
 use Model\UserInfo as UserInfoM;
+use Phalcon\Html\Helper\Img;
 
 class UserInfo extends Base {
 
@@ -55,6 +58,24 @@ class UserInfo extends Base {
     $info['img'] = $param->img;
     $info['birthday'] = date('Y-m-d', $info['birthday']);
     return self::GetJSON(['code'=>0,'msg'=>'成功','uinfo'=>$info]);
+  }
+
+  /* 编辑 */
+  static function Upimg(){
+    // 验证
+    $token = self::Post('token');
+    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    $tData = AdminToken::token($token);
+    // 参数
+    $base64 = self::Post('base64');
+    if(empty($base64)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
+    // 上传
+    $img = Upload::Base64(['path'=>self::$imgDir, 'base64'=>$base64]);
+    if(empty($img)) return self::GetJSON(['code'=>5000, 'msg'=>'上传失败!']);
+    self::Print($img);
+    // 返回
+    return self::GetJSON(['code'=>0,'msg'=>'成功', 'img'=>Data::Img(self::$imgDir.$img)]);
   }
 
 }
