@@ -31,7 +31,7 @@ func (u Util) Img(src interface{}) string {
 	if src == "" {
 		return src.(string)
 	}
-	env := (&config.Env{}).Config()
+	env := config.Env()
 	return env.BaseURL + src.(string)
 }
 

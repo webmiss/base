@@ -31,7 +31,7 @@ func (s Safety) Test(reg string, val string) bool {
 
 // Encode :加密-JWT
 func (s Safety) Encode(param map[string]interface{}) (string, error) {
-	cfg := (&config.Env{}).Config() //配置
+	cfg := config.Env() //配置
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := make(jwt.MapClaims)
 	for index, val := range param {
@@ -45,7 +45,7 @@ func (s Safety) Encode(param map[string]interface{}) (string, error) {
 // Decode :解密-JWT
 func (s Safety) Decode(token string) (jwt.MapClaims, error) {
 	// 配置
-	cfg := (&config.Env{}).Config()
+	cfg := config.Env()
 	// 解析
 	res, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 

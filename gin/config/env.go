@@ -1,7 +1,9 @@
 package config
 
-// Env :公共配置
-type Env struct {
+var Mode = "debug" //模式: debug, release, test
+
+// Env :类型
+type EnvType struct {
 	Mode             string
 	Host             string
 	Port             string
@@ -15,8 +17,9 @@ type Env struct {
 	ApiTokenAuto     bool
 }
 
-// Config :获取
-func (cfg *Env) Config() *Env {
+// Env :公共配置
+func Env() *EnvType {
+	cfg := &EnvType{}
 	cfg.Mode = "debug"                            //模式: debug, release, test
 	cfg.Host = "127.0.0.1"                        //主机
 	cfg.Port = "9030"                             //端口

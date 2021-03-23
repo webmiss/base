@@ -13,7 +13,7 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 	gin.DefaultWriter = ioutil.Discard
 	// 路由
-	cfg := (&config.Socket{}).Config()
+	cfg := config.Socket()
 	r := gin.Default()
 	r.GET(cfg.URL, func(c *gin.Context) {
 		service.Socket(c)

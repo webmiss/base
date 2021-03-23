@@ -1,15 +1,16 @@
 package config
 
-// Kafka :Kafka配置
-type Kafka struct {
+// KafkaType :类型
+type KafkaType struct {
 	Log  bool
 	Type string
 	Host string
 	Port string
 }
 
-// Config :获取
-func (cfg *Kafka) Config() *Kafka {
+// Kafka :Kafka配置
+func Kafka() *KafkaType {
+	cfg := &KafkaType{}
 	cfg.Log = false        //显示日志
 	cfg.Type = "tcp"       //类型
 	cfg.Host = "localhost" //主机

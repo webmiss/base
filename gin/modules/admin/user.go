@@ -58,7 +58,7 @@ func (r User) Login(c *gin.Context) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "该用户不允许登录!"})
 		return
 	}
-	env := (&config.Env{}).Config()
+	env := config.Env()
 	redis := (&library.Redis{}).New("")
 	key := env.AdminTokenPrefix + "_perm_" + data["id"].(string)
 	redis.Set(key, perm)

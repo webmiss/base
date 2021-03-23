@@ -21,7 +21,7 @@ func init() {
 
 func main() {
 	// 配置
-	cfg := (&config.Env{}).Config()
+	cfg := config.Env()
 	gin.SetMode(cfg.Mode)
 	// 模式
 	if gin.Mode() == gin.ReleaseMode {

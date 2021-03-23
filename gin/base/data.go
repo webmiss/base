@@ -11,6 +11,5 @@ func (Data) Img(img interface{}) string {
 	if str == "" {
 		return ""
 	}
-	env := (&config.Env{}).Config()
-	return env.BaseURL + str
+	return config.Env().BaseURL + str
 }

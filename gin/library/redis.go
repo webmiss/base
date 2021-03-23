@@ -19,9 +19,9 @@ type Redis struct {
 // RedisPool :数据池
 func RedisPool(db string) {
 	// 配置
-	cfg := (&config.Redis{}).Config()
+	cfg := config.Redis()
 	if db == "Other" {
-		cfg = (&config.Redis{}).Config()
+		cfg = config.Redis()
 	}
 	pool := &redigo.Pool{
 		MaxIdle:         cfg.Min,  //空闲数

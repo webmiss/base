@@ -2,8 +2,8 @@ package config
 
 import "time"
 
-// Redis :Redis配置
-type Redis struct {
+// RedisType :类型
+type RedisType struct {
 	Driver   string
 	Host     string
 	Port     string
@@ -14,15 +14,16 @@ type Redis struct {
 	Time     time.Duration
 }
 
-// Config :获取
-func (r *Redis) Config() *Redis {
-	r.Driver = "tcp"          //类型
-	r.Host = "127.0.0.1"      //主机
-	r.Port = "6379"           //端口
-	r.Password = ""           //密码
-	r.Db = "0"                //硬盘
-	r.Min = 100               //空闲数
-	r.Max = 200               //最大数
-	r.Time = 10 * time.Second //最大空闲时间(秒)
-	return r
+// Redis :Redis配置
+func Redis() *RedisType {
+	cfg := &RedisType{}
+	cfg.Driver = "tcp"          //类型
+	cfg.Host = "127.0.0.1"      //主机
+	cfg.Port = "6379"           //端口
+	cfg.Password = ""           //密码
+	cfg.Db = "0"                //硬盘
+	cfg.Min = 100               //空闲数
+	cfg.Max = 200               //最大数
+	cfg.Time = 10 * time.Second //最大空闲时间(秒)
+	return cfg
 }
