@@ -25,7 +25,7 @@ public class Util {
     return Date(format, String.valueOf(Time()));
   }
   public static String Date(String format, String timestamp) {
-    return new SimpleDateFormat(format).format(new Date( Long.valueOf(timestamp)));
+    return new SimpleDateFormat(format).format(new Date(Long.valueOf(timestamp)*1000));
   }
 
   /* 时间戳 */

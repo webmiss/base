@@ -41,7 +41,7 @@ class UserInfo(Base):
       'nickname': Util.Trim(param['nickname']),
       'name': Util.Trim(param['name']),
       'gender': Util.Trim(param['gender']),
-      'birthday': Util.Strtotime(Util.Trim(param['birthday']), "%Y-%m-%d"),
+      'birthday': Util.Strtotime(Util.Trim(param['birthday']), '%Y-%m-%d'),
       'position': Util.Trim(param['position']),
     }
     model.Set(info)
@@ -50,4 +50,5 @@ class UserInfo(Base):
     # 返回
     info['uname'] = tData['uname']
     info['img'] = param['img']
+    info['birthday'] = Util.Date('%Y-%m-%d', info['birthday'])
     return self.GetJSON({'code':0, 'msg':'成功', 'uinfo':info})

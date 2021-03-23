@@ -22,7 +22,7 @@ class UserInfo extends Base {
     $model->Where('uid=?', $tData->uid);
     $list = $model->FindFirst();
     // 数据
-    $list['birthday'] = $list['birthday']?$list['birthday']:'';
+    $list['birthday'] = date('Y-m-d', $list['birthday']);
     // 返回
     return self::GetJSON(['code'=>0,'msg'=>'成功','list'=>$list]);
   }
@@ -53,6 +53,7 @@ class UserInfo extends Base {
     // 返回
     $info['uname'] = $tData->uname;
     $info['img'] = $param->img;
+    $info['birthday'] = date('Y-m-d', $info['birthday']);
     return self::GetJSON(['code'=>0,'msg'=>'成功','uinfo'=>$info]);
   }
 
