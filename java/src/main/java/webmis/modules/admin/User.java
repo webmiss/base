@@ -4,8 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,7 +53,7 @@ public class User extends Base {
     ps.setString(1, uname);
     ps.setString(2, uname);
     ps.setString(3, uname);
-    ps.setString(4, Util.md5(passwd));
+    ps.setString(4, Util.Md5(passwd));
     HashMap<String, Object> data = model.FindFirst(ps);
     // 是否存在
     if(data.size()==0){
@@ -91,7 +89,7 @@ public class User extends Base {
     model.Where("id=?");
     sql = model.UpdateSql();
     ps = model.Bind(sql);
-    ps.setString(1, Util.date("yyyy-MM-dd HH:mm:ss"));
+    ps.setLong(1, Util.Time());
     ps.setString(2, data.get("id").toString());
     model.Update(ps);
     // 返回
@@ -118,7 +116,7 @@ public class User extends Base {
 
   /* Token验证 */
   @RequestMapping("token")
-  String Token(HttpServletRequest request, String token, String uinfo) throws SQLException {
+  String Token(String token, String uinfo) throws SQLException {
     HashMap<String,Object> res;
     // 验证
     String msg = AdminToken.verify(token, "");

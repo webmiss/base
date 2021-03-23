@@ -18,14 +18,14 @@ if [ "$s" == "adminer7" ]; then
 # 数据库工具-8
 elif [ "$s" == "adminer8" ]; then
   {
-    php -S $ip:$dbPort8 $nameDb
+    php -S $ip:$dbPort8 $dbFile
   } || {
     echo "> 请安装'php'"
   }
 # 数据库工具-9
 elif [ "$s" == "adminer9" ]; then
   {
-    php -S $ip:$dbPort9 $nameDb
+    php -S $ip:$dbPort9 $dbFile
   } || {
     echo "> 请安装'php'"
   }

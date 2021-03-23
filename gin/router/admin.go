@@ -16,6 +16,9 @@ func Admin(r *gin.Engine) {
 		// 登录
 		g.POST("user/login", (&admin.User{}).Login)
 		g.POST("user/token", (&admin.User{}).Token)
+		// 个人资料
+		g.POST("userinfo/list", (&admin.UserInfo{}).List)
+		g.POST("userinfo/edit", (&admin.UserInfo{}).Edit)
 		// 系统菜单
 		g.POST("Sysmenus/getMenus", (&admin.SysMenus{}).GetMenus)
 	}

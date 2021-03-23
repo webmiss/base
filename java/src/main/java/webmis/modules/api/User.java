@@ -55,7 +55,7 @@ public class User extends Base {
     ps.setString(1, uname);
     ps.setString(2, uname);
     ps.setString(3, uname);
-    ps.setString(4, Util.md5(passwd));
+    ps.setString(4, Util.Md5(passwd));
     HashMap<String, Object> data = model.FindFirst(ps);
     // 是否存在
     if(data.size()==0){
@@ -91,7 +91,7 @@ public class User extends Base {
     model.Where("id=?");
     sql = model.UpdateSql();
     ps = model.Bind(sql);
-    ps.setString(1, Util.date("yyyy-MM-dd HH:mm:ss"));
+    ps.setLong(1, Util.Time());
     ps.setString(2, data.get("id").toString());
     model.Update(ps);
     // 返回

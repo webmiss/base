@@ -21,6 +21,8 @@ class UserInfo extends Base {
     $model->Columns('nickname', 'name', 'gender', 'birthday', 'position', 'img');
     $model->Where('uid=?', $tData->uid);
     $list = $model->FindFirst();
+    // 数据
+    $list['birthday'] = $list['birthday']?$list['birthday']:'';
     // 返回
     return self::GetJSON(['code'=>0,'msg'=>'成功','list'=>$list]);
   }
@@ -35,21 +37,22 @@ class UserInfo extends Base {
     // 参数
     $data = self::Post('data');
     if(empty($data)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
-    $data = json_decode($data);
+    $param = json_decode($data);
     // 数据
     $model = new UserInfoM();
     $info = [
-      'nickname'=> trim($data->nickname),
-      'name'=> trim($data->name),
-      'gender'=> trim($data->gender),
-      'birthday'=> trim($data->birthday),
-      'position'=> trim($data->position),
+      'nickname'=> trim($param->nickname),
+      'name'=> trim($param->name),
+      'gender'=> trim($param->gender),
+      'birthday'=> strtotime(trim($param->birthday)),
+      'position'=> trim($param->position),
     ];
     $model->Set($info);
     $model->Where('uid=?', $tData->uid);
+    $model->Update();
     // 返回
     $info['uname'] = $tData->uname;
-    $info['img'] = $data->img;
+    $info['img'] = $param->img;
     return self::GetJSON(['code'=>0,'msg'=>'成功','uinfo'=>$info]);
   }
 

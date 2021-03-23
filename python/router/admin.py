@@ -19,6 +19,8 @@ def userToken() : return User().Token()
 # 个人资料
 @Admin.route('/userinfo/list',methods=['POST'])
 def userInfoList() : return UserInfo().List()
+@Admin.route('/userinfo/edit',methods=['POST'])
+def userInfoEdit() : return UserInfo().Edit()
 # 系统菜单
 @Admin.route('/Sysmenus/getMenus',methods=['POST'])
 def sysGetMenus() : return SysMenus().GetMenus()

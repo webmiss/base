@@ -51,7 +51,7 @@ class User extends Base {
     $redis->Close();
     // 登录时间
     $model->Table('user');
-    $model->Set(['ltime'=>date('YmdHis')]);
+    $model->Set(['ltime'=>time()]);
     $model->Where('id=?', $data['id']);
     $model->Update();
     // 返回

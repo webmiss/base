@@ -39,11 +39,11 @@ public class AdminToken extends Base {
     }
     // URL权限
     if(urlPerm.equals("")) return "";
-    ArrayList<String> arr = Util.explode("/", urlPerm);
+    ArrayList<String> arr = Util.Explode("/", urlPerm);
     int index = arr.size()-1;
     String action = arr.get(index);
     arr.remove(index);
-    String controller = Util.implode("/", arr);
+    String controller = Util.Implode("/", arr);
     // 菜单
     SysMenu menu = new SysMenu();
     menu.Columns("id", "action");
@@ -59,7 +59,7 @@ public class AdminToken extends Base {
     if(!permData.containsKey(id)) return "无权访问菜单!";
     // 验证-动作
     Integer actionVal = permData.get(id);
-    JSONArray permArr = Util.json_decode_array(menuData.get("action").toString());
+    JSONArray permArr = Util.Json_decode_array(menuData.get("action").toString());
     int permVal = 0;
     for(int i=0; i<permArr.size(); i++){
       if(permArr.getJSONObject(i).get("action").equals(action)){
@@ -82,10 +82,10 @@ public class AdminToken extends Base {
     String permStr = redis.Get(Env.admin_token_prefix+"_perm_"+tData.get("uid").toString());
     redis.Close();
     // 拆分
-    ArrayList<String> arr = Util.explode(" ", permStr);
+    ArrayList<String> arr = Util.Explode(" ", permStr);
     ArrayList<String> s;
     for(String val : arr){
-      s = Util.explode(":", val);
+      s = Util.Explode(":", val);
       permAll.put(s.get(0), Integer.valueOf(s.get(1)));
     }
     return permAll;
@@ -93,7 +93,7 @@ public class AdminToken extends Base {
 
   /* 生成 */
   public static String create(HashMap<String, Object> data) {
-    data.put("l_time", Util.date("yyyy-MM-dd HH:mm:ss"));
+    data.put("l_time", Util.Date("yyyy-MM-dd HH:mm:ss"));
     String token = Safety.encode(data);
     // 缓存
     Redis redis = new Redis();

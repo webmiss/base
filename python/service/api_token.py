@@ -28,9 +28,9 @@ class ApiToken:
       redis.Close()
     # URL权限
     if urlPerm=='' : return ''
-    arr = Util.explode('/', urlPerm)
+    arr = Util.Explode('/', urlPerm)
     action = arr[-1:][0]
-    controller = Util.implode('/', arr[:-1])
+    controller = Util.Implode('/', arr[:-1])
     # 菜单
     menu = ApiMenu()
     menu.Columns('id', 'action')
@@ -43,7 +43,7 @@ class ApiToken:
     if id not in permData.keys() : return '无权访问菜单!'
     # 验证-动作
     actionVal = permData[id]
-    permArr = Util.json_decode(menuData['action'])
+    permArr = Util.Json_decode(menuData['action'])
     permVal = 0
     for val in permArr :
       if action==val['action'] :
@@ -63,15 +63,15 @@ class ApiToken:
     redis.Close()
     # 拆分
     permAll = {}
-    arr = [] if not permStr else Util.explode(' ', permStr)
+    arr = [] if not permStr else Util.Explode(' ', permStr)
     for val in arr :
-      s = Util.explode(':', val)
+      s = Util.Explode(':', val)
       permAll[s[0]] = int(s[1])
     return permAll
 
   # 生成
   def create(self, data: dict):
-    data['l_time'] = Util.date('%Y-%m-%d %H:%M:%S')
+    data['l_time'] = Util.Date('%Y-%m-%d %H:%M:%S')
     token = Safety.encode(data)
     # 缓存
     redis = Redis()

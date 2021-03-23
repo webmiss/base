@@ -28,7 +28,7 @@ class User(Base):
     model.LeftJoin('sys_role AS d', 'c.role=d.id')
     model.Where(
       '(a.uname=%s OR a.tel=%s OR a.email=%s) AND a.password=%s',
-      uname, uname, uname, Util.md5(passwd)
+      uname, uname, uname, Util.Md5(passwd)
     )
     model.Columns('a.id', 'a.state', 'b.position', 'b.nickname', 'b.name', 'b.gender', 'b.birthday', 'b.img', 'c.perm', 'd.perm as role_perm')
     data = model.FindFirst()
@@ -47,7 +47,7 @@ class User(Base):
     redis.Close()
     # 登录时间
     model.Table('user')
-    model.Set({'ltime': Util.date('%Y%m%d%H%M%S')})
+    model.Set({'ltime': Util.Time()})
     model.Where('id=%s', data['id'])
     model.Update()
     # 返回

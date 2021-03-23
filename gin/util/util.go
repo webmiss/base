@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 	"webmis/config"
@@ -22,8 +23,31 @@ func (u Util) Md5(str string) string {
 }
 
 // Date :格式化时间
-func (u Util) Date(format string) string {
+// @format "2006-01-02 15:04:05"
+func (u Util) Date(format string, timestamp ...interface{}) string {
+	if len(timestamp) > 0 {
+		ts, err := strconv.ParseInt(Strval(timestamp[0]), 10, 64)
+		if err != nil {
+			return ""
+		}
+		return time.Unix(ts, 0).Format(format)
+	}
 	return time.Now().Format(format)
+}
+
+// Time :时间戳
+func (u Util) Time() int64 {
+	return time.Now().Unix()
+}
+
+// Strtotime :String To Timestamp
+// @format "2006-01-02 15:04:05"
+func (u Util) Strtotime(day string, format string) int64 {
+	if format == "" {
+		format = "2006-01-02 15:04:05"
+	}
+	ts, _ := time.ParseInLocation(format, day, time.Local)
+	return ts.Unix()
 }
 
 // Img :图片地址

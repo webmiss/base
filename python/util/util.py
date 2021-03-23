@@ -6,31 +6,44 @@ import json
 class Util:
 
   # Md5加密
-  def md5(str: str):
+  def Md5(str: str):
     return hashlib.md5(str.encode(encoding='utf-8')).hexdigest()
 
   # 格式化时间
-  def date(format: str = '%Y-%m-%d %H:%M:%S', t: str = None):
-    t = time.localtime(t)
-    return time.strftime(format,t)
+  def Date(format: str = '%Y-%m-%d %H:%M:%S', timestamp: float = None):
+    t = time.localtime(timestamp)
+    return time.strftime(format, t)
+
+  # 时间戳
+  def Time():
+    return int(time.time())
+
+  # String To Timestamp
+  def Strtotime(day: str=None, format: str='%Y-%m-%d %H:%M:%S'):
+    tArr = time.strptime(day, format)
+    return time.mktime(tArr)
+
+  # 去首尾空格
+  def Trim(str: str, charlist: str = None):
+    return str.strip(charlist)
 
   # String to List
-  def explode(delimiter: str, string: str):
+  def Explode(delimiter: str, string: str):
     return string.split(delimiter)
 
   # List to String
-  def implode(glue: str, pieces: list):
+  def Implode(glue: str, pieces: list):
     return glue.join(pieces)
 
   # Array to String
-  def json_encode(arr):
+  def Json_encode(arr):
     try :
       return json.dumps(arr)
     except Exception as e :
       return ''
 
   # String to Array
-  def json_decode(str: str):
+  def Json_decode(str: str):
     try :
       return json.loads(str)
     except Exception as e :
