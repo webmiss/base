@@ -42,7 +42,7 @@ elif [ "$s" == "stop" ]; then
   ps -aux | grep java | grep -v grep | awk {'print $2'} | xargs kill
 else
   echo "----------------------------------------------------"
-  echo "[use] ./bash.sh <command>"
+  echo "[use] ./bash <command>"
   echo "----------------------------------------------------"
   echo "<command>"
   echo "  serve         运行: php -S $ip:$port -t public"

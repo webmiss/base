@@ -39,7 +39,7 @@ elif [ "$s" == "http" ]; then
   }
 else
   echo "----------------------------------------------------"
-  echo "[use] ./bash.sh <command>"
+  echo "[use] ./bash <command>"
   echo "----------------------------------------------------"
   echo "<command>"
   echo "  serve         运行: yarn serve"

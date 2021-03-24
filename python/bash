@@ -52,7 +52,7 @@ elif [ "$s" == "socketStop" ]; then
   ps -aux | grep "$cli socket" | grep -v grep | awk {'print $2'} | xargs kill
 else
   echo "----------------------------------------------------"
-  echo "[use] ./bash.sh <command>"
+  echo "[use] ./bash <command>"
   echo "----------------------------------------------------"
   echo "<command>"
   echo "  serve         运行"

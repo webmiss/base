@@ -28,13 +28,13 @@ firewall-cmd --reload
 ### 服务端
 ```bash
 # ZooKeeper 服务
-./bash.sh zookeeper
+./bash zookeeper
 # Kafka 服务
-./bash.sh kafka
+./bash kafka
 # 创建主题
-./bash.sh topicCreate
+./bash topicCreate
 # 分区
-./bash.sh topicTime
+./bash topicTime
 # 清除数据
 ```
 

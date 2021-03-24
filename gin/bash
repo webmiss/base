@@ -118,7 +118,7 @@ elif [ "$s" == "topicConsumer" ]; then
   $kafka/kafka-console-consumer.sh --topic $topicName --from-beginning --bootstrap-server $topicHost:$topicPort --consumer.config $kafka/../config/consumer.properties
 else
   echo "----------------------------------------------------"
-  echo "[use] ./bash.sh <command>"
+  echo "[use] ./bash <command>"
   echo "----------------------------------------------------"
   echo "  <command>"
   echo "    serve                 运行: go run $index"

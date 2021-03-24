@@ -6,9 +6,9 @@ go get -u github.com/gorilla/websocket
 ## 服务器
 ```bash
 # 运行
-./bash.sh socket
+./bash socket
 # 启动
-./bash.sh socketStart
+./bash socketStart
 ```
 
 ### service/msg.go

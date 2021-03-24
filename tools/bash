@@ -41,7 +41,7 @@ elif [ "$s" == "dbImport" ]; then
   }
 else
   echo "----------------------------------------------------"
-  echo "[use] ./bash.sh <command>"
+  echo "[use] ./bash <command>"
   echo "----------------------------------------------------"
   echo "<command>"
   echo "  adminer        PHP数据库工具"
