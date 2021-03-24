@@ -15,7 +15,7 @@ REM 打包
   flutter build apk || flutter build ios || ( echo ^> 请安装'flutter' )
 ) else (
   echo ----------------------------------------------------
-  echo [use] .\cmd.bat ^<command^>
+  echo [use] .\cmd ^<command^>
   echo ----------------------------------------------------
   echo ^<command^>
   echo   serve         运行: flutter run

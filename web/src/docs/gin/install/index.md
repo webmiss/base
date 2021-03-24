@@ -32,11 +32,11 @@ git clone https://github.com/webmiss/base.git --depth=1
 #### Cmd命令
 ```bash
 # 依赖包
-.\cmd.bat install
+.\cmd install
 # 运行
-.\cmd.bat serve
+.\cmd serve
 # 打包
-.\cmd.bat build
+.\cmd build
 ```
 
 <br/><br/>

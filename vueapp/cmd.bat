@@ -26,7 +26,7 @@ REM 预览
   )
 ) else (
   echo ----------------------------------------------------
-  echo [use] .\cmd.bat ^<command^>
+  echo [use] .\cmd ^<command^>
   echo ----------------------------------------------------
   echo ^<command^>
   echo   serve         运行: yarn serve

@@ -26,7 +26,7 @@ REM Socket-运行
   ( go run cli/socket/index.go ) || ( echo ^> 请安装'go' )
 ) else (
   echo ----------------------------------------------------
-  echo [use] .\cmd.bat ^<command^>
+  echo [use] .\cmd ^<command^>
   echo ----------------------------------------------------
   echo ^<command^>
   echo   serve         运行: go run %index%

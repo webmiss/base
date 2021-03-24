@@ -16,7 +16,7 @@ REM 打包
   ( mvn package -DskipTests && del .\%jar% && copy target\%jar% .\ ) || ( echo ^> 请安装'mvn' )
 ) else (
   echo ----------------------------------------------------
-  echo [use] .\cmd.bat ^<command^>
+  echo [use] .\cmd ^<command^>
   echo ----------------------------------------------------
   echo ^<command^>
   echo   serve         运行: java -jar %jar%

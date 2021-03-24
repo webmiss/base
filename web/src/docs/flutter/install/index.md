@@ -23,9 +23,9 @@ git clone https://github.com/webmiss/base.git --depth=1
 #### Cmd命令
 ```bash
 # 依赖包
-.\cmd.bat install
+.\cmd install
 # 运行
-.\cmd.bat serve
+.\cmd serve
 ```
 
 <br/><br/>

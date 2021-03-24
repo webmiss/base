@@ -33,12 +33,12 @@ cd ../tools
 #### Cmd命令
 ```bash
 # 依赖包
-.\cmd.bat install
+.\cmd install
 # 运行
-.\cmd.bat serve
+.\cmd serve
 # 数据库工具
 cd ../tools
-.\cmd.bat adminer7
+.\cmd adminer7
 ```
 
 <br/><br/>
