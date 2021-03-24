@@ -2,40 +2,51 @@
 
 # 配置
 s=$1
-ip="127.0.0.1"
-dbPort7="7777"
-dbPort8="8888"
-dbPort9="9999"
-dbFile="adminer.php"
+dbUname=root
+dbPasswd=123456
+dbName=data
+dbPath=database/$dbName.sql
+dbPathBackup=database/$(date "+%Y-%m-%d_%H:%M:%S").sql
+adminerIp=127.0.0.1
+adminer=database/adminer.php
 
-# 数据库工具-7
-if [ "$s" == "adminer7" ]; then
+# 数据库工具
+if [ "$s" == "adminer" ]; then
   {
-    php -S $ip:$dbPort7 $dbFile
+    php -S $adminerIp:8880 $adminer
+  } || {
+    php -S $adminerIp:8881 $adminer
+  } || {
+    php -S $adminerIp:8882 $adminer
+  } || {
+    php -S $adminerIp:8883 $adminer
+  } || {
+    php -S $adminerIp:8884 $adminer
   } || {
     echo "> 请安装'php'"
   }
-# 数据库工具-8
-elif [ "$s" == "adminer8" ]; then
+# MySQL备份
+elif [ "$s" == "dbExport" ]; then
   {
-    php -S $ip:$dbPort8 $dbFile
+    mysqldump -u$dbUname -p$dbPasswd --databases $dbName --lock-all-tables --flush-logs > $dbPathBackup
   } || {
-    echo "> 请安装'php'"
+    echo "> 请安装'MySQL'或'MariaDB'"
   }
-# 数据库工具-9
-elif [ "$s" == "adminer9" ]; then
+# MySQL恢复
+elif [ "$s" == "dbImport" ]; then
   {
-    php -S $ip:$dbPort9 $dbFile
+    mysql -u$dbUname -p$dbPasswd $dbName < $dbPath
   } || {
-    echo "> 请安装'php'"
+    echo "> 请安装'MySQL'或'MariaDB'"
   }
 else
   echo "----------------------------------------------------"
   echo "[use] ./bash.sh <command>"
   echo "----------------------------------------------------"
   echo "<command>"
-  echo "  adminer7       数据库工具: 7777"
-  echo "  adminer8       数据库工具: 8888"
-  echo "  adminer9       数据库工具: 9999"
+  echo "  adminer        PHP数据库工具"
+  echo "<MySQL>"
+  echo "  dbExport       备份: $dbPathBackup"
+  echo "  dbImport       恢复: $dbPath"
   echo "----------------------------------------------------"
 fi

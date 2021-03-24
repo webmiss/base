@@ -1,5 +1,5 @@
 # WebMIS
-全栈开发基础框架.前后端分离，前端采用 Vue3 + TypeScript 在Node环境下开发并封装基础UI组件和JS组件，后端采用PHP、Python、Java封装基础功能，应用HMVC模式统一命名规范和目录结构。技术包括 PHP / Python / SpringBoot / Iris / Phalcon / Flutter / NodeJS / Vue / Socket / Redis / API 等技术。
+全栈开发基础框架.前后端分离，前端采用 Vue3 + TypeScript 在Node环境下开发并封装基础UI组件和JS组件，后端采用PHP、Python、Java、Go封装基础功能，应用HMVC模式统一命名规范和目录结构。技术包括 PHP / Python / SpringBoot / Gin / Phalcon / Flutter / NodeJS / Vue / Socket / Redis / API 等技术。
 
 #### 下载
 ```bash

@@ -3,28 +3,51 @@ CHCP 65001 >nul
 
 REM 配置
 set s=%1%
-set ip=127.0.0.1
-set dbPort7=7777
-set dbPort8=8888
-set dbPort9=9999
-set dbFile=adminer.php
+set dbUname=root
+set dbPasswd=123456
+set dbName=data
+set dbPath=database\%dbName%.sql
+set dbPathBackup=database\%date:~0,4%-%date:~5,2%-%date:~8,2%_%time:~0,2%:%time:~3,2%:%time:~6,2%.sql
+set adminerIp=127.0.0.1
+set adminer=database\adminer.php
 
-REM 数据库工具-7
-if "%s%"=="adminer7" (
-  ( php -S %ip%:%dbPort7% %dbFile% ) || ( echo ^> 请安装'php' )
-REM 数据库工具-8
-) else if "%s%"=="adminer8" (
-  ( php -S %ip%:%dbPort8% %dbFile% ) || ( echo ^> 请安装'php' )
-REM 数据库工具-9
-) else if "%s%"=="adminer9" (
-  ( php -S %ip%:%dbPort9% %dbFile% ) || ( echo ^> 请安装'php' )
+REM 数据库工具
+if "%s%"=="adminer" (
+  (
+    php -S %adminerIp%:8880 %adminer%
+  ) || (
+    php -S %adminerIp%:8881 %adminer%
+  ) || (
+    php -S %adminerIp%:8882 %adminer%
+  ) || (
+    php -S %adminerIp%:8883 %adminer%
+  ) || (
+    php -S %adminerIp%:8884 %adminer%
+  ) || (
+    echo ^> 请安装'php'
+  )
+REM MySQL备份
+) else if "%s%"=="dbExport" (
+  (
+    mysqldump -u%dbUname% -p%dbPasswd% --databases %dbName% --lock-all-tables --flush-logs > %dbPathBackup%
+  ) || (
+    echo ^> 请安装'MySQL'或'MariaDB'
+  )
+REM MySQL恢复
+) else if "%s%"=="dbExport" (
+  (
+    mysql -u%dbUname% -p%dbPasswd% %dbName% < %dbPath%
+  ) || (
+    echo ^> 请安装'MySQL'或'MariaDB'
+  )
 ) else (
   echo ----------------------------------------------------
   echo [use] cmd.bat ^<command^>
   echo ----------------------------------------------------
   echo ^<command^>
-  echo   adminer7      数据库工具: 7777
-  echo   adminer8      数据库工具: 8888
-  echo   adminer9      数据库工具: 9999
+  echo   adminer       PHP数据库工具
+  echo ^<MySQL^>
+  echo   dbExport      备份: %dbPathBackup%
+  echo   dbImport      恢复: %dbPath%
   echo ----------------------------------------------------
 )
