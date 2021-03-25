@@ -76,6 +76,8 @@ composer config -g repo.packagist composer https://packagist.phpcomposer.com
 
 ### 5) 安装MariaDB
 - [MariaDB](https://downloads.mariadb.org/)
+- 安装: "mariadb-10.5.9-winx64.msi" 到 "D:\server\MariaDB"
+- 搜索: "环境变量" > "Path" > "添加" > "D:\server\MariaDB\bin"
 - 扩展: "extension=mysqli" 和 "extension=pdo_mysql"
 - CMD: php -m
 - PHP数据库工具: [Adminer](https://github.com/vrana/adminer/releases/)

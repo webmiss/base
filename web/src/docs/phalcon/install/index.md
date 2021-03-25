@@ -27,7 +27,7 @@ git clone https://github.com/webmiss/base.git --depth=1
 ./bash serve
 # 数据库工具
 cd ../tools
-./bash adminer7
+./bash adminer
 ```
 
 #### Cmd命令
@@ -38,7 +38,7 @@ cd ../tools
 .\cmd serve
 # 数据库工具
 cd ../tools
-.\cmd adminer7
+.\cmd adminer
 ```
 
 <br/><br/>

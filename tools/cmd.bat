@@ -7,7 +7,11 @@ set dbUname=root
 set dbPasswd=123456
 set dbName=data
 set dbPath=database\%dbName%.sql
-set dbPathBackup=database\%date:~0,4%-%date:~5,2%-%date:~8,2%_%time:~0,2%:%time:~3,2%:%time:~6,2%.sql
+set y=%date:~3,4%
+set m=%date:~8,2%
+set d=%date:~11,2%
+set time=%time:~0,2%:%time:~3,2%:%time:~6,2%
+set dbPathBackup=database\%y%-%m%-%d%.sql
 set adminerIp=127.0.0.1
 set adminer=database\adminer.php
 
@@ -34,7 +38,7 @@ REM MySQL备份
     echo ^> 请安装'MySQL'或'MariaDB'
   )
 REM MySQL恢复
-) else if "%s%"=="dbExport" (
+) else if "%s%"=="dbImport" (
   (
     mysql -u%dbUname% -p%dbPasswd% %dbName% < %dbPath%
   ) || (
