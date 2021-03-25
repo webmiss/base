@@ -73,12 +73,12 @@ elif [ "$s" == "socketStart" ]; then
 # Docker-运行
 elif [ "$s" == "dockerServe" ]; then
   {
-    docker run --privileged=true -itd --name ubuntu-go -p 80:80 -v $PWD:/home/www/gin -v $PWD/config/nginx:/etc/nginx/sites-enabled nginx:go
-    cid=`(docker ps -a | grep ubuntu-go | awk {'print $1'})`
-    docker attach $cid
-  } || {
     cid=`(docker ps -a | grep ubuntu-go | awk {'print $1'})`
     docker start $cid && docker attach $cid
+  } || {
+    docker run -itd --name ubuntu-go -p 80:80 -v $PWD:/home/www/gin -v $PWD/config/nginx:/etc/nginx/sites-enabled nginx:go
+    cid=`(docker ps -a | grep ubuntu-go | awk {'print $1'})`
+    docker attach $cid
   } || {
     echo "> 请安装'docker'"
   }

@@ -105,132 +105,28 @@ docker cp 容器ID:路径 ./
 docker rm 容器ID:路径 ./
 ```
 
-## 案例：Ubuntu+Nginx服务器
-### 2.1 下载并运行
+## 案例：Ubuntu+Nginx+Go
+### Dockerfile
 ```bash
-# 下载Ubuntu镜像
-docker pull ubuntu
+FROM ubuntu:latest
 
-# 运行容器
-docker run --privileged=true -it --name nginx-ubuntu -v /home/www:/home/www ubuntu /bin/bash
+MAINTAINER webmis.vip
+
+# 升级系统、访问https
+RUN apt update && apt install ca-certificates curl -y
+# 安装Nginx
+RUN apt install nginx -y
+# 安装Go
+RUN apt install golang -y
+RUN go env -w GO111MODULE=on && go env -w GOPROXY=https://goproxy.cn,direct
 ```
-### 2.2 安装Nginx
+
+### 构建镜像
 ```bash
-# 更新
-apt update
-# 安装
-apt install nginx
-# 启动
-service nginx start
+docker build -t nginx:go .
 ```
-### 2.3 配置文件
+
+### 运行新容器
 ```bash
-# 安装vim
-apt install vim
-# 修改虚拟主机存放位置
-vi /etc/nginx/nginx.conf
-	# include /etc/nginx/conf.d/*.conf;
-	# include /etc/nginx/sites-enabled/*;
-	include /home/www/nginx-s1/*.conf;
-# 虚拟主机目录
-mkdir /home/www/nginx-s1/
-# 拷贝默认配置文件
-cp /etc/nginx/sites-enabled/default /home/www/nginx-s1/default.conf
+docker run -itd --name ubuntu-go
 ```
-### 2.4 配置虚拟主机
-```bash
-vi /home/www/nginx-s1/default.conf
-```
-**内容如下：**
-```nginx
-server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
-
-        server_name localhost;
-        root /home/www/s1/;
-        index index.html;
-
-        location / {
-                try_files $uri $uri/ =404;
-        }
-
-        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
-        #
-        #location ~ \.php$ {
-        #       include snippets/fastcgi-php.conf;
-        #
-        #       # With php7.0-cgi alone:
-        #       fastcgi_pass 127.0.0.1:9000;
-        #       # With php7.0-fpm:
-        #       fastcgi_pass unix:/run/php/php7.0-fpm.sock;
-        #}
-
-        # deny access to .htaccess files, if Apache's document root
-        # concurs with nginx's one
-        #
-        location ~ /\.ht {
-                deny all;
-        }
-}
-```
-**创建网站目录**
-```bash
-# 网站目录
-mkdir /home/www/s1
-# 测试文件
-echo '<h1>Server1</h1>' > /home/www/s1/index.html
-# 重启服务
-service nginx restart
-```
-### 2.5 安装SSH
-```bash
-# 安装
-apt install openssh-server
-# 启动
-service ssh start
-
-# 无法链接
-vi /etc/ssh/sshd_config
-	PermitRootLogin yes
-	UsePAM no
-```
-
-### 2.6 如何退出容器而不停止容器？
-```bash
-Ctrl+P+Q
-```
-
-### 2.7 将容器储存为镜像
-```bash
-docker commit 容器ID ubuntu-server
-```
-
-### 2.8 运行容器
-```bash
-docker run --privileged=true -it --name ubuntu-s1 -v /home/www:/home/www  -p 8081:80 ubuntu-server /bin/bash
-
-# 启动Nginx
-service nginx start
-
-# 退出容器命令行
-Ctrl+P+Q
-```
-
-### 2.9 测试容器
-```bash
-# 查看容器ID
-docker ps -a
-# 查看容器IP地址
-ip address
-# 测试网站服务器
-curl http://172.17.0.1:8081
-```
-
-## 服务器集群
-**制作三台服务器**
-- 1.进入nginx-ubuntu
-- 2.修改Nginx
-- 3.将容器储存为镜像
-- 4.运行容器
-- 5.测试结果
