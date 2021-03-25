@@ -130,3 +130,7 @@ docker build -t nginx:go .
 ```bash
 docker run -itd --name ubuntu-go
 ```
+**启动Nginx**
+```bash
+service nginx start
+```
