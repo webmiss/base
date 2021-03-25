@@ -24,7 +24,7 @@ vi /etc/rc.d/rc.local
 ## Nginx虚拟主机
 ``` nginx
 upstream demo_go {
-    server localhost:9010;
+    server localhost:9030;
 }
 map $http_upgrade $connection_upgrade {
     default upgrade;
@@ -50,7 +50,7 @@ server {
         proxy_set_header Connection $connection_upgrade;
     }
 
-    location ~* ^/(webmis|upload|themes|favicon.png)/(.+)$ {
+    location ~* ^/(upload|favicon.png)/(.+)$ {
         root $root_path;
     }
 

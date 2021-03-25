@@ -1,8 +1,11 @@
-# CentOS 服务器
+# 服务器
 
-## 打包
+## JRE
 ```bash
-mvn package
+# CentOS
+dnf install openjdk-jre
+# Ubuntu
+apt install default-jre
 ```
 
 ## Bash命令
@@ -27,7 +30,7 @@ vi /etc/rc.d/rc.local
 
 <br/>
 
-## Nginx虚拟主机
+## Nginx
 ``` nginx
 upstream demo_java {
     server localhost:9000;
@@ -56,7 +59,7 @@ server {
         proxy_set_header Connection $connection_upgrade;
     }
 
-    location ~* ^/(webmis|upload|themes|favicon.png)/(.+)$ {
+    location ~* ^/(upload|favicon.png)/(.+)$ {
         root $root_path;
     }
 

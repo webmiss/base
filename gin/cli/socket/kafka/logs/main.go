@@ -2,16 +2,17 @@ package main
 
 import (
 	"context"
+	"cuixsapi/pkg/kafka"
+	"cuixsapi/util"
 	"encoding/json"
 	"fmt"
 	"os"
 	"time"
-	"webmis/library"
-	"webmis/util"
 )
 
 func main() {
-	r := (&library.Kafka{}).Consumer("logs")
+	// 连接
+	r := kafka.Consumer("logs")
 	defer r.Close()
 	// 配置
 	// r.SetOffset(100)	//开始读取
@@ -24,7 +25,6 @@ func main() {
 		}
 		// 保存
 		res := write(m.Value)
-		fmt.Println(m.Offset)
 		if res == true {
 			if err := r.CommitMessages(ctx, m); err != nil {
 				fmt.Println("[Logs] Commit:", err)
@@ -33,7 +33,7 @@ func main() {
 	}
 }
 
-// 写入
+/* 记录 */
 func write(text []byte) bool {
 	// 数据
 	data := map[string]interface{}{}

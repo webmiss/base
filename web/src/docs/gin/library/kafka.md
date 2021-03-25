@@ -6,6 +6,8 @@ wget https://mirrors.tuna.tsinghua.edu.cn/apache/kafka/2.7.0/kafka_2.13-2.7.0.tg
 tar -xzf kafka_2.13-2.7.0.tgz
 # 移动到Opt目录
 mv kafka_2.13-2.7.0 /opt/kafka
+# 删除
+rm -fr kafka_2.13-2.7.0.tgz
 ```
 
 <br/>
@@ -31,19 +33,23 @@ firewall-cmd --reload
 ./bash zookeeper
 # Kafka 服务
 ./bash kafka
+```
+
+### 主题-日志
+```bash
 # 创建主题
 ./bash topicCreate
 # 分区
-./bash topicTime
-# 清除数据
+./bash topicPartitions
+
 ```
 
-<br/>
-
-### 客户端
+### 消费者
 ```bash
-go get github.com/segmentio/kafka-go
+# 运行
+./bash logsServe
 ```
+
 **生产者**
 ```bash
 # 日志
@@ -52,9 +58,4 @@ go get github.com/segmentio/kafka-go
 (&service.Logs{}).Info("信息")
 (&service.Logs{}).Action("操作")
 (&service.Logs{}).Error("错误")
-```
-**消费者**
-```bash
-# 日志
-go run cli/kafka_logs/main.go
 ```

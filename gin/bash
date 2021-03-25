@@ -53,14 +53,13 @@ elif [ "$s" == "http" ]; then
   }
 # 启动
 elif [ "$s" == "start" ]; then
-  nohup ./$name &
+  go build && nohup ./$name &
 # 重启
 elif [ "$s" == "restart" ]; then
   ps -aux | grep ./$name | grep -v grep | awk {'print $2'} | xargs kill && nohup ./$name &
 # 停止
 elif [ "$s" == "stop" ]; then
   ps -aux | grep ./$name | grep -v grep | awk {'print $2'} | xargs kill
-  ps -aux | grep go-build | grep -v grep | awk {'print $2'} | xargs kill
 # Socket-运行
 elif [ "$s" == "socket" ]; then
   {
@@ -71,6 +70,26 @@ elif [ "$s" == "socket" ]; then
 # Socket-启动
 elif [ "$s" == "socketStart" ]; then
   nohup go run cli/socket/index.go &
+# Docker-运行
+elif [ "$s" == "dockerServe" ]; then
+  {
+    docker run --privileged=true -itd --name ubuntu-go -p 80:80 -v $PWD:/home/www/gin -v $PWD/config/nginx:/etc/nginx/sites-enabled nginx:go
+    cid=`(docker ps -a | grep ubuntu-go | awk {'print $1'})`
+    docker attach $cid
+  } || {
+    cid=`(docker ps -a | grep ubuntu-go | awk {'print $1'})`
+    docker start $cid && docker attach $cid
+  } || {
+    echo "> 请安装'docker'"
+  }
+# Docker-安装
+elif [ "$s" == "dockerInstall" ]; then
+  {
+    docker pull ubuntu
+    docker build -t nginx:go .
+  } || {
+    echo "> 请安装'docker'"
+  }
 # ZooKeeper-运行
 elif [ "$s" == "zookeeper" ]; then
   $kafka/zookeeper-server-start.sh $kafka/../config/zookeeper.properties
@@ -116,6 +135,15 @@ elif [ "$s" == "topicProducer" ]; then
 # Kafka-阅读事件
 elif [ "$s" == "topicConsumer" ]; then
   $kafka/kafka-console-consumer.sh --topic $topicName --from-beginning --bootstrap-server $topicHost:$topicPort --consumer.config $kafka/../config/consumer.properties
+# Kafka-日志-运行
+elif [ "$s" == "logsServe" ]; then
+  go run cli/kafka/logs/main.go
+# Kafka-日志-启动
+elif [ "$s" == "logsStart" ]; then
+  nohup go run cli/kafka/logs/main.go &
+# Kafka-日志-停止
+elif [ "$s" == "logsStop" ]; then
+  ps -aux | grep cli/kafka/logs | grep -v grep | awk {'print $2'} | xargs kill
 else
   echo "----------------------------------------------------"
   echo "[use] ./bash <command>"
@@ -131,8 +159,11 @@ else
   echo "    restart               重启"
   echo "    stop                  停止"
   echo "  <WebSocket>"
-  echo "    socket                 运行"
-  echo "    socketStart            启动"
+  echo "    socket                运行"
+  echo "    socketStart           启动"
+  echo "  <Docker>"
+  echo "    dockerServe           运行"
+  echo "    dockerInstall         安装依赖包"
   echo "  <ZooKeeper $zookeeperHost:$zookeeperPort>"
   echo "    zookeeper             运行"
   echo "    zookeeperStart        启动"
@@ -152,5 +183,9 @@ else
   echo "    -"
   echo "    topicProducer         写入事件: $topicName"
   echo "    topicConsumer         阅读事件: $topicName"
+  echo "  <Logs>"
+  echo "    logsServe             运行"
+  echo "    logsStart             启动"
+  echo "    logsStop              停止"
   echo "----------------------------------------------------"
 fi

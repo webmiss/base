@@ -49,7 +49,7 @@ server {
         uwsgi_read_timeout 60;
         include /etc/nginx/uwsgi_params;
     }
-    location ~* ^/(webmis|upload|themes|favicon.png)/(.+)$ {
+    location ~* ^/(upload|favicon.png)/(.+)$ {
         root $root_path;
     }
     location /wss {

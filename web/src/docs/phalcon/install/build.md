@@ -34,7 +34,7 @@ server {
     location @rewrite {
         rewrite ^/(.*)$ /index.php?_url=/$1;
     }
-    location ~* ^/(webmis|upload|themes|favicon.png)/(.+)$ {
+    location ~* ^/(upload|favicon.png)/(.+)$ {
         root $root_path;
     }
     location /wss {

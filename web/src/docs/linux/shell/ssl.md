@@ -35,7 +35,6 @@ server {
     index index.php;
 
     #SSL
-    ssl on;
     ssl_stapling on;
     ssl_stapling_verify on;
     ssl_session_cache shared:SSL:10m;
@@ -53,7 +52,7 @@ server {
     location @rewrite {
         rewrite ^/(.*)$ /index.php?_url=/$1;
     }
-    location ~* ^/(webmis|upload|themes|favicon.png)/(.+)$ {
+    location ~* ^/(upload|favicon.png)/(.+)$ {
         root $root_path;
     }
 
@@ -89,9 +88,12 @@ systemctl restart nginx
 # 定时器
 crontab -e
 ```
-**添加内容**
+- 0 2 28 * * /bin/sh /home/sh/ssl.sh
+
+**/home/sh/ssl.sh**
 ``` bash
-0 2 28 * * nohup certbot renew --quiet && systemctl reload nginx &
+#!/bin/bash
+certbot renew --quiet && systemctl reload nginx
 ```
 - 每月28号2点更新证书后重启Nginx
 

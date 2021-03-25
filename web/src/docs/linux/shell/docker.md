@@ -1,5 +1,6 @@
-## 一、Docker容器
+## Docker容器
 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的容器中，然后发布到任何流行的`Linux`机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。
+
 ### 1.1 安装
 ```bash
 # CentOS
@@ -8,6 +9,32 @@ yum install docker
 systemctl enable docker
 # 启动
 systemctl start docker
+systemctl start containerd
+```
+**配置**
+```bash
+# 创建组
+sudo groupadd docker 
+# 添加当前用户到组
+sudo usermod -aG docker $USER
+# 激活
+newgrp docker
+# 重启系统
+reboot
+```
+**国内镜像**
+```bash
+sudo vi /etc/docker/daemon.json
+```
+```bash
+{
+  "registry-mirrors": ["https://xxx.mirror.aliyuncs.com"]
+}
+```
+**重启**
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart docker
 ```
 
 ### 1.2 镜像管理
@@ -78,7 +105,7 @@ docker cp 容器ID:路径 ./
 docker rm 容器ID:路径 ./
 ```
 
-## 二、案例：Ubuntu+Nginx服务器
+## 案例：Ubuntu+Nginx服务器
 ### 2.1 下载并运行
 ```bash
 # 下载Ubuntu镜像
@@ -200,7 +227,7 @@ ip address
 curl http://172.17.0.1:8081
 ```
 
-## 三、服务器集群
+## 服务器集群
 **制作三台服务器**
 - 1.进入nginx-ubuntu
 - 2.修改Nginx
