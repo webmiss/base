@@ -2,17 +2,17 @@ package main
 
 import (
 	"context"
-	"cuixsapi/pkg/kafka"
-	"cuixsapi/util"
 	"encoding/json"
 	"fmt"
 	"os"
 	"time"
+	"webmis/library"
+	"webmis/util"
 )
 
 func main() {
 	// 连接
-	r := kafka.Consumer("logs")
+	r := (&library.Kafka{}).Consumer("logs")
 	defer r.Close()
 	// 配置
 	// r.SetOffset(100)	//开始读取
