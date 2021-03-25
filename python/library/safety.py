@@ -6,7 +6,7 @@ from config.env import Env
 class Safety:
 
   # 正则-公共
-  def isRight(name,val):
+  def isRight(name: str, val: any):
     data = {
       'uname':r'^[a-zA-Z][a-zA-Z0-9\_\@\-\*\&]{3,15}$',
       'passwd':r'^[a-zA-Z0-9|_|@|-|*|&]{6,16}$',
@@ -17,19 +17,19 @@ class Safety:
     return True if re.match(data[name],val) else False
 
   # 正则-验证
-  def test(reg,val):
-    return True if re.match(reg,val) else False
+  def test(reg, val):
+    return True if re.match(reg, val) else False
 
-  # 加密
-  def encode(param={}):
+  # Base64-加密
+  def encode(param: dict={}):
     try :
       token = jwt.encode(param, Env.key, algorithm='HS256')
       return bytes.decode(token) if type(token)==bytes else token
     except Exception as e :
       return None
 
-  # 解密
-  def decode(token=''):
+  # Base64-解密
+  def decode(token: str=''):
     try :
       data = jwt.decode(token, Env.key, algorithms=['HS256'])
       return data

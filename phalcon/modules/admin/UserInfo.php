@@ -6,7 +6,6 @@ use Base\Data;
 use Library\Upload;
 use Service\AdminToken;
 use Model\UserInfo as UserInfoM;
-use Phalcon\Html\Helper\Img;
 
 class UserInfo extends Base {
 
@@ -73,7 +72,16 @@ class UserInfo extends Base {
     // 上传
     $img = Upload::Base64(['path'=>self::$imgDir, 'base64'=>$base64]);
     if(empty($img)) return self::GetJSON(['code'=>5000, 'msg'=>'上传失败!']);
-    self::Print($img);
+    // 数据
+    $model = new UserInfoM();
+    $model->Columns('img');
+    $model->Where('uid=?', $tData->uid);
+    $imgData = $model->FindFirst();
+    $model->Set(['img'=>self::$imgDir.$img]);
+    $model->Where('uid=?', $tData->uid);
+    $model->Update();
+    // 清理头像
+    if(is_file($imgData['img'])) unlink($imgData['img']);
     // 返回
     return self::GetJSON(['code'=>0,'msg'=>'成功', 'img'=>Data::Img(self::$imgDir.$img)]);
   }

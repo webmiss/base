@@ -24,7 +24,7 @@ class Safety {
     return preg_match('/'.$reg.'/',$val)?true:false;
   }
 
-  /* 加密-Base64 */
+  /* Base64-加密 */
   static function encode(array $param=[]): ?string {
     $text = is_array($param)?json_encode($param):$param;
     try{
@@ -37,8 +37,8 @@ class Safety {
     }
   }
 
-  /* 解密-Base64 */
-  static function decode($token=''): ?object {
+  /* Base64-解密 */
+  static function decode(string $token=''): ?object {
     $token = str_replace('_','+',$token);
     try{
       $crypt = new Crypt();
