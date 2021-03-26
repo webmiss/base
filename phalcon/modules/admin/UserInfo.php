@@ -3,6 +3,7 @@ namespace App\Admin;
 
 use Base\Base;
 use Base\Data;
+use Library\FileEo;
 use Library\Upload;
 use Service\AdminToken;
 use Model\UserInfo as UserInfoM;
@@ -81,8 +82,8 @@ class UserInfo extends Base {
     $model->Where('uid=?', $tData->uid);
     $model->Update();
     // 清理
-    $rmImg = $imgData['img'];
-    if(is_file($rmImg)) unlink($rmImg);
+    $rmImg = (string)$imgData['img'];
+    FileEo::RemoveAll($rmImg);
     // 返回
     return self::GetJSON(['code'=>0,'msg'=>'成功', 'img'=>Data::Img(self::$ImgDir.$img)]);
   }

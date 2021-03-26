@@ -6,7 +6,7 @@ import (
 	"webmis/config"
 )
 
-var RootDir = config.Env().RootDir
+var Root = config.Env().RootDir
 
 // Files :文件类
 type FilesEo struct {
@@ -14,8 +14,9 @@ type FilesEo struct {
 }
 
 // Mkdir :创建目录
-func (FilesEo) Mkdir(dir string) error {
-	if err := os.MkdirAll(RootDir+dir, 0766); err != nil {
+func (FilesEo) Mkdir(path string) error {
+	path = Root + path
+	if err := os.MkdirAll(path, 0766); err != nil {
 		return err
 	}
 	return nil
@@ -23,7 +24,8 @@ func (FilesEo) Mkdir(dir string) error {
 
 // Writer :写入
 func (FilesEo) Writer(file string, content string) error {
-	f, err := os.OpenFile(RootDir+file, os.O_CREATE|os.O_RDWR, 0766)
+	file = Root + file
+	f, err := os.OpenFile(file, os.O_CREATE|os.O_RDWR, 0766)
 	if err != nil {
 		return err
 	}
@@ -32,8 +34,8 @@ func (FilesEo) Writer(file string, content string) error {
 	return nil
 }
 
-// Del :删除(文件夹&文件)
-func (f FilesEo) Del(file string) error {
-	f.Print(file)
-	return nil
+// RemoveAll :删除(文件夹&文件)
+func (f FilesEo) RemoveAll(path string) error {
+	path = Root + path
+	return os.RemoveAll(path)
 }

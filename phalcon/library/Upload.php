@@ -28,13 +28,13 @@ class Upload extends Base {
     // 是否重命名
     $param['filename'] = empty($param['filename'])?$file['name']:$param['filename'].'.'.$ext;
     // 创建目录
-    if (!file_exists($param['path'])) mkdir($param['path'],0777,true);
-    // 移动文件
-    if(@move_uploaded_file($file['tmp_name'],$param['path'].$param['filename'])){
-      return $param['filename'];
-    }else{
+    if(!FileEo::Mkdir($param['path'])){
+      self::Print('[Upload] Mkdir:', '创建目录失败!');
       return '';
     }
+    // 移动文件
+    if(FileEo::MoveUpload($file['tmp_name'],$param['path'].$param['filename'])) return $param['filename'];
+    else return '';
   }
 
   /* Base64 */
@@ -57,15 +57,15 @@ class Upload extends Base {
       $base64 = $ct[1];
     }
     // 创建目录
-    if (!file_exists($param['path'])) mkdir($param['path'],0777,true);
+    if(!FileEo::Mkdir($param['path'])){
+      self::Print('[Upload] Mkdir:', '创建目录失败!');
+      return '';
+    }
     // 文件名
     $filename = empty($param['filename'])?self::_getName().'.'.$param['ext']:$param['filename'];
     // 保存文件
-    if(file_put_contents($param['path'].$filename,base64_decode($base64))){
-      return $filename;
-    }else{
-      return '';
-    }
+    if(FileEo::Writer($param['path'].$filename, base64_decode($base64))) return $filename;
+    else return '';
   }
 
   // 获取名称

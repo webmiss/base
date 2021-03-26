@@ -108,8 +108,7 @@ func (r UserInfo) Upimg(c *gin.Context) {
 	model.Update()
 	// 清理
 	rmImg := imgData["img"].(string)
-	(&library.FilesEo{}).Del(rmImg)
-	r.Print(rmImg)
+	(&library.FilesEo{}).RemoveAll(rmImg)
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "img": ""})
 }
