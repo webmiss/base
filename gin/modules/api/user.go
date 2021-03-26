@@ -14,6 +14,7 @@ import (
 // User :用户
 type User struct {
 	base.Base
+	base.Data
 }
 
 // Login :登录
@@ -37,7 +38,7 @@ func (r User) Login(c *gin.Context) {
 	model.LeftJoin("user_info AS b", "a.id=b.uid")
 	model.LeftJoin("api_perm AS c", "a.id=c.uid")
 	model.LeftJoin("api_role AS d", "c.role=d.id")
-	model.Where("(a.uname=? OR a.tel=? OR a.email=?) AND a.password=?", uname, uname, uname, (&util.Util{}).Md5(passwd))
+	model.Where("(a.uname=? OR a.tel=? OR a.email=?) AND a.password=?", uname, uname, uname, util.Md5(passwd))
 	model.Columns("a.id", "a.state", "b.position", "b.nickname", "b.name", "b.gender", "b.birthday", "b.img", "c.perm", "d.perm as role_perm")
 	data := model.FindFirst()
 	// 是否存在
@@ -66,7 +67,7 @@ func (r User) Login(c *gin.Context) {
 	redis.Close()
 	// 登录时间
 	model.Table("user")
-	model.Set(map[string]interface{}{"ltime": (&util.Util{}).Date("2006-01-02 15:04:05")})
+	model.Set(map[string]interface{}{"ltime": util.Date("2006-01-02 15:04:05")})
 	model.Where("id=?", data["id"])
 	model.Update()
 	// Token
@@ -82,7 +83,7 @@ func (r User) Login(c *gin.Context) {
 		"nickname": data["nickname"],
 		"name":     data["name"],
 		"gender":   data["gender"],
-		"img":      (&util.Util{}).Img(data["img"]),
+		"img":      r.Img(data["img"]),
 	}
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "token": token, "uinfo": user})

@@ -27,14 +27,14 @@ public class User extends Base {
   String login(String uname, String passwd) throws SQLException{
     HashMap<String,Object> res;
     // 验证用户名
-    if(!Safety.isRight("uname",uname) && !Safety.isRight("tel",uname) && !Safety.isRight("email",uname)){
+    if(!Safety.IsRight("uname",uname) && !Safety.IsRight("tel",uname) && !Safety.IsRight("email",uname)){
       res = new HashMap<String, Object>();
       res.put("code",4000);
       res.put("msg","请输入用户名/手机/邮箱!");
       return GetJSON(res);
     }
     // 密码长度
-    if(!Safety.isRight("passwd",passwd)){
+    if(!Safety.IsRight("passwd",passwd)){
       res = new HashMap<String, Object>();
       res.put("code",4000);
       res.put("msg","请输入6~16位密码!");

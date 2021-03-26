@@ -15,14 +15,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /* 上传类 */
+@SuppressWarnings("unchecked")
 public class Upload {
 
   /* 单文件 */
   public static String File(MultipartFile file, HashMap<String, Object> params) {
     // 参数
-    HashMap<String, Object> cfg = new HashMap<String, Object>();
-    cfg.put("path", "upload/");   //上传目录
-    cfg.put("filename", "");      //文件名
+    HashMap<String, Object> param = new HashMap<String, Object>();
+    param.put("path", "upload/");   //上传目录
+    param.put("filename", "");      //文件名
     ArrayList<String> bind = new ArrayList<String>();
     bind.add("jpg");
     bind.add("jpeg");
@@ -32,10 +33,8 @@ public class Upload {
     bind.add("mp4");
     bind.add("wav");
     bind.add("mp3");
-    cfg.put("bind", bind);         //允许格式
-    HashMap<String, Object> param = new HashMap<String, Object>();
-    param.putAll(cfg);
-    param.putAll(params);
+    param.put("bind", bind);         //允许格式
+    param = Util.ArrayMerge(param, params);
     // 文件
     String fileName = file.getOriginalFilename();
     // 限制格式
@@ -67,14 +66,12 @@ public class Upload {
   /* Base64 */
   public static String Base64(HashMap<String, Object> params) {
     // 参数
-    HashMap<String, Object> cfg = new HashMap<String, Object>();
-    cfg.put("path", "upload/"); //上传目录
-    cfg.put("base64", "");      //文件内容
-    cfg.put("filename", "");    //文件名
-    cfg.put("ext", "png");      //后缀
     HashMap<String, Object> param = new HashMap<String, Object>();
-    param.putAll(cfg);
-    param.putAll(params);
+    param.put("path", "upload/"); //上传目录
+    param.put("base64", "");      //文件内容
+    param.put("filename", "");    //文件名
+    param.put("ext", "png");      //后缀
+    param = Util.ArrayMerge(param, params);
     // 内容
     String base64 = String.valueOf(param.get("base64"));
     // 否有类型

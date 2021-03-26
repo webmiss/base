@@ -21,8 +21,7 @@ func init() {
 
 func main() {
 	// 配置
-	cfg := config.Env()
-	gin.SetMode(cfg.Mode)
+	gin.SetMode(config.Env().Mode)
 	// 模式
 	if gin.Mode() == gin.ReleaseMode {
 		gin.DefaultWriter = ioutil.Discard //禁止控制台输出
@@ -40,5 +39,5 @@ func main() {
 	router.API(app)
 	router.Admin(app)
 	// 运行
-	app.Run(cfg.Host + ":" + cfg.Port)
+	app.Run(config.Env().Host + ":" + config.Env().Port)
 }

@@ -47,9 +47,9 @@ func (s AdminToken) Verify(token string, urlPerm string) string {
 	if urlPerm == "" {
 		return ""
 	}
-	arr := (&util.Util{}).Explode("/", urlPerm)
+	arr := util.Explode("/", urlPerm)
 	action := arr[len(arr)-1:][0]
-	controller := (&util.Util{}).Implode("/", arr[:len(arr)-1])
+	controller := util.Implode("/", arr[:len(arr)-1])
 	// 菜单
 	menu := (&model.SysMenu{}).New()
 	menu.Columns("id", "action")
@@ -67,7 +67,7 @@ func (s AdminToken) Verify(token string, urlPerm string) string {
 	}
 	// 验证-动作
 	permArr := []map[string]interface{}{}
-	(&util.Util{}).JsonDecode(menuData["action"].(string), &permArr)
+	util.JsonDecode(menuData["action"].(string), &permArr)
 	var permVal int64
 	for _, val := range permArr {
 		if action == val["action"].(string) {
@@ -95,9 +95,9 @@ func (s AdminToken) Perm(token string) map[string]int64 {
 	permStr := string(redis.Get(env.AdminTokenPrefix + "_perm_" + tData["uid"].(string)))
 	redis.Close()
 	// 拆分
-	arr := (&util.Util{}).Explode(" ", permStr)
+	arr := util.Explode(" ", permStr)
 	for _, val := range arr {
-		s := (&util.Util{}).Explode(":", val)
+		s := util.Explode(":", val)
 		permAll[s[0]], _ = strconv.ParseInt(s[1], 10, 64)
 	}
 	return permAll
@@ -105,7 +105,7 @@ func (s AdminToken) Perm(token string) map[string]int64 {
 
 // Create :生成
 func (s AdminToken) Create(data map[string]interface{}) string {
-	data["l_time"] = (&util.Util{}).Date("2006-01-02 15:04:05")
+	data["l_time"] = util.Date("2006-01-02 15:04:05")
 	token, _ := (&library.Safety{}).Encode(data)
 	// 缓存
 	env := config.Env()

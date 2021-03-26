@@ -2,6 +2,7 @@ import os
 import time
 import datetime
 import base64 as Base64
+from util.util import Util
 from flask import request
 
 # 上传类
@@ -10,13 +11,12 @@ class Upload:
   # 单文件
   def File(params={}):
     # 参数
-    param = {
+    param = Util.ArrayMerge({
       'upName': 'up',     #上传名称
       'path':'upload/',   #上传目录
       'filename':'',      #文件名
       'bind':['jpg','jpeg','png','gif','mov','mp4','wav','mp3'], #允许格式
-    }
-    param.update(params)
+    }, params)
     # 文件
     file = request.files[param['upName']]
     # 限制格式
@@ -38,13 +38,12 @@ class Upload:
   # Base64
   def Base64(params={}):
     # 参数
-    param = {
+    param = Util.ArrayMerge({
       'path':'upload/',   #上传目录
       'base64':'',        #文件内容
       'filename':'',      #文件名
       'ext':'png',        #后缀
-    }
-    param.update(params)
+    }, params)
     # 内容
     base64 = param['base64']
     # 否有类型

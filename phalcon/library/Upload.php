@@ -42,9 +42,9 @@ class Upload extends Base {
     // 参数
     $param = array_merge([
       'path'=>'upload/',  //上传目录
-      'base64'=>'',  //文件内容
-      'filename'=>'', //文件名
-      'ext'=>'png', //后缀
+      'base64'=>'',       //文件内容
+      'filename'=>'',     //文件名
+      'ext'=>'png',       //后缀
     ],$param);
     // 内容
     $base64 = $param['base64'];

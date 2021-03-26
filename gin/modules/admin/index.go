@@ -3,7 +3,6 @@ package admin
 import (
 	"webmis/base"
 	"webmis/model"
-	"webmis/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,6 +10,7 @@ import (
 // Index :后台接口
 type Index struct {
 	base.Base
+	base.Data
 }
 
 // Index :首页
@@ -39,7 +39,7 @@ func (r Index) GetConfig(c *gin.Context) {
 		rows.Scan(&name, &val)
 		if name == "logo" || name == "login_bg" {
 			if val != "" {
-				list[name] = (&util.Util{}).Img(val)
+				list[name] = r.Img(val)
 			} else {
 				list[name] = ""
 			}

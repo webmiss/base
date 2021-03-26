@@ -64,7 +64,7 @@ func (r *SysMenus) _getMenu(fid string) []map[string]interface{} {
 		actionStr := val["action"].(string)
 		actionArr := []map[string]interface{}{}
 		if actionStr != "" {
-			(&util.Util{}).JsonDecode(actionStr, &actionArr)
+			util.JsonDecode(actionStr, &actionArr)
 		}
 		for _, v := range actionArr {
 			permVal, _ := strconv.ParseInt(util.Strval(v["perm"]), 10, 64)

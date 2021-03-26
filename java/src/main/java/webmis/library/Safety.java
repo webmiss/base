@@ -18,7 +18,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 public class Safety {
 
   /* 正则-公共 */
-  public static boolean isRight(String name, String val){
+  public static boolean IsRight(String name, String val){
     HashMap<String,Object> data = new HashMap<String,Object>();
     data.put("uname", "^[a-zA-Z][a-zA-Z0-9\\_\\@\\-\\*\\&]{3,15}$");
     data.put("passwd", "^[a-zA-Z0-9|_|@|-|*|&]{6,16}$");
@@ -31,14 +31,14 @@ public class Safety {
   }
 
   /* 正则-验证 */
-  public static boolean test(String reg, String val){
+  public static boolean Test(String reg, String val){
     Pattern pattern = Pattern.compile(reg);
     Matcher matcher = pattern.matcher(val);
     return matcher.matches();
   }
 
   /* 加密 */
-  public static String encode(HashMap<String,Object> data){
+  public static String Encode(HashMap<String,Object> data){
     String token = null;
     try {
       Algorithm algorithm = Algorithm.HMAC256(Env.key);
@@ -50,7 +50,7 @@ public class Safety {
   }
 
   /* 解密 */
-  public static HashMap<String,Object> decode(String token){
+  public static HashMap<String,Object> Decode(String token){
     HashMap<String,Object> res = null;
     try {
       DecodedJWT jwt = JWT.decode(token);

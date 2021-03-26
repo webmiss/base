@@ -78,7 +78,7 @@ public class UserInfo extends Base {
       res.put("msg", "参数错误!");
       return GetJSON(res);
     }
-    JSONObject param = Util.Json_decode(data);
+    JSONObject param = Util.JsonDecode(data);
     // 数据
     webmis.model.UserInfo model = new webmis.model.UserInfo();
     HashMap<String,Object> info = new HashMap<String,Object>();

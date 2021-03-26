@@ -40,7 +40,7 @@ class UserInfo(Base):
     # 参数
     data = self.Post('data')
     if not data : return self.GetJSON({'code':4000, 'msg':'参数错误!'})
-    param = Util.Json_decode(data)
+    param = Util.JsonDecode(data)
     # 数据
     model = UserInfoM()
     info = {

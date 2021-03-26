@@ -36,15 +36,23 @@ class Util:
     return glue.join(pieces)
 
   # Array to String
-  def Json_encode(arr):
+  def JsonEncode(arr):
     try :
       return json.dumps(arr)
     except Exception as e :
       return ''
 
   # String to Array
-  def Json_decode(str: str):
+  def JsonDecode(str: str):
     try :
       return json.loads(str)
     except Exception as e :
       return []
+
+  # 合并数组
+  def ArrayMerge(*arrays: dict):
+    res = {}
+    for arr in arrays :
+      for k,v in arr.items() : res[k] = v
+    return res
+

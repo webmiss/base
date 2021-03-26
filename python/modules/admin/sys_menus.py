@@ -43,7 +43,7 @@ class SysMenus(Base):
       action = []
       actionArr = []
       actionStr = str(val['action'])
-      if actionStr != '' : actionArr = Util.Json_decode(actionStr)
+      if actionStr != '' : actionArr = Util.JsonDecode(actionStr)
       for v in actionArr :
         permVal = int(v['perm'])
         if v['type']=='1' and perm&permVal>0 : action += [v]

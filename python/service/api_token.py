@@ -12,7 +12,7 @@ class ApiToken:
   def verify(self, token: str, urlPerm: str):
     # Token
     if token=='' : return 'Token不能为空!'
-    tData = Safety.decode(token)
+    tData = Safety.Decode(token)
     if not tData : return 'Token验证失败!'
     # 是否过期
     uid = str(tData['uid'])
@@ -43,7 +43,7 @@ class ApiToken:
     if id not in permData.keys() : return '无权访问菜单!'
     # 验证-动作
     actionVal = permData[id]
-    permArr = Util.Json_decode(menuData['action'])
+    permArr = Util.JsonDecode(menuData['action'])
     permVal = 0
     for val in permArr :
       if action==val['action'] :
@@ -55,7 +55,7 @@ class ApiToken:
   # 权限数组
   def perm(self, token: str):
     # Token
-    tData = Safety.decode(token)
+    tData = Safety.Decode(token)
     if not tData : return 'Token验证失败!'
     # 权限
     redis = Redis()
@@ -72,7 +72,7 @@ class ApiToken:
   # 生成
   def create(self, data: dict):
     data['l_time'] = Util.Date('%Y-%m-%d %H:%M:%S')
-    token = Safety.encode(data)
+    token = Safety.Encode(data)
     # 缓存
     redis = Redis()
     key = Env.api_token_prefix+'_token_'+str(data['uid'])
@@ -83,7 +83,7 @@ class ApiToken:
     
   # 获取
   def token(token: str):
-    tData = Safety.decode(token)
+    tData = Safety.Decode(token)
     if tData :
       redis = Redis()
       tData['time'] = redis.Ttl(Env.api_token_prefix+'_token_'+tData['uid'])

@@ -22,7 +22,7 @@ public class ApiToken extends Base {
     Redis redis;
     // Token
     if(token.equals("")) return "Token不能为空!";
-    HashMap<String, Object> tData = Safety.decode(token);
+    HashMap<String, Object> tData = Safety.Decode(token);
     if(tData==null) return "Token验证失败!";
     // 是否过期
     String uid = String.valueOf(tData.get("uid"));
@@ -59,7 +59,7 @@ public class ApiToken extends Base {
     if(!permData.containsKey(id)) return "无权访问菜单!";
     // 验证-动作
     Integer actionVal = permData.get(id);
-    JSONArray permArr = Util.Json_decode_array(menuData.get("action").toString());
+    JSONArray permArr = Util.JsonDecodeArray(menuData.get("action").toString());
     int permVal = 0;
     for(int i=0; i<permArr.size(); i++){
       if(permArr.getJSONObject(i).get("action").equals(action)){
@@ -75,7 +75,7 @@ public class ApiToken extends Base {
   public static HashMap<String, Integer> perm(String token) {
     HashMap<String, Integer> permAll = new HashMap<String, Integer>();
     // Token
-    HashMap<String, Object> tData = Safety.decode(token);
+    HashMap<String, Object> tData = Safety.Decode(token);
     if(tData==null) return permAll;
     // 权限
     Redis redis = new Redis();
@@ -94,7 +94,7 @@ public class ApiToken extends Base {
   /* 生成 */
   public static String create(HashMap<String, Object> data) {
     data.put("l_time", Util.Date("yyyy-MM-dd HH:mm:ss"));
-    String token = Safety.encode(data);
+    String token = Safety.Encode(data);
     // 缓存
     Redis redis = new Redis();
     String key = Env.api_token_prefix+"_token_"+String.valueOf(data.get("uid"));
@@ -106,7 +106,7 @@ public class ApiToken extends Base {
 
   /* 获取 */
   public static HashMap<String, Object> token(String token) {
-    HashMap<String, Object> tData = Safety.decode(token);
+    HashMap<String, Object> tData = Safety.Decode(token);
     if(tData!=null){
       Redis redis = new Redis();
       tData.put("time", redis.Ttl(Env.api_token_prefix+"_token_"+String.valueOf(tData.get("uid"))));

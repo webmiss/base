@@ -3,12 +3,15 @@ package admin
 import (
 	"strings"
 	"webmis/base"
+	"webmis/library"
 	"webmis/model"
 	"webmis/service"
 	"webmis/util"
 
 	"github.com/gin-gonic/gin"
 )
+
+var ImgDir = "upload/user/img/"
 
 // UserInfo :用户
 type UserInfo struct {
@@ -31,7 +34,7 @@ func (r UserInfo) List(c *gin.Context) {
 	model.Where("uid=?", tData["uid"])
 	list := model.FindFirst()
 	// 数据
-	list["birthday"] = (&util.Util{}).Date("2006-01-02", list["birthday"])
+	list["birthday"] = util.Date("2006-01-02", list["birthday"])
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list})
 }
@@ -53,14 +56,14 @@ func (r UserInfo) Edit(c *gin.Context) {
 		return
 	}
 	param := map[string]interface{}{}
-	(&util.Util{}).JsonDecode(data, &param)
+	util.JsonDecode(data, &param)
 	// 数据
 	model := (&model.UserInfo{}).New()
 	info := map[string]interface{}{
 		"nickname": strings.Trim(param["nickname"].(string), " "),
 		"name":     strings.Trim(param["name"].(string), " "),
 		"gender":   strings.Trim(param["gender"].(string), " "),
-		"birthday": (&util.Util{}).Strtotime(strings.Trim(param["birthday"].(string), " "), "2006-01-02"),
+		"birthday": util.Strtotime(strings.Trim(param["birthday"].(string), " "), "2006-01-02"),
 		"position": strings.Trim(param["position"].(string), " "),
 	}
 	model.Set(info)
@@ -69,6 +72,44 @@ func (r UserInfo) Edit(c *gin.Context) {
 	// 返回
 	info["uname"] = tData["uname"]
 	info["img"] = param["img"]
-	info["birthday"] = (&util.Util{}).Date("2006-01-02", info["birthday"])
+	info["birthday"] = util.Date("2006-01-02", info["birthday"])
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "uinfo": info})
+}
+
+// Upimg :头像
+func (r UserInfo) Upimg(c *gin.Context) {
+	// 验证
+	token := c.PostForm("token")
+	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
+	if msg != "" {
+		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
+		return
+	}
+	tData := (&service.AdminToken{}).Token(token)
+	// 参数
+	base64 := c.PostForm("base64")
+	if base64 == "" {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
+		return
+	}
+	// 上传
+	img := (&library.Upload{}).Base64(map[string]interface{}{"path": ImgDir, "base64": base64})
+	if img == "" {
+		r.GetJSON(c, gin.H{"code": 5000, "msg": "上传失败!"})
+		return
+	}
+	// 数据
+	model := (&model.UserInfo{}).New()
+	model.Columns("img")
+	model.Where("uid=?", tData["uid"])
+	imgData := model.FindFirst()
+	model.Set(map[string]interface{}{"img": ImgDir + img})
+	model.Where("uid=?", tData["uid"])
+	model.Update()
+	// 清理
+	rmImg := imgData["img"].(string)
+	(&library.FilesEo{}).Del(rmImg)
+	r.Print(rmImg)
+	// 返回
+	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "img": ""})
 }

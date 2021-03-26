@@ -81,7 +81,7 @@ public class SysMenus extends Base {
       ArrayList<JSONObject> action = new ArrayList<JSONObject>();
       String actionStr = val.get("action").toString();
       JSONArray actionArr = new JSONArray();
-      if(!actionStr.equals("")) actionArr = Util.Json_decode_array(actionStr);
+      if(!actionStr.equals("")) actionArr = Util.JsonDecodeArray(actionStr);
       for(int i=0; i<actionArr.size(); i++){
         int permVal = Integer.valueOf(actionArr.getJSONObject(i).get("perm").toString());
         if(actionArr.getJSONObject(i).get("type").toString().equals("1") && (perm&permVal)>0){

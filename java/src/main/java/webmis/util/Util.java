@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -13,6 +15,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.util.DigestUtils;
 
 /* 常用工具 */
+@SuppressWarnings("unchecked")
 public class Util {
 
   /* Md5加密 */
@@ -79,16 +82,27 @@ public class Util {
   }
 
   /* Array to String */
-  public static String Json_encode(Dynamic<?> arr) {
+  public static String JsonEncode(Dynamic<?> arr) {
     return JSON.toJSONString(arr.getKey());
   }
 
   /* String to Array */
-  public static JSONObject Json_decode(String str) {
+  public static JSONObject JsonDecode(String str) {
     try{ return JSON.parseObject(str); }catch (Exception e){ return new JSONObject(); }
   }
-  public static JSONArray Json_decode_array(String str) {
+  public static JSONArray JsonDecodeArray(String str) {
     try{ return JSON.parseArray(str); }catch (Exception e){ return new JSONArray(); }
+  }
+
+  /* 合并数组 */
+  public static HashMap<String, Object> ArrayMerge(HashMap<String, Object>... arrays) {
+    HashMap<String, Object> res = new HashMap<String, Object>();
+    for(HashMap<String, Object> arr:arrays){
+      for(Entry<String, Object> entry:arr.entrySet()){
+        res.put(entry.getKey(), entry.getValue());
+      }
+    }
+    return res;
   }
   
 }
