@@ -96,7 +96,8 @@ export default {
       ]},
       {label:'Library 类库', children:[
         {label: '缓存 Redis', value: 'docs/java/library/redis'},
-        {label: '通信 WebSocket', value: 'docs/java/library/socket'},
+        {label: '安全验证 Safety', value: 'docs/java/library/safety'},
+        {label: '文件上传 Upload', value: 'docs/java/library/upload'},
       ]},
     ];
   },
@@ -122,6 +123,8 @@ export default {
         {label: '缓存 Redis', value: 'docs/gin/library/redis'},
         {label: '事件流 Kafka', value: 'docs/gin/library/kafka'},
         {label: '通信 WebSocket', value: 'docs/gin/library/socket'},
+        {label: '安全验证 Safety', value: 'docs/gin/library/safety'},
+        {label: '文件上传 Upload', value: 'docs/gin/library/upload'},
       ]},
     ];
   },

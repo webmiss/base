@@ -6,7 +6,7 @@ import webmis.config.Env;
 public class Data {
   
   /* 图片地址 */
-  public static String img(Object img) {
+  public static String Img(Object img) {
     String str = String.valueOf(img);
     return !str.equals("")?Env.base_url+str:"";
   }

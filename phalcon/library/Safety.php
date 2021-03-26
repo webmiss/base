@@ -8,7 +8,7 @@ use Phalcon\Crypt;
 class Safety {
 
   /* 正则-公共 */
-  static function isRight(string $name='',string $val=''): bool {
+  static function IsRight(string $name='',string $val=''): bool {
     $data = [
       'uname'=>'/^[a-zA-Z][a-zA-Z0-9\_\@\-\*\&]{3,15}$/',
       'passwd'=>'/^[a-zA-Z0-9|_|@|-|*|&]{6,16}$/',
@@ -20,12 +20,12 @@ class Safety {
   }
 
   /* 正则-验证 */
-  static function test(string $reg, $val): bool {
+  static function Test(string $reg, $val): bool {
     return preg_match('/'.$reg.'/',$val)?true:false;
   }
 
   /* Base64-加密 */
-  static function encode(array $param=[]): ?string {
+  static function Encode(array $param=[]): ?string {
     $text = is_array($param)?json_encode($param):$param;
     try{
       $crypt = new Crypt();
@@ -38,7 +38,7 @@ class Safety {
   }
 
   /* Base64-解密 */
-  static function decode(string $token=''): ?object {
+  static function Decode(string $token=''): ?object {
     $token = str_replace('_','+',$token);
     try{
       $crypt = new Crypt();

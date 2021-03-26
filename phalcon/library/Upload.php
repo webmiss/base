@@ -1,11 +1,44 @@
 <?php
 namespace Library;
 
+use Base\Base;
+
 /* 上传类 */
-class Upload {
+class Upload extends Base {
+
+  /* 单文件 */
+  static function File(array $param=[]): string {
+    // 参数
+    $param = array_merge([
+      'upName'=>'up',  //上传名称
+      'path'=>'upload/',  //上传目录
+      'filename'=>'', //文件名
+      'bind'=>['jpg','jpeg','png','gif','mov','mp4','wav','mp3'], //允许格式
+    ],$param);
+    // 文件
+    $file = $_FILES[$param['upName']];
+    // 限制格式
+    $ext = strtolower(substr(strrchr($file['name'],'.'),1));
+    if($param['bind']){
+      if(!in_array($ext,$param['bind'])){
+        self::Print('只支持'.implode(',',$param['bind']).'格式!');
+        return '';
+      }
+    }
+    // 是否重命名
+    $param['filename'] = empty($param['filename'])?$file['name']:$param['filename'].'.'.$ext;
+    // 创建目录
+    if (!file_exists($param['path'])) mkdir($param['path'],0777,true);
+    // 移动文件
+    if(@move_uploaded_file($file['tmp_name'],$param['path'].$param['filename'])){
+      return $param['filename'];
+    }else{
+      return '';
+    }
+  }
 
   /* Base64 */
-  static function Base64($param=[]) {
+  static function Base64(array $param=[]): string {
     // 参数
     $param = array_merge([
       'path'=>'upload/',  //上传目录

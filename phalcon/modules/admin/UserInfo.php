@@ -9,7 +9,7 @@ use Model\UserInfo as UserInfoM;
 
 class UserInfo extends Base {
 
-  private static $imgDir = 'upload/user/img/';
+  private static $ImgDir = 'upload/user/img/';
 
   /* 列表 */
 	static function List(){
@@ -59,7 +59,7 @@ class UserInfo extends Base {
     return self::GetJSON(['code'=>0,'msg'=>'成功','uinfo'=>$info]);
   }
 
-  /* 编辑 */
+  /* 头像 */
   static function Upimg(){
     // 验证
     $token = self::Post('token');
@@ -70,20 +70,21 @@ class UserInfo extends Base {
     $base64 = self::Post('base64');
     if(empty($base64)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     // 上传
-    $img = Upload::Base64(['path'=>self::$imgDir, 'base64'=>$base64]);
+    $img = Upload::Base64(['path'=>self::$ImgDir, 'base64'=>$base64]);
     if(empty($img)) return self::GetJSON(['code'=>5000, 'msg'=>'上传失败!']);
     // 数据
     $model = new UserInfoM();
     $model->Columns('img');
     $model->Where('uid=?', $tData->uid);
     $imgData = $model->FindFirst();
-    $model->Set(['img'=>self::$imgDir.$img]);
+    $model->Set(['img'=>self::$ImgDir.$img]);
     $model->Where('uid=?', $tData->uid);
     $model->Update();
-    // 清理头像
-    if(is_file($imgData['img'])) unlink($imgData['img']);
+    // 清理
+    $rmImg = $imgData['img'];
+    if(is_file($rmImg)) unlink($rmImg);
     // 返回
-    return self::GetJSON(['code'=>0,'msg'=>'成功', 'img'=>Data::Img(self::$imgDir.$img)]);
+    return self::GetJSON(['code'=>0,'msg'=>'成功', 'img'=>Data::Img(self::$ImgDir.$img)]);
   }
 
 }

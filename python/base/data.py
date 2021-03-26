@@ -5,5 +5,5 @@ from config.env import Env
 class Data:
 
   # 图片地址
-  def img(img: str):
+  def Img(img: str):
     return Env.base_url+img if img!='' else ''

@@ -17,11 +17,11 @@ class User extends Base {
     $uname = self::Post('uname');
     $passwd = self::Post('passwd');
     // 验证用户名
-    if(!Safety::isRight('uname',$uname) && !Safety::isRight('tel',$uname) && !Safety::isRight('email',$uname)){
+    if(!Safety::IsRight('uname',$uname) && !Safety::IsRight('tel',$uname) && !Safety::IsRight('email',$uname)){
       return self::GetJSON(['code'=>4000, 'msg'=>'请输入用户名/手机/邮箱!']);
     }
     // 密码长度
-    if(!Safety::isRight('passwd',$passwd)){
+    if(!Safety::IsRight('passwd',$passwd)){
       return self::GetJSON(['code'=>4000, 'msg'=>'请输入6~16位密码!']);
     }
     // 查询
@@ -87,7 +87,7 @@ class User extends Base {
     $model->Where('uid=?',$tData->uid);
     $info = $model->FindFirst();
     $info['uname'] = $tData->uname;
-    $info['img'] = Data::img($info['img']);
+    $info['img'] = Data::Img($info['img']);
     return self::GetJSON(['code'=>0, 'msg'=>'成功', 'token_time'=>$tData->time, 'uinfo'=>$info]);
   }
 

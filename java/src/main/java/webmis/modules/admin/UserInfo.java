@@ -1,5 +1,6 @@
 package webmis.modules.admin;
 
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import webmis.base.Base;
+import webmis.base.Data;
+import webmis.library.Upload;
 import webmis.service.AdminToken;
 import webmis.util.Util;
 
@@ -20,6 +23,9 @@ import webmis.util.Util;
 @Controller("AdminUserInfo")
 @RequestMapping("/admin/userinfo")
 public class UserInfo extends Base {
+
+  private static String RootDir = "public/";
+  private static String ImgDir = "upload/user/img/";
 
   /* 列表 */
   @RequestMapping("list")
@@ -101,5 +107,63 @@ public class UserInfo extends Base {
     res.put("uinfo", info);
     return GetJSON(res);
   }
-  
+
+  /* 头像 */
+  @RequestMapping("upimg")
+  String Upimg(HttpServletRequest request, String token, String base64) throws SQLException {
+    HashMap<String,Object> res;
+    // 验证
+    String msg = AdminToken.verify(token, request.getRequestURI());
+    if(!msg.equals("")){
+      res = new HashMap<String,Object>();
+      res.put("code", 4001);
+      res.put("msg", msg);
+      return GetJSON(res);
+    }
+    HashMap<String, Object> tData = AdminToken.token(token);
+    // 参数
+    if(base64==null || base64.isEmpty()){
+      res = new HashMap<String,Object>();
+      res.put("code", 4000);
+      res.put("msg", "参数错误!");
+      return GetJSON(res);
+    }
+    // 上传
+    HashMap<String, Object> param = new HashMap<String, Object>();
+    param.put("path",RootDir+ImgDir);
+    param.put("base64",base64);
+    String img = Upload.Base64(param);
+    if(img.isEmpty()){
+      res = new HashMap<String,Object>();
+      res.put("code", 5000);
+      res.put("msg", "上传失败!");
+      return GetJSON(res);
+    }
+    // 数据
+    webmis.model.UserInfo model = new webmis.model.UserInfo();
+    model.Columns("img");
+    model.Where("uid=?");
+    String sql = model.SelectSql();
+    PreparedStatement ps = model.Bind(sql);
+    ps.setString(1, tData.get("uid").toString());
+    HashMap<String, Object> imgData = model.FindFirst(ps);
+    model.Set("img");
+    model.Where("uid=?");
+    sql = model.UpdateSql();
+    ps = model.Bind(sql);
+    ps.setString(1, ImgDir+img);
+    ps.setString(2, tData.get("uid").toString());
+    model.Update(ps);
+    // 清理
+    String rmImg = RootDir+imgData.get("img").toString();
+    File file = new File(rmImg);
+    if(file.exists()) file.delete();
+    // 返回
+    res = new HashMap<String,Object>();
+    res.put("code", 0);
+    res.put("msg", "成功");
+    res.put("img", Data.Img(ImgDir+img));
+    return GetJSON(res);
+  }
+
 }

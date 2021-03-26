@@ -36,7 +36,7 @@ upstream demo_python_websocket {
 server {
     listen       80;
     server_name  demo-python.webmis.vip;
-    set $root_path /xxx/python/;
+    set $root_path /xxx/python/public;
     root $root_path;
     index index.html;
 

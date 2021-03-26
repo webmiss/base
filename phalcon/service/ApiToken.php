@@ -14,7 +14,7 @@ class ApiToken extends Base {
   static function verify(string $token, string $urlPerm): string {
     // Token
     if($token=='') return 'Token不能为空!';
-    $tData = Safety::decode($token);
+    $tData = Safety::Decode($token);
     if(!$tData) return 'Token验证失败!';
     // 是否过期
     $uid = (string)$tData->uid;
@@ -64,7 +64,7 @@ class ApiToken extends Base {
   static function perm(string $token): array {
     $permAll = [];
     // Token
-    $tData = Safety::decode($token);
+    $tData = Safety::Decode($token);
     if(!$tData) return $permAll;
     // 权限
     $redis = new Redis();
@@ -82,7 +82,7 @@ class ApiToken extends Base {
   /* 生成 */
   static function create(array $data): ?string {
     $data['l_time'] = date('Y-m-d H:i:s');
-    $token = Safety::encode($data);
+    $token = Safety::Encode($data);
     // 缓存
     $redis = new Redis();
     $key = Env::$api_token_prefix.'_token_'.$data['uid'];
@@ -94,7 +94,7 @@ class ApiToken extends Base {
 
   /* 获取 */
   static function token(string $token): ?object {
-    $token = Safety::decode($token);
+    $token = Safety::Decode($token);
     if($token){
       $redis = new Redis();
       $token->time = $redis->Ttl(Env::$api_token_prefix.'_token_'.$token->uid);

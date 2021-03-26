@@ -17,11 +17,11 @@ class User extends Base {
     $uname = self::Post('uname');
     $passwd = self::Post('passwd');
     // 验证用户名
-    if(!Safety::isRight('tel',$uname)){
+    if(!Safety::IsRight('tel',$uname)){
       return self::GetJSON(['code'=>4000, 'msg'=>'请输手机号码!']);
     }
     // 密码长度
-    if(!Safety::isRight('passwd',$passwd)){
+    if(!Safety::IsRight('passwd',$passwd)){
       return self::GetJSON(['code'=>4000, 'msg'=>'请输入6~16位密码!']);
     }
     // 查询
@@ -88,7 +88,7 @@ class User extends Base {
     $model->Where('uid=?',$tData->uid);
     $info = $model->FindFirst();
     $info['uname'] = $tData->uname;
-    $info['img'] = Data::img($info['img']);
+    $info['img'] = Data::Img($info['img']);
     return self::GetJSON(['code'=>0, 'msg'=>'成功', 'token_time'=>$tData->time, 'uinfo'=>$info]);
   }
 

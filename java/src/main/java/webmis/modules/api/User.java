@@ -146,7 +146,7 @@ public class User extends Base {
     ps.setString(1, tData.get("uid").toString());
     HashMap<String, Object> info = model.FindFirst(ps);
     info.put("uname", tData.get("uname"));
-    info.put("img", Data.img(info.get("img")));
+    info.put("img", Data.Img(info.get("img")));
     // 返回
     res = new HashMap<String,Object>();
     res.put("code", 0);

@@ -82,5 +82,5 @@ class User(Base):
     model.Where('uid=%s',tData['uid'])
     info = model.FindFirst()
     info['uname'] = tData['uname']
-    info['img'] = Data.img(info['img'])
+    info['img'] = Data.Img(info['img'])
     return self.GetJSON({'code':0, 'msg':'成功', 'token_time':tData['time'], 'uinfo':info})

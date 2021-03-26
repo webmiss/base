@@ -1,4 +1,7 @@
+import os
+from library.upload import Upload
 from base.base import Base
+from base.data import Data
 from service.admin_token import AdminToken
 from model.user_info import UserInfo as UserInfoM
 from util.util import Util
@@ -6,6 +9,9 @@ from util.util import Util
 from flask import request
 
 class UserInfo(Base):
+
+  RootDir: str = 'public/'
+  ImgDir = 'upload/user/img/'
 
   # 列表
   def List(self):
@@ -52,3 +58,30 @@ class UserInfo(Base):
     info['img'] = param['img']
     info['birthday'] = Util.Date('%Y-%m-%d', info['birthday'])
     return self.GetJSON({'code':0, 'msg':'成功', 'uinfo':info})
+
+  # 头像
+  def Upimg(self):
+    # 验证
+    token = self.Post('token')
+    msg = AdminToken().verify(token, request.path)
+    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
+    tData = AdminToken.token(token)
+    # 参数
+    base64 = self.Post('base64')
+    if not base64 : return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 上传
+    img = Upload.Base64({'path':self.RootDir+self.ImgDir, 'base64':base64})
+    if not img : return self.GetJSON({'code':5000, 'msg':'上传失败!'})
+    # 数据
+    model = UserInfoM()
+    model.Columns('img')
+    model.Where('uid=%s', tData['uid'])
+    imgData = model.FindFirst()
+    model.Set({'img':self.ImgDir+img})
+    model.Where('uid=%s', tData['uid'])
+    model.Update()
+    # 清理
+    rmImg = self.RootDir+imgData['img']
+    if os.path.exists(rmImg) : os.remove(rmImg)
+    # 返回
+    return self.GetJSON({'code':0, 'msg':'成功', 'img':Data.Img(self.ImgDir+img)})

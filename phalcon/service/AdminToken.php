@@ -14,7 +14,7 @@ class AdminToken extends Base {
   static function verify(string $token, string $urlPerm): string {
     // Token
     if($token=='') return 'Token不能为空!';
-    $tData = Safety::decode($token);
+    $tData = Safety::Decode($token);
     if(!$tData) return 'Token验证失败!';
     // 是否过期
     $uid = (string)$tData->uid;
@@ -63,7 +63,7 @@ class AdminToken extends Base {
   static function perm(string $token): array {
     $permAll = [];
     // Token
-    $tData = Safety::decode($token);
+    $tData = Safety::Decode($token);
     if(!$tData) return $permAll;
     // 权限
     $redis = new Redis();
@@ -81,7 +81,7 @@ class AdminToken extends Base {
   /* 生成 */
   static function create(array $data): ?string {
     $data['l_time'] = date('Y-m-d H:i:s');
-    $token = Safety::encode($data);
+    $token = Safety::Encode($data);
     // 缓存
     $redis = new Redis();
     $key = Env::$admin_token_prefix.'_token_'.$data['uid'];
@@ -93,7 +93,7 @@ class AdminToken extends Base {
 
   /* 获取 */
   static function token(string $token) {
-    $tData = Safety::decode($token);
+    $tData = Safety::Decode($token);
     if($tData){
       $redis = new Redis();
       $tData->time = $redis->Ttl(Env::$admin_token_prefix.'_token_'.$tData->uid);
