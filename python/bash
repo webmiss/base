@@ -25,11 +25,7 @@ elif [ "$s" == "install" ]; then
   }
 # 启动
 elif [ "$s" == "start" ]; then
-  uwsgi --ini $config &
-# 重启
-elif [ "$s" == "restart" ]; then
-  ps -aux | grep uwsgi | grep -v grep | awk {'print $2'} | xargs kill
-  uwsgi --ini $config &
+  uwsgi --ini $config 2>&1 &
 # 停止
 elif [ "$s" == "stop" ]; then
   ps -aux | grep uwsgi | grep -v grep | awk {'print $2'} | xargs kill
@@ -55,7 +51,6 @@ else
   echo "  install       安装依赖包: $package"
   echo "<Server>"
   echo "  start         启动: uwsgi --ini $config &"
-  echo "  restart       重启: 中断进程并且重新启动"
   echo "  stop          停止"
   echo "<Socket>"
   echo "  socket        运行"
