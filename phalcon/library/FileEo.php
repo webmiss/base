@@ -16,8 +16,8 @@ class FileEo extends Base {
     return true;
   }
 
-  /* 移动-上传文件 */
-  static function MoveUpload(string $tmp='', string $to): bool {
+  /* 上传文件 */
+  static function Upload(string $tmp, string $to): bool {
     $to = self::$Root.$to;
     return move_uploaded_file($tmp, $to);
   }
@@ -30,6 +30,7 @@ class FileEo extends Base {
 
   /* 删除(文件夹&文件) */
   static function RemoveAll(string $path='') {
+    if($path=='') return false;
     $obj = self::$Root.$path;
     if(is_dir($obj)){
       // 文件夹

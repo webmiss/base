@@ -1,9 +1,5 @@
 package webmis.library;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -49,18 +45,16 @@ public class Upload {
     if (param.get("filename").equals(""))
       param.put("filename", fileName);
     // 创建目录
-    File dir = new File(String.valueOf(param.get("path")));
-    if (!dir.exists())
-      dir.mkdirs();
-    // 保存文件
-    try {
-      String root = System.getProperty("user.dir")+"/";
-      File f = new File(root+param.get("path").toString()+param.get("filename").toString());
-      file.transferTo(f);
-      return param.get("filename").toString();
-    }catch (IOException e){
+    if(!FileEo.Mkdir(String.valueOf(param.get("path")))){
+      System.out.println("[Upload] Mkdir: 创建目录失败!");
       return "";
     }
+    // 保存文件
+    if(!FileEo.Upload(file, param.get("path").toString()+param.get("filename").toString())){
+      System.out.println("[Upload] Upload: 保存文件失败!");
+      return "";
+    }
+    return param.get("filename").toString();
   }
 
   /* Base64 */
@@ -86,28 +80,20 @@ public class Upload {
       base64 = ct[1];
     }
     // 创建目录
-    File dir = new File(String.valueOf(param.get("path")));
-    if (!dir.exists()) dir.mkdirs();
-    // 文件名
-    String filename = param.get("filename").equals("")?_getName()+"."+String.valueOf(param.get("ext")):String.valueOf(param.get("filename"));
-    // 保存文件
-    FileOutputStream fos = null;
-    BufferedOutputStream bos = null;
-    try {
-      byte[] bytes = Base64.getDecoder().decode(base64);
-      File file = new File(String.valueOf(param.get("path"))+filename);
-      fos = new java.io.FileOutputStream(file);
-      bos = new BufferedOutputStream(fos);
-      bos.write(bytes);
-      return filename;
-    } catch (Exception e) {
-      System.out.println("写入文件: "+e.getMessage());
-    } finally {
-      if (bos != null) try { bos.close(); } catch (IOException e) { }
-      if (fos != null) try { fos.close(); } catch (IOException e) { }
+    if(!FileEo.Mkdir(String.valueOf(param.get("path")))){
+      System.out.println("[Upload] Mkdir: 创建目录失败!");
+      return "";
     }
-    // 结果
-    return "";
+    // 文件名
+    String filename;
+    if(param.get("filename").equals("")) filename=_getName()+"."+param.get("ext").toString();
+    else filename=param.get("filename").toString();
+    // 保存文件
+    if(!FileEo.Writer(String.valueOf(param.get("path"))+filename, Base64.getDecoder().decode(base64))){
+      System.out.println("[Upload] Writer: 保存文件失败!");
+      return "";
+    }
+    return filename;
   }
 
   /* 获取名称 */

@@ -1,6 +1,5 @@
 package webmis.modules.admin;
 
-import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import webmis.base.Base;
 import webmis.base.Data;
+import webmis.library.FileEo;
 import webmis.library.Upload;
 import webmis.service.AdminToken;
 import webmis.util.Util;
@@ -24,8 +24,7 @@ import webmis.util.Util;
 @RequestMapping("/admin/userinfo")
 public class UserInfo extends Base {
 
-  private static String RootDir = "public/";
-  private static String ImgDir = "upload/user/img/";
+  private static final String ImgDir = "upload/user/img/";
 
   /* 列表 */
   @RequestMapping("list")
@@ -130,7 +129,7 @@ public class UserInfo extends Base {
     }
     // 上传
     HashMap<String, Object> param = new HashMap<String, Object>();
-    param.put("path",RootDir+ImgDir);
+    param.put("path",ImgDir);
     param.put("base64",base64);
     String img = Upload.Base64(param);
     if(img.isEmpty()){
@@ -155,9 +154,8 @@ public class UserInfo extends Base {
     ps.setString(2, tData.get("uid").toString());
     model.Update(ps);
     // 清理
-    String rmImg = RootDir+imgData.get("img").toString();
-    File file = new File(rmImg);
-    if(file.exists()) file.delete();
+    String rmImg = imgData.get("img").toString();
+    FileEo.RemoveAll(rmImg);
     // 返回
     res = new HashMap<String,Object>();
     res.put("code", 0);

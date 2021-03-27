@@ -1,4 +1,4 @@
-import os
+from library.file_eo import FileEo
 import time
 import datetime
 import base64 as Base64
@@ -28,12 +28,14 @@ class Upload:
     # 是否重命名
     param['filename'] = file.filename if not param['filename'] else param['filename']
     # 创建目录
-    if not os.path.exists(param['path']) : os.makedirs(param['path'])
-    # 保存文件
-    if file.save(param['path']+param['filename'])==None :
-      return param['filename']
-    else :
+    if not FileEo.Mkdir(param['path']):
+      print('[Upload] Mkdir:', '创建目录失败!')
       return ''
+    # 保存文件
+    if not FileEo.Upload(file, param['path']+param['filename']):
+      print('[Upload] Upload:', '保存文件失败!')
+      return ''
+    return param['filename']
 
   # Base64
   def Base64(params={}):
@@ -54,12 +56,14 @@ class Upload:
       elif ct[0]=='data:image/gif;base64' : param['ext']='gif'
       base64 = ct[1]
     # 创建目录
-    if not os.path.exists(param['path']) : os.makedirs(param['path'])
+    if not FileEo.Mkdir(param['path']) :
+      print('[Upload] Mkdir:', '创建目录失败!')
+      return ''
     # 文件名
     filename = Upload._getName()+'.'+param['ext'] if not param['filename'] else param['filename']
-    with open(param['path']+filename,'wb') as f :
-      f.write(Base64.b64decode(base64))
-      f.close()
+    if not FileEo.Writer(param['path']+filename, Base64.b64decode(base64)) :
+      print('[Upload] Writer:', '保存文件失败!')
+      return ''
     return filename
 
   # 获取名称

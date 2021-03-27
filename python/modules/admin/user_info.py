@@ -1,3 +1,4 @@
+from library.file_eo import FileEo
 import os
 from library.upload import Upload
 from base.base import Base
@@ -10,8 +11,7 @@ from flask import request
 
 class UserInfo(Base):
 
-  RootDir: str = 'public/'
-  ImgDir = 'upload/user/img/'
+  ImgDir: str='upload/user/img/'
 
   # 列表
   def List(self):
@@ -70,7 +70,7 @@ class UserInfo(Base):
     base64 = self.Post('base64')
     if not base64 : return self.GetJSON({'code':4000, 'msg':'参数错误!'})
     # 上传
-    img = Upload.Base64({'path':self.RootDir+self.ImgDir, 'base64':base64})
+    img = Upload.Base64({'path':self.ImgDir, 'base64':base64})
     if not img : return self.GetJSON({'code':5000, 'msg':'上传失败!'})
     # 数据
     model = UserInfoM()
@@ -81,7 +81,7 @@ class UserInfo(Base):
     model.Where('uid=%s', tData['uid'])
     model.Update()
     # 清理
-    rmImg = self.RootDir+imgData['img']
-    if os.path.exists(rmImg) : os.remove(rmImg)
+    rmImg = imgData['img']
+    FileEo.RemoveAll(rmImg)
     # 返回
     return self.GetJSON({'code':0, 'msg':'成功', 'img':Data.Img(self.ImgDir+img)})

@@ -3,8 +3,9 @@ class Env :
   debug: bool = True                                  #模式
   host: str = '127.0.0.1'                             #主机
   port: int = 9010                                    #端口
-  base_url: str = 'https://demo-python.webmis.vip/'   #根目录
-  key: str = 'e4b99adec618e653400966be536c45f8'       #根目录
+  base_url: str = 'https://demo-python.webmis.vip/'   #资源
+  root_dir: str = 'public/'                           #根目录
+  key: str = 'e4b99adec618e653400966be536c45f8'       #KEY
   # Token
   admin_token_prefix = 'Admin'                        #前缀
   admin_token_time = 2*3600                           #有效时长(2小时)

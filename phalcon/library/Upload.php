@@ -32,9 +32,12 @@ class Upload extends Base {
       self::Print('[Upload] Mkdir:', '创建目录失败!');
       return '';
     }
-    // 移动文件
-    if(FileEo::MoveUpload($file['tmp_name'],$param['path'].$param['filename'])) return $param['filename'];
-    else return '';
+    // 保存文件
+    if(!FileEo::Upload($file['tmp_name'],$param['path'].$param['filename'])){
+      self::Print('[Upload] Upload:', '保存文件失败!');
+      return '';
+    }
+    return $param['filename'];
   }
 
   /* Base64 */
@@ -64,8 +67,11 @@ class Upload extends Base {
     // 文件名
     $filename = empty($param['filename'])?self::_getName().'.'.$param['ext']:$param['filename'];
     // 保存文件
-    if(FileEo::Writer($param['path'].$filename, base64_decode($base64))) return $filename;
-    else return '';
+    if(!FileEo::Writer($param['path'].$filename, base64_decode($base64))){
+      self::Print('[Upload] Writer:', '保存文件失败!');
+      return '';
+    }
+    return $filename;
   }
 
   // 获取名称
