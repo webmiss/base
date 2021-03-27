@@ -110,5 +110,5 @@ func (r UserInfo) Upimg(c *gin.Context) {
 	rmImg := imgData["img"].(string)
 	(&library.FilesEo{}).RemoveAll(rmImg)
 	// 返回
-	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "img": ""})
+	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "img": (&base.Data{}).Img(ImgDir + img)})
 }
