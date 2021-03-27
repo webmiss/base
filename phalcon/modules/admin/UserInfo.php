@@ -25,6 +25,7 @@ class UserInfo extends Base {
     $model->Where('uid=?', $tData->uid);
     $list = $model->FindFirst();
     // 数据
+    $list['img'] = Data::Img($list['img']);
     $list['birthday'] = date('Y-m-d', $list['birthday']);
     // 返回
     return self::GetJSON(['code'=>0,'msg'=>'成功','list'=>$list]);
