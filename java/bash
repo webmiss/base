@@ -27,11 +27,7 @@ elif [ "$s" == "build" ]; then
   }
 # 启动
 elif [ "$s" == "start" ]; then
-  nohup java -jar $jar >> log.txt &
-# 重启
-elif [ "$s" == "restart" ]; then
-  ps -aux | grep java | grep -v grep | awk {'print $2'} | xargs kill
-  nohup java -jar $jar >> log.txt &
+  nohup java -jar $jar >> log.txt 2>&1 &
 # 停止
 elif [ "$s" == "stop" ]; then
   ps -aux | grep java | grep -v grep | awk {'print $2'} | xargs kill
@@ -46,7 +42,6 @@ else
   echo "  build         打包: mvn package -DskipTests"
   echo "<Server>"
   echo "  start         启动"
-  echo "  restart       重启服务: 中断进程并重启"
-  echo "  stop          停止服务"
+  echo "  stop          停止"
   echo "----------------------------------------------------"
 fi

@@ -29,11 +29,7 @@ elif [ "$s" == "socket" ]; then
   }
 # Socket[start]
 elif [ "$s" == "socketStart" ]; then
-  nohup php $cli socket start &
-# Socket[restart]
-elif [ "$s" == "socketRestart" ]; then
-  ps -aux | grep "$cli socket" | grep -v grep | awk {'print $2'} | xargs kill
-  nohup php $cli socket start &
+  php $cli socket start &
 # Socket[stop]
 elif [ "$s" == "socketStop" ]; then
   ps -aux | grep "$cli socket" | grep -v grep | awk {'print $2'} | xargs kill
@@ -50,7 +46,6 @@ else
   echo "<WebSocket>"
   echo "  socket        运行"
   echo "  socketStart   启动"
-  echo "  socketRestart 重启"
   echo "  socketStop    停止"
   echo "----------------------------------------------------"
 fi
