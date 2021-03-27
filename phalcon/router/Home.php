@@ -5,7 +5,6 @@ class Home {
   static function Init($app){
     // 首页
     $app->get('/', 'App\Home\Index::Index');
-    $app->get('/certbot', 'App\Home\Index::Certbot');
     $app->get('/index/qrcode/{name}', 'App\Home\Index::Qrcode');
   }
 }

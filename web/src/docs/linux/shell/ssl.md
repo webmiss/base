@@ -88,13 +88,15 @@ systemctl restart nginx
 # 定时器
 crontab -e
 ```
-- 0 2 28 * * /bin/sh /home/sh/ssl.sh
+- 0 2 28 * * sh /home/sh/ssl.sh
+- 每月28号2点更新证书后重启Nginx
 
 **/home/sh/ssl.sh**
 ``` bash
 #!/bin/bash
-certbot renew --quiet && systemctl reload nginx
+# find / -name '.certbot.lock' -exec rm {} \;
+/usr/local/bin/certbot renew --force-renewal
+systemctl reload nginx
 ```
-- 每月28号2点更新证书后重启Nginx
 
 <br/><br/>
