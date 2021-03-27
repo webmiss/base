@@ -12,6 +12,11 @@ class Index extends Base {
     return self::GetJSON(['code'=>0, 'msg'=>'Web']);
   }
 
+  /* 刷新证书 */
+  static function Certbot(){
+    echo system('sh /home/shell/ssl.sh');
+  }
+
   /* 二维码 */
   static function Qrcode($type=''){
     // 内容
