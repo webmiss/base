@@ -6,22 +6,22 @@ set s=%1%
 
 REM 运行
 if "%s%"=="serve" (
-  ( yarn serve ) || ( echo ^> 请安装'npm install -g yarn' )
+  ( yarn serve ) || ( yarn install && yarn serve ) || ( echo ^> 请安装'npm install -g yarn' )
 REM 安装
 ) else if "%s%"=="install" (
   ( yarn install ) || ( echo ^> 请安装'npm install -g yarn' )
 REM 打包
 ) else if "%s%"=="build" (
-  ( yarn build ) || ( echo ^> 请安装'npm install -g yarn' )
+  ( yarn install && yarn build ) || ( echo ^> 请安装'npm install -g yarn' )
 REM 预览
 ) else if "%s%"=="http" (
   ( http-server -v ) && (
-    yarn build
+    yarn install && yarn build
     http-server ./dist
   ) || (
     echo ^> 准备安装'npm install -g http-server'
     npm install -g http-server
-    yarn build
+    yarn install && yarn build
     http-server ./dist
   )
 ) else (

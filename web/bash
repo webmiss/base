@@ -8,6 +8,8 @@ if [ "$s" == "serve" ]; then
   {
     yarn serve
   } || {
+    yarn install && yarn serve
+  } || {
     echo "> 请安装'npm install -g yarn'"
   }
 # 安装
@@ -20,7 +22,7 @@ elif [ "$s" == "install" ]; then
 # 打包
 elif [ "$s" == "build" ]; then
   {
-    yarn build
+    yarn install && yarn build
   } || {
     echo "> 请安装'npm install -g yarn'"
   }
@@ -29,12 +31,12 @@ elif [ "$s" == "http" ]; then
   {
     http-server -v
   } && {
-    yarn build
+    yarn install && yarn build
     http-server ./dist
   } || {
     echo "> 准备安装'yarn global add http-server'"
     yarn global add http-server
-    yarn build
+    yarn install && yarn build
     http-server ./dist
   }
 else
