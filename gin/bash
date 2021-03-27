@@ -53,7 +53,7 @@ elif [ "$s" == "http" ]; then
   }
 # 启动
 elif [ "$s" == "start" ]; then
-  go build && ./$name &
+  go build && ./$name 2>&1 &
 # 停止
 elif [ "$s" == "stop" ]; then
   ps -aux | grep ./$name | grep -v grep | awk {'print $2'} | xargs kill
