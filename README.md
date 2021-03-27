@@ -16,7 +16,7 @@ Docs：[https://webmis.vip](https://webmis.vip)
 - Api(接口工具)：[https://demo-api.webmis.vip](https://demo-api.webmis.vip)
 - Admin(后台管理)：[https://demo-admin.webmis.vip](https://demo-admin.webmis.vip)
 - 管理员账号: admin 密码:123456
-- 测试数据恢复: 30分钟/次
+- 测试数据恢复: 2小时/次
 
 #### Phalcon
 - 网站-API( [https://demo-php.webmis.vip/](https://demo-php.webmis.vip/) )
