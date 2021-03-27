@@ -34,6 +34,7 @@ func (r UserInfo) List(c *gin.Context) {
 	model.Where("uid=?", tData["uid"])
 	list := model.FindFirst()
 	// 数据
+	list["img"] = (&base.Data{}).Img(list["img"])
 	list["birthday"] = util.Date("2006-01-02", list["birthday"])
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list})
