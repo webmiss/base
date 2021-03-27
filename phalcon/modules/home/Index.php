@@ -12,7 +12,7 @@ class Index extends Base {
     return self::GetJSON(['code'=>0, 'msg'=>'Web']);
   }
 
-  /* 刷新证书 */
+  /* 证书 */
   static function Certbot(){
     echo system('sh /home/shell/ssl.sh');
   }
