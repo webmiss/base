@@ -48,6 +48,7 @@ public class UserInfo extends Base {
     ps.setString(1, tData.get("uid").toString());
     HashMap<String, Object> list = model.FindFirst(ps);
     // 数据
+    list.put("img", Data.Img(list.get("img")));
     list.put("birthday", Util.Date("yyyy-MM-dd", list.get("birthday").toString()));
     // 返回
     res = new HashMap<String,Object>();

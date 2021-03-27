@@ -26,6 +26,7 @@ class UserInfo(Base):
     model.Where('uid=%s', str(tData['uid']))
     list = model.FindFirst()
     # 数据
+    list['img'] = Data.Img(str(list['img']))
     list['birthday'] = Util.Date("%Y-%m-%d", float(list['birthday']))
     # 返回
     return self.GetJSON({'code':0, 'msg':'成功', 'list':list})
