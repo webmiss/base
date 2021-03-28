@@ -31,4 +31,4 @@ if __name__ == '__main__':
   # 默认数据库
   Model.DBPool(Model, '')
   # 启动
-  if(Env.debug): app.run(host=Env.host,port=Env.port)
+  app.run(host=Env.host,port=Env.port)
