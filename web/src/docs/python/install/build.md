@@ -27,10 +27,10 @@ vi /etc/rc.d/rc.local
 ## Nginx虚拟主机
 ``` nginx
 upstream demo_flask {
-    server unix:///home/www/base/python/server/web.sock;
+    server unix:///home/www/base/python/tmp/web.sock;
 }
 upstream demo_python_websocket {
-    server 127.0.0.1:5001;
+    server 127.0.0.1:9011;
 }
 
 server {
