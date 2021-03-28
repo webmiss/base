@@ -1,7 +1,8 @@
 <template>
   <wm-main>
     <div class="index_test">
-      <el-button>桌面</el-button>
+      桌面
+      <!-- <el-button>桌面</el-button> -->
     </div>
   </wm-main>
 </template>

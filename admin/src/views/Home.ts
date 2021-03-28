@@ -3,12 +3,12 @@ import { useStore } from 'vuex';
 /* UI组件 */
 import wmMain from '@/components/main/index.vue'
 /* ElementUI */
-import { ElButton } from 'element-plus';
-import '@/assets/themes/button.css'
+// import { ElButton } from 'element-plus';
+// import '@/assets/themes/button.css'
 
 export default defineComponent({
   name: 'Home',
-  components: {wmMain,ElButton},
+  components: {wmMain},
   data(){
     // 状态
     const store: any = useStore();
