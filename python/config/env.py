@@ -1,6 +1,6 @@
 # 公共配置
 class Env :
-  debug: bool = True                                  #模式
+  debug: bool = False                                 #模式
   host: str = '127.0.0.1'                             #主机
   port: int = 9010                                    #端口
   base_url: str = 'https://demo-python.webmis.vip/'   #资源
