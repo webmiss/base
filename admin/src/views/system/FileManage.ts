@@ -29,7 +29,7 @@ export default defineComponent({
     const lists: any = {url:'', folder:[], files:[], dirNum:0, fileNum:0, size:'0KB'};
     const folder: any = {show:false, form:{name:''}};
     const rename: any = {show:false, form:{rename:'', name:''}};
-    const upload: any = {url:'Sysfilemanage/upFile', param:{}};
+    const upload: any = {url:'sysfile/upload', param:{}};
     const down: any = {show:false,filename:''};
     const zip: any = {show:false, form:{name:'', files:[]}};
     const del: any = {show:false, data:[]};
@@ -71,14 +71,6 @@ export default defineComponent({
     }
   },
   mounted(){
-    // 动作菜单
-    this.state.action.menus = [
-      {name:'新建文件夹', action:'mkdir', ico:''},
-      {name:'重命名', action:'rename', ico:''},
-      {name:'上传', action:'upload', ico:''},
-      // {name:'打包', action:'zip', ico:''},
-      {name:'删除', action:'remove', ico:''},
-    ];
     // 加载数据
     if(Storage.getItem('token')) this.loadData();
   },
@@ -87,7 +79,7 @@ export default defineComponent({
     /* 加载数据 */
     loadData(){
       const load = Loading();
-      Post('Sysfilemanage/list',{
+      Post('sysfile/list',{
         token: Storage.getItem('token'),
         path: this.info.path
       },(res: any)=>{
@@ -132,7 +124,7 @@ export default defineComponent({
       if(!this.isExist(name)) return false;
       // 提交
       this.folder.show = false;
-      this.subAjax('mkDir',{path:this.info.path, name:name});
+      this.subAjax('mkdir',{path:this.info.path, name:name});
     },
 
     /* 重命名 */
@@ -144,7 +136,7 @@ export default defineComponent({
       if(!this.isExist(name)) return false;
       // 提交
       this.rename.show = false;
-      this.subAjax('reName',{path:this.info.path, rename:rename, name:name});
+      this.subAjax('rename',{path:this.info.path, rename:rename, name:name});
     },
 
     /* 上传 */
@@ -161,7 +153,7 @@ export default defineComponent({
     /* 下载 */
     downFile(){
       this.down.show = false;
-      DownBlob('Sysfilemanage/downFile',{
+      DownBlob('sysfile/down',{
         token:Storage.getItem('token'),
         path: this.info.path,
         filename: this.down.filename,
@@ -173,7 +165,7 @@ export default defineComponent({
       const data = JSON.stringify(this.del.data);
       // 提交
       this.del.show = false;
-      this.subAjax('rmFile',{path:this.info.path, data:data});
+      this.subAjax('remove',{path:this.info.path, data:data});
     },
 
     /* 打开文件夹 */
@@ -266,7 +258,7 @@ export default defineComponent({
     subAjax(action: string, parameter: any, callback?: any, config?: any){
       parameter.token = Storage.getItem('token');
       const load = Loading();
-      Post('Sysfilemanage/'+action,parameter,(res: any)=>{
+      Post('sysfile/'+action,parameter,(res: any)=>{
         load.clear();
         const d = res.data;
         // 回调

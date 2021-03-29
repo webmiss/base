@@ -16,8 +16,10 @@ class Admin {
     $app->post('/admin/userinfo/upimg', 'App\Admin\UserInfo::Upimg');
     // 修改密码
     $app->post('/admin/userpasswd/edit', 'App\Admin\UserPasswd::Edit');
+    // 文件管理
+    $app->post('/admin/sysfile/list', 'App\Admin\SysFile::List');
     // 系统菜单
-    $app->post('/admin/Sysmenus/getMenus', 'App\Admin\SysMenus::GetMenus');
+    $app->post('/admin/sysmenus/getMenus', 'App\Admin\SysMenus::GetMenus');
   }
 
 }

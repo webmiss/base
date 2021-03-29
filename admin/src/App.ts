@@ -231,7 +231,7 @@ export default defineComponent({
 
     /* 用户菜单 */
     getMenus(){
-      Post('Sysmenus/getMenus',{token:Storage.getItem('token')},(res: any)=>{
+      Post('sysmenus/getMenus',{token:Storage.getItem('token')},(res: any)=>{
         let d = res.data;
         if(d.code==0){
           this.menus = d.menus;
