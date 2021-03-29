@@ -25,7 +25,7 @@ elif [ "$s" == "install" ]; then
   }
 # 启动
 elif [ "$s" == "start" ]; then
-  sudo uwsgi --ini $config 2>&1 &
+  uwsgi --ini $config 2>&1 &
 # 停止
 elif [ "$s" == "stop" ]; then
   ps -aux | grep uwsgi | grep -v grep | awk {'print $2'} | xargs kill
