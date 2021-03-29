@@ -1,7 +1,7 @@
 <?php
 namespace Model;
 
-use Base\Base;
+use Service\Base;
 use Config\Db;
 
 /* 数据库 */

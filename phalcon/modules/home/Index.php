@@ -1,7 +1,7 @@
 <?php
 namespace App\Home;
 
-use Base\Base;
+use Service\Base;
 use Library\Qrcode;
 
 class Index extends Base {

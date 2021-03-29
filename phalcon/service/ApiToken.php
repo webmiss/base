@@ -1,7 +1,6 @@
 <?php
 namespace Service;
 
-use Base\Base;
 use Config\Env;
 use Library\Safety;
 use Library\Redis;

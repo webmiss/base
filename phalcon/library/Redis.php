@@ -1,7 +1,7 @@
 <?php
 namespace Library;
 
-use Base\Base;
+use Service\Base;
 use Config\Redis as Cfg;
 
 /* 缓存数据库 */

@@ -1,7 +1,7 @@
 <?php
 namespace Middleware;
 
-use Base\Base;
+use Service\Base;
 
 /* 允许跨域请求 */
 class NotFound extends Base {

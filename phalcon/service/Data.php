@@ -1,7 +1,6 @@
 <?php
-namespace Base;
+namespace Service;
 
-use Base\Base;
 use Config\Env;
 
 /* 数据类 */

@@ -1,7 +1,7 @@
 <?php
 namespace App\Api;
 
-use Base\Base;
+use Service\Base;
 
 class Index extends Base {
 

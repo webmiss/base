@@ -2,7 +2,7 @@
 use Phalcon\Loader;
 use Phalcon\Mvc\Micro;
 
-use Base\Base;
+use Service\Base;
 use Router\Home;
 use Router\Api;
 use Router\Admin;
@@ -18,7 +18,6 @@ require $load;
 /* 命名空间 */
 $loader = new Loader();
 $loader->registerNamespaces([
-  'Base'=> BASE_PATH.'/base/',
   'Config'=> BASE_PATH.'/config/',
   'Library'=> BASE_PATH.'/library/',
   'Middleware'=> BASE_PATH.'/middleware/',

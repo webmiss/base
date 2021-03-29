@@ -1,7 +1,7 @@
 <?php
 namespace App\Api;
 
-use Base\Base;
+use Service\Base;
 use Service\ApiToken;
 
 class Demo extends Base {

@@ -1,7 +1,7 @@
 <?php
 namespace App\Admin;
 
-use Base\Base;
+use Service\Base;
 use Service\AdminToken;
 use Model\SysMenu;
 

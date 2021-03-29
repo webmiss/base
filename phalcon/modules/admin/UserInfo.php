@@ -1,8 +1,8 @@
 <?php
 namespace App\Admin;
 
-use Base\Base;
-use Base\Data;
+use Service\Base;
+use Service\Data;
 use Library\FileEo;
 use Library\Upload;
 use Service\AdminToken;

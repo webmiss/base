@@ -1,7 +1,7 @@
 <?php
 namespace Library;
 
-use Base\Base;
+use Service\Base;
 
 /* 上传类 */
 class Upload extends Base {

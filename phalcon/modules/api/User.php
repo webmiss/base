@@ -1,8 +1,8 @@
 <?php
 namespace App\Api;
 
-use Base\Base;
-use Base\Data;
+use Service\Base;
+use Service\Data;
 use Config\Env;
 use Library\Safety;
 use Library\Redis;

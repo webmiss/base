@@ -1,9 +1,8 @@
 <?php
 
-namespace Base;
+namespace Service;
 
 use Middleware\Cors;
-use Error;
 
 class Base {
 

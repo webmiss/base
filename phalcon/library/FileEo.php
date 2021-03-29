@@ -1,7 +1,7 @@
 <?php
 namespace Library;
 
-use Base\Base;
+use Service\Base;
 
 /* 文件类 */
 class FileEo extends Base {
