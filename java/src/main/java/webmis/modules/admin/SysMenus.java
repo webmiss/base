@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import webmis.base.Base;
+import webmis.service.Base;
 import webmis.model.SysMenu;
 import webmis.service.AdminToken;
 import webmis.util.Util;

@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 import com.alibaba.druid.pool.DruidDataSource;
 
-import webmis.base.Base;
+import webmis.service.Base;
 import webmis.config.Db;
 
 /* 数据库 */

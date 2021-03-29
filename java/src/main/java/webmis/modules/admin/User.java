@@ -8,8 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import webmis.base.Base;
-import webmis.base.Data;
+import webmis.service.Base;
+import webmis.service.Data;
 import webmis.config.Env;
 import webmis.library.Redis;
 import webmis.library.Safety;

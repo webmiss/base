@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 import com.alibaba.fastjson.JSONArray;
 
-import webmis.base.Base;
 import webmis.config.Env;
 import webmis.library.Redis;
 import webmis.library.Safety;

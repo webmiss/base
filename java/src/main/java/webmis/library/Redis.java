@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import redis.clients.jedis.Jedis;
-import webmis.base.Base;
+import webmis.service.Base;
 
 /* 缓存数据库 */
 public class Redis extends Base {
