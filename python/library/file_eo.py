@@ -1,12 +1,11 @@
 import os
 import re
 from util.util import Util
-from config.env import Env
 
 # 文件类
 class FileEo:
 
-  Root: str = Env.root_dir
+  Root: str=''
 
   # 列表
   def List(path: str=''):

@@ -1,7 +1,8 @@
-from library.file_eo import FileEo
 import time
 import datetime
 import base64 as Base64
+from config.env import Env
+from library.file_eo import FileEo
 from util.util import Util
 from flask import request
 
@@ -28,6 +29,7 @@ class Upload:
     # 是否重命名
     param['filename'] = file.filename if not param['filename'] else param['filename']
     # 创建目录
+    FileEo.Root = Env.root_dir
     if not FileEo.Mkdir(param['path']):
       print('[Upload] Mkdir:', '创建目录失败!')
       return ''
@@ -56,6 +58,7 @@ class Upload:
       elif ct[0]=='data:image/gif;base64' : param['ext']='gif'
       base64 = ct[1]
     # 创建目录
+    FileEo.Root = Env.root_dir
     if not FileEo.Mkdir(param['path']) :
       print('[Upload] Mkdir:', '创建目录失败!')
       return ''

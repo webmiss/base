@@ -4,15 +4,154 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import webmis.config.Env;
+import webmis.util.Util;
 
 /* 文件类 */
 public class FileEo {
 
-  public static String Root=Env.root_dir;
+  public static String Root="";
+
+  /* 列表 */
+  public static HashMap<String, Object> List(String path){
+    // 路径
+    path = path.equals("/") ? "" : Util.Trim(path, "/") + "/";
+    path = path.replaceAll("\\.\\.|\\.\\/", "");
+    // 数据
+    HashMap<String, Object> res = new HashMap<String, Object>();
+    ArrayList<HashMap<String, Object>> folder = new ArrayList<HashMap<String, Object>>();
+    ArrayList<HashMap<String, Object>> files = new ArrayList<HashMap<String, Object>>();
+    HashMap<String, Object> tmp;
+    res.put("path", path);
+    res.put("dirNum", 0);
+    res.put("fileNum", 0);
+    res.put("size", 0);
+    res.put("folder", folder);
+    res.put("files", files);
+    // 是否文件夹
+    String root = Root + path;
+    File dir = new File(root);
+    if (!dir.exists()) return res;
+    // 文件夹&文件
+    String ff;
+    long size;
+    long total = 0;
+    String ctime;
+    String mtime;
+    String perm;
+    File[] list = dir.listFiles();
+    for (File f : list) {
+      ff = root+"/"+f.getName();
+      size = FileSize(f);
+      total += size;
+      ctime = GetCtime(ff);
+      mtime = GetMtime(ff);
+      perm = GetPerm(ff);
+      if (f.isDirectory()) {
+        tmp = new HashMap<String, Object>();
+        tmp.put("name", f.getName());
+        tmp.put("size", FormatBytes(size));
+        tmp.put("ctime", ctime);
+        tmp.put("mtime", mtime);
+        tmp.put("perm", perm);
+        folder.add(tmp);
+        res.put("dirNum", Integer.valueOf(res.get("dirNum").toString())+1);
+      } else {
+        tmp = new HashMap<String, Object>();
+        tmp.put("name", f.getName());
+        tmp.put("size", FormatBytes(size));
+        tmp.put("ctime", ctime);
+        tmp.put("mtime", mtime);
+        tmp.put("perm", perm);
+        tmp.put("ext", GetExt(f.getName()));
+        files.add(tmp);
+        res.put("fileNum", Integer.valueOf(res.get("fileNum").toString())+1);
+      }
+      // 大小
+      res.put("size", FormatBytes(total));
+    }
+    return res;
+  }
+
+  /* 大小(文件夹&文件) */
+  public static Long FileSize(File file){
+    long total = 0;
+    // 文件
+    if(file.isFile()) return file.length();
+    // 文件夹
+    final File[] children = file.listFiles();
+    if (children!=null){
+      for (final File child : children){
+        total += FileSize(child);
+      }
+    }
+    return total;
+  }
+  
+  
+  /* 创建时间 */
+  public static String GetCtime(String ff) {
+    String time = "";
+    try {
+      BasicFileAttributes att = Files.readAttributes(Paths.get(ff), BasicFileAttributes.class);
+      String t = String.valueOf(att.creationTime().toMillis());
+      time = Util.Date("yyyy-MM-dd hh:mm:ss",t);
+    }catch(IOException e){ }
+    return time;
+  }
+  /* 修改时间 */
+  public static String GetMtime(String ff){
+    String time = "";
+    try {
+      BasicFileAttributes att = Files.readAttributes(Paths.get(ff), BasicFileAttributes.class);
+      String t = String.valueOf(att.creationTime().toMillis());
+      time = Util.Date("yyyy-MM-dd hh:mm:ss",t);
+    }catch(IOException e){ }
+    return time;
+  }
+  /* 获取权限值 */
+  public static String GetPerm(String ff) {
+    File file = new File(ff);
+    String str="";
+    int perm = 0;
+    if(file.canExecute()) perm+=1;
+    if(file.canRead()) perm+=2;
+    if(file.canWrite()) perm+=4;
+    if(perm==7) str = "755";
+    else if(perm==6) str = "644";
+    else str = String.valueOf(perm);
+    return str;
+  }
+  /* 文件后缀 */
+  public static String GetExt(String fileName){
+    return fileName.substring(fileName.lastIndexOf(".")+1).toLowerCase();
+  }
+
+  /* 格式化 */
+  public static String FormatBytes(Long bytes){
+    String str;
+    double tmp;
+    if(bytes >= 1073741824){
+      tmp = Double.valueOf(Math.round(bytes*100/1073741824))/100;
+      str = String.format("%sGB",tmp);
+    }else if(bytes >= 1048576){
+      tmp = Double.valueOf(Math.round(bytes*100/1048576))/100;
+      str = String.format("%sMB",tmp);
+    }else if(bytes >= 1024){
+      tmp = Double.valueOf(Math.round(bytes*100/1024))/100;
+      str = String.format("%sKB",tmp);
+    }else{
+      str = String.format("%sB",bytes);
+    }
+    return str;
+  }
 
   /* 创建目录 */
   public static boolean Mkdir(String path){

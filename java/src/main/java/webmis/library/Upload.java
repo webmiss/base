@@ -5,6 +5,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import org.springframework.web.multipart.MultipartFile;
 
+import webmis.config.Env;
 import webmis.util.Util;
 
 import java.time.LocalDateTime;
@@ -45,6 +46,7 @@ public class Upload {
     if (param.get("filename").equals(""))
       param.put("filename", fileName);
     // 创建目录
+    FileEo.Root = Env.root_dir;
     if(!FileEo.Mkdir(String.valueOf(param.get("path")))){
       System.out.println("[Upload] Mkdir: 创建目录失败!");
       return "";
@@ -80,6 +82,7 @@ public class Upload {
       base64 = ct[1];
     }
     // 创建目录
+    FileEo.Root = Env.root_dir;
     if(!FileEo.Mkdir(String.valueOf(param.get("path")))){
       System.out.println("[Upload] Mkdir: 创建目录失败!");
       return "";

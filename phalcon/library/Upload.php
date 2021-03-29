@@ -1,6 +1,7 @@
 <?php
 namespace Library;
 
+use Config\Env;
 use Service\Base;
 
 /* 上传类 */
@@ -28,6 +29,7 @@ class Upload extends Base {
     // 是否重命名
     $param['filename'] = empty($param['filename'])?$file['name']:$param['filename'].'.'.$ext;
     // 创建目录
+    FileEo::$Root = Env::$root_dir;
     if(!FileEo::Mkdir($param['path'])){
       self::Print('[Upload] Mkdir:', '创建目录失败!');
       return '';
@@ -60,6 +62,7 @@ class Upload extends Base {
       $base64 = $ct[1];
     }
     // 创建目录
+    FileEo::$Root = Env::$root_dir;
     if(!FileEo::Mkdir($param['path'])){
       self::Print('[Upload] Mkdir:', '创建目录失败!');
       return '';

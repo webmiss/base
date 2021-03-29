@@ -20,7 +20,7 @@ import webmis.util.Util;
 /* 系统菜单 */
 @RestController
 @Controller("AdminSysMenus")
-@RequestMapping("/admin/Sysmenus")
+@RequestMapping("/admin/sysmenus")
 public class SysMenus extends Base {
 
   private static HashMap<String, ArrayList<HashMap<String, Object>>> menus = null;

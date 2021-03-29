@@ -18,7 +18,7 @@ class SysFile extends Base {
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $path = self::Post('path');
-    FileEo::$Root = self::$dirRoot;
+    FileEo::$Root = Env::$root_dir . self::$dirRoot;
     $list = FileEo::List($path);
     // 返回
     return self::GetJSON(['code'=>0, 'msg'=>'成功', 'url'=>Env::$base_url.self::$dirRoot, 'data'=>$list]);
