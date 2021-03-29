@@ -3,6 +3,7 @@ from modules.admin.index import Index
 from modules.admin.user import User
 from modules.admin.user_info import UserInfo
 from modules.admin.user_passwd import UserPasswd
+from modules.admin.sys_file import SysFile
 from modules.admin.sys_menus import SysMenus
 
 Admin = Blueprint('admin', __name__)
@@ -27,6 +28,9 @@ def userInfoUpimg() : return UserInfo().Upimg()
 # 修改密码
 @Admin.route('/userpasswd/edit',methods=['POST'])
 def userPasswdEdit() : return UserPasswd().Edit()
+# 文件管理
+@Admin.route('/sysfile/list',methods=['POST'])
+def sysFilelist() : return SysFile().List()
 # 系统菜单
-@Admin.route('/Sysmenus/getMenus',methods=['POST'])
+@Admin.route('/sysmenus/getMenus',methods=['POST'])
 def sysGetMenus() : return SysMenus().GetMenus()
