@@ -1,5 +1,4 @@
 from library.file_eo import FileEo
-import os
 from library.upload import Upload
 from service.base import Base
 from service.data import Data

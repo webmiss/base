@@ -41,7 +41,7 @@ func (r User) Login(c *gin.Context) {
 	model.Columns("a.id", "a.state", "b.position", "b.nickname", "b.name", "b.gender", "b.birthday", "b.img", "c.perm", "d.perm as role_perm")
 	data := model.FindFirst()
 	// 是否存在
-	if len(data) == 0 {
+	if data == nil {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "帐号或密码错误!"})
 		return
 	}

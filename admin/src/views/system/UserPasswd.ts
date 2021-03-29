@@ -50,8 +50,8 @@ export default defineComponent({
       // 提交
       const load = Loading();
       Post(
-        'Userpasswd/edit',
-        {token:Storage.getItem('token'), passwd:passwd, passwd1:passwd1},
+        'userpasswd/edit',
+        {token:Storage.getItem('token'), passwd:passwd, passwdNew:passwd1},
       (res: any)=>{
         load.clear();
         const d = res.data;

@@ -58,7 +58,7 @@ public class User extends Base {
     ps.setString(4, Util.Md5(passwd));
     HashMap<String, Object> data = model.FindFirst(ps);
     // 是否存在
-    if(data.size()==0){
+    if(data.isEmpty()){
       res = new HashMap<String, Object>();
       res.put("code",4000);
       res.put("msg","帐号或密码错误!");

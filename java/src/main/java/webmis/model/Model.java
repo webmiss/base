@@ -248,10 +248,9 @@ public class Model extends Base {
   }
   /* 查询-单条 */
   public HashMap<String,Object> FindFirst(PreparedStatement ps) {
-    HashMap<String,Object> res = new HashMap<String,Object>();
     ArrayList<HashMap<String,Object>> data = FindDataAll(ps);
-    if(data.size()>0) return data.get(0);
-     return res;
+    if(data.isEmpty()) return null;
+     return data.get(0);
   }
   /* 获取查询结果 */
   public ArrayList<HashMap<String,Object>> FindDataAll(PreparedStatement ps) {
@@ -273,10 +272,11 @@ public class Model extends Base {
       // 释放
       rs.close();
       ps.close();
+      return res;
     } catch (SQLException e) {
       Print("[Model] Find: ", e.getMessage());
+      return null;
     }
-    return res;
   }
 
   /* 添加-数据 */

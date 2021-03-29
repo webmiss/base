@@ -71,8 +71,7 @@ export default defineComponent({
     }
   },
   mounted(){
-    // 动作菜单-获取
-    this.state.action.url = 'SysFileManage';
+    // 动作菜单
     this.state.action.menus = [
       {name:'新建文件夹', action:'mkdir', ico:''},
       {name:'重命名', action:'rename', ico:''},

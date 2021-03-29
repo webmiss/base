@@ -32,8 +32,6 @@ export default defineComponent({
     return {state, form, upload}
   },
   mounted(){
-    // 动作菜单-获取
-    this.state.action.url = 'SysConfig';
     // 加载数据
     if(Storage.getItem('token')) this.loadData();
   },

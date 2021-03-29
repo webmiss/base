@@ -20,6 +20,8 @@ func Admin(r *gin.Engine) {
 		g.POST("userinfo/list", (&admin.UserInfo{}).List)
 		g.POST("userinfo/edit", (&admin.UserInfo{}).Edit)
 		g.POST("userinfo/upimg", (&admin.UserInfo{}).Upimg)
+		// 修改密码
+		g.POST("userpasswd/edit", (&admin.UserPasswd{}).Edit)
 		// 系统菜单
 		g.POST("Sysmenus/getMenus", (&admin.SysMenus{}).GetMenus)
 	}

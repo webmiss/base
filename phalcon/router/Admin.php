@@ -14,6 +14,8 @@ class Admin {
     $app->post('/admin/userinfo/list', 'App\Admin\UserInfo::List');
     $app->post('/admin/userinfo/edit', 'App\Admin\UserInfo::Edit');
     $app->post('/admin/userinfo/upimg', 'App\Admin\UserInfo::Upimg');
+    // 修改密码
+    $app->post('/admin/userpasswd/edit', 'App\Admin\UserPasswd::Edit');
     // 系统菜单
     $app->post('/admin/Sysmenus/getMenus', 'App\Admin\SysMenus::GetMenus');
   }

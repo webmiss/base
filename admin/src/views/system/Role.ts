@@ -63,8 +63,6 @@ export default defineComponent({
     }
   },
   mounted(){
-    // 动作菜单-获取
-    this.state.action.url = 'SysRole';
     // 加载数据
     if(Storage.getItem('token')) this.loadData();
   },
