@@ -153,7 +153,12 @@ public class UserInfo extends Base {
     ps = model.Bind(sql);
     ps.setString(1, ImgDir+img);
     ps.setString(2, tData.get("uid").toString());
-    model.Update(ps);
+    if(!model.Update(ps)){
+      res = new HashMap<String,Object>();
+      res.put("code", 5000);
+      res.put("msg", "上传失败!");
+      return GetJSON(res);
+    }
     // 清理
     String rmImg = imgData.get("img").toString();
     FileEo.RemoveAll(rmImg);

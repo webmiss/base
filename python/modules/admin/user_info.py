@@ -80,7 +80,7 @@ class UserInfo(Base):
     imgData = model.FindFirst()
     model.Set({'img':self.ImgDir+img})
     model.Where('uid=%s', tData['uid'])
-    model.Update()
+    if not model.Update() : return self.GetJSON({'code':5000, 'msg':'上传失败!'})
     # 清理
     rmImg = imgData['img']
     FileEo.RemoveAll(rmImg)

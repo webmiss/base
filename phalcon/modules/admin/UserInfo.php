@@ -81,7 +81,7 @@ class UserInfo extends Base {
     $imgData = $model->FindFirst();
     $model->Set(['img'=>self::$ImgDir.$img]);
     $model->Where('uid=?', $tData->uid);
-    $model->Update();
+    if(!$model->Update()) return self::GetJSON(['code'=>5000, 'msg'=>'上传失败!']);
     // 清理
     $rmImg = (string)$imgData['img'];
     FileEo::RemoveAll($rmImg);

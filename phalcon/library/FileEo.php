@@ -11,7 +11,6 @@ class FileEo extends Base {
   /* 创建目录 */
   static function Mkdir(string $path=''): bool {
     $path = self::$Root.$path;
-    self::Print($path);
     if(!file_exists($path)) return mkdir($path,0777,true);
     return true;
   }

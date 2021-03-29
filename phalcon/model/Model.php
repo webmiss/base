@@ -9,7 +9,6 @@ class Model extends Base {
 
   private $conn = null;          //连接
   private $sql = '';             //SQL
-  private $db = '';              //数据库
   private $table = '';           //数据表
   private $columns = '';         //字段
   private $where = '';           //条件
@@ -20,6 +19,8 @@ class Model extends Base {
   private $keys = '';            //新增-名
   private $values = '';          //新增-值
   private $data = '';            //更新-数据
+  private $id = 0;               //自增ID
+  private $nums = 0;             //条数
 
   /* 构造函数 */
   function __construct(string $db='') {
@@ -28,21 +29,15 @@ class Model extends Base {
 
   /* 数据库 */
   function Db(string $db=''): object {
-    // 参数
-    $params = [
-      'host'=> Db::$Host,
-      'port'=> Db::$Port,
-      'username'=> Db::$User,
-      'password'=> Db::$Password,
-      'dbname'=> $this->db!=''?$this->db:Db::$Database,
-      'charset'=> Db::$Charset,
-      'persistent'=> Db::$Persistent,
-    ];
-    // 删除编码
-    if (Db::$Driver == 'Postgresql') unset($params['charset']);
+    // 配置
+    if($db=='other') $cfg = Db::Default();
+    else $cfg = Db::Default();
+    // Postgresql
+    if ($cfg['driver'] == 'Postgresql') unset($params['charset']);
     // 命名空间
-    $class = 'Phalcon\Db\Adapter\Pdo\\'.Db::$Driver;
-    return new $class($params);
+    $class = 'Phalcon\Db\Adapter\Pdo\\'.$cfg['driver'];
+    unset($cfg['driver']);
+    return new $class($cfg);
   }
 
   /* 链接 */
@@ -57,7 +52,7 @@ class Model extends Base {
       return null;
     }
     // 连接
-    if(!$this->conn) return false;
+    if(!$this->conn) return null;
     try {
       return $this->conn->query($sql, $args);
     }catch (\Exception $e){
@@ -71,10 +66,10 @@ class Model extends Base {
   function Exec(string $sql, array $args=[]) {
     if(empty($sql)){
       $this->Print('[Model] Exec: SQL不能为空!');
-      return false;
+      return null;
     }
     // 连接
-    if(!$this->conn) return false;
+    if(!$this->conn) return null;
     try {
       return $this->conn->execute($sql, $args);
     }catch (\Exception $e){
@@ -87,6 +82,14 @@ class Model extends Base {
   /* 获取-SQL */
   function GetSql() : string {
     return $this->sql;
+  }
+  /* 获取-自增ID */
+  function GetID() : int {
+    return $this->id;
+  }
+  /* 获取-条数 */
+  function GetNums() : int {
+    return $this->nums;
   }
 
   /* 表 */
@@ -218,11 +221,15 @@ class Model extends Base {
     return [$this->sql, $args];
   }
   /* 添加-执行 */
-  function Insert(): ?int {
+  function Insert(): bool {
     list($sql, $args) = $this->InsertSql();
-    if(empty($sql)) return null;
+    if(empty($sql)) return false;
     $res = $this->Exec($sql, $args);
-    return $res?$this->conn->lastInsertId():null;
+    if($res){
+       $this->id = $this->conn->lastInsertId();
+      return true;
+    }
+    return false;
   }
 
   /* 更新-数据 */
@@ -258,11 +265,15 @@ class Model extends Base {
     return [$this->sql, $args];
   }
   /* 更新-执行 */
-  function Update(): ?int {
+  function Update(): bool {
     list($sql, $args) = $this->UpdateSql();
-    if(empty($sql)) return null;
+    if(empty($sql)) return false;
     $res = $this->Exec($sql, $args);
-    return $res?$this->conn->affectedRows():null;
+    if($res){
+      $this->nums = $this->conn->affectedRows();
+      return true;
+    }
+    return false;
   }
 
   /* 删除-SQL */
@@ -284,11 +295,15 @@ class Model extends Base {
   }
 
   /* 删除-执行 */
-  function Delete() {
+  function Delete(): bool {
     list($sql, $args) = $this->DeleteSql();
-    if(empty($sql)) return null;
+    if(empty($sql)) return false;
     $res = $this->Exec($sql, $args);
-    return $res?$this->conn->affectedRows():null;
+    if($res){
+      $this->nums = $this->conn->affectedRows();
+      return true;
+    }
+    return false;
   }
 
 }

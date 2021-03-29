@@ -8,19 +8,20 @@ class Model :
   DBDefault = None            #默认数据库
   DBOther = None              #其他数据库
 
-  __conn = None               #连接
-  __sql: str = ''             #SQL
-  __db: str = ''              #数据库
-  __table: str = ''           #数据表
-  __columns: str = ''         #字段
-  __where: str = ''           #条件
-  __group: str = ''           #分组
-  __order: str = ''           #排序
-  __limit: str = ''           #限制
-  __args: tuple = ()          #参数
-  __keys: str = ''            #新增-名
-  __values: str = ''          #新增-值
-  __data: str = ''            #更新-数据
+  __conn = None             #连接
+  __sql: str=''             #SQL
+  __table: str=''           #数据表
+  __columns: str=''         #字段
+  __where: str=''           #条件
+  __group: str=''           #分组
+  __order: str=''           #排序
+  __limit: str=''           #限制
+  __args: tuple=()          #参数
+  __keys: str=''            #新增-名
+  __values: str=''          #新增-值
+  __data: str=''            #更新-数据
+  __id: int=0               #自增ID
+  __nums: int=0             #条数
 
   # 构造函数
   def __init__(self, db: str=''):
@@ -49,40 +50,46 @@ class Model :
   def Query(self, sql: str, args: tuple = ()) :
     if sql == '' :
       print('[Model] Query: SQL不能为空!')
-      return None, 0
+      return None
     # 连接
-    if not self.__conn : return None, 0
+    if not self.__conn : return None
     # 游标
     try :
       cs = self.__conn.cursor(cursor=pymysql.cursors.DictCursor)
-      num = cs.execute(sql, args)
-      return cs, num
+      self.__nums = cs.execute(sql, args)
+      return cs
     except Exception as e :
       print('[Model] Query:', e)
       print('[Model] SQL:', sql)
-      return None, 0
+      return None
   
   # 执行
   def Exec(self, sql: str, args: tuple = ()) :
     if sql == '' :
       print('[Model] Exec: SQL不能为空!')
-      return None, 0
+      return None
     # 连接
-    if not self.__conn : return None, 0
+    if not self.__conn : return None
     # 游标
     try :
       cs = self.__conn.cursor()
-      num = cs.execute(sql, args)
+      self.__nums = cs.execute(sql, args)
       self.__conn.commit()
-      return cs, num
+      return cs
     except Exception as e :
       print('[Model] Exec:', e)
       print('[Model] SQL:', sql)
-      return None, 0
+      return None
 
   # 获取-SQL
   def GetSql(self):
     return self.__sql
+  # 获取-自增ID
+  def GetID(self):
+    return self.__id
+  # 获取-条数
+  def GetNums(self):
+    return self.__nums
 
   # 表
   def Table(self, table: str) :
@@ -151,7 +158,7 @@ class Model :
     res = []
     sql, args = self.SelectSql()
     if(sql=='') : return res
-    cs, num = self.Query(sql, args)
+    cs = self.Query(sql, args)
     if not cs : return res
     res = cs.fetchall()
     cs.close()
@@ -161,7 +168,7 @@ class Model :
     res = {}
     sql, args = self.SelectSql()
     if(sql=='') : return res
-    cs, num = self.Query(sql, args)
+    cs = self.Query(sql, args)
     if not cs : return res
     res = cs.fetchone()
     cs.close()
@@ -195,12 +202,12 @@ class Model :
   # 添加-执行
   def Insert(self) :
     sql, args = self.InsertSql()
-    if(sql=='') : return 0
-    cs, num = self.Exec(sql, args)
-    if cs == None : return None
-    id = cs.lastrowid
+    if(sql=='') : return False
+    cs = self.Exec(sql, args)
+    if cs==None : return False
+    self.__id = cs.lastrowid
     cs.close()
-    return id
+    return True
 
   # 更新-数据
   def Set(self, data: dict) :
@@ -231,11 +238,11 @@ class Model :
   # 更新-执行
   def Update(self) :
     sql, args = self.UpdateSql()
-    if(sql=='') : return 0
-    cs, num = self.Exec(sql, args)
-    if cs == None : return None
+    if(sql=='') : return False
+    cs = self.Exec(sql, args)
+    if cs == None : return False
     cs.close()
-    return num
+    return True
 
   # 删除-SQL
   def DeleteSql(self) :
@@ -254,9 +261,9 @@ class Model :
   # 删除-执行
   def Delete(self) :
     sql, args = self.DeleteSql()
-    if(sql=='') : return 0
-    cs, num = self.Exec(sql, args)
-    if cs == None : return None
+    if(sql=='') : return False
+    cs = self.Exec(sql, args)
+    if cs == None : return False
     cs.close()
-    return num
+    return True
     

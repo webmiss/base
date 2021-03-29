@@ -28,6 +28,8 @@ type Model struct {
 	keys    string        //新增-名
 	values  string        //新增-值
 	data    string        //更新-数据
+	id      int64         //自增ID
+	nums    int64         //条数
 }
 
 // DBPool :数据池
@@ -108,6 +110,16 @@ func (m *Model) Exec(sql string, args []interface{}) sql.Result {
 // GetSQL :获取-SQL
 func (m *Model) GetSQL() string {
 	return m.sql
+}
+
+// GetID :获取-自增ID
+func (m *Model) GetID() int64 {
+	return m.id
+}
+
+// GetNums :获取-条数
+func (m *Model) GetNums() int64 {
+	return m.nums
 }
 
 // Table :表
@@ -324,20 +336,21 @@ func (m *Model) InsertSQL() (string, []interface{}) {
 }
 
 // Insert :添加-执行
-func (m *Model) Insert() int64 {
+func (m *Model) Insert() bool {
 	sql, args := m.InsertSQL()
 	if sql == "" {
-		return 0
+		return false
 	}
 	rows := m.Exec(sql, args)
 	if rows == nil {
-		return 0
+		return false
 	}
 	id, err := rows.LastInsertId()
 	if err != nil {
-		return 0
+		return false
 	}
-	return id
+	m.id = id
+	return true
 }
 
 // Set :更新-数据
@@ -378,20 +391,21 @@ func (m *Model) UpdateSQL() (string, []interface{}) {
 }
 
 // Update :更新-执行
-func (m *Model) Update() int64 {
+func (m *Model) Update() bool {
 	sql, args := m.UpdateSQL()
 	if sql == "" {
-		return 0
+		return false
 	}
 	rows := m.Exec(sql, args)
 	if rows == nil {
-		return 0
+		return false
 	}
 	num, err := rows.RowsAffected()
 	if err != nil {
-		return 0
+		return false
 	}
-	return num
+	m.nums = num
+	return true
 }
 
 // DeleteSQL :删除-SQL
@@ -413,18 +427,19 @@ func (m *Model) DeleteSQL() (string, []interface{}) {
 }
 
 // Delete :删除-执行
-func (m *Model) Delete() int64 {
+func (m *Model) Delete() bool {
 	sql, args := m.DeleteSQL()
 	if sql == "" {
-		return 0
+		return false
 	}
 	rows := m.Exec(sql, args)
 	if rows == nil {
-		return 0
+		return false
 	}
 	num, err := rows.RowsAffected()
 	if err != nil {
-		return 0
+		return false
 	}
-	return num
+	m.nums = num
+	return true
 }

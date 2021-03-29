@@ -106,7 +106,10 @@ func (r UserInfo) Upimg(c *gin.Context) {
 	imgData := model.FindFirst()
 	model.Set(map[string]interface{}{"img": ImgDir + img})
 	model.Where("uid=?", tData["uid"])
-	model.Update()
+	if !model.Update() {
+		r.GetJSON(c, gin.H{"code": 5000, "msg": "上传失败!"})
+		return
+	}
 	// 清理
 	rmImg := imgData["img"].(string)
 	(&library.FilesEo{}).RemoveAll(rmImg)

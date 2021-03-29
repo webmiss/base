@@ -32,7 +32,8 @@ public class Model extends Base {
   private String _keys = "";                        //新增-名
   private String _values = "";                      //新增-值
   private String _data = "";                        //更新-数据
-  private int _num = 0;                             //统计条数
+  private int _id = 0;                              //自增ID
+  private int _nums = 0;                            //条数
 
   /* 构造函数 */
   public Model(String db) {
@@ -110,7 +111,7 @@ public class Model extends Base {
   }
 
   /* 查询 */
-  public ResultSet Query(PreparedStatement ps){
+  public ResultSet Query(PreparedStatement ps) {
     ResultSet rs;
     try {
       rs = ps.executeQuery();
@@ -123,24 +124,33 @@ public class Model extends Base {
   }
 
   /* 执行 */
-  public int Exec(PreparedStatement ps){
-    int num = 0;
+  public PreparedStatement Exec(PreparedStatement ps) {
     try {
-      num = ps.executeUpdate();
+      _nums = ps.executeUpdate();
       if(_type.equals("insert")){
         ResultSet rs = ps.getGeneratedKeys();
-        num = rs.next()?rs.getInt(1):0;
+        _id = rs.next()?rs.getInt(1):0;
+        rs.close();
       }
+      return ps;
     } catch (SQLException e) {
       Print("[Model] Exec:", e.getMessage());
       Print("[Model] SQL:", ps);
+      return null;
     }
-    return num;
   }
 
   /* 获取-SQL */
   public String GetSql() {
     return _sql;
+  }
+  /* 获取-自增ID */
+  public int GetID() {
+    return _id;
+  }
+  /* 获取-条数 */
+  public int GetNums() {
+    return _nums;
   }
   
   /* 表 */
@@ -259,7 +269,7 @@ public class Model extends Base {
         res.add(tmp);
         num++;
       }
-      _num = num;
+      _nums = num;
       // 释放
       rs.close();
       ps.close();
@@ -297,8 +307,8 @@ public class Model extends Base {
     return _sql;
   }
   /* 添加-执行 */
-  public int Insert(PreparedStatement ps) {
-    return Exec(ps);
+  public boolean Insert(PreparedStatement ps) {
+    return Exec(ps)!=null?true:false;
   }
 
   /* 更新-数据 */
@@ -330,8 +340,8 @@ public class Model extends Base {
     return _sql;
   }
   /* 更新-执行 */
-  public int Update(PreparedStatement ps) {
-    return Exec(ps);
+  public boolean Update(PreparedStatement ps) {
+    return Exec(ps)!=null?true:false;
   }
 
   /* 删除-SQL */
@@ -350,8 +360,8 @@ public class Model extends Base {
     return _sql;
   }
   /* 删除-执行 */
-  public int Delete(PreparedStatement ps) {
-    return Exec(ps);
+  public boolean Delete(PreparedStatement ps) {
+    return Exec(ps)!=null?true:false;
   }
 
 }
