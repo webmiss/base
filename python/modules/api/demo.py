@@ -1,4 +1,4 @@
-from base.base import Base
+from service.base import Base
 from service.api_token import ApiToken
 
 from flask import request

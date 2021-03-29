@@ -1,4 +1,4 @@
-from base.base import Base
+from service.base import Base
 from config.env import Env
 from model.sys_config import SysConfig
 

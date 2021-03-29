@@ -1,8 +1,8 @@
 from library.file_eo import FileEo
 import os
 from library.upload import Upload
-from base.base import Base
-from base.data import Data
+from service.base import Base
+from service.data import Data
 from service.admin_token import AdminToken
 from model.user_info import UserInfo as UserInfoM
 from util.util import Util

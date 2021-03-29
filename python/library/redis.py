@@ -1,5 +1,5 @@
 import redis
-from base.base import Base
+from service.base import Base
 from config.redis import Redis as Cfg
 
 # 缓存数据库

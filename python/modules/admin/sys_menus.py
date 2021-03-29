@@ -1,5 +1,5 @@
 from util.util import Util
-from base.base import Base
+from service.base import Base
 from service.admin_token import AdminToken
 from model.sys_menu import SysMenu
 

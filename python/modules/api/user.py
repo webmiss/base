@@ -1,5 +1,5 @@
-from base.base import Base
-from base.data import Data
+from service.base import Base
+from service.data import Data
 from config.env import Env
 from library.safety import Safety
 from library.redis import Redis
