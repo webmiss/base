@@ -22,7 +22,9 @@ func Admin(r *gin.Engine) {
 		g.POST("userinfo/upimg", (&admin.UserInfo{}).Upimg)
 		// 修改密码
 		g.POST("userpasswd/edit", (&admin.UserPasswd{}).Edit)
+		// 文件管理
+		g.POST("sysfile/list", (&admin.SysFile{}).List)
 		// 系统菜单
-		g.POST("Sysmenus/getMenus", (&admin.SysMenus{}).GetMenus)
+		g.POST("sysmenus/getMenus", (&admin.SysMenus{}).GetMenus)
 	}
 }

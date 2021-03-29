@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"strings"
 	"webmis/library"
 	"webmis/model"
 	"webmis/service"
@@ -60,11 +59,11 @@ func (r UserInfo) Edit(c *gin.Context) {
 	// 数据
 	model := (&model.UserInfo{}).New()
 	info := map[string]interface{}{
-		"nickname": strings.Trim(param["nickname"].(string), " "),
-		"name":     strings.Trim(param["name"].(string), " "),
-		"gender":   strings.Trim(param["gender"].(string), " "),
-		"birthday": util.Strtotime(strings.Trim(param["birthday"].(string), " "), "2006-01-02"),
-		"position": strings.Trim(param["position"].(string), " "),
+		"nickname": util.Trim(param["nickname"].(string), " "),
+		"name":     util.Trim(param["name"].(string), " "),
+		"gender":   util.Trim(param["gender"].(string), " "),
+		"birthday": util.Strtotime(util.Trim(param["birthday"].(string), " "), "2006-01-02"),
+		"position": util.Trim(param["position"].(string), " "),
 	}
 	model.Set(info)
 	model.Where("uid=?", tData["uid"])

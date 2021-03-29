@@ -10,7 +10,7 @@ class FileEo:
   # 列表
   def List(path: str=''):
     # 路径
-    path = '' if path=='/' else path.strip('/')+'/'
+    path = '' if path=='/' else Util.Trim(path, '/')+'/'
     path = re.sub(r'\.\.|\.\\/', '', path)
     # 数据
     res = {'path': path, 'dirNum': 0, 'fileNum': 0, 'size': 0, 'folder': [], 'files': []}

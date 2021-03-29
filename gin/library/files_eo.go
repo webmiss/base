@@ -2,13 +2,40 @@ package library
 
 import (
 	"os"
-	"webmis/config"
+	"webmis/util"
 )
 
-var Root = config.Env().RootDir
+var Root string
 
 // Files :文件类
 type FilesEo struct{}
+
+// New :创建
+func (FilesEo) New(root string) {
+	Root = root
+}
+
+// List :列表
+func (FilesEo) List(path string) map[string]interface{} {
+	// 路径
+	if path == "/" {
+		path = ""
+	} else {
+		path = util.Trim(path, "/") + "/"
+	}
+	// 数据
+	folder := []map[string]interface{}{}
+	files := []map[string]interface{}{}
+	res := map[string]interface{}{
+		"path":    path,
+		"dirNum":  0,
+		"fileNum": 0,
+		"size":    0,
+		"folder":  folder,
+		"files":   files,
+	}
+	return res
+}
 
 // Mkdir :创建目录
 func (FilesEo) Mkdir(path string) error {

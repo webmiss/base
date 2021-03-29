@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"webmis/config"
 	"webmis/util"
 )
 
@@ -35,6 +36,7 @@ func (u Upload) Base64(params map[string]interface{}) string {
 		base64 = ct[1]
 	}
 	// 创建目录
+	(&FilesEo{}).New(config.Env().RootDir)
 	if err := (&FilesEo{}).Mkdir(param["path"].(string)); err != nil {
 		fmt.Println("[Upload] Mkdir:", err)
 		return ""

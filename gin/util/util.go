@@ -49,6 +49,11 @@ func Strtotime(day string, format string) int64 {
 	return ts.Unix()
 }
 
+// 去首尾空格
+func Trim(str string, charlist string) string {
+	return strings.Trim(str, charlist)
+}
+
 // Explode :String to List
 func Explode(delimiter string, str string) []string {
 	res := strings.Split(str, delimiter)
