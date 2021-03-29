@@ -28,7 +28,5 @@ app.register_blueprint(Admin, url_prefix="/admin")
 
 # 运行
 if __name__ == '__main__':
-  # 默认数据库
-  Model.DBPool(Model, '')
   # 启动
   app.run(host=Env.host,port=Env.port)

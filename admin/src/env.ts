@@ -6,10 +6,10 @@ const platform: string = Storage.getItem('platform') || '';
 const lag: any = platform?JSON.parse(platform):'';
 let baseUrl: string, socket: string;
 if(lag && lag.name=='python'){
-  // baseUrl = 'http://localhost:9010/';
-  // socket = 'ws://localhost:9011/';
-  baseUrl = 'https://demo-python.webmis.vip/';
-  socket = 'wss://demo-python.webmis.vip/wss';
+  baseUrl = 'http://localhost:9010/';
+  socket = 'ws://localhost:9011/';
+  // baseUrl = 'https://demo-python.webmis.vip/';
+  // socket = 'wss://demo-python.webmis.vip/wss';
 }else if(lag && lag.name=='java'){
   // baseUrl = 'http://localhost:9020/';
   // socket = 'ws://localhost:9020/websocket';

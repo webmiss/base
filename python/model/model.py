@@ -24,12 +24,16 @@ class Model :
 
   # 构造函数
   def __init__(self, db: str=''):
-    if db=="other" : self.__conn = self.DBOther.connection()
-    else : self.__conn = self.DBDefault.connection()
+    if db=='other' :
+      if not self.DBOther : Model.DBPool(Model, 'other')
+      self.__conn = self.DBOther.connection()
+    else :
+      if not self.DBDefault : Model.DBPool(Model, '')
+      self.__conn = self.DBDefault.connection()
 
   # 数据池
   def DBPool(self, db: str=''):
-    if db=="other" : cfg = Db.Default()
+    if db=='other' : cfg = Db.Default()
     else : cfg = Db.Default()
     try :
       if db=="other" : self.DBOther = PooledDB(**cfg)
