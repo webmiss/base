@@ -1,16 +1,16 @@
 package admin
 
 import (
-	"webmis/base"
 	"webmis/model"
+	"webmis/service"
 
 	"github.com/gin-gonic/gin"
 )
 
 // Index :后台接口
 type Index struct {
-	base.Base
-	base.Data
+	service.Base
+	service.Data
 }
 
 // Index :首页

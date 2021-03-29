@@ -1,14 +1,14 @@
 package api
 
 import (
-	"webmis/base"
+	"webmis/service"
 
 	"github.com/gin-gonic/gin"
 )
 
 // Index :API
 type Index struct {
-	base.Base
+	service.Base
 }
 
 // Index :首页

@@ -1,7 +1,6 @@
 package api
 
 import (
-	"webmis/base"
 	"webmis/config"
 	"webmis/library"
 	"webmis/model"
@@ -13,8 +12,8 @@ import (
 
 // User :用户
 type User struct {
-	base.Base
-	base.Data
+	service.Base
+	service.Data
 }
 
 // Login :登录
@@ -111,7 +110,7 @@ func (r User) Token(c *gin.Context) {
 	model.Where("uid=?", tData["uid"])
 	info := model.FindFirst()
 	info["uname"] = tData["uname"]
-	info["img"] = (&base.Data{}).Img(info["img"])
+	info["img"] = r.Img(info["img"])
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "token_time": tData["time"], "uinfo": info})
 }

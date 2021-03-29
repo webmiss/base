@@ -2,7 +2,6 @@ package service
 
 import (
 	"strconv"
-	"webmis/base"
 	"webmis/config"
 	"webmis/library"
 	"webmis/model"
@@ -13,7 +12,7 @@ import (
 
 // ApiToken :后台Token
 type ApiToken struct {
-	base.Base
+	Base
 }
 
 // Create :验证

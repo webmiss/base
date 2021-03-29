@@ -2,17 +2,15 @@ package library
 
 import (
 	Base64 "encoding/base64"
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
-	"webmis/base"
 	"webmis/util"
 )
 
 // Upload :上传类
-type Upload struct {
-	base.Base
-}
+type Upload struct{}
 
 // Base64 :Base64
 func (u Upload) Base64(params map[string]interface{}) string {
@@ -38,7 +36,7 @@ func (u Upload) Base64(params map[string]interface{}) string {
 	}
 	// 创建目录
 	if err := (&FilesEo{}).Mkdir(param["path"].(string)); err != nil {
-		u.Print("[Upload] Mkdir:", err)
+		fmt.Println("[Upload] Mkdir:", err)
 		return ""
 	}
 	// 文件名
@@ -48,7 +46,7 @@ func (u Upload) Base64(params map[string]interface{}) string {
 	}
 	byt, _ := Base64.StdEncoding.DecodeString(base64)
 	if err := (&FilesEo{}).Writer(param["path"].(string)+filename, string(byt)); err != nil {
-		u.Print("[Upload] Write:", err)
+		fmt.Println("[Upload] Write:", err)
 		return ""
 	}
 	return filename

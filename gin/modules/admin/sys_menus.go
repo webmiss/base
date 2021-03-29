@@ -2,7 +2,6 @@ package admin
 
 import (
 	"strconv"
-	"webmis/base"
 	"webmis/model"
 	"webmis/service"
 	"webmis/util"
@@ -12,7 +11,7 @@ import (
 
 // SysMenus :系统菜单
 type SysMenus struct {
-	base.Base
+	service.Base
 	menus   map[string][]map[string]interface{}
 	permAll map[string]int64
 }

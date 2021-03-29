@@ -1,7 +1,6 @@
 package api
 
 import (
-	"webmis/base"
 	"webmis/service"
 
 	"github.com/gin-gonic/gin"
@@ -9,7 +8,7 @@ import (
 
 // Demo :Demo
 type Demo struct {
-	base.Base
+	service.Base
 }
 
 // Token :验证Token

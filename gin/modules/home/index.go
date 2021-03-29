@@ -1,14 +1,14 @@
 package home
 
 import (
-	"webmis/base"
+	"webmis/service"
 
 	"github.com/gin-gonic/gin"
 )
 
 // Index :Web
 type Index struct {
-	base.Base
+	service.Base
 }
 
 // Index :首页

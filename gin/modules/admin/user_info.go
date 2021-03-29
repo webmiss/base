@@ -2,7 +2,6 @@ package admin
 
 import (
 	"strings"
-	"webmis/base"
 	"webmis/library"
 	"webmis/model"
 	"webmis/service"
@@ -15,7 +14,7 @@ var ImgDir = "upload/user/img/"
 
 // UserInfo :用户
 type UserInfo struct {
-	base.Base
+	service.Base
 }
 
 // List :列表
@@ -34,7 +33,7 @@ func (r UserInfo) List(c *gin.Context) {
 	model.Where("uid=?", tData["uid"])
 	list := model.FindFirst()
 	// 数据
-	list["img"] = (&base.Data{}).Img(list["img"])
+	list["img"] = (&service.Data{}).Img(list["img"])
 	list["birthday"] = util.Date("2006-01-02", list["birthday"])
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list})
@@ -114,5 +113,5 @@ func (r UserInfo) Upimg(c *gin.Context) {
 	rmImg := imgData["img"].(string)
 	(&library.FilesEo{}).RemoveAll(rmImg)
 	// 返回
-	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "img": (&base.Data{}).Img(ImgDir + img)})
+	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "img": (&service.Data{}).Img(ImgDir + img)})
 }
