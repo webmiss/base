@@ -29,5 +29,5 @@ func (r SysFile) List(c *gin.Context) {
 	(&library.FilesEo{}).New(config.Env().RootDir + dirRoot)
 	list := (&library.FilesEo{}).List(path)
 	// 返回
-	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "url": config.Env().RootDir + dirRoot, "data": list})
+	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "url": config.Env().BaseURL + dirRoot, "data": list})
 }

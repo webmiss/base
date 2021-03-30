@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 	"webmis/util"
 )
@@ -38,8 +39,8 @@ func (fe FilesEo) List(path string) map[string]interface{} {
 		"dirNum":  0,
 		"fileNum": 0,
 		"size":    0,
-		"folder":  []map[string]interface{}{},
-		"files":   []map[string]interface{}{},
+		"folder":  folder,
+		"files":   files,
 	}
 	// 是否文件夹
 	root := Root + path
@@ -51,20 +52,22 @@ func (fe FilesEo) List(path string) map[string]interface{} {
 		return res
 	}
 	// 文件夹&文件
+	var total int64
 	list, _ := ioutil.ReadDir(root)
 	for _, f := range list {
 		ff := root + "/" + f.Name()
 		size := fe.FileSize(ff)
+		total += size
 		ctime := fe.GetCtime(ff)
 		mtime := fe.GetMtime(ff)
-		fmt.Println(size)
+		perm := fe.GetPerm(ff)
 		if f.IsDir() {
 			folder = append(folder, map[string]interface{}{
 				"name":  f.Name(),
 				"size":  fe.FormatBytes(size),
 				"ctime": ctime,
 				"mtime": mtime,
-				"perm":  f.Mode(),
+				"perm":  perm,
 			})
 		} else {
 			files = append(files, map[string]interface{}{
@@ -72,12 +75,14 @@ func (fe FilesEo) List(path string) map[string]interface{} {
 				"size":  fe.FormatBytes(size),
 				"ctime": ctime,
 				"mtime": mtime,
-				"perm":  f.Mode(),
+				"perm":  perm,
 				"ext":   fe.GetExt(f.Name()),
 			})
 		}
 	}
-	fmt.Println(folder, files)
+	res["folder"] = folder
+	res["files"] = files
+	res["size"] = fe.FormatBytes(total)
 	return res
 }
 
@@ -112,6 +117,32 @@ func (FilesEo) GetCtime(ff string) string {
 func (FilesEo) GetMtime(ff string) string {
 	f, _ := os.Stat(ff)
 	return f.ModTime().Format("2006-01-02 15:04:05")
+}
+
+// GetPerm :获取权限值
+func (fe FilesEo) GetPerm(ff string) int {
+	f, _ := os.Stat(ff)
+	perm := f.Mode().String()
+	p1 := fe.permToVal(perm[1:4])
+	p2 := fe.permToVal(perm[4:7])
+	p3 := fe.permToVal(perm[7:10])
+	res, _ := strconv.Atoi(p1 + p2 + p3)
+	return res
+}
+
+// 权限值 转 数字
+func (FilesEo) permToVal(perm string) string {
+	var num int
+	if perm[0:1] == "r" {
+		num += 4
+	}
+	if perm[1:2] == "w" {
+		num += 2
+	}
+	if perm[2:3] == "x" {
+		num += 1
+	}
+	return strconv.Itoa(num)
 }
 
 // GetExt :文件后缀
