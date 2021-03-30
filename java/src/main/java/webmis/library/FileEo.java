@@ -80,13 +80,13 @@ public class FileEo {
     return res;
   }
 
-  /* 大小(文件夹&文件) */
-  public static Long FileSize(File file){
+  /* 统计大小 */
+  public static Long FileSize(File ff){
     long total = 0;
     // 文件
-    if(file.isFile()) return file.length();
+    if(ff.isFile()) return ff.length();
     // 文件夹
-    final File[] children = file.listFiles();
+    final File[] children = ff.listFiles();
     if (children!=null){
       for (final File child : children){
         total += FileSize(child);
@@ -137,18 +137,14 @@ public class FileEo {
   /* 格式化 */
   public static String FormatBytes(Long bytes){
     String str;
-    double tmp;
     if(bytes >= 1073741824){
-      tmp = Double.valueOf(Math.round(bytes*100/1073741824))/100;
-      str = String.format("%sGB",tmp);
+      str = String.format("%.2f GB", bytes/1073741824);
     }else if(bytes >= 1048576){
-      tmp = Double.valueOf(Math.round(bytes*100/1048576))/100;
-      str = String.format("%sMB",tmp);
+      str = String.format("%.2f MB", bytes/1048576);
     }else if(bytes >= 1024){
-      tmp = Double.valueOf(Math.round(bytes*100/1024))/100;
-      str = String.format("%sKB",tmp);
+      str = String.format("%.2f KB", bytes/1024);
     }else{
-      str = String.format("%sB",bytes);
+      str = String.format("%.0f B", bytes);
     }
     return str;
   }

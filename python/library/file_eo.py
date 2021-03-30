@@ -37,7 +37,7 @@ class FileEo:
     res['size'] = FileEo.FormatBytes(res['size'])
     return res
 
-  # 大小
+  # 统计大小
   def FileSize(ff):
     total = 0
     # 文件
@@ -64,13 +64,13 @@ class FileEo:
   # 格式化
   def FormatBytes(bytes):
     if bytes >= 1073741824 :
-      bytes = '%sGB'%(round(bytes*100/1073741824)/100)
+      bytes = '%.2f GB'%(bytes/1073741824)
     elif bytes >= 1048576 :
-      bytes = '%sMB'%(round(bytes*100/1048576)/100)
+      bytes = '%.2f MB'%(bytes/1048576)
     elif bytes >= 1024 :
-      bytes = '%sKB'%(round(bytes*100/1024)/100)
+      bytes = '%.2f KB'%(bytes/1024)
     else :
-      bytes = '%sB'%bytes
+      bytes = '%.0f B'%bytes
     return bytes
 
   # 创建目录

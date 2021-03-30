@@ -32,7 +32,7 @@ class FileEo extends Base {
         $res['folder'][] = ['name'=>$f, 'size'=>self::FormatBytes($size), 'ctime'=>$ctime, 'mtime'=>$mtime, 'perm'=>$perm];
         $res['dirNum']++;
       }else {
-        $ext = self::getExt($f);
+        $ext = self::GetExt($f);
         $res['files'][] = ['name'=>$f, 'size'=>self::FormatBytes($size), 'ctime'=>$ctime, 'mtime'=>$mtime, 'perm'=>$perm, 'ext'=>$ext];
         $res['fileNum']++;
       }
@@ -42,7 +42,7 @@ class FileEo extends Base {
     return $res;
   }
 
-  /* 大小 */
+  /* 统计大小 */
   static function FileSize($ff){
     $total = 0;
     // 文件
@@ -77,13 +77,13 @@ class FileEo extends Base {
   /* 格式化 */
   static function FormatBytes($bytes){
     if($bytes >= 1073741824){
-      $bytes = round($bytes*100/1073741824)/100 . 'GB';
+      $bytes = round($bytes*100/1073741824)/100 . ' GB';
     }elseif($bytes >= 1048576){
-      $bytes = round($bytes*100/1048576)/100 . 'MB';
+      $bytes = round($bytes*100/1048576)/100 . ' MB';
     }elseif($bytes >= 1024){
-      $bytes = round($bytes*100/1024)/100 . 'KB';
+      $bytes = round($bytes*100/1024)/100 . ' KB';
     }else{
-      $bytes = $bytes . 'B';
+      $bytes = $bytes . ' B';
     }
     return $bytes;
   }

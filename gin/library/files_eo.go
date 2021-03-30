@@ -1,7 +1,12 @@
 package library
 
 import (
+	"fmt"
+	"io/ioutil"
 	"os"
+	"path/filepath"
+	"regexp"
+	"strings"
 	"webmis/util"
 )
 
@@ -16,13 +21,15 @@ func (FilesEo) New(root string) {
 }
 
 // List :列表
-func (FilesEo) List(path string) map[string]interface{} {
+func (fe FilesEo) List(path string) map[string]interface{} {
 	// 路径
 	if path == "/" {
 		path = ""
 	} else {
 		path = util.Trim(path, "/") + "/"
 	}
+	reg := regexp.MustCompile("\\.\\.|\\.\\/")
+	path = reg.ReplaceAllString(path, "")
 	// 数据
 	folder := []map[string]interface{}{}
 	files := []map[string]interface{}{}
@@ -31,10 +38,104 @@ func (FilesEo) List(path string) map[string]interface{} {
 		"dirNum":  0,
 		"fileNum": 0,
 		"size":    0,
-		"folder":  folder,
-		"files":   files,
+		"folder":  []map[string]interface{}{},
+		"files":   []map[string]interface{}{},
 	}
+	// 是否文件夹
+	root := Root + path
+	dir, err := os.Stat(root)
+	if err != nil {
+		return res
+	}
+	if !dir.IsDir() {
+		return res
+	}
+	// 文件夹&文件
+	list, _ := ioutil.ReadDir(root)
+	for _, f := range list {
+		ff := root + "/" + f.Name()
+		size := fe.FileSize(ff)
+		ctime := fe.GetCtime(ff)
+		mtime := fe.GetMtime(ff)
+		fmt.Println(size)
+		if f.IsDir() {
+			folder = append(folder, map[string]interface{}{
+				"name":  f.Name(),
+				"size":  fe.FormatBytes(size),
+				"ctime": ctime,
+				"mtime": mtime,
+				"perm":  f.Mode(),
+			})
+		} else {
+			files = append(files, map[string]interface{}{
+				"name":  f.Name(),
+				"size":  fe.FormatBytes(size),
+				"ctime": ctime,
+				"mtime": mtime,
+				"perm":  f.Mode(),
+				"ext":   fe.GetExt(f.Name()),
+			})
+		}
+	}
+	fmt.Println(folder, files)
 	return res
+}
+
+// FileSize :统计大小
+func (fe FilesEo) FileSize(ff string) int64 {
+	var total int64
+	// 文件
+	dir, _ := os.Stat(ff)
+	if !dir.IsDir() {
+		return dir.Size()
+	}
+	// 文件夹
+	list, _ := ioutil.ReadDir(ff)
+	for _, f := range list {
+		if f.IsDir() {
+			dir := filepath.Join(ff, f.Name())
+			total += fe.FileSize(dir)
+		} else {
+			total += f.Size()
+		}
+	}
+	return total
+}
+
+// GetCtime :创建时间
+func (FilesEo) GetCtime(ff string) string {
+	f, _ := os.Stat(ff)
+	return f.ModTime().Format("2006-01-02 15:04:05")
+}
+
+// GetMtime :修改时间
+func (FilesEo) GetMtime(ff string) string {
+	f, _ := os.Stat(ff)
+	return f.ModTime().Format("2006-01-02 15:04:05")
+}
+
+// GetExt :文件后缀
+func (FilesEo) GetExt(fileName string) string {
+	arr := strings.Split(fileName, ".")
+	if len(arr) > 0 {
+		return arr[len(arr)-1:][0]
+	}
+	return ""
+}
+
+// FormatBytes :格式化
+func (FilesEo) FormatBytes(bytes int64) string {
+	var str string
+	if bytes >= 1073741824 {
+		str = fmt.Sprintf("%.2f GB", float64(bytes)/1073741824)
+	} else if bytes >= 1048576 {
+		str = fmt.Sprintf("%.2f MB", float64(bytes)/1048576)
+	} else if bytes >= 1024 {
+		str = fmt.Sprintf("%.2f KB", float64(bytes)/1024)
+	} else {
+		str = fmt.Sprintf("%.0f B", float64(bytes))
+	}
+	return str
 }
 
 // Mkdir :创建目录
