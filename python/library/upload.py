@@ -17,13 +17,13 @@ class Upload:
       'bind':['svg', 'jpg','jpeg','png','gif','mov','mp4','wav','mp3'], #允许格式
     }, params)
     # 限制格式
-    ext = file.filename.split('.')[-1:][0].lower()
+    ext = FileEo.GetExt(file.filename)
     if param['bind'] :
       if ext not in param['bind'] :
         print('只支持%s格式!'%(','.join(param['bind'])))
         return ''
     # 是否重命名
-    param['filename'] = file.filename if not param['filename'] else param['filename']
+    param['filename'] = file.filename if not param['filename'] else param['filename']+'.'+ext
     # 创建目录
     FileEo.Root = Env.root_dir
     if not FileEo.Mkdir(param['path']):

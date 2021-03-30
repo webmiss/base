@@ -16,7 +16,7 @@ class Upload extends Base {
       'bind'=>['svg','jpg','jpeg','png','gif','mov','mp4','wav','mp3'], //允许格式
     ],$param);
     // 限制格式
-    $ext = strtolower(substr(strrchr($file['name'],'.'),1));
+    $ext = FileEo::GetExt($file['name']);
     if($param['bind']){
       if(!in_array($ext,$param['bind'])){
         self::Print('只支持'.implode(',',$param['bind']).'格式!');

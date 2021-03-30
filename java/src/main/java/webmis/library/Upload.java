@@ -35,16 +35,15 @@ public class Upload {
     param = Util.ArrayMerge(param, params);
     // 限制格式
     String fileName = file.getOriginalFilename();
-    String ext = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
-    if (param.get("bind") != null) {
-      if (!bind.contains(ext)){
+    String ext = FileEo.GetExt(fileName);
+    if(param.get("bind") != null) {
+      if(!bind.contains(ext)){
         System.out.println("只支持" + Util.Implode(",", bind) + "格式!");
         return "";
       }
     }
     // 是否重命名
-    if (param.get("filename").equals(""))
-      param.put("filename", fileName);
+    param.put("filename", param.get("filename").equals("")?fileName:param.get("filename").toString()+"."+ext);
     // 创建目录
     FileEo.Root = Env.root_dir;
     if(!FileEo.Mkdir(String.valueOf(param.get("path")))){

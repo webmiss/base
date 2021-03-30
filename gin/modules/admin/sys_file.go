@@ -91,6 +91,32 @@ func (r SysFile) Rename(c *gin.Context) {
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
 }
 
+/* 上传 */
+func (r SysFile) Upload(c *gin.Context) {
+	// 验证
+	token := c.PostForm("token")
+	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
+	if msg != "" {
+		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
+		return
+	}
+	// 参数
+	path := c.PostForm("path")
+	if path == "" {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
+		return
+	}
+	// 数据
+	file, _ := c.FormFile("up")
+	img := (&library.Upload{}).File(c, file, map[string]interface{}{"path": dirRoot + path, "bind": nil})
+	if img == "" {
+		r.GetJSON(c, gin.H{"code": 5000, "msg": "上传失败!"})
+		return
+	}
+	// 返回
+	r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
+}
+
 /* 删除 */
 func (r SysFile) Remove(c *gin.Context) {
 	// 验证

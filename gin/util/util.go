@@ -90,3 +90,13 @@ func ArrayMerge(arrays ...map[string]interface{}) map[string]interface{} {
 	}
 	return res
 }
+
+/* 是否存在于数组 */
+func InArray(needle string, haystack []string) bool {
+	for _, val := range haystack {
+		if val == needle {
+			return true
+		}
+	}
+	return false
+}

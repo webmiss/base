@@ -3,17 +3,57 @@ package library
 import (
 	Base64 "encoding/base64"
 	"fmt"
+	"mime/multipart"
 	"strconv"
 	"strings"
 	"time"
 	"webmis/config"
 	"webmis/util"
+
+	"github.com/gin-gonic/gin"
 )
 
-// Upload :上传类
+/* 上传类 */
 type Upload struct{}
 
-// Base64 :Base64
+/* 单文件 */
+func (u Upload) File(c *gin.Context, file *multipart.FileHeader, params map[string]interface{}) string {
+	param := map[string]interface{}{
+		"path":     "upload/",                                                                //上传目录
+		"filename": "",                                                                       //文件名
+		"bind":     []string{"svg", "jpg", "jpeg", "png", "gif", "mov", "mp4", "wav", "mp3"}, //后缀
+	}
+	param = util.ArrayMerge(param, params)
+	// 限制格式
+	ext := (&FilesEo{}).GetExt(file.Filename)
+	if param["bind"] != nil {
+		if !util.InArray(ext, param["bind"].([]string)) {
+			fmt.Println("只支持" + util.Implode(",", param["bind"].([]string)) + "格式!")
+			return ""
+		}
+		fmt.Println(param["bind"], ext, param["path"].(string))
+	}
+	// 是否重命名
+	if param["filename"] == "" {
+		param["filename"] = file.Filename
+	} else {
+		param["filename"] = param["filename"].(string) + "." + ext
+	}
+	// 创建目录
+	(&FilesEo{}).New(config.Env().RootDir)
+	if !(&FilesEo{}).Mkdir(param["path"].(string)) {
+		fmt.Println("[Upload] Upload:", "创建目录失败!")
+		return ""
+	}
+	// 保存文件
+	if !(&FilesEo{}).Upload(c, file, param["path"].(string)+param["filename"].(string)) {
+		fmt.Println("[Upload] Mkdir:", "保存文件失败!")
+		return ""
+	}
+	return param["filename"].(string)
+}
+
+/* Base64 */
 func (u Upload) Base64(params map[string]interface{}) string {
 	param := map[string]interface{}{
 		"param":    "upload/", //上传目录

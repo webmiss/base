@@ -3,12 +3,15 @@ package library
 import (
 	"fmt"
 	"io/ioutil"
+	"mime/multipart"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
 	"webmis/util"
+
+	"github.com/gin-gonic/gin"
 )
 
 var Root string
@@ -183,6 +186,15 @@ func (FilesEo) Rename(rename string, name string) bool {
 	src := Root + rename
 	dst := Root + name
 	if err := os.Rename(src, dst); err != nil {
+		return false
+	}
+	return true
+}
+
+/* 上传文件 */
+func (FilesEo) Upload(c *gin.Context, file *multipart.FileHeader, filename string) bool {
+	dst := Root + filename
+	if err := c.SaveUploadedFile(file, dst); err != nil {
 		return false
 	}
 	return true
