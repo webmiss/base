@@ -8,16 +8,13 @@ use Service\Base;
 class Upload extends Base {
 
   /* 单文件 */
-  static function File(array $param=[]): string {
+  static function File($file, array $param=[]): string {
     // 参数
     $param = array_merge([
-      'upName'=>'up',  //上传名称
       'path'=>'upload/',  //上传目录
       'filename'=>'', //文件名
-      'bind'=>['jpg','jpeg','png','gif','mov','mp4','wav','mp3'], //允许格式
+      'bind'=>['svg','jpg','jpeg','png','gif','mov','mp4','wav','mp3'], //允许格式
     ],$param);
-    // 文件
-    $file = $_FILES[$param['upName']];
     // 限制格式
     $ext = strtolower(substr(strrchr($file['name'],'.'),1));
     if($param['bind']){

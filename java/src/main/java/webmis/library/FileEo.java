@@ -94,8 +94,7 @@ public class FileEo {
     }
     return total;
   }
-  
-  
+
   /* 创建时间 */
   public static String GetCtime(String ff) {
     String time = "";

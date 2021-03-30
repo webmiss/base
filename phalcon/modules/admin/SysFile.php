@@ -3,6 +3,7 @@ namespace App\Admin;
 
 use Config\Env;
 use Library\FileEo;
+use Library\Upload;
 use Service\Base;
 use Service\AdminToken;
 
@@ -57,6 +58,23 @@ class SysFile extends Base {
     // 数据
     FileEo::$Root = Env::$root_dir . self::$dirRoot;
     if(!FileEo::Rename($path.$rename, $path.$name)) return self::GetJSON(['code'=>5000, 'msg'=>'重命名失败!']);
+    // 返回
+    return self::GetJSON(['code'=>0, 'msg'=>'成功']);
+  }
+
+  /* 上传 */
+  static function Upload(){
+    // 验证
+    $token = self::Post('token');
+    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    // 参数
+    $path = self::Post('path');
+    if(empty($path)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
+    // 数据
+    $file = $_FILES['up'];
+    $img = Upload::File($file, ['path'=>self::$dirRoot . $path, 'bind'=>null]);
+    if(empty($img)) return self::GetJSON(['code'=>5000, 'msg'=>'上传失败!']);
     // 返回
     return self::GetJSON(['code'=>0, 'msg'=>'成功']);
   }

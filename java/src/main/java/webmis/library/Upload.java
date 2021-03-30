@@ -22,6 +22,7 @@ public class Upload {
     param.put("path", "upload/");   //上传目录
     param.put("filename", "");      //文件名
     ArrayList<String> bind = new ArrayList<String>();
+    bind.add("svg");
     bind.add("jpg");
     bind.add("jpeg");
     bind.add("png");
@@ -32,9 +33,8 @@ public class Upload {
     bind.add("mp3");
     param.put("bind", bind);         //允许格式
     param = Util.ArrayMerge(param, params);
-    // 文件
-    String fileName = file.getOriginalFilename();
     // 限制格式
+    String fileName = file.getOriginalFilename();
     String ext = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
     if (param.get("bind") != null) {
       if (!bind.contains(ext)){

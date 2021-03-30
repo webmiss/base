@@ -1,6 +1,7 @@
 from util.util import Util
 from config.env import Env
 from library.file_eo import FileEo
+from library.upload import Upload
 from service.base import Base
 from service.admin_token import AdminToken
 
@@ -55,6 +56,22 @@ class SysFile(Base):
     # 数据
     FileEo.Root = Env.root_dir + self.__dirRoot
     if not FileEo.Rename(path+rename, path+name) : return self.GetJSON({'code':5000, 'msg':'新建文件夹失败!'})
+    # 返回
+    return self.GetJSON({'code':0, 'msg':'成功'})
+
+  # 上传
+  def Upload(self):
+    # 验证
+    token = self.Post('token')
+    msg = AdminToken().verify(token, request.path)
+    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
+    # 参数
+    path = self.Post('path')
+    if not path : return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 数据
+    file = request.files['up']
+    img = Upload.File(file, {'path':self.__dirRoot+path, 'bind':None})
+    if not img : return self.GetJSON({'code':5000, 'msg':'上传失败!'})
     # 返回
     return self.GetJSON({'code':0, 'msg':'成功'})
 

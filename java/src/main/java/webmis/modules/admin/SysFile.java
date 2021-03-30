@@ -9,13 +9,16 @@ import com.alibaba.fastjson.JSONArray;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import webmis.service.Base;
 import webmis.util.Util;
 import webmis.service.AdminToken;
 import webmis.config.Env;
 import webmis.library.FileEo;
+import webmis.library.Upload;
 
 @RestController
 @Controller("AdminSysFile")
@@ -114,6 +117,43 @@ public class SysFile extends Base {
       res = new HashMap<String,Object>();
       res.put("code", 5000);
       res.put("msg", "重命名失败!");
+      return GetJSON(res);
+    }
+    // 返回
+    res = new HashMap<String,Object>();
+    res.put("code", 0);
+    res.put("msg", "成功");
+    return GetJSON(res);
+  }
+
+  /* 上传 */
+  @RequestMapping("upload")
+  String Upload(HttpServletRequest request, String token, String path, @RequestParam("up") MultipartFile file) throws SQLException {
+    HashMap<String,Object> res;
+    // 验证
+    String msg = AdminToken.verify(token, request.getRequestURI());
+    if(!msg.equals("")){
+      res = new HashMap<String,Object>();
+      res.put("code", 4001);
+      res.put("msg", msg);
+      return GetJSON(res);
+    }
+    // 参数
+    if(path.isEmpty()) {
+      res = new HashMap<String,Object>();
+      res.put("code", 4000);
+      res.put("msg", "参数错误!");
+      return GetJSON(res);
+    }
+    // 数据
+    HashMap<String, Object> params = new HashMap<String, Object>();
+    params.put("path",dirRoot+path);
+    params.put("bind",null);
+    String img = Upload.File(file, params);
+    if(img.isEmpty()) {
+      res = new HashMap<String,Object>();
+      res.put("code", 5000);
+      res.put("msg", "上传失败!");
       return GetJSON(res);
     }
     // 返回

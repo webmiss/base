@@ -4,22 +4,18 @@ import base64 as Base64
 from config.env import Env
 from library.file_eo import FileEo
 from util.util import Util
-from flask import request
 
 # 上传类
 class Upload:
 
   # 单文件
-  def File(params={}):
+  def File(file, params={}):
     # 参数
     param = Util.ArrayMerge({
-      'upName': 'up',     #上传名称
       'path':'upload/',   #上传目录
       'filename':'',      #文件名
-      'bind':['jpg','jpeg','png','gif','mov','mp4','wav','mp3'], #允许格式
+      'bind':['svg', 'jpg','jpeg','png','gif','mov','mp4','wav','mp3'], #允许格式
     }, params)
-    # 文件
-    file = request.files[param['upName']]
     # 限制格式
     ext = file.filename.split('.')[-1:][0].lower()
     if param['bind'] :
