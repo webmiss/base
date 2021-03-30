@@ -76,8 +76,15 @@ class FileEo:
   # 创建目录
   def Mkdir(path: str=''):
     path = FileEo.Root+path
-    if not os.path.exists(path) : os.makedirs(path)
+    if not os.path.exists(path) :
+      return True if not os.makedirs(path) else False
     return True
+
+  # 重命名
+  def Rename(rename: str, name: str):
+    src = FileEo.Root+rename
+    dst = FileEo.Root+name
+    return True if not os.rename(src,dst) else False
 
   # 上传文件
   def Upload(tmp, to: str):

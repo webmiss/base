@@ -37,8 +37,8 @@ func (u Upload) Base64(params map[string]interface{}) string {
 	}
 	// 创建目录
 	(&FilesEo{}).New(config.Env().RootDir)
-	if err := (&FilesEo{}).Mkdir(param["path"].(string)); err != nil {
-		fmt.Println("[Upload] Mkdir:", err)
+	if !(&FilesEo{}).Mkdir(param["path"].(string)) {
+		fmt.Println("[Upload] Mkdir:", "创建目录失败!")
 		return ""
 	}
 	// 文件名

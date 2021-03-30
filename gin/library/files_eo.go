@@ -169,16 +169,26 @@ func (FilesEo) FormatBytes(bytes int64) string {
 	return str
 }
 
-// Mkdir :创建目录
-func (FilesEo) Mkdir(path string) error {
+/* 创建目录 */
+func (FilesEo) Mkdir(path string) bool {
 	path = Root + path
 	if err := os.MkdirAll(path, 0766); err != nil {
-		return err
+		return false
 	}
-	return nil
+	return true
 }
 
-// Writer :写入
+/* 重命名 */
+func (FilesEo) Rename(rename string, name string) bool {
+	src := Root + rename
+	dst := Root + name
+	if err := os.Rename(src, dst); err != nil {
+		return false
+	}
+	return true
+}
+
+/* 写入 */
 func (FilesEo) Writer(file string, content string) error {
 	file = Root + file
 	f, err := os.OpenFile(file, os.O_CREATE|os.O_RDWR, 0766)
@@ -190,7 +200,7 @@ func (FilesEo) Writer(file string, content string) error {
 	return nil
 }
 
-// RemoveAll :删除(文件夹&文件)
+/* 删除(文件夹&文件) */
 func (FilesEo) RemoveAll(path string) error {
 	path = Root + path
 	return os.RemoveAll(path)

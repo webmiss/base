@@ -95,6 +95,13 @@ class FileEo extends Base {
     return true;
   }
 
+  /* 重命名 */
+  static function Rename(string $rename, string $name): bool {
+    $src = self::$Root.$rename;
+    $dst = self::$Root.$name;
+    return rename($src,$dst);
+  }
+
   /* 上传文件 */
   static function Upload(string $tmp, string $to): bool {
     $to = self::$Root.$to;

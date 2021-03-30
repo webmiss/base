@@ -138,13 +138,13 @@ public class FileEo {
   public static String FormatBytes(Long bytes){
     String str;
     if(bytes >= 1073741824){
-      str = String.format("%.2f GB", bytes/1073741824);
+      str = String.format("%.2f GB", Float.valueOf(bytes.toString())/1073741824);
     }else if(bytes >= 1048576){
-      str = String.format("%.2f MB", bytes/1048576);
+      str = String.format("%.2f MB", Float.valueOf(bytes.toString())/1048576);
     }else if(bytes >= 1024){
-      str = String.format("%.2f KB", bytes/1024);
+      str = String.format("%.2f KB", Float.valueOf(bytes.toString())/1024);
     }else{
-      str = String.format("%.0f B", bytes);
+      str = String.format("%.0f B", Float.valueOf(bytes.toString()));
     }
     return str;
   }
@@ -155,6 +155,13 @@ public class FileEo {
     File dir = new File(path);
     if(!dir.exists()) return dir.mkdirs();
     return true;
+  }
+
+  /* 创建目录 */
+  public static boolean Rename(String rename, String name){
+    File src = new File(Root+rename);
+    File dst = new File(Root+name);
+    return src.renameTo(dst);
   }
 
   /* 上传文件 */

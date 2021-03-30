@@ -24,6 +24,9 @@ func Admin(r *gin.Engine) {
 		g.POST("userpasswd/edit", (&admin.UserPasswd{}).Edit)
 		// 文件管理
 		g.POST("sysfile/list", (&admin.SysFile{}).List)
+		g.POST("sysfile/mkdir", (&admin.SysFile{}).Mkdir)
+		g.POST("sysfile/rename", (&admin.SysFile{}).Rename)
+		g.POST("sysfile/remove", (&admin.SysFile{}).Remove)
 		// 系统菜单
 		g.POST("sysmenus/getMenus", (&admin.SysMenus{}).GetMenus)
 	}

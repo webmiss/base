@@ -88,10 +88,18 @@ public class Util {
 
   /* String to Array */
   public static JSONObject JsonDecode(String str) {
-    try{ return JSON.parseObject(str); }catch (Exception e){ return new JSONObject(); }
+    try{
+      return JSON.parseObject(str);
+    }catch (Exception e){
+      return new JSONObject();
+    }
   }
   public static JSONArray JsonDecodeArray(String str) {
-    try{ return JSON.parseArray(str); }catch (Exception e){ return new JSONArray(); }
+    try{
+      return JSON.parseArray(str);
+    }catch (Exception e){
+      return new JSONArray();
+    }
   }
 
   /* 合并数组 */
