@@ -220,6 +220,7 @@ export default defineComponent({
       this.state.uInfo = {};
       Storage.setItem('token','');
       this.login.passwd = '';
+      if(Env.socket.start && this.state.socket) this.state.socket.close();
     },
     /* Enter登录 */
     _enter(){

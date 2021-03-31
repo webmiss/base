@@ -108,7 +108,8 @@ CREATE TABLE `sys_perm` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
 
 INSERT INTO `sys_perm` (`uid`, `utime`, `role`, `perm`) VALUES
-(1,	0,	'',	'1:0 2:0 3:0 4:0 5:7 6:3 7:63 8:0 9:0 10:0 11:0 12:0 13:0 14:0');
+(1,	0,	'',	'1:0 2:0 3:0 4:0 5:7 6:3 7:63 8:0 9:0 10:0 11:0 12:0 13:0 14:0'),
+(2,	0,	'1',	'');
 
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
@@ -121,7 +122,7 @@ CREATE TABLE `sys_role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统角色';
 
 INSERT INTO `sys_role` (`id`, `role`, `ctime`, `utime`, `perm`) VALUES
-(1,	'基础权限',	0,	0,	'1:0 3:0 4:1 5:1 6:1 14:1');
+(1,	'基础权限',	0,	0,	'1:0 3:0 4:0 5:7 6:3 14:0');
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (

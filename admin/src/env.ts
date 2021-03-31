@@ -92,7 +92,7 @@ export default {
   /* 高德地图 */
   amap: {
     start: true,  //开启定位
-    jsapi_key: 'd956f0c3e15489a1b5bf291e5d133c8a',  
+    jsapi_key: 'd956f0c3e15489a1b5bf291e5d133c8a',
   },
   /* Socket */
   socket: {
