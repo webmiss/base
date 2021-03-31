@@ -134,7 +134,7 @@ func (r SysFile) Down(c *gin.Context) {
 		return
 	}
 	// 返回
-	c.Writer.Write((&library.FilesEo{}).Blob(path + filename))
+	c.Writer.Write((&library.FilesEo{}).Bytes(path + filename))
 }
 
 /* 删除 */

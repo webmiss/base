@@ -172,7 +172,7 @@ public class SysFile extends Base {
     // 参数
     if(path.isEmpty() || filename.isEmpty()) return null;
     // 返回
-    return FileEo.Blob(path+filename);
+    return FileEo.Bytes(path+filename);
   }
 
   /* 删除 */

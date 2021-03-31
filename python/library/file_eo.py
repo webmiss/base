@@ -101,7 +101,7 @@ class FileEo:
     return True
 
   # 下载
-  def Blob(file: str):
+  def Bytes(file: str):
     dst = FileEo.Root+file
     with open(dst, 'rb') as f: return f.read()
 

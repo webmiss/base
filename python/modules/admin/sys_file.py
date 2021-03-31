@@ -87,7 +87,7 @@ class SysFile(Base):
     if not path or not filename : return self.GetJSON({'code':4000, 'msg':'参数错误!'})
     # 返回
     FileEo.Root = Env.root_dir + self.__dirRoot
-    return FileEo.Blob(path+filename)
+    return FileEo.Bytes(path+filename)
 
   # 删除
   def Remove(self):

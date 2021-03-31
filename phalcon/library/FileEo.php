@@ -115,7 +115,7 @@ class FileEo extends Base {
   }
 
   /* 下载 */
-  static function Blob(string $file) {
+  static function Bytes(string $file) {
     $dst = self::$Root.$file;
     return file_get_contents($dst);
   }

@@ -212,8 +212,8 @@ func (FilesEo) Writer(file string, content string) error {
 	return nil
 }
 
-/* 上传文件 */
-func (FilesEo) Blob(file string) []byte {
+/* 下载 */
+func (FilesEo) Bytes(file string) []byte {
 	dst := Root + file
 	bytes, _ := ioutil.ReadFile(dst)
 	return bytes

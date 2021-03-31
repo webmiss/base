@@ -93,7 +93,7 @@ class SysFile extends Base {
     // 返回
     self::GetJSON();
     FileEo::$Root = Env::$root_dir . self::$dirRoot;
-    return FileEo::Blob($path.$filename);
+    return FileEo::Bytes($path.$filename);
   }
 
   /* 删除 */

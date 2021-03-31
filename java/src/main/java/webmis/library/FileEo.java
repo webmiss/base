@@ -198,7 +198,7 @@ public class FileEo {
   }
 
   /* 下载 */
-  public static byte[] Blob(String file){
+  public static byte[] Bytes(String file){
     byte[] bytes = null;
     FileInputStream fs = null;
     try{
