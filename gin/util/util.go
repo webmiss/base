@@ -10,10 +10,10 @@ import (
 	"time"
 )
 
-// Util :常用工具
+/* 常用工具 */
 type Util struct{}
 
-// Md5 :加密
+/* Md5加密 */
 func Md5(str string) string {
 	data := []byte(str)
 	h := md5.New()
@@ -21,8 +21,10 @@ func Md5(str string) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-// Date :格式化时间
-// @format "2006-01-02 15:04:05"
+/*
+格式化时间
+@format "2006-01-02 15:04:05"
+*/
 func Date(format string, timestamp ...interface{}) string {
 	if len(timestamp) > 0 {
 		ts, err := strconv.ParseInt(Strval(timestamp[0]), 10, 64)
@@ -34,13 +36,15 @@ func Date(format string, timestamp ...interface{}) string {
 	return time.Now().Format(format)
 }
 
-// Time :时间戳
+/* 时间戳 */
 func Time() int64 {
 	return time.Now().Unix()
 }
 
-// Strtotime :String To Timestamp
-// @format "2006-01-02 15:04:05"
+/*
+String To Timestamp
+@format "2006-01-02 15:04:05"
+*/
 func Strtotime(day string, format string) int64 {
 	if format == "" {
 		format = "2006-01-02 15:04:05"
@@ -49,30 +53,30 @@ func Strtotime(day string, format string) int64 {
 	return ts.Unix()
 }
 
-// 去首尾空格
+/* 去首尾空格 */
 func Trim(str string, charlist string) string {
 	return strings.Trim(str, charlist)
 }
 
-// Explode :String to List
+/* String to List */
 func Explode(delimiter string, str string) []string {
 	res := strings.Split(str, delimiter)
 	return res
 }
 
-// Implode :List to String
+/* List to String */
 func Implode(glue string, pieces []string) string {
 	res := strings.Join(pieces, glue)
 	return res
 }
 
-// JsonEncode :Array to []byte
+/* Array to []byte */
 func JsonEncode(arr interface{}) []byte {
 	res, _ := json.Marshal(arr)
 	return res
 }
 
-// JsonDecode :Array to []byte
+/* String to interface{} */
 func JsonDecode(str string, res interface{}) {
 	err := json.Unmarshal([]byte(str), &res)
 	if err != nil {
@@ -80,7 +84,7 @@ func JsonDecode(str string, res interface{}) {
 	}
 }
 
-// ArrayMerge :合并数组
+/* 合并数组 */
 func ArrayMerge(arrays ...map[string]interface{}) map[string]interface{} {
 	res := map[string]interface{}{}
 	for _, arr := range arrays {

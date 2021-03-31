@@ -16,15 +16,15 @@ import (
 
 var Root string
 
-// Files :文件类
+/* 文件类 */
 type FilesEo struct{}
 
-// New :创建
+/* 创建 */
 func (FilesEo) New(root string) {
 	Root = root
 }
 
-// List :列表
+/* 列表 */
 func (fe FilesEo) List(path string) map[string]interface{} {
 	// 路径
 	if path == "/" {
@@ -89,7 +89,7 @@ func (fe FilesEo) List(path string) map[string]interface{} {
 	return res
 }
 
-// FileSize :统计大小
+/* 统计大小 */
 func (fe FilesEo) FileSize(ff string) int64 {
 	var total int64
 	// 文件
@@ -110,19 +110,19 @@ func (fe FilesEo) FileSize(ff string) int64 {
 	return total
 }
 
-// GetCtime :创建时间
+/* 创建时间 */
 func (FilesEo) GetCtime(ff string) string {
 	f, _ := os.Stat(ff)
 	return f.ModTime().Format("2006-01-02 15:04:05")
 }
 
-// GetMtime :修改时间
+/* 修改时间 */
 func (FilesEo) GetMtime(ff string) string {
 	f, _ := os.Stat(ff)
 	return f.ModTime().Format("2006-01-02 15:04:05")
 }
 
-// GetPerm :获取权限值
+/* 权限值 */
 func (fe FilesEo) GetPerm(ff string) int {
 	f, _ := os.Stat(ff)
 	perm := f.Mode().String()
@@ -132,8 +132,6 @@ func (fe FilesEo) GetPerm(ff string) int {
 	res, _ := strconv.Atoi(p1 + p2 + p3)
 	return res
 }
-
-// 权限值 转 数字
 func (FilesEo) permToVal(perm string) string {
 	var num int
 	if perm[0:1] == "r" {
@@ -148,7 +146,7 @@ func (FilesEo) permToVal(perm string) string {
 	return strconv.Itoa(num)
 }
 
-// GetExt :文件后缀
+/* 文件后缀 */
 func (FilesEo) GetExt(fileName string) string {
 	arr := strings.Split(fileName, ".")
 	if len(arr) > 0 {
@@ -157,7 +155,7 @@ func (FilesEo) GetExt(fileName string) string {
 	return ""
 }
 
-// FormatBytes :格式化
+/* 格式化 */
 func (FilesEo) FormatBytes(bytes int64) string {
 	var str string
 	if bytes >= 1073741824 {

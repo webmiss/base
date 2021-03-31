@@ -8,10 +8,9 @@ import (
 	"github.com/segmentio/kafka-go"
 )
 
-// Kafka :客户端
 type Kafka struct{}
 
-// producer :生产者
+/* 生产者 */
 func (Kafka) Producer(topic string, partition int) *kafka.Conn {
 	cfg := config.Kafka()
 	w, err := kafka.DialLeader(context.Background(), cfg.Type, cfg.Host+":"+cfg.Port, topic, partition)
@@ -24,7 +23,7 @@ func (Kafka) Producer(topic string, partition int) *kafka.Conn {
 	return w
 }
 
-// Consumer :消费者
+/* 消费者 */
 func (Kafka) Consumer(topic string) *kafka.Reader {
 	cfg := config.Kafka()
 	r := kafka.NewReader(kafka.ReaderConfig{

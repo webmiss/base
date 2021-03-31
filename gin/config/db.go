@@ -1,6 +1,6 @@
 package config
 
-// MySQL :数据库配置
+/* 数据库配置 */
 type MySQL struct {
 	Driver   string
 	Host     string
@@ -14,7 +14,7 @@ type MySQL struct {
 	Time     int64
 }
 
-// Default :默认数据库
+/* 默认数据库 */
 func (d *MySQL) Default() *MySQL {
 	d.Driver = "mysql"                              //类型
 	d.Host = "127.0.0.1"                            //主机

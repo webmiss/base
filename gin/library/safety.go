@@ -7,10 +7,10 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-// Safety :验证类
+/* 验证类 */
 type Safety struct{}
 
-// IsRight :正则-公共
+/* 正则-公共 */
 func (s Safety) IsRight(name string, val string) bool {
 	data := map[string]string{
 		"uname":  "^[a-zA-Z][a-zA-Z0-9\\_\\@\\-\\*\\&]{3,15}$",
@@ -23,13 +23,13 @@ func (s Safety) IsRight(name string, val string) bool {
 	return res
 }
 
-// Test :正则-验证
+/* 正则-验证 */
 func (s Safety) Test(reg string, val string) bool {
 	res, _ := regexp.MatchString(reg, val)
 	return res
 }
 
-// Encode :加密-JWT
+/* 加密-JWT */
 func (s Safety) Encode(param map[string]interface{}) (string, error) {
 	cfg := config.Env() //配置
 	token := jwt.New(jwt.SigningMethodHS256)
@@ -42,13 +42,12 @@ func (s Safety) Encode(param map[string]interface{}) (string, error) {
 	return res, err
 }
 
-// Decode :解密-JWT
+/* 解密-JWT */
 func (s Safety) Decode(token string) (jwt.MapClaims, error) {
 	// 配置
 	cfg := config.Env()
 	// 解析
 	res, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
-
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, nil
 		}

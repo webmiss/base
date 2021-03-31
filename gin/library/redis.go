@@ -11,12 +11,12 @@ import (
 var RedisDB *redigo.Pool
 var RedisDBOther *redigo.Pool
 
-// Redis :缓存数据库
+/* 缓存数据库 */
 type Redis struct {
 	conn redigo.Conn
 }
 
-// RedisPool :数据池
+/* 数据池 */
 func RedisPool(db string) {
 	// 配置
 	cfg := config.Redis()
@@ -69,33 +69,36 @@ func RedisPool(db string) {
 	}
 }
 
-// New :创建
+/* 创建 */
 func (r *Redis) New(db string) *Redis {
 	if db == "Other" {
-		if RedisDBOther != nil {
-			r.conn = RedisDBOther.Get()
+		if RedisDBOther == nil {
+			RedisPool(db)
 		}
+		r.conn = RedisDBOther.Get()
 	} else {
-		if RedisDB != nil {
-			r.conn = RedisDB.Get()
+		if RedisDB == nil {
+			RedisPool(db)
+			fmt.Println("Conn:", RedisDB)
 		}
+		r.conn = RedisDB.Get()
 	}
 	return r
 }
 
-// Close :关闭
+/* 关闭-释放连接 */
 func (r *Redis) Close() {
 	if r.conn != nil {
 		r.conn.Close()
 	}
 }
 
-// Conn :连接
+/* 连接 */
 func (r *Redis) Conn() redigo.Conn {
 	return r.conn
 }
 
-// 是否连接
+/* 是否连接 */
 func (r *Redis) IsConn() bool {
 	if r.conn == nil {
 		fmt.Println("[Redis] Conn: 连接为空!")
@@ -108,7 +111,7 @@ func (r *Redis) IsConn() bool {
 	return true
 }
 
-// Set :添加
+/* 添加 */
 func (r *Redis) Set(key string, val interface{}) []byte {
 	if !r.IsConn() {
 		return nil
@@ -121,7 +124,7 @@ func (r *Redis) Set(key string, val interface{}) []byte {
 	return res
 }
 
-// Get :获取
+/* 获取 */
 func (r *Redis) Get(key string) []byte {
 	if !r.IsConn() {
 		return nil
@@ -134,7 +137,7 @@ func (r *Redis) Get(key string) []byte {
 	return res
 }
 
-// Del :删除
+/* 删除 */
 func (r *Redis) Del(keys ...interface{}) bool {
 	if !r.IsConn() {
 		return false
@@ -147,7 +150,7 @@ func (r *Redis) Del(keys ...interface{}) bool {
 	return res
 }
 
-// Exist :是否存在
+/* 是否存在 */
 func (r *Redis) Exist(key string) bool {
 	if !r.IsConn() {
 		return false
@@ -160,7 +163,7 @@ func (r *Redis) Exist(key string) bool {
 	return res
 }
 
-// Expire :设置过期时间(秒)
+/* 设置过期时间(秒) */
 func (r *Redis) Expire(key string, ttl int64) int64 {
 	if !r.IsConn() {
 		return 0
@@ -173,7 +176,7 @@ func (r *Redis) Expire(key string, ttl int64) int64 {
 	return res
 }
 
-// TTL :获取过期时间(秒)
+/* 获取过期时间(秒) */
 func (r *Redis) TTL(key string) int64 {
 	if !r.IsConn() {
 		return 0
@@ -186,7 +189,7 @@ func (r *Redis) TTL(key string) int64 {
 	return res
 }
 
-// StrLen :获取长度
+/* 获取长度 */
 func (r *Redis) StrLen(key string) int64 {
 	if !r.IsConn() {
 		return 0
@@ -199,7 +202,7 @@ func (r *Redis) StrLen(key string) int64 {
 	return res
 }
 
-// HSet :哈希(Hash)-添加
+/* 哈希(Hash)-添加 */
 func (r *Redis) HSet(name string, key string, val interface{}) int64 {
 	if !r.IsConn() {
 		return 0
@@ -211,8 +214,6 @@ func (r *Redis) HSet(name string, key string, val interface{}) int64 {
 	}
 	return res
 }
-
-// HMSet :哈希(Hash)-添加
 func (r *Redis) HMSet(name string, obj interface{}) int64 {
 	if !r.IsConn() {
 		return 0
@@ -225,7 +226,7 @@ func (r *Redis) HMSet(name string, obj interface{}) int64 {
 	return res
 }
 
-// HGet :哈希(Hash)-获取
+/* 哈希(Hash)-获取 */
 func (r *Redis) HGet(name string, key string) []byte {
 	if !r.IsConn() {
 		return nil
@@ -237,8 +238,6 @@ func (r *Redis) HGet(name string, key string) []byte {
 	}
 	return res
 }
-
-// HMGet :哈希(Hash)-获取
 func (r *Redis) HMGet(name string, keys ...string) []interface{} {
 	if !r.IsConn() {
 		return nil
@@ -255,7 +254,7 @@ func (r *Redis) HMGet(name string, keys ...string) []interface{} {
 	return res
 }
 
-// HDel :哈希(Hash)-删除
+/* 哈希(Hash)-删除 */
 func (r *Redis) HDel(name string, key ...string) int64 {
 	if !r.IsConn() {
 		return 0
@@ -268,7 +267,7 @@ func (r *Redis) HDel(name string, key ...string) int64 {
 	return res
 }
 
-// HExist :哈希(Hash)-是否存在
+/* 哈希(Hash)-是否存在 */
 func (r *Redis) HExist(name string, key string) bool {
 	if !r.IsConn() {
 		return false
@@ -281,7 +280,7 @@ func (r *Redis) HExist(name string, key string) bool {
 	return res
 }
 
-// HLen :哈希(Hash)-Key个数
+/* 哈希(Hash)-Key个数 */
 func (r *Redis) HLen(name string) int64 {
 	if !r.IsConn() {
 		return 0

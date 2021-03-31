@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// API :路由
+/* API路由 */
 func API(r *gin.Engine) {
 	g := r.Group("api")
 	{

@@ -1,13 +1,12 @@
 package config
 
-// SocketType :类型
 type SocketType struct {
 	URL  string
 	Host string
 	Port string
 }
 
-// Socket :配置
+/* Socket配置 */
 func Socket() *SocketType {
 	cfg := &SocketType{}
 	cfg.URL = "/websocket" //地址

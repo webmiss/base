@@ -11,12 +11,12 @@ import (
 
 var ImgDir = "upload/user/img/"
 
-// UserInfo :用户
+/* 用户信息 */
 type UserInfo struct {
 	service.Base
 }
 
-// List :列表
+/* 列表 */
 func (r UserInfo) List(c *gin.Context) {
 	// 验证
 	token := c.PostForm("token")
@@ -38,7 +38,7 @@ func (r UserInfo) List(c *gin.Context) {
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list})
 }
 
-// Edit :编辑
+/* 编辑 */
 func (r UserInfo) Edit(c *gin.Context) {
 	// 验证
 	token := c.PostForm("token")
@@ -75,7 +75,7 @@ func (r UserInfo) Edit(c *gin.Context) {
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "uinfo": info})
 }
 
-// Upimg :头像
+/* 头像 */
 func (r UserInfo) Upimg(c *gin.Context) {
 	// 验证
 	token := c.PostForm("token")

@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Recovery :异常捕获
+/* 异常捕获 */
 func Recovery(c *gin.Context) {
 	defer func() {
 		if r := recover(); r != nil {

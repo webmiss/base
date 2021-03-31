@@ -11,7 +11,9 @@ import (
 )
 
 // Logs :日志
-type Logs struct{}
+type Logs struct {
+	Base
+}
 
 // Log :访问日志
 func (k Logs) Log(content interface{}) {
@@ -50,14 +52,14 @@ func (k Logs) Error(content string, err error) {
 }
 
 // Writer :发送
-func (Logs) Writer(conn *kafka.Conn, text []byte) {
+func (l Logs) Writer(conn *kafka.Conn, text []byte) {
 	if conn == nil {
 		return
 	}
 	cfg := config.Kafka()
 	_, err := conn.WriteMessages(kafka.Message{Value: text})
 	if err != nil && cfg.Log {
-		fmt.Println("[Logs] Writer:", err)
-		fmt.Println("[Logs] Writer:", string(text))
+		l.Print("[Logs] Writer:", err)
+		l.Print("[Logs] Writer:", string(text))
 	}
 }

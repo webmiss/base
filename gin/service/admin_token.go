@@ -10,12 +10,12 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-// AdminToken :后台Token
+/* AdminToken */
 type AdminToken struct {
 	Base
 }
 
-// Create :验证
+/* 验证 */
 func (s AdminToken) Verify(token string, urlPerm string) string {
 	var redis *library.Redis
 	// Token
@@ -80,7 +80,7 @@ func (s AdminToken) Verify(token string, urlPerm string) string {
 	return ""
 }
 
-// Perm :权限数组
+/* 权限数组 */
 func (s AdminToken) Perm(token string) map[string]int64 {
 	permAll := map[string]int64{}
 	// Token
@@ -102,7 +102,7 @@ func (s AdminToken) Perm(token string) map[string]int64 {
 	return permAll
 }
 
-// Create :生成
+/* 生成 */
 func (s AdminToken) Create(data map[string]interface{}) string {
 	data["l_time"] = util.Date("2006-01-02 15:04:05")
 	token, _ := (&library.Safety{}).Encode(data)
@@ -116,7 +116,7 @@ func (s AdminToken) Create(data map[string]interface{}) string {
 	return token
 }
 
-// Token :获取
+/* Token数据 */
 func (s AdminToken) Token(token string) jwt.MapClaims {
 	tData, _ := (&library.Safety{}).Decode(token)
 	if tData != nil {

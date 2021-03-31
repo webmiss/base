@@ -9,14 +9,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// SysMenus :系统菜单
+/* 系统菜单 */
 type SysMenus struct {
 	service.Base
 	menus   map[string][]map[string]interface{}
 	permAll map[string]int64
 }
 
-// GetMenus :获取菜单
+/* 获取菜单 */
 func (r *SysMenus) GetMenus(c *gin.Context) {
 	// 验证
 	token := c.PostForm("token")

@@ -10,8 +10,13 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+/* Socket */
+type SocketType struct {
+	Base
+}
+
 // Socket :通信
-func Socket(c *gin.Context) {
+func (s SocketType) Socket(c *gin.Context) {
 	// 验证
 	tp := c.Query("type")
 	token := c.Query("token")
@@ -21,7 +26,20 @@ func Socket(c *gin.Context) {
 	}
 	defer conn.Close()
 	// 验证
-	fmt.Println("参数:", tp, token)
+	if tp == "api" {
+		msg := (&ApiToken{}).Verify(token, "")
+		if msg != "" {
+			return
+		}
+	} else if tp == "admin" {
+		msg := (&AdminToken{}).Verify(token, "")
+		s.Print("Admin:", msg)
+		if msg != "" {
+			return
+		}
+	} else {
+		return
+	}
 	for {
 		mt, msg, err := conn.ReadMessage()
 		if err != nil {

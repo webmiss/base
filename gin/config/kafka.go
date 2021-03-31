@@ -1,6 +1,5 @@
 package config
 
-// KafkaType :类型
 type KafkaType struct {
 	Log  bool
 	Type string
@@ -8,7 +7,7 @@ type KafkaType struct {
 	Port string
 }
 
-// Kafka :Kafka配置
+/* Kafka配置 */
 func Kafka() *KafkaType {
 	cfg := &KafkaType{}
 	cfg.Log = false        //显示日志

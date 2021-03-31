@@ -14,7 +14,7 @@ import (
 var DBDefault *sql.DB
 var DBOther *sql.DB
 
-// Model :数据库
+/* 数据库 */
 type Model struct {
 	conn    *sql.DB       //连接
 	sql     string        //SQL
@@ -32,7 +32,7 @@ type Model struct {
 	nums    int64         //条数
 }
 
-// DBPool :数据池
+/* 数据池 */
 func DBPool(db string) {
 	// 配置
 	cfg := (&config.MySQL{}).Default()
@@ -59,16 +59,22 @@ func DBPool(db string) {
 	}
 }
 
-// Conn :连接
+/* 连接 */
 func (m *Model) Conn(db string) {
 	if db == "other" {
+		if DBOther == nil {
+			DBPool(db)
+		}
 		m.conn = DBOther
 	} else {
+		if DBDefault == nil {
+			DBPool(db)
+		}
 		m.conn = DBDefault
 	}
 }
 
-// Query :查询
+/* 查询 */
 func (m *Model) Query(sql string, args []interface{}) *sql.Rows {
 	if sql == "" {
 		fmt.Println("[Model] Query: SQL不能为空!")
@@ -87,7 +93,7 @@ func (m *Model) Query(sql string, args []interface{}) *sql.Rows {
 	return rows
 }
 
-// Exec :执行
+/* 执行 */
 func (m *Model) Exec(sql string, args []interface{}) sql.Result {
 	if sql == "" {
 		fmt.Println("[Model] Exec: SQL不能为空!")
@@ -107,47 +113,47 @@ func (m *Model) Exec(sql string, args []interface{}) sql.Result {
 	return rows
 }
 
-// GetSQL :获取-SQL
+/* 获取-SQL */
 func (m *Model) GetSQL() string {
 	return m.sql
 }
 
-// GetID :获取-自增ID
+/* 获取-自增ID */
 func (m *Model) GetID() int64 {
 	return m.id
 }
 
-// GetNums :获取-条数
+/* 获取-条数 */
 func (m *Model) GetNums() int64 {
 	return m.nums
 }
 
-// Table :表
+/* 表 */
 func (m *Model) Table(table string) {
 	m.table = table
 }
 
-// Join :关联-INNER
+/* 关联-INNER */
 func (m *Model) Join(table string, on string) {
 	m.table += " INNER JOIN " + table + " ON " + on
 }
 
-// LeftJoin :关联-LEFT
+/* 关联-LEFT */
 func (m *Model) LeftJoin(table string, on string) {
 	m.table += " LEFT JOIN " + table + " ON " + on
 }
 
-// RightJoin :关联-RIGHT
+/* 关联-RIGHT */
 func (m *Model) RightJoin(table string, on string) {
 	m.table += " RIGHT JOIN " + table + " ON " + on
 }
 
-// FullJoin :关联-FULL
+/* 关联-FULL */
 func (m *Model) FullJoin(table string, on string) {
 	m.table += " FULL JOIN " + table + " ON " + on
 }
 
-// Columns :字段
+/* 字段 */
 func (m *Model) Columns(columns ...string) {
 	m.columns = ""
 	for _, v := range columns {
@@ -158,7 +164,7 @@ func (m *Model) Columns(columns ...string) {
 	}
 }
 
-// Where :条件
+/* 条件 */
 func (m *Model) Where(where string, values ...interface{}) {
 	m.where = where
 	for _, v := range values {
@@ -166,12 +172,12 @@ func (m *Model) Where(where string, values ...interface{}) {
 	}
 }
 
-// Limit :限制
+/* 限制 */
 func (m *Model) Limit(start int, limit int) {
 	m.limit = strconv.Itoa(start) + "," + strconv.Itoa(limit)
 }
 
-// Order :排序
+/* 排序 */
 func (m *Model) Order(order ...string) {
 	m.order = ""
 	for _, v := range order {
@@ -182,7 +188,7 @@ func (m *Model) Order(order ...string) {
 	}
 }
 
-// Group :分组
+/* 分组 */
 func (m *Model) Group(group ...string) {
 	m.order = ""
 	for _, v := range group {
@@ -193,13 +199,13 @@ func (m *Model) Group(group ...string) {
 	}
 }
 
-// Page :分页
+/* 分页 */
 func (m *Model) Page(page int, limit int) {
 	start := (page - 1) * limit
 	m.limit = strconv.Itoa(start) + "," + strconv.Itoa(limit)
 }
 
-// SelectSQL :查询-SQL
+/* 查询-SQL */
 func (m *Model) SelectSQL() (string, []interface{}) {
 	if m.table == "" {
 		fmt.Println("[Model] Select: 表不能为空!")
@@ -232,7 +238,7 @@ func (m *Model) SelectSQL() (string, []interface{}) {
 	return m.sql, args
 }
 
-// Find :查询-多条
+/* 查询-多条 */
 func (m *Model) Find() []map[string]interface{} {
 	sql, args := m.SelectSQL()
 	if sql == "" {
@@ -245,7 +251,7 @@ func (m *Model) Find() []map[string]interface{} {
 	return m.FindDataAll(rows)
 }
 
-// FindFirst :查询-单条
+/* 查询-单条 */
 func (m *Model) FindFirst() map[string]interface{} {
 	m.limit = "0,1"
 	sql, args := m.SelectSQL()
@@ -263,7 +269,7 @@ func (m *Model) FindFirst() map[string]interface{} {
 	return res[0]
 }
 
-// FindDataAll :获取查询结果-多条
+/* 获取查询结果-多条 */
 func (m *Model) FindDataAll(rows *sql.Rows) []map[string]interface{} {
 	// 字段长度
 	columns, _ := rows.Columns()
@@ -292,7 +298,7 @@ func (m *Model) FindDataAll(rows *sql.Rows) []map[string]interface{} {
 	return res
 }
 
-// Values :添加-数据
+/* 添加-数据 */
 func (m *Model) Values(data map[string]interface{}) {
 	keys, vals := "", ""
 	m.args = make([]interface{}, 0, 10)
@@ -309,7 +315,7 @@ func (m *Model) Values(data map[string]interface{}) {
 	m.values = vals
 }
 
-// InsertSQL :添加-SQL
+/* 添加-SQL */
 func (m *Model) InsertSQL() (string, []interface{}) {
 	if m.table == "" {
 		fmt.Println("[Model] Insert: 表不能为空!")
@@ -328,7 +334,7 @@ func (m *Model) InsertSQL() (string, []interface{}) {
 	return m.sql, args
 }
 
-// Insert :添加-执行
+/* 添加-执行 */
 func (m *Model) Insert() bool {
 	sql, args := m.InsertSQL()
 	if sql == "" {
@@ -346,7 +352,7 @@ func (m *Model) Insert() bool {
 	return true
 }
 
-// Set :更新-数据
+/* 更新-数据 */
 func (m *Model) Set(data map[string]interface{}) {
 	m.args = make([]interface{}, 0, 10)
 	vals := ""
@@ -360,7 +366,7 @@ func (m *Model) Set(data map[string]interface{}) {
 	m.data = vals
 }
 
-// UpdateSQL :更新-SQL
+/* 更新-SQL */
 func (m *Model) UpdateSQL() (string, []interface{}) {
 	if m.table == "" {
 		fmt.Println("[Model] Update: 表不能为空!")
@@ -383,7 +389,7 @@ func (m *Model) UpdateSQL() (string, []interface{}) {
 	return m.sql, args
 }
 
-// Update :更新-执行
+/* 更新-执行 */
 func (m *Model) Update() bool {
 	sql, args := m.UpdateSQL()
 	if sql == "" {
@@ -401,7 +407,7 @@ func (m *Model) Update() bool {
 	return true
 }
 
-// DeleteSQL :删除-SQL
+/* 删除-SQL */
 func (m *Model) DeleteSQL() (string, []interface{}) {
 	if m.table == "" {
 		fmt.Println("[Model] Delete: 表不能为空!")
@@ -419,7 +425,7 @@ func (m *Model) DeleteSQL() (string, []interface{}) {
 	return m.sql, args
 }
 
-// Delete :删除-执行
+/* 删除-执行 */
 func (m *Model) Delete() bool {
 	sql, args := m.DeleteSQL()
 	if sql == "" {

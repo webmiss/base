@@ -3,21 +3,12 @@ package main
 import (
 	"io/ioutil"
 	"webmis/config"
-	"webmis/library"
 	"webmis/middleware"
-	"webmis/model"
 	"webmis/router"
 
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 )
-
-func init() {
-	// 默认数据库
-	model.DBPool("")
-	// Redis数据库
-	library.RedisPool("")
-}
 
 func main() {
 	// 配置

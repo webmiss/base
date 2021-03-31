@@ -9,12 +9,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// UserPasswd :用户
+/* 用户密码 */
 type UserPasswd struct {
 	service.Base
 }
 
-// Edit :编辑
+/* 编辑 */
 func (r UserPasswd) Edit(c *gin.Context) {
 	// 验证
 	token := c.PostForm("token")

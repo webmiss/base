@@ -16,7 +16,7 @@ func main() {
 	cfg := config.Socket()
 	r := gin.Default()
 	r.GET(cfg.URL, func(c *gin.Context) {
-		service.Socket(c)
+		(&service.SocketType{}).Socket(c)
 	})
 	r.Run(cfg.Host + ":" + cfg.Port)
 }

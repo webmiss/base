@@ -10,13 +10,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// User :用户
+/* 用户 */
 type User struct {
 	service.Base
 	service.Data
 }
 
-// Login :登录
+/* 登录 */
 func (r User) Login(c *gin.Context) {
 	uname := c.PostForm("uname")
 	passwd := c.PostForm("passwd")
@@ -88,7 +88,7 @@ func (r User) Login(c *gin.Context) {
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "token": token, "uinfo": user})
 }
 
-// Token :验证
+/* Token验证 */
 func (r User) Token(c *gin.Context) {
 	// 验证
 	token := c.PostForm("token")

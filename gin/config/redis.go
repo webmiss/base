@@ -2,7 +2,6 @@ package config
 
 import "time"
 
-// RedisType :类型
 type RedisType struct {
 	Driver   string
 	Host     string
@@ -14,7 +13,7 @@ type RedisType struct {
 	Time     time.Duration
 }
 
-// Redis :Redis配置
+/* Redis配置 */
 func Redis() *RedisType {
 	cfg := &RedisType{}
 	cfg.Driver = "tcp"          //类型

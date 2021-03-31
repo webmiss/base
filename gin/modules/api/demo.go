@@ -6,12 +6,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Demo :Demo
+/* Demo */
 type Demo struct {
 	service.Base
 }
 
-// Token :验证Token
+/* 验证Token */
 func (r Demo) Token(c *gin.Context) {
 	// 验证
 	token := c.PostForm("token")
@@ -24,7 +24,7 @@ func (r Demo) Token(c *gin.Context) {
 	r.GetJSON(c, gin.H{"code": 0, "msg": "验证成功"})
 }
 
-// List :验证Url
+/* 验证Url */
 func (r Demo) List(c *gin.Context) {
 	// 验证
 	token := c.PostForm("token")
@@ -36,8 +36,6 @@ func (r Demo) List(c *gin.Context) {
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "验证成功"})
 }
-
-// Perm :验证Url
 func (r Demo) Perm(c *gin.Context) {
 	// 验证
 	token := c.PostForm("token")

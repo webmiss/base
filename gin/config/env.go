@@ -1,8 +1,5 @@
 package config
 
-var Mode = "debug" //模式: debug, release, test
-
-// Env :类型
 type EnvType struct {
 	Mode             string
 	Host             string
@@ -18,7 +15,7 @@ type EnvType struct {
 	ApiTokenAuto     bool
 }
 
-// Env :公共配置
+/* 公共配置 */
 func Env() *EnvType {
 	cfg := &EnvType{}
 	cfg.Mode = "debug"                           //模式: debug, release, test
