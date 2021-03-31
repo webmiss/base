@@ -45,6 +45,7 @@
         </li>
       </ul>
       <!-- 列表 End -->
+      <div v-else class="folder_null">文件夹为空</div>
     </div>
 
     <!-- 新建文件夹 -->
@@ -101,6 +102,7 @@
 </template>
 
 <style scoped>
+.folder_null{position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: #999;}
 /* 信息 */
 .file_path{line-height: 20px; padding: 16px;}
 .file_path a{color: #333; user-select: none;}
@@ -136,6 +138,7 @@
 .file_ct{width: 100%; height: 84px; line-height: 84px; text-align: center;}
 .file_ct .icons{font-size: 64px; color: #B9C9D6;}
 .file_ct .icon_folder{color: #FFD65D;}
+
 /* 图片 */
 .file_img{width: 100%; height: 100%; background-color: #F2F4F6;}
 .file_img.bgImg{background-size: contain;}

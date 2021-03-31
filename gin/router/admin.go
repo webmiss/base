@@ -27,6 +27,7 @@ func Admin(r *gin.Engine) {
 		g.POST("sysfile/mkdir", (&admin.SysFile{}).Mkdir)
 		g.POST("sysfile/rename", (&admin.SysFile{}).Rename)
 		g.POST("sysfile/upload", (&admin.SysFile{}).Upload)
+		g.POST("sysfile/down", (&admin.SysFile{}).Down)
 		g.POST("sysfile/remove", (&admin.SysFile{}).Remove)
 		// 系统菜单
 		g.POST("sysmenus/getMenus", (&admin.SysMenus{}).GetMenus)

@@ -21,6 +21,7 @@ class Admin {
     $app->post('/admin/sysfile/mkdir', 'App\Admin\SysFile::Mkdir');
     $app->post('/admin/sysfile/rename', 'App\Admin\SysFile::Rename');
     $app->post('/admin/sysfile/upload', 'App\Admin\SysFile::Upload');
+    $app->post('/admin/sysfile/down', 'App\Admin\SysFile::Down');
     $app->post('/admin/sysfile/remove', 'App\Admin\SysFile::Remove');
     // 系统菜单
     $app->post('/admin/sysmenus/getMenus', 'App\Admin\SysMenus::GetMenus');

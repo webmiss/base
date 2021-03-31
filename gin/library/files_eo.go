@@ -191,7 +191,7 @@ func (FilesEo) Rename(rename string, name string) bool {
 	return true
 }
 
-/* 上传文件 */
+/* 上传 */
 func (FilesEo) Upload(c *gin.Context, file *multipart.FileHeader, filename string) bool {
 	dst := Root + filename
 	if err := c.SaveUploadedFile(file, dst); err != nil {
@@ -210,6 +210,13 @@ func (FilesEo) Writer(file string, content string) error {
 	defer f.Close()
 	f.WriteString(content)
 	return nil
+}
+
+/* 上传文件 */
+func (FilesEo) Blob(file string) []byte {
+	dst := Root + file
+	bytes, _ := ioutil.ReadFile(dst)
+	return bytes
 }
 
 /* 删除(文件夹&文件) */

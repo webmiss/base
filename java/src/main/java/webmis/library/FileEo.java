@@ -2,6 +2,7 @@ package webmis.library;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -163,7 +164,7 @@ public class FileEo {
     return src.renameTo(dst);
   }
 
-  /* 上传文件 */
+  /* 上传 */
   public static boolean Upload(MultipartFile tmp, String to){
     to = Root+to;
     try {
@@ -194,6 +195,24 @@ public class FileEo {
       if (fos != null) try { fos.close(); } catch (IOException e) { }
     }
     return true;
+  }
+
+  /* 下载 */
+  public static byte[] Blob(String file){
+    byte[] bytes = null;
+    FileInputStream fs = null;
+    try{
+      File ff = new File(Root+file);
+      fs = new FileInputStream(ff);
+      bytes = new byte[(int)ff.length()];
+      fs.read(bytes);
+      fs.close();
+    }catch(IOException e){
+      System.out.println("读取文件失败: "+e.getMessage());
+    }finally{
+      try { fs.close(); }catch(IOException e) { }
+    }
+    return bytes;
   }
 
   /* 删除(文件夹&文件) */

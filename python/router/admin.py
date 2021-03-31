@@ -37,6 +37,8 @@ def sysFileMkdir() : return SysFile().Mkdir()
 def sysFileRename() : return SysFile().Rename()
 @Admin.route('/sysfile/upload',methods=['POST'])
 def sysFileUpload() : return SysFile().Upload()
+@Admin.route('/sysfile/down',methods=['POST'])
+def sysFileDown() : return SysFile().Down()
 @Admin.route('/sysfile/remove',methods=['POST'])
 def sysFileRemove() : return SysFile().Remove()
 # 系统菜单

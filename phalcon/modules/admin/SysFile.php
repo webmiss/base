@@ -79,6 +79,23 @@ class SysFile extends Base {
     return self::GetJSON(['code'=>0, 'msg'=>'成功']);
   }
 
+  /* 下载 */
+  static function Down(){
+    
+    // 验证
+    $token = self::Post('token');
+    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    // 参数
+    $path = self::Post('path');
+    $filename = self::Post('filename');
+    if(empty($path) || empty($filename)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
+    // 返回
+    self::GetJSON();
+    FileEo::$Root = Env::$root_dir . self::$dirRoot;
+    return FileEo::Blob($path.$filename);
+  }
+
   /* 删除 */
   static function Remove(){
     // 验证

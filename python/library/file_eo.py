@@ -86,7 +86,7 @@ class FileEo:
     dst = FileEo.Root+name
     return True if not os.rename(src,dst) else False
 
-  # 上传文件
+  # 上传
   def Upload(tmp, to: str):
     to = FileEo.Root+to
     if tmp.save(to)==None : return True
@@ -99,6 +99,11 @@ class FileEo:
       f.write(content)
       f.close()
     return True
+
+  # 下载
+  def Blob(file: str):
+    dst = FileEo.Root+file
+    with open(dst, 'rb') as f: return f.read()
 
   # 删除(文件夹&文件)
   def RemoveAll(path: str=''):

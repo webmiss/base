@@ -102,7 +102,7 @@ class FileEo extends Base {
     return rename($src,$dst);
   }
 
-  /* 上传文件 */
+  /* 上传 */
   static function Upload(string $tmp, string $to): bool {
     $to = self::$Root.$to;
     return move_uploaded_file($tmp, $to);
@@ -112,6 +112,12 @@ class FileEo extends Base {
   static function Writer(string $file='', string $content): ?bool {
     $file = self::$Root.$file;
     return file_put_contents($file, $content)?true:false;
+  }
+
+  /* 下载 */
+  static function Blob(string $file) {
+    $dst = self::$Root.$file;
+    return file_get_contents($dst);
   }
 
   /* 删除(文件夹&文件) */

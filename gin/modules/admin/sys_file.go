@@ -117,6 +117,26 @@ func (r SysFile) Upload(c *gin.Context) {
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
 }
 
+/* 下载 */
+func (r SysFile) Down(c *gin.Context) {
+	// 验证
+	token := c.PostForm("token")
+	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
+	if msg != "" {
+		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
+		return
+	}
+	// 参数
+	path := c.PostForm("path")
+	filename := c.PostForm("filename")
+	if path == "" || filename == "" {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
+		return
+	}
+	// 返回
+	c.Writer.Write((&library.FilesEo{}).Blob(path + filename))
+}
+
 /* 删除 */
 func (r SysFile) Remove(c *gin.Context) {
 	// 验证

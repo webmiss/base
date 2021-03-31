@@ -163,6 +163,18 @@ public class SysFile extends Base {
     return GetJSON(res);
   }
 
+  /* 下载 */
+  @RequestMapping("down")
+  byte[] Down(HttpServletRequest request, String token, String path, String filename) throws SQLException {
+    // 验证
+    String msg = AdminToken.verify(token, request.getRequestURI());
+    if(!msg.equals("")) return null;
+    // 参数
+    if(path.isEmpty() || filename.isEmpty()) return null;
+    // 返回
+    return FileEo.Blob(path+filename);
+  }
+
   /* 删除 */
   @RequestMapping("remove")
   String Remove(HttpServletRequest request, String token, String path, String data) throws SQLException {

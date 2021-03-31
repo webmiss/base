@@ -75,6 +75,20 @@ class SysFile(Base):
     # 返回
     return self.GetJSON({'code':0, 'msg':'成功'})
 
+  # 下载
+  def Down(self):
+    # 验证
+    token = self.Post('token')
+    msg = AdminToken().verify(token, request.path)
+    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
+    # 参数
+    path = self.Post('path')
+    filename = self.Post('filename')
+    if not path or not filename : return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 返回
+    FileEo.Root = Env.root_dir + self.__dirRoot
+    return FileEo.Blob(path+filename)
+
   # 删除
   def Remove(self):
     # 验证
