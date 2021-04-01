@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"time"
 	"webmis/config"
 	"webmis/util"
@@ -23,10 +22,12 @@ type SocketType struct {
 
 // Socket :通信
 func (s SocketType) Socket(c *gin.Context) {
+	if Clients == nil {
+		Clients = map[string]*websocket.Conn{}
+	}
 	// 参数
 	tp := c.Query("type")
 	token := c.Query("token")
-	s.Print("Token:", token)
 	conn, err := (&websocket.Upgrader{CheckOrigin: func(r *http.Request) bool { return true }}).Upgrade(c.Writer, c.Request, nil)
 	if tp == "" || token == "" || err != nil {
 		return
@@ -43,6 +44,7 @@ func (s SocketType) Socket(c *gin.Context) {
 		}
 		tData := (&ApiToken{}).Token(token)
 		uid = util.Strval(tData["uid"])
+		Clients[uid] = conn
 	} else if tp == "admin" {
 		msg := (&AdminToken{}).Verify(token, "")
 		if msg != "" {
@@ -50,15 +52,10 @@ func (s SocketType) Socket(c *gin.Context) {
 		}
 		tData := (&AdminToken{}).Token(token)
 		uid = util.Strval(tData["uid"])
-		s.Print("Admin:", uid, reflect.TypeOf(uid).String(), tData)
+		Clients[uid] = conn
 	} else {
 		return
 	}
-	// 保存连接
-	if Clients == nil {
-		Clients = map[string]*websocket.Conn{}
-	}
-	Clients[uid] = conn
 	for {
 		mt, msg, err := conn.ReadMessage()
 		// 断开连接
@@ -72,41 +69,64 @@ func (s SocketType) Socket(c *gin.Context) {
 		}
 		MsgType = mt
 		// 用户ID
-		var id string
+		id := "0"
 		for k, v := range Clients {
 			if v == conn {
 				id = k
 				break
 			}
 		}
-		s.Print("Clients:", Clients)
 		// 消息路由
-		router(Clients[id], msg)
+		router(id, msg)
 	}
 }
 
+/* 群发 */
+func sendAll(data map[string]interface{}) {
+	for _, conn := range Clients {
+		res, _ := json.Marshal(data)
+		if err := conn.WriteMessage(MsgType, res); err != nil {
+			fmt.Println("[Socket] sendAll:", err)
+		}
+	}
+}
+
+/* 单发 */
+func send(uid string, data map[string]interface{}) {
+	res, _ := json.Marshal(data)
+	conn, ok := Clients[uid]
+	if !ok {
+		return
+	}
+	conn.WriteMessage(MsgType, res)
+}
+
 /* 路由 */
-func router(conn *websocket.Conn, message []byte) {
+func router(uid string, message []byte) {
 	// 数据
 	msg := make(map[string]interface{})
 	_ = json.Unmarshal(message, &msg)
 	// 消息
 	if msg["type"] == "msg" {
-		getMsg(conn, msg)
+		getMsg(uid, msg)
 	} else {
-		res, _ := json.Marshal(gin.H{"type": "", "code": 0, "msg": "成功"})
-		conn.WriteMessage(MsgType, res)
+		send(uid, gin.H{"type": "", "code": 0, "msg": "成功"})
 	}
 }
 
 /* 消息 */
-func getMsg(conn *websocket.Conn, msg map[string]interface{}) {
-	fmt.Println(msg)
-	res, _ := json.Marshal(gin.H{
+func getMsg(uid string, msg map[string]interface{}) {
+	fmt.Println(uid, msg)
+	// 群发
+	if uid == "0" {
+		sendAll(msg)
+		return
+	}
+	// 单发
+	send(uid, gin.H{
 		"type": "msg",
 		"code": 0,
 		"msg":  "成功",
 		"time": time.Now().Format("2006-01-02 15:04:05"),
 	})
-	conn.WriteMessage(MsgType, res)
 }

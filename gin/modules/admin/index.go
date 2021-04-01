@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"webmis/library"
 	"webmis/model"
 	"webmis/service"
 
@@ -16,7 +15,6 @@ type Index struct {
 
 /* 首页 */
 func (r Index) Index(c *gin.Context) {
-	(&library.Socket{}).Send("admin")
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "Admin"})
 }

@@ -79,7 +79,6 @@ func (r *Redis) New(db string) *Redis {
 	} else {
 		if RedisDB == nil {
 			RedisPool(db)
-			fmt.Println("Conn:", RedisDB)
 		}
 		r.conn = RedisDB.Get()
 	}

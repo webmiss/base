@@ -1,8 +1,3 @@
-## 安装
-```bash
-go get -u github.com/gorilla/websocket
-```
-
 ## 服务器
 ```bash
 # 运行
@@ -10,46 +5,20 @@ go get -u github.com/gorilla/websocket
 # 启动
 ./bash socketStart
 ```
+- 数据: service/scoket.go
+- 发送: library/scoket.go
 
-### service/msg.go
+## 群发
 ```go
-package service
-
-import (
-	"encoding/json"
-	"fmt"
-	"time"
-
-	"github.com/gin-gonic/gin"
-	"github.com/gorilla/websocket"
+go (&library.Socket{}).Send(
+  "admin",
+  gin.H{
+    "code": 0,
+    "type": "msg",
+    "data": gin.H{
+      "title":   "测试",
+      "content": "测试内容",
+    },
+  },
 )
-
-type Msgs struct {
-}
-
-/* 路由 */
-func (m Msgs) Router(conn *websocket.Conn, mt int, message []byte) {
-	// 数据
-	msg := make(map[string]interface{})
-	_ = json.Unmarshal(message, &msg)
-	// 消息
-	if msg["type"] == "msg" {
-		Msg(conn, mt, msg)
-	} else {
-		res, _ := json.Marshal(gin.H{"type": "", "code": 0, "msg": "成功"})
-		conn.WriteMessage(mt, res)
-	}
-}
-
-/* 消息 */
-func Msg(conn *websocket.Conn, mt int, msg map[string]interface{}) {
-	fmt.Println(msg)
-	res, _ := json.Marshal(gin.H{
-		"type": "msg",
-		"code": 0,
-		"msg":  "成功",
-		"time": time.Now().Format("2006-01-02 15:04:05"),
-	})
-	conn.WriteMessage(mt, res)
-}
 ```
