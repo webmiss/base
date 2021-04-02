@@ -10,6 +10,8 @@
 
 ## 群发
 ```go
+import "library"
+
 go (&library.Socket{}).Send(
   "admin",
   gin.H{

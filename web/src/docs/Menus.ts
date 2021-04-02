@@ -46,6 +46,7 @@ export default {
       {label:'Library 类库', children:[
         {label: '二维码 Qrcode', value: 'docs/phalcon/library/qrcode'},
         {label: '缓存 Redis', value: 'docs/phalcon/library/redis'},
+        {label: '通信 WebSocket', value: 'docs/phalcon/library/socket'},
         {label: '安全验证 Safety', value: 'docs/phalcon/library/safety'},
         {label: '文件上传 Upload', value: 'docs/phalcon/library/upload'},
       ]},
