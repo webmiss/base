@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Cli;
+namespace Task;
 
 use Phalcon\Cli\Task;
 

@@ -17,17 +17,12 @@ require $load;
 /* 命名空间 */
 $loader = new Loader();
 $loader->registerNamespaces([
-  'Cli'=> 'cli/',
+  'Task'=> 'task/',
   'Config'=> BASE_PATH.'/config/',
   'Library'=> BASE_PATH.'/library/',
-  'Middleware'=> BASE_PATH.'/middleware/',
   'Model'=> BASE_PATH.'/model/',
-  'Router'=> BASE_PATH.'/router/',
   'Service'=> BASE_PATH.'/service/',
   'Util'=> BASE_PATH.'/util/',
-  'App\Home'=> BASE_PATH.'/modules/home/',
-  'App\Api'=> BASE_PATH.'/modules/api/',
-  'App\Admin'=> BASE_PATH.'/modules/admin/',
 ]);
 $loader->register();
 
@@ -36,7 +31,7 @@ $container  = new CliDI();
 
 /* 适配器 */
 $dispatcher = new Dispatcher();
-$dispatcher->setDefaultNamespace('Cli');
+$dispatcher->setDefaultNamespace('Task');
 $container->setShared('dispatcher', $dispatcher);
 
 /* 参数 */
