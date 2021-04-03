@@ -14,7 +14,7 @@ args['p'] = param[3] if len(param)>3 else ''
 controller = string.capwords(args['c'])
 action = string.capwords(args['a'])
 try :
-  exec('from task.'+args['c']+' import '+controller)
+  exec('from task.'+args['c'].lower()+' import '+controller)
   if args['p'] == '' : eval(controller+'().'+action+'()')
   else : eval(controller+'().'+action+'('+args['p']+')')
 except Exception as e :
