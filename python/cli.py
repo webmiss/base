@@ -2,7 +2,6 @@
 # -*- coding: UTF-8 -*-
 import sys
 import string
-from task.socket import Socket
 
 # 参数
 param = sys.argv
