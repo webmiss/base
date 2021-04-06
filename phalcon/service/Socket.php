@@ -32,8 +32,7 @@ class Socket implements MessageComponentInterface {
 
   /* 消息 */
   function getMsg(string $uid, $conn, $msg) {
-    print_r($uid);
-    print_r($msg);
+    print_r($uid.' '.$msg);
     // 群发
     if($uid=='0') {
       $this->sendAll($msg);
@@ -64,41 +63,20 @@ class Socket implements MessageComponentInterface {
   /* 连接 */
   function onOpen(ConnectionInterface $conn) {
     // 验证
-    $uid = $this->verify($conn);
-    if($uid==''){
-      return $conn->close();
-    }
-    // 连接
+    $uid = $this->verify((array)$conn->httpRequest->getUri());
+    if($uid=='') return $conn->close();
+    // 保存
     $this->clients->attach($conn);
     $this->uids[$uid] = $conn->resourceId;
   }
-
-  /* 验证 */
-  private function verify($conn): string {
-    // 参数
-    $param = (array)$conn->httpRequest->getUri();
-    $data = [];
-    foreach($param as $val) $data[] = $val;
-    $arr = Util::UrlToArray($data[5]);
-    if(empty($arr)) return '';
-    $type = $arr['type'];
-    $token = $arr['token'];
-    if(empty($type) || empty($token)) return '';
+  /* 消息 */
+  function onMessage(ConnectionInterface $from, $msg) {
     // 验证
-    if($token==Env::$key){
-      return '0';
-    }elseif($type=='api'){
-      $tData = ApiToken::token($token);
-      if(empty($tData)) return '';
-      return (string)$tData->uid;
-    }elseif($type=='admin'){
-      $tData = AdminToken::token($token);
-      if(empty($tData)) return '';
-      return (string)$tData->uid;
-    }
-    return '';
+    $uid = $this->verify((array)$from->httpRequest->getUri());
+    if($uid=='') return $from->close();
+    // 路由
+    $this->router($uid, $from, $msg);
   }
-
   /* 关闭 */
   function onClose(ConnectionInterface $conn) {
     $this->clients->detach($conn);
@@ -115,15 +93,30 @@ class Socket implements MessageComponentInterface {
     return $conn->close();
   }
 
-  /* 消息 */
-  function onMessage(ConnectionInterface $from, $msg) {
+  /* 验证 */
+  private function verify($url): string {
+    // 参数
+    $param = $url;
+    $data = [];
+    foreach($param as $val) $data[] = $val;
+    $arr = Util::UrlToArray($data[5]);
+    if(empty($arr)) return '';
+    $type = isset($arr['type'])?$arr['type']:'';
+    $token = isset($arr['token'])?$arr['token']:'';
+    if(empty($type) || empty($token)) return '';
     // 验证
-    $uid = $this->verify($from);
-    if($uid==''){
-      return $from->close();
+    if($token==Env::$key){
+      return '0';
+    }elseif($type=='api'){
+      $tData = ApiToken::token($token);
+      if(empty($tData)) return '';
+      return (string)$tData->uid;
+    }elseif($type=='admin'){
+      $tData = AdminToken::token($token);
+      if(empty($tData)) return '';
+      return (string)$tData->uid;
     }
-    // 路由
-    $this->router($uid, $from, $msg);
+    return '';
   }
 
 }

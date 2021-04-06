@@ -56,3 +56,14 @@ class Util:
       for k,v in arr.items() : res[k] = v
     return res
 
+  # Url to Array
+  def UrlToArray(url: str):
+    if not url : return {}
+    arr = url.split('?')
+    path = arr[1] if len(arr)>1 else arr[0]
+    arr = path.split('&')
+    param = {}
+    for v in arr :
+      tmp = v.split('=')
+      param[tmp[0]] = tmp[1]
+    return param
