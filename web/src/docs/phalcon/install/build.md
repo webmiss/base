@@ -18,7 +18,7 @@ cd /xxx/phalcon && composer install
 ## Nginx虚拟主机
 ``` nginx
 upstream demo_php_websocket {
-    server 127.0.0.1:9011;
+    server 127.0.0.1:9001;
 }
 
 server {

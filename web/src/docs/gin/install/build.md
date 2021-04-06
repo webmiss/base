@@ -26,6 +26,9 @@ vi /etc/rc.d/rc.local
 upstream demo_go {
     server localhost:9030;
 }
+upstream demo_go_websocket {
+    server localhost:9031;
+}
 map $http_upgrade $connection_upgrade {
     default upgrade;
     '' close;
@@ -52,6 +55,15 @@ server {
 
     location ~* ^/(upload|favicon.png)/(.+)$ {
         root $root_path;
+    }
+
+    location /wss {
+        proxy_pass http://demo_go_websocket;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header Connection "keep-alive";
+        proxy_set_header X-Real-IP $remote_addr;
     }
 
     location ~ /\.ht {
