@@ -3,9 +3,10 @@ from service.admin_token import AdminToken
 from service.api_token import ApiToken
 from util.util import Util
 
+# Socket服务
 class Socket:
 
-  clients = {}
+  clients = {}  #连接
 
   # 路由
   async def router(self, uid: str, conn: any, msg: str):

@@ -25,6 +25,7 @@ public class Util {
 
   /* 格式化时间 */
   public static String Date(String format) {
+    if(format.equals("")) format = "yyyy-MM-dd HH:mm:ss";
     return Date(format, String.valueOf(Time()));
   }
   public static String Date(String format, String timestamp) {
@@ -82,8 +83,8 @@ public class Util {
   }
 
   /* Array to String */
-  public static String JsonEncode(Dynamic<?> arr) {
-    return JSON.toJSONString(arr.getKey());
+  public static String JsonEncode(Object arr) {
+    return JSON.toJSONString(arr);
   }
 
   /* String to Array */

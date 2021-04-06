@@ -9,7 +9,7 @@ use Util\Util;
 use Ratchet\WebSocket\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
-/* 数据类 */
+/* Socket服务 */
 class Socket implements MessageComponentInterface {
 
   public $clients=null; //连接
@@ -80,7 +80,6 @@ class Socket implements MessageComponentInterface {
   /* 关闭 */
   function onClose(ConnectionInterface $conn) {
     $this->clients->detach($conn);
-    // 移除Uid
     foreach($this->uids as $key=>$val) {
       if($val==$conn->resourceId){
         unset($this->uids[$key]);

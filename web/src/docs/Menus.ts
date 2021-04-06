@@ -98,6 +98,7 @@ export default {
       ]},
       {label:'Library 类库', children:[
         {label: '缓存 Redis', value: 'docs/java/library/redis'},
+        {label: '通信 WebSocket', value: 'docs/java/library/socket'},
         {label: '安全验证 Safety', value: 'docs/java/library/safety'},
         {label: '文件上传 Upload', value: 'docs/java/library/upload'},
       ]},
