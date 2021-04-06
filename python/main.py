@@ -3,7 +3,6 @@ from werkzeug.exceptions import HTTPException
 import json
 import flask_cors
 from config.env import Env
-from model.model import Model
 from router.home import Home
 from router.api import Api
 from router.admin import Admin

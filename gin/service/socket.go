@@ -1,7 +1,6 @@
 package service
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
@@ -24,7 +23,7 @@ type SocketType struct {
 func router(uid string, conn *websocket.Conn, message []byte) {
 	// 数据
 	data := make(map[string]interface{})
-	_ = json.Unmarshal(message, &data)
+	util.JsonDecode(string(message), data)
 	// 消息
 	if data["type"] == "msg" {
 		getMsg(uid, conn, data)
@@ -59,7 +58,7 @@ func sendAll(data map[string]interface{}) {
 
 /* 单发 */
 func send(conn *websocket.Conn, data map[string]interface{}) {
-	res, _ := json.Marshal(data)
+	res := util.JsonEncode(data)
 	if err := conn.WriteMessage(MsgType, res); err != nil {
 		fmt.Println("[Socket] send:", err)
 	}

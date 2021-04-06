@@ -7,16 +7,15 @@ Api = Blueprint('api', __name__)
 
 # 首页
 @Api.route('/',methods=['GET', 'POST'])
-def index() : return Index().index()
+def index() : return Index().Index()
 # 登录
-@Api.route('/user/login',methods=['POST'])
-def userLogin() : return User().Login()
-@Api.route('/user/token',methods=['POST'])
-def userToken() : return User().Token()
+@Api.route('/user/<a>',methods=['POST'])
+def user(a) :
+  if a=='login' : return User().Login()
+  elif a=='token' : return User().Token()
 # 权限
-@Api.route('/demo/token',methods=['POST'])
-def demoToken() : return Demo().Token()
-@Api.route('/demo/list',methods=['POST'])
-def demoList() : return Demo().List()
-@Api.route('/demo/perm',methods=['POST'])
-def demoPerm() : return Demo().Perm()
+@Api.route('/demo/<a>',methods=['POST'])
+def demo(a) :
+  if a=='token' : return Demo().Token()
+  elif a=='list' : return Demo().List()
+  elif a=='perm' : return Demo().Perm()

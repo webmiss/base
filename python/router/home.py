@@ -5,4 +5,4 @@ Home = Blueprint('home', __name__)
 
 # 首页
 @Home.route('/',methods=['GET', 'POST'])
-def index() : return Index().index()
+def index() : return Index().Index()
