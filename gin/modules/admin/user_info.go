@@ -110,7 +110,7 @@ func (r UserInfo) Upimg(c *gin.Context) {
 	}
 	// 清理
 	rmImg := imgData["img"].(string)
-	(&library.FilesEo{}).RemoveAll(rmImg)
+	(&library.FileEo{}).RemoveAll(rmImg)
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "img": (&service.Data{}).Img(ImgDir + img)})
 }

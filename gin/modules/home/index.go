@@ -1,6 +1,8 @@
 package home
 
 import (
+	"webmis/config"
+	"webmis/library"
 	"webmis/service"
 
 	"github.com/gin-gonic/gin"
@@ -15,4 +17,36 @@ type Index struct {
 func (r *Index) Index(c *gin.Context) {
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "Web"})
+}
+
+/* 二维码 */
+func (r *Index) Qrcode(c *gin.Context) {
+	tp := c.Param("name")
+	var text string
+	if tp == "docs" {
+		text = "https://webmis.vip/"
+	} else if tp == "demo" {
+		text = "https://demo-app.webmis.vip/"
+	} else if tp == "wechat" {
+		text = "http://weixin.qq.com/r/mC1YQK3EDPBzrekj93iK"
+	} else if tp == "server1" {
+		text = "https://u.wechat.com/MNFMyg4xN7d6ihWrfoWD7So"
+	} else if tp == "server2" {
+		text = "https://u.wechat.com/MC35ApmM-JB7K6cJD6CaYJo"
+	}
+	// 创建目录
+	path := "upload/qrcode/"
+	(&library.FileEo{}).New(config.Env().RootDir)
+	if !(&library.FileEo{}).Mkdir(path) {
+		return
+	}
+	// 是否生成
+	file := path + tp + ".png"
+	if !(&library.FileEo{}).IsFile(file) {
+		ct := (&library.Qrcode{}).Create(map[string]interface{}{"text": text})
+		(&library.FileEo{}).Writer(file, string(ct))
+	}
+	// 返回
+	res := (&library.FileEo{}).Bytes(file)
+	c.Writer.WriteString(string(res))
 }

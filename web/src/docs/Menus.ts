@@ -49,6 +49,7 @@ export default {
         {label: '通信 WebSocket', value: 'docs/phalcon/library/socket'},
         {label: '安全验证 Safety', value: 'docs/phalcon/library/safety'},
         {label: '文件上传 Upload', value: 'docs/phalcon/library/upload'},
+        {label: '二维码 Qrcode', value: 'docs/phalcon/library/qrcode'},
       ]},
     ];
   },
@@ -124,10 +125,11 @@ export default {
       ]},
       {label:'Library 类库', children:[
         {label: '缓存 Redis', value: 'docs/gin/library/redis'},
-        {label: '事件流 Kafka', value: 'docs/gin/library/kafka'},
         {label: '通信 WebSocket', value: 'docs/gin/library/socket'},
         {label: '安全验证 Safety', value: 'docs/gin/library/safety'},
         {label: '文件上传 Upload', value: 'docs/gin/library/upload'},
+        {label: '二维码 Qrcode', value: 'docs/gin/library/qrcode'},
+        {label: '事件流 Kafka', value: 'docs/gin/library/kafka'},
       ]},
     ];
   },

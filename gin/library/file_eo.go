@@ -17,15 +17,15 @@ import (
 var Root string
 
 /* 文件类 */
-type FilesEo struct{}
+type FileEo struct{}
 
 /* 创建 */
-func (FilesEo) New(root string) {
+func (FileEo) New(root string) {
 	Root = root
 }
 
 /* 列表 */
-func (fe FilesEo) List(path string) map[string]interface{} {
+func (fe FileEo) List(path string) map[string]interface{} {
 	// 路径
 	if path == "/" {
 		path = ""
@@ -90,7 +90,7 @@ func (fe FilesEo) List(path string) map[string]interface{} {
 }
 
 /* 统计大小 */
-func (fe FilesEo) FileSize(ff string) int64 {
+func (fe FileEo) FileSize(ff string) int64 {
 	var total int64
 	// 文件
 	dir, _ := os.Stat(ff)
@@ -111,19 +111,19 @@ func (fe FilesEo) FileSize(ff string) int64 {
 }
 
 /* 创建时间 */
-func (FilesEo) GetCtime(ff string) string {
+func (FileEo) GetCtime(ff string) string {
 	f, _ := os.Stat(ff)
 	return f.ModTime().Format("2006-01-02 15:04:05")
 }
 
 /* 修改时间 */
-func (FilesEo) GetMtime(ff string) string {
+func (FileEo) GetMtime(ff string) string {
 	f, _ := os.Stat(ff)
 	return f.ModTime().Format("2006-01-02 15:04:05")
 }
 
 /* 权限值 */
-func (fe FilesEo) GetPerm(ff string) int {
+func (fe FileEo) GetPerm(ff string) int {
 	f, _ := os.Stat(ff)
 	perm := f.Mode().String()
 	p1 := fe.permToVal(perm[1:4])
@@ -132,7 +132,7 @@ func (fe FilesEo) GetPerm(ff string) int {
 	res, _ := strconv.Atoi(p1 + p2 + p3)
 	return res
 }
-func (FilesEo) permToVal(perm string) string {
+func (FileEo) permToVal(perm string) string {
 	var num int
 	if perm[0:1] == "r" {
 		num += 4
@@ -147,7 +147,7 @@ func (FilesEo) permToVal(perm string) string {
 }
 
 /* 文件后缀 */
-func (FilesEo) GetExt(fileName string) string {
+func (FileEo) GetExt(fileName string) string {
 	arr := strings.Split(fileName, ".")
 	if len(arr) > 0 {
 		return arr[len(arr)-1:][0]
@@ -156,7 +156,7 @@ func (FilesEo) GetExt(fileName string) string {
 }
 
 /* 格式化 */
-func (FilesEo) FormatBytes(bytes int64) string {
+func (FileEo) FormatBytes(bytes int64) string {
 	var str string
 	if bytes >= 1073741824 {
 		str = fmt.Sprintf("%.2f GB", float64(bytes)/1073741824)
@@ -170,8 +170,18 @@ func (FilesEo) FormatBytes(bytes int64) string {
 	return str
 }
 
+/* 是否文件 */
+func (FileEo) IsFile(file string) bool {
+	file = Root + file
+	_, err := os.Stat(file)
+	if err != nil {
+		return false
+	}
+	return true
+}
+
 /* 创建目录 */
-func (FilesEo) Mkdir(path string) bool {
+func (FileEo) Mkdir(path string) bool {
 	path = Root + path
 	if err := os.MkdirAll(path, 0766); err != nil {
 		return false
@@ -180,7 +190,7 @@ func (FilesEo) Mkdir(path string) bool {
 }
 
 /* 重命名 */
-func (FilesEo) Rename(rename string, name string) bool {
+func (FileEo) Rename(rename string, name string) bool {
 	src := Root + rename
 	dst := Root + name
 	if err := os.Rename(src, dst); err != nil {
@@ -190,7 +200,7 @@ func (FilesEo) Rename(rename string, name string) bool {
 }
 
 /* 上传 */
-func (FilesEo) Upload(c *gin.Context, file *multipart.FileHeader, filename string) bool {
+func (FileEo) Upload(c *gin.Context, file *multipart.FileHeader, filename string) bool {
 	dst := Root + filename
 	if err := c.SaveUploadedFile(file, dst); err != nil {
 		return false
@@ -199,7 +209,7 @@ func (FilesEo) Upload(c *gin.Context, file *multipart.FileHeader, filename strin
 }
 
 /* 写入 */
-func (FilesEo) Writer(file string, content string) error {
+func (FileEo) Writer(file string, content string) error {
 	file = Root + file
 	f, err := os.OpenFile(file, os.O_CREATE|os.O_RDWR, 0766)
 	if err != nil {
@@ -210,15 +220,15 @@ func (FilesEo) Writer(file string, content string) error {
 	return nil
 }
 
-/* 下载 */
-func (FilesEo) Bytes(file string) []byte {
+/* 读取 */
+func (FileEo) Bytes(file string) []byte {
 	dst := Root + file
 	bytes, _ := ioutil.ReadFile(dst)
 	return bytes
 }
 
 /* 删除(文件夹&文件) */
-func (FilesEo) RemoveAll(path string) error {
+func (FileEo) RemoveAll(path string) error {
 	path = Root + path
 	return os.RemoveAll(path)
 }

@@ -32,8 +32,8 @@ func (r SysFile) List(c *gin.Context) {
 		return
 	}
 	// 数据
-	(&library.FilesEo{}).New(config.Env().RootDir + dirRoot)
-	list := (&library.FilesEo{}).List(path)
+	(&library.FileEo{}).New(config.Env().RootDir + dirRoot)
+	list := (&library.FileEo{}).List(path)
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "url": config.Env().BaseURL + dirRoot, "data": list})
 }
@@ -55,8 +55,8 @@ func (r SysFile) Mkdir(c *gin.Context) {
 		return
 	}
 	// 数据
-	(&library.FilesEo{}).New(config.Env().RootDir + dirRoot)
-	if !(&library.FilesEo{}).Mkdir(path + name) {
+	(&library.FileEo{}).New(config.Env().RootDir + dirRoot)
+	if !(&library.FileEo{}).Mkdir(path + name) {
 		r.GetJSON(c, gin.H{"code": 5000, "msg": "新建文件夹失败!"})
 		return
 	}
@@ -82,8 +82,8 @@ func (r SysFile) Rename(c *gin.Context) {
 		return
 	}
 	// 数据
-	(&library.FilesEo{}).New(config.Env().RootDir + dirRoot)
-	if !(&library.FilesEo{}).Rename(path+rename, path+name) {
+	(&library.FileEo{}).New(config.Env().RootDir + dirRoot)
+	if !(&library.FileEo{}).Rename(path+rename, path+name) {
 		r.GetJSON(c, gin.H{"code": 5000, "msg": "重命名失败!"})
 		return
 	}
@@ -134,7 +134,7 @@ func (r SysFile) Down(c *gin.Context) {
 		return
 	}
 	// 返回
-	c.Writer.Write((&library.FilesEo{}).Bytes(path + filename))
+	c.Writer.Write((&library.FileEo{}).Bytes(path + filename))
 }
 
 /* 删除 */
@@ -154,11 +154,11 @@ func (r SysFile) Remove(c *gin.Context) {
 		return
 	}
 	// 数据
-	(&library.FilesEo{}).New(config.Env().RootDir + dirRoot)
+	(&library.FileEo{}).New(config.Env().RootDir + dirRoot)
 	files := []interface{}{}
 	util.JsonDecode(data, &files)
 	for _, val := range files {
-		(&library.FilesEo{}).RemoveAll(path + util.Strval(val))
+		(&library.FileEo{}).RemoveAll(path + util.Strval(val))
 	}
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})

@@ -25,7 +25,7 @@ func (u Upload) File(c *gin.Context, file *multipart.FileHeader, params map[stri
 	}
 	param = util.ArrayMerge(param, params)
 	// 限制格式
-	ext := (&FilesEo{}).GetExt(file.Filename)
+	ext := (&FileEo{}).GetExt(file.Filename)
 	if param["bind"] != nil {
 		if !util.InArray(ext, param["bind"].([]string)) {
 			fmt.Println("只支持" + util.Implode(",", param["bind"].([]string)) + "格式!")
@@ -40,13 +40,13 @@ func (u Upload) File(c *gin.Context, file *multipart.FileHeader, params map[stri
 		param["filename"] = param["filename"].(string) + "." + ext
 	}
 	// 创建目录
-	(&FilesEo{}).New(config.Env().RootDir)
-	if !(&FilesEo{}).Mkdir(param["path"].(string)) {
+	(&FileEo{}).New(config.Env().RootDir)
+	if !(&FileEo{}).Mkdir(param["path"].(string)) {
 		fmt.Println("[Upload] Upload:", "创建目录失败!")
 		return ""
 	}
 	// 保存文件
-	if !(&FilesEo{}).Upload(c, file, param["path"].(string)+param["filename"].(string)) {
+	if !(&FileEo{}).Upload(c, file, param["path"].(string)+param["filename"].(string)) {
 		fmt.Println("[Upload] Mkdir:", "保存文件失败!")
 		return ""
 	}
@@ -76,8 +76,8 @@ func (u Upload) Base64(params map[string]interface{}) string {
 		base64 = ct[1]
 	}
 	// 创建目录
-	(&FilesEo{}).New(config.Env().RootDir)
-	if !(&FilesEo{}).Mkdir(param["path"].(string)) {
+	(&FileEo{}).New(config.Env().RootDir)
+	if !(&FileEo{}).Mkdir(param["path"].(string)) {
 		fmt.Println("[Upload] Mkdir:", "创建目录失败!")
 		return ""
 	}
@@ -87,7 +87,7 @@ func (u Upload) Base64(params map[string]interface{}) string {
 		filename = u._getName() + "." + param["ext"].(string)
 	}
 	byt, _ := Base64.StdEncoding.DecodeString(base64)
-	if err := (&FilesEo{}).Writer(param["path"].(string)+filename, string(byt)); err != nil {
+	if err := (&FileEo{}).Writer(param["path"].(string)+filename, string(byt)); err != nil {
 		fmt.Println("[Upload] Write:", err)
 		return ""
 	}

@@ -1,8 +1,10 @@
 <?php
 namespace App\Home;
 
+use Config\Env;
 use Service\Base;
 use Library\Qrcode;
+use Library\FileEo;
 
 class Index extends Base {
 
@@ -23,17 +25,18 @@ class Index extends Base {
     elseif($type=='server2') $text = 'https://u.wechat.com/MC35ApmM-JB7K6cJD6CaYJo';
     // 创建目录
     $path = 'upload/qrcode/';
-    $filename = $type.'.png';
-    if (!file_exists($path)) mkdir($path,0777,true);
+    FileEo::$Root = Env::$root_dir;
+    if(!FileEo::Mkdir($path)) return;
     // 是否生成
-    if(!is_file($path.$filename)){
-      $ct = Qrcode::create(['text'=>$text]);
-      file_put_contents($path.$filename,$ct);
+    $file = $path.$type.'.png';
+    if(!FileEo::IsFile($file)){
+      $ct = Qrcode::Create(['text'=>$text]);
+      FileEo::Writer($file, $ct);
     }
     // 数据
     self::getJSON();
     header('content-type: image/png');
-    return file_get_contents($path.$filename);
+    return FileEo::Bytes($file);
   }
 
 }

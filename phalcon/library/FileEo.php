@@ -88,6 +88,12 @@ class FileEo extends Base {
     return $bytes;
   }
 
+  /* 是否文件 */
+  static function IsFile(string $file=''): bool {
+    $file = self::$Root.$file;
+    return is_file($file);
+  }
+
   /* 创建目录 */
   static function Mkdir(string $path=''): bool {
     $path = self::$Root.$path;
@@ -114,7 +120,7 @@ class FileEo extends Base {
     return file_put_contents($file, $content)?true:false;
   }
 
-  /* 下载 */
+  /* 读取 */
   static function Bytes(string $file) {
     $dst = self::$Root.$file;
     return file_get_contents($dst);

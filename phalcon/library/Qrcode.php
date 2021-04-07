@@ -1,16 +1,15 @@
 <?php
 namespace Library;
 
+use Config\Env;
 use Library\Barcode;
 use Zxing\QrReader;
 
-/*
-* 二维码类
-*/
-class Qrcode{
+/* 二维码类 */
+class Qrcode {
 
   /* 生成 */
-  static function create($param=[]){
+  static function Create($params=[]): ?string {
     // 参数
     $param = array_merge([
       'text'=> '',  //内容
@@ -18,9 +17,10 @@ class Qrcode{
       'tmpPath'=>'upload/tmp/', //缓存目录
       'filename'=>self::_getName().'.png', //文件名
       'options'=>['f'=>'png','p'=>-20,'w'=>200,'h'=>200], //配置
-    ],$param);
+    ],$params);
     // 创建目录
-    if (!file_exists($param['tmpPath'])) mkdir($param['tmpPath'],0777,true);
+    FileEo::$Root = Env::$root_dir;
+    if(!FileEo::Mkdir($param['tmpPath'])) return null;
     // 文件
     $file = $param['tmpPath'].$param['filename'];
     // 生成
@@ -29,14 +29,14 @@ class Qrcode{
     imagepng($img,$file);
     imagedestroy($img);
     // 内容
-    $ct = file_get_contents($file);
+    $ct = FileEo::Bytes($file);
     // 清理
     unlink($file);
     return $ct;
   }
 
   /* 识别 */
-  static function scan($file=''){
+  static function Scan($file=''){
     $qrcode = new QrReader($file);
     return $qrcode->text();
   }

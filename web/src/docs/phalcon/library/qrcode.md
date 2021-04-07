@@ -3,7 +3,7 @@
 use Library\Qrcode;
 ```
 
-## 二维码-生成
+## 生成
 ```php
 Qrcode::create([
   'text'=> '',  //内容
@@ -14,7 +14,7 @@ Qrcode::create([
 ]);
 ```
 
-## 二维码-识别
+## 识别
 ```php
 Qrcode::scan($file);
 ```
