@@ -59,9 +59,14 @@
 			<version>1.2.73</version>
 		</dependency>
 		<dependency>
-			<groupId>org.casbin</groupId>
-			<artifactId>jcasbin</artifactId>
-			<version>1.6.3</version>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.4.1</version>
 		</dependency>
 		<!-- 调试工具 -->
 		<dependency>

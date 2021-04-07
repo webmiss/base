@@ -102,6 +102,7 @@ export default {
         {label: '通信 WebSocket', value: 'docs/java/library/socket'},
         {label: '安全验证 Safety', value: 'docs/java/library/safety'},
         {label: '文件上传 Upload', value: 'docs/java/library/upload'},
+        {label: '二维码 Qrcode', value: 'docs/java/library/qrcode'},
       ]},
     ];
   },

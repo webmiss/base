@@ -149,15 +149,22 @@ public class FileEo {
     return str;
   }
 
+  /* 是否文件 */
+  public static boolean IsFile(String file){
+    file = Root+file;
+    File obj = new File(file);
+    return obj.isFile();
+  }
+
   /* 创建目录 */
   public static boolean Mkdir(String path){
     path = Root+path;
     File dir = new File(path);
-    if(!dir.exists()) return dir.mkdirs();
+    if(!dir.isDirectory()) return dir.mkdirs();
     return true;
   }
 
-  /* 创建目录 */
+  /* 重命名 */
   public static boolean Rename(String rename, String name){
     File src = new File(Root+rename);
     File dst = new File(Root+name);
@@ -197,7 +204,7 @@ public class FileEo {
     return true;
   }
 
-  /* 下载 */
+  /* 读取 */
   public static byte[] Bytes(String file){
     byte[] bytes = null;
     FileInputStream fs = null;
