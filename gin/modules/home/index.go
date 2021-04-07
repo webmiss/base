@@ -21,17 +21,17 @@ func (r *Index) Index(c *gin.Context) {
 
 /* 二维码 */
 func (r *Index) Qrcode(c *gin.Context) {
-	tp := c.Param("name")
+	name := c.Param("name")
 	var text string
-	if tp == "docs" {
+	if name == "docs" {
 		text = "https://webmis.vip/"
-	} else if tp == "demo" {
+	} else if name == "demo" {
 		text = "https://demo-app.webmis.vip/"
-	} else if tp == "wechat" {
+	} else if name == "wechat" {
 		text = "http://weixin.qq.com/r/mC1YQK3EDPBzrekj93iK"
-	} else if tp == "server1" {
+	} else if name == "server1" {
 		text = "https://u.wechat.com/MNFMyg4xN7d6ihWrfoWD7So"
-	} else if tp == "server2" {
+	} else if name == "server2" {
 		text = "https://u.wechat.com/MC35ApmM-JB7K6cJD6CaYJo"
 	}
 	// 创建目录
@@ -41,12 +41,12 @@ func (r *Index) Qrcode(c *gin.Context) {
 		return
 	}
 	// 是否生成
-	file := path + tp + ".png"
+	file := path + name + ".png"
 	if !(&library.FileEo{}).IsFile(file) {
 		ct := (&library.Qrcode{}).Create(map[string]interface{}{"text": text})
 		(&library.FileEo{}).Writer(file, string(ct))
 	}
 	// 返回
-	res := (&library.FileEo{}).Bytes(file)
-	c.Writer.WriteString(string(res))
+	img := (&library.FileEo{}).Bytes(file)
+	c.Writer.WriteString(string(img))
 }

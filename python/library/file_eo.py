@@ -73,6 +73,11 @@ class FileEo:
       bytes = '%.0f B'%bytes
     return bytes
 
+  # 是否文件
+  def IsFile(file: str=''):
+    file = FileEo.Root+file
+    return os.path.isfile(file)
+
   # 创建目录
   def Mkdir(path: str=''):
     path = FileEo.Root+path
@@ -93,14 +98,14 @@ class FileEo:
     return False
 
   # 写入
-  def Writer(file: str='', content: any=''):
+  def Writer(file: str='', content=''):
     file = FileEo.Root+file
     with open(file,'wb') as f :
       f.write(content)
       f.close()
     return True
 
-  # 下载
+  # 读取
   def Bytes(file: str):
     dst = FileEo.Root+file
     with open(dst, 'rb') as f: return f.read()

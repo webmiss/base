@@ -15,20 +15,20 @@ class Index extends Base {
   }
 
   /* 二维码 */
-  static function Qrcode($type=''){
+  static function Qrcode($name=''){
     // 内容
     $text = '';
-    if($type=='docs') $text = 'https://webmis.vip/';
-    elseif($type=='demo') $text = 'https://demo-app.webmis.vip/';
-    elseif($type=='wechat') $text = 'http://weixin.qq.com/r/mC1YQK3EDPBzrekj93iK';
-    elseif($type=='server1') $text = 'https://u.wechat.com/MNFMyg4xN7d6ihWrfoWD7So';
-    elseif($type=='server2') $text = 'https://u.wechat.com/MC35ApmM-JB7K6cJD6CaYJo';
+    if($name=='docs') $text = 'https://webmis.vip/';
+    elseif($name=='demo') $text = 'https://demo-app.webmis.vip/';
+    elseif($name=='wechat') $text = 'http://weixin.qq.com/r/mC1YQK3EDPBzrekj93iK';
+    elseif($name=='server1') $text = 'https://u.wechat.com/MNFMyg4xN7d6ihWrfoWD7So';
+    elseif($name=='server2') $text = 'https://u.wechat.com/MC35ApmM-JB7K6cJD6CaYJo';
     // 创建目录
     $path = 'upload/qrcode/';
     FileEo::$Root = Env::$root_dir;
     if(!FileEo::Mkdir($path)) return;
     // 是否生成
-    $file = $path.$type.'.png';
+    $file = $path.$name.'.png';
     if(!FileEo::IsFile($file)){
       $ct = Qrcode::Create(['text'=>$text]);
       FileEo::Writer($file, $ct);
