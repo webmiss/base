@@ -38,8 +38,10 @@ public class Model extends Base {
   /* 构造函数 */
   public Model(String db) {
     if(db.equals("other")){
+      if(DBOther==null) Model.DBPool("other");
       _conn = DBOther;
     }else{
+      if(DBDefault==null) Model.DBPool("");
       _conn = DBDefault;
     }
   }
