@@ -2,7 +2,9 @@
 use Phalcon\Loader;
 use Phalcon\Mvc\Micro;
 
-use Service\Base;
+use Middleware\Cors;
+use Middleware\Logs;
+
 use Router\Home;
 use Router\Api;
 use Router\Admin;
@@ -31,8 +33,14 @@ $loader->registerNamespaces([
 ]);
 $loader->register();
 
-/* 注册 */
+/* 微应用 */
 $app = new Micro();
+
+/* 中间件 */
+$app->before(function() use ($app) {
+  Cors::Init(); //允许跨域请求
+  Logs::Init(); //访问日志
+});
 
 // 路由 
 Home::Init($app);
@@ -44,5 +52,6 @@ try {
   $app->notFound('Middleware\NotFound::Init');
   $app->handle($_SERVER["REQUEST_URI"]);
 }catch (\Exception $e){
-  echo Base::GetJSON(['code'=>500,'msg'=>$e->getMessage()]);
+  Cors::Init();
+  echo json_encode(['code'=>500,'msg'=>$e->getMessage()]);
 }

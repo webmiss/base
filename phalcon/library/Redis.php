@@ -17,8 +17,7 @@ class Redis extends Base {
       if(Cfg::$password) $this->conn->auth(Cfg::$password);
       $this->conn->select(Cfg::$db);
     }catch (\Exception $e){
-      $msg = '[Redis] Conn: 请检测Redis是否启动!';
-      self::Print($msg);
+      self::Print('[Redis] Conn: 请检测Redis是否启动!');
     }
   }
 
@@ -100,6 +99,26 @@ class Redis extends Base {
   function HLen(string $name) {
     if(!$this->conn) return null;
     return $this->conn->hlen($name);
+  }
+
+  /* 列表(List)-写入 */
+  function RPush(string $key, $val) {
+    if(!$this->conn) return null;
+    return $this->conn->rpush($key, $val);
+  }
+  function LPush(string $key, $val) {
+    if(!$this->conn) return null;
+    return $this->conn->lpush($key, $val);
+  }
+
+  /* 列表(List)-读取 */
+  function BRPop($key, $timeout): array {
+    if(!$this->conn) return null;
+    return $this->conn->brPop($key, $timeout);
+  }
+  function BLPop($key, $timeout): array {
+    if(!$this->conn) return null;
+    return $this->conn->blPop($key, $timeout);
   }
 
 }

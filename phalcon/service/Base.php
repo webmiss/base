@@ -1,14 +1,10 @@
 <?php
-
 namespace Service;
-
-use Middleware\Cors;
 
 class Base {
 
   /* 返回JSON */
   static function GetJSON(array $data=[]): string {
-    Cors::Init();
     return json_encode($data);
   }
 

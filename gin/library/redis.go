@@ -305,22 +305,22 @@ func (r *Redis) HLen(name string) int64 {
 }
 
 /* 列表(List)-写入 */
-func (r *Redis) RPush(name string, key string) bool {
+func (r *Redis) RPush(key string, val interface{}) bool {
 	if !r.IsConn() {
 		return false
 	}
-	res, err := redigo.Bool(r.conn.Do("RPUSH", name, key))
+	res, err := redigo.Bool(r.conn.Do("RPUSH", key, val))
 	if err != nil {
 		fmt.Println("[Redis] LPUSH:", err)
 		return false
 	}
 	return res
 }
-func (r *Redis) LPush(name string, key string) bool {
+func (r *Redis) LPush(key string, val interface{}) bool {
 	if !r.IsConn() {
 		return false
 	}
-	res, err := redigo.Bool(r.conn.Do("LPUSH", name, key))
+	res, err := redigo.Bool(r.conn.Do("LPUSH", key, val))
 	if err != nil {
 		fmt.Println("[Redis] LPUSH:", err)
 		return false
@@ -329,21 +329,21 @@ func (r *Redis) LPush(name string, key string) bool {
 }
 
 /* 列表(List)-读取 */
-func (r *Redis) BRPop(name string, time int) []interface{} {
+func (r *Redis) BRPop(key string, timeout int) []interface{} {
 	if !r.IsConn() {
 		return nil
 	}
-	res, err := redigo.Values(r.conn.Do("BRPOP", name, time))
+	res, err := redigo.Values(r.conn.Do("BRPOP", key, timeout))
 	if err != nil {
 		return nil
 	}
 	return res
 }
-func (r *Redis) BLPop(name string, time int) []interface{} {
+func (r *Redis) BLPop(key string, timeout int) []interface{} {
 	if !r.IsConn() {
 		return nil
 	}
-	res, err := redigo.Values(r.conn.Do("BLPOP", name, time))
+	res, err := redigo.Values(r.conn.Do("BLPOP", key, timeout))
 	if err != nil {
 		return nil
 	}
