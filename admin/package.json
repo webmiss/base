@@ -17,8 +17,8 @@
     "@better-scroll/scroll-bar": "^2.1.1",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-    "element-plus": "^1.0.2-beta.35",
-    "vue": "^3.0.8",
+    "element-plus": "^1.0.2-beta.37",
+    "vue": "^3.0.9",
     "vue-router": "^4.0.0",
     "vuex": "^4.0.0"
   },
@@ -28,7 +28,7 @@
     "@vue/cli-plugin-typescript": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.8",
+    "@vue/compiler-sfc": "^3.0.9",
     "typescript": "~4.2.3"
   },
   "browserslist": [

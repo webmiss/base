@@ -20,7 +20,7 @@
     "marked": "^1.2.8",
     "print-js": "^1.5.0",
     "text-loader": "^0.0.1",
-    "vue": "^3.0.5",
+    "vue": "3.0.9",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"
   },
@@ -30,7 +30,7 @@
     "@vue/cli-plugin-typescript": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.5",
+    "@vue/compiler-sfc": "3.0.9",
     "@types/marked": "^1.2.1",
     "typescript": "~3.9.3"
   },
