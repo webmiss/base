@@ -1,4 +1,4 @@
-package main
+package task
 
 import (
 	"context"
@@ -10,7 +10,10 @@ import (
 	"webmis/util"
 )
 
-func main() {
+type Kafka struct{}
+
+/* 日志-消费者 */
+func (k Kafka) Logs() {
 	// 连接
 	r := (&library.Kafka{}).Consumer("logs")
 	defer r.Close()
@@ -24,7 +27,7 @@ func main() {
 			break
 		}
 		// 保存
-		res := write(m.Value)
+		res := k.write(m.Value)
 		if res == true {
 			if err := r.CommitMessages(ctx, m); err != nil {
 				fmt.Println("[Logs] Commit:", err)
@@ -34,7 +37,7 @@ func main() {
 }
 
 /* 记录 */
-func write(text []byte) bool {
+func (Kafka) write(text []byte) bool {
 	// 数据
 	data := map[string]interface{}{}
 	err := json.Unmarshal(text, &data)

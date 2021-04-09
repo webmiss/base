@@ -10,6 +10,7 @@ import (
 
 var RedisDB *redigo.Pool
 var RedisDBOther *redigo.Pool
+var showErr bool
 
 /* 缓存数据库 */
 type Redis struct {
@@ -23,6 +24,7 @@ func RedisPool(db string) {
 	if db == "Other" {
 		cfg = config.Redis()
 	}
+	showErr = cfg.Error
 	pool := &redigo.Pool{
 		MaxIdle:         cfg.Min,  //空闲数
 		MaxActive:       cfg.Max,  //最大数
@@ -33,21 +35,27 @@ func RedisPool(db string) {
 		Dial: func() (redigo.Conn, error) {
 			conn, err := redigo.Dial(cfg.Driver, cfg.Host+":"+cfg.Port)
 			if err != nil {
-				fmt.Println("[Redis] Conn:", err)
+				if showErr {
+					fmt.Println("[Redis] Conn:", err)
+				}
 				return nil, err
 			}
 			// 密码
 			if cfg.Password != "" {
 				if _, err := conn.Do("AUTH", cfg.Password); err != nil {
 					conn.Close()
-					fmt.Println("[Redis] Conn:", err)
+					if showErr {
+						fmt.Println("[Redis] Conn:", err)
+					}
 					return nil, err
 				}
 			}
 			// 硬盘
 			if _, err := conn.Do("SELECT", cfg.Db); err != nil {
 				conn.Close()
-				fmt.Println("[Redis] Conn:", err)
+				if showErr {
+					fmt.Println("[Redis] Conn:", err)
+				}
 				return nil, err
 			}
 			return conn, err
@@ -100,11 +108,15 @@ func (r *Redis) Conn() redigo.Conn {
 /* 是否连接 */
 func (r *Redis) IsConn() bool {
 	if r.conn == nil {
-		fmt.Println("[Redis] Conn: 连接为空!")
+		if showErr {
+			fmt.Println("[Redis] Conn: 连接为空!")
+		}
 		return false
 	}
 	if err := r.conn.Err(); err != nil {
-		fmt.Println("[Redis] Conn:", err)
+		if showErr {
+			fmt.Println("[Redis] Conn:", err)
+		}
 		return false
 	}
 	return true
@@ -288,6 +300,54 @@ func (r *Redis) HLen(name string) int64 {
 	if err != nil {
 		fmt.Println("[Redis] HLen:", err)
 		return 0
+	}
+	return res
+}
+
+/* 列表(List)-写入 */
+func (r *Redis) RPush(name string, key string) bool {
+	if !r.IsConn() {
+		return false
+	}
+	res, err := redigo.Bool(r.conn.Do("RPUSH", name, key))
+	if err != nil {
+		fmt.Println("[Redis] LPUSH:", err)
+		return false
+	}
+	return res
+}
+func (r *Redis) LPush(name string, key string) bool {
+	if !r.IsConn() {
+		return false
+	}
+	res, err := redigo.Bool(r.conn.Do("LPUSH", name, key))
+	if err != nil {
+		fmt.Println("[Redis] LPUSH:", err)
+		return false
+	}
+	return res
+}
+
+/* 列表(List)-读取 */
+func (r *Redis) BRPop(name string, time int) bool {
+	if !r.IsConn() {
+		return false
+	}
+	res, err := redigo.Bool(r.conn.Do("BRPOP", name, time))
+	if err != nil {
+		fmt.Println("[Redis] BRPOP:", err)
+		return false
+	}
+	return res
+}
+func (r *Redis) BLPop(name string, time int) bool {
+	if !r.IsConn() {
+		return false
+	}
+	res, err := redigo.Bool(r.conn.Do("BLPOP", name, time))
+	if err != nil {
+		fmt.Println("[Redis] BLPOP:", err)
+		return false
 	}
 	return res
 }

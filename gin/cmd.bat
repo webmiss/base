@@ -5,6 +5,7 @@ REM 配置
 set s=%1%
 set name=webmis
 set index=main.go
+set cli=cli/main.go
 
 REM 运行
 if "%s%"=="serve" (
@@ -23,7 +24,7 @@ REM 预览
   ( .\%name% ) || ( echo ^> 请安装'go' )
 REM Socket-运行
 ) else if "%s%"=="socket" (
-  ( go run cli/socket/index.go ) || ( echo ^> 请安装'go' )
+  ( go run %cli% ) || ( echo ^> 请安装'go' )
 ) else (
   echo ----------------------------------------------------
   echo [use] .\cmd ^<command^>

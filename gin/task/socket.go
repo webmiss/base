@@ -1,4 +1,4 @@
-package main
+package task
 
 import (
 	"io/ioutil"
@@ -8,7 +8,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func main() {
+type Socket struct{}
+
+func (Socket) Start() {
 	// 配置
 	gin.SetMode(gin.ReleaseMode)
 	gin.DefaultWriter = ioutil.Discard

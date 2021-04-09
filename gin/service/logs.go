@@ -2,64 +2,41 @@ package service
 
 import (
 	"encoding/json"
-	"fmt"
-	"webmis/config"
 	"webmis/library"
 
 	"github.com/gin-gonic/gin"
-	"github.com/segmentio/kafka-go"
 )
 
-// Logs :日志
-type Logs struct {
-	Base
+/* 日志 */
+type Logs struct{}
+
+/* 访问日志 */
+func (l Logs) Log(data interface{}) {
+	text, _ := json.Marshal(gin.H{"type": "log", "data": data})
+	go l.Writer(text)
 }
 
-// Log :访问日志
-func (k Logs) Log(content interface{}) {
-	text, _ := json.Marshal(gin.H{
-		"type": "log",
-		"data": content,
-	})
-	go k.Writer((&library.Kafka{}).Producer("logs", 0), text)
+/* 信息日志 */
+func (l Logs) Info(data interface{}) {
+	text, _ := json.Marshal(gin.H{"type": "info", "data": data})
+	go l.Writer(text)
 }
 
-// Info :信息日志
-func (k Logs) Info(content interface{}) {
-	text, _ := json.Marshal(gin.H{
-		"type": "info",
-		"data": content,
-	})
-	go k.Writer((&library.Kafka{}).Producer("logs", 1), text)
+/* 操作日志 */
+func (l Logs) Action(data interface{}) {
+	text, _ := json.Marshal(gin.H{"type": "action", "data": data})
+	go l.Writer(text)
 }
 
-// Action :操作日志
-func (k Logs) Action(content interface{}) {
-	text, _ := json.Marshal(gin.H{
-		"type": "action",
-		"data": content,
-	})
-	go k.Writer((&library.Kafka{}).Producer("logs", 2), text)
+/* 错误日志 */
+func (l Logs) Error(data interface{}) {
+	text, _ := json.Marshal(gin.H{"type": "error", "data": data})
+	go l.Writer(text)
 }
 
-// Error :错误日志
-func (k Logs) Error(content string, err error) {
-	text, _ := json.Marshal(gin.H{
-		"type": "error",
-		"data": fmt.Sprintf(content, err),
-	})
-	go k.Writer((&library.Kafka{}).Producer("logs", 3), text)
-}
-
-// Writer :发送
-func (l Logs) Writer(conn *kafka.Conn, text []byte) {
-	if conn == nil {
-		return
-	}
-	cfg := config.Kafka()
-	_, err := conn.WriteMessages(kafka.Message{Value: text})
-	if err != nil && cfg.Log {
-		l.Print("[Logs] Writer:", err)
-		l.Print("[Logs] Writer:", string(text))
-	}
+/* 发送 */
+func (l Logs) Writer(text []byte) {
+	redis := (&library.Redis{}).New("")
+	redis.RPush("logs", string(text))
+	redis.Close()
 }
