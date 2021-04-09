@@ -30,6 +30,10 @@ func main() {
 		if action == "start" {
 			(&task.Socket{}).Start()
 		}
+	case controller == "redis":
+		if action == "logs" {
+			(&task.Redis{}).Logs()
+		}
 	case controller == "kafka":
 		if action == "logs" {
 			(&task.Kafka{}).Logs()

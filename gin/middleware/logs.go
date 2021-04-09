@@ -15,7 +15,7 @@ func Logs() gin.HandlerFunc {
 			"method":     c.Request.Method,
 			"path":       c.Request.URL.Path,
 			"user_agent": c.Request.UserAgent(),
-			"time":       time.Now().Format("2006-01-02 15:04:05"),
+			"time":       time.Now().UnixNano(),
 		})
 	}
 }

@@ -220,6 +220,18 @@ func (FileEo) Writer(file string, content string) error {
 	return nil
 }
 
+/* 追加 */
+func (FileEo) WriterEnd(file string, content string) error {
+	file = Root + file
+	f, err := os.OpenFile(file, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0766)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	f.WriteString(content)
+	return nil
+}
+
 /* 读取 */
 func (FileEo) Bytes(file string) []byte {
 	dst := Root + file

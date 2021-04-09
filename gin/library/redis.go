@@ -329,25 +329,23 @@ func (r *Redis) LPush(name string, key string) bool {
 }
 
 /* 列表(List)-读取 */
-func (r *Redis) BRPop(name string, time int) bool {
+func (r *Redis) BRPop(name string, time int) []interface{} {
 	if !r.IsConn() {
-		return false
+		return nil
 	}
-	res, err := redigo.Bool(r.conn.Do("BRPOP", name, time))
+	res, err := redigo.Values(r.conn.Do("BRPOP", name, time))
 	if err != nil {
-		fmt.Println("[Redis] BRPOP:", err)
-		return false
+		return nil
 	}
 	return res
 }
-func (r *Redis) BLPop(name string, time int) bool {
+func (r *Redis) BLPop(name string, time int) []interface{} {
 	if !r.IsConn() {
-		return false
+		return nil
 	}
-	res, err := redigo.Bool(r.conn.Do("BLPOP", name, time))
+	res, err := redigo.Values(r.conn.Do("BLPOP", name, time))
 	if err != nil {
-		fmt.Println("[Redis] BLPOP:", err)
-		return false
+		return nil
 	}
 	return res
 }
