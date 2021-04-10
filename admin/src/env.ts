@@ -21,10 +21,10 @@ if(lag && lag.name=='python'){
   baseUrl = 'https://demo-go.webmis.vip/';
   socket = 'wss://demo-go.webmis.vip/websocket';
 }else{
-  baseUrl = 'http://localhost:9000/';
-  socket = 'ws://localhost:9001/';
-  // baseUrl = 'https://demo-php.webmis.vip/';
-  // socket = 'wss://demo-php.webmis.vip/wss';
+  // baseUrl = 'http://localhost:9000/';
+  // socket = 'ws://localhost:9001/';
+  baseUrl = 'https://demo-php.webmis.vip/';
+  socket = 'wss://demo-php.webmis.vip/wss';
 }
 
 /* 配置 */

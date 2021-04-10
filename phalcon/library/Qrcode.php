@@ -19,7 +19,6 @@ class Qrcode {
       'options'=>['f'=>'png','p'=>-20,'w'=>200,'h'=>200], //配置
     ],$params);
     // 创建目录
-    FileEo::$Root = Env::$root_dir;
     if(!FileEo::Mkdir($param['tmpPath'])) return null;
     // 文件
     $file = $param['tmpPath'] . $param['filename'];

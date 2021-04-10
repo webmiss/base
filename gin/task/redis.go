@@ -2,7 +2,6 @@ package task
 
 import (
 	"fmt"
-	"time"
 	"webmis/config"
 	"webmis/library"
 	"webmis/util"
@@ -12,10 +11,10 @@ type Redis struct{}
 
 /* 日志-消费者 */
 func (r Redis) Logs() {
-	redis := (&library.Redis{}).New("")
-	defer redis.Close()
 	for {
-		data := redis.BLPop("logs", 10)
+		redis := (&library.Redis{}).New("")
+		data := redis.BLPop("logs", config.Redis().Timeout)
+		redis.Close()
 		if data == nil {
 			continue
 		}
@@ -35,10 +34,10 @@ func (Redis) LogsWrite(msg string) bool {
 	data := map[string]interface{}{}
 	util.JsonDecode(msg, &data)
 	// 时间
-	now := time.Now()
-	year := now.Format("2006")
-	month := now.Format("01")
-	day := now.Format("02")
+	ctime := util.Date("2006-01-02 15:04:05")
+	year := ctime[0:4]
+	month := ctime[5:7]
+	day := ctime[8:10]
 	// 目录
 	name := data["type"].(string)
 	path := "upload/logs/" + name + "/" + year + "/" + month + "/"
@@ -49,7 +48,6 @@ func (Redis) LogsWrite(msg string) bool {
 	}
 	// 追加
 	file := path + day + ".text"
-	ctime := now.Format("2006-01-02 15:04:05")
 	content := util.Strval(data["data"])
 	err := (&library.FileEo{}).WriterEnd(file, "["+name+"] "+ctime+" "+content+"\n")
 	if err != nil {

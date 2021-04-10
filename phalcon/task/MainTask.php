@@ -2,12 +2,10 @@
 declare(strict_types=1);
 namespace Task;
 
-use Phalcon\Cli\Task;
-
-class MainTask extends Task {
+class MainTask extends Base {
 
   function mainAction() {
-    echo "Cli";
+    self::Print('Cli');
   }
 
 }

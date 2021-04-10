@@ -14,18 +14,21 @@ var showErr bool
 
 /* 缓存数据库 */
 type Redis struct {
+	db   string
 	conn redigo.Conn
 }
 
 /* 数据池 */
-func RedisPool(db string) {
+func (r Redis) RedisPool() *redigo.Pool {
 	// 配置
-	cfg := config.Redis()
-	if db == "Other" {
+	var cfg *config.RedisType
+	if r.db == "Other" {
 		cfg = config.Redis()
+	} else {
+		cfg = config.RedisOther()
 	}
 	showErr = cfg.Error
-	pool := &redigo.Pool{
+	return &redigo.Pool{
 		MaxIdle:         cfg.Min,  //空闲数
 		MaxActive:       cfg.Max,  //最大数
 		IdleTimeout:     cfg.Time, //空闲超时(秒)
@@ -69,27 +72,27 @@ func RedisPool(db string) {
 			return err
 		},
 	}
-	// 多数据库
-	if db == "Other" {
-		RedisDBOther = pool
+}
+
+/* 连接 */
+func (r *Redis) RedisConn() {
+	if r.db == "Other" {
+		if RedisDBOther == nil {
+			RedisDBOther = r.RedisPool()
+		}
+		r.conn = RedisDBOther.Get()
 	} else {
-		RedisDB = pool
+		if RedisDB == nil {
+			RedisDB = r.RedisPool()
+		}
+		r.conn = RedisDB.Get()
 	}
 }
 
 /* 创建 */
 func (r *Redis) New(db string) *Redis {
-	if db == "Other" {
-		if RedisDBOther == nil {
-			RedisPool(db)
-		}
-		r.conn = RedisDBOther.Get()
-	} else {
-		if RedisDB == nil {
-			RedisPool(db)
-		}
-		r.conn = RedisDB.Get()
-	}
+	r.db = db
+	r.RedisConn()
 	return r
 }
 
@@ -100,33 +103,21 @@ func (r *Redis) Close() {
 	}
 }
 
-/* 连接 */
+/* 实例 */
 func (r *Redis) Conn() redigo.Conn {
 	return r.conn
 }
 
 /* 是否连接 */
-func (r *Redis) IsConn() bool {
-	if r.conn == nil {
-		if showErr {
-			fmt.Println("[Redis] Conn: 连接为空!")
-		}
-		return false
-	}
+func (r *Redis) IsConn() {
 	if err := r.conn.Err(); err != nil {
-		if showErr {
-			fmt.Println("[Redis] Conn:", err)
-		}
-		return false
+		r.RedisConn()
 	}
-	return true
 }
 
 /* 添加 */
 func (r *Redis) Set(key string, val interface{}) []byte {
-	if !r.IsConn() {
-		return nil
-	}
+	r.IsConn()
 	res, err := redigo.Bytes(r.conn.Do("SET", key, val))
 	if err != nil {
 		fmt.Println("[Redis] Set:", err)
@@ -137,9 +128,7 @@ func (r *Redis) Set(key string, val interface{}) []byte {
 
 /* 获取 */
 func (r *Redis) Get(key string) []byte {
-	if !r.IsConn() {
-		return nil
-	}
+	r.IsConn()
 	res, err := redigo.Bytes(r.conn.Do("Get", key))
 	if err != nil {
 		fmt.Println("[Redis] Get:", err)
@@ -150,9 +139,7 @@ func (r *Redis) Get(key string) []byte {
 
 /* 删除 */
 func (r *Redis) Del(keys ...interface{}) bool {
-	if !r.IsConn() {
-		return false
-	}
+	r.IsConn()
 	res, err := redigo.Bool(r.conn.Do("DEL", keys...))
 	if err != nil {
 		fmt.Println("[Redis] Del:", err)
@@ -163,9 +150,7 @@ func (r *Redis) Del(keys ...interface{}) bool {
 
 /* 是否存在 */
 func (r *Redis) Exist(key string) bool {
-	if !r.IsConn() {
-		return false
-	}
+	r.IsConn()
 	res, err := redigo.Bool(r.conn.Do("EXISTS", key))
 	if err != nil {
 		fmt.Println("[Redis] Exist:", err)
@@ -176,9 +161,7 @@ func (r *Redis) Exist(key string) bool {
 
 /* 设置过期时间(秒) */
 func (r *Redis) Expire(key string, ttl int64) int64 {
-	if !r.IsConn() {
-		return 0
-	}
+	r.IsConn()
 	res, err := redigo.Int64(r.conn.Do("EXPIRE", key, ttl))
 	if err != nil {
 		fmt.Println("[Redis] Expire:", err)
@@ -189,9 +172,7 @@ func (r *Redis) Expire(key string, ttl int64) int64 {
 
 /* 获取过期时间(秒) */
 func (r *Redis) TTL(key string) int64 {
-	if !r.IsConn() {
-		return 0
-	}
+	r.IsConn()
 	res, err := redigo.Int64(r.conn.Do("TTL", key))
 	if err != nil {
 		fmt.Println("[Redis] TTL:", err)
@@ -202,9 +183,7 @@ func (r *Redis) TTL(key string) int64 {
 
 /* 获取长度 */
 func (r *Redis) StrLen(key string) int64 {
-	if !r.IsConn() {
-		return 0
-	}
+	r.IsConn()
 	res, err := redigo.Int64(r.conn.Do("STRLEN", key))
 	if err != nil {
 		fmt.Println("[Redis] StrLen:", err)
@@ -215,9 +194,7 @@ func (r *Redis) StrLen(key string) int64 {
 
 /* 哈希(Hash)-添加 */
 func (r *Redis) HSet(name string, key string, val interface{}) int64 {
-	if !r.IsConn() {
-		return 0
-	}
+	r.IsConn()
 	res, err := redigo.Int64(r.conn.Do("HSET", name, key, val))
 	if err != nil {
 		fmt.Println("[Redis] HSet:", err)
@@ -226,9 +203,7 @@ func (r *Redis) HSet(name string, key string, val interface{}) int64 {
 	return res
 }
 func (r *Redis) HMSet(name string, obj interface{}) int64 {
-	if !r.IsConn() {
-		return 0
-	}
+	r.IsConn()
 	res, err := redigo.Int64(r.conn.Do("HMSET", redigo.Args{}.Add(name).AddFlat(&obj)...))
 	if err != nil {
 		fmt.Println("[Redis] HMSet:", err)
@@ -239,9 +214,7 @@ func (r *Redis) HMSet(name string, obj interface{}) int64 {
 
 /* 哈希(Hash)-获取 */
 func (r *Redis) HGet(name string, key string) []byte {
-	if !r.IsConn() {
-		return nil
-	}
+	r.IsConn()
 	res, err := redigo.Bytes(r.conn.Do("HGET", name, key))
 	if err != nil {
 		fmt.Println("[Redis] HGet:", err)
@@ -250,9 +223,7 @@ func (r *Redis) HGet(name string, key string) []byte {
 	return res
 }
 func (r *Redis) HMGet(name string, keys ...string) []interface{} {
-	if !r.IsConn() {
-		return nil
-	}
+	r.IsConn()
 	args := []interface{}{name}
 	for _, field := range keys {
 		args = append(args, field)
@@ -267,9 +238,7 @@ func (r *Redis) HMGet(name string, keys ...string) []interface{} {
 
 /* 哈希(Hash)-删除 */
 func (r *Redis) HDel(name string, key ...string) int64 {
-	if !r.IsConn() {
-		return 0
-	}
+	r.IsConn()
 	res, err := redigo.Int64(r.conn.Do("HDEL", name, key))
 	if err != nil {
 		fmt.Println("[Redis] HDel:", err)
@@ -280,9 +249,7 @@ func (r *Redis) HDel(name string, key ...string) int64 {
 
 /* 哈希(Hash)-是否存在 */
 func (r *Redis) HExist(name string, key string) bool {
-	if !r.IsConn() {
-		return false
-	}
+	r.IsConn()
 	res, err := redigo.Bool(r.conn.Do("HEXISTS", name, key))
 	if err != nil {
 		fmt.Println("[Redis] HExist:", err)
@@ -293,9 +260,7 @@ func (r *Redis) HExist(name string, key string) bool {
 
 /* 哈希(Hash)-Key个数 */
 func (r *Redis) HLen(name string) int64 {
-	if !r.IsConn() {
-		return 0
-	}
+	r.IsConn()
 	res, err := redigo.Int64(r.conn.Do("HLEN", name))
 	if err != nil {
 		fmt.Println("[Redis] HLen:", err)
@@ -306,9 +271,7 @@ func (r *Redis) HLen(name string) int64 {
 
 /* 列表(List)-写入 */
 func (r *Redis) RPush(key string, val interface{}) bool {
-	if !r.IsConn() {
-		return false
-	}
+	r.IsConn()
 	res, err := redigo.Bool(r.conn.Do("RPUSH", key, val))
 	if err != nil {
 		fmt.Println("[Redis] LPUSH:", err)
@@ -317,9 +280,7 @@ func (r *Redis) RPush(key string, val interface{}) bool {
 	return res
 }
 func (r *Redis) LPush(key string, val interface{}) bool {
-	if !r.IsConn() {
-		return false
-	}
+	r.IsConn()
 	res, err := redigo.Bool(r.conn.Do("LPUSH", key, val))
 	if err != nil {
 		fmt.Println("[Redis] LPUSH:", err)
@@ -330,9 +291,7 @@ func (r *Redis) LPush(key string, val interface{}) bool {
 
 /* 列表(List)-读取 */
 func (r *Redis) BRPop(key string, timeout int) []interface{} {
-	if !r.IsConn() {
-		return nil
-	}
+	r.IsConn()
 	res, err := redigo.Values(r.conn.Do("BRPOP", key, timeout))
 	if err != nil {
 		return nil
@@ -340,9 +299,7 @@ func (r *Redis) BRPop(key string, timeout int) []interface{} {
 	return res
 }
 func (r *Redis) BLPop(key string, timeout int) []interface{} {
-	if !r.IsConn() {
-		return nil
-	}
+	r.IsConn()
 	res, err := redigo.Values(r.conn.Do("BLPOP", key, timeout))
 	if err != nil {
 		return nil

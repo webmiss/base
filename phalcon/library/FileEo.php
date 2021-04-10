@@ -115,9 +115,18 @@ class FileEo extends Base {
   }
 
   /* 写入 */
-  static function Writer(string $file='', string $content): ?bool {
+  static function Writer(string $file='', string $content): bool {
     $file = self::$Root.$file;
     return file_put_contents($file, $content)?true:false;
+  }
+
+  /* 追加 */
+  static function WriterEnd(string $file='', string $content): bool {
+    $file = self::$Root.$file;
+    $f = fopen($file, 'a+');
+    if(!$f) return false;
+    fwrite($f, $content);
+    return fclose($f);
   }
 
   /* 读取 */

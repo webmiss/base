@@ -2,8 +2,6 @@
 declare(strict_types=1);
 namespace Task;
 
-use Phalcon\Cli\Task;
-
 use Config\Socket as cfg;
 use Service\Socket;
 
@@ -11,7 +9,7 @@ use Ratchet\WebSocket\WsServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 
-class SocketTask extends Task {
+class SocketTask extends Base {
 
   /* 启动 */
   function startAction(){
