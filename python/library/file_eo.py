@@ -105,6 +105,14 @@ class FileEo:
       f.close()
     return True
 
+  # 追加
+  def WriterEnd(file: str='', content=''):
+    file = FileEo.Root+file
+    with open(file,'a+') as f :
+      f.write(content)
+      f.close()
+    return True
+
   # 读取
   def Bytes(file: str):
     dst = FileEo.Root+file
