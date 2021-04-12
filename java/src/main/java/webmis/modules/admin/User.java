@@ -78,7 +78,7 @@ public class User extends Base {
       res.put("msg","该用户不允许登录!");
       return GetJSON(res);
     }
-    Redis redis = new Redis();
+    Redis redis = new Redis("");
     String key = Env.admin_token_prefix+"_perm_"+String.valueOf(data.get("id"));
     redis.Set(key, perm);
     redis.Expire(key, Env.admin_token_time);

@@ -25,13 +25,13 @@ public class ApiToken extends Base {
     if(tData==null) return "Token验证失败!";
     // 是否过期
     String uid = String.valueOf(tData.get("uid"));
-    redis = new Redis();
+    redis = new Redis("");
     Long time = redis.Ttl(Env.api_token_prefix+"_token_"+uid);
     redis.Close();
     if(time<1) return "Token已过期!";
     // 续期
     if(Env.api_token_auto){
-      redis = new Redis();
+      redis = new Redis("");
       redis.Expire(Env.api_token_prefix+"_token_"+uid, Env.api_token_time);
       redis.Expire(Env.api_token_prefix+"_perm_"+uid, Env.api_token_time);
       redis.Close();
@@ -77,7 +77,7 @@ public class ApiToken extends Base {
     HashMap<String, Object> tData = Safety.Decode(token);
     if(tData==null) return permAll;
     // 权限
-    Redis redis = new Redis();
+    Redis redis = new Redis("");
     String permStr = redis.Get(Env.api_token_prefix+"_perm_"+tData.get("uid").toString());
     redis.Close();
     // 拆分
@@ -95,7 +95,7 @@ public class ApiToken extends Base {
     data.put("l_time", Util.Date("yyyy-MM-dd HH:mm:ss"));
     String token = Safety.Encode(data);
     // 缓存
-    Redis redis = new Redis();
+    Redis redis = new Redis("");
     String key = Env.api_token_prefix+"_token_"+String.valueOf(data.get("uid"));
     redis.Set(key, "1");
     redis.Expire(key, Env.api_token_time);
@@ -107,7 +107,7 @@ public class ApiToken extends Base {
   public static HashMap<String, Object> token(String token) {
     HashMap<String, Object> tData = Safety.Decode(token);
     if(tData!=null){
-      Redis redis = new Redis();
+      Redis redis = new Redis("");
       tData.put("time", redis.Ttl(Env.api_token_prefix+"_token_"+String.valueOf(tData.get("uid"))));
       redis.Close();
     }
