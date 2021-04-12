@@ -14,7 +14,6 @@ import webmis.util.Http;
 public class Logs implements ServletRequestListener {
 
   public void requestInitialized(ServletRequestEvent se) {
-    
     HttpServletRequest request = (HttpServletRequest) se.getServletRequest();
     HashMap<String, Object> data = new HashMap<String, Object>();
     data.put("ip", Http.IpAddress(request));
