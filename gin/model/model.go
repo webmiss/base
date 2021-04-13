@@ -11,11 +11,12 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var DBDefault *sql.DB
-var DBOther *sql.DB
+var DBDefault *sql.DB //默认池
+var DBOther *sql.DB   //其它池
 
 /* 数据库 */
 type Model struct {
+	db      string        //数据库
 	conn    *sql.DB       //连接
 	sql     string        //SQL
 	table   string        //数据表
@@ -32,12 +33,18 @@ type Model struct {
 	nums    int64         //条数
 }
 
+/* 构造函数 */
+func (m *Model) Init(db string) {
+	m.db = db
+	m.DBConn()
+}
+
 /* 数据池 */
-func DBPool(db string) {
+func (m *Model) DBPool() *sql.DB {
 	// 配置
 	cfg := (&config.MySQL{}).Default()
-	if db == "other" {
-		cfg = (&config.MySQL{}).Default()
+	if m.db == "other" {
+		cfg = (&config.MySQL{}).Other()
 	}
 	// 连接
 	source := cfg.User + ":" + cfg.Password + "@(" + cfg.Host + ":" + cfg.Port + ")/" + cfg.Database + "?charset=" + cfg.Charset + "&parseTime=true&loc=Local"
@@ -45,33 +52,33 @@ func DBPool(db string) {
 	// 是否成功
 	if err := pool.Ping(); err != nil {
 		fmt.Println("[Model] Conn:", err)
-		return
+		return nil
 	}
 	// 配置
 	pool.SetMaxIdleConns(cfg.Min)
 	pool.SetMaxOpenConns(cfg.Max)
 	pool.SetConnMaxLifetime(time.Second * time.Duration(cfg.Time))
-	// 多数据库
-	if db == "other" {
-		DBOther = pool
-	} else {
-		DBDefault = pool
-	}
+	return pool
 }
 
 /* 连接 */
-func (m *Model) Conn(db string) {
-	if db == "other" {
+func (m *Model) DBConn() {
+	if m.db == "other" {
 		if DBOther == nil {
-			DBPool(db)
+			DBOther = m.DBPool()
 		}
 		m.conn = DBOther
 	} else {
 		if DBDefault == nil {
-			DBPool(db)
+			DBDefault = m.DBPool()
 		}
 		m.conn = DBDefault
 	}
+}
+
+/* 实例 */
+func (m *Model) Conn() *sql.DB {
+	return m.conn
 }
 
 /* 查询 */

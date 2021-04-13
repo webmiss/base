@@ -4,8 +4,7 @@ use Model\Demo;
 // 对象
 $demo = new Demo();
 $demo->Values(['uid'=>null,'title'=>'PHP-添加']);
-$id = $demo->Insert();
-self::Print($id);
+$demo->Insert();
 ```
 
 ### 生成SQL

@@ -7,6 +7,11 @@ use Config\Db;
 /* 数据库 */
 class Model extends Base {
 
+  static $DBDefault = null;      //默认池
+  static $DBOther = null;        //其它池
+  static $Test = null;        //其它池
+
+  private $db = null;            //数据库
   private $conn = null;          //连接
   private $sql = '';             //SQL
   private $table = '';           //数据表
@@ -24,13 +29,14 @@ class Model extends Base {
 
   /* 构造函数 */
   function __construct(string $db='') {
-    $this->conn = $this->Db($db);
+    $this->db = $db;
+    $this->DbConn();
   }
 
-  /* 数据库 */
-  function Db(string $db=''): object {
+  /* 连接池 */
+  function DBPool() {
     // 配置
-    if($db=='other') $cfg = Db::Default();
+    if($this->db=='other') $cfg = Db::Other();
     else $cfg = Db::Default();
     // Postgresql
     if ($cfg['driver'] == 'Postgresql') unset($params['charset']);
@@ -40,7 +46,18 @@ class Model extends Base {
     return new $class($cfg);
   }
 
-  /* 链接 */
+  /* 连接 */
+  function DbConn() {
+    if($this->db=='other'){
+      if(!Model::$DBOther) Model::$DBOther=$this->DBPool();
+      $this->conn = self::$DBOther;
+    } else {     
+      if(!Model::$DBDefault) Model::$DBDefault=$this->DBPool();
+      $this->conn = self::$DBDefault;
+    }
+  }
+
+  /* 实例 */
   function Conn(): object {
     return $this->conn;
   }
@@ -51,8 +68,6 @@ class Model extends Base {
       $this->Print('[Model] Query: SQL不能为空!');
       return null;
     }
-    // 连接
-    if(!$this->conn) return null;
     try {
       return $this->conn->query($sql, $args);
     }catch (\Exception $e){
@@ -68,8 +83,6 @@ class Model extends Base {
       $this->Print('[Model] Exec: SQL不能为空!');
       return null;
     }
-    // 连接
-    if(!$this->conn) return null;
     try {
       return $this->conn->execute($sql, $args);
     }catch (\Exception $e){

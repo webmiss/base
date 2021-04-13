@@ -4,8 +4,7 @@ from model.demo import Demo
 # 对象
 demo = Demo()
 demo.Where('uid=%s', id)
-num = demo.Delete()
-self.Print(num)
+demo.Delete()
 ```
 
 ### 生成SQL

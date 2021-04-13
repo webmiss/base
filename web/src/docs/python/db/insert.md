@@ -4,8 +4,7 @@ from model.demo import Demo
 # 对象
 demo = Demo()
 demo.Values({'uid': None, 'title':'添加'})
-id = demo.Insert()
-self.Print(id)
+demo.Insert()
 ```
 
 ### 生成SQL

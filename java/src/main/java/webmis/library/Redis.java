@@ -12,9 +12,8 @@ import webmis.service.Base;
 /* 缓存数据库 */
 public class Redis extends Base {
 
-  // 连接池
-  public static JedisPool RedisDB = null;
-  public static JedisPool RedisDBOther = null;
+  public static JedisPool RedisDB = null;       //默认池
+  public static JedisPool RedisDBOther = null;  //其它池
 
   // 属性
   private String _db = "";
@@ -24,22 +23,13 @@ public class Redis extends Base {
   public Redis(String db) {
     _db = db;
     RedisConn();
-    // try {
-    //   // 创建连接
-    //   _conn = new Jedis(webmis.config.Redis.host,webmis.config.Redis.port);
-    //   _conn.ping();
-    //   if(!webmis.config.Redis.password.equals("")) _conn.auth(webmis.config.Redis.password);
-    //   _conn.select(webmis.config.Redis.db);
-    // } catch (Exception e) {
-    //   Print("[Redis] Conn:", e.getMessage());
-    // }
   }
 
   /* 连接池 */
   public JedisPool RedisPool() {
     HashMap<String, Object> cfg;
     // 配置
-    if(_db.equals("Other")) cfg=webmis.config.Redis.Other();
+    if(_db.equals("other")) cfg=webmis.config.Redis.Other();
     else cfg=webmis.config.Redis.Default();
     // 连接
     JedisPoolConfig config = new JedisPoolConfig();
@@ -52,7 +42,7 @@ public class Redis extends Base {
   /* 连接 */
   public void RedisConn() {
     HashMap<String, Object> cfg;
-    if(_db.equals("Other")) {
+    if(_db.equals("other")) {
       if(Redis.RedisDBOther==null) Redis.RedisDBOther=RedisPool();
       _conn = Redis.RedisDBOther.getResource();
       cfg=webmis.config.Redis.Other();

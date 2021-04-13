@@ -4,8 +4,7 @@ use Model\Demo;
 // 对象
 $demo = new Demo();
 $demo->Where('uid=?', $id);
-$num = $demo->Delete();
-self::Print($num);
+$demo->Delete();
 ```
 
 ### 生成SQL

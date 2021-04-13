@@ -7,8 +7,7 @@ demo.Where("uid=?");
 String sql = demo.DeleteSql();
 PreparedStatement ps = demo.Bind(sql);
 ps.setInt(1, id);
-int num = demo.Delete(ps);
-Print(num);
+demo.Delete(ps);
 ```
 
 ### 生成SQL

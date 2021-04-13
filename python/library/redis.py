@@ -20,7 +20,7 @@ class Redis(Base):
   # 连接池
   def RedisPool(self):
     # 配置
-    if self.__db=='Other' : cfg=Cfg.Other
+    if self.__db=='other' : cfg=Cfg.Other
     else : cfg=Cfg.Default()
     # 连接
     try:
@@ -39,7 +39,7 @@ class Redis(Base):
   # 连接
   def RedisConn(self):
     try:
-      if self.__db=='Other' :
+      if self.__db=='other' :
         if not Redis.RedisDBOther : Redis.RedisDBOther=self.RedisPool()
         self.__conn = redis.StrictRedis(connection_pool=self.RedisDBOther)
       else :

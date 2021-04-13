@@ -7,8 +7,7 @@ demo.Values(map[string]interface{}{
   "uid":   nil,
   "title": "Go-添加",
 })
-id := demo.Insert()
-self.Print(id)
+demo.Insert()
 ```
 
 ### 生成SQL

@@ -17,10 +17,12 @@ import webmis.config.Db;
 /* 数据库 */
 public class Model extends Base {
 
-  public static Connection DBDefault = null;        //默认数据库
-  public static Connection DBOther = null;          //其他数据库
+  public static DruidDataSource DBDefault = null;   //默认池
+  public static DruidDataSource DBOther = null;     //其它池
+
+  private String _db = null;                        //数据库
   private Connection _conn = null;                  //链接
-  private String _type = "";                        //类型: select、insert、update、delete
+  private String _type = "";                        //类型: insert
   private String _sql = "";                         //SQL
   private String _table = "";                       //数据表
   private String _columns = "";                     //字段
@@ -37,21 +39,16 @@ public class Model extends Base {
 
   /* 构造函数 */
   public Model(String db) {
-    if(db.equals("other")){
-      if(DBOther==null) Model.DBPool("other");
-      _conn = DBOther;
-    }else{
-      if(DBDefault==null) Model.DBPool("");
-      _conn = DBDefault;
-    }
+    _db = db;
+    DBConn();
   }
 
   /* 数据池 */
-  public static void DBPool(String db) {
+  public DruidDataSource DBPool() {
     // 配置
     HashMap<String, Object> cfg;
-    if(db=="other"){
-      cfg = Db.Default();
+    if(_db.equals("other")){
+      cfg = Db.Other();
     }else{
       cfg = Db.Default();
     }
@@ -73,20 +70,29 @@ public class Model extends Base {
       source.setTimeBetweenEvictionRunsMillis(60000);
       // 等待超时(毫秒)
       source.setMaxWait((int)cfg.get("time"));
-      // 多数据库
-      if(db=="other"){
-        DBOther = source.getConnection();
+      return source;
+    } catch (Exception e) {
+      Print("[Model] Pool:", e.getMessage());
+      return null;
+    }
+  }
+
+  /* 连接 */
+  public void DBConn() {
+    try {
+      if(_db.equals("other")){
+        if(Model.DBOther==null) Model.DBOther=DBPool();
+        _conn = DBOther.getConnection();
       }else{
-        DBDefault = source.getConnection();
+        if(Model.DBDefault==null) Model.DBDefault=DBPool();
+        _conn = DBDefault.getConnection();
       }
-      // 关闭
-      source.close();
     } catch (Exception e) {
       Print("[Model] Conn:", e.getMessage());
     }
   }
 
-  /* 链接 */
+  /* 实例 */
   public Connection Conn() {
     return _conn;
   }
@@ -98,8 +104,6 @@ public class Model extends Base {
   public PreparedStatement Bind(String sql, Boolean insert) {
     // 类型
     _type = insert?"insert":"";
-    // 连接
-    if(_conn==null) return _bind;
     try {
       if(_type.equals("insert")){
         _bind = _conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

@@ -20,7 +20,7 @@ class Redis extends Base {
   /* 连接 */
   function RedisConn() {
     // 配置
-    if($this->db=='Other') $cfg=Cfg::Other();
+    if($this->db=='other') $cfg=Cfg::Other();
     else $cfg=Cfg::Default();
     // 连接
     try{

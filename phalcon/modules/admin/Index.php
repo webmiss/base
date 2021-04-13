@@ -4,7 +4,6 @@ namespace App\Admin;
 use Service\Base;
 use Config\Env;
 use Model\SysConfig;
-use Library\Socket;
 
 class Index extends Base {
 

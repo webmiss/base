@@ -5,9 +5,10 @@ from config.db import Db
 # 数据库
 class Model :
 
-  DBDefault = None            #默认数据库
-  DBOther = None              #其他数据库
+  DBDefault = None          #默认池
+  DBOther = None            #其它池
 
+  __db = None               #数据库
   __conn = None             #连接
   __sql: str=''             #SQL
   __table: str=''           #数据表
@@ -25,34 +26,44 @@ class Model :
 
   # 构造函数
   def __init__(self, db: str=''):
-    if db=='other' :
-      if not self.DBOther : Model.DBPool(Model, 'other')
-      self.__conn = self.DBOther.connection()
-    else :
-      if not self.DBDefault : Model.DBPool(Model, '')
-      self.__conn = self.DBDefault.connection()
-
-  # 数据池
-  def DBPool(self, db: str=''):
-    if db=='other' : cfg = Db.Default()
+    self.__db = db
+    self.DBConn()
+    
+  # 连接池
+  def DBPool(self):
+    if self.__db=='other' : cfg = Db.Default()
     else : cfg = Db.Default()
     try :
-      if db=="other" : self.DBOther = PooledDB(**cfg)
-      else : self.DBDefault = PooledDB(**cfg)
+      return PooledDB(**cfg)
     except Exception as e :
       print('[Model] Pool:', e)
+      return None
 
-  # 链接
+  # 连接
+  def DBConn(self):
+    try :
+      if self.__db=='other' :
+        if not Model.DBOther : Model.DBOther=self.DBPool()
+        self.__conn = self.DBOther.connection()
+      else :
+        if not Model.DBDefault : Model.DBDefault=self.DBPool()
+        self.__conn = self.DBDefault.connection()
+    except Exception as e :
+      print('[Model] Conn:', e)
+
+  # 实例
   def Conn(self):
     return self.__conn
+
+  # 关闭
+  def Close(self):
+    if self.__conn !=None : self.__conn.close()
 
   # 查询
   def Query(self, sql: str, args: tuple = ()) :
     if sql == '' :
       print('[Model] Query: SQL不能为空!')
       return None
-    # 连接
-    if not self.__conn : return None
     # 游标
     try :
       cs = self.__conn.cursor(cursor=pymysql.cursors.DictCursor)
@@ -68,8 +79,6 @@ class Model :
     if sql == '' :
       print('[Model] Exec: SQL不能为空!')
       return None
-    # 连接
-    if not self.__conn : return None
     # 游标
     try :
       cs = self.__conn.cursor()

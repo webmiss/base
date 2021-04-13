@@ -8,10 +8,8 @@ import (
 	redigo "github.com/gomodule/redigo/redis"
 )
 
-// 连接池
-var RedisDB *redigo.Pool
-var RedisDBOther *redigo.Pool
-var showErr bool
+var RedisDB *redigo.Pool      //默认池
+var RedisDBOther *redigo.Pool //其它池
 
 /* 缓存数据库 */
 type Redis struct {
@@ -23,12 +21,11 @@ type Redis struct {
 func (r Redis) RedisPool() *redigo.Pool {
 	// 配置
 	var cfg *config.RedisType
-	if r.db == "Other" {
+	if r.db == "other" {
 		cfg = config.Redis()
 	} else {
 		cfg = config.RedisOther()
 	}
-	showErr = cfg.Error
 	return &redigo.Pool{
 		MaxIdle:         cfg.Min,  //空闲数
 		MaxActive:       cfg.Max,  //最大数
@@ -39,29 +36,15 @@ func (r Redis) RedisPool() *redigo.Pool {
 		Dial: func() (redigo.Conn, error) {
 			conn, err := redigo.Dial(cfg.Driver, cfg.Host+":"+cfg.Port)
 			if err != nil {
-				if showErr {
-					fmt.Println("[Redis] Conn:", err)
-				}
+				fmt.Println("[Redis] Conn:", err)
 				return nil, err
 			}
 			// 密码
 			if cfg.Password != "" {
-				if _, err := conn.Do("AUTH", cfg.Password); err != nil {
-					conn.Close()
-					if showErr {
-						fmt.Println("[Redis] Conn:", err)
-					}
-					return nil, err
-				}
+				conn.Do("AUTH", cfg.Password)
 			}
 			// 硬盘
-			if _, err := conn.Do("SELECT", cfg.Db); err != nil {
-				conn.Close()
-				if showErr {
-					fmt.Println("[Redis] Conn:", err)
-				}
-				return nil, err
-			}
+			conn.Do("SELECT", cfg.Db)
 			return conn, err
 		},
 		// 检测
@@ -77,7 +60,7 @@ func (r Redis) RedisPool() *redigo.Pool {
 
 /* 连接 */
 func (r *Redis) RedisConn() {
-	if r.db == "Other" {
+	if r.db == "other" {
 		if RedisDBOther == nil {
 			RedisDBOther = r.RedisPool()
 		}

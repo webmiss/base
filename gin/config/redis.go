@@ -19,7 +19,6 @@ type RedisType struct {
 /* 默认 */
 func Redis() *RedisType {
 	cfg := &RedisType{}
-	cfg.Error = true            //显示错误
 	cfg.Driver = "tcp"          //类型
 	cfg.Host = "127.0.0.1"      //主机
 	cfg.Port = "6379"           //端口
@@ -35,7 +34,6 @@ func Redis() *RedisType {
 /* 其它 */
 func RedisOther() *RedisType {
 	cfg := &RedisType{}
-	cfg.Error = true            //显示错误
 	cfg.Driver = "tcp"          //类型
 	cfg.Host = "127.0.0.1"      //主机
 	cfg.Port = "6379"           //端口
