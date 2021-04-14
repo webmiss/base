@@ -7,9 +7,10 @@ use Config\Redis as cfg;
 use Library\Redis;
 use Library\FileEo;
 
+/* 日志 */
 class RedisTask extends Base {
 
-  /* 日志-消费者 */
+  /* 消费者 */
   function logsAction() {
     while(true){
       $redis = new Redis();
@@ -18,7 +19,7 @@ class RedisTask extends Base {
       if(empty($data)) continue;
       // 保存
       $msg = $data[1];
-      $res = self::LogsWrite($msg);
+      $res = self::_logsWrite($msg);
       if(!$res){
         self::Print('[Logs] Write:', '日志记录失败!');
         self::Print($msg);
@@ -26,8 +27,8 @@ class RedisTask extends Base {
     }
   }
 
-  /* 日志-写入 */
-  static function LogsWrite(string $msg): bool {
+  /* 写入 */
+  private static function _logsWrite(string $msg): bool {
     // 数据
     $data = json_decode($msg, true);
     // 时间

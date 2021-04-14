@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -194,12 +195,26 @@ public class FileEo {
       fos = new java.io.FileOutputStream(f);
       bos = new BufferedOutputStream(fos);
       bos.write(content);
-      return true;
     } catch (Exception e) {
       System.out.println("写入文件: "+e.getMessage());
+      return false;
     } finally {
       if (bos != null) try { bos.close(); } catch (IOException e) { }
       if (fos != null) try { fos.close(); } catch (IOException e) { }
+    }
+    return true;
+  }
+
+  /* 追加 */
+  public static boolean WriterEnd(String file, String content){
+    file = Root+file;
+    try {
+      FileWriter writer = new FileWriter(file, true);
+      writer.write(content);
+      writer.close();
+    } catch (IOException e) {
+      System.out.println("追加文件: "+e.getMessage());
+      return false;
     }
     return true;
   }

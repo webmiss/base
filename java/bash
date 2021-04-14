@@ -24,7 +24,7 @@ elif [ "$s" == "build" ]; then
   {
     mvn package -DskipTests && rm "./$jar" && cp "target/$jar" ./
   } || {
-    echo "> 请安装'mvn'"
+    echo "> 请安装'maven'"
   }
 # 启动
 elif [ "$s" == "start" ]; then

@@ -13,7 +13,7 @@ REM 安装
   ( mvn clean install -e -U -DskipTests ) || ( echo ^> 请安装'mvn' )
 REM 打包
 ) else if "%s%"=="build" (
-  ( mvn package -DskipTests && del .\%jar% && copy target\%jar% .\ ) || ( echo ^> 请安装'mvn' )
+  ( mvn package -DskipTests && del .\%jar% && copy target\%jar% .\ ) || ( echo ^> 请安装'maven' )
 ) else (
   echo ----------------------------------------------------
   echo [use] .\cmd ^<command^>

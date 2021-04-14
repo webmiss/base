@@ -5,9 +5,10 @@ from library.redis import Redis as RedisDB
 from library.file_eo import FileEo
 from util.util import Util
 
+# 日志
 class Redis(Base):
 
-  # 日志-消费者
+  # 消费者
   def Logs(self):
     while True :
       redis = RedisDB()
@@ -16,13 +17,13 @@ class Redis(Base):
       if not data : continue
       # 保存
       msg = data[1]
-      res = self.LogsWrite(msg)
+      res = self._logsWrite(msg)
       if not res :
         self.Print('[Logs] Write:', '日志记录失败!')
         self.Print(msg)
 
   # 日志-写入
-  def LogsWrite(self, msg):
+  def _logsWrite(self, msg):
     # 数据
     data = Util.JsonDecode(msg)
     # 时间

@@ -7,9 +7,10 @@ import (
 	"webmis/util"
 )
 
+/* 日志 */
 type Redis struct{}
 
-/* 日志-消费者 */
+/* 消费者 */
 func (r Redis) Logs() {
 	for {
 		redis := (&library.Redis{}).New("")
@@ -20,7 +21,7 @@ func (r Redis) Logs() {
 		}
 		// 保存
 		msg := util.Strval(data[1])
-		res := r.LogsWrite(msg)
+		res := r._logsWrite(msg)
 		if !res {
 			fmt.Println("[Logs] Write:", "日志记录失败!")
 			fmt.Println(msg)
@@ -29,7 +30,7 @@ func (r Redis) Logs() {
 }
 
 /* 日志-写入 */
-func (Redis) LogsWrite(msg string) bool {
+func (Redis) _logsWrite(msg string) bool {
 	// 数据
 	data := map[string]interface{}{}
 	util.JsonDecode(msg, &data)
