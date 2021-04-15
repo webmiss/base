@@ -15,5 +15,6 @@ class Env {
   static $api_token_prefix = 'Api';                         //前缀
   static $api_token_time = 7*24*3600;                       //有效时长(7天)
   static $api_token_auto = true;                            //自动续期
-
+  /* Logs */
+  static $log_on = false;                                   //访问日志
 }

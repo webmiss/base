@@ -6,7 +6,6 @@ class ApiMenu extends Model {
 
   /* 构造函数 */
   function __construct(){
-    parent::__construct();
     $this->Table('api_menus');
   }
 

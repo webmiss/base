@@ -9,11 +9,10 @@ class Model extends Base {
 
   static $DBDefault = null;      //默认池
   static $DBOther = null;        //其它池
-  static $Test = null;        //其它池
 
-  private $db = null;            //数据库
   private $conn = null;          //连接
   private $sql = '';             //SQL
+  private $db = '';              //数据库
   private $table = '';           //数据表
   private $columns = '';         //字段
   private $where = '';           //条件
@@ -27,12 +26,6 @@ class Model extends Base {
   private $id = 0;               //自增ID
   private $nums = 0;             //条数
 
-  /* 构造函数 */
-  function __construct(string $db='') {
-    $this->db = $db;
-    $this->DbConn();
-  }
-
   /* 连接池 */
   function DBPool() {
     // 配置
@@ -43,7 +36,12 @@ class Model extends Base {
     // 命名空间
     $class = 'Phalcon\Db\Adapter\Pdo\\'.$cfg['driver'];
     unset($cfg['driver']);
-    return new $class($cfg);
+    try {
+      return new $class($cfg);
+    }catch (\Exception $e){
+      self::Print('[Model] Pool:', $e->getMessage());
+      return null;
+    }
   }
 
   /* 连接 */
@@ -55,10 +53,6 @@ class Model extends Base {
       if(!Model::$DBDefault) Model::$DBDefault=$this->DBPool();
       $this->conn = self::$DBDefault;
     }
-  }
-
-  /* 实例 */
-  function Conn(): object {
     return $this->conn;
   }
 
@@ -69,6 +63,7 @@ class Model extends Base {
       return null;
     }
     try {
+      $this->DbConn();
       return $this->conn->query($sql, $args);
     }catch (\Exception $e){
       $this->Print('[Model] Query:', $e->getMessage());
@@ -84,6 +79,7 @@ class Model extends Base {
       return null;
     }
     try {
+      $this->DbConn();
       return $this->conn->execute($sql, $args);
     }catch (\Exception $e){
       $this->Print('[Model] Exec:', $e->getMessage());
@@ -105,6 +101,10 @@ class Model extends Base {
     return $this->nums;
   }
 
+  /* 数据库 */
+  function Db(string $db): void {
+    $this->db = $db;
+  }
   /* 表 */
   function Table(string $table): void {
     $this->table = $table;
@@ -189,7 +189,8 @@ class Model extends Base {
   function Find(): array {
     $res = [];
     list($sql, $args) = $this->SelectSql();
-    if(!$this->conn || empty($sql)) return $res;
+    if(empty($sql)) return $res;
+    $this->DbConn();
     $res = $this->conn->fetchAll($sql, 2, $args);
     return $res?$res:[];
   }
@@ -198,7 +199,8 @@ class Model extends Base {
     $res = [];
     $this->limit = '0,1';
     list($sql, $args) = $this->SelectSql();
-    if(!$this->conn || empty($sql)) return $res;
+    if(empty($sql)) return $res;
+    $this->DbConn();
     $res = $this->conn->fetchOne($sql, 2, $args);
     return $res?$res:[];
   }

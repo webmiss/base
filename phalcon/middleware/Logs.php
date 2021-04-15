@@ -1,6 +1,7 @@
 <?php
 namespace Middleware;
 
+use Config\Env;
 use Service\Base;
 use Service\Logs as LogsService;
 
@@ -9,6 +10,7 @@ class Logs extends Base {
 
   /* 访问日志 */
   static function Init() {
+    if(!Env::$log_on) return;
     LogsService::Log([
       'ip'=> $_SERVER['REMOTE_ADDR'],
       'method'=> $_SERVER['REQUEST_METHOD'],
