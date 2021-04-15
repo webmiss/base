@@ -14,5 +14,7 @@ public class Env {
   public static final String api_token_prefix = "ApiToken_";                  //前缀
   public static final int api_token_time = 7*24*3600;                         //有效时长(7天)
   public static final boolean api_token_auto = true;                          //自动续期
-  
+  /* Logs */
+  public static final boolean log_on = false;                                 //访问日志
+
 }

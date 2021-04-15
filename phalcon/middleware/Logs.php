@@ -10,7 +10,9 @@ class Logs extends Base {
 
   /* 访问日志 */
   static function Init() {
+    // 是否记录
     if(!Env::$log_on) return;
+    // 数据
     LogsService::Log([
       'ip'=> $_SERVER['REMOTE_ADDR'],
       'method'=> $_SERVER['REQUEST_METHOD'],

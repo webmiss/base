@@ -17,4 +17,5 @@ class Env {
   static $api_token_auto = true;                            //自动续期
   /* Logs */
   static $log_on = false;                                   //访问日志
+  
 }
