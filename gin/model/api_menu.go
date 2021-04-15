@@ -7,7 +7,6 @@ type ApiMenu struct {
 
 /* 构造函数 */
 func (m *ApiMenu) New() *ApiMenu {
-	m.Init("")
 	m.Table("api_menus")
 	return m
 }

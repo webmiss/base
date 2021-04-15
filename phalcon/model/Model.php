@@ -45,7 +45,7 @@ class Model extends Base {
   }
 
   /* 连接 */
-  function DbConn() {
+  function DBConn() {
     if($this->db=='other'){
       if(!Model::$DBOther) Model::$DBOther=$this->DBPool();
       $this->conn = self::$DBOther;
@@ -63,7 +63,7 @@ class Model extends Base {
       return null;
     }
     try {
-      $this->DbConn();
+      $this->DBConn();
       return $this->conn->query($sql, $args);
     }catch (\Exception $e){
       $this->Print('[Model] Query:', $e->getMessage());
@@ -79,7 +79,7 @@ class Model extends Base {
       return null;
     }
     try {
-      $this->DbConn();
+      $this->DBConn();
       return $this->conn->execute($sql, $args);
     }catch (\Exception $e){
       $this->Print('[Model] Exec:', $e->getMessage());
@@ -190,7 +190,7 @@ class Model extends Base {
     $res = [];
     list($sql, $args) = $this->SelectSql();
     if(empty($sql)) return $res;
-    $this->DbConn();
+    $this->DBConn();
     $res = $this->conn->fetchAll($sql, 2, $args);
     return $res?$res:[];
   }
@@ -200,7 +200,7 @@ class Model extends Base {
     $this->limit = '0,1';
     list($sql, $args) = $this->SelectSql();
     if(empty($sql)) return $res;
-    $this->DbConn();
+    $this->DBConn();
     $res = $this->conn->fetchOne($sql, 2, $args);
     return $res?$res:[];
   }

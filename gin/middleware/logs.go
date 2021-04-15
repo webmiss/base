@@ -10,12 +10,12 @@ import (
 
 /* 访问日志 */
 func Logs() gin.HandlerFunc {
-	// 是否记录
-	if !config.Env().LogOn {
-		return nil
-	}
-	// 数据
 	return func(c *gin.Context) {
+		// 是否记录
+		if !config.Env().LogOn {
+			return
+		}
+		// 数据
 		(&service.Logs{}).Log(gin.H{
 			"ip":         c.ClientIP(),
 			"method":     c.Request.Method,

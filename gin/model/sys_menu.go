@@ -7,7 +7,6 @@ type SysMenu struct {
 
 /* 构造函数 */
 func (m *SysMenu) New() *SysMenu {
-	m.Init("")
 	m.Table("sys_menus")
 	return m
 }

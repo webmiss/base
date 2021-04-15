@@ -8,9 +8,9 @@ class Model :
   DBDefault = None          #默认池
   DBOther = None            #其它池
 
-  __db = None               #数据库
   __conn = None             #连接
   __sql: str=''             #SQL
+  __db = ''                 #数据库
   __table: str=''           #数据表
   __columns: str=''         #字段
   __where: str=''           #条件
@@ -23,11 +23,6 @@ class Model :
   __data: str=''            #更新-数据
   __id: int=0               #自增ID
   __nums: int=0             #条数
-
-  # 构造函数
-  def __init__(self, db: str=''):
-    self.__db = db
-    self.DBConn()
     
   # 连接池
   def DBPool(self):
@@ -48,12 +43,10 @@ class Model :
       else :
         if not Model.DBDefault : Model.DBDefault=self.DBPool()
         self.__conn = self.DBDefault.connection()
+      return self.__conn
     except Exception as e :
       print('[Model] Conn:', e)
-
-  # 实例
-  def Conn(self):
-    return self.__conn
+      return None
 
   # 关闭
   def Close(self):
@@ -66,6 +59,7 @@ class Model :
       return None
     # 游标
     try :
+      self.DBConn()
       cs = self.__conn.cursor(cursor=pymysql.cursors.DictCursor)
       self.__nums = cs.execute(sql, args)
       return cs
@@ -81,6 +75,7 @@ class Model :
       return None
     # 游标
     try :
+      self.DBConn()
       cs = self.__conn.cursor()
       self.__nums = cs.execute(sql, args)
       self.__conn.commit()
@@ -100,6 +95,9 @@ class Model :
   def GetNums(self):
     return self.__nums
 
+  # 数据库
+  def Db(self, db: str) :
+    self.__db = db
   # 表
   def Table(self, table: str) :
     self.__table = table
@@ -171,6 +169,7 @@ class Model :
     if not cs : return res
     res = cs.fetchall()
     cs.close()
+    self.__conn.close()
     return res
   #查询-单条
   def FindFirst(self) :
@@ -181,6 +180,7 @@ class Model :
     if not cs : return res
     res = cs.fetchone()
     cs.close()
+    self.__conn.close()
     return res
 
   # 添加-数据
@@ -216,6 +216,7 @@ class Model :
     if cs==None : return False
     self.__id = cs.lastrowid
     cs.close()
+    self.__conn.close()
     return True
 
   # 更新-数据
@@ -251,6 +252,7 @@ class Model :
     cs = self.Exec(sql, args)
     if cs == None : return False
     cs.close()
+    self.__conn.close()
     return True
 
   # 删除-SQL
@@ -274,5 +276,6 @@ class Model :
     cs = self.Exec(sql, args)
     if cs == None : return False
     cs.close()
+    self.__conn.close()
     return True
     

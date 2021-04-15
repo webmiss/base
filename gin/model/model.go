@@ -16,9 +16,9 @@ var DBOther *sql.DB   //其它池
 
 /* 数据库 */
 type Model struct {
-	db      string        //数据库
 	conn    *sql.DB       //连接
 	sql     string        //SQL
+	db      string        //数据库
 	table   string        //数据表
 	columns string        //字段
 	where   string        //条件
@@ -33,13 +33,7 @@ type Model struct {
 	nums    int64         //条数
 }
 
-/* 构造函数 */
-func (m *Model) Init(db string) {
-	m.db = db
-	m.DBConn()
-}
-
-/* 数据池 */
+/* 连接池 */
 func (m *Model) DBPool() *sql.DB {
 	// 配置
 	cfg := (&config.MySQL{}).Default()
@@ -62,7 +56,7 @@ func (m *Model) DBPool() *sql.DB {
 }
 
 /* 连接 */
-func (m *Model) DBConn() {
+func (m *Model) DBConn() *sql.DB {
 	if m.db == "other" {
 		if DBOther == nil {
 			DBOther = m.DBPool()
@@ -74,6 +68,7 @@ func (m *Model) DBConn() {
 		}
 		m.conn = DBDefault
 	}
+	return m.conn
 }
 
 /* 实例 */
@@ -87,10 +82,8 @@ func (m *Model) Query(sql string, args []interface{}) *sql.Rows {
 		fmt.Println("[Model] Query: SQL不能为空!")
 		return nil
 	}
-	// 是否连接
-	if m.conn == nil {
-		return nil
-	}
+	// 连接
+	m.DBConn()
 	rows, err := m.conn.Query(sql, args...)
 	if err != nil {
 		fmt.Println("[Model] Query:", err)
@@ -106,10 +99,8 @@ func (m *Model) Exec(sql string, args []interface{}) sql.Result {
 		fmt.Println("[Model] Exec: SQL不能为空!")
 		return nil
 	}
-	// 是否连接
-	if m.conn == nil {
-		return nil
-	}
+	// 连接
+	m.DBConn()
 	rows, err := m.conn.Exec(sql, args...)
 	m.args = make([]interface{}, 0, 10)
 	if err != nil {
@@ -133,6 +124,11 @@ func (m *Model) GetID() int64 {
 /* 获取-条数 */
 func (m *Model) GetNums() int64 {
 	return m.nums
+}
+
+/* 数据库 */
+func (m *Model) Db(db string) {
+	m.db = db
 }
 
 /* 表 */

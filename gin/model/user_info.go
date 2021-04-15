@@ -7,7 +7,6 @@ type UserInfo struct {
 
 /* 构造函数 */
 func (m *UserInfo) New() *UserInfo {
-	m.Init("")
 	m.Table("user_info")
 	return m
 }

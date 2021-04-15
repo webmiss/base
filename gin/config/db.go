@@ -23,8 +23,8 @@ func (d *MySQL) Default() *MySQL {
 	d.Password = "e4b99adec618e653400966be536c45f8" //密码
 	d.Database = "data"                             //数据库名
 	d.Charset = "utf8mb4"                           //编码
-	d.Min = 200                                     //空闲连接数
-	d.Max = 300                                     //最大连接数
+	d.Min = 5                                       //空闲连接数
+	d.Max = 10                                      //最大连接数
 	d.Time = 30                                     //连接超时(秒)
 	return d
 }
@@ -38,8 +38,8 @@ func (d *MySQL) Other() *MySQL {
 	d.Password = "e4b99adec618e653400966be536c45f8" //密码
 	d.Database = "data"                             //数据库名
 	d.Charset = "utf8mb4"                           //编码
-	d.Min = 200                                     //空闲连接数
-	d.Max = 300                                     //最大连接数
+	d.Min = 5                                       //空闲连接数
+	d.Max = 10                                      //最大连接数
 	d.Time = 30                                     //连接超时(秒)
 	return d
 }
