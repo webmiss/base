@@ -24,7 +24,10 @@ REM 预览
   ( .\%name% ) || ( echo ^> 请安装'go' )
 REM Socket-运行
 ) else if "%s%"=="socket" (
-  ( go run %cli% ) || ( echo ^> 请安装'go' )
+  ( go run %cli% socket start ) || ( echo ^> 请安装'go' )
+REM Logs-运行
+) else if "%s%"=="logs" (
+  ( go run %cli% redis logs ) || ( echo ^> 请安装'go' )
 ) else (
   echo ----------------------------------------------------
   echo [use] .\cmd ^<command^>
@@ -37,5 +40,7 @@ REM Socket-运行
   echo   http          预览: .\%name%
   echo ^<WebSocket^>
   echo   socket        运行
+  echo ^<Logs^>
+  echo   logs          运行
   echo ----------------------------------------------------
 )
