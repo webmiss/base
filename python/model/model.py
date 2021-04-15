@@ -5,24 +5,24 @@ from config.db import Db
 # 数据库
 class Model :
 
-  DBDefault = None          #默认池
-  DBOther = None            #其它池
+  DBDefault = None     #默认池
+  DBOther = None       #其它池
 
-  __conn = None             #连接
-  __sql: str=''             #SQL
-  __db = ''                 #数据库
-  __table: str=''           #数据表
-  __columns: str=''         #字段
-  __where: str=''           #条件
-  __group: str=''           #分组
-  __order: str=''           #排序
-  __limit: str=''           #限制
-  __args: tuple=()          #参数
-  __keys: str=''            #新增-名
-  __values: str=''          #新增-值
-  __data: str=''            #更新-数据
-  __id: int=0               #自增ID
-  __nums: int=0             #条数
+  __conn = None        #连接
+  __sql: str=''        #SQL
+  __db = ''            #数据库
+  __table: str=''      #数据表
+  __columns: str=''    #字段
+  __where: str=''      #条件
+  __group: str=''      #分组
+  __order: str=''      #排序
+  __limit: str=''      #限制
+  __args: tuple=()     #参数
+  __keys: str=''       #新增-名
+  __values: str=''     #新增-值
+  __data: str=''       #更新-数据
+  __id: int=0          #自增ID
+  __nums: int=0        #条数
 
   # 连接
   def DBConn(self):

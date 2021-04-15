@@ -47,11 +47,11 @@ public class Model extends Base {
         if(Model.DBDefault==null) Model.DBDefault=DBPool(Db.Default());
         _conn = DBDefault.getConnection();
       }
+      return _conn;
     } catch (Exception e) {
       Print("[Model] Conn:", e.getMessage());
-      _conn = null;
+      return null;
     }
-    return _conn;
   }
 
   /* 数据池 */

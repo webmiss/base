@@ -13,19 +13,42 @@ var RedisDBOther *redigo.Pool //其它池
 
 /* 缓存数据库 */
 type Redis struct {
-	db   string
-	conn redigo.Conn
+	db   string      //数据库
+	conn redigo.Conn //连接
+}
+
+/* 构造函数 */
+func (r *Redis) New(db string) *Redis {
+	r.db = db
+	r.RedisConn()
+	return r
+}
+
+/* 连接 */
+func (r *Redis) RedisConn() *redigo.Conn {
+	if r.db == "other" {
+		if RedisDBOther == nil {
+			RedisDBOther = r.RedisPool(config.RedisOther())
+		}
+		r.conn = RedisDBOther.Get()
+	} else {
+		if RedisDB == nil {
+			RedisDB = r.RedisPool(config.Redis())
+		}
+		r.conn = RedisDB.Get()
+	}
+	return &r.conn
+}
+
+/* 关闭 */
+func (r *Redis) Close() {
+	if r.conn != nil {
+		r.conn.Close()
+	}
 }
 
 /* 数据池 */
-func (r Redis) RedisPool() *redigo.Pool {
-	// 配置
-	var cfg *config.RedisType
-	if r.db == "other" {
-		cfg = config.Redis()
-	} else {
-		cfg = config.RedisOther()
-	}
+func (r *Redis) RedisPool(cfg *config.RedisType) *redigo.Pool {
 	return &redigo.Pool{
 		MaxIdle:         cfg.Min,  //空闲数
 		MaxActive:       cfg.Max,  //最大数
@@ -56,40 +79,6 @@ func (r Redis) RedisPool() *redigo.Pool {
 			return err
 		},
 	}
-}
-
-/* 连接 */
-func (r *Redis) RedisConn() {
-	if r.db == "other" {
-		if RedisDBOther == nil {
-			RedisDBOther = r.RedisPool()
-		}
-		r.conn = RedisDBOther.Get()
-	} else {
-		if RedisDB == nil {
-			RedisDB = r.RedisPool()
-		}
-		r.conn = RedisDB.Get()
-	}
-}
-
-/* 创建 */
-func (r *Redis) New(db string) *Redis {
-	r.db = db
-	r.RedisConn()
-	return r
-}
-
-/* 关闭-释放连接 */
-func (r *Redis) Close() {
-	if r.conn != nil {
-		r.conn.Close()
-	}
-}
-
-/* 实例 */
-func (r *Redis) Conn() redigo.Conn {
-	return r.conn
 }
 
 /* 添加 */
