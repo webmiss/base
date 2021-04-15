@@ -23,29 +23,27 @@ class Model :
   __data: str=''            #更新-数据
   __id: int=0               #自增ID
   __nums: int=0             #条数
-    
-  # 连接池
-  def DBPool(self):
-    if self.__db=='other' : cfg = Db.Default()
-    else : cfg = Db.Default()
-    try :
-      return PooledDB(**cfg)
-    except Exception as e :
-      print('[Model] Pool:', e)
-      return None
 
   # 连接
   def DBConn(self):
     try :
       if self.__db=='other' :
-        if not Model.DBOther : Model.DBOther=self.DBPool()
+        if not Model.DBOther : Model.DBOther=self.DBPool(Db.Default())
         self.__conn = self.DBOther.connection()
       else :
-        if not Model.DBDefault : Model.DBDefault=self.DBPool()
+        if not Model.DBDefault : Model.DBDefault=self.DBPool(Db.Default())
         self.__conn = self.DBDefault.connection()
       return self.__conn
     except Exception as e :
       print('[Model] Conn:', e)
+      return None
+
+  # 连接池
+  def DBPool(self, cfg: dict):
+    try :
+      return PooledDB(**cfg)
+    except Exception as e :
+      print('[Model] Pool:', e)
       return None
 
   # 关闭

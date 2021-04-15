@@ -26,11 +26,20 @@ class Model extends Base {
   private $id = 0;               //自增ID
   private $nums = 0;             //条数
 
+  /* 连接 */
+  function DBConn() {
+    if($this->db=='other'){
+      if(!Model::$DBOther) Model::$DBOther=$this->DBPool(Db::Other());
+      $this->conn = self::$DBOther;
+    } else {     
+      if(!Model::$DBDefault) Model::$DBDefault=$this->DBPool(Db::Default());
+      $this->conn = self::$DBDefault;
+    }
+    return $this->conn;
+  }
+
   /* 连接池 */
-  function DBPool() {
-    // 配置
-    if($this->db=='other') $cfg = Db::Other();
-    else $cfg = Db::Default();
+  function DBPool(array $cfg) {
     // Postgresql
     if ($cfg['driver'] == 'Postgresql') unset($params['charset']);
     // 命名空间
@@ -42,18 +51,6 @@ class Model extends Base {
       self::Print('[Model] Pool:', $e->getMessage());
       return null;
     }
-  }
-
-  /* 连接 */
-  function DBConn() {
-    if($this->db=='other'){
-      if(!Model::$DBOther) Model::$DBOther=$this->DBPool();
-      $this->conn = self::$DBOther;
-    } else {     
-      if(!Model::$DBDefault) Model::$DBDefault=$this->DBPool();
-      $this->conn = self::$DBDefault;
-    }
-    return $this->conn;
   }
 
   /* 查询 */

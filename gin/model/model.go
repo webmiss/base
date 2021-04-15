@@ -33,14 +33,25 @@ type Model struct {
 	nums    int64         //条数
 }
 
-/* 连接池 */
-func (m *Model) DBPool() *sql.DB {
-	// 配置
-	cfg := (&config.MySQL{}).Default()
+/* 连接 */
+func (m *Model) DBConn() *sql.DB {
 	if m.db == "other" {
-		cfg = (&config.MySQL{}).Other()
+		if DBOther == nil {
+			DBOther = m.DBPool((&config.MySQL{}).Other())
+		}
+		m.conn = DBOther
+	} else {
+		if DBDefault == nil {
+			DBDefault = m.DBPool((&config.MySQL{}).Default())
+		}
+		m.conn = DBDefault
 	}
-	// 连接
+	return m.conn
+}
+
+/* 连接池 */
+func (m *Model) DBPool(cfg *config.MySQL) *sql.DB {
+	// 配置
 	source := cfg.User + ":" + cfg.Password + "@(" + cfg.Host + ":" + cfg.Port + ")/" + cfg.Database + "?charset=" + cfg.Charset + "&parseTime=true&loc=Local"
 	pool, _ := sql.Open(cfg.Driver, source)
 	// 是否成功
@@ -53,22 +64,6 @@ func (m *Model) DBPool() *sql.DB {
 	pool.SetMaxOpenConns(cfg.Max)
 	pool.SetConnMaxLifetime(time.Second * time.Duration(cfg.Time))
 	return pool
-}
-
-/* 连接 */
-func (m *Model) DBConn() *sql.DB {
-	if m.db == "other" {
-		if DBOther == nil {
-			DBOther = m.DBPool()
-		}
-		m.conn = DBOther
-	} else {
-		if DBDefault == nil {
-			DBDefault = m.DBPool()
-		}
-		m.conn = DBDefault
-	}
-	return m.conn
 }
 
 /* 实例 */

@@ -9,7 +9,6 @@ type Demo struct {
 
 /* 构造函数 */
 func (m *Demo) New() *Demo {
-	m.Init("")
 	m.Table("test")
 	return m
 }

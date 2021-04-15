@@ -37,17 +37,27 @@ public class Model extends Base {
   private int _id = 0;                              //自增ID
   private int _nums = 0;                            //条数
 
-  /* 数据池 */
-  public DruidDataSource DBPool() {
-    // 配置
-    HashMap<String, Object> cfg;
-    if(_db.equals("other")){
-      cfg = Db.Other();
-    }else{
-      cfg = Db.Default();
-    }
+  /* 连接 */
+  public Connection DBConn() {
     try {
-      // 数据池
+      if(_db.equals("other")){
+        if(Model.DBOther==null) Model.DBOther=DBPool(Db.Other());
+        _conn = DBOther.getConnection();
+      }else{
+        if(Model.DBDefault==null) Model.DBDefault=DBPool(Db.Default());
+        _conn = DBDefault.getConnection();
+      }
+    } catch (Exception e) {
+      Print("[Model] Conn:", e.getMessage());
+      _conn = null;
+    }
+    return _conn;
+  }
+
+  /* 数据池 */
+  public DruidDataSource DBPool(HashMap<String, Object> cfg) {
+    try {
+      // 配置
       DruidDataSource source = new DruidDataSource();
       source.setUrl("jdbc:"+(String)cfg.get("jdbc"));
       source.setUsername((String)cfg.get("user"));
@@ -69,23 +79,6 @@ public class Model extends Base {
       Print("[Model] Pool:", e.getMessage());
       return null;
     }
-  }
-
-  /* 连接 */
-  public Connection DBConn() {
-    try {
-      if(_db.equals("other")){
-        if(Model.DBOther==null) Model.DBOther=DBPool();
-        _conn = DBOther.getConnection();
-      }else{
-        if(Model.DBDefault==null) Model.DBDefault=DBPool();
-        _conn = DBDefault.getConnection();
-      }
-    } catch (Exception e) {
-      Print("[Model] Conn:", e.getMessage());
-      _conn = null;
-    }
-    return _conn;
   }
 
   /* 关闭 */
