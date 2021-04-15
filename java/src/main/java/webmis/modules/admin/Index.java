@@ -1,8 +1,7 @@
 package webmis.modules.admin;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.springframework.stereotype.Controller;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import webmis.service.Base;
-import webmis.config.Env;
+import webmis.service.Data;
 import webmis.model.SysConfig;
 
 @RestController
@@ -38,22 +37,16 @@ public class Index extends Base {
     config.Where("name in (\"title\",\"copy\",\"logo\",\"login_bg\")");
     String sql = config.SelectSql();
     PreparedStatement ps = config.Bind(sql);
-    ResultSet rs = config.Query(ps);
+    ArrayList<HashMap<String, Object>> data = config.Find(ps);
     // 数据
     HashMap<String,Object> list = new HashMap<String,Object>();
-    String name = "";
-    String val = "";
-    try {
-      while (rs.next()) {
-        name = rs.getString(1);
-        val = rs.getString(2);
-        if(name.equals("logo") || name.equals("login_bg")){
-          list.put(name, !val.equals("")?Env.base_url+val:"");
-        }else{
-          list.put(name, val);
-        }
+    for(HashMap<String, Object> val : data){
+      if(val.get("name").equals("logo") || val.get("name").equals("login_bg")){
+        list.put(val.get("name").toString(), Data.Img(val.get("val")));
+      } else {
+        list.put(val.get("name").toString(), val.get("val"));
       }
-    } catch (SQLException e) { }
+    }
     // 返回
     HashMap<String,Object> res = new HashMap<String,Object>();
     res.put("code", 0);

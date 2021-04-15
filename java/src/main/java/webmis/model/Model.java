@@ -20,10 +20,10 @@ public class Model extends Base {
   public static DruidDataSource DBDefault = null;   //默认池
   public static DruidDataSource DBOther = null;     //其它池
 
-  private String _db = null;                        //数据库
   private Connection _conn = null;                  //链接
   private String _type = "";                        //类型: insert
   private String _sql = "";                         //SQL
+  private String _db = "";                          //数据库
   private String _table = "";                       //数据表
   private String _columns = "";                     //字段
   private String _where = "";                       //条件
@@ -36,12 +36,6 @@ public class Model extends Base {
   private String _data = "";                        //更新-数据
   private int _id = 0;                              //自增ID
   private int _nums = 0;                            //条数
-
-  /* 构造函数 */
-  public Model(String db) {
-    _db = db;
-    DBConn();
-  }
 
   /* 数据池 */
   public DruidDataSource DBPool() {
@@ -78,7 +72,7 @@ public class Model extends Base {
   }
 
   /* 连接 */
-  public void DBConn() {
+  public Connection DBConn() {
     try {
       if(_db.equals("other")){
         if(Model.DBOther==null) Model.DBOther=DBPool();
@@ -89,12 +83,18 @@ public class Model extends Base {
       }
     } catch (Exception e) {
       Print("[Model] Conn:", e.getMessage());
+      _conn = null;
     }
+    return _conn;
   }
 
-  /* 实例 */
-  public Connection Conn() {
-    return _conn;
+  /* 关闭 */
+  public void Close() {
+    try {
+      _conn.close();
+    } catch (SQLException e) {
+      Print("[Model] Close:", e.getMessage());
+    }
   }
 
   /* 过滤 */
@@ -102,6 +102,8 @@ public class Model extends Base {
     return Bind(sql, false);
   }
   public PreparedStatement Bind(String sql, Boolean insert) {
+    // 连接
+    DBConn();
     // 类型
     _type = insert?"insert":"";
     try {
@@ -159,6 +161,10 @@ public class Model extends Base {
     return _nums;
   }
   
+  /* 数据库 */
+  public void DB(String db) {
+    _db = db;
+  }
   /* 表 */
   public void Table(String table) {
     _table = table;
@@ -278,6 +284,7 @@ public class Model extends Base {
       // 释放
       rs.close();
       ps.close();
+      _conn.close();
       return res;
     } catch (SQLException e) {
       Print("[Model] Find: ", e.getMessage());
@@ -314,7 +321,19 @@ public class Model extends Base {
   }
   /* 添加-执行 */
   public boolean Insert(PreparedStatement ps) {
-    return Exec(ps)!=null?true:false;
+    try{
+      if(Exec(ps)!=null){
+        ps.close();
+        _conn.close();
+        return true;
+      } else {
+        _conn.close();
+        return false;
+      }
+    } catch (SQLException e) {
+      Print("[Model] Insert: ", e.getMessage());
+      return false;
+    }
   }
 
   /* 更新-数据 */
@@ -347,7 +366,19 @@ public class Model extends Base {
   }
   /* 更新-执行 */
   public boolean Update(PreparedStatement ps) {
-    return Exec(ps)!=null?true:false;
+    try{
+      if(Exec(ps)!=null){
+        ps.close();
+        _conn.close();
+        return true;
+      } else {
+        _conn.close();
+        return false;
+      }
+    } catch (SQLException e) {
+      Print("[Model] Update: ", e.getMessage());
+      return false;
+    }
   }
 
   /* 删除-SQL */
@@ -367,7 +398,19 @@ public class Model extends Base {
   }
   /* 删除-执行 */
   public boolean Delete(PreparedStatement ps) {
-    return Exec(ps)!=null?true:false;
+    try{
+      if(Exec(ps)!=null){
+        ps.close();
+        _conn.close();
+        return true;
+      } else {
+        _conn.close();
+        return false;
+      }
+    } catch (SQLException e) {
+      Print("[Model] Delete: ", e.getMessage());
+      return false;
+    }
   }
 
 }

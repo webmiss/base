@@ -5,7 +5,6 @@ public class UserInfo extends Model {
 
   /* 构造函数 */
   public UserInfo() {
-    super("");
     this.Table("user_info");
   }
   
