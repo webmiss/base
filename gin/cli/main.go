@@ -23,19 +23,19 @@ func main() {
 		args["p"] = param[3]
 	}
 	// 路由
-	controller := strings.ToLower(args["c"])
-	action := strings.ToLower(args["a"])
+	c := strings.ToLower(args["c"])
+	a := strings.ToLower(args["a"])
 	switch {
-	case controller == "socket":
-		if action == "start" {
+	case c == "socket":
+		if a == "start" {
 			(&task.Socket{}).Start()
 		}
-	case controller == "redis":
-		if action == "logs" {
+	case c == "redis":
+		if a == "logs" {
 			(&task.Redis{}).Logs()
 		}
-	case controller == "kafka":
-		if action == "logs" {
+	case c == "kafka":
+		if a == "logs" {
 			(&task.Kafka{}).Logs()
 		}
 	default:
