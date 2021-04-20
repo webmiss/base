@@ -4,6 +4,7 @@ from modules.admin.user import User
 from modules.admin.user_info import UserInfo
 from modules.admin.user_passwd import UserPasswd
 from modules.admin.sys_file import SysFile
+from modules.admin.sys_user import SysUser
 from modules.admin.sys_menus import SysMenus
 
 Admin = Blueprint('admin', __name__)
@@ -37,6 +38,10 @@ def sysFile(a) :
   elif a=='upload' : return SysFile().Upload()
   elif a=='down' : return SysFile().Down()
   elif a=='remove' : return SysFile().Remove()
+# 用户管理
+@Admin.route('/sysuser/<a>',methods=['POST'])
+def sysUser(a) :
+  if a=='list' : return SysUser().List()
 # 系统菜单
 @Admin.route('/sysmenus/<a>',methods=['POST'])
 def sysGetMenus(a) :

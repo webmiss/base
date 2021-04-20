@@ -1,3 +1,5 @@
+from flask import request
+
 from library.file_eo import FileEo
 from library.upload import Upload
 from service.base import Base
@@ -5,8 +7,6 @@ from service.data import Data
 from service.admin_token import AdminToken
 from model.user_info import UserInfo as UserInfoM
 from util.util import Util
-
-from flask import request
 
 class UserInfo(Base):
 
@@ -21,12 +21,11 @@ class UserInfo(Base):
     tData = AdminToken.token(token)
     # 查询
     model = UserInfoM()
-    model.Columns('nickname', 'name', 'gender', 'birthday', 'position', 'img')
-    model.Where('uid=%s', str(tData['uid']))
+    model.Columns('nickname', 'name', 'gender', 'FROM_UNIXTIME(birthday, %s) as birthday', 'position', 'img')
+    model.Where('uid=%s', '%Y-%m-%d', str(tData['uid']))
     list = model.FindFirst()
     # 数据
     list['img'] = Data.Img(str(list['img']))
-    list['birthday'] = Util.Date("%Y-%m-%d", float(list['birthday']))
     # 返回
     return self.GetJSON({'code':0, 'msg':'成功', 'list':list})
 

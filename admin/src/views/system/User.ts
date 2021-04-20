@@ -60,7 +60,7 @@ export default defineComponent({
         this.loadData();
       }else if(val=='sea'){
         this.sea.show = true;
-      }else if(val=='Add'){
+      }else if(val=='add'){
         this.add.show = true;
       }else if(val=='edit'){
         this.editData();
@@ -80,7 +80,7 @@ export default defineComponent({
       this.page.list = [];
       this.page.total = 0;
       const load: any = Loading();
-      Post('Sysuser/list',{
+      Post('sysuser/list',{
         token: Storage.getItem('token'),
         page: this.page.page,
         limit: this.page.limit,
@@ -114,7 +114,7 @@ export default defineComponent({
       // 提交
       const data: string = JSON.stringify(this.add.form);
       const load: any = Loading();
-      Post('Sysuser/add',{
+      Post('sysuser/add',{
         token: Storage.getItem('token'),
         data: data
       },(res: any)=>{
@@ -142,7 +142,7 @@ export default defineComponent({
       const uid: number = this.edit.uid;
       const data: string = JSON.stringify(this.edit.form);
       const load: any = Loading();
-      Post('Sysuser/edit',{
+      Post('sysuser/edit',{
         token: Storage.getItem('token'),
         uid: uid,
         data: data
@@ -166,7 +166,7 @@ export default defineComponent({
       this.del.show = false;
       // 提交
       const load = Loading();
-      Post('Sysuser/delete',{
+      Post('sysuser/delete',{
         token: Storage.getItem('token'),
         data: this.del.ids
       },(res: any)=>{
@@ -181,7 +181,7 @@ export default defineComponent({
     setState(type: string, val: boolean, uid: string){
       const state = val?'1':'0';
       const load = Loading();
-      Post('Sysuser/state',{
+      Post('sysuser/state',{
         token: Storage.getItem('token'),
         uid: uid,
         type: type,
@@ -220,7 +220,7 @@ export default defineComponent({
       const uid = this.info.uid;
       const data = JSON.stringify(this.info.form);
       const load = Loading();
-      Post('Sysuser/info',{
+      Post('sysuser/info',{
         token: Storage.getItem('token'),
         uid: uid,
         data: data

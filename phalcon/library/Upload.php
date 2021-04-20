@@ -1,7 +1,6 @@
 <?php
 namespace Library;
 
-use Config\Env;
 use Service\Base;
 
 /* 上传类 */

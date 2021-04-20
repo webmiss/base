@@ -21,7 +21,7 @@ class SysFile extends Base {
     $path = self::Post('path');
     if(empty($path)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     // 数据
-    FileEo::$Root = Env::$root_dir . self::$dirRoot;
+    FileEo::$Root = self::$dirRoot;
     $list = FileEo::List($path);
     // 返回
     return self::GetJSON(['code'=>0, 'msg'=>'成功', 'url'=>Env::$base_url.self::$dirRoot, 'data'=>$list]);
@@ -38,7 +38,7 @@ class SysFile extends Base {
     $name = self::Post('name');
     if(empty($path) || empty($name)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     // 数据
-    FileEo::$Root = Env::$root_dir . self::$dirRoot;
+    FileEo::$Root = self::$dirRoot;
     if(!FileEo::Mkdir($path.$name)) return self::GetJSON(['code'=>5000, 'msg'=>'新建文件夹失败!']);
     // 返回
     return self::GetJSON(['code'=>0, 'msg'=>'成功']);
@@ -56,7 +56,7 @@ class SysFile extends Base {
     $name = self::Post('name');
     if(empty($path) || empty($rename) || empty($name)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     // 数据
-    FileEo::$Root = Env::$root_dir . self::$dirRoot;
+    FileEo::$Root = self::$dirRoot;
     if(!FileEo::Rename($path.$rename, $path.$name)) return self::GetJSON(['code'=>5000, 'msg'=>'重命名失败!']);
     // 返回
     return self::GetJSON(['code'=>0, 'msg'=>'成功']);
@@ -92,7 +92,7 @@ class SysFile extends Base {
     if(empty($path) || empty($filename)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     // 返回
     self::GetJSON();
-    FileEo::$Root = Env::$root_dir . self::$dirRoot;
+    FileEo::$Root = self::$dirRoot;
     return FileEo::Bytes($path.$filename);
   }
 
@@ -107,7 +107,7 @@ class SysFile extends Base {
     $data = self::Post('data');
     if(empty($path) || empty($data)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     // 数据
-    FileEo::$Root = Env::$root_dir . self::$dirRoot;
+    FileEo::$Root = self::$dirRoot;
     $files = json_decode($data, true);
     foreach($files as $val) FileEo::RemoveAll($path.$val);
     // 返回

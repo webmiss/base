@@ -23,6 +23,8 @@ class Admin {
     $app->post('/admin/sysfile/upload', 'App\Admin\SysFile::Upload');
     $app->post('/admin/sysfile/down', 'App\Admin\SysFile::Down');
     $app->post('/admin/sysfile/remove', 'App\Admin\SysFile::Remove');
+    // 用户管理
+    $app->post('/admin/sysuser/list', 'App\Admin\SysUser::List');
     // 系统菜单
     $app->post('/admin/sysmenus/getMenus', 'App\Admin\SysMenus::GetMenus');
   }

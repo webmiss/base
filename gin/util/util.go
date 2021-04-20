@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"strconv"
 	"strings"
 	"time"
@@ -12,6 +13,16 @@ import (
 
 /* 常用工具 */
 type Util struct{}
+
+/* 是否为空 */
+func Empty(val interface{}) bool {
+	r := reflect.ValueOf(val)
+	res := reflect.Zero(r.Type())
+	if !reflect.DeepEqual(r.Interface(), res.Interface()) {
+		return false
+	}
+	return true
+}
 
 /* Md5加密 */
 func Md5(str string) string {

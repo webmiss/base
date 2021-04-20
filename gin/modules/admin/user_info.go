@@ -11,7 +11,6 @@ import (
 
 var ImgDir = "upload/user/img/"
 
-/* 用户信息 */
 type UserInfo struct {
 	service.Base
 }
@@ -28,12 +27,11 @@ func (r UserInfo) List(c *gin.Context) {
 	tData := (&service.AdminToken{}).Token(token)
 	// 查询
 	model := (&model.UserInfo{}).New()
-	model.Columns("nickname", "name", "gender", "birthday", "position", "img")
+	model.Columns("nickname", "name", "gender", "FROM_UNIXTIME(birthday, '%Y-%m-%d') as birthday", "position", "img")
 	model.Where("uid=?", tData["uid"])
 	list := model.FindFirst()
 	// 数据
 	list["img"] = (&service.Data{}).Img(list["img"])
-	list["birthday"] = util.Date("2006-01-02", list["birthday"])
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list})
 }

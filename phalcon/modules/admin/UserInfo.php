@@ -3,9 +3,9 @@ namespace App\Admin;
 
 use Service\Base;
 use Service\Data;
+use Service\AdminToken;
 use Library\FileEo;
 use Library\Upload;
-use Service\AdminToken;
 use Model\UserInfo as UserInfoM;
 
 class UserInfo extends Base {
@@ -21,12 +21,11 @@ class UserInfo extends Base {
     $tData = AdminToken::token($token);
     // 查询
     $model = new UserInfoM();
-    $model->Columns('nickname', 'name', 'gender', 'birthday', 'position', 'img');
+    $model->Columns('nickname', 'name', 'gender', 'FROM_UNIXTIME(birthday, "%Y-%m-%d") as birthday', 'position', 'img');
     $model->Where('uid=?', $tData->uid);
     $list = $model->FindFirst();
     // 数据
     $list['img'] = Data::Img($list['img']);
-    $list['birthday'] = date('Y-m-d', $list['birthday']);
     // 返回
     return self::GetJSON(['code'=>0,'msg'=>'成功','list'=>$list]);
   }
