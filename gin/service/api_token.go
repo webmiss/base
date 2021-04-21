@@ -91,7 +91,7 @@ func (s ApiToken) Perm(token string) map[string]int64 {
 	// 权限
 	env := config.Env()
 	redis := (&library.Redis{}).New("")
-	permStr := string(redis.Get(env.ApiTokenPrefix + "_perm_" + tData["uid"].(string)))
+	permStr := redis.Get(env.ApiTokenPrefix + "_perm_" + tData["uid"].(string))
 	redis.Close()
 	// 拆分
 	arr := util.Explode(" ", permStr)

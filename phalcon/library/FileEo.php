@@ -123,10 +123,7 @@ class FileEo extends Base {
   /* 追加 */
   static function WriterEnd(string $file='', string $content): bool {
     $file = self::$Root.$file;
-    $f = fopen($file, 'a+');
-    if(!$f) return false;
-    fwrite($f, $content);
-    return fclose($f);
+    return file_put_contents($file, $content, FILE_APPEND)?true:false;
   }
 
   /* 读取 */

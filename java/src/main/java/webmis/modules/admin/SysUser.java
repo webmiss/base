@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import webmis.config.Env;
 import webmis.model.User;
 import webmis.service.AdminToken;
 import webmis.service.Base;
@@ -43,8 +44,8 @@ public class SysUser extends Base {
       res.put("msg", "参数错误!");
       return GetJSON(res);
     }
-    JSONObject sea = Util.JsonDecode(data);
-    String uname = sea.containsKey("uname")?String.valueOf(sea.get("uname")).trim():"";
+    JSONObject param = Util.JsonDecode(data);
+    String uname = param.containsKey("uname")?String.valueOf(param.get("uname")).trim():"";
     // 统计
     User model = new User();
     model.Columns("count(*) AS num");
@@ -74,10 +75,6 @@ public class SysUser extends Base {
       val.put("uid", val.get("uid").toString());
       val.put("state", val.get("state").equals("1")?true:false);
       val.put("img", Data.Img(val.get("img")));
-      // val.put("birthday", Util.Date("yyyy-MM-dd", val.get("birthday").toString()));
-      // val.put("rtime", Util.Date("yyyy-MM-dd HH:mm:ss", val.get("rtime").toString()));
-      // val.put("ltime", Util.Date("yyyy-MM-dd HH:mm:ss", val.get("ltime").toString()));
-      // val.put("utime", Util.Date("yyyy-MM-dd HH:mm:ss", val.get("utime").toString()));
     }
     // 返回
     res = new HashMap<String,Object>();
@@ -85,6 +82,38 @@ public class SysUser extends Base {
     res.put("msg", "成功");
     res.put("list", list);
     res.put("total", total.get("num"));
+    return GetJSON(res);
+  }
+
+  /* 添加 */
+  @RequestMapping("add")
+  String Add(HttpServletRequest request, String token, String data) throws SQLException {
+    HashMap<String,Object> res;
+    // 验证
+    String msg = AdminToken.verify(token, request.getRequestURI());
+    if(!msg.equals("")){
+      res = new HashMap<String,Object>();
+      res.put("code", 4001);
+      res.put("msg", msg);
+      return GetJSON(res);
+    }
+    // 参数
+    if(data==""){
+      res = new HashMap<String,Object>();
+      res.put("code", 4000);
+      res.put("msg", "参数错误!");
+      return GetJSON(res);
+    }
+    JSONObject param = Util.JsonDecode(data);
+    String tel = param.containsKey("tel")?String.valueOf(param.get("tel")).trim():"";
+    String passwd = param.containsKey("passwd")?String.valueOf(param.get("passwd")):Env.password;
+    // 验证
+    String uid = Data.GetId();
+    Print(tel, passwd, uid);
+    // 返回
+    res = new HashMap<String,Object>();
+    res.put("code", 0);
+    res.put("msg", "成功");
     return GetJSON(res);
   }
   

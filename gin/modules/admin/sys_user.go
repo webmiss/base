@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"webmis/config"
 	"webmis/model"
 	"webmis/service"
 	"webmis/util"
@@ -29,10 +30,10 @@ func (r SysUser) List(c *gin.Context) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
-	sea := map[string]string{}
-	util.JsonDecode(data, &sea)
+	param := map[string]string{}
+	util.JsonDecode(data, &param)
 	var uname string
-	if val, ok := sea["uname"]; ok {
+	if val, ok := param["uname"]; ok {
 		uname = val
 	}
 	// 统计
@@ -63,4 +64,36 @@ func (r SysUser) List(c *gin.Context) {
 	}
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list, "total": util.Int(total["num"])})
+}
+
+/* 添加 */
+func (r SysUser) Add(c *gin.Context) {
+	// 验证
+	token := c.PostForm("token")
+	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
+	if msg != "" {
+		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
+		return
+	}
+	// 参数
+	data := c.PostForm("data")
+	if util.Empty(data) {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
+		return
+	}
+	param := map[string]string{}
+	util.JsonDecode(data, &param)
+	var tel string
+	if val, ok := param["tel"]; ok {
+		tel = val
+	}
+	passwd := config.Env().Password
+	if val, ok := param["passwd"]; ok {
+		passwd = val
+	}
+	// 验证
+	uid := (&service.Data{}).GetId()
+	r.Print(tel, passwd, uid)
+	// 返回
+	r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
 }

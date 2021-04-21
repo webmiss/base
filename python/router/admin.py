@@ -42,6 +42,7 @@ def sysFile(a) :
 @Admin.route('/sysuser/<a>',methods=['POST'])
 def sysUser(a) :
   if a=='list' : return SysUser().List()
+  elif a=='add' : return SysUser().Add()
 # 系统菜单
 @Admin.route('/sysmenus/<a>',methods=['POST'])
 def sysGetMenus(a) :

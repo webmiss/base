@@ -1,6 +1,7 @@
 <?php
 namespace App\Admin;
 
+use Config\Env;
 use Service\Base;
 use Service\Data;
 use Service\AdminToken;
@@ -21,8 +22,8 @@ class SysUser extends Base {
     if(empty($data) || empty($page) || empty($limit)){
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
-    $sea = json_decode($data);
-    $uname = isset($sea->uname)?trim($sea->uname):'';
+    $param = json_decode($data);
+    $uname = isset($param->uname)?trim($param->uname):'';
     // 统计
     $model = new User();
     $model->Columns('count(*) AS num');
@@ -47,6 +48,27 @@ class SysUser extends Base {
     }
     // 返回
     return self::GetJSON(['code'=>0,'msg'=>'成功','list'=>$list,'total'=>(int)$total['num']]);
+  }
+
+  /* 添加 */
+  static function Add(){
+    // 验证
+    $token = self::Post('token');
+    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    // 参数
+    $data = self::Post('data');
+    if(empty($data)){
+      return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
+    }
+    $param = json_decode($data);
+    $tel = isset($param->tel)?trim($param->tel):'';
+    $passwd = isset($param->passwd)?$param->passwd:Env::$password;
+    // 验证
+    $uid = Data::GetId();
+    self::Print($tel, $passwd, $uid);
+    // 返回
+    return self::GetJSON(['code'=>0,'msg'=>'成功']);
   }
 
 }

@@ -1,5 +1,6 @@
 from flask import request
 
+from config.env import Env
 from service.base import Base
 from service.data import Data
 from service.admin_token import AdminToken
@@ -20,8 +21,8 @@ class SysUser(Base):
     limit = self.Post('limit')
     if not data or not page or not limit :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
-    sea = Util.JsonDecode(data)
-    uname = sea['uname'] if 'uname' in sea.keys() else ''
+    param = Util.JsonDecode(data)
+    uname = param['uname'] if 'uname' in param.keys() else ''
     # 统计
     model = User()
     model.Columns('count(*) AS num')
@@ -51,3 +52,22 @@ class SysUser(Base):
     # 返回
     return self.GetJSON({'code':0, 'msg':'成功', 'list':list, 'total':total['num']})
     
+  # 添加
+  def Add(self):
+    # 验证
+    token = self.Post('token')
+    msg = AdminToken().verify(token, request.path)
+    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
+    # 参数
+    data = self.Post('data')
+    if not data :
+      return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    param = Util.JsonDecode(data)
+    tel = param['tel'] if 'tel' in param.keys() else ''
+    passwd = param['passwd'] if 'passwd' in param.keys() else Env.password
+    # 验证
+    uid = Data.GetId()
+    print(tel, passwd, uid)
+    # 返回
+    return self.GetJSON({'code':0, 'msg':'成功'})
+

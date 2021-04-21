@@ -25,6 +25,7 @@ class Admin {
     $app->post('/admin/sysfile/remove', 'App\Admin\SysFile::Remove');
     // 用户管理
     $app->post('/admin/sysuser/list', 'App\Admin\SysUser::List');
+    $app->post('/admin/sysuser/add', 'App\Admin\SysUser::Add');
     // 系统菜单
     $app->post('/admin/sysmenus/getMenus', 'App\Admin\SysMenus::GetMenus');
   }

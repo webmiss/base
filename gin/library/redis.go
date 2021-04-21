@@ -92,11 +92,11 @@ func (r *Redis) Set(key string, val interface{}) []byte {
 }
 
 /* 获取 */
-func (r *Redis) Get(key string) []byte {
-	res, err := redigo.Bytes(r.conn.Do("Get", key))
+func (r *Redis) Get(key string) string {
+	res, err := redigo.String(r.conn.Do("Get", key))
 	if err != nil {
 		fmt.Println("[Redis] Get:", err)
-		return nil
+		return ""
 	}
 	return res
 }

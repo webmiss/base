@@ -3,11 +3,12 @@ namespace Config;
 
 /* 公共配置 */
 class Env {
-
-  static $base_url = 'https://demo-php.webmis.vip/';        //资源
-  // static $base_url = 'http://localhost/phalcon/public/';    //资源
-  static $root_dir = 'public/';                             //根目录
   static $key = 'e4b99adec618e653400966be536c45f8';         //KEY
+  static $password = '123456';                              //默认密码
+  // 资源
+  static $base_url = 'https://demo-php.webmis.vip/';
+  // static $base_url = 'http://localhost/phalcon/public/';
+  static $root_dir = 'public/';                             //根目录
   /* Token */
   static $admin_token_prefix = 'Admin';                     //前缀
   static $admin_token_time = 2*3600;                        //有效时长(2小时)
@@ -17,5 +18,4 @@ class Env {
   static $api_token_auto = true;                            //自动续期
   /* Logs */
   static $log_on = false;                                   //访问日志
-  
 }

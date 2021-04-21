@@ -31,6 +31,7 @@ func Admin(r *gin.Engine) {
 		g.POST("sysfile/remove", (&admin.SysFile{}).Remove)
 		// 用户管理
 		g.POST("sysuser/list", (&admin.SysUser{}).List)
+		g.POST("sysuser/add", (&admin.SysUser{}).Add)
 		// 系统菜单
 		g.POST("sysmenus/getMenus", (&admin.SysMenus{}).GetMenus)
 	}
