@@ -1,6 +1,5 @@
 package webmis.modules.admin;
 
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -34,10 +33,8 @@ public class Index extends Base {
     // 查询
     SysConfig config = new SysConfig();
     config.Columns("name","val");
-    config.Where("name in (\"title\",\"copy\",\"logo\",\"login_bg\")");
-    String sql = config.SelectSql();
-    PreparedStatement ps = config.Bind(sql);
-    ArrayList<HashMap<String, Object>> data = config.Find(ps);
+    config.Where("name in ('title','copy','logo','login_bg')");
+    ArrayList<HashMap<String, Object>> data = config.Find();
     // 数据
     HashMap<String,Object> list = new HashMap<String,Object>();
     for(HashMap<String, Object> val : data){

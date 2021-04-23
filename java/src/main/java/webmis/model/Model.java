@@ -1,6 +1,7 @@
 package webmis.model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -8,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import com.alibaba.druid.pool.DruidDataSource;
 
@@ -30,7 +32,7 @@ public class Model extends Base {
   private String _group = "";                       //分组
   private String _order = "";                       //排序
   private String _limit = "";                       //限制
-  private PreparedStatement _bind = null;           //参数
+  private Object[] _args = new Object[]{};          //参数
   private String _keys = "";                        //新增-名
   private String _values = "";                      //新增-值
   private String _data = "";                        //更新-数据
@@ -95,20 +97,37 @@ public class Model extends Base {
     return Bind(sql, false);
   }
   public PreparedStatement Bind(String sql, Boolean insert) {
+    PreparedStatement ps = null;
+    String name;
     // 连接
     DBConn();
     // 类型
     _type = insert?"insert":"";
     try {
       if(_type.equals("insert")){
-        _bind = _conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        ps = _conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
       }else{
-        _bind = _conn.prepareStatement(sql);
+        ps = _conn.prepareStatement(sql);
       }
+      // 参数
+      for(int i=0; i<_args.length; i++){
+        name = _args[i].getClass().getSimpleName();
+        switch(name) {
+          case "String" : ps.setString(i+1, (String) _args[i]); break;
+          case "Integer" : ps.setInt(i+1, ((Integer) _args[i]).intValue()); break;
+          case "Double" : ps.setDouble(i+1, ((Double) _args[i]).doubleValue()); break;
+          case "Float" : ps.setFloat(i+1, ((Float) _args[i]).floatValue()); break;
+          case "Long" : ps.setLong(i+1, ((Long) _args[i]).longValue()); break;
+          case "Boolean" : ps.setBoolean(i+1, ((Boolean) _args[i]).booleanValue()); break;
+          case "Date" : ps.setDate(i+1, (Date) _args[i]); break;
+        }
+      }
+      // 重置
+      _args = new Object[]{};
     } catch (SQLException e) {
       Print("[Model] Bind:", e.getMessage());
     }
-    return _bind;
+    return ps;
   }
 
   /* 查询 */
@@ -187,8 +206,17 @@ public class Model extends Base {
     _columns = _columns.length()>0?_columns.substring(0,_columns.length()-2):"";
   }
   /* 条件 */
-  public void Where(String where) {
+  public void Where(String where, Object... args) {
     _where = where;
+    // 参数
+    int n1 = _args.length;
+    int n2 = args.length;
+    Object[] param = new Object[n1+n2];
+    for(int i=0; i<param.length; i++){
+      if(i<n1) param[i] = _args[i];
+      else param[i] = args[i-n1];
+    }
+    _args = param;
   }
   /* 限制 */
   public void Limit(int start, int limit) {
@@ -248,11 +276,15 @@ public class Model extends Base {
     return _sql;
   }
   /* 查询-多条 */
-  public ArrayList<HashMap<String,Object>> Find(PreparedStatement ps) {
+  public ArrayList<HashMap<String,Object>> Find() {
+    String sql = SelectSql();
+    PreparedStatement ps = Bind(sql);
     return FindDataAll(ps);
   }
   /* 查询-单条 */
-  public HashMap<String,Object> FindFirst(PreparedStatement ps) {
+  public HashMap<String,Object> FindFirst() {
+    String sql = SelectSql();
+    PreparedStatement ps = Bind(sql);
     ArrayList<HashMap<String,Object>> data = FindDataAll(ps);
     if(data.isEmpty()) return new HashMap<String,Object>();
      return data.get(0);
@@ -286,15 +318,28 @@ public class Model extends Base {
   }
 
   /* 添加-数据 */
-  public void Values(String... columns) {
+  public void Values(HashMap<String, Object> data) {
     String keys = "";
     String vals = "";
-    for(int i=0; i<columns.length; i++){
-      keys += columns[i] + ", ";
+    Object[] args = new Object[data.size()];
+    int n = 0;
+    for(Entry<String, Object> entry : data.entrySet()){
+      keys += entry.getKey() + ", ";
       vals += "?, ";
+      args[n] = entry.getValue();
+      n++;
     }
     _keys = keys.length()>0?keys.substring(0,keys.length()-2):"";
     _values = vals.length()>0?vals.substring(0,vals.length()-2):"";
+    // 参数
+    int n1 = _args.length;
+    int n2 = data.size();
+    Object[] param = new Object[n1+n2];
+    for(int i=0; i<param.length; i++){
+      if(i<n1) param[i] = _args[i];
+      else param[i] = args[i-n1];
+    }
+    _args = param;
   }
   /* 添加-SQL */
   public String InsertSql() {
@@ -313,7 +358,9 @@ public class Model extends Base {
     return _sql;
   }
   /* 添加-执行 */
-  public boolean Insert(PreparedStatement ps) {
+  public boolean Insert() {
+    String sql = InsertSql();
+    PreparedStatement ps = Bind(sql, true);
     try{
       if(Exec(ps)!=null){
         ps.close();
@@ -330,12 +377,25 @@ public class Model extends Base {
   }
 
   /* 更新-数据 */
-  public void Set(String... columns) {
+  public void Set(HashMap<String, Object> data) {
     String vals = "";
-    for(int i=0; i<columns.length; i++){
-      vals += columns[i] + "=?, ";
+    Object[] args = new Object[data.size()];
+    int n = 0;
+    for(Entry<String, Object> entry : data.entrySet()){
+      vals += entry.getKey() + "=?, ";
+      args[n] = entry.getValue();
+      n++;
     }
     _data = vals.length()>0?vals.substring(0,vals.length()-2):"";
+    // 参数
+    int n1 = _args.length;
+    int n2 = data.size();
+    Object[] param = new Object[n1+n2];
+    for(int i=0; i<param.length; i++){
+      if(i<n1) param[i] = _args[i];
+      else param[i] = args[i-n1];
+    }
+    _args = param;
   }
   /* 更新-SQL */
   public String UpdateSql() {
@@ -358,7 +418,9 @@ public class Model extends Base {
     return _sql;
   }
   /* 更新-执行 */
-  public boolean Update(PreparedStatement ps) {
+  public boolean Update() {
+    String sql = UpdateSql();
+    PreparedStatement ps = Bind(sql);
     try{
       if(Exec(ps)!=null){
         ps.close();
@@ -390,7 +452,9 @@ public class Model extends Base {
     return _sql;
   }
   /* 删除-执行 */
-  public boolean Delete(PreparedStatement ps) {
+  public boolean Delete() {
+    String sql = DeleteSql();
+    PreparedStatement ps = Bind(sql);
     try{
       if(Exec(ps)!=null){
         ps.close();

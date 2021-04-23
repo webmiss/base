@@ -1,7 +1,5 @@
 package webmis.modules.admin;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +21,7 @@ public class UserPasswd extends Base {
 
   /* 编辑 */
   @RequestMapping("edit")
-  String Edit(HttpServletRequest request, String token, String passwd, String passwdNew) throws SQLException {
+  String Edit(HttpServletRequest request, String token, String passwd, String passwdNew) {
     HashMap<String,Object> res;
     // 验证
     String msg = AdminToken.verify(token, request.getRequestURI());
@@ -50,25 +48,19 @@ public class UserPasswd extends Base {
     // 数据
     User model = new User();
     model.Columns("id");
-    model.Where("id=? AND password=?");
-    String sql = model.SelectSql();
-    PreparedStatement ps = model.Bind(sql);
-    ps.setString(1, tData.get("uid").toString());
-    ps.setString(2, Util.Md5(passwd));
-    HashMap<String, Object> uData = model.FindFirst(ps);
+    model.Where("id=? AND password=?", tData.get("uid").toString(), Util.Md5(passwd));
+    HashMap<String, Object> uData = model.FindFirst();
     if(uData.isEmpty()){
       res = new HashMap<String,Object>();
       res.put("code", 4000);
       res.put("msg", "当前密码错误!");
       return GetJSON(res);
     }
-    model.Set("password");
-    model.Where("id=?");
-    sql = model.UpdateSql();
-    ps = model.Bind(sql);
-    ps.setString(1, Util.Md5(passwdNew));
-    ps.setString(2, tData.get("uid").toString());
-    if(!model.Update(ps)) {
+    HashMap<String, Object> upParam = new HashMap<String, Object>();
+    upParam.put("password", Util.Md5(passwdNew));
+    model.Set(upParam);
+    model.Where("id=?", tData.get("uid").toString());
+    if(!model.Update()) {
       res = new HashMap<String,Object>();
       res.put("code", 5000);
       res.put("msg", "修改失败!");

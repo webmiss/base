@@ -3,14 +3,13 @@
 import webmis.model.Demo;
 // 对象
 Demo demo = new Demo();
-demo.Set("title");
-demo.Where("uid=?");
-String sql = demo.UpdateSql();
-PreparedStatement ps = demo.Bind(sql);
-ps.setString(1, "Java-更新");
-ps.setInt(2, id);
-int num = demo.Update(ps);
-Print(num);
+// 数据
+HashMap<String,Object> data = new HashMap<String,Object>();
+data.put("title", "Java-更新");
+demo.Set(data);
+demo.Where("uid=?", id);
+// 执行
+demo.Update();
 ```
 
 ### 生成SQL

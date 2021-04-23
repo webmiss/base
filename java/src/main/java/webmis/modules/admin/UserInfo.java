@@ -1,7 +1,5 @@
 package webmis.modules.admin;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +26,7 @@ public class UserInfo extends Base {
 
   /* 列表 */
   @RequestMapping("list")
-  String List(HttpServletRequest request, String token, String data) throws SQLException {
+  String List(HttpServletRequest request, String token, String data) {
     HashMap<String,Object> res;
     // 验证
     String msg = AdminToken.verify(token, request.getRequestURI());
@@ -42,11 +40,8 @@ public class UserInfo extends Base {
     // 查询
     webmis.model.UserInfo model = new webmis.model.UserInfo();
     model.Columns("nickname", "name", "gender", "FROM_UNIXTIME(birthday, '%Y-%m-%d') as birthday", "position", "img");
-    model.Where("uid=?");
-    String sql = model.SelectSql();
-    PreparedStatement ps = model.Bind(sql);
-    ps.setString(1, tData.get("uid").toString());
-    HashMap<String, Object> list = model.FindFirst(ps);
+    model.Where("uid=?", tData.get("uid").toString());
+    HashMap<String, Object> list = model.FindFirst();
     // 数据
     list.put("img", Data.Img(list.get("img")));
     // 返回
@@ -59,7 +54,7 @@ public class UserInfo extends Base {
 
   /* 编辑 */
   @RequestMapping("edit")
-  String Edit(HttpServletRequest request, String token, String data) throws SQLException {
+  String Edit(HttpServletRequest request, String token, String data) {
     HashMap<String,Object> res;
     // 验证
     String msg = AdminToken.verify(token, request.getRequestURI());
@@ -84,22 +79,16 @@ public class UserInfo extends Base {
     info.put("nickname", Util.Trim(param.get("nickname").toString()));
     info.put("name", Util.Trim(param.get("name").toString()));
     info.put("gender", Util.Trim(param.get("gender").toString()));
-    info.put("birthday", Util.Trim(param.get("birthday").toString()));
+    String birthday = Util.Trim(param.get("birthday").toString());
+    info.put("birthday", Util.Strtotime(birthday, "yyyy-MM-dd"));
     info.put("position", Util.Trim(param.get("position").toString()));
-    model.Set("nickname", "name", "gender", "birthday", "position");
-    model.Where("uid=?");
-    String sql = model.UpdateSql();
-    PreparedStatement ps = model.Bind(sql);
-    ps.setString(1, info.get("nickname").toString());
-    ps.setString(2, info.get("name").toString());
-    ps.setString(3, info.get("gender").toString());
-    ps.setLong(4, Util.Strtotime(info.get("birthday").toString(), "yyyy-MM-dd"));
-    ps.setString(5, info.get("position").toString());
-    ps.setString(6, tData.get("uid").toString());
-    model.Update(ps);
+    model.Set(info);
+    model.Where("uid=?", tData.get("uid").toString());
+    model.Update();
     // 返回
     info.put("uname", tData.get("uname").toString());
     info.put("img", param.get("img").toString());
+    info.put("birthday", birthday);
     res = new HashMap<String,Object>();
     res.put("code", 0);
     res.put("msg", "成功");
@@ -109,7 +98,7 @@ public class UserInfo extends Base {
 
   /* 头像 */
   @RequestMapping("upimg")
-  String Upimg(HttpServletRequest request, String token, String base64) throws SQLException {
+  String Upimg(HttpServletRequest request, String token, String base64) {
     HashMap<String,Object> res;
     // 验证
     String msg = AdminToken.verify(token, request.getRequestURI());
@@ -141,18 +130,13 @@ public class UserInfo extends Base {
     // 数据
     webmis.model.UserInfo model = new webmis.model.UserInfo();
     model.Columns("img");
-    model.Where("uid=?");
-    String sql = model.SelectSql();
-    PreparedStatement ps = model.Bind(sql);
-    ps.setString(1, tData.get("uid").toString());
-    HashMap<String, Object> imgData = model.FindFirst(ps);
-    model.Set("img");
-    model.Where("uid=?");
-    sql = model.UpdateSql();
-    ps = model.Bind(sql);
-    ps.setString(1, ImgDir+img);
-    ps.setString(2, tData.get("uid").toString());
-    if(!model.Update(ps)){
+    model.Where("uid=?", tData.get("uid").toString());
+    HashMap<String, Object> imgData = model.FindFirst();
+    HashMap<String, Object> upParam = new HashMap<String, Object>();
+    upParam.put("img", ImgDir+img);
+    model.Set(upParam);
+    model.Where("uid=?", tData.get("uid").toString());
+    if(!model.Update()){
       res = new HashMap<String,Object>();
       res.put("code", 5000);
       res.put("msg", "上传失败!");

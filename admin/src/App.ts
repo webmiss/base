@@ -239,6 +239,7 @@ export default defineComponent({
         }
       },()=>{
         Toast('获取菜单失败!');
+        this.logout();
       });
     },
     /* 点击菜单 */

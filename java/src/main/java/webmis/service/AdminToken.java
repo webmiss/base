@@ -1,7 +1,5 @@
 package webmis.service;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,7 +15,7 @@ import webmis.util.Util;
 public class AdminToken extends Base {
 
   /* 验证 */
-  public static String verify(String token, String urlPerm) throws SQLException {
+  public static String verify(String token, String urlPerm) {
     Redis redis;
     // Token
     if(token.equals("")) return "Token不能为空!";
@@ -46,11 +44,8 @@ public class AdminToken extends Base {
     // 菜单
     SysMenu menu = new SysMenu();
     menu.Columns("id", "action");
-    menu.Where("controller=?");
-    String sql = menu.SelectSql();
-    PreparedStatement ps = menu.Bind(sql);
-    ps.setString(1, controller);
-    HashMap<String, Object> menuData = menu.FindFirst(ps);
+    menu.Where("controller=?", controller);
+    HashMap<String, Object> menuData = menu.FindFirst();
     if(menuData.size()==0) return "菜单验证无效!";
     // 验证-菜单
     String id = menuData.get("id").toString();

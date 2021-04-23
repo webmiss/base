@@ -1,7 +1,5 @@
 package webmis.modules.admin;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -28,7 +26,7 @@ public class SysMenus extends Base {
 
   /* 获取菜单 */
   @RequestMapping("getMenus")
-  String GetMenus(String token) throws SQLException {
+  String GetMenus(String token) {
     HashMap<String,Object> res;
     ArrayList<HashMap<String, Object>> tmp;
     // 验证
@@ -44,9 +42,7 @@ public class SysMenus extends Base {
     SysMenu model = new SysMenu();
     model.Columns("id", "fid", "title", "url", "ico", "controller", "action");
     model.Order("sort DESC, id");
-    String sql = model.SelectSql();
-    PreparedStatement ps = model.Bind(sql);
-    ArrayList<HashMap<String, Object>> all = model.Find(ps);
+    ArrayList<HashMap<String, Object>> all = model.Find();
     for (HashMap<String, Object> val : all) {
       String fid = String.valueOf(val.get("fid"));
       if (menus.containsKey(fid)) {

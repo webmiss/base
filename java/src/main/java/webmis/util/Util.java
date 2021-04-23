@@ -45,7 +45,8 @@ public class Util {
     try {
       SimpleDateFormat sdf = new SimpleDateFormat(format);
       Date data = sdf.parse(day);
-      return data.getTime()/1000;
+      long time = data.getTime()/1000;
+      return time>0?time:0;
     } catch (ParseException e) {
       return 0;
     }

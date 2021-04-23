@@ -1,7 +1,5 @@
 package webmis.modules.admin;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -28,7 +26,7 @@ public class SysUser extends Base {
 
   /* 列表 */
   @RequestMapping("list")
-  String List(HttpServletRequest request, String token, String data, int page, int limit) throws SQLException {
+  String List(HttpServletRequest request, String token, String data, int page, int limit) {
     HashMap<String,Object> res;
     // 验证
     String msg = AdminToken.verify(token, request.getRequestURI());
@@ -50,9 +48,7 @@ public class SysUser extends Base {
     // 统计
     User model = new User();
     model.Columns("count(*) AS num");
-    String sql = model.SelectSql();
-    PreparedStatement ps = model.Bind(sql);
-    HashMap<String, Object> total = model.FindFirst(ps);
+    HashMap<String, Object> total = model.FindFirst();
     // 查询
     model.Table("user as a");
     model.LeftJoin("user_info as b", "a.id=b.uid");
@@ -62,15 +58,13 @@ public class SysUser extends Base {
       "b.nickname", "b.position", "b.name", "b.gender", "FROM_UNIXTIME(b.birthday, '%Y-%m-%d') as birthday", "b.img",
       "c.role", "c.perm"
     );
-    model.Where("a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?");
+    model.Where(
+      "a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?",
+      "%"+uname+"%", "%"+uname+"%", "%"+uname+"%"
+    );
     model.Order("a.id DESC");
     model.Page(page, limit);
-    sql = model.SelectSql();
-    ps = model.Bind(sql);
-    ps.setString(1, "%"+uname+"%");
-    ps.setString(2, "%"+uname+"%");
-    ps.setString(3, "%"+uname+"%");
-    ArrayList<HashMap<String,Object>> list = model.Find(ps);
+    ArrayList<HashMap<String,Object>> list = model.Find();
     // 状态
     for (HashMap<String, Object> val : list) {
       val.put("uid", val.get("uid").toString());
@@ -88,7 +82,7 @@ public class SysUser extends Base {
 
   /* 添加 */
   @RequestMapping("add")
-  String Add(HttpServletRequest request, String token, String data) throws SQLException {
+  String Add(HttpServletRequest request, String token, String data) {
     HashMap<String,Object> res;
     // 验证
     String msg = AdminToken.verify(token, request.getRequestURI());
@@ -124,11 +118,8 @@ public class SysUser extends Base {
     // 是否存在
     User model = new User();
     model.Columns("id");
-    model.Where("tel=?");
-    String sql = model.SelectSql();
-    PreparedStatement ps = model.Bind(sql);
-    ps.setString(1, tel);
-    HashMap<String, Object> user = model.FindFirst(ps);
+    model.Where("tel=?", tel);
+    HashMap<String, Object> user = model.FindFirst();
     if(!user.isEmpty()){
       res = new HashMap<String,Object>();
       res.put("code", 4000);

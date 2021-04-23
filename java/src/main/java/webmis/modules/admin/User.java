@@ -1,7 +1,5 @@
 package webmis.modules.admin;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.HashMap;
 
 import org.springframework.stereotype.Controller;
@@ -24,7 +22,7 @@ public class User extends Base {
 
   /* 登录 */
   @RequestMapping("login")
-  String login(String uname, String passwd) throws SQLException{
+  String login(String uname, String passwd) {
     HashMap<String,Object> res;
     // 验证用户名
     if(!Safety.IsRight("uname",uname) && !Safety.IsRight("tel",uname) && !Safety.IsRight("email",uname)){
@@ -47,14 +45,11 @@ public class User extends Base {
     model.LeftJoin("sys_perm AS c", "a.id=c.uid");
     model.LeftJoin("sys_role AS d", "c.role=d.id");
     model.Columns("a.id", "a.state", "b.position", "b.nickname", "b.name", "b.gender", "b.birthday", "b.img", "c.perm", "d.perm as role_perm");
-    model.Where("(a.uname=? OR a.tel=? OR a.email=?) AND a.password=?");
-    String sql = model.SelectSql();
-    PreparedStatement ps = model.Bind(sql);
-    ps.setString(1, uname);
-    ps.setString(2, uname);
-    ps.setString(3, uname);
-    ps.setString(4, Util.Md5(passwd));
-    HashMap<String, Object> data = model.FindFirst(ps);
+    model.Where(
+      "(a.uname=? OR a.tel=? OR a.email=?) AND a.password=?",
+      uname, uname, uname, Util.Md5(passwd)
+    );
+    HashMap<String, Object> data = model.FindFirst();
     // 是否存在
     if(data.isEmpty()){
       res = new HashMap<String, Object>();
@@ -85,13 +80,11 @@ public class User extends Base {
     redis.Close();
     // 登录时间
     model.Table("user");
-    model.Set("ltime");
-    model.Where("id=?");
-    sql = model.UpdateSql();
-    ps = model.Bind(sql);
-    ps.setLong(1, Util.Time());
-    ps.setString(2, data.get("id").toString());
-    model.Update(ps);
+    HashMap<String, Object> upParam = new HashMap<String, Object>();
+    upParam.put("ltime", Util.Time());
+    model.Set(upParam);
+    model.Where("id=?", data.get("id").toString());
+    model.Update();
     // 返回
     res = new HashMap<String,Object>();
     res.put("code", 0);
@@ -116,7 +109,7 @@ public class User extends Base {
 
   /* Token验证 */
   @RequestMapping("token")
-  String Token(String token, String uinfo) throws SQLException {
+  String Token(String token, String uinfo) {
     HashMap<String,Object> res;
     // 验证
     String msg = AdminToken.verify(token, "");
@@ -138,11 +131,8 @@ public class User extends Base {
     // 用户信息
     UserInfo model = new UserInfo();
     model.Columns("nickname","position","name","img");
-    model.Where("uid=?");
-    String sql = model.SelectSql();
-    PreparedStatement ps = model.Bind(sql);
-    ps.setString(1, tData.get("uid").toString());
-    HashMap<String, Object> info = model.FindFirst(ps);
+    model.Where("uid=?", tData.get("uid").toString());
+    HashMap<String, Object> info = model.FindFirst();
     info.put("uname", tData.get("uname"));
     info.put("img", Data.Img(info.get("img")));
     // 返回

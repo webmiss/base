@@ -3,11 +3,8 @@
 import webmis.model.Demo;
 // 对象
 Demo demo = new Demo();
-demo.Where("uid=?");
-String sql = demo.DeleteSql();
-PreparedStatement ps = demo.Bind(sql);
-ps.setInt(1, id);
-demo.Delete(ps);
+demo.Where("uid=?", id);
+demo.Delete();
 ```
 
 ### 生成SQL

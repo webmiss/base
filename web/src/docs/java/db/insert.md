@@ -3,14 +3,13 @@
 import webmis.model.Demo;
 // 对象
 Demo demo = new Demo();
-demo.Values("uid","title");
-String sql = demo.InsertSql();
-// 参数
-PreparedStatement ps = demo.Bind(sql, true);
-ps.setNull(1, 0);
-ps.setString(2, "Java-添加");
+// 数据
+HashMap<String,Object> data = new HashMap<String,Object>();
+data.put("uid", 0);
+data.put("title", "Java-添加");
+demo.Values(data);
 // 执行
-demo.Insert(ps);
+demo.Insert();
 ```
 
 ### 生成SQL
