@@ -254,7 +254,7 @@ public class Model extends Base {
   /* 查询-单条 */
   public HashMap<String,Object> FindFirst(PreparedStatement ps) {
     ArrayList<HashMap<String,Object>> data = FindDataAll(ps);
-    if(data.isEmpty()) return null;
+    if(data.isEmpty()) return new HashMap<String,Object>();
      return data.get(0);
   }
   /* 获取查询结果 */
@@ -281,7 +281,7 @@ public class Model extends Base {
       return res;
     } catch (SQLException e) {
       Print("[Model] Find: ", e.getMessage());
-      return null;
+      return res;
     }
   }
 

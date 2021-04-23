@@ -2,6 +2,7 @@ package admin
 
 import (
 	"webmis/config"
+	"webmis/library"
 	"webmis/model"
 	"webmis/service"
 	"webmis/util"
@@ -92,8 +93,26 @@ func (r SysUser) Add(c *gin.Context) {
 		passwd = val
 	}
 	// 验证
-	uid := (&service.Data{}).GetId()
-	r.Print(tel, passwd, uid)
+	if !(&library.Safety{}).IsRight("tel", tel) {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "手机号码有误!"})
+		return
+	}
+	if !(&library.Safety{}).IsRight("passwd", passwd) {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "密码为6～16位!"})
+		return
+	}
+	// 是否存在
+	model := (&model.User{}).New()
+	model.Columns("id")
+	model.Where("tel=?", tel)
+	user := model.FindFirst()
+	if !util.Empty(user) {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "该用户已存在!"})
+		return
+	}
+	// 新增
+	uid := (&service.Data{}).GetId("ID")
+	r.Print(tel, passwd, uid, user, util.Empty(user))
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
 }

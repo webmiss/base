@@ -2,27 +2,31 @@
 namespace Service;
 
 use Config\Env;
+use Library\Redis;
 
 /* 数据类 */
 class Data extends Base {
 
+  static $id = 0;           //自增ID
+  static $idShift = 16;     //自增数位数
+  static $saltShift = 8;    //随机数移位
+  static $saltBit = 8;      //随机数位数
+
   /* 生成ID */
-  static function GetId() {
-    // $time = floor(microtime(true) * 1000);
-    // // 0bit 未使用
-    // $suffix = 0;
-    // // 41bit 时间戳
-    // $base = decbin(pow(2,40) - 1 + $time);
-    // // 10bit 设备ID
-    // $machineid = decbin(pow(2,9) - 1 + Env::$machine_id);
-    // // 12bit 毫秒序号
-    // $random = mt_rand(1, pow(2,11)-1);
-    // $random = decbin(pow(2,11)-1 + $random);
-    // // 64bit
-    // $base64 = $suffix.$base.$machineid.$random;
-    // self::Print($base64);
-    // $id = sprintf('%.0f', bindec($base64));
-    return '2021';
+  static function GetId(string $name) {
+    // 获取
+    $redis = new Redis();
+    Data::$id = floor($redis->Gets($name));
+    Data::$id++;
+    // 随机数
+    $randA = mt_rand(0, 255);
+    $randB = mt_rand(0, 255);
+    // 位运算
+    $mist = floor((Data::$id << Data::$idShift) | ($randA << Data::$saltShift) | $randB);
+    // 保存
+    $redis->Set($name, Data::$id);
+    $redis->Close();
+    return $mist;
   }
 
   /* 图片地址 */

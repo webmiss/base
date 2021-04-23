@@ -4,6 +4,7 @@ from config.env import Env
 from service.base import Base
 from service.data import Data
 from service.admin_token import AdminToken
+from library.safety import Safety
 from model.user import User
 from util.util import Util
 
@@ -66,8 +67,20 @@ class SysUser(Base):
     tel = param['tel'] if 'tel' in param.keys() else ''
     passwd = param['passwd'] if 'passwd' in param.keys() else Env.password
     # 验证
-    uid = Data.GetId()
-    print(tel, passwd, uid)
+    if not Safety.IsRight('tel', tel) :
+      return self.GetJSON({'code':4000, 'msg':'手机号码有误!'})
+    if not Safety.IsRight('passwd', passwd) :
+      return self.GetJSON({'code':4000, 'msg':'密码为6～16位!'})
+    # 是否存在
+    model = User()
+    model.Columns('id')
+    model.Where('tel=%s', tel)
+    user = model.FindFirst()
+    if user :
+      return self.GetJSON({'code':4000, 'msg':'该用户已存在!'})
+    # 新增
+    uid = Data.GetId('ID')
+    print(tel, passwd, uid, user, not user)
     # 返回
     return self.GetJSON({'code':0, 'msg':'成功'})
 

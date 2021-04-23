@@ -52,17 +52,21 @@ class Redis(Base):
   # 添加
   def Set(self, key: str, val: str):
     try:
-      return self.__conn.set(key, val)
+      res = self.__conn.set(key, val)
+      if not res : return False
+      return res
     except Exception as e:
       self.Print('[Redis] Set:', e)
       return False
   # 获取
   def Get(self, key: str):
     try:
-      return self.__conn.get(key)
+      res = self.__conn.get(key)
+      if not res : return b''
+      return res
     except Exception as e:
       self.Print('[Redis] Get:', e)
-      return None
+      return b''
   # 删除
   def Del(self, *key: str):
     try:
@@ -97,7 +101,7 @@ class Redis(Base):
       return self.__conn.strlen(key)
     except Exception as e:
       self.Print('[Redis] StrLen:', e)
-      return None
+      return 0
 
   # 哈希(Hash)-添加
   def HSet(self, name: str, key, val):
@@ -115,10 +119,12 @@ class Redis(Base):
   # 哈希(Hash)-获取
   def HGet(self, name: str, key):
     try:
-      return self.__conn.hget(name, key)
+      res = self.__conn.hget(name, key)
+      if not res : return b''
+      return res
     except Exception as e:
       self.Print('[Redis] HGet:', e)
-      return None
+      return b''
   def HMGet(self, name: str, key):
     try:
       return self.__conn.hmget(name, key)
@@ -163,13 +169,17 @@ class Redis(Base):
   # 列表(List)-读取
   def BRPop(self, key: str, timeout: float):
     try:
-      return self.__conn.brpop(key, timeout)
+      res = self.__conn.brpop(key, timeout)
+      if not res : return tuple(b'',b'')
+      return res
     except Exception as e:
       self.Print('[Redis] BRPop:', e)
-      return None
+      return tuple(b'',b'')
   def BLPop(self, key: str, timeout: float):
     try:
-      return self.__conn.blpop(key, timeout)
+      res = self.__conn.blpop(key, timeout)
+      if not res : return tuple(b'',b'')
+      return res
     except Exception as e:
       self.Print('[Redis] BLPop:', e)
-      return None
+      return tuple(b'',b'')

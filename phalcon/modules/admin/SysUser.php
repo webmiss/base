@@ -5,6 +5,7 @@ use Config\Env;
 use Service\Base;
 use Service\Data;
 use Service\AdminToken;
+use Library\Safety;
 use Model\User;
 
 class SysUser extends Base {
@@ -65,8 +66,23 @@ class SysUser extends Base {
     $tel = isset($param->tel)?trim($param->tel):'';
     $passwd = isset($param->passwd)?$param->passwd:Env::$password;
     // 验证
-    $uid = Data::GetId();
-    self::Print($tel, $passwd, $uid);
+    if(!Safety::IsRight('tel', $tel)) {
+      return self::GetJSON(['code'=>4000, 'msg'=>'手机号码有误!']);
+    }
+    if(!Safety::IsRight('passwd', $passwd)) {
+      return self::GetJSON(['code'=>4000, 'msg'=>'密码为6～16位!']);
+    }
+    // 是否存在
+    $model = new User();
+    $model->Columns('id');
+    $model->Where('tel=?', $tel);
+    $user = $model->FindFirst();
+    if(!empty($user)) {
+      return self::GetJSON(['code'=>4000, 'msg'=>'该用户已存在!']);
+    }
+    // 新增
+    $uid = Data::GetId('ID');
+    self::Print($tel, $passwd, $uid, $user, !empty($user));
     // 返回
     return self::GetJSON(['code'=>0,'msg'=>'成功']);
   }

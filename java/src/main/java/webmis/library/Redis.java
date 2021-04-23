@@ -70,37 +70,37 @@ public class Redis extends Base {
 
   /* 添加 */
   public String Set(String key, String val) {
-    if(_conn==null) return null;
+    if(_conn==null) return "";
     return _conn.set(key, val);
   }
   /* 获取 */
   public String Get(String key) {
-    if(_conn==null) return null;
+    if(_conn==null) return "";
     return _conn.get(key);
   }
   /* 删除 */
-  public Long Del(String... key) {
-    if(_conn==null) return null;
+  public long Del(String... key) {
+    if(_conn==null) return 0;
     return _conn.del(key);
   }
   /* 是否存在 */
-  public Boolean Exist(String key) {
-    if(_conn==null) return null;
+  public boolean Exist(String key) {
+    if(_conn==null) return false;
     return _conn.exists(key);
   }
   /* 设置过期时间(秒) */
-  public Long Expire(String key, int ttl) {
-    if(_conn==null) return null;
+  public long Expire(String key, int ttl) {
+    if(_conn==null) return 0;
     return _conn.expire(key, ttl);
   }
   /* 获取过期时间(秒) */
-  public Long Ttl(String key) {
-    if(_conn==null) return null;
+  public long Ttl(String key) {
+    if(_conn==null) return 0;
     return _conn.ttl(key);
   }
   /* 获取长度 */
-  public Long StrLen(String key) {
-    if(_conn==null) return null;
+  public long StrLen(String key) {
+    if(_conn==null) return 0;
     return _conn.strlen(key);
   }
 
@@ -110,12 +110,12 @@ public class Redis extends Base {
     return _conn.hset(name, key, val);
   }
   public String HMSet(String name, Map<String, String> obj) {
-    if(_conn==null) return null;
+    if(_conn==null) return "";
     return _conn.hmset(name, obj);
   }
   /* 哈希(Hash)-获取 */
   public String HGet(String name, String key) {
-    if(_conn==null) return null;
+    if(_conn==null) return "";
     return _conn.hget(name, key);
   }
   public List<String> HMGet(String name, String... key) {
@@ -123,28 +123,28 @@ public class Redis extends Base {
     return _conn.hmget(name, key);
   }
   /* 哈希(Hash)-删除 */
-  public Long HDel(String name, String... key) {
-    if(_conn==null) return null;
+  public long HDel(String name, String... key) {
+    if(_conn==null) return 0;
     return _conn.hdel(name, key);
   }
   /* 哈希(Hash)-是否存在 */
-  public Boolean HExist(String name, String key) {
-    if(_conn==null) return null;
+  public boolean HExist(String name, String key) {
+    if(_conn==null) return false;
     return _conn.hexists(name, key);
   }
   /* 哈希(Hash)-Key个数 */
-  public Long HLen(String name) {
-    if(_conn==null) return null;
+  public long HLen(String name) {
+    if(_conn==null) return 0;
     return _conn.hlen(name);
   }
 
   /* 列表(List)-写入 */
-  public Long RPush(String key, String... val) {
-    if(_conn==null) return null;
+  public long RPush(String key, String... val) {
+    if(_conn==null) return 0;
     return _conn.rpush(key, val);
   }
-  public Long LPush(String key, String... val) {
-    if(_conn==null) return null;
+  public long LPush(String key, String... val) {
+    if(_conn==null) return 0;
     return _conn.lpush(key, val);
   }
 

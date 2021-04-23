@@ -140,7 +140,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `uname`, `tel`, `email`, `password`, `rtime`, `ltime`, `utime`, `state`) VALUES
 (1,	'admin',	'',	'',	'e10adc3949ba59abbe56e057f20f883e',	0,	0,	0,	'1'),
-(2,	'15000000000',	'',	'',	'e10adc3949ba59abbe56e057f20f883e',	0,	0,	0,	'1');
+(2,	'',	'15000000000',	'',	'e10adc3949ba59abbe56e057f20f883e',	0,	0,	0,	'1');
 
 DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE `user_info` (

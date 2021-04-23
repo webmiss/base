@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import webmis.config.Env;
+import webmis.library.Safety;
 import webmis.model.User;
 import webmis.service.AdminToken;
 import webmis.service.Base;
@@ -108,8 +109,35 @@ public class SysUser extends Base {
     String tel = param.containsKey("tel")?String.valueOf(param.get("tel")).trim():"";
     String passwd = param.containsKey("passwd")?String.valueOf(param.get("passwd")):Env.password;
     // 验证
-    String uid = Data.GetId();
-    Print(tel, passwd, uid);
+    if(!Safety.IsRight("tel", tel)){
+      res = new HashMap<String,Object>();
+      res.put("code", 4000);
+      res.put("msg", "手机号码有误!");
+      return GetJSON(res);
+    }
+    if(!Safety.IsRight("passwd", passwd)){
+      res = new HashMap<String,Object>();
+      res.put("code", 4000);
+      res.put("msg", "密码为6～16位!");
+      return GetJSON(res);
+    }
+    // 是否存在
+    User model = new User();
+    model.Columns("id");
+    model.Where("tel=?");
+    String sql = model.SelectSql();
+    PreparedStatement ps = model.Bind(sql);
+    ps.setString(1, tel);
+    HashMap<String, Object> user = model.FindFirst(ps);
+    if(!user.isEmpty()){
+      res = new HashMap<String,Object>();
+      res.put("code", 4000);
+      res.put("msg", "该用户已存在!");
+      return GetJSON(res);
+    }
+    // 新增
+    long uid = Data.GetId("ID");
+    Print(tel, passwd, uid, user.isEmpty());
     // 返回
     res = new HashMap<String,Object>();
     res.put("code", 0);
