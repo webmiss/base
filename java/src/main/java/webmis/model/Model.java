@@ -318,6 +318,16 @@ public class Model extends Base {
   }
 
   /* 添加-数据 */
+  public void Values(String... data) {
+    String keys = "";
+    String vals = "";
+    for(int i=0; i<data.length; i++) {
+      keys += data[i] + ", ";
+      vals += "?, ";
+    }
+    _keys = keys.length()>0?keys.substring(0,keys.length()-2):"";
+    _values = vals.length()>0?vals.substring(0,vals.length()-2):"";
+  }
   public void Values(HashMap<String, Object> data) {
     String keys = "";
     String vals = "";
@@ -377,6 +387,13 @@ public class Model extends Base {
   }
 
   /* 更新-数据 */
+  public void Set(String... data) {
+    String vals = "";
+    for(int i=0; i<data.length; i++) {
+      vals += data[i] + "=?, ";
+    }
+    _data = vals.length()>0?vals.substring(0,vals.length()-2):"";
+  }
   public void Set(HashMap<String, Object> data) {
     String vals = "";
     Object[] args = new Object[data.size()];

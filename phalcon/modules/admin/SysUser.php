@@ -7,6 +7,8 @@ use Service\Data;
 use Service\AdminToken;
 use Library\Safety;
 use Model\User;
+use Model\UserInfo;
+use Model\ApiPerm;
 
 class SysUser extends Base {
 
@@ -73,18 +75,40 @@ class SysUser extends Base {
       return self::GetJSON(['code'=>4000, 'msg'=>'密码为6～16位!']);
     }
     // 是否存在
-    $model = new User();
-    $model->Columns('id');
-    $model->Where('tel=?', $tel);
-    $user = $model->FindFirst();
+    $m = new User();
+    $m->Columns('id');
+    $m->Where('tel=?', $tel);
+    $user = $m->FindFirst();
     if(!empty($user)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'该用户已存在!']);
     }
     // 新增
     $uid = Data::GetId('ID');
-    self::Print($tel, $passwd, $uid, $user, !empty($user));
-    // 返回
-    return self::GetJSON(['code'=>0,'msg'=>'成功']);
+    $conn = $m->DBConn();
+    try{
+      $conn->begin();
+      // 用户
+      $m1 = new User();
+      $m1->Values(['id'=>$uid, 'tel'=>$tel, 'password'=>md5($passwd)]);
+      list($sql, $args) = $m1->InsertSql();
+      $conn->execute($sql, $args);
+      // 详情
+      $m2 = new UserInfo();
+      $m2->Values(['uid'=>$uid]);
+      list($sql, $args) = $m2->InsertSql();
+      $conn->execute($sql, $args);
+      // 权限
+      $m3 = new ApiPerm();
+      $m3->Values(['uid'=>$uid, 'role'=>1, 'utime'=>time()]);
+      list($sql, $args) = $m3->InsertSql();
+      $conn->execute($sql, $args);
+      // 提交
+      $conn->commit();
+      return self::GetJSON(['code'=>0,'msg'=>'成功']);
+    } catch (\Exception $e) {
+      $conn->rollback();
+      return self::GetJSON(['code'=>5000,'msg'=>'添加失败!']);
+    }
   }
 
 }

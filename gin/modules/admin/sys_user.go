@@ -102,17 +102,39 @@ func (r SysUser) Add(c *gin.Context) {
 		return
 	}
 	// 是否存在
-	model := (&model.User{}).New()
-	model.Columns("id")
-	model.Where("tel=?", tel)
-	user := model.FindFirst()
+	m := (&model.User{}).New()
+	m.Columns("id")
+	m.Where("tel=?", tel)
+	user := m.FindFirst()
 	if !util.Empty(user) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "该用户已存在!"})
 		return
 	}
 	// 新增
 	uid := (&service.Data{}).GetId("ID")
-	r.Print(tel, passwd, uid, user, util.Empty(user))
-	// 返回
-	r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
+	conn := m.DBConn()
+	tx, _ := conn.Begin()
+	// 用户
+	m1 := (&model.User{}).New()
+	m1.Values(map[string]interface{}{"id": uid, "tel": tel, "password": util.Md5(passwd)})
+	sql, args := m1.InsertSQL()
+	_, err1 := tx.Exec(sql, args...)
+	// 详情
+	m2 := (&model.UserInfo{}).New()
+	m2.Values(map[string]interface{}{"uid": uid})
+	sql, args = m2.InsertSQL()
+	_, err2 := tx.Exec(sql, args...)
+	// 权限
+	m3 := (&model.ApiPerm{}).New()
+	m3.Values(map[string]interface{}{"uid": uid, "role": 1, "utime": util.Time()})
+	sql, args = m3.InsertSQL()
+	_, err3 := tx.Exec(sql, args...)
+	if err1 != nil || err2 != nil || err3 != nil {
+		tx.Rollback()
+		r.GetJSON(c, gin.H{"code": 5000, "msg": "添加失败!"})
+	} else {
+		// 提交
+		tx.Commit()
+		r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
+	}
 }

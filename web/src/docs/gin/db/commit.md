@@ -1,9 +1,10 @@
 ### 事务
 ```go
 import "webmis/model"
+
 // 对象
 demo := (&model.Demo{}).New()
-conn, _ := demo.Conn()
+conn, _ := demo.DBConn()
 // 开始
 tx, _ := conn.Begin()
 // SQL1
@@ -12,21 +13,15 @@ demo.Values(map[string]interface{}{
   "title": "Go-事件",
 })
 sql, args := demo.InsertSql()
-rows, err := tx.Exec(sql, args...)
-if err != nil {
-  tx.Rollback()
-}
-id, _ := rows.LastInsertId()
-self.Print(sql, args, id)
+_, err1 := tx.Exec(sql, args...)
 // SQL2
 demo.Where("uid=?", id)
 sql, args = demo.DeleteSql()
-rows, err = tx.Exec(sql, args...)
-if err != nil {
+_, err2 := tx.Exec(sql, args...)
+if err1 != nil || err2 != nil {
   tx.Rollback()
+} else {
+  // 提交
+  tx.Commit()
 }
-num, _ := rows.RowsAffected()
-self.Print(sql, args, num)
-// 提交
-tx.Commit()
 ```

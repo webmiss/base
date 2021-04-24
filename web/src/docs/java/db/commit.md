@@ -1,11 +1,9 @@
 ### 事务
 ```java
 import webmis.model.Demo;
-import webmis.model.Model;
 
-Model model = new Model();
-Demo demo = new Demo();
-Connection conn = model.Conn();
+Demo model = new Demo();
+Connection conn = model.DBConn();
 try {
   // 开始
   conn.setAutoCommit(false);
@@ -16,16 +14,14 @@ try {
   ps.setNull(1, 0);
   ps.setString(2, "Java-事件");
   ps.executeUpdate();
-  ResultSet rs = ps.getGeneratedKeys();
-  int id = rs.next()?rs.getInt(1):0;
-  Print(ps, id);
+  ps.close();
   // SQL2
   demo.Where("uid=?");
   sql = demo.DeleteSql();
   ps = conn.prepareStatement(sql);
   ps.setInt(1, id);
-  int num = ps.executeUpdate();
-  Print(ps, num);
+  ps.executeUpdate();
+  ps.close();
   // 提交
   conn.commit();
 } catch (SQLException e) {

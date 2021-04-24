@@ -1,5 +1,8 @@
 package webmis.modules.admin;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import webmis.config.Env;
 import webmis.library.Safety;
+import webmis.model.ApiPerm;
 import webmis.model.User;
+import webmis.model.UserInfo;
 import webmis.service.AdminToken;
 import webmis.service.Base;
 import webmis.service.Data;
@@ -82,7 +87,7 @@ public class SysUser extends Base {
 
   /* 添加 */
   @RequestMapping("add")
-  String Add(HttpServletRequest request, String token, String data) {
+  String Add(HttpServletRequest request, String token, String data) throws SQLException {
     HashMap<String,Object> res;
     // 验证
     String msg = AdminToken.verify(token, request.getRequestURI());
@@ -116,10 +121,10 @@ public class SysUser extends Base {
       return GetJSON(res);
     }
     // 是否存在
-    User model = new User();
-    model.Columns("id");
-    model.Where("tel=?", tel);
-    HashMap<String, Object> user = model.FindFirst();
+    User m = new User();
+    m.Columns("id");
+    m.Where("tel=?", tel);
+    HashMap<String, Object> user = m.FindFirst();
     if(!user.isEmpty()){
       res = new HashMap<String,Object>();
       res.put("code", 4000);
@@ -127,12 +132,55 @@ public class SysUser extends Base {
       return GetJSON(res);
     }
     // 新增
+    String sql;
+    PreparedStatement ps;
     long uid = Data.GetId("ID");
-    Print(tel, passwd, uid, user.isEmpty());
-    // 返回
-    res = new HashMap<String,Object>();
-    res.put("code", 0);
-    res.put("msg", "成功");
+    Connection conn = m.DBConn();
+    try {
+      conn.setAutoCommit(false);
+      // 用户
+      User m1 = new User();
+      m1.Values("id", "tel", "password");
+      sql = m1.InsertSql();
+      ps = conn.prepareStatement(sql);
+      ps.setLong(1, uid);
+      ps.setString(2, tel);
+      ps.setString(3, Util.Md5(passwd));
+      ps.executeUpdate();
+      ps.close();
+      // 详情
+      UserInfo m2 = new UserInfo();
+      m2.Values("uid");
+      sql = m2.InsertSql();
+      ps = conn.prepareStatement(sql);
+      ps.setLong(1, uid);
+      ps.executeUpdate();
+      ps.close();
+      // 权限
+      ApiPerm m3 = new ApiPerm();
+      m3.Values("uid", "role", "utime");
+      sql = m3.InsertSql();
+      ps = conn.prepareStatement(sql);
+      ps.setLong(1, uid);
+      ps.setInt(2, 1);
+      ps.setLong(3, Util.Time());
+      ps.executeUpdate();
+      ps.close();
+      // 提交
+      conn.commit();
+      // 返回
+      res = new HashMap<String,Object>();
+      res.put("code", 0);
+      res.put("msg", "成功");
+    } catch (SQLException e) {
+      conn.rollback();
+      // 返回
+      res = new HashMap<String,Object>();
+      res.put("code", 5000);
+      res.put("msg", "添加失败!");
+    } finally {
+      conn.close();
+    }
     return GetJSON(res);
   }
   

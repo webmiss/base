@@ -25,15 +25,16 @@ INSERT INTO `api_menus` (`id`, `fid`, `title`, `ico`, `ctime`, `utime`, `sort`, 
 
 DROP TABLE IF EXISTS `api_perm`;
 CREATE TABLE `api_perm` (
-  `uid` bigint(18) unsigned NOT NULL COMMENT 'uid',
+  `uid` bigint(19) unsigned NOT NULL COMMENT 'uid',
   `utime` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '更新时间',
-  `role` varchar(6) DEFAULT '' COMMENT '角色权限',
+  `role` smallint(5) unsigned NOT NULL DEFAULT 1 COMMENT '角色权限',
   `perm` text DEFAULT '' COMMENT '专属权限',
   PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
 
 INSERT INTO `api_perm` (`uid`, `utime`, `role`, `perm`) VALUES
-(2,	0,	'1',	'');
+(1,	0,	1,	''),
+(2,	0,	1,	'');
 
 
 DROP TABLE IF EXISTS `api_role`;
@@ -100,7 +101,7 @@ INSERT INTO `sys_menus` (`id`, `fid`, `title`, `ico`, `ctime`, `utime`, `sort`, 
 
 DROP TABLE IF EXISTS `sys_perm`;
 CREATE TABLE `sys_perm` (
-  `uid` bigint(18) unsigned NOT NULL COMMENT 'uid',
+  `uid` bigint(19) unsigned NOT NULL COMMENT 'uid',
   `utime` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '更新时间',
   `role` varchar(6) DEFAULT '' COMMENT '角色权限',
   `perm` text DEFAULT '' COMMENT '专属权限',
@@ -126,7 +127,7 @@ INSERT INTO `sys_role` (`id`, `role`, `ctime`, `utime`, `perm`) VALUES
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `id` bigint(18) unsigned NOT NULL COMMENT 'ID',
+  `id` bigint(19) unsigned NOT NULL COMMENT 'ID',
   `uname` varchar(16) NOT NULL DEFAULT '' COMMENT '用户名',
   `tel` varchar(11) NOT NULL DEFAULT '' COMMENT '手机号码',
   `email` varchar(32) NOT NULL DEFAULT '' COMMENT '邮箱',
@@ -144,7 +145,7 @@ INSERT INTO `user` (`id`, `uname`, `tel`, `email`, `password`, `rtime`, `ltime`,
 
 DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE `user_info` (
-  `uid` bigint(18) unsigned NOT NULL COMMENT 'uid',
+  `uid` bigint(19) unsigned NOT NULL COMMENT 'uid',
   `utime` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '更新时间',
   `nickname` varchar(8) NOT NULL DEFAULT '' COMMENT '昵称',
   `position` varchar(8) NOT NULL DEFAULT '' COMMENT '职位',
@@ -161,7 +162,7 @@ INSERT INTO `user_info` (`uid`, `utime`, `nickname`, `position`, `name`, `gender
 
 DROP TABLE IF EXISTS `user_msg`;
 CREATE TABLE `user_msg` (
-  `id` bigint(18) unsigned NOT NULL COMMENT 'ID',
+  `id` bigint(19) unsigned NOT NULL COMMENT 'ID',
   `type` enum('0','1') NOT NULL DEFAULT '0' COMMENT '0消息,1其他',
   `uid` varchar(18) NOT NULL DEFAULT '0' COMMENT 'UID',
   `fid` varchar(16) NOT NULL DEFAULT '0' COMMENT '发送者ID',

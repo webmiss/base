@@ -6,6 +6,8 @@ from service.data import Data
 from service.admin_token import AdminToken
 from library.safety import Safety
 from model.user import User
+from model.user_info import UserInfo
+from model.api_perm import ApiPerm
 from util.util import Util
 
 class SysUser(Base):
@@ -72,15 +74,37 @@ class SysUser(Base):
     if not Safety.IsRight('passwd', passwd) :
       return self.GetJSON({'code':4000, 'msg':'密码为6～16位!'})
     # 是否存在
-    model = User()
-    model.Columns('id')
-    model.Where('tel=%s', tel)
-    user = model.FindFirst()
+    m = User()
+    m.Columns('id')
+    m.Where('tel=%s', tel)
+    user = m.FindFirst()
     if user :
       return self.GetJSON({'code':4000, 'msg':'该用户已存在!'})
     # 新增
     uid = Data.GetId('ID')
-    print(tel, passwd, uid, user, not user)
-    # 返回
-    return self.GetJSON({'code':0, 'msg':'成功'})
+    conn = m.DBConn()
+    try:
+      conn.begin()
+      cs = conn.cursor()
+      # 用户
+      m1 = User()
+      m1.Values({'id':uid, 'tel':tel, 'password':Util.Md5(passwd)})
+      sql, args = m1.InsertSql()
+      cs.execute(sql, args)
+      # 详情
+      m2 = UserInfo()
+      m2.Values({'uid':uid})
+      sql, args = m2.InsertSql()
+      cs.execute(sql, args)
+      # 权限
+      m3 = ApiPerm()
+      m3.Values({'uid':uid, 'role':1, 'utime':Util.Time()})
+      sql, args = m3.InsertSql()
+      cs.execute(sql, args)
+      # 提交
+      conn.commit()
+      return self.GetJSON({'code':0, 'msg':'成功'})
+    except Exception as e:
+      conn.rollback()
+      return self.GetJSON({'code':5000, 'msg':'添加失败!'})
 

@@ -1,28 +1,25 @@
 ### 事务
 ```php
-use Model\Model;
 use Model\Demo;
 
-$model = Model::Conn();
+$model = new Demo();
+$conn = $model->DBConn();
 try {
   // 开始
-  $model->begin();
-  $demo = new Demo();
+  $conn->begin();
   // SQL1
-  $demo->Values(['uid'=>null,'title'=>'PHP-事件']);
-  list($sql, $args) = $demo->InsertSql();
-  $model->execute($sql, $args);
-  $id = $model->lastInsertId();
-  self::Print($sql, $args, $id);
+  $m1 = new Demo();
+  $m1->Values(['uid'=>null,'title'=>'PHP-事件']);
+  list($sql, $args) = $m1->InsertSql();
+  $conn->execute($sql, $args);
   // SQL2
-  $demo->Where('uid=?', $id);
-  list($sql, $args) = $demo->DeleteSql();
-  $model->execute($sql, $args);
-  $num = $model->affectedRows();
-  self::Print($sql, $args, $num);
+  $m2 = new Demo();
+  $m2->Where('uid=?', $id);
+  list($sql, $args) = $m2->DeleteSql();
+  $conn->execute($sql, $args);
   // 提交
-  $model->commit();
+  $conn->commit();
 } catch (\Exception $e) {
-  $model->rollback();
+  $conn->rollback();
 }
 ```
