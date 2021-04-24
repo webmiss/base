@@ -8,12 +8,14 @@ conn, _ := demo.DBConn()
 // 开始
 tx, _ := conn.Begin()
 // SQL1
-demo.Values(map[string]interface{}{"uid": nil, "title": "Go-事件"})
-sql, args := demo.InsertSql()
+m1 := (&model.Demo{}).New()
+m1.Values(map[string]interface{}{"uid": nil, "title": "Go-事件"})
+sql, args := m1.InsertSql()
 _, err1 := tx.Exec(sql, args...)
 // SQL2
-demo.Where("uid=?", id)
-sql, args = demo.DeleteSql()
+m2 := (&model.Demo{}).New()
+m2.Where("uid=?", id)
+sql, args = m2.DeleteSql()
 _, err2 := tx.Exec(sql, args...)
 if err1 != nil || err2 != nil {
   tx.Rollback()
