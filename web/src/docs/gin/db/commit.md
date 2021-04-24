@@ -8,10 +8,7 @@ conn, _ := demo.DBConn()
 // 开始
 tx, _ := conn.Begin()
 // SQL1
-demo.Values(map[string]interface{}{
-  "uid":   nil,
-  "title": "Go-事件",
-})
+demo.Values(map[string]interface{}{"uid": nil, "title": "Go-事件"})
 sql, args := demo.InsertSql()
 _, err1 := tx.Exec(sql, args...)
 // SQL2
