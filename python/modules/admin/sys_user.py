@@ -8,6 +8,7 @@ from library.safety import Safety
 from model.user import User
 from model.user_info import UserInfo
 from model.api_perm import ApiPerm
+from model.sys_perm import SysPerm
 from util.util import Util
 
 class SysUser(Base):
@@ -108,3 +109,112 @@ class SysUser(Base):
       conn.rollback()
       return self.GetJSON({'code':5000, 'msg':'添加失败!'})
 
+  # 编辑
+  def Edit(self):
+    # 验证
+    token = self.Post('token')
+    msg = AdminToken().verify(token, request.path)
+    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
+    # 参数
+    uid = self.Post('uid')
+    data = self.Post('data')
+    if not uid or not data :
+      return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    param = Util.JsonDecode(data)
+    tel = Util.Trim(param['tel']) if 'tel' in param.keys() else ''
+    passwd = param['passwd'] if 'passwd' in param.keys() else ''
+    # 验证
+    if not Safety.IsRight('tel', tel) :
+      return self.GetJSON({'code':4000, 'msg':'手机号码有误!'})
+    # 是否存在
+    m = User()
+    m.Columns('id')
+    m.Where('tel=%s', tel)
+    user = m.FindFirst()
+    if user :
+      return self.GetJSON({'code':4000, 'msg':'该用户已存在!'})
+    # 更新
+    uData = {'tel': tel}
+    if passwd != '' : uData['password'] = Util.Md5(passwd)
+    m.Set(uData)
+    m.Where('id=%s', uid)
+    if m.Update() :
+      return self.GetJSON({'code':0, 'msg':'成功'})
+    else :
+      return self.GetJSON({'code':5000, 'msg':'更新失败!'})
+
+  # 删除
+  def Del(self):
+    # 验证
+    token = self.Post('token')
+    msg = AdminToken().verify(token, request.path)
+    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
+    # 参数
+    data = self.Post('data')
+    if not data :
+      return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    param = Util.JsonDecode(data)
+    ids = Util.Implode(',', param)
+    # 执行
+    m1 = User()
+    m1.Where('id in('+ids+')')
+    m2 = UserInfo()
+    m2.Where('uid in('+ids+')')
+    m3 = SysPerm()
+    m3.Where('uid in('+ids+')')
+    m4 = ApiPerm()
+    m4.Where('uid in('+ids+')')
+    if m1.Delete() and m2.Delete() and m3.Delete() and m4.Delete() :
+      return self.GetJSON({'code':0, 'msg':'成功'})
+    else :
+      return self.GetJSON({'code':5000, 'msg':'删除失败!'})
+
+  # 状态
+  def State(self):
+    # 验证
+    token = self.Post('token')
+    msg = AdminToken().verify(token, request.path)
+    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
+    # 参数
+    uid = self.Post('uid')
+    state = self.Post('state')
+    state = "1" if state=='1' else '0'
+    if not uid :
+      return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 更新
+    m = User()
+    m.Set({'state': state})
+    m.Where('id=%s', uid)
+    if m.Update() :
+      return self.GetJSON({'code':0, 'msg':'成功'})
+    else :
+      return self.GetJSON({'code':5000, 'msg':'更新失败!'})
+
+  # 个人信息
+  def Info(self):
+    # 验证
+    token = self.Post('token')
+    msg = AdminToken().verify(token, request.path)
+    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
+    # 参数
+    uid = self.Post('uid')
+    data = self.Post('data')
+    if not uid or not data :
+      return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 数据
+    param = Util.JsonDecode(data)
+    info = {
+      'nickname': Util.Trim(param['nickname']) if 'nickname' in param.keys() else '',
+      'name': Util.Trim(param['name']) if 'name' in param.keys() else '',
+      'gender': Util.Trim(param['gender']) if 'gender' in param.keys() else '',
+      'birthday': Util.Strtotime(param['birthday'], '%Y-%m-%d') if 'birthday' in param.keys() else 0,
+      'position': Util.Trim(param['position']) if 'position' in param.keys() else '',
+    }
+    # 执行
+    m = UserInfo()
+    m.Set(info)
+    m.Where('uid=%s', uid)
+    if m.Update() :
+      return self.GetJSON({'code':0, 'msg':'成功'})
+    else :
+      return self.GetJSON({'code':5000, 'msg':'更新失败!'})

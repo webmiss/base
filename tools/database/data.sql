@@ -91,12 +91,12 @@ INSERT INTO `sys_menus` (`id`, `fid`, `title`, `ico`, `ctime`, `utime`, `sort`, 
 (5,	1,	'个人资料',	'icons icon_user_info',	0,	0,	0,	'UserInfo',	'/admin/userinfo',	'[{\"type\":\"2\",\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"type\":\"2\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":2},{\"type\":\"2\",\"name\":\"头像\",\"action\":\"upimg\",\"perm\":4}]'),
 (6,	1,	'修改密码',	'icons icon_user_passwd',	0,	0,	0,	'UserPasswd',	'/admin/userpasswd',	'[{\"type\":\"2\",\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"type\":\"2\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":2}]'),
 (7,	2,	'文件目录',	'icons icon_sys_folder',	0,	0,	0,	'SysFileManage',	'/admin/sysfile',	'[{\"type\":\"2\",\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"type\":\"1\",\"name\":\"新建文件夹\",\"action\":\"mkdir\",\"perm\":2},{\"type\":\"1\",\"name\":\"重命名\",\"action\":\"rename\",\"perm\":4},{\"type\":\"1\",\"name\":\"上传\",\"action\":\"upload\",\"perm\":8},{\"type\":\"2\",\"name\":\"下载\",\"action\":\"down\",\"perm\":16},{\"type\":\"1\",\"name\":\"删除\",\"action\":\"remove\",\"perm\":32}]'),
-(8,	2,	'用户管理',	'icons icon_sys_user',	0,	0,	0,	'SysUser',	'/admin/sysuser',	'[{\"type\":\"1\",\"name\":\"刷新\",\"action\":\"list\",\"perm\":1},{\"type\":\"1\",\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"type\":\"1\",\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"type\":\"1\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"type\":\"1\",\"name\":\"删除\",\"action\":\"del\",\"perm\":16}]'),
+(8,	2,	'用户管理',	'icons icon_sys_user',	0,	0,	0,	'SysUser',	'/admin/sysuser',	'[{\"type\":\"1\",\"name\":\"刷新\",\"action\":\"list\",\"perm\":1},{\"type\":\"1\",\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"type\":\"1\",\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"type\":\"1\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"type\":\"1\",\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"type\":\"2\",\"name\":\"状态\",\"action\":\"state\",\"perm\":32},{\"type\":\"2\",\"name\":\"个人信息\",\"action\":\"info\",\"perm\":64}]'),
 (9,	2,	'会员菜单',	'icons icon_sys_menu',	0,	0,	0,	'ApiMenus',	'',	''),
 (10,	2,	'会员角色',	'icons icon_sys_role',	0,	0,	0,	'ApiRole',	'',	''),
-(11,	2,	'系统配置',	'icons icon_sys_config',	0,	0,	0,	'SysConfig',	'',	''),
-(12,	2,	'系统菜单',	'icons icon_sys_menu',	0,	0,	0,	'SysMenus',	'',	''),
-(13,	2,	'系统角色',	'icons icon_sys_role',	0,	0,	0,	'SysRole',	'',	''),
+(11,	2,	'系统菜单',	'icons icon_sys_menu',	0,	0,	0,	'SysMenus',	'',	''),
+(12,	2,	'系统角色',	'icons icon_sys_role',	0,	0,	0,	'SysRole',	'',	''),
+(13,	2,	'系统配置',	'icons icon_sys_config',	0,	0,	0,	'SysConfig',	'',	''),
 (14,	3,	'Demo',	'icons icon_app',	0,	0,	0,	'Demo',	'',	'');
 
 DROP TABLE IF EXISTS `sys_perm`;
@@ -109,7 +109,7 @@ CREATE TABLE `sys_perm` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
 
 INSERT INTO `sys_perm` (`uid`, `utime`, `role`, `perm`) VALUES
-(1,	0,	'',	'1:0 2:0 3:0 4:0 5:7 6:3 7:63 8:31 9:0 10:0 11:0 12:0 13:0 14:0'),
+(1,	0,	'',	'1:0 2:0 3:0 4:0 5:7 6:3 7:63 8:127 9:0 10:0 11:0 12:0 13:0 14:0'),
 (2,	0,	'1',	'');
 
 DROP TABLE IF EXISTS `sys_role`;

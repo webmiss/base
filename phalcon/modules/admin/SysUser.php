@@ -9,6 +9,8 @@ use Library\Safety;
 use Model\User;
 use Model\UserInfo;
 use Model\ApiPerm;
+use Model\SysPerm;
+use Util\Util;
 
 class SysUser extends Base {
 
@@ -108,6 +110,130 @@ class SysUser extends Base {
     } catch (\Exception $e) {
       $conn->rollback();
       return self::GetJSON(['code'=>5000,'msg'=>'添加失败!']);
+    }
+  }
+
+  /* 编辑 */
+  static function Edit(){
+    // 验证
+    $token = self::Post('token');
+    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    // 参数
+    $uid = self::Post('uid');
+    $data = self::Post('data');
+    if(empty($data) || empty($data)){
+      return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
+    }
+    $param = json_decode($data);
+    $tel = isset($param->tel)?trim($param->tel):'';
+    $passwd = isset($param->passwd)?$param->passwd:'';
+    // 验证
+    if(!Safety::IsRight('tel', $tel)) {
+      return self::GetJSON(['code'=>4000, 'msg'=>'手机号码有误!']);
+    }
+    // 是否存在
+    $m = new User();
+    $m->Columns('id');
+    $m->Where('tel=?', $tel);
+    $user = $m->FindFirst();
+    if(!empty($user)) {
+      return self::GetJSON(['code'=>4000, 'msg'=>'该用户已存在!']);
+    }
+    // 更新
+    $uData = ['tel'=>$tel];
+    if($passwd!='') $uData['password'] = md5($passwd);
+    $m->Set($uData);
+    $m->Where('id=?', $uid);
+    if($m->Update()){
+      return self::GetJSON(['code'=>0,'msg'=>'成功']);
+    } else {
+      return self::GetJSON(['code'=>5000,'msg'=>'更新失败!']);
+    }
+  }
+
+  /* 删除 */
+  static function Del(){
+    // 验证
+    $token = self::Post('token');
+    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    // 参数
+    $data = self::Post('data');
+    if(empty($data)){
+      return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
+    }
+    $param = json_decode($data);
+    $ids = implode(',',$param);
+    // 执行
+    $m1 = new User();
+    $m1->Where('id in('.$ids.')');
+    $m2 = new UserInfo();
+    $m2->Where('uid in('.$ids.')');
+    $m3 = new SysPerm();
+    $m3->Where('uid in('.$ids.')');
+    $m4 = new ApiPerm();
+    $m4->Where('uid in('.$ids.')');
+    if($m1->Delete() && $m2->Delete() && $m3->Delete() && $m4->Delete()){
+      return self::GetJSON(['code'=>0,'msg'=>'成功']);
+    } else {
+      return self::GetJSON(['code'=>5000,'msg'=>'删除失败!']);
+    }
+  }
+
+  /* 状态 */
+  static function State(){
+    // 验证
+    $token = self::Post('token');
+    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    // 参数
+    $uid = self::Post('uid');
+    $state = self::Post('state');
+    $state = $state=='1'?'1':'0';
+    if(empty($uid)){
+      return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
+    }
+    // 更新
+    $m = new User();
+    $m->Set(['state'=>$state]);
+    $m->Where('id=?', $uid);
+    if($m->Update()){
+      return self::GetJSON(['code'=>0,'msg'=>'成功']);
+    } else {
+      return self::GetJSON(['code'=>5000,'msg'=>'更新失败!']);
+    }
+  }
+
+  /* 个人信息 */
+  static function Info(){
+    // 验证
+    $token = self::Post('token');
+    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    // 参数
+    $uid = self::Post('uid');
+    $data = self::Post('data');
+    if(empty($uid) || empty($data)){
+      return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
+    }
+    // 数据
+    $param = json_decode($data);
+    $info = [
+      'nickname'=> isset($param->nickname)?trim($param->nickname):'',
+      'name'=> isset($param->name)?trim($param->name):'',
+      'gender'=> isset($param->gender)?trim($param->gender):'',
+      'birthday'=> isset($param->birthday)?Util::Strtotime($param->birthday):0,
+      'position'=> isset($param->position)?trim($param->position):'',
+    ];
+    // 执行
+    $m = new UserInfo();
+    $m->Set($info);
+    $m->Where('uid=?', $uid);
+    if($m->Update()){
+      return self::GetJSON(['code'=>0,'msg'=>'成功']);
+    } else {
+      return self::GetJSON(['code'=>5000,'msg'=>'更新失败!']);
     }
   }
 

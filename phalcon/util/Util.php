@@ -4,6 +4,12 @@ namespace Util;
 /* 工具 */
 class Util {
 
+  /* String To Timestamp */
+  static function Strtotime(string $day): int {
+    $t = strtotime(trim($day));
+    return $t>0?$t:0;
+  }
+
   /* Url to Array */
   static function UrlToArray(string $url): array {
     if(empty($url)) return [];

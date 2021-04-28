@@ -7,6 +7,7 @@ use Service\AdminToken;
 use Library\FileEo;
 use Library\Upload;
 use Model\UserInfo as UserInfoM;
+use Util\Util;
 
 class UserInfo extends Base {
 
@@ -47,7 +48,7 @@ class UserInfo extends Base {
       'nickname'=> trim($param->nickname),
       'name'=> trim($param->name),
       'gender'=> trim($param->gender),
-      'birthday'=> strtotime(trim($param->birthday)),
+      'birthday'=> Util::Strtotime($param->birthday),
       'position'=> trim($param->position),
     ];
     $model->Set($info);

@@ -15,7 +15,7 @@
 .wm-radio_item:hover{background-color: #F6F8FA; border-radius: 4px;}
 .wm-radio_item:hover .checked{border-color: #595;}
 .wm-radio_item .active{border-color: #595; background-color: #6FB737;}
-.wm-radio_item .active::after{content: ""; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 4px; height: 4px; background-color: #FFF; border-radius: 50%;}
+.wm-radio_item .active::after{content: ""; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 5px; height: 5px; background-color: #FFF; border-radius: 50%;}
 </style>
 
 <script lang="ts">

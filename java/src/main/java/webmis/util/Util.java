@@ -45,8 +45,8 @@ public class Util {
     try {
       SimpleDateFormat sdf = new SimpleDateFormat(format);
       Date data = sdf.parse(day);
-      long time = data.getTime()/1000;
-      return time>0?time:0;
+      long t = data.getTime()/1000;
+      return t>0?t:0;
     } catch (ParseException e) {
       return 0;
     }
@@ -81,6 +81,14 @@ public class Util {
   public static String Implode(String glue, ArrayList<String> pieces) {
     String res = String.join(glue, pieces);
     return res;
+  }
+  public static String Implode(String glue, JSONArray pieces) {
+    String str = "";
+    for(Object val : pieces){
+      str += val.toString() + glue;
+    }
+    str = str.length()>0?str.substring(0,str.length()-glue.length()):"";
+    return str;
   }
 
   /* Array to String */

@@ -26,6 +26,10 @@ class Admin {
     // 用户管理
     $app->post('/admin/sysuser/list', 'App\Admin\SysUser::List');
     $app->post('/admin/sysuser/add', 'App\Admin\SysUser::Add');
+    $app->post('/admin/sysuser/edit', 'App\Admin\SysUser::Edit');
+    $app->post('/admin/sysuser/del', 'App\Admin\SysUser::Del');
+    $app->post('/admin/sysuser/state', 'App\Admin\SysUser::State');
+    $app->post('/admin/sysuser/info', 'App\Admin\SysUser::Info');
     // 系统菜单
     $app->post('/admin/sysmenus/getMenus', 'App\Admin\SysMenus::GetMenus');
   }

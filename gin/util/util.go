@@ -24,6 +24,21 @@ func Empty(val interface{}) bool {
 	return true
 }
 
+/* 是否KEY */
+func InKey(name string, data map[string]interface{}) bool {
+	_, ok := data[name]
+	return ok
+}
+
+/* 三元表达式 */
+func If(val bool, tVal interface{}, fVal interface{}) interface{} {
+	if val {
+		return tVal
+	} else {
+		return fVal
+	}
+}
+
 /* Md5加密 */
 func Md5(str string) string {
 	data := []byte(str)
@@ -61,12 +76,17 @@ func Strtotime(day string, format string) int64 {
 		format = "2006-01-02 15:04:05"
 	}
 	ts, _ := time.ParseInLocation(format, day, time.Local)
-	return ts.Unix()
+	t := ts.Unix()
+	if t > 0 {
+		return t
+	} else {
+		return 0
+	}
 }
 
 /* 去首尾空格 */
-func Trim(str string, charlist string) string {
-	return strings.Trim(str, charlist)
+func Trim(str interface{}, charlist string) string {
+	return strings.Trim(Strval(str), charlist)
 }
 
 /* String to List */

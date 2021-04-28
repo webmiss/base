@@ -7,12 +7,11 @@
         <td width="60">UID</td>
         <td width="128">账号</td>
         <td width="60">状态</td>
-        <td width="60">后台</td>
-        <td width="60">APP</td>
-        <td width="80">权限</td>
+        <td width="90">系统权限</td>
+        <td width="90">API权限</td>
         <td>个人信息</td>
       </wm-table-title>
-      <wm-table-tr v-for="(val,key) in page.list" :key="key" :value="val.uid+''">
+      <wm-table-tr v-for="(val,key) in page.list" :key="key" :value="val.uid">
         <td>
           <wm-img width="40px" height="40px" radius="50%" icoSize="24px" :url="val.img" :title="val.uid"></wm-img>
         </td>
@@ -33,18 +32,17 @@
           </wm-popover>
         </td>
         <td>
-          <wm-switch :value="val.state" @update:value="setState('state',$event,val.uid)"></wm-switch>
+          <wm-switch :value="val.state" @update:value="setState($event,val.uid)"></wm-switch>
         </td>
         <td>
-          <wm-switch :value="val.state_admin" @update:value="setState('state_admin',$event,val.uid)"></wm-switch>
+          <wm-button v-if="val.sys_perm" type="danger" height="32px" @click="permData(val.uid,val.sys_perm)">私有</wm-button>
+          <wm-button v-else-if="val.sys_role" height="32px" @click="permData(val.uid,val.sys_role)">角色</wm-button>
+          <wm-button v-else type="info" height="32px" @click="permData(val.uid,val.sys_perm)">分配</wm-button>
         </td>
         <td>
-          <wm-switch :value="val.state_app" @update:value="setState('state_app',$event,val.uid)"></wm-switch>
-        </td>
-        <td>
-          <wm-button v-if="val.perm" type="danger" height="32px" @click="permData(val.uid,val.perm)">私有</wm-button>
-          <wm-button v-else-if="val.role" height="32px" @click="permData(val.uid,val.perm)">角色</wm-button>
-          <wm-button v-else type="info" height="32px" @click="permData(val.uid,val.perm)">分配</wm-button>
+          <wm-button v-if="val.api_perm" type="danger" height="32px" @click="permData(val.uid,val.api_perm)">私有</wm-button>
+          <wm-button v-else-if="val.api_role" height="32px" @click="permData(val.uid,val.api_role)">角色</wm-button>
+          <wm-button v-else type="info" height="32px" @click="permData(val.uid,val.api_perm)">分配</wm-button>
         </td>
         <td>
           <wm-button v-if="val.nickname" type="info" height="32px" @click="infoData(val)">{{ val.nickname }}</wm-button>

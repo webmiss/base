@@ -2,7 +2,7 @@
   <div
     ref="Switch"
     class="wm-switch"
-    @click="$emit('update:value',!value);switchClick();"
+    @click="click();"
   >
     <div ref="SwitchCursor" class="wm-switch_cursor"></div>
   </div>
@@ -22,14 +22,28 @@ export default defineComponent({
     activeColor: {type: String, default: '#6FB737'}, //打开时的背景色
     inactiveColor: {type: String, default: '#DCDFE6'}, //打开时的背景色
   },
+  data(){
+    const show: Boolean = false;
+    return {show};
+  },
   mounted(){
     // 初始化
-    this.switchClick();
+    this.show = this.value;
+    this.switch();
   },
   methods:{
 
-    /* 点击开关 */
-    switchClick(){
+    /* 选择 */
+    click(){
+      // 事件
+      this.show=!this.show
+      this.$emit('update:value', this.show);
+      // 动画
+      this.switch();
+    },
+
+    /* 动画 */
+    switch(){
       // 对象
       const box: any = this.$refs.Switch;
       const cursor: any = this.$refs.SwitchCursor;
@@ -37,7 +51,7 @@ export default defineComponent({
       box.style.transitionDuration = `400ms`;
       cursor.style.transitionDuration = `400ms`;
       // 位置
-      if(this.value){
+      if(this.show){
         box.style.backgroundColor = this.activeColor;
         cursor.style.left = '22px';
       }else{
@@ -45,7 +59,7 @@ export default defineComponent({
         cursor.style.left = '2px';
       }
     }
-
+    
   }
 });
 </script>

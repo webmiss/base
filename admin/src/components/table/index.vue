@@ -43,7 +43,10 @@ export default defineComponent({
       const val: any = obj.querySelector('input').value;
       const data: any = this.data;
       for(let v of data){
-        if(v.name && v.name==val) row = v;
+        if(v[name] && v[name]==val){
+          row = v;
+          break;
+        }
       }
       return row;
     },
@@ -60,7 +63,7 @@ export default defineComponent({
         let val: any = obj[x].querySelector('input').value;
         let data: any = this.data;
         for(let v of data){
-          if(v.name && v.name==val) row.push(v);
+          if(v[name] && v[name]==val) row.push(v);
         }
       }
       return row;

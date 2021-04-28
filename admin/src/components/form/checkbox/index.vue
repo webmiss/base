@@ -1,6 +1,6 @@
 <template>
-  <div class="wm-checkbox" @click="$emit('update:checked',checked=!checked)">
-    <div class="checked" :class="checked?'active':''">
+  <div class="wm-checkbox" @click="click()">
+    <div class="checked" :class="show?'active':''">
       <input type="checkbox" class="checkbox" :value="value">
     </div>
     <div v-if="label" class="name">label</div>
@@ -15,7 +15,7 @@
 .wm-checkbox:hover{background-color: #F6F8FA; border-radius: 4px;}
 .wm-checkbox:hover .checked{border-color: #595;}
 .wm-checkbox .active{border-color: #595; background-color: #6FB737;}
-.wm-checkbox .active:after{content: ""; position: absolute; width: 4px; height: 8px; border: 2px solid #fff; border-left: 0; border-top: 0; left: 4px; top: 2px; transform-origin: center; transform: rotate(45deg) scaleY(1);}
+.wm-checkbox .active:after{content: ""; position: absolute; width: 4px; height: 8px; border: 2px solid #fff; border-left: 0; border-top: 0; left: 4px; top: 1px; transform-origin: center; transform: rotate(45deg) scaleY(1);}
 .wm-checkbox .checkbox{display: none;}
 </style>
 
@@ -28,5 +28,20 @@ export default defineComponent({
     label: {type: String, default: ''}, //名称
     checked: {type: Boolean, default: false}, //是否选中
   },
+  data(){
+    const show: Boolean = false;
+    return {show};
+  },
+  mounted(){
+    this.show = this.checked;
+  },
+  methods:{
+
+    /* 选择 */
+    click(){
+      this.$emit('update:checked',this.show=!this.show)
+    }
+
+  }
 });
 </script>

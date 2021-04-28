@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import webmis.config.Env;
 import webmis.library.Safety;
 import webmis.model.ApiPerm;
+import webmis.model.SysPerm;
 import webmis.model.User;
 import webmis.model.UserInfo;
 import webmis.service.AdminToken;
@@ -180,6 +182,187 @@ public class SysUser extends Base {
       res.put("msg", "添加失败!");
     } finally {
       conn.close();
+    }
+    return GetJSON(res);
+  }
+
+  /* 编辑 */
+  @RequestMapping("edit")
+  String Edit(HttpServletRequest request, String token, String uid, String data) {
+    HashMap<String,Object> res;
+    // 验证
+    String msg = AdminToken.verify(token, request.getRequestURI());
+    if(!msg.equals("")){
+      res = new HashMap<String,Object>();
+      res.put("code", 4001);
+      res.put("msg", msg);
+      return GetJSON(res);
+    }
+    // 参数
+    if(uid=="" || data==""){
+      res = new HashMap<String,Object>();
+      res.put("code", 4000);
+      res.put("msg", "参数错误!");
+      return GetJSON(res);
+    }
+    JSONObject param = Util.JsonDecode(data);
+    String tel = param.containsKey("tel")?String.valueOf(param.get("tel")).trim():"";
+    String passwd = param.containsKey("passwd")?String.valueOf(param.get("passwd")):"";
+    // 验证
+    if(!Safety.IsRight("tel", tel)){
+      res = new HashMap<String,Object>();
+      res.put("code", 4000);
+      res.put("msg", "手机号码有误!");
+      return GetJSON(res);
+    }
+    // 是否存在
+    User m = new User();
+    m.Columns("id");
+    m.Where("tel=?", tel);
+    HashMap<String, Object> user = m.FindFirst();
+    if(!user.isEmpty()){
+      res = new HashMap<String,Object>();
+      res.put("code", 4000);
+      res.put("msg", "该用户已存在!");
+      return GetJSON(res);
+    }
+    // 更新
+    HashMap<String,Object> uData = new HashMap<String,Object>();
+    uData.put("tel", tel);
+    if(!passwd.equals("")) uData.put("password", Util.Md5(passwd));
+    m.Set(uData);
+    m.Where("id=?", uid);
+    if(m.Update()){
+      res = new HashMap<String,Object>();
+      res.put("code", 0);
+      res.put("msg", "成功");
+    } else {
+      res = new HashMap<String,Object>();
+      res.put("code", 5000);
+      res.put("msg", "更新失败!");
+    }
+    return GetJSON(res);
+  }
+
+  /* 删除 */
+  @RequestMapping("del")
+  String Del(HttpServletRequest request, String token, String data) {
+    HashMap<String,Object> res;
+    // 验证
+    String msg = AdminToken.verify(token, request.getRequestURI());
+    if(!msg.equals("")){
+      res = new HashMap<String,Object>();
+      res.put("code", 4001);
+      res.put("msg", msg);
+      return GetJSON(res);
+    }
+    // 参数
+    if(data==""){
+      res = new HashMap<String,Object>();
+      res.put("code", 4000);
+      res.put("msg", "参数错误!");
+      return GetJSON(res);
+    }
+    JSONArray param = Util.JsonDecodeArray(data);
+    String ids = Util.Implode(",", JSONArray.parseArray(param.toJSONString()));
+    // 执行
+    User m1 = new User();
+    m1.Where("id in("+ids+")");
+    UserInfo m2 = new UserInfo();
+    m2.Where("uid in("+ids+")");
+    SysPerm m3 = new SysPerm();
+    m3.Where("uid in("+ids+")");
+    ApiPerm m4 = new ApiPerm();
+    m4.Where("uid in("+ids+")");
+    if(m1.Delete() && m2.Delete() && m3.Delete() && m4.Delete()){
+      res = new HashMap<String,Object>();
+      res.put("code", 0);
+      res.put("msg", "成功");
+    } else {
+      res = new HashMap<String,Object>();
+      res.put("code", 5000);
+      res.put("msg", "删除失败!");
+    }
+    return GetJSON(res);
+  }
+
+  /* 状态 */
+  @RequestMapping("state")
+  String State(HttpServletRequest request, String token, String uid,  String state) {
+    HashMap<String,Object> res;
+    // 验证
+    String msg = AdminToken.verify(token, request.getRequestURI());
+    if(!msg.equals("")){
+      res = new HashMap<String,Object>();
+      res.put("code", 4001);
+      res.put("msg", msg);
+      return GetJSON(res);
+    }
+    // 参数
+    state = state=="1"?"1":"0";
+    if(uid==""){
+      res = new HashMap<String,Object>();
+      res.put("code", 4000);
+      res.put("msg", "参数错误!");
+      return GetJSON(res);
+    }
+    // 更新
+    User m = new User();
+    HashMap<String, Object> uData = new HashMap<String, Object>();
+    uData.put("state", state);
+    m.Set(uData);
+    m.Where("id=?", uid);
+    if(m.Update()){
+      res = new HashMap<String,Object>();
+      res.put("code", 0);
+      res.put("msg", "成功");
+    } else {
+      res = new HashMap<String,Object>();
+      res.put("code", 5000);
+      res.put("msg", "更新失败!");
+    }
+    return GetJSON(res);
+  }
+
+  /* 个人信息 */
+  @RequestMapping("info")
+  String Info(HttpServletRequest request, String token, String uid, String data) {
+    HashMap<String,Object> res;
+    // 验证
+    String msg = AdminToken.verify(token, request.getRequestURI());
+    if(!msg.equals("")){
+      res = new HashMap<String,Object>();
+      res.put("code", 4001);
+      res.put("msg", msg);
+      return GetJSON(res);
+    }
+    // 参数
+    if(uid=="" || data==""){
+      res = new HashMap<String,Object>();
+      res.put("code", 4000);
+      res.put("msg", "参数错误!");
+      return GetJSON(res);
+    }
+    // 数据
+    JSONObject param = Util.JsonDecode(data);
+    HashMap<String,Object> info = new HashMap<String,Object>();
+    info.put("nickname", param.containsKey("nickname")?String.valueOf(param.get("nickname")).trim():"");
+    info.put("name", param.containsKey("name")?String.valueOf(param.get("name")).trim():"");
+    info.put("gender", param.containsKey("gender")?String.valueOf(param.get("gender")).trim():"");
+    info.put("birthday", param.containsKey("birthday")?Util.Strtotime(param.get("birthday").toString(), "yyyy-MM-dd"):0);
+    info.put("position", param.containsKey("position")?String.valueOf(param.get("position")).trim():"");
+    // 执行
+    UserInfo m = new UserInfo();
+    m.Set(info);
+    m.Where("uid=?", uid);
+    if(m.Update()){
+      res = new HashMap<String,Object>();
+      res.put("code", 0);
+      res.put("msg", "成功");
+    } else {
+      res = new HashMap<String,Object>();
+      res.put("code", 5000);
+      res.put("msg", "更新失败!");
     }
     return GetJSON(res);
   }

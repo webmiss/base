@@ -43,6 +43,10 @@ def sysFile(a) :
 def sysUser(a) :
   if a=='list' : return SysUser().List()
   elif a=='add' : return SysUser().Add()
+  elif a=='edit' : return SysUser().Edit()
+  elif a=='del' : return SysUser().Del()
+  elif a=='state' : return SysUser().State()
+  elif a=='info' : return SysUser().Info()
 # 系统菜单
 @Admin.route('/sysmenus/<a>',methods=['POST'])
 def sysGetMenus(a) :

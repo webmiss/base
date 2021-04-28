@@ -32,6 +32,10 @@ func Admin(r *gin.Engine) {
 		// 用户管理
 		g.POST("sysuser/list", (&admin.SysUser{}).List)
 		g.POST("sysuser/add", (&admin.SysUser{}).Add)
+		g.POST("sysuser/edit", (&admin.SysUser{}).Edit)
+		g.POST("sysuser/del", (&admin.SysUser{}).Del)
+		g.POST("sysuser/state", (&admin.SysUser{}).State)
+		g.POST("sysuser/info", (&admin.SysUser{}).Info)
 		// 系统菜单
 		g.POST("sysmenus/getMenus", (&admin.SysMenus{}).GetMenus)
 	}

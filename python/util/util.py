@@ -21,7 +21,8 @@ class Util:
   # String To Timestamp
   def Strtotime(day: str=None, format: str='%Y-%m-%d %H:%M:%S'):
     tArr = time.strptime(day, format)
-    return time.mktime(tArr)
+    t = time.mktime(tArr)
+    return t if t>0 else 0
 
   # 去首尾空格
   def Trim(str: str, charlist: str = None):

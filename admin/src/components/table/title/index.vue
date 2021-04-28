@@ -1,7 +1,7 @@
 <template>
   <tr class="wm-table_title">
     <td width="32" class="checkbox">
-      <wm-checkbox :checked="checked" @update:checked="checked=$event"></wm-checkbox>
+      <wm-checkbox :checked="checked" @update:checked="show=$event"></wm-checkbox>
     </td>
     <slot></slot>
   </tr>
@@ -23,10 +23,17 @@ export default defineComponent({
   props: {
     checked: {type: Boolean, default: false}, //全选&不选
   },
+  data(){
+    const show: Boolean = false;
+    return {show};
+  },
+  mounted(){
+    this.show = this.checked;
+  },
   watch: {
 
     // 全选&不选
-    checked(val: boolean){
+    show(val: boolean){
       const obj = document.querySelectorAll('.wm-table_checkbox div.checked');
       for(let i=0; i<obj.length; i++){
         if(val) obj[i].classList.add("active");

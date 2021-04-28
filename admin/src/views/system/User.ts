@@ -166,7 +166,7 @@ export default defineComponent({
       this.del.show = false;
       // 提交
       const load = Loading();
-      Post('sysuser/delete',{
+      Post('sysuser/del',{
         token: Storage.getItem('token'),
         data: this.del.ids
       },(res: any)=>{
@@ -178,13 +178,12 @@ export default defineComponent({
     },
 
     /* 状态 */
-    setState(type: string, val: boolean, uid: string){
+    setState(val: boolean, uid: string){
       const state = val?'1':'0';
       const load = Loading();
       Post('sysuser/state',{
         token: Storage.getItem('token'),
         uid: uid,
-        type: type,
         state: state
       },(res: any)=>{
         load.clear();
