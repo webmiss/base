@@ -38,5 +38,9 @@ func Admin(r *gin.Engine) {
 		g.POST("sysuser/info", (&admin.SysUser{}).Info)
 		// 系统菜单
 		g.POST("sysmenus/getMenus", (&admin.SysMenus{}).GetMenus)
+		// 系统配置
+		g.POST("sysconfig/list", (&admin.SysConfig{}).List)
+		g.POST("sysconfig/edit", (&admin.SysConfig{}).Edit)
+		g.POST("sysconfig/upimg", (&admin.SysConfig{}).Upimg)
 	}
 }

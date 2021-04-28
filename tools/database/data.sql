@@ -65,7 +65,7 @@ INSERT INTO `sys_config` (`id`, `title`, `name`, `val`, `ctime`, `utime`) VALUES
 (1,	'LOGO',	'logo',	'',	0,	0),
 (2,	'系统名称',	'title',	'数据中心',	0,	0),
 (3,	'网站域名',	'http',	'webmis.vip',	0,	0),
-(4,	'版权信息',	'copy',	'2020 webmis.vip MIT license',	0,	0),
+(4,	'版权信息',	'copy',	'2021 webmis.vip MIT license',	0,	0),
 (5,	'登录背景',	'login_bg',	'',	0,	0);
 
 DROP TABLE IF EXISTS `sys_menus`;
@@ -96,7 +96,7 @@ INSERT INTO `sys_menus` (`id`, `fid`, `title`, `ico`, `ctime`, `utime`, `sort`, 
 (10,	2,	'会员角色',	'icons icon_sys_role',	0,	0,	0,	'ApiRole',	'',	''),
 (11,	2,	'系统菜单',	'icons icon_sys_menu',	0,	0,	0,	'SysMenus',	'',	''),
 (12,	2,	'系统角色',	'icons icon_sys_role',	0,	0,	0,	'SysRole',	'',	''),
-(13,	2,	'系统配置',	'icons icon_sys_config',	0,	0,	0,	'SysConfig',	'',	''),
+(13,	2,	'系统配置',	'icons icon_sys_config',	0,	0,	0,	'SysConfig',	'/admin/sysconfig',	'[{\"type\":\"2\",\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"type\":\"2\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":2},{\"type\":\"2\",\"name\":\"图片\",\"action\":\"upimg\",\"perm\":4}]'),
 (14,	3,	'Demo',	'icons icon_app',	0,	0,	0,	'Demo',	'',	'');
 
 DROP TABLE IF EXISTS `sys_perm`;
@@ -109,7 +109,7 @@ CREATE TABLE `sys_perm` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
 
 INSERT INTO `sys_perm` (`uid`, `utime`, `role`, `perm`) VALUES
-(1,	0,	'',	'1:0 2:0 3:0 4:0 5:7 6:3 7:63 8:127 9:0 10:0 11:0 12:0 13:0 14:0'),
+(1,	0,	'',	'1:0 2:0 3:0 4:0 5:7 6:3 7:63 8:127 9:0 10:0 11:0 12:0 13:7 14:0'),
 (2,	0,	'1',	'');
 
 DROP TABLE IF EXISTS `sys_role`;

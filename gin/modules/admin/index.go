@@ -10,7 +10,6 @@ import (
 /* Admin */
 type Index struct {
 	service.Base
-	service.Data
 }
 
 /* 首页 */
@@ -38,12 +37,7 @@ func (r Index) GetConfig(c *gin.Context) {
 	for rows.Next() {
 		rows.Scan(&name, &val)
 		if name == "logo" || name == "login_bg" {
-			if val != "" {
-				list[name] = r.Img(val)
-			} else {
-				list[name] = ""
-			}
-			list[name] = val
+			list[name] = (&service.Data{}).Img(val)
 		} else {
 			list[name] = val
 		}

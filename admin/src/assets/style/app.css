@@ -15,13 +15,13 @@
 .login_body{position: absolute; width: 100%; max-width: 360px; left: 50%; top: 50%; transform: translate(-50%,-50%);}
 .login_logo{height: 32px; line-height: 32px; padding: 16px 0;}
 .login_logo div{width: 32px; height: 32px; border-radius: 50%; background-size: 70%; background-color: #F2F4F6;}
-.login_logo h2{padding-left: 8px;}
+.login_logo h2{padding: 4px 8px; text-shadow: 0 0 16px #FFF; color: #000;}
 .login_ct{position: relative; padding: 16px 32px; border-radius: 8px; background-color: rgba(255,255,255,.8);}
 .login_ct h3{padding: 16px 0 8px; text-align: center;}
 .login_input{padding: 8px 0;}
 .login_input input{background-color: #FFF;}
 .login_input button{width: 100%;}
-.login_copy{line-height: 40px; text-align: center; font-size: 12px;color: #444;}
+.login_copy{line-height: 40px; text-align: center; font-size: 12px; color: #000; text-shadow: 0 0 8px #FFF;}
 
 .login_type{cursor: pointer; position: absolute; width: 200px; top: 0; left: 50%; transform: translate(-50%,0); font-size: 12px; text-align: center;}
 .login_type_title{padding: 0 16px; line-height: 24px; background-color: rgba(0,0,0,.7); color: #6FB737; border-radius: 0 0 24px 24px;}

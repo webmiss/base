@@ -32,6 +32,10 @@ class Admin {
     $app->post('/admin/sysuser/info', 'App\Admin\SysUser::Info');
     // 系统菜单
     $app->post('/admin/sysmenus/getMenus', 'App\Admin\SysMenus::GetMenus');
+    // 系统配置
+    $app->post('/admin/sysconfig/list', 'App\Admin\SysConfig::List');
+    $app->post('/admin/sysconfig/edit', 'App\Admin\SysConfig::Edit');
+    $app->post('/admin/sysconfig/upimg', 'App\Admin\SysConfig::Upimg');
   }
 
 }

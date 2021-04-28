@@ -19,7 +19,7 @@
     <div v-show="state.isLogin===false" class="login_bg bgImg bgcover" :style="{backgroundImage:'url('+(state.system.login_bg?state.system.login_bg:'')+')'}">
       <div class="login_body">
         <div class="login_logo flex_center">
-          <div class="bgImg" :style="{backgroundImage:'url('+(state.system.logo?state.system.logo:require('./assets/logo.svg'))+')'}"></div>
+          <div class="bgImg" :style="{backgroundImage:'url('+(state.system.logo?state.system.logo:require('./assets/logo.svg'))+')', backgroundSize: state.system.logo?'cover':''}"></div>
           <h2 class="nowrap">{{state.system.title}}</h2>
         </div>
         <div class="login_ct">

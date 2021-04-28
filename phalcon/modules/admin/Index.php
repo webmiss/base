@@ -2,6 +2,7 @@
 namespace App\Admin;
 
 use Service\Base;
+use Service\Data;
 use Config\Env;
 use Model\SysConfig;
 
@@ -23,7 +24,7 @@ class Index extends Base {
     $list = [];
     foreach($data as $val){
       if($val['name']=='logo' || $val['name']=='login_bg'){
-        $list[$val['name']] = $val['val']?Env::$base_url.$val['val']:'';
+        $list[$val['name']] = Data::Img($val['val']);
       }else{
         $list[$val['name']] = $val['val'];
       }

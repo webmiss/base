@@ -9,12 +9,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type UserInfo struct {
+type SysConfig struct {
 	service.Base
 }
 
 /* 列表 */
-func (r UserInfo) List(c *gin.Context) {
+func (r SysConfig) List(c *gin.Context) {
 	// 验证
 	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
@@ -22,20 +22,25 @@ func (r UserInfo) List(c *gin.Context) {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	tData := (&service.AdminToken{}).Token(token)
 	// 查询
-	model := (&model.UserInfo{}).New()
-	model.Columns("nickname", "name", "gender", "FROM_UNIXTIME(birthday, '%Y-%m-%d') as birthday", "position", "img")
-	model.Where("uid=?", tData["uid"])
-	list := model.FindFirst()
+	model := (&model.SysConfig{}).New()
+	model.Columns("name", "val")
+	data := model.Find()
+	list := map[string]interface{}{}
 	// 数据
-	list["img"] = (&service.Data{}).Img(list["img"])
+	for _, val := range data {
+		if val["name"] == "logo" || val["name"] == "login_bg" {
+			list[val["name"].(string)] = (&service.Data{}).Img(val["val"])
+		} else {
+			list[val["name"].(string)] = val["val"]
+		}
+	}
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list})
 }
 
 /* 编辑 */
-func (r UserInfo) Edit(c *gin.Context) {
+func (r SysConfig) Edit(c *gin.Context) {
 	// 验证
 	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
@@ -43,36 +48,32 @@ func (r UserInfo) Edit(c *gin.Context) {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	tData := (&service.AdminToken{}).Token(token)
 	// 参数
 	data := c.PostForm("data")
 	if data == "" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
+	// 数据
+	m := (&model.SysConfig{}).New()
 	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
-	// 数据
-	model := (&model.UserInfo{}).New()
-	info := map[string]interface{}{
-		"nickname": util.Trim(param["nickname"].(string), " "),
-		"name":     util.Trim(param["name"].(string), " "),
-		"gender":   util.Trim(param["gender"].(string), " "),
-		"birthday": util.Strtotime(util.Trim(param["birthday"], " "), "2006-01-02"),
-		"position": util.Trim(param["position"].(string), " "),
+	for key, val := range param {
+		if key == "logo" || key == "login_bg" {
+			continue
+		}
+		m.Set(map[string]interface{}{"val": util.Trim(val, " ")})
+		m.Where("name=?", key)
+		if !m.Update() {
+			r.GetJSON(c, gin.H{"code": 5000, "msg": "更新失败!"})
+			return
+		}
 	}
-	model.Set(info)
-	model.Where("uid=?", tData["uid"])
-	model.Update()
-	// 返回
-	info["uname"] = tData["uname"]
-	info["img"] = param["img"]
-	info["birthday"] = util.Date("2006-01-02", info["birthday"])
-	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "uinfo": info})
+	r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
 }
 
 /* 头像 */
-func (r UserInfo) Upimg(c *gin.Context) {
+func (r SysConfig) Upimg(c *gin.Context) {
 	// 验证
 	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
@@ -80,33 +81,38 @@ func (r UserInfo) Upimg(c *gin.Context) {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	tData := (&service.AdminToken{}).Token(token)
 	// 参数
+	name := c.PostForm("name")
 	base64 := c.PostForm("base64")
 	if base64 == "" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
+	// 类型
+	if name != "logo" && name != "login_bg" {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "类型错误!"})
+		return
+	}
 	// 上传
-	ImgDir := "upload/user/img/"
+	ImgDir := "upload/admin/img/"
 	img := (&library.Upload{}).Base64(map[string]interface{}{"path": ImgDir, "base64": base64})
 	if img == "" {
 		r.GetJSON(c, gin.H{"code": 5000, "msg": "上传失败!"})
 		return
 	}
 	// 数据
-	model := (&model.UserInfo{}).New()
-	model.Columns("img")
-	model.Where("uid=?", tData["uid"])
-	imgData := model.FindFirst()
-	model.Set(map[string]interface{}{"img": ImgDir + img})
-	model.Where("uid=?", tData["uid"])
-	if !model.Update() {
+	m := (&model.SysConfig{}).New()
+	m.Columns("val")
+	m.Where("name=?", name)
+	imgData := m.FindFirst()
+	m.Set(map[string]interface{}{"val": ImgDir + img})
+	m.Where("name=?", name)
+	if !m.Update() {
 		r.GetJSON(c, gin.H{"code": 5000, "msg": "上传失败!"})
 		return
 	}
 	// 清理
-	rmImg := imgData["img"].(string)
+	rmImg := imgData["val"].(string)
 	(&library.FileEo{}).RemoveAll(rmImg)
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "img": (&service.Data{}).Img(ImgDir + img)})

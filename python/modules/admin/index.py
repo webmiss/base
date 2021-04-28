@@ -1,5 +1,6 @@
-from service.base import Base
 from config.env import Env
+from service.base import Base
+from service.data import Data
 from model.sys_config import SysConfig
 
 class Index(Base):
@@ -18,7 +19,7 @@ class Index(Base):
     list = {}
     for val in data :
       if val['name']=='logo' or val['name']=='login_bg' :
-        list[val['name']] = Env.base_url+val['val'] if val['val']!='' else ''
+        list[val['name']] = Data.Img(val['val'])
       else :
         list[val['name']] = val['val']
     return self.GetJSON({'code':0,'msg':'成功', 'list':list})

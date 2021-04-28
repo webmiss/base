@@ -25,9 +25,9 @@ export default defineComponent({
     const form: any = {logo:'',title:'',http:'',copy:'',login_bg:''};
     // 上传
     const upload: any = {
-      url: 'Sysconfig/upImg',
-      param_logo: {type:'logo', token:Storage.getItem('token')},
-      param_login_bg: {type:'login_bg', token:Storage.getItem('token')},
+      url: 'sysconfig/upimg',
+      param_logo: {name:'logo', token:Storage.getItem('token')},
+      param_login_bg: {name:'login_bg', token:Storage.getItem('token')},
     };
     return {state, form, upload}
   },
@@ -40,7 +40,7 @@ export default defineComponent({
     /* 加载数据 */
     loadData(){
       const load: any = Loading();
-      Post('Sysconfig/list',{
+      Post('sysconfig/list',{
         token: Storage.getItem('token')
       },(res: any)=>{
         load.clear();
@@ -54,7 +54,7 @@ export default defineComponent({
     onSubmit(){
       const data: string = JSON.stringify(this.form);
       const load: any = Loading();
-      Post('Sysconfig/edit',{
+      Post('sysconfig/edit',{
         token: Storage.getItem('token'),
         data: data
       },(res: any)=>{

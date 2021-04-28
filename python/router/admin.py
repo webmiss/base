@@ -6,6 +6,7 @@ from modules.admin.user_passwd import UserPasswd
 from modules.admin.sys_file import SysFile
 from modules.admin.sys_user import SysUser
 from modules.admin.sys_menus import SysMenus
+from modules.admin.sys_config import SysConfig
 
 Admin = Blueprint('admin', __name__)
 
@@ -51,3 +52,9 @@ def sysUser(a) :
 @Admin.route('/sysmenus/<a>',methods=['POST'])
 def sysGetMenus(a) :
   if a=='getMenus' : return SysMenus().GetMenus()
+# 系统配置
+@Admin.route('/sysconfig/<a>',methods=['POST'])
+def sysConfig(a) :
+  if a=='list' : return SysConfig().List()
+  elif a=='edit' : return SysConfig().Edit()
+  elif a=='upimg' : return SysConfig().Upimg()
