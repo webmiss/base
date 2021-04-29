@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import webmis.service.Base;
-import webmis.model.SysMenu;
+import webmis.model.ApiMenu;
 import webmis.service.AdminToken;
 import webmis.util.Util;
 
 /* 系统菜单 */
 @RestController
-@Controller("AdminSysMenus")
-@RequestMapping("/admin/sysmenus")
-public class SysMenus extends Base {
+@Controller("AdminApiMenus")
+@RequestMapping("/admin/apimenus")
+public class ApiMenus extends Base {
 
   private static HashMap<String, ArrayList<HashMap<String, Object>>> menus = null;  //全部菜单
   private static HashMap<String, Integer> permAll = null;                           //用户权限
@@ -50,7 +50,7 @@ public class SysMenus extends Base {
     String title = param.containsKey("title")?String.valueOf(param.get("title")).trim():"";
     String url = param.containsKey("url")?String.valueOf(param.get("url")).trim():"";
     // 统计
-    webmis.model.SysMenu m = new webmis.model.SysMenu();
+    webmis.model.ApiMenu m = new webmis.model.ApiMenu();
     m.Columns("count(*) AS num");
     m.Where("fid like ? AND title like ? AND url like ?", "%"+fid+"%", "%"+title+"%", "%"+url+"%");
     HashMap<String, Object> total = m.FindFirst();
@@ -101,7 +101,7 @@ public class SysMenus extends Base {
       return GetJSON(res);
     }
     // 数据
-    webmis.model.SysMenu m = new webmis.model.SysMenu();
+    webmis.model.ApiMenu m = new webmis.model.ApiMenu();
     HashMap<String,Object> uData = new HashMap<String,Object>();
     uData.put("fid", param.containsKey("fid")?String.valueOf(param.get("fid")).trim():0);
     uData.put("title", title);
@@ -151,7 +151,7 @@ public class SysMenus extends Base {
       return GetJSON(res);
     }
     // 数据
-    webmis.model.SysMenu m = new webmis.model.SysMenu();
+    webmis.model.ApiMenu m = new webmis.model.ApiMenu();
     HashMap<String,Object> uData = new HashMap<String,Object>();
     uData.put("fid", param.containsKey("fid")?String.valueOf(param.get("fid")).trim():0);
     uData.put("title", title);
@@ -196,7 +196,7 @@ public class SysMenus extends Base {
     JSONArray param = Util.JsonDecodeArray(data);
     String ids = Util.Implode(",", JSONArray.parseArray(param.toJSONString()));
     // 执行
-    webmis.model.SysMenu m = new webmis.model.SysMenu();
+    webmis.model.ApiMenu m = new webmis.model.ApiMenu();
     m.Where("id in("+ids+")");
     if(m.Delete()){
       res = new HashMap<String,Object>();
@@ -225,7 +225,7 @@ public class SysMenus extends Base {
     }
     // 全部菜单
     menus = new HashMap<String, ArrayList<HashMap<String, Object>>>();
-    SysMenu model = new SysMenu();
+    ApiMenu model = new ApiMenu();
     model.Columns("id", "fid", "title", "url", "ico", "controller", "action");
     model.Order("sort DESC, id");
     ArrayList<HashMap<String, Object>> all = model.Find();

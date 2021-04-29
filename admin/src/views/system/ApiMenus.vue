@@ -139,4 +139,4 @@
 .form{padding-right: 24px;}
 </style>
 
-<script lang="ts" src="./Menus.ts"></script>
+<script lang="ts" src="./ApiMenus.ts"></script>

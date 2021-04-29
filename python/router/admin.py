@@ -5,6 +5,7 @@ from modules.admin.user_info import UserInfo
 from modules.admin.user_passwd import UserPasswd
 from modules.admin.sys_file import SysFile
 from modules.admin.sys_user import SysUser
+from modules.admin.api_menus import ApiMenus
 from modules.admin.api_role import ApiRole
 from modules.admin.sys_menus import SysMenus
 from modules.admin.sys_role import SysRole
@@ -50,7 +51,14 @@ def sysUser(a) :
   elif a=='del' : return SysUser().Del()
   elif a=='state' : return SysUser().State()
   elif a=='info' : return SysUser().Info()
-# 系统角色
+# 会员菜单
+@Admin.route('/apimenus/<a>',methods=['POST'])
+def apiMenus(a) :
+  if a=='list' : return ApiMenus().List()
+  elif a=='add' : return ApiMenus().Add()
+  elif a=='edit' : return ApiMenus().Edit()
+  elif a=='del' : return ApiMenus().Del()
+# 会员角色
 @Admin.route('/apirole/<a>',methods=['POST'])
 def sysRole(a) :
   if a=='list' : return ApiRole().List()

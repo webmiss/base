@@ -11,6 +11,7 @@ const routes: Array<RouteRecordRaw> = [
   // 设置
   {path:'/SysFileManage', name:'SysFileManage', component:()=>import('../views/system/FileManage.vue')},
   {path:'/SysUser', name:'SysUser', component:()=>import('../views/system/User.vue')},
+  {path:'/ApiMenus', name:'ApiMenus', component:()=>import('../views/system/ApiMenus.vue')},
   {path:'/ApiRole', name:'ApiRole', component:()=>import('../views/system/ApiRole.vue')},
   {path:'/SysRole', name:'SysRole', component:()=>import('../views/system/Role.vue')},
   {path:'/SysMenus', name:'SysMenus', component:()=>import('../views/system/Menus.vue')},

@@ -36,7 +36,12 @@ func Admin(r *gin.Engine) {
 		g.POST("sysuser/del", (&admin.SysUser{}).Del)
 		g.POST("sysuser/state", (&admin.SysUser{}).State)
 		g.POST("sysuser/info", (&admin.SysUser{}).Info)
-		// API角色
+		// 会员菜单
+		g.POST("apimenus/list", (&admin.ApiMenus{}).List)
+		g.POST("apimenus/add", (&admin.ApiMenus{}).Add)
+		g.POST("apimenus/edit", (&admin.ApiMenus{}).Edit)
+		g.POST("apimenus/del", (&admin.ApiMenus{}).Del)
+		// 会员角色
 		g.POST("apirole/list", (&admin.ApiRole{}).List)
 		g.POST("apirole/add", (&admin.ApiRole{}).Add)
 		g.POST("apirole/edit", (&admin.ApiRole{}).Edit)

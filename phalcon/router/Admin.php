@@ -30,6 +30,11 @@ class Admin {
     $app->post('/admin/sysuser/del', 'App\Admin\SysUser::Del');
     $app->post('/admin/sysuser/state', 'App\Admin\SysUser::State');
     $app->post('/admin/sysuser/info', 'App\Admin\SysUser::Info');
+    // 会员菜单
+    $app->post('/admin/apimenus/list', 'App\Admin\ApiMenus::List');
+    $app->post('/admin/apimenus/add', 'App\Admin\ApiMenus::Add');
+    $app->post('/admin/apimenus/edit', 'App\Admin\ApiMenus::Edit');
+    $app->post('/admin/apimenus/del', 'App\Admin\ApiMenus::Del');
     // 会员角色
     $app->post('/admin/apirole/list', 'App\Admin\ApiRole::List');
     $app->post('/admin/apirole/add', 'App\Admin\ApiRole::Add');
