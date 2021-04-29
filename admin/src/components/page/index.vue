@@ -90,8 +90,8 @@ export default defineComponent({
     },
 
     /* 跳转 */
-    subInput(n: number){
-      let page = n || 1;
+    subInput(n: any){
+      let page: number = parseInt(n) || 1;
       if(n<1) page = 1;
       else if(n>this.max) page = this.max;
       this.input = '';
