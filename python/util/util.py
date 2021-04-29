@@ -1,6 +1,7 @@
 import hashlib
 import time
 import json
+from typing import Any
 
 # 常用工具
 class Util:
@@ -25,8 +26,9 @@ class Util:
     return t if t>0 else 0
 
   # 去首尾空格
-  def Trim(str: str, charlist: str = None):
-    return str.strip(charlist)
+  def Trim(content, charlist: str = None):
+    text = str(content)
+    return text.strip(charlist)
 
   # String to List
   def Explode(delimiter: str, string: str):

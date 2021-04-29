@@ -31,7 +31,7 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'Input',
   props: {
-    value: {type: String, default: ''},  //值
+    value: {default: ''},  //值
     type: {type: String, default: 'text'},  //类型: input属性
     maxlength: {type: String, default: ''}, //最大字符: 默认
     placeholder: {type: String, default: ''}, //提示: 无

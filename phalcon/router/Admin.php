@@ -36,6 +36,10 @@ class Admin {
     $app->post('/admin/apirole/edit', 'App\Admin\ApiRole::Edit');
     $app->post('/admin/apirole/del', 'App\Admin\ApiRole::Del');
     // 系统菜单
+    $app->post('/admin/sysmenus/list', 'App\Admin\SysMenus::List');
+    $app->post('/admin/sysmenus/add', 'App\Admin\SysMenus::Add');
+    $app->post('/admin/sysmenus/edit', 'App\Admin\SysMenus::Edit');
+    $app->post('/admin/sysmenus/del', 'App\Admin\SysMenus::Del');
     $app->post('/admin/sysmenus/getMenus', 'App\Admin\SysMenus::GetMenus');
     // 系统角色
     $app->post('/admin/sysrole/list', 'App\Admin\SysRole::List');

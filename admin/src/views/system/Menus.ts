@@ -34,7 +34,9 @@ export default defineComponent({
     const add: any = {show:false, form:{}};
     const edit: any = {show:false, id:'', form:{}};
     const del: any = {show:false, ids:''};
-    return {state, page, sea, add, edit, del};
+    // 权限
+    const perm: any = {show:false, id:'', title:'权限', action:''};
+    return {state, page, sea, add, edit, del, perm};
   },
   computed: {
     // 动作菜单-监听
@@ -71,7 +73,7 @@ export default defineComponent({
       this.page.list = [];
       this.page.total = 0;
       const load: any = Loading();
-      Post('Sysmenus/list',{
+      Post('sysmenus/list',{
         token: Storage.getItem('token'),
         page: this.page.page,
         limit: this.page.limit,
@@ -105,7 +107,7 @@ export default defineComponent({
       // 提交
       const data: string = JSON.stringify(this.add.form);
       const load: any = Loading();
-      Post('Sysmenus/add',{
+      Post('sysmenus/add',{
         token: Storage.getItem('token'),
         data: data
       },(res: any)=>{
@@ -127,10 +129,9 @@ export default defineComponent({
       this.edit.form.fid = row.fid;
       this.edit.form.title = row.title;
       this.edit.form.url = row.url;
-      this.edit.form.perm = row.perm;
       this.edit.form.ico = row.ico;
       this.edit.form.sort = row.sort;
-      this.edit.form.remark = row.remark;
+      this.edit.form.controller = row.controller;
     },
     subEdit(){
       this.edit.show = false;
@@ -138,7 +139,7 @@ export default defineComponent({
       const id: number = this.edit.id;
       const data: string = JSON.stringify(this.edit.form);
       const load: any = Loading();
-      Post('Sysmenus/edit',{
+      Post('sysmenus/edit',{
         token: Storage.getItem('token'),
         id: id,
         data: data
@@ -162,7 +163,7 @@ export default defineComponent({
       this.del.show = false;
       // 提交
       const load: any = Loading();
-      Post('Sysmenus/delete',{
+      Post('sysmenus/del',{
         token: Storage.getItem('token'),
         data: this.del.ids
       },(res: any)=>{
@@ -171,6 +172,16 @@ export default defineComponent({
         if(d.code===0) this.loadData();
         return Toast(d.msg);
       });
+    },
+
+    /* 权限 */
+    permData(id: number, title: string, controller: string, action: string){
+      this.perm.show = true;
+      this.perm.title = title + ': ' + controller;
+      console.log(id, controller, action);
+    },
+    subPerm(){
+      this.perm.show = false;
     },
 
   },

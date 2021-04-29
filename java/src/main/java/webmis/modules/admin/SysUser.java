@@ -61,16 +61,18 @@ public class SysUser extends Base {
     m.Table("user as a");
     m.LeftJoin("user_info as b", "a.id=b.uid");
     m.LeftJoin("sys_perm as c", "a.id=c.uid");
+    m.LeftJoin("api_perm as d", "a.id=d.uid");
     m.Columns(
       "a.id AS uid", "a.uname", "a.email", "a.tel", "a.state", "FROM_UNIXTIME(a.rtime, '%Y-%m-%d %H:%i:%s') as rtime", "FROM_UNIXTIME(a.ltime, '%Y-%m-%d %H:%i:%s') as ltime", "FROM_UNIXTIME(a.utime, '%Y-%m-%d %H:%i:%s') as utime",
       "b.nickname", "b.position", "b.name", "b.gender", "FROM_UNIXTIME(b.birthday, '%Y-%m-%d') as birthday", "b.img",
-      "c.role", "c.perm"
+      "c.role AS sys_role", "c.perm AS sys_perm",
+      "d.role AS api_role", "d.perm AS api_perm"
     );
     m.Where("a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?", "%"+uname+"%", "%"+uname+"%", "%"+uname+"%");
     m.Order("a.id DESC");
     m.Page(page, limit);
     ArrayList<HashMap<String,Object>> list = m.Find();
-    // 状态
+    // 数据
     for (HashMap<String, Object> val : list) {
       val.put("uid", val.get("uid").toString());
       val.put("state", val.get("state").equals("1")?true:false);

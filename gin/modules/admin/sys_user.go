@@ -54,7 +54,7 @@ func (r SysUser) List(c *gin.Context) {
 	m.Order("a.id DESC")
 	m.Page(util.Int(page), util.Int(limit))
 	list := m.Find()
-	// 状态
+	// 数据
 	for _, val := range list {
 		if util.Strval(val["state"]) == "1" {
 			val["state"] = true

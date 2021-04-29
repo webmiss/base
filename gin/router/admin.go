@@ -42,6 +42,10 @@ func Admin(r *gin.Engine) {
 		g.POST("apirole/edit", (&admin.ApiRole{}).Edit)
 		g.POST("apirole/del", (&admin.ApiRole{}).Del)
 		// 系统菜单
+		g.POST("sysmenus/list", (&admin.SysMenus{}).List)
+		g.POST("sysmenus/add", (&admin.SysMenus{}).Add)
+		g.POST("sysmenus/edit", (&admin.SysMenus{}).Edit)
+		g.POST("sysmenus/del", (&admin.SysMenus{}).Del)
 		g.POST("sysmenus/getMenus", (&admin.SysMenus{}).GetMenus)
 		// 系统角色
 		g.POST("sysrole/list", (&admin.SysRole{}).List)

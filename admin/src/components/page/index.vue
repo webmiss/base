@@ -62,11 +62,11 @@ export default defineComponent({
     /* 初始化 */
     init(){
       this.max = Math.ceil(this.total/this.limit);
-      this.toPage(this.page,false);
+      this.toPage(this.page, false);
     },
 
     /* 翻页 */
-    toPage(n: number, isPage: boolean){
+    toPage(n: number, isPage: boolean=true){
       // 是否数据
       if(this.total==0) return this.lists = [];
       // 边界

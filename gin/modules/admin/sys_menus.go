@@ -12,8 +12,165 @@ import (
 /* 系统菜单 */
 type SysMenus struct {
 	service.Base
-	menus   map[string][]map[string]interface{}
-	permAll map[string]int64
+	menus   map[string][]map[string]interface{} //全部菜单
+	permAll map[string]int64                    //用户权限
+}
+
+/* 列表 */
+func (r SysMenus) List(c *gin.Context) {
+	// 验证
+	token := c.PostForm("token")
+	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
+	if msg != "" {
+		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
+		return
+	}
+	// 参数
+	data := c.PostForm("data")
+	page := c.PostForm("page")
+	limit := c.PostForm("limit")
+	if util.Empty(data) || util.Empty(page) || util.Empty(limit) {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
+		return
+	}
+	param := map[string]interface{}{}
+	util.JsonDecode(data, &param)
+	fid := util.Trim(util.If(util.InKey("fid", param), param["fid"], ""))
+	title := util.Trim(util.If(util.InKey("title", param), param["title"], ""))
+	url := util.Trim(util.If(util.InKey("url", param), param["url"], ""))
+	// 统计
+	m := (&model.SysMenu{}).New()
+	m.Columns("count(*) AS num")
+	m.Where("fid like ? AND title like ? AND url like ?", "%"+fid+"%", "%"+title+"%", "%"+url+"%")
+	total := m.FindFirst()
+	// 查询
+	m.Columns("id", "fid", "title", "ico", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "sort", "url", "controller", "action")
+	m.Where("fid like ? AND title like ? AND url like ?", "%"+fid+"%", "%"+title+"%", "%"+url+"%")
+	m.Order("sort DESC", "fid")
+	m.Page(util.Int(page), util.Int(limit))
+	list := m.Find()
+	// 数据
+	for _, val := range list {
+		if str := util.Strval(val["action"]); str != "" {
+			action := []map[string]interface{}{}
+			util.JsonDecode(str, &action)
+			val["action"] = action
+		} else {
+			val["action"] = ""
+		}
+	}
+	// 返回
+	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list, "total": util.Int(total["num"])})
+}
+
+/* 添加 */
+func (r SysMenus) Add(c *gin.Context) {
+	// 验证
+	token := c.PostForm("token")
+	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
+	if msg != "" {
+		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
+		return
+	}
+	// 参数
+	data := c.PostForm("data")
+	if util.Empty(data) {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
+		return
+	}
+	param := map[string]interface{}{}
+	util.JsonDecode(data, &param)
+	title := util.Trim(util.If(util.InKey("title", param), param["title"], ""))
+	if title == "" {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "名称不能为空!"})
+		return
+	}
+	// 数据
+	m := (&model.SysMenu{}).New()
+	m.Values(map[string]interface{}{
+		"fid":        util.Trim(util.If(util.InKey("fid", param), param["fid"], 0)),
+		"title":      title,
+		"url":        util.Trim(util.If(util.InKey("url", param), param["url"], "")),
+		"ico":        util.Trim(util.If(util.InKey("ico", param), param["ico"], "")),
+		"sort":       util.Trim(util.If(util.InKey("sort", param), param["sort"], 0)),
+		"controller": util.Trim(util.If(util.InKey("controller", param), param["controller"], "")),
+		"ctime":      util.Time(),
+	})
+	if m.Insert() {
+		r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
+	} else {
+		r.GetJSON(c, gin.H{"code": 5000, "msg": "添加失败!"})
+	}
+}
+
+/* 编辑 */
+func (r SysMenus) Edit(c *gin.Context) {
+	// 验证
+	token := c.PostForm("token")
+	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
+	if msg != "" {
+		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
+		return
+	}
+	// 参数
+	id := c.PostForm("id")
+	data := c.PostForm("data")
+	if util.Empty(id) || util.Empty(data) {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
+		return
+	}
+	param := map[string]interface{}{}
+	util.JsonDecode(data, &param)
+	title := util.Trim(util.If(util.InKey("title", param), param["title"], ""))
+	if title == "" {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "名称不能为空!"})
+		return
+	}
+	// 数据
+	m := (&model.SysMenu{}).New()
+	m.Set(map[string]interface{}{
+		"fid":        util.Trim(util.If(util.InKey("fid", param), param["fid"], 0)),
+		"title":      title,
+		"url":        util.Trim(util.If(util.InKey("url", param), param["url"], "")),
+		"ico":        util.Trim(util.If(util.InKey("ico", param), param["ico"], "")),
+		"sort":       util.Trim(util.If(util.InKey("sort", param), param["sort"], 0)),
+		"controller": util.Trim(util.If(util.InKey("controller", param), param["controller"], "")),
+		"utime":      util.Time(),
+	})
+	m.Where("id=?", id)
+	if m.Update() {
+		r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
+	} else {
+		r.GetJSON(c, gin.H{"code": 5000, "msg": "更新失败!"})
+	}
+}
+
+/* 删除 */
+func (r SysMenus) Del(c *gin.Context) {
+	// 验证
+	token := c.PostForm("token")
+	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
+	if msg != "" {
+		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
+		return
+	}
+	// 参数
+	data := c.PostForm("data")
+	if util.Empty(data) {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
+		return
+	}
+	param := []string{}
+	util.JsonDecode(data, &param)
+	ids := util.Implode(",", param)
+	// 执行
+	m := (&model.SysMenu{}).New()
+	m.Where("id in(" + ids + ")")
+	if m.Delete() {
+		r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
+	} else {
+		r.GetJSON(c, gin.H{"code": 5000, "msg": "删除失败!"})
+	}
 }
 
 /* 获取菜单 */

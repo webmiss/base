@@ -36,10 +36,12 @@ class SysUser(Base):
     m.Table('user as a')
     m.LeftJoin('user_info as b', 'a.id=b.uid')
     m.LeftJoin('sys_perm as c', 'a.id=c.uid')
+    m.LeftJoin('api_perm as d', 'a.id=d.uid')
     m.Columns(
       'a.id AS uid', 'a.uname', 'a.email', 'a.tel', 'a.state', 'FROM_UNIXTIME(a.rtime, %s) as rtime', 'FROM_UNIXTIME(a.ltime, %s) as ltime', 'FROM_UNIXTIME(a.utime, %s) as utime',
       'b.nickname', 'b.position', 'b.name', 'b.gender', 'FROM_UNIXTIME(b.birthday, %s) as birthday', 'b.img',
-      'c.role', 'c.perm'
+      'c.role AS sys_role', 'c.perm AS sys_perm',
+      'd.role AS api_role', 'd.perm AS api_perm'
     )
     m.Where(
       'a.uname LIKE %s OR a.tel LIKE %s OR a.email LIKE %s',
@@ -49,7 +51,7 @@ class SysUser(Base):
     m.Order('a.id DESC')
     m.Page(int(page), int(limit))
     list = m.Find()
-    # 状态
+    # 数据
     for val in list :
       val['uid'] = str(val['uid'])
       val['state'] = True if val['state']=='1' else False

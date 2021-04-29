@@ -38,16 +38,18 @@ class SysUser extends Base {
     $model->Table('user as a');
     $model->LeftJoin('user_info as b', 'a.id=b.uid');
     $model->LeftJoin('sys_perm as c', 'a.id=c.uid');
+    $model->LeftJoin('api_perm as d', 'a.id=d.uid');
     $model->Columns(
       'a.id AS uid', 'a.uname', 'a.email', 'a.tel', 'a.state', 'FROM_UNIXTIME(a.rtime) as rtime', 'FROM_UNIXTIME(a.ltime) as ltime', 'FROM_UNIXTIME(a.utime) as utime',
       'b.nickname', 'b.position', 'b.name', 'b.gender', 'FROM_UNIXTIME(b.birthday, "%Y-%m-%d") as birthday', 'b.img',
-      'c.role', 'c.perm'
+      'c.role AS sys_role', 'c.perm AS sys_perm',
+      'd.role AS api_role', 'd.perm AS api_perm'
     );
     $model->Where('a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?', '%'.$uname.'%', '%'.$uname.'%', '%'.$uname.'%');
     $model->Order('a.id DESC');
     $model->Page($page, $limit);
     $list = $model->Find();
-    // 状态
+    // 数据
     foreach ($list as $key => $val) {
       $list[$key]['state'] = $val['state']?true:false;
       $list[$key]['img'] = Data::Img($val['img']);

@@ -59,8 +59,12 @@ def sysRole(a) :
   elif a=='del' : return ApiRole().Del()
 # 系统菜单
 @Admin.route('/sysmenus/<a>',methods=['POST'])
-def sysGetMenus(a) :
-  if a=='getMenus' : return SysMenus().GetMenus()
+def sysMenus(a) :
+  if a=='list' : return SysMenus().List()
+  elif a=='add' : return SysMenus().Add()
+  elif a=='edit' : return SysMenus().Edit()
+  elif a=='del' : return SysMenus().Del()
+  elif a=='getMenus' : return SysMenus().GetMenus()
 # 系统角色
 @Admin.route('/sysrole/<a>',methods=['POST'])
 def apiRole(a) :
