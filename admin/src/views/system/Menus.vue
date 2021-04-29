@@ -28,7 +28,7 @@
         </td>
         <td>
           <wm-button v-if="val.controller && !val.action" type="danger" height="32px" @click="permData(val.id, val.title, val.controller, val.action)">设置</wm-button>
-          <wm-button v-else-if="val.controller && val.action" height="32px" @click="permData(val.id, val.title, val.controller, val.action)">修改</wm-button>
+          <wm-button v-else-if="val.controller && val.action" height="32px" @click="permData(val.id, val.title, val.controller, val.action)">动作</wm-button>
         </td>
         <td style="text-align: center;">{{ val.sort }}</td>
         <td>{{ val.url }}</td>

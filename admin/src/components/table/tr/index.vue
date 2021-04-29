@@ -1,6 +1,6 @@
 <template>
   <tr class="wm-table_tr">
-    <td width="32" class="checkbox wm-table_checkbox">
+    <td width="32" class="checkbox wm-table_checkbox" v-if="checkbox">
       <wm-checkbox :value="value"></wm-checkbox>
     </td>
     <slot></slot>
@@ -20,6 +20,7 @@ export default defineComponent({
   name: 'TableRow',
   components: {wmCheckbox},
   props: {
+    checkbox: {type: Boolean, default: true}, //多选
     value: {type: String, default:''}, //checkbox[value]
   },
 });

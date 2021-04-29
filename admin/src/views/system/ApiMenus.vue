@@ -28,7 +28,7 @@
         </td>
         <td>
           <wm-button v-if="val.controller && !val.action" type="danger" height="32px" @click="permData(val.id, val.title, val.controller, val.action)">设置</wm-button>
-          <wm-button v-else-if="val.controller && val.action" height="32px" @click="permData(val.id, val.title, val.controller, val.action)">修改</wm-button>
+          <wm-button v-else-if="val.controller && val.action" height="32px" @click="permData(val.id, val.title, val.controller, val.action)">动作</wm-button>
         </td>
         <td style="text-align: center;">{{ val.sort }}</td>
         <td>{{ val.url }}</td>
@@ -123,8 +123,22 @@
     <!-- Del End -->
 
     <!-- Perm -->
-    <wm-dialog width="640px" :title="perm.title" :show="perm.show" @update:show="perm.show=$event">
-      <div>内容</div>
+    <wm-dialog width="720px" :title="perm.title" :show="perm.show" @update:show="perm.show=$event">
+      <wm-table>
+        <wm-table-title :checkbox="false">
+          <td>名称</td>
+          <td>动作</td>
+          <td>权限</td>
+          <td>图标</td>
+        </wm-table-title>
+        <wm-table-tr :checkbox="false">
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+        </wm-table-tr>
+      </wm-table>
+      <!-- <div>内容</div> -->
       <template #footer>
         <wm-button @click="subPerm()">更 新</wm-button>
       </template>

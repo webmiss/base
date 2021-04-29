@@ -1,6 +1,6 @@
 <template>
   <tr class="wm-table_title">
-    <td width="32" class="checkbox">
+    <td width="32" class="checkbox" v-if="checkbox">
       <wm-checkbox :checked="checked" @update:checked="show=$event"></wm-checkbox>
     </td>
     <slot></slot>
@@ -9,7 +9,7 @@
 
 <style>
 .wm-table_title{font-size: 14px; font-weight: 600; color: #999;}
-.wm-table_title td{border: none; line-height: 48px;}
+.wm-table_title td{border: none; line-height: 40px;}
 .wm-table_title .checkbox{position: relative;}
 .wm-table_title .wm-checkbox{position: absolute;}
 </style>
@@ -21,6 +21,7 @@ export default defineComponent({
   name:'TableTitle',
   components: {wmCheckbox},
   props: {
+    checkbox: {type: Boolean, default: true}, //多选
     checked: {type: Boolean, default: false}, //全选&不选
   },
   data(){

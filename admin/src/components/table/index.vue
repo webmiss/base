@@ -6,10 +6,10 @@
 
 <style>
 .wm-table{width: 100%; border-collapse:collapse; box-sizing: border-box; border-radius: 4px;}
-.wm-table tr:nth-child(odd){background-color: #FAFAFA;}
+.wm-table tr:nth-child(odd){background-color: #F8F8F8;}
 .wm-table tr:nth-child(even){background-color: #FFF;}
 .wm-table tr:hover{background-color: #F2F4F6;}
-.wm-table td{padding: 4px 8px; line-height: 40px; border-top: #EBEEF5 1px solid; border-bottom: #EBEEF5 1px solid;}
+.wm-table td{padding: 4px 8px; line-height: 40px;}
 </style>
 
 <script lang="ts">
