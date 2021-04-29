@@ -5,7 +5,9 @@ from modules.admin.user_info import UserInfo
 from modules.admin.user_passwd import UserPasswd
 from modules.admin.sys_file import SysFile
 from modules.admin.sys_user import SysUser
+from modules.admin.api_role import ApiRole
 from modules.admin.sys_menus import SysMenus
+from modules.admin.sys_role import SysRole
 from modules.admin.sys_config import SysConfig
 
 Admin = Blueprint('admin', __name__)
@@ -48,10 +50,24 @@ def sysUser(a) :
   elif a=='del' : return SysUser().Del()
   elif a=='state' : return SysUser().State()
   elif a=='info' : return SysUser().Info()
+# 系统角色
+@Admin.route('/apirole/<a>',methods=['POST'])
+def sysRole(a) :
+  if a=='list' : return ApiRole().List()
+  elif a=='add' : return ApiRole().Add()
+  elif a=='edit' : return ApiRole().Edit()
+  elif a=='del' : return ApiRole().Del()
 # 系统菜单
 @Admin.route('/sysmenus/<a>',methods=['POST'])
 def sysGetMenus(a) :
   if a=='getMenus' : return SysMenus().GetMenus()
+# 系统角色
+@Admin.route('/sysrole/<a>',methods=['POST'])
+def apiRole(a) :
+  if a=='list' : return SysRole().List()
+  elif a=='add' : return SysRole().Add()
+  elif a=='edit' : return SysRole().Edit()
+  elif a=='del' : return SysRole().Del()
 # 系统配置
 @Admin.route('/sysconfig/<a>',methods=['POST'])
 def sysConfig(a) :

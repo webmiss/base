@@ -20,7 +20,7 @@ import wmInput from '@/components/form/input/index.vue'
 import wmButton from '@/components/form/button/index.vue'
 import wmPage from '@/components/page/index.vue'
 
-/* 用户管理 */
+/* 系统角色 */
 export default defineComponent({
   components: {wmMain,wmRow,wmTable,wmTableTitle,wmTableTr,wmTag,wmPopover,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmPage},
   data(){
@@ -73,7 +73,7 @@ export default defineComponent({
       this.page.list = [];
       this.page.total = 0;
       const load: any = Loading();
-      Post('Sysrole/list',{
+      Post('sysrole/list',{
         token: Storage.getItem('token'),
         page: this.page.page,
         limit: this.page.limit,
@@ -107,7 +107,7 @@ export default defineComponent({
       // 提交
       const data: string = JSON.stringify(this.add.form);
       const load: any = Loading();
-      Post('Sysrole/add',{
+      Post('sysrole/add',{
         token: Storage.getItem('token'),
         data:data
       },(res: any)=>{
@@ -126,7 +126,7 @@ export default defineComponent({
       this.edit.show = true;
       // 默认值
       this.edit.id = row.id;
-      this.edit.form.role = row.role;
+      this.edit.form.name = row.name;
     },
     subEdit(){
       this.edit.show = false;
@@ -134,7 +134,7 @@ export default defineComponent({
       const id: number = this.edit.id;
       const data: string = JSON.stringify(this.edit.form);
       const load: any = Loading();
-      Post('Sysrole/edit',{
+      Post('sysrole/edit',{
         token: Storage.getItem('token'),
         id: id,
         data: data
@@ -158,7 +158,7 @@ export default defineComponent({
       this.del.show = false;
       // 提交
       const load = Loading();
-      Post('Sysrole/delete',{
+      Post('sysrole/del',{
         token: Storage.getItem('token'),
         data: this.del.ids
       },(res: any)=>{

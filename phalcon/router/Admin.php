@@ -30,8 +30,18 @@ class Admin {
     $app->post('/admin/sysuser/del', 'App\Admin\SysUser::Del');
     $app->post('/admin/sysuser/state', 'App\Admin\SysUser::State');
     $app->post('/admin/sysuser/info', 'App\Admin\SysUser::Info');
+    // 会员角色
+    $app->post('/admin/apirole/list', 'App\Admin\ApiRole::List');
+    $app->post('/admin/apirole/add', 'App\Admin\ApiRole::Add');
+    $app->post('/admin/apirole/edit', 'App\Admin\ApiRole::Edit');
+    $app->post('/admin/apirole/del', 'App\Admin\ApiRole::Del');
     // 系统菜单
     $app->post('/admin/sysmenus/getMenus', 'App\Admin\SysMenus::GetMenus');
+    // 系统角色
+    $app->post('/admin/sysrole/list', 'App\Admin\SysRole::List');
+    $app->post('/admin/sysrole/add', 'App\Admin\SysRole::Add');
+    $app->post('/admin/sysrole/edit', 'App\Admin\SysRole::Edit');
+    $app->post('/admin/sysrole/del', 'App\Admin\SysRole::Del');
     // 系统配置
     $app->post('/admin/sysconfig/list', 'App\Admin\SysConfig::List');
     $app->post('/admin/sysconfig/edit', 'App\Admin\SysConfig::Edit');

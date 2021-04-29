@@ -55,11 +55,11 @@ func (r UserInfo) Edit(c *gin.Context) {
 	// 数据
 	model := (&model.UserInfo{}).New()
 	info := map[string]interface{}{
-		"nickname": util.Trim(param["nickname"].(string), " "),
-		"name":     util.Trim(param["name"].(string), " "),
-		"gender":   util.Trim(param["gender"].(string), " "),
-		"birthday": util.Strtotime(util.Trim(param["birthday"], " "), "2006-01-02"),
-		"position": util.Trim(param["position"].(string), " "),
+		"nickname": util.Trim(param["nickname"]),
+		"name":     util.Trim(param["name"]),
+		"gender":   util.Trim(param["gender"]),
+		"birthday": util.Strtotime(util.Trim(param["birthday"]), "2006-01-02"),
+		"position": util.Trim(param["position"]),
 	}
 	model.Set(info)
 	model.Where("uid=?", tData["uid"])

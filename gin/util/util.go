@@ -85,8 +85,12 @@ func Strtotime(day string, format string) int64 {
 }
 
 /* 去首尾空格 */
-func Trim(str interface{}, charlist string) string {
-	return strings.Trim(Strval(str), charlist)
+func Trim(str interface{}, charlist ...string) string {
+	char := " "
+	if len(charlist) > 0 {
+		char = charlist[0]
+	}
+	return strings.Trim(Strval(str), char)
 }
 
 /* String to List */

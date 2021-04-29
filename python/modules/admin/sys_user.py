@@ -26,28 +26,29 @@ class SysUser(Base):
     if not data or not page or not limit :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
     param = Util.JsonDecode(data)
-    uname = param['uname'] if 'uname' in param.keys() else ''
+    uname = Util.Trim(param['uname']) if 'uname' in param.keys() else ''
     # 统计
-    model = User()
-    model.Columns('count(*) AS num')
-    total = model.FindFirst()
+    m = User()
+    m.Columns('count(*) AS num')
+    m.Where('uname LIKE %s OR tel LIKE %s OR email LIKE %s', '%'+uname+'%', '%'+uname+'%', '%'+uname+'%')
+    total = m.FindFirst()
     # 查询
-    model.Table('user as a')
-    model.LeftJoin('user_info as b', 'a.id=b.uid')
-    model.LeftJoin('sys_perm as c', 'a.id=c.uid')
-    model.Columns(
+    m.Table('user as a')
+    m.LeftJoin('user_info as b', 'a.id=b.uid')
+    m.LeftJoin('sys_perm as c', 'a.id=c.uid')
+    m.Columns(
       'a.id AS uid', 'a.uname', 'a.email', 'a.tel', 'a.state', 'FROM_UNIXTIME(a.rtime, %s) as rtime', 'FROM_UNIXTIME(a.ltime, %s) as ltime', 'FROM_UNIXTIME(a.utime, %s) as utime',
       'b.nickname', 'b.position', 'b.name', 'b.gender', 'FROM_UNIXTIME(b.birthday, %s) as birthday', 'b.img',
       'c.role', 'c.perm'
     )
-    model.Where(
+    m.Where(
       'a.uname LIKE %s OR a.tel LIKE %s OR a.email LIKE %s',
       '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', '%Y-%m-%d',
       '%'+uname+'%', '%'+uname+'%', '%'+uname+'%'
     )
-    model.Order('a.id DESC')
-    model.Page(int(page), int(limit))
-    list = model.Find()
+    m.Order('a.id DESC')
+    m.Page(int(page), int(limit))
+    list = m.Find()
     # 状态
     for val in list :
       val['uid'] = str(val['uid'])
@@ -67,8 +68,8 @@ class SysUser(Base):
     if not data :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
     param = Util.JsonDecode(data)
-    tel = param['tel'] if 'tel' in param.keys() else ''
-    passwd = param['passwd'] if 'passwd' in param.keys() else Env.password
+    tel = Util.Trim(param['tel']) if 'tel' in param.keys() else ''
+    passwd = Util.Trim(param['passwd']) if 'passwd' in param.keys() else Env.password
     # 验证
     if not Safety.IsRight('tel', tel) :
       return self.GetJSON({'code':4000, 'msg':'手机号码有误!'})
@@ -122,7 +123,7 @@ class SysUser(Base):
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
     param = Util.JsonDecode(data)
     tel = Util.Trim(param['tel']) if 'tel' in param.keys() else ''
-    passwd = param['passwd'] if 'passwd' in param.keys() else ''
+    passwd = Util.Trim(param['passwd']) if 'passwd' in param.keys() else ''
     # 验证
     if not Safety.IsRight('tel', tel) :
       return self.GetJSON({'code':4000, 'msg':'手机号码有误!'})

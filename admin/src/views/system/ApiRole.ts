@@ -11,6 +11,8 @@ import wmRow from '@/components/main/row/index.vue'
 import wmTable from '@/components/table/index.vue'
 import wmTableTitle from '@/components/table/title/index.vue'
 import wmTableTr from '@/components/table/tr/index.vue'
+import wmTag from '@/components/tag/index.vue'
+import wmPopover from '@/components/popover/index.vue'
 import wmDialog from '@/components/dialog/index.vue'
 import wmForm from '@/components/form/index.vue'
 import wmFormItem from '@/components/form/item/index.vue'
@@ -18,9 +20,9 @@ import wmInput from '@/components/form/input/index.vue'
 import wmButton from '@/components/form/button/index.vue'
 import wmPage from '@/components/page/index.vue'
 
-/* 动作菜单 */
+/* API角色 */
 export default defineComponent({
-  components: {wmMain,wmRow,wmTable,wmTableTitle,wmTableTr,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmPage},
+  components: {wmMain,wmRow,wmTable,wmTableTitle,wmTableTr,wmTag,wmPopover,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmPage},
   data(){
     // 状态
     const store: any = useStore();
@@ -32,7 +34,9 @@ export default defineComponent({
     const add: any = {show:false, form:{}};
     const edit: any = {show:false, id:'', form:{}};
     const del: any = {show:false, ids:''};
-    return {state, page, sea, add, edit, del};
+    // 权限
+    const perm: any = {show:false, id:'', perm:''};
+    return {state, page, sea, add, edit, del, perm}
   },
   computed: {
     // 动作菜单-监听
@@ -69,7 +73,7 @@ export default defineComponent({
       this.page.list = [];
       this.page.total = 0;
       const load: any = Loading();
-      Post('Sysmenusaction/list',{
+      Post('apirole/list',{
         token: Storage.getItem('token'),
         page: this.page.page,
         limit: this.page.limit,
@@ -103,9 +107,9 @@ export default defineComponent({
       // 提交
       const data: string = JSON.stringify(this.add.form);
       const load: any = Loading();
-      Post('Sysmenusaction/add',{
+      Post('apirole/add',{
         token: Storage.getItem('token'),
-        data: data
+        data:data
       },(res: any)=>{
         load.clear();
         const d = res.data;
@@ -123,9 +127,6 @@ export default defineComponent({
       // 默认值
       this.edit.id = row.id;
       this.edit.form.name = row.name;
-      this.edit.form.action = row.action;
-      this.edit.form.perm = row.perm;
-      this.edit.form.ico = row.ico;
     },
     subEdit(){
       this.edit.show = false;
@@ -133,7 +134,7 @@ export default defineComponent({
       const id: number = this.edit.id;
       const data: string = JSON.stringify(this.edit.form);
       const load: any = Loading();
-      Post('Sysmenusaction/edit',{
+      Post('apirole/edit',{
         token: Storage.getItem('token'),
         id: id,
         data: data
@@ -156,8 +157,8 @@ export default defineComponent({
     subDel(){
       this.del.show = false;
       // 提交
-      const load: any = Loading();
-      Post('Sysmenusaction/delete',{
+      const load = Loading();
+      Post('apirole/del',{
         token: Storage.getItem('token'),
         data: this.del.ids
       },(res: any)=>{
@@ -166,6 +167,15 @@ export default defineComponent({
         if(d.code===0) this.loadData();
         return Toast(d.msg);
       });
+    },
+
+    /* 权限 */
+    permData(id: number, perm: any){
+      this.perm.show = true;
+      console.log(id,perm);
+    },
+    subPerm(){
+      this.perm.show = false;
     },
 
   },

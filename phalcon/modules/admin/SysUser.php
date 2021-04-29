@@ -32,6 +32,7 @@ class SysUser extends Base {
     // 统计
     $model = new User();
     $model->Columns('count(*) AS num');
+    $model->Where('uname LIKE ? OR tel LIKE ? OR email LIKE ?', '%'.$uname.'%', '%'.$uname.'%', '%'.$uname.'%');
     $total = $model->FindFirst();
     // 查询
     $model->Table('user as a');
@@ -122,7 +123,7 @@ class SysUser extends Base {
     // 参数
     $uid = self::Post('uid');
     $data = self::Post('data');
-    if(empty($data) || empty($data)){
+    if(empty($uid) || empty($data)){
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
     $param = json_decode($data);

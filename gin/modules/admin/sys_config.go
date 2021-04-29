@@ -62,7 +62,7 @@ func (r SysConfig) Edit(c *gin.Context) {
 		if key == "logo" || key == "login_bg" {
 			continue
 		}
-		m.Set(map[string]interface{}{"val": util.Trim(val, " ")})
+		m.Set(map[string]interface{}{"val": util.Trim(val)})
 		m.Where("name=?", key)
 		if !m.Update() {
 			r.GetJSON(c, gin.H{"code": 5000, "msg": "更新失败!"})

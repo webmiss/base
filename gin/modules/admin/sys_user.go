@@ -31,31 +31,29 @@ func (r SysUser) List(c *gin.Context) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
-	param := map[string]string{}
+	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
-	var uname string
-	if val, ok := param["uname"]; ok {
-		uname = val
-	}
+	uname := util.Trim(util.If(util.InKey("uname", param), param["uname"], ""))
 	// 统计
-	model := (&model.User{}).New()
-	model.Columns("count(*) AS num")
-	total := model.FindFirst()
+	m := (&model.User{}).New()
+	m.Columns("count(*) AS num")
+	m.Where("uname LIKE ? OR tel LIKE ? OR email LIKE ?", "%"+uname+"%", "%"+uname+"%", "%"+uname+"%")
+	total := m.FindFirst()
 	// 查询
-	model.Table("user as a")
-	model.LeftJoin("user_info as b", "a.id=b.uid")
-	model.LeftJoin("sys_perm as c", "a.id=c.uid")
-	model.LeftJoin("api_perm as d", "a.id=d.uid")
-	model.Columns(
+	m.Table("user as a")
+	m.LeftJoin("user_info as b", "a.id=b.uid")
+	m.LeftJoin("sys_perm as c", "a.id=c.uid")
+	m.LeftJoin("api_perm as d", "a.id=d.uid")
+	m.Columns(
 		"a.id AS uid", "a.uname", "a.email", "a.tel", "a.state", "FROM_UNIXTIME(a.rtime, '%Y-%m-%d %H:%i:%s') as rtime", "FROM_UNIXTIME(a.ltime, '%Y-%m-%d %H:%i:%s') as ltime", "FROM_UNIXTIME(a.utime, '%Y-%m-%d %H:%i:%s') as utime",
 		"b.nickname", "b.position", "b.name", "b.gender", "FROM_UNIXTIME(b.birthday, '%Y-%m-%d') as birthday", "b.img",
 		"c.role AS sys_role", "c.perm AS sys_perm",
 		"d.role AS api_role", "d.perm AS api_perm",
 	)
-	model.Where("a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?", "%"+uname+"%", "%"+uname+"%", "%"+uname+"%")
-	model.Order("a.id DESC")
-	model.Page(util.Int(page), util.Int(limit))
-	list := model.Find()
+	m.Where("a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?", "%"+uname+"%", "%"+uname+"%", "%"+uname+"%")
+	m.Order("a.id DESC")
+	m.Page(util.Int(page), util.Int(limit))
+	list := m.Find()
 	// 状态
 	for _, val := range list {
 		if util.Strval(val["state"]) == "1" {
@@ -84,16 +82,10 @@ func (r SysUser) Add(c *gin.Context) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
-	param := map[string]string{}
+	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
-	var tel string
-	if val, ok := param["tel"]; ok {
-		tel = val
-	}
-	passwd := config.Env().Password
-	if val, ok := param["passwd"]; ok {
-		passwd = val
-	}
+	tel := util.Trim(util.If(util.InKey("tel", param), param["tel"], ""))
+	passwd := util.Trim(util.If(util.InKey("passwd", param), param["passwd"], config.Env().Password))
 	// 验证
 	if !(&library.Safety{}).IsRight("tel", tel) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "手机号码有误!"})
@@ -153,20 +145,14 @@ func (r SysUser) Edit(c *gin.Context) {
 	// 参数
 	uid := c.PostForm("uid")
 	data := c.PostForm("data")
-	if util.Empty(data) {
+	if util.Empty(uid) || util.Empty(data) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
-	param := map[string]string{}
+	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
-	var tel string
-	if val, ok := param["tel"]; ok {
-		tel = val
-	}
-	passwd := ""
-	if val, ok := param["passwd"]; ok {
-		passwd = val
-	}
+	tel := util.Trim(util.If(util.InKey("tel", param), param["tel"], ""))
+	passwd := util.Trim(util.If(util.InKey("passwd", param), param["passwd"], ""))
 	// 验证
 	if !(&library.Safety{}).IsRight("tel", tel) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "手机号码有误!"})
@@ -281,11 +267,11 @@ func (r SysUser) Info(c *gin.Context) {
 	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
 	info := map[string]interface{}{
-		"nickname": util.If(util.InKey("nickname", param), util.Trim(param["nickname"], " "), ""),
-		"name":     util.If(util.InKey("name", param), util.Trim(param["name"], " "), ""),
-		"gender":   util.If(util.InKey("gender", param), util.Trim(param["gender"], " "), ""),
-		"birthday": util.If(util.InKey("birthday", param), util.Strtotime(util.Trim(param["birthday"], " "), "2006-01-02"), 0),
-		"position": util.If(util.InKey("position", param), util.Trim(param["position"], " "), ""),
+		"nickname": util.If(util.InKey("nickname", param), util.Trim(param["nickname"]), ""),
+		"name":     util.If(util.InKey("name", param), util.Trim(param["name"]), ""),
+		"gender":   util.If(util.InKey("gender", param), util.Trim(param["gender"]), ""),
+		"birthday": util.If(util.InKey("birthday", param), util.Strtotime(util.Trim(param["birthday"]), "2006-01-02"), 0),
+		"position": util.If(util.InKey("position", param), util.Trim(param["position"]), ""),
 	}
 	// 执行
 	m := (&model.UserInfo{}).New()

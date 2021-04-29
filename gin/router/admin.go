@@ -36,8 +36,18 @@ func Admin(r *gin.Engine) {
 		g.POST("sysuser/del", (&admin.SysUser{}).Del)
 		g.POST("sysuser/state", (&admin.SysUser{}).State)
 		g.POST("sysuser/info", (&admin.SysUser{}).Info)
+		// API角色
+		g.POST("apirole/list", (&admin.ApiRole{}).List)
+		g.POST("apirole/add", (&admin.ApiRole{}).Add)
+		g.POST("apirole/edit", (&admin.ApiRole{}).Edit)
+		g.POST("apirole/del", (&admin.ApiRole{}).Del)
 		// 系统菜单
 		g.POST("sysmenus/getMenus", (&admin.SysMenus{}).GetMenus)
+		// 系统角色
+		g.POST("sysrole/list", (&admin.SysRole{}).List)
+		g.POST("sysrole/add", (&admin.SysRole{}).Add)
+		g.POST("sysrole/edit", (&admin.SysRole{}).Edit)
+		g.POST("sysrole/del", (&admin.SysRole{}).Del)
 		// 系统配置
 		g.POST("sysconfig/list", (&admin.SysConfig{}).List)
 		g.POST("sysconfig/edit", (&admin.SysConfig{}).Edit)
