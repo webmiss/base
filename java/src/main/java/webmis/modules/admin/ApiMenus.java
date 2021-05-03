@@ -50,7 +50,7 @@ public class ApiMenus extends Base {
     String title = param.containsKey("title")?String.valueOf(param.get("title")).trim():"";
     String url = param.containsKey("url")?String.valueOf(param.get("url")).trim():"";
     // 统计
-    webmis.model.ApiMenu m = new webmis.model.ApiMenu();
+    ApiMenu m = new ApiMenu();
     m.Columns("count(*) AS num");
     m.Where("fid like ? AND title like ? AND url like ?", "%"+fid+"%", "%"+title+"%", "%"+url+"%");
     HashMap<String, Object> total = m.FindFirst();
@@ -101,7 +101,7 @@ public class ApiMenus extends Base {
       return GetJSON(res);
     }
     // 数据
-    webmis.model.ApiMenu m = new webmis.model.ApiMenu();
+    ApiMenu m = new ApiMenu();
     HashMap<String,Object> uData = new HashMap<String,Object>();
     uData.put("fid", param.containsKey("fid")?String.valueOf(param.get("fid")).trim():0);
     uData.put("title", title);
@@ -151,7 +151,7 @@ public class ApiMenus extends Base {
       return GetJSON(res);
     }
     // 数据
-    webmis.model.ApiMenu m = new webmis.model.ApiMenu();
+    ApiMenu m = new ApiMenu();
     HashMap<String,Object> uData = new HashMap<String,Object>();
     uData.put("fid", param.containsKey("fid")?String.valueOf(param.get("fid")).trim():0);
     uData.put("title", title);
@@ -196,7 +196,7 @@ public class ApiMenus extends Base {
     JSONArray param = Util.JsonDecodeArray(data);
     String ids = Util.Implode(",", JSONArray.parseArray(param.toJSONString()));
     // 执行
-    webmis.model.ApiMenu m = new webmis.model.ApiMenu();
+    ApiMenu m = new ApiMenu();
     m.Where("id in("+ids+")");
     if(m.Delete()){
       res = new HashMap<String,Object>();
@@ -206,6 +206,43 @@ public class ApiMenus extends Base {
       res = new HashMap<String,Object>();
       res.put("code", 5000);
       res.put("msg", "删除失败!");
+    }
+    return GetJSON(res);
+  }
+
+  /* 动作权限 */
+  @RequestMapping("perm")
+  String Perm(HttpServletRequest request, String token, Integer id, String data) {
+    HashMap<String,Object> res;
+    // 验证
+    String msg = AdminToken.verify(token, request.getRequestURI());
+    if(!msg.equals("")){
+      res = new HashMap<String,Object>();
+      res.put("code", 4001);
+      res.put("msg", msg);
+      return GetJSON(res);
+    }
+    // 参数
+    if(id==0 || data==""){
+      res = new HashMap<String,Object>();
+      res.put("code", 4000);
+      res.put("msg", "参数错误!");
+      return GetJSON(res);
+    }
+    // 执行
+    ApiMenu m = new ApiMenu();
+    HashMap<String,Object> uData = new HashMap<String,Object>();
+    uData.put("action", data);
+    m.Set(uData);
+    m.Where("id=?", id);
+    if(m.Update()){
+      res = new HashMap<String,Object>();
+      res.put("code", 0);
+      res.put("msg", "成功");
+    } else {
+      res = new HashMap<String,Object>();
+      res.put("code", 5000);
+      res.put("msg", "更新失败!");
     }
     return GetJSON(res);
   }

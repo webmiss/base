@@ -136,4 +136,27 @@ class ApiMenus extends Base {
     }
   }
 
+  /* 动作权限 */
+  static function Perm(){
+    // 验证
+    $token = self::Post('token');
+    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    // 参数
+    $id = self::Post('id');
+    $data = self::Post('data');
+    if(empty($id) || empty($data)){
+      return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
+    }
+    // 执行
+    $m = new ApiMenu();
+    $m->Set(['action'=>$data]);
+    $m->Where('id=?', $id);
+    if($m->Update()){
+      return self::GetJSON(['code'=>0,'msg'=>'成功']);
+    } else {
+      return self::GetJSON(['code'=>5000,'msg'=>'更新失败!']);
+    }
+  }
+
 }

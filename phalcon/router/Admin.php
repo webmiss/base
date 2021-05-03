@@ -35,6 +35,7 @@ class Admin {
     $app->post('/admin/apimenus/add', 'App\Admin\ApiMenus::Add');
     $app->post('/admin/apimenus/edit', 'App\Admin\ApiMenus::Edit');
     $app->post('/admin/apimenus/del', 'App\Admin\ApiMenus::Del');
+    $app->post('/admin/apimenus/perm', 'App\Admin\ApiMenus::Perm');
     // 会员角色
     $app->post('/admin/apirole/list', 'App\Admin\ApiRole::List');
     $app->post('/admin/apirole/add', 'App\Admin\ApiRole::Add');
@@ -45,6 +46,7 @@ class Admin {
     $app->post('/admin/sysmenus/add', 'App\Admin\SysMenus::Add');
     $app->post('/admin/sysmenus/edit', 'App\Admin\SysMenus::Edit');
     $app->post('/admin/sysmenus/del', 'App\Admin\SysMenus::Del');
+    $app->post('/admin/sysmenus/perm', 'App\Admin\SysMenus::Perm');
     $app->post('/admin/sysmenus/getMenus', 'App\Admin\SysMenus::GetMenus');
     // 系统角色
     $app->post('/admin/sysrole/list', 'App\Admin\SysRole::List');

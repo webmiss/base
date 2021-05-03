@@ -124,7 +124,26 @@
 
     <!-- Perm -->
     <wm-dialog width="640px" :title="perm.title" :show="perm.show" @update:show="perm.show=$event">
-      <div>内容</div>
+      <wm-table>
+        <wm-table-title :checkbox="false">
+          <td width="60">类型</td>
+          <td>名称</td>
+          <td>动作</td>
+          <td width="100">权限</td>
+          <td width="30">
+            <div class="perm_an"><wm-add @click="permAdd()" /></div>
+          </td>
+        </wm-table-title>
+        <wm-table-tr :checkbox="false" v-for="(val,key) in perm.list" :key="key">
+          <td><wm-input :value="val.type" @update:value="val.type=$event" /></td>
+          <td><wm-input :value="val.name" @update:value="val.name=$event" /></td>
+          <td><wm-input :value="val.action" @update:value="val.action=$event" /></td>
+          <td><wm-input :value="val.perm" @update:value="val.perm=$event" /></td>
+          <td>
+            <div class="perm_an"  @click="permRemove(key)"><wm-close /></div>
+          </td>
+        </wm-table-tr>
+      </wm-table>
       <template #footer>
         <wm-button @click="subPerm()">更 新</wm-button>
       </template>
@@ -137,6 +156,7 @@
 <style scoped>
 .table{min-width: 800px;}
 .form{padding-right: 24px;}
+.perm_an{position: absolute; margin-top: -11px; white-space: nowrap;}
 </style>
 
 <script lang="ts" src="./Menus.ts"></script>

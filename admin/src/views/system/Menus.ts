@@ -14,6 +14,8 @@ import wmTableTr from '@/components/table/tr/index.vue'
 import wmTag from '@/components/tag/index.vue'
 import wmPopover from '@/components/popover/index.vue'
 import wmDialog from '@/components/dialog/index.vue'
+import wmAdd from '@/components/action/add/index.vue'
+import wmClose from '@/components/action/close/index.vue'
 import wmForm from '@/components/form/index.vue'
 import wmFormItem from '@/components/form/item/index.vue'
 import wmInput from '@/components/form/input/index.vue'
@@ -22,7 +24,7 @@ import wmPage from '@/components/page/index.vue'
 
 /* 系统菜单 */
 export default defineComponent({
-  components: {wmMain,wmRow,wmTable,wmTableTitle,wmTableTr,wmTag,wmPopover,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmPage},
+  components: {wmMain,wmRow,wmTable,wmTableTitle,wmTableTr,wmTag,wmPopover,wmDialog,wmAdd,wmClose,wmForm,wmFormItem,wmInput,wmButton,wmPage},
   data(){
     // 状态
     const store: any = useStore();
@@ -35,7 +37,7 @@ export default defineComponent({
     const edit: any = {show:false, id:'', form:{}};
     const del: any = {show:false, ids:''};
     // 权限
-    const perm: any = {show:false, id:'', title:'权限', action:''};
+    const perm: any = {show:false, id:'', title:'权限', list:[]};
     return {state, page, sea, add, edit, del, perm};
   },
   computed: {
@@ -174,14 +176,45 @@ export default defineComponent({
       });
     },
 
-    /* 权限 */
-    permData(id: number, title: string, controller: string, action: string){
+    /* 动作权限 */
+    permData(id: number, title: string, controller: string, data: string){
       this.perm.show = true;
+      this.perm.id = id;
       this.perm.title = title + ': ' + controller;
-      console.log(id, controller, action);
+      this.perm.list = data;
     },
     subPerm(){
+      // 过滤
+      const list = this.perm.list;
+      const data = [];
+      for(let i in list){
+        if(list[i].action && list[i].perm) data.push(list[i]);
+      }
+      this.perm.list = data;
       this.perm.show = false;
+      // 提交
+      const load: any = Loading();
+      Post('sysmenus/perm',{
+        token: Storage.getItem('token'),
+        id: this.perm.id,
+        data: JSON.stringify(data)
+      },(res: any)=>{
+        load.clear();
+        const d = res.data;
+        if(d.code===0) this.loadData();
+        return Toast(d.msg);
+      });
+    },
+    /* 追加 */
+    permAdd(){
+      const list = this.perm.list;
+      const perm = list[list.length-1].perm;
+      list.push({type:'1', name:'', action:'', perm:perm*2});
+    },
+    /* 删除 */
+    permRemove(key: number){
+      const list = this.perm.list;
+      list.splice(key, 1);
     },
 
   },

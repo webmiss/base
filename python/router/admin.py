@@ -58,6 +58,7 @@ def apiMenus(a) :
   elif a=='add' : return ApiMenus().Add()
   elif a=='edit' : return ApiMenus().Edit()
   elif a=='del' : return ApiMenus().Del()
+  elif a=='perm' : return ApiMenus().Perm()
 # 会员角色
 @Admin.route('/apirole/<a>',methods=['POST'])
 def sysRole(a) :
@@ -72,6 +73,7 @@ def sysMenus(a) :
   elif a=='add' : return SysMenus().Add()
   elif a=='edit' : return SysMenus().Edit()
   elif a=='del' : return SysMenus().Del()
+  elif a=='perm' : return SysMenus().Perm()
   elif a=='getMenus' : return SysMenus().GetMenus()
 # 系统角色
 @Admin.route('/sysrole/<a>',methods=['POST'])

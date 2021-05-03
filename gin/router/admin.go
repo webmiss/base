@@ -41,6 +41,7 @@ func Admin(r *gin.Engine) {
 		g.POST("apimenus/add", (&admin.ApiMenus{}).Add)
 		g.POST("apimenus/edit", (&admin.ApiMenus{}).Edit)
 		g.POST("apimenus/del", (&admin.ApiMenus{}).Del)
+		g.POST("apimenus/perm", (&admin.ApiMenus{}).Perm)
 		// 会员角色
 		g.POST("apirole/list", (&admin.ApiRole{}).List)
 		g.POST("apirole/add", (&admin.ApiRole{}).Add)
@@ -51,6 +52,7 @@ func Admin(r *gin.Engine) {
 		g.POST("sysmenus/add", (&admin.SysMenus{}).Add)
 		g.POST("sysmenus/edit", (&admin.SysMenus{}).Edit)
 		g.POST("sysmenus/del", (&admin.SysMenus{}).Del)
+		g.POST("sysmenus/perm", (&admin.SysMenus{}).Perm)
 		g.POST("sysmenus/getMenus", (&admin.SysMenus{}).GetMenus)
 		// 系统角色
 		g.POST("sysrole/list", (&admin.SysRole{}).List)

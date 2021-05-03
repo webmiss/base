@@ -173,6 +173,33 @@ func (r SysMenus) Del(c *gin.Context) {
 	}
 }
 
+/* 动作权限 */
+func (r SysMenus) Perm(c *gin.Context) {
+	// 验证
+	token := c.PostForm("token")
+	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
+	if msg != "" {
+		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
+		return
+	}
+	// 参数
+	id := c.PostForm("id")
+	data := c.PostForm("data")
+	if util.Empty(id) || util.Empty(data) {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
+		return
+	}
+	// 执行
+	m := (&model.SysMenu{}).New()
+	m.Set(map[string]interface{}{"action": data})
+	m.Where("id=?", id)
+	if m.Update() {
+		r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
+	} else {
+		r.GetJSON(c, gin.H{"code": 5000, "msg": "更新失败!"})
+	}
+}
+
 /* 获取菜单 */
 func (r *SysMenus) GetMenus(c *gin.Context) {
 	// 验证
