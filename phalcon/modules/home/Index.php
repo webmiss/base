@@ -1,10 +1,10 @@
 <?php
 namespace App\Home;
 
-use Config\Env;
 use Service\Base;
 use Library\Qrcode;
 use Library\FileEo;
+use Library\Captcha;
 
 class Index extends Base {
 
@@ -12,6 +12,11 @@ class Index extends Base {
   static function Index() {
     // 返回
     return self::GetJSON(['code'=>0, 'msg'=>'Web']);
+  }
+
+  /* 验证码 */
+  static function Vcode() {
+    Captcha::Vcode();
   }
 
   /* 二维码 */

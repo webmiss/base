@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import webmis.config.Env;
+import webmis.library.Captcha;
 import webmis.library.FileEo;
 import webmis.library.Qrcode;
 import webmis.service.Base;
@@ -22,6 +23,8 @@ public class Index extends Base{
   @RequestMapping("")
   String index() {
     HashMap<String,Object> res;
+    Captcha c = new Captcha();
+    c.Vcode();
     // 返回
     res = new HashMap<String,Object>();
     res.put("code",0);

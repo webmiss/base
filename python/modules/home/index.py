@@ -2,6 +2,7 @@ from service.base import Base
 from config.env import Env
 from library.file_eo import FileEo
 from library.qrcode import Qrcode
+from library.captcha import Captcha
 
 from flask import send_file
 
@@ -9,6 +10,7 @@ class Index(Base) :
 
   # 首页
   def Index(self):
+    Captcha().Vcode()
     # 返回
     return self.GetJSON({'code':0,'msg':'Web'})
 
