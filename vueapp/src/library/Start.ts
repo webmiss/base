@@ -22,6 +22,8 @@ export default {
   init(){
     // 状态
     this.state = App.$store.state;
+    this.setSize();
+    window.onresize = ()=>{this.setSize();}
     // APP设置
     this.setApp();
     // 登录验证
@@ -34,6 +36,12 @@ export default {
     }
     // 消息推送
     if(Env.socket.start) Socket.start();
+  },
+
+  /* 可视区域 */
+  setSize() {
+    this.state.width = document.body.offsetWidth;
+    this.state.height = document.body.offsetHeight;
   },
 
   /* 登录验证 */

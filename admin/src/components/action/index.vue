@@ -17,9 +17,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useStore } from 'vuex';
-import Post from '../../library/ui/request-post'
-import Storage from '../../library/ui/storage'
-import Toast from '../../library/ui/ui-toast'
 export default defineComponent({
   name: 'Action',
   props: {

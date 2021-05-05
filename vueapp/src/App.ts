@@ -25,7 +25,7 @@ export default defineComponent({
     return {state,router,transitionName,update,updateCfg,info}
   },
   watch:{
-    $route(to,from){
+    $route(to: any, from: any){
       // 页面切换动画
       if(to.path=='/' && from.path=='/') return ;
       this.transitionName = this.router.isBack?'slide-right':'slide-left';
@@ -37,9 +37,9 @@ export default defineComponent({
     mode(){ return this.state.mode; },
   },
   mounted(){
-    /* 启动服务 */
+    // 启动服务
     setTimeout(()=>{ Start.init(); },400);
-    /* 检测更新 */
+    // 检测更新
     if(Env.update.start) this.isUpdate();
   },
   methods:{

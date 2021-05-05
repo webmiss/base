@@ -9,7 +9,7 @@
 .wm-table tr:nth-child(odd){background-color: #F8F8F8;}
 .wm-table tr:nth-child(even){background-color: #FFF;}
 .wm-table tr:hover{background-color: #F2F4F6;}
-.wm-table td{padding: 4px 8px; line-height: 40px;}
+.wm-table td{position: relative; padding: 4px 8px; line-height: 40px;}
 </style>
 
 <script lang="ts">

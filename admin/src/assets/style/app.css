@@ -34,7 +34,7 @@
 .app_left{position: absolute; left: 0; width: 200px; height: 100%; background-color: #24292E;}
 .app_right{position: absolute; right: 0; width: calc(100% - 200px); height: 100%;}
 .app_top{position: relative; height: 42px; padding: 10px 16px; box-shadow: 0 1px 0 #F2F4F6;}
-.app_main{position: absolute; width: 100%; height: calc(100% - 100px);}
+.app_main{position: absolute; z-index: 9999; width: 100%; height: calc(100% - 100px);}
 .app_copy{position: fixed; width: calc(100% - 200px); height: 40px; line-height: 40px; bottom: 0; text-align: center; color: #999; font-size: 12px; background-color: rgba(0,0,0,.02);}
 
 /* 菜单 */

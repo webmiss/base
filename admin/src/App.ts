@@ -62,9 +62,9 @@ export default defineComponent({
     mode(){ return this.state.mode; },
   },
   mounted(){
-    /* 启动服务 */
+    // 启动服务
     setTimeout(()=>{ Start.init(); },400);
-    /* 检测更新 */
+    // 检测更新
     if(Env.update.start) this.isUpdate();
     // 用户名
     this.login.uname = Storage.getItem('uname');
