@@ -10,9 +10,13 @@ class Index(Base) :
 
   # 首页
   def Index(self):
-    Captcha().Vcode()
     # 返回
     return self.GetJSON({'code':0,'msg':'Web'})
+
+  # 验证码
+  def Vcode(self):
+    Captcha().Vcode()
+    return ''
 
   # 二维码
   def Qrcode(self, name: str):

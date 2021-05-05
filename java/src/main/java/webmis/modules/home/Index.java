@@ -32,8 +32,16 @@ public class Index extends Base{
     return GetJSON(res);
   }
 
+  /* 验证码 */
+  @RequestMapping("vcode")
+  String vcode() {
+    Captcha c = new Captcha();
+    c.Vcode();
+    return "";
+  }
+
   /* 二维码 */
-  @RequestMapping(value = "/index/qrcode/{name}", produces=MediaType.IMAGE_PNG_VALUE)
+  @RequestMapping(value = "index/qrcode/{name}", produces=MediaType.IMAGE_PNG_VALUE)
   byte[] Qrcode(@PathVariable("name") String name) {
     String text="";
     if(name.equals("docs")) text="https://webmis.vip/";

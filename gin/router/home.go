@@ -12,6 +12,7 @@ func Home(r *gin.Engine) {
 	{
 		// 首页
 		g.GET("", (&home.Index{}).Index)
+		g.GET("vcode", (&home.Index{}).Vcode)
 		g.GET("index/qrcode/:name", (&home.Index{}).Qrcode)
 	}
 }

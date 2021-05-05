@@ -15,6 +15,6 @@ func (self *Base) Print(content ...interface{}) {
 }
 
 /* 返回JSON */
-func (self *Base) GetJSON(c *gin.Context, data map[string]interface{}) {
+func (self *Base) GetJSON(c *gin.Context, data interface{}) {
 	c.JSON(200, data)
 }

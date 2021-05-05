@@ -20,6 +20,13 @@ func (r *Index) Index(c *gin.Context) {
 	r.GetJSON(c, gin.H{"code": 0, "msg": "Web"})
 }
 
+/* 验证码 */
+func (r *Index) Vcode(c *gin.Context) {
+	(&library.Captcha{}).Vcode()
+	// 返回
+	r.GetJSON(c, "")
+}
+
 /* 二维码 */
 func (r *Index) Qrcode(c *gin.Context) {
 	name := c.Param("name")
