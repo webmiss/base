@@ -8,6 +8,7 @@ use Middleware\Logs;
 use Router\Home;
 use Router\Api;
 use Router\Admin;
+use Router\Demo;
 
 define('BASE_PATH', __DIR__);
 define('STDERR',fopen('php://stderr', 'a'));
@@ -22,14 +23,17 @@ $loader = new Loader();
 $loader->registerNamespaces([
   'Config'=> BASE_PATH.'/config/',
   'Library'=> BASE_PATH.'/library/',
+  'Library\Aliyun'=> BASE_PATH.'/library/aliyun',
+  'Library\Tencent'=> BASE_PATH.'/library/tencent',
   'Middleware'=> BASE_PATH.'/middleware/',
   'Model'=> BASE_PATH.'/model/',
   'Router'=> BASE_PATH.'/router/',
   'Service'=> BASE_PATH.'/service/',
   'Util'=> BASE_PATH.'/util/',
-  'App\Home'=> BASE_PATH.'/modules/home/',
   'App\Api'=> BASE_PATH.'/modules/api/',
   'App\Admin'=> BASE_PATH.'/modules/admin/',
+  'App\Home'=> BASE_PATH.'/modules/home/',
+  'App\Demo'=> BASE_PATH.'/modules/demo/',
 ]);
 $loader->register();
 
@@ -43,9 +47,10 @@ $app->before(function() use ($app) {
 });
 
 // 路由 
-Home::Init($app);
 Api::Init($app);
 Admin::Init($app);
+Home::Init($app);
+Demo::Init($app);
 
 // 运行
 try {

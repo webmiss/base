@@ -5,9 +5,10 @@ import flask_cors
 
 from config.env import Env
 from middleware.logs import Logs
-from router.home import Home
 from router.api import Api
 from router.admin import Admin
+from router.home import Home
+from router.demo import Demo
 
 # 配置
 app = Flask(__name__)
@@ -31,6 +32,7 @@ def handle_exception(e):
 app.register_blueprint(Home, url_prefix="")
 app.register_blueprint(Api, url_prefix="/api")
 app.register_blueprint(Admin, url_prefix="/admin")
+app.register_blueprint(Demo, url_prefix="/demo")
 
 # 运行
 if __name__ == '__main__':

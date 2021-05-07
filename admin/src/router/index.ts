@@ -16,7 +16,8 @@ const routes: Array<RouteRecordRaw> = [
   {path:'/SysRole', name:'SysRole', component:()=>import('../views/system/Role.vue')},
   {path:'/SysMenus', name:'SysMenus', component:()=>import('../views/system/Menus.vue')},
   {path:'/SysConfig', name:'SysConfig', component:()=>import('../views/system/Config.vue')},
-  // 业务
+  // Demo
+  {path:'/demo/TWebLive', name:'DemoTWebLive', component:()=>import('../views/demo/TWebLive.vue')},
 ]
 
 /* 配置 */
