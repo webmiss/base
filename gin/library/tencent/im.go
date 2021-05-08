@@ -3,7 +3,7 @@ package tencent
 import (
 	"crypto/hmac"
 	"crypto/sha256"
-	"fmt"
+	"sort"
 	"webmis/config"
 	"webmis/util"
 )
@@ -13,13 +13,13 @@ type Im struct{}
 
 /* 鉴权票据 */
 func (i Im) UserSig(userId int64, expire ...int) string {
+	// 配置
+	cfg := config.TRTC()
 	// 默认值
-	expire_time := 86400 * 180
+	expire_time := cfg.ExpireTime
 	if len(expire) > 0 {
 		expire_time = expire[0]
 	}
-	// 配置
-	cfg := config.TRTC()
 	// 参数
 	param := map[string]string{
 		"TLS.ver":        "2.0",
@@ -32,27 +32,62 @@ func (i Im) UserSig(userId int64, expire ...int) string {
 	data := util.JsonEncode(param)
 	// 压缩
 	res := (&util.Base64{}).Compress(data)
-	return (&util.Base64{}).UrlEncode(string(res))
+	return (&util.Base64{}).UrlEncode(res)
 }
 
 /* 验证 */
-func (i Im) VerifySig(userId int64, userSig string) bool {
-	// 数据
+func (i Im) VerifySig(userId int64, userSig string) int64 {
+	// 解码
 	base64 := (&util.Base64{}).UrlDecode(userSig)
-	fmt.Println(base64)
-	return true
+	if base64 == nil {
+		return 0
+	}
+	// 解压
+	un_sig := (&util.Base64{}).UnCompress(base64)
+	if un_sig == nil {
+		return 0
+	}
+	data := map[string]string{}
+	util.JsonDecode(string(un_sig), &data)
+	// 配置
+	cfg := config.TRTC()
+	if util.Strval(cfg.SDKAppID) != data["TLS.sdkappid"] {
+		return 0
+	}
+	if util.Strval(userId) != data["TLS.identifier"] {
+		return 0
+	}
+	// 是否过期
+	now_time := util.Time()
+	out_time := util.Int64(data["TLS.time"]) + util.Int64(data["TLS.expire"])
+	if now_time > out_time {
+		return 0
+	}
+	// 验证Sig
+	sig := i.hmacsha256(data, cfg.SecretKey)
+	if sig != data["TLS.sig"] {
+		return 0
+	}
+	return out_time - now_time
 }
 
 /* 获取Sig */
 func (Im) hmacsha256(param map[string]string, key string) string {
+	// 排序
+	var keys []string
+	for k := range param {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	// 拼接
 	content := ""
-	for k, v := range param {
+	for _, k := range keys {
 		if k == "TLS.ver" || k == "TLS.sig" {
 			continue
 		}
-		content += k + ":" + v + "\n"
+		content += k + ":" + param[k] + "\n"
 	}
 	h := hmac.New(sha256.New, []byte(key))
 	h.Write([]byte(content))
-	return (&util.Base64{}).Encode(string(h.Sum(nil)))
+	return (&util.Base64{}).Encode(h.Sum(nil))
 }

@@ -13,6 +13,7 @@ import webmis.library.Redis;
 import webmis.library.Safety;
 import webmis.model.UserInfo;
 import webmis.service.AdminToken;
+import webmis.util.Hmac;
 import webmis.util.Util;
 
 @RestController
@@ -47,7 +48,7 @@ public class User extends Base {
     model.Columns("a.id", "a.state", "b.position", "b.nickname", "b.name", "b.gender", "b.birthday", "b.img", "c.perm", "d.perm as role_perm");
     model.Where(
       "(a.uname=? OR a.tel=? OR a.email=?) AND a.password=?",
-      uname, uname, uname, Util.Md5(passwd)
+      uname, uname, uname, Hmac.Md5(passwd)
     );
     HashMap<String, Object> data = model.FindFirst();
     // 是否存在

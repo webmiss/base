@@ -12,16 +12,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-import org.springframework.util.DigestUtils;
-
 /* 常用工具 */
 @SuppressWarnings("unchecked")
 public class Util {
-
-  /* Md5加密 */
-  public static String Md5(String str) {
-    return DigestUtils.md5DigestAsHex(str.getBytes());
-  }
 
   /* 格式化时间 */
   public static String Date(String format) {

@@ -24,6 +24,7 @@ import webmis.model.UserInfo;
 import webmis.service.AdminToken;
 import webmis.service.Base;
 import webmis.service.Data;
+import webmis.util.Hmac;
 import webmis.util.Util;
 
 @RestController
@@ -147,7 +148,7 @@ public class SysUser extends Base {
       ps = conn.prepareStatement(sql);
       ps.setLong(1, uid);
       ps.setString(2, tel);
-      ps.setString(3, Util.Md5(passwd));
+      ps.setString(3, Hmac.Md5(passwd));
       ps.executeUpdate();
       ps.close();
       // 详情
@@ -229,7 +230,7 @@ public class SysUser extends Base {
     // 更新
     HashMap<String,Object> uData = new HashMap<String,Object>();
     uData.put("tel", tel);
-    if(!passwd.equals("")) uData.put("password", Util.Md5(passwd));
+    if(!passwd.equals("")) uData.put("password", Hmac.Md5(passwd));
     m.Set(uData);
     m.Where("id=?", uid);
     if(m.Update()){

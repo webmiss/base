@@ -12,7 +12,7 @@ import webmis.service.Base;
 import webmis.service.AdminToken;
 import webmis.library.Safety;
 import webmis.model.User;
-import webmis.util.Util;
+import webmis.util.Hmac;
 
 @RestController
 @Controller("AdminUserPasswd")
@@ -48,7 +48,7 @@ public class UserPasswd extends Base {
     // 数据
     User model = new User();
     model.Columns("id");
-    model.Where("id=? AND password=?", tData.get("uid").toString(), Util.Md5(passwd));
+    model.Where("id=? AND password=?", tData.get("uid").toString(), Hmac.Md5(passwd));
     HashMap<String, Object> uData = model.FindFirst();
     if(uData.isEmpty()){
       res = new HashMap<String,Object>();
@@ -57,7 +57,7 @@ public class UserPasswd extends Base {
       return GetJSON(res);
     }
     HashMap<String, Object> upParam = new HashMap<String, Object>();
-    upParam.put("password", Util.Md5(passwdNew));
+    upParam.put("password", Hmac.Md5(passwdNew));
     model.Set(upParam);
     model.Where("id=?", tData.get("uid").toString());
     if(!model.Update()) {

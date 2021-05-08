@@ -10,24 +10,23 @@ import (
 
 type Base64 struct{}
 
-/* 加密 */
-func (Base64) Encode(str string) string {
-	return base64.StdEncoding.EncodeToString([]byte(str))
+/* 编码 */
+func (Base64) Encode(data []byte) string {
+	return base64.StdEncoding.EncodeToString([]byte(data))
 }
 
-/* 解密 */
-func (Base64) Decode(content string) string {
-	res, err := base64.RawStdEncoding.DecodeString(content)
-	if err != nil {
-		return ""
-	}
-	return string(res)
+/* 解码 */
+func (Base64) Decode(data string) []byte {
+	res, _ := base64.RawStdEncoding.DecodeString(data)
+	return res
 }
 
-/* 加密(URL) */
-func (Base64) UrlEncode(str string) string {
+/* 编码(URL) */
+func (Base64) UrlEncode(data []byte) string {
+	// 编码
+	res := base64.StdEncoding.EncodeToString(data)
+	// 替换
 	replace := map[string]string{"\\+": "*", "/": "-", "=": "_"}
-	res := base64.StdEncoding.EncodeToString([]byte(str))
 	for k, v := range replace {
 		reg, _ := regexp.Compile(k)
 		res = reg.ReplaceAllString(res, v)
@@ -35,18 +34,17 @@ func (Base64) UrlEncode(str string) string {
 	return res
 }
 
-/* 解密(URL) */
-func (Base64) UrlDecode(content string) string {
-	replace := map[string]string{"\\+": "*", "/": "-", "=": "_"}
+/* 解码(URL) */
+func (Base64) UrlDecode(data string) []byte {
+	// 替换
+	replace := map[string]string{"\\*": "+", "-": "/", "_": "="}
 	for k, v := range replace {
 		reg, _ := regexp.Compile(k)
-		content = reg.ReplaceAllString(content, v)
+		data = reg.ReplaceAllString(data, v)
 	}
-	res, err := base64.RawStdEncoding.DecodeString(content)
-	if err != nil {
-		return ""
-	}
-	return string(res)
+	// 解码
+	res, _ := base64.RawStdEncoding.DecodeString(data)
+	return res
 }
 
 /* 压缩 */
@@ -59,9 +57,13 @@ func (Base64) Compress(data []byte) []byte {
 }
 
 /* 解压 */
-func (Base64) UnCompress(content []byte) []byte {
+func (Base64) UnCompress(data []byte) []byte {
 	var b bytes.Buffer
-	r, _ := zlib.NewReader(bytes.NewReader(content))
+	r, err := zlib.NewReader(bytes.NewReader(data))
+	if err != nil {
+		return nil
+	}
 	io.Copy(&b, r)
+	r.Close()
 	return b.Bytes()
 }

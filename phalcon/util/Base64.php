@@ -3,38 +3,42 @@ namespace Util;
 
 class Base64 {
 
-  /* 加密 */
-  static function Encode(string $str): string {
-    return base64_encode($str);
+  /* 编码 */
+  static function Encode(string $data): string {
+    return base64_encode($data);
   }
 
-  /* 解密 */
-  static function Decode(string $base64) {
-    return base64_decode($base64);
+  /* 解码 */
+  static function Decode(string $data) {
+    return base64_decode($data);
   }
 
-  /* 加密(URL) */
-  static function UrlEncode(string $str): string {
+  /* 编码(URL) */
+  static function UrlEncode(string $data): string {
+    // 编码
+    $res = base64_encode($data);
+    // 替换
     static $replace = Array('+'=>'*', '/'=>'-', '='=>'_');
-    $res = base64_encode($str);
     return str_replace(array_keys($replace), array_values($replace), $res);
   }
 
-  /* 解密(URL) */
-  static function UrlDecode(string $base64) {
+  /* 解码(URL) */
+  static function UrlDecode(string $data) {
+    // 替换
     static $replace = Array('+'=>'*', '/'=>'-', '='=>'_');
-    $res = str_replace(array_values($replace), array_keys($replace), $base64);
+    $res = str_replace(array_values($replace), array_keys($replace), $data);
+    // 解码
     return base64_decode($res);
   }
 
   /* 压缩 */
-  static function Compress(string $content) {
-    return gzcompress($content);
+  static function Compress(string $data) {
+    return gzcompress($data);
   }
 
   /* 解压 */
-  static function UnCompress(string $content) {
-    return gzuncompress($content);
+  static function UnCompress(string $data) {
+    return gzuncompress($data);
   }
 
 }
