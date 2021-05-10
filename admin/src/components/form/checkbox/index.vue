@@ -1,5 +1,5 @@
 <template>
-  <div class="wm-checkbox" @click="click()">
+  <div class="wm-checkbox" @click.stop="click()">
     <div class="checked" :class="show?'active':''">
       <input type="checkbox" class="checkbox" :value="value">
     </div>
@@ -24,9 +24,15 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Checkbox',
   props: {
-    value: {type: String, default: ''}, //checkbox[value]
+    value: {default: ''}, //checkbox[value]
     label: {type: String, default: ''}, //名称
     checked: {type: Boolean, default: false}, //是否选中
+  },
+  watch:{
+    show(val: boolean){
+      console.log('checkbox', val);
+      // this.show = val;
+    }
   },
   data(){
     const show: Boolean = false;
