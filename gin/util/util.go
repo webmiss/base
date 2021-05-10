@@ -1,8 +1,6 @@
 package util
 
 import (
-	"crypto/md5"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"reflect"
@@ -37,14 +35,6 @@ func If(val bool, tVal interface{}, fVal interface{}) interface{} {
 	} else {
 		return fVal
 	}
-}
-
-/* Md5加密 */
-func Md5(str string) string {
-	data := []byte(str)
-	h := md5.New()
-	h.Write(data)
-	return hex.EncodeToString(h.Sum(nil))
 }
 
 /*

@@ -37,7 +37,7 @@ func (r User) Login(c *gin.Context) {
 	model.LeftJoin("user_info AS b", "a.id=b.uid")
 	model.LeftJoin("api_perm AS c", "a.id=c.uid")
 	model.LeftJoin("api_role AS d", "c.role=d.id")
-	model.Where("(a.uname=? OR a.tel=? OR a.email=?) AND a.password=?", uname, uname, uname, util.Md5(passwd))
+	model.Where("(a.uname=? OR a.tel=? OR a.email=?) AND a.password=?", uname, uname, uname, (&util.Hmac{}).Md5(passwd))
 	model.Columns("a.id", "a.state", "b.position", "b.nickname", "b.name", "b.gender", "b.birthday", "b.img", "c.perm", "d.perm as role_perm")
 	data := model.FindFirst()
 	// 是否存在

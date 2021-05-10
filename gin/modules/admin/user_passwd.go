@@ -38,13 +38,13 @@ func (r UserPasswd) Edit(c *gin.Context) {
 	// 数据
 	model := (&model.User{}).New()
 	model.Columns("id")
-	model.Where("id=? AND password=?", tData["uid"], util.Md5(passwd))
+	model.Where("id=? AND password=?", tData["uid"], (&util.Hmac{}).Md5(passwd))
 	uData := model.FindFirst()
 	if uData == nil {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "当前密码错误!"})
 		return
 	}
-	model.Set(map[string]interface{}{"password": util.Md5(passwdNew)})
+	model.Set(map[string]interface{}{"password": (&util.Hmac{}).Md5(passwdNew)})
 	model.Where("id=?", tData["uid"])
 	if !model.Update() {
 		r.GetJSON(c, gin.H{"code": 5000, "msg": "修改失败!"})

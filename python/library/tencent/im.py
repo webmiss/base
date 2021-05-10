@@ -4,6 +4,7 @@ import hashlib
 from config.tencent import Tencent
 from util.util import Util
 from util.base64 import Base64
+from util.hmac import Hmac
 
 # 即时通信
 class Im:
@@ -53,5 +54,5 @@ class Im:
     for k in keys:
       if k=='TLS.ver' or k=='TLS.sig': continue
       content += k + ':'+ param[k] +"\n"
-    sig = Base64.Encode(hmac.new(str.encode(key), str.encode(content), hashlib.sha256).digest())
+    sig = Base64.Encode(Hmac.Sha256(content, key))
     return bytes.decode(sig)

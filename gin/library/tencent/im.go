@@ -1,8 +1,6 @@
 package tencent
 
 import (
-	"crypto/hmac"
-	"crypto/sha256"
 	"sort"
 	"webmis/config"
 	"webmis/util"
@@ -87,7 +85,5 @@ func (Im) hmacsha256(param map[string]string, key string) string {
 		}
 		content += k + ":" + param[k] + "\n"
 	}
-	h := hmac.New(sha256.New, []byte(key))
-	h.Write([]byte(content))
-	return (&util.Base64{}).Encode(h.Sum(nil))
+	return (&util.Base64{}).Encode((&util.Hmac{}).Sha256(content, key))
 }
