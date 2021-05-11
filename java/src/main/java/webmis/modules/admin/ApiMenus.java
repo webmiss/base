@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import webmis.service.Base;
 import webmis.model.ApiMenu;
 import webmis.service.AdminToken;
+import webmis.service.ApiToken;
 import webmis.util.Util;
 
 /* 系统菜单 */
@@ -24,7 +25,7 @@ import webmis.util.Util;
 public class ApiMenus extends Base {
 
   private static HashMap<String, ArrayList<HashMap<String, Object>>> menus = null;  //全部菜单
-  private static HashMap<String, Integer> permAll = null;                           //用户权限
+  private static HashMap<String, Long> permAll = null;                           //用户权限
 
   /* 列表 */
   @RequestMapping("list")
@@ -277,7 +278,7 @@ public class ApiMenus extends Base {
       }
     }
     // 全部权限
-    permAll = AdminToken.perm(token);
+    permAll = ApiToken.perm(token);
     // 返回
     res = new HashMap<String,Object>();
     res.put("code", 0);
@@ -296,13 +297,13 @@ public class ApiMenus extends Base {
       // 菜单权限
       if(!permAll.containsKey(id)) continue;
       // 动作权限
-      int perm = permAll.get(id);
+      long perm = permAll.get(id);
       ArrayList<JSONObject> action = new ArrayList<JSONObject>();
       String actionStr = val.get("action").toString();
       JSONArray actionArr = new JSONArray();
       if(!actionStr.equals("")) actionArr = Util.JsonDecodeArray(actionStr);
       for(int i=0; i<actionArr.size(); i++){
-        int permVal = Integer.valueOf(actionArr.getJSONObject(i).get("perm").toString());
+        long permVal = Long.valueOf(actionArr.getJSONObject(i).get("perm").toString());
         if(actionArr.getJSONObject(i).get("type").toString().equals("1") && (perm&permVal)>0){
           action.add(actionArr.getJSONObject(i));
         }

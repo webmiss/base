@@ -195,8 +195,7 @@ func (r *SysRole) PermList(c *gin.Context) {
 	}
 	// 用户权限
 	r.permAll = r.permArr(perm)
-	r.Print(r.permAll)
-	// 权限列表
+	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": r._getMenu("0")})
 }
 
@@ -246,7 +245,7 @@ func (r *SysRole) _getMenu(fid string) []map[string]interface{} {
 		// 数据
 		_, checked := r.permAll[id]
 		tmp := map[string]interface{}{"id": val["id"], "label": val["title"], "checked": checked}
-		if util.Strval(val["fid"]) == "0" {
+		if val["fid"] == 0 {
 			tmp["show"] = true
 		}
 		// children

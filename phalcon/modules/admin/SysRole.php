@@ -159,7 +159,7 @@ class SysRole extends Base {
     }
     // 用户权限
     self::$permAll = self::permArr($perm);
-    // 权限列表
+    // 返回
     return self::GetJSON(['code'=>0,'msg'=>'成功', 'list'=>self::_getMenu('0')]);
   }
   // 权限-拆分

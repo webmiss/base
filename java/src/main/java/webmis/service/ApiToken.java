@@ -49,15 +49,15 @@ public class ApiToken extends Base {
     if(menuData.size()==0) return "菜单验证无效!";
     // 验证-菜单
     String id = menuData.get("id").toString();
-    HashMap<String, Integer> permData= perm(token);
+    HashMap<String, Long> permData= perm(token);
     if(!permData.containsKey(id)) return "无权访问菜单!";
     // 验证-动作
-    Integer actionVal = permData.get(id);
+    long actionVal = permData.get(id);
     JSONArray permArr = Util.JsonDecodeArray(menuData.get("action").toString());
-    int permVal = 0;
+    long permVal = 0;
     for(int i=0; i<permArr.size(); i++){
       if(permArr.getJSONObject(i).get("action").equals(action)){
-        permVal = Integer.valueOf(permArr.getJSONObject(i).get("perm").toString());
+        permVal = Long.valueOf(permArr.getJSONObject(i).get("perm").toString());
         break;
       }
     }
@@ -66,8 +66,8 @@ public class ApiToken extends Base {
   }
 
   /* 权限数组 */
-  public static HashMap<String, Integer> perm(String token) {
-    HashMap<String, Integer> permAll = new HashMap<String, Integer>();
+  public static HashMap<String, Long> perm(String token) {
+    HashMap<String, Long> permAll = new HashMap<String, Long>();
     // Token
     HashMap<String, Object> tData = Safety.Decode(token);
     if(tData==null) return permAll;
@@ -80,7 +80,7 @@ public class ApiToken extends Base {
     ArrayList<String> s;
     for(String val : arr){
       s = Util.Explode(":", val);
-      permAll.put(s.get(0), Integer.valueOf(s.get(1)));
+      permAll.put(s.get(0), Long.valueOf(s.get(1)));
     }
     return permAll;
   }

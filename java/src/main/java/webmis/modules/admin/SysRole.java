@@ -23,7 +23,7 @@ import webmis.util.Util;
 public class SysRole extends Base {
 
   private static HashMap<String, ArrayList<HashMap<String, Object>>> menus = null;  //全部菜单
-  private static HashMap<String, Integer> permAll = null;                           //用户权限
+  private static HashMap<String, Long> permAll = null;                              //用户权限
 
   /* 列表 */
   @RequestMapping("list")
@@ -261,25 +261,68 @@ public class SysRole extends Base {
     }
     // 用户权限
     permAll = permArr(perm);
-    Print(permAll);
-    // 权限列表
-    ArrayList<HashMap<String, Object>> lists = new ArrayList<HashMap<String, Object>>();
+    // 返回
     res = new HashMap<String,Object>();
     res.put("code", 0);
     res.put("msg", "成功");
-    res.put("list", lists);
+    res.put("list", _getMenu("0"));
     return GetJSON(res);
   }
   // 权限-拆分
-  private HashMap<String, Integer> permArr(String perm) {
-    HashMap<String, Integer> permAll = new HashMap<String, Integer>();
+  private HashMap<String, Long> permArr(String perm) {
+    HashMap<String, Long> permAll = new HashMap<String, Long>();
     ArrayList<String> arr = Util.Explode(" ", perm);
     ArrayList<String> s;
     for(String val : arr){
       s = Util.Explode(":", val);
-      permAll.put(s.get(0), Integer.valueOf(s.get(1)));
+      permAll.put(s.get(0), Long.valueOf(s.get(1)));
     }
     return permAll;
+  }
+  // 递归菜单
+  private ArrayList<HashMap<String, Object>> _getMenu(String fid) {
+    HashMap<String, Object> tmp;
+    ArrayList<HashMap<String, Object>> menu;
+    ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
+    ArrayList<HashMap<String, Object>> M = menus.containsKey(fid)?menus.get(fid):data;
+    for( HashMap<String, Object> val : M) {
+      // 菜单权限
+      String id = val.get("id").toString();
+      Long perm = permAll.containsKey(id)?permAll.get(id):0;
+      // 动作权限
+      HashMap<String, Object> actionTmp;
+      ArrayList<HashMap<String, Object>> action = new ArrayList<HashMap<String, Object>>();
+      String actionStr = val.get("action").toString();
+      JSONArray actionArr = new JSONArray();
+      if(!actionStr.equals("")) actionArr = Util.JsonDecodeArray(actionStr);
+      for(int i=0; i<actionArr.size(); i++){
+        Long permVal = Long.valueOf(actionArr.getJSONObject(i).get("perm").toString());
+        boolean checked = (perm&permVal)>0?true:false;
+        String tName = actionArr.getJSONObject(i).get("type").toString().equals("1")?"S":"H";
+        actionTmp = new HashMap<String, Object>();
+        actionTmp.put("id", Long.valueOf(val.get("id").toString())+Long.valueOf(actionArr.getJSONObject(i).get("perm").toString()));
+        actionTmp.put("label", actionArr.getJSONObject(i).get("name").toString()+"->"+tName);
+        actionTmp.put("checked", checked);
+        actionTmp.put("perm", actionArr.getJSONObject(i).get("perm"));
+        action.add(actionTmp);
+      }
+      // 数据
+      boolean checked = permAll.containsKey(id)?true:false;
+      tmp = new HashMap<String, Object>();
+      tmp.put("id", val.get("id"));
+      tmp.put("label", val.get("title"));
+      tmp.put("checked", checked);
+      if(val.get("fid").equals(0)) tmp.put("show", true);
+      // children
+      menu = _getMenu(id);
+      if(menu.size()>0) tmp.put("children", menu);
+      else if(action.size()>0) {
+        tmp.put("action", true);
+        tmp.put("children", action);
+      }
+      data.add(tmp);
+    }
+    return data;
   }
   
 }

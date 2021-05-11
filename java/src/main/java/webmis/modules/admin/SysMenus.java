@@ -24,7 +24,7 @@ import webmis.util.Util;
 public class SysMenus extends Base {
 
   private static HashMap<String, ArrayList<HashMap<String, Object>>> menus = null;  //全部菜单
-  private static HashMap<String, Integer> permAll = null;                           //用户权限
+  private static HashMap<String, Long> permAll = null;                           //用户权限
 
   /* 列表 */
   @RequestMapping("list")
@@ -296,13 +296,13 @@ public class SysMenus extends Base {
       String id = val.get("id").toString();
       if(!permAll.containsKey(id)) continue;
       // 动作权限
-      int perm = permAll.get(id);
+      Long perm = permAll.get(id);
       ArrayList<JSONObject> action = new ArrayList<JSONObject>();
       String actionStr = val.get("action").toString();
       JSONArray actionArr = new JSONArray();
       if(!actionStr.equals("")) actionArr = Util.JsonDecodeArray(actionStr);
       for(int i=0; i<actionArr.size(); i++){
-        int permVal = Integer.valueOf(actionArr.getJSONObject(i).get("perm").toString());
+        long permVal = Long.valueOf(actionArr.getJSONObject(i).get("perm").toString());
         if(actionArr.getJSONObject(i).get("type").toString().equals("1") && (perm&permVal)>0){
           action.add(actionArr.getJSONObject(i));
         }

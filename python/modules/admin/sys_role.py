@@ -144,10 +144,8 @@ class SysRole(Base):
       else : self.__menus[fid] = [val]
     # 用户权限
     self.__permAll = self.__permArr(perm)
-    print(self.__permAll)
-    # 权限列表
-    lists = []
-    return self.GetJSON({'code':0, 'msg':'成功', 'list':lists})
+    # 返回
+    return self.GetJSON({'code':0, 'msg':'成功', 'list':self._getMenu('0')})
 
   # 权限-拆分
   def __permArr(self, perm: str):
@@ -157,3 +155,39 @@ class SysRole(Base):
       s = Util.Explode(':', val)
       permAll[s[0]] = int(s[1])
     return permAll
+  
+  # 递归菜单
+  def _getMenu(self, fid: str):
+    data = []
+    M = self.__menus[fid] if fid in self.__menus else []
+    for val in M :
+      # 菜单权限
+      id = str(val['id'])
+      perm = self.__permAll[id] if id in self.__permAll.keys() else 0
+      # 动作权限
+      action = []
+      actionArr = []
+      actionStr = str(val['action'])
+      if actionStr != '' : actionArr = Util.JsonDecode(actionStr)
+      for v in actionArr :
+        permVal = int(v['perm'])
+        checked = True if perm&permVal>0 else False
+        tName = 'S' if v['type']=='1' else 'H'
+        action += [{
+          'id': int(val['id'])+int(v['perm']),
+          'label': str(v['name'])+'->'+tName,
+          'checked': checked,
+          'perm': v['perm'],
+        }]
+      # 数据
+      checked = True if id in self.__permAll.keys() else False
+      tmp = {'id': val['id'], 'label': val['title'], 'checked': checked}
+      if val['fid']==0 : tmp['show'] = True
+      # children
+      menu = self._getMenu(id)
+      if len(menu)>0 : tmp['children'] = menu
+      elif len(action)>0 :
+        tmp['action'] = True
+        tmp['children'] = action
+      data += [tmp]
+    return data
