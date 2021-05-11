@@ -27,11 +27,11 @@ export default defineComponent({
     value: {default: ''}, //checkbox[value]
     label: {type: String, default: ''}, //名称
     checked: {type: Boolean, default: false}, //是否选中
+    disclick: {type: Boolean, default: false}, //禁用Click
   },
   watch:{
-    show(val: boolean){
-      console.log('checkbox', val);
-      // this.show = val;
+    checked(val: boolean){
+      this.show = val;
     }
   },
   data(){
@@ -45,6 +45,7 @@ export default defineComponent({
 
     /* 选择 */
     click(){
+      if(this.disclick) return;
       this.$emit('update:checked',this.show=!this.show)
     }
 
