@@ -251,7 +251,6 @@ public class SysMenus extends Base {
   @RequestMapping("getMenus")
   String GetMenus(String token) {
     HashMap<String,Object> res;
-    ArrayList<HashMap<String, Object>> tmp;
     // 验证
     String msg = AdminToken.verify(token, "");
     if(!msg.equals("")){
@@ -261,6 +260,7 @@ public class SysMenus extends Base {
       return GetJSON(res);
     }
     // 全部菜单
+    ArrayList<HashMap<String, Object>> tmp;
     menus = new HashMap<String, ArrayList<HashMap<String, Object>>>();
     SysMenu model = new SysMenu();
     model.Columns("id", "fid", "title", "url", "ico", "controller", "action");
@@ -276,7 +276,7 @@ public class SysMenus extends Base {
         menus.put(fid,tmp);
       }
     }
-    // 全部权限
+    // 用户权限
     permAll = AdminToken.perm(token);
     // 返回
     res = new HashMap<String,Object>();
@@ -292,8 +292,8 @@ public class SysMenus extends Base {
     ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
     ArrayList<HashMap<String, Object>> M = menus.containsKey(fid)?menus.get(fid):data;
     for( HashMap<String, Object> val : M) {
-      String id = val.get("id").toString();
       // 菜单权限
+      String id = val.get("id").toString();
       if(!permAll.containsKey(id)) continue;
       // 动作权限
       int perm = permAll.get(id);

@@ -82,6 +82,8 @@ def apiRole(a) :
   elif a=='add' : return SysRole().Add()
   elif a=='edit' : return SysRole().Edit()
   elif a=='del' : return SysRole().Del()
+  elif a=='perm' : return SysRole().Perm()
+  elif a=='permList' : return SysRole().PermList()
 # 系统配置
 @Admin.route('/sysconfig/<a>',methods=['POST'])
 def sysConfig(a) :

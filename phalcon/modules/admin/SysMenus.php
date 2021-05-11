@@ -177,7 +177,7 @@ class SysMenus extends Base {
       $fid = (string)$val['fid'];
       self::$menus[$fid][] = $val;
     }
-    // 全部权限
+    // 用户权限
     self::$permAll = AdminToken::perm($token);
     // 返回
     return self::GetJSON(['code'=>0, 'msg'=>'成功', 'menus'=>self::_getMenu('0')]);
@@ -187,8 +187,8 @@ class SysMenus extends Base {
     $data = [];
     $M = isset(self::$menus[$fid])?self::$menus[$fid]:[];
     foreach($M as $val){
+      // 菜单权限
       $id = (string)$val['id'];
-      // 权限
       if(!isset(self::$permAll[$id])) continue;
       $perm = self::$permAll[$id];
       // 动作权限

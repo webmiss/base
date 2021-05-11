@@ -110,7 +110,7 @@ func (r SysUser) Add(c *gin.Context) {
 	tx, _ := conn.Begin()
 	// 用户
 	m1 := (&model.User{}).New()
-	m1.Values(map[string]interface{}{"id": uid, "tel": tel, "password": (&util.Hmac{}).Md5(passwd)})
+	m1.Values(map[string]interface{}{"id": uid, "tel": tel, "password": util.Md5(passwd)})
 	sql, args := m1.InsertSQL()
 	_, err1 := tx.Exec(sql, args...)
 	// 详情
@@ -170,7 +170,7 @@ func (r SysUser) Edit(c *gin.Context) {
 	// 更新
 	uData := map[string]interface{}{"tel": tel}
 	if passwd != "" {
-		uData["password"] = (&util.Hmac{}).Md5(passwd)
+		uData["password"] = util.Md5(passwd)
 	}
 	m.Set(uData)
 	m.Where("id=?", uid)

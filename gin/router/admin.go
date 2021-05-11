@@ -59,6 +59,8 @@ func Admin(r *gin.Engine) {
 		g.POST("sysrole/add", (&admin.SysRole{}).Add)
 		g.POST("sysrole/edit", (&admin.SysRole{}).Edit)
 		g.POST("sysrole/del", (&admin.SysRole{}).Del)
+		g.POST("sysrole/perm", (&admin.SysRole{}).Perm)
+		g.POST("sysrole/permList", (&admin.SysRole{}).PermList)
 		// 系统配置
 		g.POST("sysconfig/list", (&admin.SysConfig{}).List)
 		g.POST("sysconfig/edit", (&admin.SysConfig{}).Edit)

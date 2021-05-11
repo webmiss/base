@@ -78,8 +78,8 @@
     <!-- Del End -->
 
     <!-- Perm -->
-    <wm-dialog title="权限" width="420px" :show="perm.show" @update:show="perm.show=$event">
-      <div>内容</div>
+    <wm-dialog title="权限" width="540px" :show="perm.show" @update:show="perm.show=$event">
+      <wm-tree ref="perm" :data="perm.menus"></wm-tree>
       <template #footer>
         <wm-button @click="subPerm()">更 新</wm-button>
       </template>

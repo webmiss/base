@@ -85,5 +85,5 @@ func (Im) hmacsha256(param map[string]string, key string) string {
 		}
 		content += k + ":" + param[k] + "\n"
 	}
-	return (&util.Base64{}).Encode((&util.Hmac{}).Sha256(content, key))
+	return (&util.Base64{}).Encode(util.Sha256(content, key))
 }

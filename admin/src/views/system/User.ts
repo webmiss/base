@@ -23,10 +23,17 @@ import wmRadio from '@/components/form/radio/index.vue'
 import wmDate from '@/components/form/date/index.vue'
 import wmButton from '@/components/form/button/index.vue'
 import wmPage from '@/components/page/index.vue'
+/* ElementUI */
+import { ElTabs, ElTabPane } from 'element-plus';
+import '@/assets/themes/tabs.css'
+import '@/assets/themes/tab-pane.css'
 
 /* 用户管理 */
 export default defineComponent({
-  components: {wmMain,wmRow,wmTable,wmTableTitle,wmTableTr,wmImg,wmTag,wmPopover,wmSwitch,wmDialog,wmForm,wmFormItem,wmInput,wmRadio,wmDate,wmButton,wmPage},
+  components: {
+    wmMain,wmRow,wmTable,wmTableTitle,wmTableTr,wmImg,wmTag,wmPopover,wmSwitch,wmDialog,wmForm,wmFormItem,wmInput,wmRadio,wmDate,wmButton,wmPage,
+    ElTabs, ElTabPane,
+  },
   data(){
     // 状态
     const store: any = useStore();

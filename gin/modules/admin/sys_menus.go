@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"strconv"
 	"webmis/model"
 	"webmis/service"
 	"webmis/util"
@@ -222,7 +221,7 @@ func (r *SysMenus) GetMenus(c *gin.Context) {
 		}
 		r.menus[fid] = append(r.menus[fid], val)
 	}
-	// 全部权限
+	// 用户权限
 	r.permAll = (&service.AdminToken{}).Perm(token)
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "menus": r._getMenu("0")})
@@ -231,13 +230,13 @@ func (r *SysMenus) GetMenus(c *gin.Context) {
 // 递归菜单
 func (r *SysMenus) _getMenu(fid string) []map[string]interface{} {
 	data := []map[string]interface{}{}
-	M := data
-	if _, ok := r.menus[fid]; ok {
-		M = r.menus[fid]
+	M, ok := r.menus[fid]
+	if !ok {
+		M = data
 	}
 	for _, val := range M {
-		id := util.Strval(val["id"])
 		// 菜单权限
+		id := util.Strval(val["id"])
 		perm, ok := r.permAll[id]
 		if !ok {
 			continue
@@ -250,7 +249,7 @@ func (r *SysMenus) _getMenu(fid string) []map[string]interface{} {
 			util.JsonDecode(actionStr, &actionArr)
 		}
 		for _, v := range actionArr {
-			permVal, _ := strconv.ParseInt(util.Strval(v["perm"]), 10, 64)
+			permVal := util.Int64(v["perm"])
 			if v["type"].(string) == "1" && perm&permVal > 0 {
 				action = append(action, v)
 			}

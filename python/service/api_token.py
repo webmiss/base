@@ -54,15 +54,15 @@ class ApiToken:
 
   # 权限数组
   def perm(self, token: str):
+    permAll = {}
     # Token
     tData = Safety.Decode(token)
-    if not tData : return 'Token验证失败!'
+    if not tData : return permAll
     # 权限
     redis = Redis()
     permStr = redis.Get(Env.api_token_prefix+'_perm_'+tData['uid'])
     redis.Close()
     # 拆分
-    permAll = {}
     arr = [] if not permStr else Util.Explode(' ', permStr)
     for val in arr :
       s = Util.Explode(':', val)

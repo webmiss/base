@@ -53,6 +53,8 @@ class Admin {
     $app->post('/admin/sysrole/add', 'App\Admin\SysRole::Add');
     $app->post('/admin/sysrole/edit', 'App\Admin\SysRole::Edit');
     $app->post('/admin/sysrole/del', 'App\Admin\SysRole::Del');
+    $app->post('/admin/sysrole/perm', 'App\Admin\SysRole::Perm');
+    $app->post('/admin/sysrole/permList', 'App\Admin\SysRole::PermList');
     // 系统配置
     $app->post('/admin/sysconfig/list', 'App\Admin\SysConfig::List');
     $app->post('/admin/sysconfig/edit', 'App\Admin\SysConfig::Edit');

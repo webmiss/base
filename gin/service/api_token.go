@@ -97,7 +97,7 @@ func (s ApiToken) Perm(token string) map[string]int64 {
 	arr := util.Explode(" ", permStr)
 	for _, val := range arr {
 		s := util.Explode(":", val)
-		permAll[s[0]], _ = strconv.ParseInt(s[1], 10, 64)
+		permAll[s[0]] = util.Int64(s[1])
 	}
 	return permAll
 }

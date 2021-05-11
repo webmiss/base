@@ -19,10 +19,13 @@ import wmFormItem from '@/components/form/item/index.vue'
 import wmInput from '@/components/form/input/index.vue'
 import wmButton from '@/components/form/button/index.vue'
 import wmPage from '@/components/page/index.vue'
+import wmTree from '@/components/tree/index.vue'
 
 /* 系统角色 */
 export default defineComponent({
-  components: {wmMain,wmRow,wmTable,wmTableTitle,wmTableTr,wmTag,wmPopover,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmPage},
+  components: {
+    wmMain,wmRow,wmTable,wmTableTitle,wmTableTr,wmTag,wmPopover,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmPage,wmTree
+  },
   data(){
     // 状态
     const store: any = useStore();
@@ -35,7 +38,7 @@ export default defineComponent({
     const edit: any = {show:false, id:'', form:{}};
     const del: any = {show:false, ids:''};
     // 权限
-    const perm: any = {show:false, id:'', perm:''};
+    const perm: any = {show:false, id:'', perm:'', menus:[]};
     return {state, page, sea, add, edit, del, perm}
   },
   computed: {
@@ -170,12 +173,36 @@ export default defineComponent({
     },
 
     /* 权限 */
-    permData(id: number, perm: any){
+    permData(id: number, perm: string){
       this.perm.show = true;
-      console.log(id,perm);
+      this.perm.id = id;
+      // 获取列表
+      const load = Loading();
+      Post('sysrole/permList',{
+        token: Storage.getItem('token'),
+        perm: perm,
+      },(res: any)=>{
+        load.clear();
+        const d = res.data;
+        if(d.code===0) this.perm.menus = d.list;
+        else Toast(d.msg);
+      });
     },
     subPerm(){
       this.perm.show = false;
+      // 提交
+      const obj: any = this.$refs.perm;
+      const load = Loading();
+      Post('sysrole/perm',{
+        token: Storage.getItem('token'),
+        id: this.perm.id,
+        perm: obj.getPerms()
+      },(res: any)=>{
+        load.clear();
+        const d = res.data;
+        if(d.code===0) this.loadData();
+        return Toast(d.msg);
+      });
     },
 
   },

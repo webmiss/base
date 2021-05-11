@@ -1,9 +1,8 @@
 <template>
   <wm-main>
-    <wm-tree :data="data"></wm-tree>
-    <!-- <div class="index_test">
+    <div class="index_test">
       桌面
-    </div> -->
+    </div>
   </wm-main>
 </template>
 

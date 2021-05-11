@@ -81,7 +81,7 @@
 .wm-tree_node{white-space: nowrap; outline: none;}
 .wm-tree_arrow{width: 8px; margin-top: -2px; text-align: center; font-size: 12px; font-weight: 600; color: #C0C4CC;}
 .wm-tree_arrow_none{width: 8px;}
-.wm-tree_checkbox{width: 24px;}
+.wm-tree_checkbox{position: relative; width: 24px;}
 .wm-tree_checkbox .wm-checkbox{position: absolute; margin-left: -3px; transform: scale(0.9, 0.9);}
 .wm-tree_label{font-size: 14px; color: #606266;}
 </style>
@@ -97,8 +97,9 @@ export default defineComponent({
   },
   data(){
     let menus: any = [];
+    let arrs: Array<object> = [];
     let perms: string = '';
-    return {menus, perms};
+    return {menus, perms, arrs};
   },
   watch:{
     data(val: boolean){
@@ -123,11 +124,24 @@ export default defineComponent({
         if(data[i].children) this.setChecked(checked, data[i].children);
       }
     },
-
     /* Checkbox状态 */
     setCheckbox(id: any, checked: boolean) {
       let obj = document.querySelector('#wm-tree_node_'+id+' div.checked');
       if(obj) checked?obj.classList.add("active"):obj.classList.remove("active");
+    },
+
+    /* ID-获取 */
+    getIds() {
+      this.arrs = [];
+      this.setIds(this.menus);
+      return this.arrs;
+    },
+    /* ID-生成 */
+    setIds(data: any) {
+      for(let x in data) {
+        if(data[x].children) this.setIds(data[x].children);
+        if(data[x].checked) this.arrs.push(data[x].id);
+      }
     },
 
     /* 权限-获取 */
@@ -141,12 +155,8 @@ export default defineComponent({
       for(let x in data) {
         let perm = 0;
         if(data[x].action) {
-          for(let y in data[x].children) {
-            if(data[x].children[y].checked) perm += data[x].children[y].perm
-          }
-        } else if(data[x].children) {
-          this.setPerms(data[x].children);
-        }
+          for(let y in data[x].children) if(data[x].children[y].checked) perm += data[x].children[y].perm
+        } else if(data[x].children) this.setPerms(data[x].children);
         if(data[x].checked) this.perms += data[x].id+':'+perm+' ';
       }
     },

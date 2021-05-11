@@ -162,7 +162,7 @@ class SysMenus(Base):
       fid = str(val['fid'])
       if fid in self.__menus : self.__menus[fid] += [val]
       else : self.__menus[fid] = [val]
-    # 全部权限
+    # 用户权限
     self.__permAll = AdminToken().perm(token)
     # 返回
     return self.GetJSON({'code':0, 'msg':'成功', 'menus':self._getMenu('0')})
@@ -172,8 +172,8 @@ class SysMenus(Base):
     data = []
     M = self.__menus[fid] if fid in self.__menus else []
     for val in M :
+      # 菜单权限
       id = str(val['id'])
-      # 权限
       if id not in self.__permAll.keys() : continue
       # 动作权限
       perm = self.__permAll[id]
