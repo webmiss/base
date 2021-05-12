@@ -66,6 +66,8 @@ def sysRole(a) :
   elif a=='add' : return ApiRole().Add()
   elif a=='edit' : return ApiRole().Edit()
   elif a=='del' : return ApiRole().Del()
+  elif a=='perm' : return ApiRole().Perm()
+  elif a=='permList' : return ApiRole().PermList()
 # 系统菜单
 @Admin.route('/sysmenus/<a>',methods=['POST'])
 def sysMenus(a) :

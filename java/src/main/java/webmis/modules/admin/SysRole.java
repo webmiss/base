@@ -230,7 +230,7 @@ public class SysRole extends Base {
     return GetJSON(res);
   }
 
-  /* 权限 */
+  /* 权限-列表 */
   @RequestMapping("permList")
   String PermList(HttpServletRequest request, String token, String perm) {
     HashMap<String,Object> res;
@@ -271,7 +271,7 @@ public class SysRole extends Base {
   // 权限-拆分
   private HashMap<String, Long> permArr(String perm) {
     HashMap<String, Long> permAll = new HashMap<String, Long>();
-    ArrayList<String> arr = Util.Explode(" ", perm);
+    ArrayList<String> arr = !perm.isEmpty()?Util.Explode(" ", perm):new ArrayList<String>();
     ArrayList<String> s;
     for(String val : arr){
       s = Util.Explode(":", val);

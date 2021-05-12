@@ -10,6 +10,8 @@ import (
 
 type ApiRole struct {
 	service.Base
+	menus   map[string][]map[string]interface{} //全部菜单
+	permAll map[string]int64                    //用户权限
 }
 
 /* 列表 */
@@ -138,4 +140,125 @@ func (r ApiRole) Del(c *gin.Context) {
 	} else {
 		r.GetJSON(c, gin.H{"code": 5000, "msg": "删除失败!"})
 	}
+}
+
+/* 权限 */
+func (r ApiRole) Perm(c *gin.Context) {
+	// 验证
+	token := c.PostForm("token")
+	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
+	if msg != "" {
+		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
+		return
+	}
+	// 参数
+	id := c.PostForm("id")
+	perm := c.PostForm("perm")
+	if util.Empty(id) {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
+		return
+	}
+	// 数据
+	m := (&model.ApiRole{}).New()
+	m.Set(map[string]interface{}{"perm": perm, "utime": util.Time()})
+	m.Where("id=?", id)
+	if m.Update() {
+		r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
+	} else {
+		r.GetJSON(c, gin.H{"code": 5000, "msg": "更新失败!"})
+	}
+}
+
+/* 权限-列表 */
+func (r *ApiRole) PermList(c *gin.Context) {
+	// 验证
+	token := c.PostForm("token")
+	msg := (&service.AdminToken{}).Verify(token, "")
+	if msg != "" {
+		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
+		return
+	}
+	// 参数
+	perm := c.PostForm("perm")
+	// 全部菜单
+	r.menus = map[string][]map[string]interface{}{}
+	model := (&model.ApiMenu{}).New()
+	model.Columns("id", "fid", "title", "url", "ico", "controller", "action")
+	model.Order("sort DESC, id")
+	data := model.Find()
+	for _, val := range data {
+		fid := util.Strval(val["fid"])
+		if _, ok := r.menus[fid]; !ok {
+			r.menus[fid] = []map[string]interface{}{}
+		}
+		r.menus[fid] = append(r.menus[fid], val)
+	}
+	// 用户权限
+	r.permAll = r.permArr(perm)
+	// 返回
+	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": r._getMenu("0")})
+}
+
+// 权限-拆分
+func (r ApiRole) permArr(perm string) map[string]int64 {
+	permAll := map[string]int64{}
+	arr := []string{}
+	if !util.Empty(perm) {
+		arr = util.Explode(" ", perm)
+	}
+	for _, val := range arr {
+		s := util.Explode(":", val)
+		permAll[s[0]] = util.Int64(s[1])
+	}
+	return permAll
+}
+
+// 递归菜单
+func (r *ApiRole) _getMenu(fid string) []map[string]interface{} {
+	data := []map[string]interface{}{}
+	M, ok := r.menus[fid]
+	if !ok {
+		M = data
+	}
+	for _, val := range M {
+		// 菜单权限
+		id := util.Strval(val["id"])
+		perm, ok := r.permAll[id]
+		if !ok {
+			perm = 0
+		}
+		// 动作权限
+		action := []map[string]interface{}{}
+		actionStr := val["action"].(string)
+		actionArr := []map[string]interface{}{}
+		if actionStr != "" {
+			util.JsonDecode(actionStr, &actionArr)
+		}
+		for _, v := range actionArr {
+			permVal := util.Int64(v["perm"])
+			checked := util.If(perm&permVal > 0, true, false)
+			action = append(action, map[string]interface{}{
+				"id":      util.Int64(val["id"]) + util.Int64(v["perm"]),
+				"label":   v["name"],
+				"checked": checked,
+				"perm":    v["perm"],
+			})
+		}
+		// 数据
+		_, checked := r.permAll[id]
+		tmp := map[string]interface{}{"id": val["id"], "label": val["title"], "checked": checked}
+		if util.Strval(val["fid"]) == "0" {
+			tmp["show"] = true
+		}
+		// children
+		menu := r._getMenu(id)
+		if len(menu) > 0 {
+			tmp["children"] = menu
+		} else if len(action) > 0 {
+			tmp["action"] = true
+			tmp["children"] = action
+		}
+		data = append(data, tmp)
+	}
+	return data
 }

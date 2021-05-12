@@ -4,8 +4,12 @@ namespace App\Admin;
 use Service\Base;
 use Service\AdminToken;
 use Model\ApiRole as ApiRoleM;
+use Model\ApiMenu;
 
 class ApiRole extends Base {
+
+  private static $menus = [];   //全部菜单
+  private static $permAll = []; //用户权限
 
   /* 列表 */
 	static function List(){
@@ -111,6 +115,100 @@ class ApiRole extends Base {
     } else {
       return self::GetJSON(['code'=>5000,'msg'=>'删除失败!']);
     }
+  }
+
+  /* 权限 */
+  static function Perm(){
+    // 验证
+    $token = self::Post('token');
+    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    // 参数
+    $id = self::Post('id');
+    $perm = self::Post('perm');
+    if(empty($id)){
+      return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
+    }
+    // 数据
+    $m = new ApiRoleM();
+    $m->Set(['perm'=>$perm, 'utime'=>time()]);
+    $m->Where('id=?', $id);
+    if($m->Update()){
+      return self::GetJSON(['code'=>0,'msg'=>'成功']);
+    } else {
+      return self::GetJSON(['code'=>5000,'msg'=>'更新失败!']);
+    }
+  }
+
+  /* 权限-列表 */
+  static function PermList(){
+    // 验证
+    $token = self::Post('token');
+    $msg = AdminToken::verify($token, '');
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    // 参数
+    $perm = self::Post('perm');
+    // 全部菜单
+    $model = new ApiMenu();
+    $model->Columns('id', 'fid', 'title', 'url', 'ico', 'controller', 'action');
+    $model->Order('sort DESC, id');
+    $data = $model->Find();
+    foreach($data as $val){
+      $fid = (string)$val['fid'];
+      self::$menus[$fid][] = $val;
+    }
+    // 用户权限
+    self::$permAll = self::permArr($perm);
+    // 返回
+    return self::GetJSON(['code'=>0,'msg'=>'成功', 'list'=>self::_getMenu('0')]);
+  }
+  // 权限-拆分
+  private static function permArr(string $perm): array {
+    $permAll = [];
+    $arr = !empty($perm)?explode(' ',$perm):[];
+    foreach($arr as $val){
+      $s = explode(':',$val);
+      $permAll[$s[0]] = (int)$s[1];
+    }
+    return $permAll;
+  }
+  // 递归菜单
+  private static function _getMenu(string $fid) {
+    $data = [];
+    $M = isset(self::$menus[$fid])?self::$menus[$fid]:[];
+    foreach($M as $val){
+      // 菜单权限
+      $id = (string)$val['id'];
+      $perm = isset(self::$permAll[$id])?self::$permAll[$id]:0;
+      // 动作权限
+      $action = [];
+      $actionArr = [];
+      $actionStr = (string)$val['action'];
+      if($actionStr != '') $actionArr=json_decode($actionStr, true);
+      foreach($actionArr as $v){
+        $permVal = (int)$v['perm'];
+        $checked = ($perm&$permVal)>0?true:false;
+        $action[]=[
+          'id'=> $val['id']+$v['perm'],
+          'label'=> $v['name'],
+          'checked'=> $checked,
+          'perm'=> $v['perm'],
+        ];
+      }
+      // 数据
+      $checked = isset(self::$permAll[$id])?true:false;
+      $tmp = ['id'=>$val['id'], 'label'=>$val['title'], 'checked'=>$checked];
+      if($val['fid']==0) $tmp['show'] = true;
+      // children
+      $menu = self::_getMenu($id);
+      if(!empty($menu)) $tmp['children'] = $menu;
+      else if(!empty($action)){
+        $tmp['action'] = true;
+        $tmp['children'] = $action;
+      }
+      $data[] = $tmp;
+    }
+    return $data;
   }
 
 }

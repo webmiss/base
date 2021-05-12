@@ -41,6 +41,8 @@ class Admin {
     $app->post('/admin/apirole/add', 'App\Admin\ApiRole::Add');
     $app->post('/admin/apirole/edit', 'App\Admin\ApiRole::Edit');
     $app->post('/admin/apirole/del', 'App\Admin\ApiRole::Del');
+    $app->post('/admin/apirole/perm', 'App\Admin\ApiRole::Perm');
+    $app->post('/admin/apirole/permList', 'App\Admin\ApiRole::PermList');
     // 系统菜单
     $app->post('/admin/sysmenus/list', 'App\Admin\SysMenus::List');
     $app->post('/admin/sysmenus/add', 'App\Admin\SysMenus::Add');

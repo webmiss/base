@@ -76,7 +76,7 @@ public class ApiToken extends Base {
     String permStr = redis.Get(Env.api_token_prefix+"_perm_"+tData.get("uid").toString());
     redis.Close();
     // 拆分
-    ArrayList<String> arr = Util.Explode(" ", permStr);
+    ArrayList<String> arr = !permStr.isEmpty()?Util.Explode(" ", permStr):new ArrayList<String>();
     ArrayList<String> s;
     for(String val : arr){
       s = Util.Explode(":", val);

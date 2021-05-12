@@ -202,7 +202,10 @@ func (r *SysRole) PermList(c *gin.Context) {
 // 权限-拆分
 func (r SysRole) permArr(perm string) map[string]int64 {
 	permAll := map[string]int64{}
-	arr := util.Explode(" ", perm)
+	arr := []string{}
+	if !util.Empty(perm) {
+		arr = util.Explode(" ", perm)
+	}
 	for _, val := range arr {
 		s := util.Explode(":", val)
 		permAll[s[0]] = util.Int64(s[1])
@@ -245,7 +248,7 @@ func (r *SysRole) _getMenu(fid string) []map[string]interface{} {
 		// 数据
 		_, checked := r.permAll[id]
 		tmp := map[string]interface{}{"id": val["id"], "label": val["title"], "checked": checked}
-		if val["fid"] == 0 {
+		if util.Strval(val["fid"]) == "0" {
 			tmp["show"] = true
 		}
 		// children
