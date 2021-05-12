@@ -22,7 +22,7 @@
     "text-loader": "^0.0.1",
     "vue": "3.0.9",
     "vue-router": "^4.0.2",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
