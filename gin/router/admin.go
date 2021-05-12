@@ -35,20 +35,22 @@ func Admin(r *gin.Engine) {
 		g.POST("sysuser/edit", (&admin.SysUser{}).Edit)
 		g.POST("sysuser/del", (&admin.SysUser{}).Del)
 		g.POST("sysuser/state", (&admin.SysUser{}).State)
+		g.POST("sysuser/perm", (&admin.SysUser{}).Perm)
 		g.POST("sysuser/info", (&admin.SysUser{}).Info)
-		// 会员菜单
+		// API菜单
 		g.POST("apimenus/list", (&admin.ApiMenus{}).List)
 		g.POST("apimenus/add", (&admin.ApiMenus{}).Add)
 		g.POST("apimenus/edit", (&admin.ApiMenus{}).Edit)
 		g.POST("apimenus/del", (&admin.ApiMenus{}).Del)
 		g.POST("apimenus/perm", (&admin.ApiMenus{}).Perm)
-		// 会员角色
+		// API角色
 		g.POST("apirole/list", (&admin.ApiRole{}).List)
 		g.POST("apirole/add", (&admin.ApiRole{}).Add)
 		g.POST("apirole/edit", (&admin.ApiRole{}).Edit)
 		g.POST("apirole/del", (&admin.ApiRole{}).Del)
 		g.POST("apirole/perm", (&admin.ApiRole{}).Perm)
 		g.POST("apirole/permList", (&admin.ApiRole{}).PermList)
+		g.POST("apirole/roleList", (&admin.ApiRole{}).RoleList)
 		// 系统菜单
 		g.POST("sysmenus/list", (&admin.SysMenus{}).List)
 		g.POST("sysmenus/add", (&admin.SysMenus{}).Add)
@@ -63,6 +65,7 @@ func Admin(r *gin.Engine) {
 		g.POST("sysrole/del", (&admin.SysRole{}).Del)
 		g.POST("sysrole/perm", (&admin.SysRole{}).Perm)
 		g.POST("sysrole/permList", (&admin.SysRole{}).PermList)
+		g.POST("sysrole/roleList", (&admin.SysRole{}).RoleList)
 		// 系统配置
 		g.POST("sysconfig/list", (&admin.SysConfig{}).List)
 		g.POST("sysconfig/edit", (&admin.SysConfig{}).Edit)

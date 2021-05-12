@@ -170,6 +170,27 @@ func (r ApiRole) Perm(c *gin.Context) {
 }
 
 /* 权限-列表 */
+func (r ApiRole) RoleList(c *gin.Context) {
+	// 验证
+	token := c.PostForm("token")
+	msg := (&service.AdminToken{}).Verify(token, "")
+	if msg != "" {
+		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
+		return
+	}
+	// 查询
+	m := (&model.SysRole{}).New()
+	m.Columns("id", "name")
+	data := m.Find()
+	lists := []map[string]interface{}{}
+	lists = append(lists, map[string]interface{}{"label": "无", "value": 0})
+	for _, val := range data {
+		lists = append(lists, map[string]interface{}{"label": val["name"], "value": util.Int(val["id"])})
+	}
+	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": lists})
+}
+
+/* 权限-列表 */
 func (r *ApiRole) PermList(c *gin.Context) {
 	// 验证
 	token := c.PostForm("token")

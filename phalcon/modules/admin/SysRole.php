@@ -140,6 +140,23 @@ class SysRole extends Base {
     }
   }
 
+  /* 角色-列表 */
+  static function RoleList(){
+    // 验证
+    $token = self::Post('token');
+    $msg = AdminToken::verify($token, '');
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    // 查询
+    $m = new SysRoleM();
+    $m->Columns('id', 'name');
+    $data = $m->Find();
+    $lists = [['label'=>'无', 'value'=>0]];
+    foreach($data as $val) {
+      $lists[] = ['label'=>$val['name'], 'value'=>(int)$val['id']];
+    }
+    return self::GetJSON(['code'=>0,'msg'=>'成功', 'list'=>$lists]);
+  }
+
   /* 权限-列表 */
   static function PermList(){
     // 验证

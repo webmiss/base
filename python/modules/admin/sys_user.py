@@ -5,10 +5,13 @@ from service.base import Base
 from service.data import Data
 from service.admin_token import AdminToken
 from library.safety import Safety
+from library.redis import Redis
 from model.user import User
 from model.user_info import UserInfo
 from model.api_perm import ApiPerm
+from model.api_role import ApiRole
 from model.sys_perm import SysPerm
+from model.sys_role import SysRole
 from util.util import Util
 
 class SysUser(Base):
@@ -178,12 +181,16 @@ class SysUser(Base):
     token = self.Post('token')
     msg = AdminToken().verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
+    tData = AdminToken.token(token)
     # 参数
     uid = self.Post('uid')
     state = self.Post('state')
     state = "1" if state=='1' else '0'
     if not uid :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 超级管理员
+    if uid==1 and tData['uid']!=1 :
+      return self.GetJSON({'code':4000, 'msg':'您不是超级管理员!'})
     # 更新
     m = User()
     m.Set({'state': state})
@@ -192,6 +199,70 @@ class SysUser(Base):
       return self.GetJSON({'code':0, 'msg':'成功'})
     else :
       return self.GetJSON({'code':5000, 'msg':'更新失败!'})
+
+  # 权限
+  def Perm(self):
+    # 验证
+    token = self.Post('token')
+    msg = AdminToken().verify(token, request.path)
+    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
+    tData = AdminToken.token(token)
+    # 参数
+    uid = self.Post('uid')
+    type = self.Post('type')
+    role = self.Post('role')
+    perm = self.Post('perm')
+    if not uid or not type :
+      return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 超级管理员
+    if uid==1 and tData['uid']!=1 :
+      return self.GetJSON({'code':4000, 'msg':'您不是超级管理员!'})
+    # 类型
+    uData = {'role': role, 'perm': perm, 'utime': Util.Time()}
+    if type=='admin' :
+      # 系统权限
+      m = SysPerm()
+      m.Set(uData)
+      m.Where('uid=%s', uid)
+      if m.Update() :
+        # 角色权限
+        if not perm :
+          m1 = SysRole()
+          m1.Columns('perm')
+          m1.Where('id=%s', role)
+          data = m1.FindFirst()
+          perm = data['perm'] if 'perm' in data.keys() else ''
+        # 更新权限
+        self._setPerm(Env.admin_token_prefix+'_perm_'+str(uid), perm)
+        return self.GetJSON({'code':0, 'msg':'成功'})
+      else :
+        return self.GetJSON({'code':5000, 'msg':'更新失败!'})
+    elif type=='api' :
+      # API权限
+      m = ApiPerm()
+      m.Set(uData)
+      m.Where('uid=%s', uid)
+      if m.Update() :
+        # 角色权限
+        if not perm :
+          m1 = ApiRole()
+          m1.Columns('perm')
+          m1.Where('id=%s', role)
+          data = m1.FindFirst()
+          perm = data['perm'] if 'perm' in data.keys() else ''
+        # 更新权限
+        self._setPerm(Env.api_token_prefix+'_perm_'+str(uid), perm)
+        return self.GetJSON({'code':0, 'msg':'成功'})
+      else :
+        return self.GetJSON({'code':5000, 'msg':'更新失败!'})
+    else :
+      return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+
+  # 更新权限
+  def _setPerm(self, key: str, perm: str):
+    redis = Redis()
+    redis.Set(key, perm)
+    redis.Close()
 
   # 个人信息
   def Info(self):

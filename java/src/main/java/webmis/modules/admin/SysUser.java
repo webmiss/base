@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import webmis.config.Env;
+import webmis.library.Redis;
 import webmis.library.Safety;
 import webmis.model.ApiPerm;
+import webmis.model.ApiRole;
 import webmis.model.SysPerm;
+import webmis.model.SysRole;
 import webmis.model.User;
 import webmis.model.UserInfo;
 import webmis.service.AdminToken;
@@ -299,12 +302,20 @@ public class SysUser extends Base {
       res.put("msg", msg);
       return GetJSON(res);
     }
+    HashMap<String, Object> tData = AdminToken.token(token);
     // 参数
     state = state=="1"?"1":"0";
     if(uid==""){
       res = new HashMap<String,Object>();
       res.put("code", 4000);
       res.put("msg", "参数错误!");
+      return GetJSON(res);
+    }
+    // 超级管理员
+    if(uid.equals(1) && !tData.get("uid").equals("1") ){
+      res = new HashMap<String,Object>();
+      res.put("code", 4000);
+      res.put("msg", "您不是超级管理员!");
       return GetJSON(res);
     }
     // 更新
@@ -323,6 +334,104 @@ public class SysUser extends Base {
       res.put("msg", "更新失败!");
     }
     return GetJSON(res);
+  }
+
+  /* 权限 */
+  @RequestMapping("perm")
+  String Perm(HttpServletRequest request, String token, Integer uid, String type, Integer role, String perm) {
+    HashMap<String,Object> res;
+    // 验证
+    String msg = AdminToken.verify(token, request.getRequestURI());
+    if(!msg.equals("")){
+      res = new HashMap<String,Object>();
+      res.put("code", 4001);
+      res.put("msg", msg);
+      return GetJSON(res);
+    }
+    HashMap<String, Object> tData = AdminToken.token(token);
+    // 参数
+    if(uid==null || type.isEmpty()){
+      res = new HashMap<String,Object>();
+      res.put("code", 4000);
+      res.put("msg", "参数错误!");
+      return GetJSON(res);
+    }
+    // 超级管理员
+    if(uid.equals(1) && !tData.get("uid").equals("1") ){
+      res = new HashMap<String,Object>();
+      res.put("code", 4000);
+      res.put("msg", "您不是超级管理员!");
+      return GetJSON(res);
+    }
+    // 类型
+    HashMap<String,Object> uData = new HashMap<String,Object>();
+    uData.put("role", role);
+    uData.put("perm", perm);
+    uData.put("utime", Util.Time());
+    if(type.equals("admin")) {
+      // 系统权限
+      SysPerm m = new SysPerm();
+      m.Set(uData);
+      m.Where("uid=?", uid);
+      if(m.Update()){
+        // 角色权限
+        if(perm.isEmpty()) {
+          SysRole m1 = new SysRole();
+          m1.Columns("perm");
+          m1.Where("id=?", role);
+          HashMap<String, Object> data = m1.FindFirst();
+          perm = data.containsKey("perm")?data.get("perm").toString():"";
+        }
+        // 更新权限
+        _setPerm(Env.admin_token_prefix+"_perm_"+String.valueOf(uid), perm);
+        res = new HashMap<String,Object>();
+        res.put("code", 0);
+        res.put("msg", "成功");
+        return GetJSON(res);
+      } else {
+        res = new HashMap<String,Object>();
+        res.put("code", 5000);
+        res.put("msg", "更新失败!");
+        return GetJSON(res);
+      }
+    } else if(type.equals("api")) {
+      // API权限
+      ApiPerm m = new ApiPerm();
+      m.Set(uData);
+      m.Where("uid=?", uid);
+      if(m.Update()){
+        // 角色权限
+        if(perm.isEmpty()) {
+          ApiRole m1 = new ApiRole();
+          m1.Columns("perm");
+          m1.Where("id=?", role);
+          HashMap<String, Object> data = m1.FindFirst();
+          perm = data.containsKey("perm")?data.get("perm").toString():"";
+        }
+        // 更新权限
+        _setPerm(Env.api_token_prefix+"_perm_"+String.valueOf(uid), perm);
+        res = new HashMap<String,Object>();
+        res.put("code", 0);
+        res.put("msg", "成功");
+        return GetJSON(res);
+      } else {
+        res = new HashMap<String,Object>();
+        res.put("code", 5000);
+        res.put("msg", "更新失败!");
+        return GetJSON(res);
+      }
+    } else {
+      res = new HashMap<String,Object>();
+      res.put("code", 4000);
+      res.put("msg", "参数错误!");
+      return GetJSON(res);
+    }
+  }
+  // 更新权限
+  private void _setPerm(String key, String perm) {
+    Redis redis = new Redis("");
+    redis.Set(key, perm);
+    redis.Close();
   }
 
   /* 个人信息 */

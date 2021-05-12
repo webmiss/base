@@ -125,6 +125,21 @@ class ApiRole(Base):
       return self.GetJSON({'code':5000, 'msg':'更新失败!'})
 
   # 权限-列表
+  def RoleList(self):
+    # 验证
+    token = self.Post('token')
+    msg = AdminToken().verify(token, '')
+    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
+    # 查询
+    m = ApiRoleM()
+    m.Columns('id', 'name')
+    data = m.Find()
+    lists = [{'label':'无', 'value':0}]
+    for val in data :
+      lists += [{'label': val['name'], 'value':val['id']}]
+    return self.GetJSON({'code':0, 'msg':'成功', 'list':lists})
+
+  # 权限-列表
   def PermList(self):
     # 验证
     token = self.Post('token')

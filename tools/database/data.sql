@@ -18,7 +18,7 @@ CREATE TABLE `api_menus` (
   `controller` varchar(32) DEFAULT '',
   `action` tinytext DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员菜单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='API菜单';
 
 INSERT INTO `api_menus` (`id`, `fid`, `title`, `ico`, `ctime`, `utime`, `sort`, `url`, `controller`, `action`) VALUES
 (1,	0,	'测试接口',	'',	0,	0,	0,	'',	'/api/demo',	'[{\"name\":\"列表\",\"action\":\"List\",\"perm\":1},{\"name\":\"权限\",\"action\":\"perm\",\"perm\":2}]');
@@ -45,7 +45,7 @@ CREATE TABLE `api_role` (
   `utime` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '更新时间',
   `perm` text DEFAULT NULL COMMENT '权限值',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员角色';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='API角色';
 
 INSERT INTO `api_role` (`id`, `name`, `ctime`, `utime`, `perm`) VALUES
 (1,	'普通会员',	0,	0,	'1:2');
@@ -91,9 +91,9 @@ INSERT INTO `sys_menus` (`id`, `fid`, `title`, `ico`, `ctime`, `utime`, `sort`, 
 (5,	1,	'个人资料',	'icons icon_user_info',	0,	0,	0,	'/UserInfo',	'/admin/userinfo',	'[{\"type\":\"2\",\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"type\":\"2\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":2},{\"type\":\"2\",\"name\":\"头像\",\"action\":\"upimg\",\"perm\":4}]'),
 (6,	1,	'修改密码',	'icons icon_user_passwd',	0,	0,	0,	'/UserPasswd',	'/admin/userpasswd',	'[{\"type\":\"2\",\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"type\":\"2\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":2}]'),
 (7,	2,	'文件目录',	'icons icon_sys_folder',	0,	0,	0,	'/SysFileManage',	'/admin/sysfile',	'[{\"type\":\"2\",\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"type\":\"1\",\"name\":\"新建文件夹\",\"action\":\"mkdir\",\"perm\":2},{\"type\":\"1\",\"name\":\"重命名\",\"action\":\"rename\",\"perm\":4},{\"type\":\"1\",\"name\":\"上传\",\"action\":\"upload\",\"perm\":8},{\"type\":\"2\",\"name\":\"下载\",\"action\":\"down\",\"perm\":16},{\"type\":\"1\",\"name\":\"删除\",\"action\":\"remove\",\"perm\":32}]'),
-(8,	2,	'用户管理',	'icons icon_sys_user',	0,	0,	0,	'/SysUser',	'/admin/sysuser',	'[{\"type\":\"1\",\"name\":\"刷新\",\"action\":\"list\",\"perm\":1},{\"type\":\"1\",\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"type\":\"1\",\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"type\":\"1\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"type\":\"1\",\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"type\":\"2\",\"name\":\"状态\",\"action\":\"state\",\"perm\":32},{\"type\":\"2\",\"name\":\"个人信息\",\"action\":\"info\",\"perm\":64}]'),
-(9,	2,	'会员菜单',	'icons icon_sys_menu',	0,	0,	0,	'/ApiMenus',	'/admin/apimenus',	'[{\"type\":\"1\",\"name\":\"刷新\",\"action\":\"list\",\"perm\":1},{\"type\":\"1\",\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"type\":\"1\",\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"type\":\"1\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"type\":\"1\",\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"type\":\"2\",\"name\":\"权限\",\"action\":\"perm\",\"perm\":32}]'),
-(10,	2,	'会员角色',	'icons icon_sys_role',	0,	0,	0,	'/ApiRole',	'/admin/apirole',	'[{\"type\":\"1\",\"name\":\"刷新\",\"action\":\"list\",\"perm\":1},{\"type\":\"1\",\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"type\":\"1\",\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"type\":\"1\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"type\":\"1\",\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"type\":\"2\",\"name\":\"权限\",\"action\":\"perm\",\"perm\":32}]'),
+(8,	2,	'用户管理',	'icons icon_sys_user',	0,	0,	0,	'/SysUser',	'/admin/sysuser',	'[{\"type\":\"1\",\"name\":\"刷新\",\"action\":\"list\",\"perm\":1},{\"type\":\"1\",\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"type\":\"1\",\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"type\":\"1\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"type\":\"1\",\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"type\":\"2\",\"name\":\"状态\",\"action\":\"state\",\"perm\":32},{\"type\":\"2\",\"name\":\"权限\",\"action\":\"perm\",\"perm\":64},{\"type\":\"2\",\"name\":\"个人信息\",\"action\":\"info\",\"perm\":128}]'),
+(9,	2,	'API菜单',	'icons icon_sys_menu',	0,	0,	0,	'/ApiMenus',	'/admin/apimenus',	'[{\"type\":\"1\",\"name\":\"刷新\",\"action\":\"list\",\"perm\":1},{\"type\":\"1\",\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"type\":\"1\",\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"type\":\"1\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"type\":\"1\",\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"type\":\"2\",\"name\":\"权限\",\"action\":\"perm\",\"perm\":32}]'),
+(10,	2,	'API角色',	'icons icon_sys_role',	0,	0,	0,	'/ApiRole',	'/admin/apirole',	'[{\"type\":\"1\",\"name\":\"刷新\",\"action\":\"list\",\"perm\":1},{\"type\":\"1\",\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"type\":\"1\",\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"type\":\"1\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"type\":\"1\",\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"type\":\"2\",\"name\":\"权限\",\"action\":\"perm\",\"perm\":32}]'),
 (11,	2,	'系统菜单',	'icons icon_sys_menu',	0,	0,	0,	'/SysMenus',	'/admin/sysmenus',	'[{\"type\":\"1\",\"name\":\"刷新\",\"action\":\"list\",\"perm\":1},{\"type\":\"1\",\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"type\":\"1\",\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"type\":\"1\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"type\":\"1\",\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"type\":\"2\",\"name\":\"权限\",\"action\":\"perm\",\"perm\":32}]'),
 (12,	2,	'系统角色',	'icons icon_sys_role',	0,	0,	0,	'/SysRole',	'/admin/sysrole',	'[{\"type\":\"1\",\"name\":\"刷新\",\"action\":\"list\",\"perm\":1},{\"type\":\"1\",\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"type\":\"1\",\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"type\":\"1\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"type\":\"1\",\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"type\":\"2\",\"name\":\"权限\",\"action\":\"perm\",\"perm\":32}]'),
 (13,	2,	'系统配置',	'icons icon_sys_config',	0,	0,	0,	'/SysConfig',	'/admin/sysconfig',	'[{\"type\":\"2\",\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"type\":\"2\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":2},{\"type\":\"2\",\"name\":\"图片\",\"action\":\"upimg\",\"perm\":4}]'),
@@ -109,7 +109,7 @@ CREATE TABLE `sys_perm` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
 
 INSERT INTO `sys_perm` (`uid`, `utime`, `role`, `perm`) VALUES
-(1,	0,	'',	'1:0 2:0 3:0 4:0 5:7 6:3 7:63 8:127 9:63 10:63 11:63 12:63 13:7 14:0'),
+(1,	0,	'',	'1:0 2:0 3:0 4:0 5:7 6:3 7:63 8:255 9:63 10:63 11:63 12:63 13:7 14:0'),
 (2,	0,	'1',	'');
 
 DROP TABLE IF EXISTS `sys_role`;

@@ -69,7 +69,7 @@
           </div>
         </div>
         <!-- 菜单 -->
-        <wm-menu class="app_menus" ref="Menus" :height="36" textColor="#A2A4A8" :data="menus" :defaultIndex="menusActive" @active="menuClick"></wm-menu>
+        <wm-menu class="app_menus" ref="Menus" textColor="#A2A4A8" :data="menus" :defaultIndex="menusActive" @active="menuClick"></wm-menu>
         <!-- 登录信息 -->
         <div class="app_login nowrap">
           <span class="config">{{state.uInfo.uname}}</span>&gt;

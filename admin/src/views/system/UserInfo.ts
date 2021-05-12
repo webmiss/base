@@ -24,7 +24,7 @@ export default defineComponent({
     const state: any = store.state;
     // 表单
     const form: any = {img:'',nickname:'',name:'',gender:'男',birthday:'',position:''};
-    const gender: any = [{name:'男',val:'男'},{name:'女',val:'女'}];
+    const gender: any = [{label:'男',value:'男'},{label:'女',value:'女'}];
     // 上传
     const upload: any = {
       url:'userinfo/upimg',

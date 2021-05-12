@@ -29,20 +29,22 @@ class Admin {
     $app->post('/admin/sysuser/edit', 'App\Admin\SysUser::Edit');
     $app->post('/admin/sysuser/del', 'App\Admin\SysUser::Del');
     $app->post('/admin/sysuser/state', 'App\Admin\SysUser::State');
+    $app->post('/admin/sysuser/perm', 'App\Admin\SysUser::Perm');
     $app->post('/admin/sysuser/info', 'App\Admin\SysUser::Info');
-    // 会员菜单
+    // API菜单
     $app->post('/admin/apimenus/list', 'App\Admin\ApiMenus::List');
     $app->post('/admin/apimenus/add', 'App\Admin\ApiMenus::Add');
     $app->post('/admin/apimenus/edit', 'App\Admin\ApiMenus::Edit');
     $app->post('/admin/apimenus/del', 'App\Admin\ApiMenus::Del');
     $app->post('/admin/apimenus/perm', 'App\Admin\ApiMenus::Perm');
-    // 会员角色
+    // API角色
     $app->post('/admin/apirole/list', 'App\Admin\ApiRole::List');
     $app->post('/admin/apirole/add', 'App\Admin\ApiRole::Add');
     $app->post('/admin/apirole/edit', 'App\Admin\ApiRole::Edit');
     $app->post('/admin/apirole/del', 'App\Admin\ApiRole::Del');
     $app->post('/admin/apirole/perm', 'App\Admin\ApiRole::Perm');
     $app->post('/admin/apirole/permList', 'App\Admin\ApiRole::PermList');
+    $app->post('/admin/apirole/roleList', 'App\Admin\ApiRole::RoleList');
     // 系统菜单
     $app->post('/admin/sysmenus/list', 'App\Admin\SysMenus::List');
     $app->post('/admin/sysmenus/add', 'App\Admin\SysMenus::Add');
@@ -57,6 +59,7 @@ class Admin {
     $app->post('/admin/sysrole/del', 'App\Admin\SysRole::Del');
     $app->post('/admin/sysrole/perm', 'App\Admin\SysRole::Perm');
     $app->post('/admin/sysrole/permList', 'App\Admin\SysRole::PermList');
+    $app->post('/admin/sysrole/roleList', 'App\Admin\SysRole::RoleList');
     // 系统配置
     $app->post('/admin/sysconfig/list', 'App\Admin\SysConfig::List');
     $app->post('/admin/sysconfig/edit', 'App\Admin\SysConfig::Edit');

@@ -23,16 +23,19 @@ import wmRadio from '@/components/form/radio/index.vue'
 import wmDate from '@/components/form/date/index.vue'
 import wmButton from '@/components/form/button/index.vue'
 import wmPage from '@/components/page/index.vue'
+import wmTree from '@/components/tree/index.vue'
 /* ElementUI */
 import { ElTabs, ElTabPane } from 'element-plus';
 import '@/assets/themes/tabs.css'
 import '@/assets/themes/tab-pane.css'
+import '@/assets/themes/select.css'
+import '@/assets/themes/option.css'
 
 /* 用户管理 */
 export default defineComponent({
   components: {
-    wmMain,wmRow,wmTable,wmTableTitle,wmTableTr,wmImg,wmTag,wmPopover,wmSwitch,wmDialog,wmForm,wmFormItem,wmInput,wmRadio,wmDate,wmButton,wmPage,
-    ElTabs, ElTabPane,
+    wmMain,wmRow,wmTable,wmTableTitle,wmTableTr,wmImg,wmTag,wmPopover,wmSwitch,wmDialog,wmForm,wmFormItem,wmInput,wmRadio,wmDate,wmButton,wmPage,wmTree,
+    ElTabs,ElTabPane,
   },
   data(){
     // 状态
@@ -46,10 +49,10 @@ export default defineComponent({
     const edit: any = {show:false, id:'', form:{}};
     const del: any = {show:false, ids:''};
     // 权限
-    const perm: any = {show:false, id:'', perm:''};
+    const perm: any = {show:false, active:'role', m:'', uid:'', role: 0, roleList:[], perm:'', permList:[]};
     // 用户信息
     const info: any = {show:false, id:'', form:{}};
-    const gender: any = [{name:'男', val:'男'},{name:'女', val:'女'}];
+    const gender: any = [{label:'男',value:'男'},{label:'女',value:'女'}];
     return {state, page, sea, add, edit, del, perm, info, gender};
   },
   computed: {
@@ -201,12 +204,58 @@ export default defineComponent({
     },
 
     /* 权限 */
-    permData(uid: string, perm: string){
+    permData(m: string, uid: string, role: number, perm: string){
       this.perm.show = true;
-      console.log(uid,perm);
+      this.perm.m = m;
+      this.perm.uid = uid;
+      this.perm.role = 0;
+      // 模块
+      let roleUrl: string = '';
+      let permUrl: string = '';
+      if(m=='admin'){
+        roleUrl = 'sysrole/roleList';
+        permUrl = 'sysrole/permList';
+      }else if(m=='api'){
+        roleUrl = 'apirole/roleList';
+        permUrl = 'apirole/permList';
+      }
+      // 角色列表
+      Post(roleUrl, {
+        token: Storage.getItem('token'),
+      },(res: any)=>{
+        const d = res.data;
+        if(d.code===0){
+          this.perm.roleList = d.list;
+          this.perm.role = role;
+        }else Toast(d.msg);
+      });
+      // 权限列表
+      Post(permUrl,{
+        token: Storage.getItem('token'),
+        perm: perm,
+      },(res: any)=>{
+        const d = res.data;
+        if(d.code===0) this.perm.permList = d.list;
+        else Toast(d.msg);
+      });
     },
     subPerm(){
-
+      this.perm.show = false;
+      // 提交
+      const obj: any = this.$refs.perm;
+      const load = Loading();
+      Post('sysuser/perm',{
+        token: Storage.getItem('token'),
+        type: this.perm.m,
+        uid: this.perm.uid,
+        role: this.perm.role,
+        perm: obj.getPerms()
+      },(res: any)=>{
+        load.clear();
+        const d = res.data;
+        if(d.code===0) this.loadData();
+        return Toast(d.msg);
+      });
     },
 
     /* 用户信息 */

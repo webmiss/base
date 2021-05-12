@@ -35,14 +35,14 @@
           <wm-switch :value="val.state" @update:value="setState($event,val.uid)"></wm-switch>
         </td>
         <td>
-          <wm-button v-if="val.sys_perm" type="danger" height="32px" @click="permData(val.uid,val.sys_perm)">私有</wm-button>
-          <wm-button v-else-if="val.sys_role" height="32px" @click="permData(val.uid,val.sys_role)">角色</wm-button>
-          <wm-button v-else type="info" height="32px" @click="permData(val.uid,val.sys_perm)">分配</wm-button>
+          <wm-button v-if="val.sys_perm" type="danger" height="32px" @click="permData('admin', val.uid, val.sys_role, val.sys_perm)">私有</wm-button>
+          <wm-button v-else-if="val.sys_role" height="32px" @click="permData('admin', val.uid, val.sys_role, val.sys_perm)">角色</wm-button>
+          <wm-button v-else type="info" height="32px" @click="permData('admin', val.uid, val.sys_role, val.sys_perm)">分配</wm-button>
         </td>
         <td>
-          <wm-button v-if="val.api_perm" type="danger" height="32px" @click="permData(val.uid,val.api_perm)">私有</wm-button>
-          <wm-button v-else-if="val.api_role" height="32px" @click="permData(val.uid,val.api_role)">角色</wm-button>
-          <wm-button v-else type="info" height="32px" @click="permData(val.uid,val.api_perm)">分配</wm-button>
+          <wm-button v-if="val.api_perm" type="danger" height="32px" @click="permData('api', val.uid, val.api_role, val.api_perm)">私有</wm-button>
+          <wm-button v-else-if="val.api_role" height="32px" @click="permData('api', val.uid, val.api_role, val.api_perm)">角色</wm-button>
+          <wm-button v-else type="info" height="32px" @click="permData('api', val.uid, val.api_role, val.api_perm)">分配</wm-button>
         </td>
         <td>
           <wm-button v-if="val.nickname" type="info" height="32px" @click="infoData(val)">{{ val.nickname }}</wm-button>
@@ -133,10 +133,17 @@
     <!-- Info End -->
 
     <!-- Perm -->
-    <wm-dialog title="权限" width="420px" :show="perm.show" @update:show="perm.show=$event">
-      <div>内容</div>
+    <wm-dialog title="权限" width="540px" :show="perm.show" @update:show="perm.show=$event">
+      <el-tabs v-model="perm.active">
+        <el-tab-pane label="角色" name="role">
+          <wm-radio :data="perm.roleList" :value="perm.role" @update:value="perm.role=$event"></wm-radio>
+        </el-tab-pane>
+        <el-tab-pane label="私有" name="perm">
+          <wm-tree ref="perm" :data="perm.permList"></wm-tree>
+        </el-tab-pane>
+      </el-tabs>
       <template #footer>
-        <wm-button @click="subInfo()">更 新</wm-button>
+        <wm-button @click="subPerm()">更 新</wm-button>
       </template>
     </wm-dialog>
     <!-- Perm End -->

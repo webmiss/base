@@ -106,8 +106,6 @@ export default defineComponent({
       this.menus = val;
     },
   },
-  mounted(){
-  },
   methods:{
 
     /* 选择 */

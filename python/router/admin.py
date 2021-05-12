@@ -50,8 +50,9 @@ def sysUser(a) :
   elif a=='edit' : return SysUser().Edit()
   elif a=='del' : return SysUser().Del()
   elif a=='state' : return SysUser().State()
+  elif a=='perm' : return SysUser().Perm()
   elif a=='info' : return SysUser().Info()
-# 会员菜单
+# API菜单
 @Admin.route('/apimenus/<a>',methods=['POST'])
 def apiMenus(a) :
   if a=='list' : return ApiMenus().List()
@@ -59,7 +60,7 @@ def apiMenus(a) :
   elif a=='edit' : return ApiMenus().Edit()
   elif a=='del' : return ApiMenus().Del()
   elif a=='perm' : return ApiMenus().Perm()
-# 会员角色
+# API角色
 @Admin.route('/apirole/<a>',methods=['POST'])
 def sysRole(a) :
   if a=='list' : return ApiRole().List()
@@ -68,6 +69,7 @@ def sysRole(a) :
   elif a=='del' : return ApiRole().Del()
   elif a=='perm' : return ApiRole().Perm()
   elif a=='permList' : return ApiRole().PermList()
+  elif a=='roleList' : return ApiRole().RoleList()
 # 系统菜单
 @Admin.route('/sysmenus/<a>',methods=['POST'])
 def sysMenus(a) :
@@ -86,6 +88,7 @@ def apiRole(a) :
   elif a=='del' : return SysRole().Del()
   elif a=='perm' : return SysRole().Perm()
   elif a=='permList' : return SysRole().PermList()
+  elif a=='roleList' : return SysRole().RoleList()
 # 系统配置
 @Admin.route('/sysconfig/<a>',methods=['POST'])
 def sysConfig(a) :

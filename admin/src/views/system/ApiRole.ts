@@ -38,7 +38,7 @@ export default defineComponent({
     const edit: any = {show:false, id:'', form:{}};
     const del: any = {show:false, ids:''};
     // 权限
-    const perm: any = {show:false, id:'', perm:'', menus:[]};
+    const perm: any = {show:false, id:'', perm:'', permList:[]};
     return {state, page, sea, add, edit, del, perm}
   },
   computed: {
@@ -176,7 +176,7 @@ export default defineComponent({
     permData(id: number, perm: string){
       this.perm.show = true;
       this.perm.id = id;
-      // 获取列表
+      // 权限列表
       const load = Loading();
       Post('apirole/permList',{
         token: Storage.getItem('token'),
@@ -184,7 +184,7 @@ export default defineComponent({
       },(res: any)=>{
         load.clear();
         const d = res.data;
-        if(d.code===0) this.perm.menus = d.list;
+        if(d.code===0) this.perm.permList = d.list;
         else Toast(d.msg);
       });
     },

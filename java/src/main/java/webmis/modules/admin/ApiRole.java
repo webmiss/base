@@ -230,6 +230,40 @@ public class ApiRole extends Base {
     return GetJSON(res);
   }
 
+  /* 角色-列表 */
+  @RequestMapping("roleList")
+  String RoleList(HttpServletRequest request, String token, String perm) {
+    HashMap<String,Object> res;
+    // 验证
+    String msg = AdminToken.verify(token, "");
+    if(!msg.equals("")){
+      res = new HashMap<String,Object>();
+      res.put("code", 4001);
+      res.put("msg", msg);
+      return GetJSON(res);
+    }
+    // 查询
+    webmis.model.ApiRole m = new webmis.model.ApiRole();
+    m.Columns("id", "name");
+    HashMap<String, Object> tmp = new HashMap<String, Object>();
+    ArrayList<HashMap<String, Object>> data = m.Find();
+    ArrayList<HashMap<String, Object>> lists = new ArrayList<HashMap<String, Object>>();
+    tmp.put("label", "无");
+    tmp.put("value", 0);
+    lists.add(tmp);
+    for (HashMap<String, Object> val : data) {
+      tmp = new HashMap<String, Object>();
+      tmp.put("label", val.get("name"));
+      tmp.put("value", val.get("id"));
+      lists.add(tmp);
+    }
+    res = new HashMap<String,Object>();
+    res.put("code", 0);
+    res.put("msg", "成功");
+    res.put("list", lists);
+    return GetJSON(res);
+  }
+
   /* 权限-列表 */
   @RequestMapping("permList")
   String PermList(HttpServletRequest request, String token, String perm) {

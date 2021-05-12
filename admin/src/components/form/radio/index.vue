@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="wm-radio_item" v-for="(val,key) in data" :key="key" @click="$emit('update:value',val.val)">
-      <div class="checked" :class="val.checked?'active':''"></div>
-      <div class="name">{{val.name}}</div>
+    <div class="wm-radio_item" v-for="(item,key) in data" :key="key" @click.stop="$emit('update:value',item.value)">
+      <div class="checked" :class="item.checked?'active':''"></div>
+      <div class="name">{{item.label}}</div>
     </div>
   </div>
 </template>
@@ -23,8 +23,8 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Radio',
   props: {
-    data: {type: Array, default: []}, //数据: [{name:'男',val:'男'},{name:'女',val:'女'}]
-    value: {type: String, default: ''}, //默认值: val
+    data: {type: Array, default: []}, //数据: [{label:'男',value:'男'},{label:'女',value:'女'}]
+    value: {default: ''}, //默认值: val
   },
   watch:{
     value(val){
@@ -37,12 +37,12 @@ export default defineComponent({
   methods:{
 
     /* 点击 */
-    radioClick(val: string){
+    radioClick(val: any){
       let v: any;
       for(v of this.data){
         v.checked = false;
         // 勾选
-        if(v.val==val) v.checked = true;
+        if(v.value==val) v.checked = true;
       }
     },
 

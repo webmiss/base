@@ -224,6 +224,7 @@ func (r SysUser) State(c *gin.Context) {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
+	tData := (&service.AdminToken{}).Token(token)
 	// 参数
 	uid := c.PostForm("uid")
 	state := c.PostForm("state")
@@ -236,6 +237,11 @@ func (r SysUser) State(c *gin.Context) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
+	// 超级管理员
+	if uid == "1" && tData["uid"] != "1" {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "您不是超级管理员!"})
+		return
+	}
 	// 更新
 	m := (&model.User{}).New()
 	m.Set(map[string]interface{}{"state": state})
@@ -245,6 +251,89 @@ func (r SysUser) State(c *gin.Context) {
 	} else {
 		r.GetJSON(c, gin.H{"code": 5000, "msg": "更新失败!"})
 	}
+}
+
+/* 权限 */
+func (r SysUser) Perm(c *gin.Context) {
+	// 验证
+	token := c.PostForm("token")
+	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
+	if msg != "" {
+		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
+		return
+	}
+	tData := (&service.AdminToken{}).Token(token)
+	// 参数
+	uid := c.PostForm("uid")
+	tp := c.PostForm("type")
+	role := c.PostForm("role")
+	perm := c.PostForm("perm")
+	if util.Empty(uid) || util.Empty(tp) {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
+		return
+	}
+	// 超级管理员
+	if uid == "1" && tData["uid"] != "1" {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "您不是超级管理员!"})
+		return
+	}
+	// 类型
+	env := config.Env()
+	uData := map[string]interface{}{"role": role, "perm": perm, "utime": util.Time()}
+	if tp == "admin" {
+		// 系统权限
+		m := (&model.SysPerm{}).New()
+		m.Set(uData)
+		m.Where("uid=?", uid)
+		if m.Update() {
+			// 角色权限
+			if util.Empty(perm) {
+				m1 := (&model.SysRole{}).New()
+				m1.Columns("perm")
+				m1.Where("id=?", role)
+				data := m1.FindFirst()
+				if res, ok := data["perm"]; ok {
+					perm = util.Strval(res)
+				}
+			}
+			// 更新权限
+			r._setPerm(env.AdminTokenPrefix+"_perm_"+uid, perm)
+			r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
+		} else {
+			r.GetJSON(c, gin.H{"code": 5000, "msg": "更新失败!"})
+		}
+	} else if tp == "api" {
+		// API权限
+		m := (&model.ApiPerm{}).New()
+		m.Set(uData)
+		m.Where("uid=?", uid)
+		if m.Update() {
+			// 角色权限
+			if util.Empty(perm) {
+				m1 := (&model.ApiRole{}).New()
+				m1.Columns("perm")
+				m1.Where("id=?", role)
+				data := m1.FindFirst()
+				if res, ok := data["perm"]; ok {
+					perm = util.Strval(res)
+				}
+			}
+			// 更新权限
+			r._setPerm(env.ApiTokenPrefix+"_perm_"+uid, perm)
+			r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
+		} else {
+			r.GetJSON(c, gin.H{"code": 5000, "msg": "更新失败!"})
+		}
+	} else {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
+	}
+}
+
+// 更新权限
+func (r SysUser) _setPerm(key string, perm string) {
+	redis := (&library.Redis{}).New("")
+	redis.Set(key, perm)
+	redis.Close()
 }
 
 /* 个人信息 */
