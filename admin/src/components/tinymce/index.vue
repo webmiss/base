@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import HtmlLoad from '../../library/inc/html-load'
+// import HtmlLoad from '../../library/inc/html-load'
 export default defineComponent({
   name: 'TinyMCE',
   props: {
@@ -52,7 +52,7 @@ export default defineComponent({
 
     /* 初始化 */
     setInit() {
-      HtmlLoad(['/tinymce/tinymce.min.js'], true);
+      // HtmlLoad(['/tinymce/tinymce.min.js'], true);
       // setTimeout(()=>{
         // console.log(this.defInit);
         // @ts-ignore
