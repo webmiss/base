@@ -14,6 +14,20 @@ export default defineComponent({
     const tinymce: any = {init:{}, content: ''};
     return {state, tinymce}
   },
+  computed: {
+    // 动作菜单-监听
+    actionType(){
+      const active: any = this.state.action.active;
+      return active;
+    }
+  },
+  watch:{
+    // 动作菜单-点击
+    actionType(val){
+      if(!val) return false;
+      console.log(val);
+    }
+  },
   mounted(){
   },
   beforeUnmount(){
