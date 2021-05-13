@@ -1,5 +1,7 @@
 <template>
-  <div class="wm-tinymce" v-html="content"></div>
+  <div>
+    <div class="wm-tinymce" v-html="content"></div>
+  </div>
 </template>
 
 <style scoped>
@@ -32,7 +34,7 @@ export default defineComponent({
       init_instance_callback: (editor: any)=>{
         // 监听输入
         editor.on('input', ()=>{
-          this.getContent();
+          // this.getContent();
         });
       }
     };
@@ -55,7 +57,7 @@ export default defineComponent({
         // console.log(this.defInit);
         // @ts-ignore
         tinymce.init(this.defInit);
-      },600);
+      },6000);
     },
 
     /* 获取内容 */
