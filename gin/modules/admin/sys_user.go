@@ -56,6 +56,7 @@ func (r SysUser) List(c *gin.Context) {
 	list := m.Find()
 	// 数据
 	for _, val := range list {
+		val["uid"] = util.Strval(val["uid"])
 		if util.Strval(val["state"]) == "1" {
 			val["state"] = true
 		} else {
@@ -238,7 +239,7 @@ func (r SysUser) State(c *gin.Context) {
 		return
 	}
 	// 超级管理员
-	if uid == "1" && tData["uid"] != "1" {
+	if uid == "1" && util.Strval(tData["uid"]) != "1" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "您不是超级管理员!"})
 		return
 	}
@@ -273,7 +274,7 @@ func (r SysUser) Perm(c *gin.Context) {
 		return
 	}
 	// 超级管理员
-	if uid == "1" && tData["uid"] != "1" {
+	if uid == "1" && util.Strval(tData["uid"]) != "1" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "您不是超级管理员!"})
 		return
 	}

@@ -11,7 +11,7 @@ func Recovery(c *gin.Context) {
 	defer func() {
 		if r := recover(); r != nil {
 			fmt.Printf("panic: %v\n", r)
-			c.JSON(200, gin.H{"code": 500, "msg": r})
+			c.JSON(200, gin.H{"code": 500, "msg": "Internal Server Error"})
 			c.Abort()
 		}
 	}()

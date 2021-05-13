@@ -102,8 +102,8 @@ func JsonEncode(arr interface{}) []byte {
 }
 
 /* String to interface{} */
-func JsonDecode(str string, res interface{}) {
-	err := json.Unmarshal([]byte(str), &res)
+func JsonDecode(str interface{}, res interface{}) {
+	err := json.Unmarshal([]byte(Strval(str)), &res)
 	if err != nil {
 		fmt.Println(err)
 	}

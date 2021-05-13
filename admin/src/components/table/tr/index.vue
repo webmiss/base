@@ -21,7 +21,7 @@ export default defineComponent({
   components: {wmCheckbox},
   props: {
     checkbox: {type: Boolean, default: true}, //多选
-    value: {type: String, default:''}, //checkbox[value]
+    value: {default:''}, //checkbox[value]
   },
 });
 </script>

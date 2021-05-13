@@ -60,7 +60,7 @@ func (r User) Login(c *gin.Context) {
 	}
 	env := config.Env()
 	redis := (&library.Redis{}).New("")
-	key := env.AdminTokenPrefix + "_perm_" + data["id"].(string)
+	key := env.AdminTokenPrefix + "_perm_" + util.Strval(data["id"])
 	redis.Set(key, perm)
 	redis.Expire(key, env.AdminTokenTime)
 	redis.Close()

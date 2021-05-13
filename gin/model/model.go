@@ -283,10 +283,13 @@ func (m *Model) FindDataAll(rows *sql.Rows) []map[string]interface{} {
 		rows.Scan(key...)
 		tmp := make(map[string]interface{})
 		for k, v := range val {
-			if v != nil {
+			tp := util.GetType(v)
+			if v == nil {
+				tmp[columns[k]] = ""
+			} else if tp == "byte" || tp == "uint" || tp == "uint8" || tp == "uint16" || tp == "uint32" || tp == "uint64" {
 				tmp[columns[k]] = util.Strval(v)
 			} else {
-				tmp[columns[k]] = ""
+				tmp[columns[k]] = v
 			}
 		}
 		res = append(res, tmp)
