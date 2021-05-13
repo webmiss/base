@@ -97,7 +97,8 @@ INSERT INTO `sys_menus` (`id`, `fid`, `title`, `ico`, `ctime`, `utime`, `sort`, 
 (11,	2,	'系统菜单',	'icons icon_sys_menu',	0,	0,	0,	'/SysMenus',	'/admin/sysmenus',	'[{\"type\":\"1\",\"name\":\"刷新\",\"action\":\"list\",\"perm\":1},{\"type\":\"1\",\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"type\":\"1\",\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"type\":\"1\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"type\":\"1\",\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"type\":\"2\",\"name\":\"权限\",\"action\":\"perm\",\"perm\":32}]'),
 (12,	2,	'系统角色',	'icons icon_sys_role',	0,	0,	0,	'/SysRole',	'/admin/sysrole',	'[{\"type\":\"1\",\"name\":\"刷新\",\"action\":\"list\",\"perm\":1},{\"type\":\"1\",\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"type\":\"1\",\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"type\":\"1\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"type\":\"1\",\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"type\":\"2\",\"name\":\"权限\",\"action\":\"perm\",\"perm\":32}]'),
 (13,	2,	'系统配置',	'icons icon_sys_config',	0,	0,	0,	'/SysConfig',	'/admin/sysconfig',	'[{\"type\":\"2\",\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"type\":\"2\",\"name\":\"编辑\",\"action\":\"edit\",\"perm\":2},{\"type\":\"2\",\"name\":\"图片\",\"action\":\"upimg\",\"perm\":4}]'),
-(14,	3,	'TWebLive直播',	'icons icon_app',	0,	0,	0,	'/demo/TWebLive',	'',	'');
+(14,	3,	'TinyMCE编辑器',	'icons icon_app',	0,	0,	0,	'/demo/TinyMCE',	'',	''),
+(15,	3,	'TWebLive直播',	'icons icon_app',	0,	0,	0,	'/demo/TWebLive',	'',	'');
 
 DROP TABLE IF EXISTS `sys_perm`;
 CREATE TABLE `sys_perm` (
@@ -109,7 +110,7 @@ CREATE TABLE `sys_perm` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
 
 INSERT INTO `sys_perm` (`uid`, `utime`, `role`, `perm`) VALUES
-(1,	0,	'',	'1:0 2:0 3:0 4:0 5:7 6:3 7:63 8:255 9:63 10:63 11:63 12:63 13:7 14:0'),
+(1,	0,	'',	'1:0 2:0 3:0 4:0 5:7 6:3 7:63 8:255 9:63 10:63 11:63 12:63 13:7 14:0 15:0'),
 (2,	0,	'1',	'');
 
 DROP TABLE IF EXISTS `sys_role`;

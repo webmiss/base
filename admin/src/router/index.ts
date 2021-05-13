@@ -17,6 +17,7 @@ const routes: Array<RouteRecordRaw> = [
   {path:'/SysMenus', name:'SysMenus', component:()=>import('../views/system/Menus.vue')},
   {path:'/SysConfig', name:'SysConfig', component:()=>import('../views/system/Config.vue')},
   // Demo
+  {path:'/demo/TinyMCE', name:'DemoTinyMCE', component:()=>import('../views/demo/TinyMCE.vue')},
   {path:'/demo/TWebLive', name:'DemoTWebLive', component:()=>import('../views/demo/TWebLive.vue')},
 ]
 

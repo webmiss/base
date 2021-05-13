@@ -26,9 +26,9 @@
 .wm-dialog_close::after,.wm-dialog_close::before{content: ''; position: absolute; width: 16px; height: 2px; background-color: #999; left: 50%; top: 50%; transform-origin: center;}
 .wm-dialog_close::after{transform: rotate(45deg); margin-left: -25%;}
 .wm-dialog_close::before{transform: rotate(-45deg); margin-left: -25%;}
-.wm-dialog_footer{height: 40px; padding: 10px 0 20px;}
+.wm-dialog_footer{height: 40px; padding: 10px 0;}
 /* 滚动条 */
-.wm-dialog_body{overflow: auto; width: 100%; height: calc(100% - 48px - 70px);}
+.wm-dialog_body{overflow: auto; width: 100%; height: calc(100% - 48px - 60px);}
 .wm-dialog_body::-webkit-scrollbar{width: 8px;}
 .wm-dialog_body::-webkit-scrollbar-thumb{border-radius: 4px; background: rgba(136,136,136,0.4);}
 .wm-dialog_body:hover::-webkit-scrollbar-track{background: rgba(136,136,136,0.1);}
@@ -80,8 +80,8 @@ export default defineComponent({
       HtmlObserve(body, () => {
         let val: string = getComputedStyle(content).getPropertyValue('height');
         let bh: number = this.state.height;
-        let h: number = parseInt(val.replace(/(px)/g, ''))+48+70+this.hMargin*2;
-        if(h>bh) body.style.height = bh-48-70-this.hMargin*2+'px';
+        let h: number = parseInt(val.replace(/(px)/g, ''))+48+60+this.hMargin*2;
+        if(h>bh) body.style.height = bh-48-60-this.hMargin*2+'px';
         else body.style.height = '';
       });
     },
