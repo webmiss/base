@@ -53,11 +53,11 @@ export default defineComponent({
     /* 初始化 */
     setInit() {
       HtmlLoad(['/tinymce/tinymce.min.js'], true);
-      setTimeout(()=>{
+      // setTimeout(()=>{
         // console.log(this.defInit);
         // @ts-ignore
         tinymce.init(this.defInit);
-      },6000);
+      // },600);
     },
 
     /* 获取内容 */
