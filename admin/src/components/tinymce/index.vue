@@ -11,7 +11,7 @@ import HtmlLoad from '../../library/inc/html-load'
 export default defineComponent({
   name: 'TinyMCE',
   props: {
-    init: {default: {}},    //配置
+    config: {default: {}},  //配置
     content: {default: ''}, //内容
   },
   data(){
@@ -39,7 +39,7 @@ export default defineComponent({
     return {defInit};
   },
   watch:{
-    init(val: any){
+    config(val: any){
       console.log('init');
     },
   },
