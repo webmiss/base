@@ -50,7 +50,7 @@ export default defineComponent({
 
     /* 初始化 */
     setInit() {
-      HtmlLoad(['/tinymce/tinymce.min.js']);
+      // HtmlLoad(['/tinymce/tinymce.min.js']);
       setTimeout(()=>{
         // console.log(this.defInit);
         // @ts-ignore
