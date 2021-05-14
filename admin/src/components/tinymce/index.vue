@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="wm-tinymce" v-html="content"></div>
-    <!-- <editor class="wm-tinymce" v-model="tmpContent" :init="defInit"></editor> -->
   </div>
 </template>
 
@@ -11,41 +10,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import HtmlLoad from '../../library/inc/html-load'
-// import tinymce from 'tinymce';
-// import Editor from '@tinymce/tinymce-vue';
-// import 'tinymce/themes/silver/theme';
-// import 'tinymce/icons/default/icons';
-// 插件
-// import 'tinymce/plugins/anchor'
-// import 'tinymce/plugins/advlist'
-// import 'tinymce/plugins/autolink'
-// import 'tinymce/plugins/charmap'
-// import 'tinymce/plugins/print'
-// import 'tinymce/plugins/searchreplace'
-// import 'tinymce/plugins/visualblocks'
-// import 'tinymce/plugins/help'
-// import 'tinymce/plugins/image';
-// import 'tinymce/plugins/link';
-// import 'tinymce/plugins/code';
-// import 'tinymce/plugins/table';
-// import 'tinymce/plugins/lists';
-// import 'tinymce/plugins/contextmenu';
-// import 'tinymce/plugins/wordcount';
-// import 'tinymce/plugins/colorpicker';
-// import 'tinymce/plugins/textcolor';
-// import 'tinymce/plugins/media';
-// import 'tinymce/plugins/fullscreen';
-// import 'tinymce/plugins/preview';
-// import 'tinymce/plugins/pagebreak';
-// import 'tinymce/plugins/insertdatetime';
-// import 'tinymce/plugins/hr';
-// import 'tinymce/plugins/paste';
-// import 'tinymce/plugins/codesample';
-// console.log(tinymce);
 
 export default defineComponent({
   name: 'TinyMCE',
-  // components: {Editor},
   props: {
     config: {default: {}},  //配置
     content: {default: ''}, //内容
