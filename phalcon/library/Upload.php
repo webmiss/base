@@ -71,6 +71,23 @@ class Upload extends Base {
     return $filename;
   }
 
+  /* 图片回收 */
+  static function HtmlImgClear(string $html, string $dir): bool {
+    // 文件名
+    $pattern="/<img.*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>/";
+    preg_match_all($pattern, htmlspecialchars_decode($html), $match);
+    $imgs = [];
+    foreach($match[1] as $val){
+      $imgs[] = basename($val);
+    }
+    // 清理图片
+    $all = FileEo::AllFile($dir);
+    foreach($all as $val) {
+      if(!in_array($val, $imgs)) FileEo::RemoveAll($dir.$val);
+    }
+    return true;
+  }
+
   // 获取名称
   private static function _getName(){
     list($msec, $sec) = explode(' ', microtime());

@@ -14,7 +14,7 @@ export default (fileObj: any, parm: any, callback: any)=>{
         else if(fileObj.type=='image/gif') parm.ext = 'gif';
       }
       // 压缩
-      Compress(this.result,parm,callback);
+      Compress(this.result, parm, callback);
     }
   }catch(e){
     let ready = new FileReader();

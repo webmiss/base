@@ -1,6 +1,6 @@
 /* 开发 */
-// const baseUrl = 'http://localhost:9010/';
-// const socket = 'ws://localhost:9011/';
+// const baseUrl = 'http://localhost:9000/';
+// const socket = 'ws://localhost:9001/';
 
 /* 正式 */
 const baseUrl = 'https://demo-php.webmis.vip/';

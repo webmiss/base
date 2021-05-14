@@ -42,6 +42,22 @@ class FileEo extends Base {
     return $res;
   }
 
+  /* 全部文件 */
+  static function AllFile(string $path=''): array {
+    $res = [];
+    // 是否文件夹
+    $root = self::$Root.$path;
+    if(!is_dir($root)) return $res;
+    // 文件夹&文件
+    $list = scandir($root);
+    foreach($list as $f) {
+      if($f=='.' || $f=='..') continue;
+      $ff = $root . '/' . $f;
+      if(is_file($ff)) $res[] = $f;
+    }
+    return $res;
+  }
+
   /* 统计大小 */
   static function FileSize($ff){
     $total = 0;

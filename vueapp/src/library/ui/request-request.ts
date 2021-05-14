@@ -3,8 +3,10 @@ import axios, { AxiosRequestConfig } from 'axios'
 
 /* Delete请求 */
 export default (url: string, data?: any, success?: any, fail?: any, config?: any)=>{
-  const str = url.substr(0,4);
-  url = str=='http'?url:Env.apiUrl+url;
+  // URL
+  if(url.substr(0,4)=='http') url=url;
+  else if(url.substr(0,1)=='/') url=Env.baseUrl+url.substr(1);
+  else url=Env.apiUrl+url;
   // 配置
   const cfg: AxiosRequestConfig = config || <AxiosRequestConfig>{
     url: url,

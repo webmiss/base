@@ -1,10 +1,13 @@
 /* 正式 */
-const title = 'WebMIS-微信小程序';
+// const baseUrl = 'http://localhost:9000/';
+// const socket = 'ws://localhost:9001/';
+
+/* 正式 */
 const baseUrl = 'https://demo-api.webmis.vip/';
 const socket = 'wss://demo-api.webmis.vip/wss';
 
 export default {
-  name: title,  //应用名称
+  name: 'WebMIS-微信小程序',  //应用名称
   baseUrl: baseUrl, //数据地址
   apiUrl: baseUrl+'api/', //数据接口地址
   keyStr: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=', //加密字符

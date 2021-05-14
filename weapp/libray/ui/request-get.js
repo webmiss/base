@@ -2,8 +2,10 @@ import Env from '../../env.js'
 
 /* Get请求 */
 export default (url,data,success,fail)=>{
-  const str = url.substr(0,4);
-  url = str=='http'?url:Env.apiUrl+url;
+  // URL
+  if(url.substr(0,4)=='http') url=url;
+  else if(url.substr(0,1)=='/') url=Env.baseUrl+url.substr(1);
+  else url=Env.apiUrl+url;
   wx.request({
     url: url,
     data: data,

@@ -1,8 +1,15 @@
+
+/* 开发 */
+// const baseUrl: string = 'http://localhost:9000';
+
+/* 正式 */
+const baseUrl: string = 'https://demo-php.webmis.vip/';
+
 export default {
   title: 'WebMIS API', //名称
   version: '1.0.0', //版本
-  // apiUrl: 'https://demo-php.webmis.vip/api/',  //接口
-  apiUrl: 'http://localhost:9000/api/',  //接口
+  baseUrl: baseUrl, //数据地址
+  apiUrl: baseUrl+'api/',  //接口
   copy: 'Copyright © WebMIS.vip 2021',  // 版权信息
   /* Token */
   token: '',
