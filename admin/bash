@@ -29,8 +29,6 @@ elif [ "$s" == "build" ]; then
 # 预览
 elif [ "$s" == "http" ]; then
   {
-    http-server -v
-  } && {
     yarn install && yarn build
     http-server ./dist
   } || {

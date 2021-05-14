@@ -15,7 +15,7 @@ REM 打包
   ( yarn install && yarn build ) || ( echo ^> 请安装'npm install -g yarn' )
 REM 预览
 ) else if "%s%"=="http" (
-  ( http-server -v ) && (
+  (
     yarn install && yarn build
     http-server ./dist
   ) || (
