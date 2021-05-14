@@ -46,7 +46,7 @@ export default defineComponent({
     /* 选择 */
     click(){
       if(this.disclick) return;
-      this.$emit('update:checked',this.show=!this.show)
+      this.$emit('update:checked',this.show=!this.show);
     }
 
   }

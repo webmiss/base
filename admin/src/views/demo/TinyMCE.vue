@@ -1,6 +1,6 @@
 <template>
   <wm-main>
-    <wm-tinymce ref="TinyMCE" :content="tinymce.content"></wm-tinymce>
+    <wm-tinymce ref="TinyMCE" :content="tinymce.content" @update:value="tinymce.content=$event"></wm-tinymce>
     <wm-button @click="getContent()">获取内容</wm-button>
   </wm-main>
 </template>

@@ -11,7 +11,7 @@ export default defineComponent({
     // 状态
     const store: any = useStore();
     const state: any = store.state;
-    const tinymce: any = {init:{}, content: ''};
+    const tinymce: any = {init:{}, content: '', content1: ''};
     return {state, tinymce}
   },
   computed: {
@@ -37,9 +37,7 @@ export default defineComponent({
 
     /* 获取内容 */
     getContent(){
-      const obj: any = this.$refs.TinyMCE;
-      let ct = obj.getContent();
-      console.log(ct);
+      console.log(this.tinymce.content);
     },
 
   }
