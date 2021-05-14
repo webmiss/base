@@ -1,3 +1,5 @@
+import re
+import os
 import time
 import datetime
 import base64 as Base64
@@ -64,6 +66,20 @@ class Upload:
       print('[Upload] Writer:', '保存文件失败!')
       return ''
     return filename
+
+  # 图片回收
+  def HtmlImgClear(html: str, dir: str):
+    pattern = re.compile(r'<img.*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>')
+    match = pattern.findall(html)
+    imgs = []
+    for val in match:
+      imgs += [os.path.basename(val)]
+    # 清理图片
+    FileEo.Root = Env.root_dir
+    all = FileEo.AllFile(dir)
+    for val in all :
+      if val not in imgs : FileEo.RemoveAll(dir+val)
+    return True
 
   # 获取名称
   def _getName():

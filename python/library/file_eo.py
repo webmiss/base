@@ -37,6 +37,19 @@ class FileEo:
     res['size'] = FileEo.FormatBytes(res['size'])
     return res
 
+  # 全部文件
+  def AllFile(path: str=''):
+    res = []
+    # 是否文件夹
+    root = FileEo.Root+path
+    if not os.path.isdir(root) : return res
+    # 文件夹&文件
+    list = os.listdir(root)
+    for f in list :
+      ff = root+'/'+f
+      if os.path.isfile(ff) : res += [f]
+    return res
+
   # 统计大小
   def FileSize(ff):
     total = 0

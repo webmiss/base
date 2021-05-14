@@ -74,7 +74,7 @@ class Upload extends Base {
   /* 图片回收 */
   static function HtmlImgClear(string $html, string $dir): bool {
     // 文件名
-    $pattern="/<img.*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>/";
+    $pattern = '/<img.*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>/';
     preg_match_all($pattern, htmlspecialchars_decode($html), $match);
     $imgs = [];
     foreach($match[1] as $val){

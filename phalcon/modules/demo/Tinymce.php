@@ -9,7 +9,7 @@ use Util\Url;
 
 class Tinymce extends Base {
 
-  private static $ImgDir = 'upload/tinymce/php/';
+  private static $ImgDir = 'upload/tinymce/';
 
   /* 编辑 */
   static function Edit() {
@@ -26,8 +26,8 @@ class Tinymce extends Base {
     return self::GetJSON(['code'=>0,'msg'=>'成功', 'content'=>Url::Encode($content)]);
   }
 
-  /* 头像 */
-  static function Upimg() {
+  /* 图片 */
+  static function UpImg() {
     // 验证
     $token = self::Post('token');
     $msg = AdminToken::verify($token, '');
