@@ -53,33 +53,42 @@ export default defineComponent({
 
     /* 初始化 */
     init() {
+      // 加载
       HtmlLoad(['/tinymce/tinymce.min.js']);
-      setTimeout(()=>{
-        // 配置
-        const cfg: any = this.config;
-        for(let key in cfg){
-          this.defInit[key] = cfg[key];
-        }
-        // 图片上传
-        if(this.upload.start) {
-          this.defInit.paste_data_images = true;
-          this.defInit.images_upload_handler = (blobInfo: any, succFun: any, failFun: any)=>{
-            // 压缩
-            const fileObj = blobInfo.blob();
-            ImgReader(fileObj, {width: this.upload.width, height: this.upload.height}, (base64: string)=>{
-              // 提交
-              Post(this.upload.url, {token:Storage.getItem('token'), base64: base64}, (res: any)=>{
-                const d = res.data;
-                if(d.code==0) succFun(d.img);
-                else succFun('');
-                return Toast(d.msg);
-              });
+      // 配置
+      const cfg: any = this.config;
+      for(let key in cfg){
+        this.defInit[key] = cfg[key];
+      }
+      // 图片上传
+      if(this.upload.start) {
+        this.defInit.paste_data_images = true;
+        this.defInit.images_upload_handler = (blobInfo: any, succFun: any, failFun: any)=>{
+          // 压缩
+          const fileObj = blobInfo.blob();
+          ImgReader(fileObj, {width: this.upload.width, height: this.upload.height}, (base64: string)=>{
+            // 提交
+            Post(this.upload.url, {token:Storage.getItem('token'), base64: base64}, (res: any)=>{
+              const d = res.data;
+              if(d.code==0) succFun(d.img);
+              else succFun('');
+              return Toast(d.msg);
             });
-          }
+          });
         }
+      }
+      // 启动
+      this.start(this.defInit);
+    },
+
+    /* 启动 */
+    start(cfg: any) {
+      try{
         // @ts-ignore
-        tinymce.init(this.defInit);
-      }, 600);
+        tinymce.init(cfg);
+      } catch(e){
+        setTimeout(()=>{ this.start(cfg); }, 1000);
+      }
     },
 
   },

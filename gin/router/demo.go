@@ -13,5 +13,8 @@ func Demo(r *gin.Engine) {
 		// 首页
 		g.GET("", (&demo.Index{}).Index)
 		g.GET("index", (&demo.Index{}).Index)
+		// TinyMCE
+		g.POST("tinymce/edit", (&demo.Tinymce{}).Edit)
+		g.POST("tinymce/upImg", (&demo.Tinymce{}).UpImg)
 	}
 }

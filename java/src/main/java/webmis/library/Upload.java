@@ -3,6 +3,9 @@ package webmis.library;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import webmis.config.Env;
@@ -96,6 +99,31 @@ public class Upload {
       return "";
     }
     return filename;
+  }
+
+  /* 图片回收 */
+  public static Boolean HtmlImgClear(String html, String dir) {
+    String img = "";
+    String[] url;
+    Pattern pattern = Pattern.compile("<img.*?src=[\'|\"](.*?)[\'|\"].*?[\\/]?>");
+    Matcher match = pattern.matcher(html);
+    ArrayList<String> imgs = new ArrayList<>();
+    while (match.find()) {
+      img = match.group();
+      // src数据
+      Matcher m = Pattern.compile("src\\s*=\\s*\"?(.*?)(\"|>|\\s+)").matcher(img);
+      while (m.find()) {
+        url = m.group(1).split("/");
+        imgs.add(url[url.length-1]);
+      }
+    }
+    // 清理图片
+    FileEo.Root = Env.root_dir;
+    ArrayList<String> all = FileEo.AllFile(dir);
+    for(String val:all) {
+      if(!imgs.contains(val)) FileEo.RemoveAll(dir+val);
+    }
+    return true;
   }
 
   /* 获取名称 */

@@ -82,6 +82,21 @@ public class FileEo {
     return res;
   }
 
+  /* 全部文件 */
+  public static ArrayList<String> AllFile(String path){
+    ArrayList<String> res = new ArrayList<String>();
+    // 是否文件夹
+    String root = Root + path;
+    File dir = new File(root);
+    if (!dir.exists()) return res;
+    // 文件夹&文件
+    File[] list = dir.listFiles();
+    for (File f : list) {
+      if (f.isFile()) res.add(f.getName()); 
+    }
+    return res;
+  }
+
   /* 统计大小 */
   public static Long FileSize(File ff){
     long total = 0;

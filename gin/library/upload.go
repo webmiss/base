@@ -4,6 +4,7 @@ import (
 	Base64 "encoding/base64"
 	"fmt"
 	"mime/multipart"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -92,6 +93,28 @@ func (u Upload) Base64(params map[string]interface{}) string {
 		return ""
 	}
 	return filename
+}
+
+/* 图片回收 */
+func (u Upload) HtmlImgClear(html string, dir string) bool {
+	// pattern := "<img.*?src=[\\'|\"](.*?)[\\'|\"].*?[\\/]?>"
+	pattern := regexp.MustCompile(`<img.*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>`)
+	match := pattern.FindAllStringSubmatch(html, -1)
+	imgs := []string{}
+	for i := range match {
+		src := match[i][1]
+		index := strings.LastIndex(src, "/")
+		imgs = append(imgs, src[index+1:])
+	}
+	// 清理图片
+	(&FileEo{}).New(config.Env().RootDir)
+	all := (&FileEo{}).AllFile(dir)
+	for _, val := range all {
+		if !util.InArray(val, imgs) {
+			(&FileEo{}).RemoveAll(dir + val)
+		}
+	}
+	return true
 }
 
 // 获取名称

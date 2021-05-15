@@ -89,6 +89,28 @@ func (fe FileEo) List(path string) map[string]interface{} {
 	return res
 }
 
+/* 全部文件 */
+func (fe FileEo) AllFile(path string) []string {
+	res := []string{}
+	// 是否文件夹
+	root := Root + path
+	dir, err := os.Stat(root)
+	if err != nil {
+		return res
+	}
+	if !dir.IsDir() {
+		return res
+	}
+	// 文件夹&文件
+	list, _ := ioutil.ReadDir(root)
+	for _, f := range list {
+		if !f.IsDir() {
+			res = append(res, f.Name())
+		}
+	}
+	return res
+}
+
 /* 统计大小 */
 func (fe FileEo) FileSize(ff string) int64 {
 	var total int64
