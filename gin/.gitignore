@@ -1,5 +1,4 @@
-nohup.out
-webmis
+# webmis
 public/logs
 public/upload/*
 
