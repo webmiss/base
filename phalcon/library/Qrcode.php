@@ -25,7 +25,7 @@ class Qrcode {
     // 生成
     $qrcode = new Barcode();
     $img = $qrcode->render_image($param['type'],$param['text'],$param['options']);
-    imagepng($img,Env::$root_dir.$file);
+    imagepng($img,$file);
     imagedestroy($img);
     // 内容
     $ct = FileEo::Bytes($file);
