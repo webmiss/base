@@ -50,6 +50,12 @@ export default {
         {label: '文件上传 Upload', value: 'docs/phalcon/library/upload'},
         {label: '二维码 Qrcode', value: 'docs/phalcon/library/qrcode'},
       ]},
+      {label:'Util 工具', children:[
+        {label: '常用工具', value: 'docs/phalcon/util/util'},
+        {label: '编码/解码 URL', value: 'docs/phalcon/util/url'},
+        {label: '编码/解码 Base64', value: 'docs/phalcon/util/base64'},
+        {label: '加密算法 Hmac', value: 'docs/phalcon/util/hmac'},
+      ]},
     ];
   },
 
@@ -76,6 +82,12 @@ export default {
         {label: '安全验证 Safety', value: 'docs/python/library/safety'},
         {label: '文件上传 Upload', value: 'docs/python/library/upload'},
         {label: '二维码 Qrcode', value: 'docs/python/library/qrcode'},
+      ]},
+      {label:'Util 工具', children:[
+        {label: '常用工具', value: 'docs/python/util/util'},
+        {label: '编码/解码 URL', value: 'docs/python/util/url'},
+        {label: '编码/解码 Base64', value: 'docs/python/util/base64'},
+        {label: '加密算法 Hmac', value: 'docs/python/util/hmac'},
       ]},
     ];
   },
@@ -104,6 +116,14 @@ export default {
         {label: '文件上传 Upload', value: 'docs/java/library/upload'},
         {label: '二维码 Qrcode', value: 'docs/java/library/qrcode'},
       ]},
+      {label:'Util 工具', children:[
+        {label: '常用工具', value: 'docs/java/util/util'},
+        {label: '编码/解码 URL', value: 'docs/java/util/url'},
+        {label: '编码/解码 Base64', value: 'docs/java/util/base64'},
+        {label: '加密算法 Hmac', value: 'docs/java/util/hmac'},
+        {label: '泛型 Dynamic', value: 'docs/java/util/dynamic'},
+        {label: '请求响应 Http', value: 'docs/java/util/http'},
+      ]},
     ];
   },
 
@@ -131,6 +151,13 @@ export default {
         {label: '文件上传 Upload', value: 'docs/gin/library/upload'},
         {label: '二维码 Qrcode', value: 'docs/gin/library/qrcode'},
         {label: '事件流 Kafka', value: 'docs/gin/library/kafka'},
+      ]},
+      {label:'Util 工具', children:[
+        {label: '常用工具', value: 'docs/gin/util/util'},
+        {label: '编码/解码 URL', value: 'docs/gin/util/url'},
+        {label: '编码/解码 Base64', value: 'docs/gin/util/base64'},
+        {label: '加密算法 Hmac', value: 'docs/gin/util/hmac'},
+        {label: '类型转换 Type', value: 'docs/gin/util/type'},
       ]},
     ];
   },

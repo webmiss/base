@@ -6,10 +6,6 @@ from typing import Any
 # 常用工具
 class Util:
 
-  # Md5加密
-  def Md5(str: str):
-    return hashlib.md5(str.encode(encoding='utf-8')).hexdigest()
-
   # 格式化时间
   def Date(format: str = '%Y-%m-%d %H:%M:%S', timestamp: float = None):
     t = time.localtime(timestamp)

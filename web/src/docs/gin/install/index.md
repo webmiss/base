@@ -39,19 +39,4 @@ git clone https://github.com/webmiss/base.git --depth=1
 .\cmd build
 ```
 
-#### Docker
-```bash
-# 构建
-./bash dockerInstall
-# 运行容器
-./bash dockerServe
-```
-**启动服务**
-```bash
-# Nginx
-service start nginx
-# Gin
-cd /home/www/gin && ./bash serve
-```
-
 <br/><br/>

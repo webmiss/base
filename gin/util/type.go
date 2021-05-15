@@ -66,66 +66,66 @@ func Uint64(val interface{}) uint64 {
 }
 
 /* Interface 转 String */
-func Strval(value interface{}) string {
+func Strval(val interface{}) string {
 	var res string
-	if value == nil {
+	if val == nil {
 		return res
 	}
-	switch value.(type) {
+	switch val.(type) {
 	case string:
-		res = value.(string)
+		res = val.(string)
 	case int:
-		it := value.(int)
+		it := val.(int)
 		res = strconv.Itoa(it)
 	case int8:
-		it := value.(int8)
+		it := val.(int8)
 		res = strconv.Itoa(int(it))
 	case int16:
-		it := value.(int16)
+		it := val.(int16)
 		res = strconv.Itoa(int(it))
 	case int32:
-		it := value.(int32)
+		it := val.(int32)
 		res = strconv.Itoa(int(it))
 	case int64:
-		it := value.(int64)
+		it := val.(int64)
 		res = strconv.FormatInt(it, 10)
 	case float64:
-		ft := value.(float64)
+		ft := val.(float64)
 		res = strconv.FormatFloat(ft, 'f', -1, 64)
 	case float32:
-		ft := value.(float32)
+		ft := val.(float32)
 		res = strconv.FormatFloat(float64(ft), 'f', -1, 64)
 	case uint:
-		it := value.(uint)
+		it := val.(uint)
 		res = strconv.Itoa(int(it))
 	case uint8:
-		it := value.(uint8)
+		it := val.(uint8)
 		res = strconv.Itoa(int(it))
 	case uint16:
-		it := value.(uint16)
+		it := val.(uint16)
 		res = strconv.Itoa(int(it))
 	case uint32:
-		it := value.(uint32)
+		it := val.(uint32)
 		res = strconv.Itoa(int(it))
 	case uint64:
-		it := value.(uint64)
+		it := val.(uint64)
 		res = strconv.FormatUint(it, 10)
 	case []byte:
-		res = string(value.([]byte))
+		res = string(val.([]byte))
 	default:
-		newValue, _ := json.Marshal(value)
-		res = string(newValue)
+		data, _ := json.Marshal(val)
+		res = string(data)
 	}
 	return res
 }
 
 /* 获取类型 */
-func GetType(value interface{}) string {
+func GetType(val interface{}) string {
 	var res string
-	if value == nil {
+	if val == nil {
 		return "nil"
 	}
-	switch value.(type) {
+	switch val.(type) {
 	case string:
 		res = "string"
 	case int:
