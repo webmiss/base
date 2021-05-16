@@ -140,7 +140,7 @@ public class SysUser extends Base {
     // 新增
     String sql;
     PreparedStatement ps;
-    long uid = Data.GetId("ID");
+    long uid = Data.Mist("ID");
     Connection conn = m.DBConn();
     try {
       conn.setAutoCommit(false);

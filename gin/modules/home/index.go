@@ -15,7 +15,6 @@ type Index struct {
 
 /* 首页 */
 func (r *Index) Index(c *gin.Context) {
-	(&library.Captcha{}).Vcode()
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "Web"})
 }

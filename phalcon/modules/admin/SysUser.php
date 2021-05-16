@@ -91,7 +91,7 @@ class SysUser extends Base {
       return self::GetJSON(['code'=>4000, 'msg'=>'该用户已存在!']);
     }
     // 新增
-    $uid = Data::GetId('ID');
+    $uid = Data::Mist('ID');
     $conn = $m->DBConn();
     try{
       $conn->begin();

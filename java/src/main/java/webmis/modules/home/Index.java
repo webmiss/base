@@ -23,8 +23,6 @@ public class Index extends Base{
   @RequestMapping("")
   String index() {
     HashMap<String,Object> res;
-    Captcha c = new Captcha();
-    c.Vcode();
     // 返回
     res = new HashMap<String,Object>();
     res.put("code",0);

@@ -7,26 +7,40 @@ use Library\Redis;
 /* 数据类 */
 class Data extends Base {
 
-  static $id = 0;           //自增ID
-  static $idShift = 16;     //自增数位数
-  static $saltShift = 8;    //随机数移位
-  static $saltBit = 8;      //随机数位数
+  static $autoId = 0;     //自增ID
+  const max8bit = 8;      //随机数位数
 
-  /* 生成ID */
-  static function GetId(string $name) {
-    // 获取
+  static $machineId = 1;  //机器标识
+  const max10bit = 10;    //机器位数
+  const max12bit = 12;    //序列数位数
+  
+
+  /* 薄雾算法 */
+  static function Mist(string $redisName): float {
+    // 自增ID
     $redis = new Redis();
-    Data::$id = floor($redis->Gets($name));
-    Data::$id++;
+    Data::$autoId = floor($redis->Gets($redisName));
+    Data::$autoId++;
     // 随机数
     $randA = mt_rand(0, 255);
     $randB = mt_rand(0, 255);
     // 位运算
-    $mist = floor((Data::$id << Data::$idShift) | ($randA << Data::$saltShift) | $randB);
+    $mist = decbin((Data::$autoId << (self::max8bit + self::max8bit)) | ($randA << self::max8bit) | $randB);
     // 保存
-    $redis->Set($name, Data::$id);
+    $redis->Set($redisName, Data::$autoId);
     $redis->Close();
-    return $mist;
+    return bindec($mist);
+  }
+
+  /* 雪花算法 */
+  static function Snowflake() {
+    // 时间戳
+    $t = floor(microtime(true) * 1000);
+    // 随机数
+    $rand = mt_rand(0, 4095);
+    // 位运算
+    $mist = decbin(($t << (self::max10bit + self::max12bit)) | (Data::$machineId << self::max12bit) | $rand);
+    return bindec($mist);
   }
 
   /* 图片地址 */

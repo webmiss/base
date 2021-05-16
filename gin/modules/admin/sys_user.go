@@ -106,7 +106,7 @@ func (r SysUser) Add(c *gin.Context) {
 		return
 	}
 	// 新增
-	uid := (&service.Data{}).GetId("ID")
+	uid := (&service.Data{}).Mist("ID")
 	conn := m.DBConn()
 	tx, _ := conn.Begin()
 	// 用户

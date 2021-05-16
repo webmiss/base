@@ -1,4 +1,5 @@
 from math import floor
+import time
 import random
 from config.env import Env
 from library.redis import Redis
@@ -6,26 +7,38 @@ from library.redis import Redis
 # 数据类
 class Data:
 
-  id: int = 0           #自增ID
-  idShift: int = 16     #自增数位数
-  saltShift: int = 8    #随机数移位
-  saltBit: int = 8      #随机数位数
+  autoId: int = 0      #自增ID
+  max8bit: int = 8     #随机数位数
 
-  # 生成ID
-  def GetId(name: str):
-    # 获取
+  machineId: int = 1   #机器标识
+  max10bit: int = 10   #机器位数
+  max12bit: int = 12   #序列数位数
+
+  # 薄雾算法
+  def Mist(redisName: str):
+    # 自增ID
     redis = Redis()
-    _id = redis.Get(name)
-    Data.id = 0 if not _id else int(_id)
-    Data.id += 1
+    _id = redis.Get(redisName)
+    Data.autoId = 0 if not _id else int(_id)
+    Data.autoId += 1
     # 随机数
     randA = random.randint(0,255)
     randB = random.randint(0,255)
     # 位运算
-    mist = int((Data.id << Data.idShift) | (randA << Data.saltShift) | randB)
+    mist = int((Data.autoId << (Data.max8bit + Data.max8bit)) | (randA << Data.max8bit) | randB)
     # 保存
-    redis.Set(name, Data.id)
+    redis.Set(redisName, Data.autoId)
     redis.Close()
+    return mist
+
+  # 雪花算法
+  def Snowflake():
+    # 时间戳
+    t = int(round(time.time() * 1000))
+    # 随机数
+    rand = random.randint(0,4095)
+    # 位运算
+    mist = int((t << (Data.max10bit + Data.max12bit)) | (Data.machineId << Data.max12bit) | rand)
     return mist
 
   # 图片地址
