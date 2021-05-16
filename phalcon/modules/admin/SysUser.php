@@ -56,6 +56,8 @@ class SysUser extends Base {
     foreach ($list as $key => $val) {
       $list[$key]['state'] = $val['state']?true:false;
       $list[$key]['img'] = Data::Img($val['img']);
+      if(!$val['sys_role']) $list[$key]['sys_role']='';
+      if(!$val['sys_perm']) $list[$key]['sys_perm']='';
     }
     // 返回
     return self::GetJSON(['code'=>0,'msg'=>'成功','list'=>$list,'total'=>(int)$total['num']]);

@@ -81,6 +81,8 @@ public class SysUser extends Base {
       val.put("uid", val.get("uid").toString());
       val.put("state", val.get("state").equals("1")?true:false);
       val.put("img", Data.Img(val.get("img")));
+      if(val.get("sys_role")==null) val.put("sys_role", "");
+      if(val.get("sys_perm")==null) val.put("sys_perm", "");
     }
     // 返回
     res = new HashMap<String,Object>();
