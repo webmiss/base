@@ -65,7 +65,7 @@ func send(conn *websocket.Conn, data map[string]interface{}) {
 }
 
 /* 启动 */
-func (s SocketType) Socket(c *gin.Context) {
+func (SocketType) Socket(c *gin.Context) {
 	if Clients == nil {
 		Clients = map[string]*websocket.Conn{}
 	}

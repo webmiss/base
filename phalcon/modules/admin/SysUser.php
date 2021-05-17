@@ -21,7 +21,7 @@ class SysUser extends Base {
 	static function List(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $data = self::Post('data');
@@ -67,7 +67,7 @@ class SysUser extends Base {
   static function Add(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $data = self::Post('data');
@@ -125,7 +125,7 @@ class SysUser extends Base {
   static function Edit(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $uid = self::Post('uid');
@@ -164,7 +164,7 @@ class SysUser extends Base {
   static function Del(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $data = self::Post('data');
@@ -193,9 +193,9 @@ class SysUser extends Base {
   static function State(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    $tData = AdminToken::token($token);
+    $tData = AdminToken::Token($token);
     // 参数
     $uid = self::Post('uid');
     $state = self::Post('state');
@@ -222,9 +222,9 @@ class SysUser extends Base {
   static function Perm(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    $tData = AdminToken::token($token);
+    $tData = AdminToken::Token($token);
     // 参数
     $uid = self::Post('uid');
     $type = self::Post('type');
@@ -294,7 +294,7 @@ class SysUser extends Base {
   static function Info() {
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $uid = self::Post('uid');

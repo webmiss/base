@@ -15,7 +15,7 @@ class ApiRole(Base):
   def List(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     data = self.Post('data')
@@ -42,7 +42,7 @@ class ApiRole(Base):
   def Add(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     data = self.Post('data')
@@ -64,7 +64,7 @@ class ApiRole(Base):
   def Edit(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     id = self.Post('id')
@@ -88,7 +88,7 @@ class ApiRole(Base):
   def Del(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     data = self.Post('data')
@@ -108,7 +108,7 @@ class ApiRole(Base):
   def Perm(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     id = self.Post('id')
@@ -128,7 +128,7 @@ class ApiRole(Base):
   def RoleList(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, '')
+    msg = AdminToken.Verify(token, '')
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 查询
     m = ApiRoleM()
@@ -143,7 +143,7 @@ class ApiRole(Base):
   def PermList(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, '')
+    msg = AdminToken.Verify(token, '')
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     perm = self.Post('perm')

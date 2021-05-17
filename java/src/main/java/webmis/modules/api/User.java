@@ -96,7 +96,7 @@ public class User extends Base {
     HashMap<String, Object> token = new HashMap<String, Object>();
     token.put("uid", data.get("id").toString());
     token.put("uname", uname);
-    res.put("token", ApiToken.create(token));
+    res.put("token", ApiToken.Create(token));
     // 用户信息
     HashMap<String,Object> uinfo = new HashMap<String,Object>();
     uinfo.put("uid", data.get("id"));
@@ -115,7 +115,7 @@ public class User extends Base {
   String Token(HttpServletRequest request, String token, String uinfo)  {
     HashMap<String,Object> res;
     // 验证
-    String msg = ApiToken.verify(token, "");
+    String msg = ApiToken.Verify(token, "");
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -123,7 +123,7 @@ public class User extends Base {
       return GetJSON(res);
     }
     // 参数
-    HashMap<String, Object> tData = ApiToken.token(token);
+    HashMap<String, Object> tData = ApiToken.Token(token);
     if(!uinfo.equals("1")){
       res = new HashMap<String,Object>();
       res.put("code", 0);

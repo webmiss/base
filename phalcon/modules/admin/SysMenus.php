@@ -14,7 +14,7 @@ class SysMenus extends Base {
 	static function List(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $data = self::Post('data');
@@ -50,7 +50,7 @@ class SysMenus extends Base {
   static function Add(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $data = self::Post('data');
@@ -84,7 +84,7 @@ class SysMenus extends Base {
   static function Edit(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $id = self::Post('id');
@@ -120,7 +120,7 @@ class SysMenus extends Base {
   static function Del(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $data = self::Post('data');
@@ -143,7 +143,7 @@ class SysMenus extends Base {
   static function Perm(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $id = self::Post('id');
@@ -166,7 +166,7 @@ class SysMenus extends Base {
   static function GetMenus() {
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, '');
+    $msg = AdminToken::Verify($token, '');
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 全部菜单
     $model = new SysMenu();
@@ -178,7 +178,7 @@ class SysMenus extends Base {
       self::$menus[$fid][] = $val;
     }
     // 用户权限
-    self::$permAll = AdminToken::perm($token);
+    self::$permAll = AdminToken::Perm($token);
     // 返回
     return self::GetJSON(['code'=>0, 'msg'=>'成功', 'menus'=>self::_getMenu('0')]);
   }

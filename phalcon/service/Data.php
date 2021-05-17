@@ -16,7 +16,7 @@ class Data extends Base {
   
 
   /* 薄雾算法 */
-  static function Mist(string $redisName): float {
+  static function Mist(string $redisName) {
     // 自增ID
     $redis = new Redis();
     Data::$autoId = floor($redis->Gets($redisName));

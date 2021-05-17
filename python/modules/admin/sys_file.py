@@ -15,7 +15,7 @@ class SysFile(Base):
   def List(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     path = self.Post('path')
@@ -30,7 +30,7 @@ class SysFile(Base):
   def Mkdir(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     path = self.Post('path')
@@ -46,7 +46,7 @@ class SysFile(Base):
   def Rename(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     path = self.Post('path')
@@ -63,7 +63,7 @@ class SysFile(Base):
   def Upload(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     path = self.Post('path')
@@ -79,7 +79,7 @@ class SysFile(Base):
   def Down(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     path = self.Post('path')
@@ -93,7 +93,7 @@ class SysFile(Base):
   def Remove(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     path = self.Post('path')

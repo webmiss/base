@@ -24,10 +24,3 @@ class Base :
   def Error(self, msg: str =''):
     print(msg)
     raise Exception(msg)
-
-  # 请求
-  def request(self):
-    data = None
-    if request.method=='POST': data=request.form
-    elif request.method=='GET': data=request.args
-    return data

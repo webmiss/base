@@ -94,7 +94,7 @@ public class User extends Base {
     HashMap<String, Object> token = new HashMap<String, Object>();
     token.put("uid", data.get("id").toString());
     token.put("uname", uname);
-    res.put("token", AdminToken.create(token));
+    res.put("token", AdminToken.Create(token));
     // 用户信息
     HashMap<String,Object> uinfo = new HashMap<String,Object>();
     uinfo.put("uid", data.get("id"));
@@ -113,7 +113,7 @@ public class User extends Base {
   String Token(String token, String uinfo) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, "");
+    String msg = AdminToken.Verify(token, "");
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -121,7 +121,7 @@ public class User extends Base {
       return GetJSON(res);
     }
     // 参数
-    HashMap<String, Object> tData = AdminToken.token(token);
+    HashMap<String, Object> tData = AdminToken.Token(token);
     if(!uinfo.equals("1")){
       res = new HashMap<String,Object>();
       res.put("code", 0);

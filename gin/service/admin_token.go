@@ -80,7 +80,7 @@ func (s AdminToken) Verify(token string, urlPerm string) string {
 }
 
 /* 权限数组 */
-func (s AdminToken) Perm(token string) map[string]int64 {
+func (AdminToken) Perm(token string) map[string]int64 {
 	permAll := map[string]int64{}
 	// Token
 	tData, _ := (&library.Safety{}).Decode(token)
@@ -105,7 +105,7 @@ func (s AdminToken) Perm(token string) map[string]int64 {
 }
 
 /* 生成 */
-func (s AdminToken) Create(data map[string]interface{}) string {
+func (AdminToken) Create(data map[string]interface{}) string {
 	data["l_time"] = util.Date("2006-01-02 15:04:05")
 	token, _ := (&library.Safety{}).Encode(data)
 	// 缓存
@@ -119,7 +119,7 @@ func (s AdminToken) Create(data map[string]interface{}) string {
 }
 
 /* Token数据 */
-func (s AdminToken) Token(token string) jwt.MapClaims {
+func (AdminToken) Token(token string) jwt.MapClaims {
 	tData, _ := (&library.Safety{}).Decode(token)
 	if tData != nil {
 		env := config.Env()

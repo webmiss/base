@@ -16,7 +16,7 @@ class SysConfig(Base):
   def List(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 查询
     m = SysConfigM()
@@ -36,7 +36,7 @@ class SysConfig(Base):
   def Edit(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     data = self.Post('data')
@@ -56,7 +56,7 @@ class SysConfig(Base):
   def Upimg(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     name = self.Post('name')

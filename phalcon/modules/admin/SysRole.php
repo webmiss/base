@@ -15,7 +15,7 @@ class SysRole extends Base {
 	static function List(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $data = self::Post('data');
@@ -44,7 +44,7 @@ class SysRole extends Base {
   static function Add(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $data = self::Post('data');
@@ -70,7 +70,7 @@ class SysRole extends Base {
   static function Edit(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $id = self::Post('id');
@@ -98,7 +98,7 @@ class SysRole extends Base {
   static function Del(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $data = self::Post('data');
@@ -121,7 +121,7 @@ class SysRole extends Base {
   static function Perm(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $id = self::Post('id');
@@ -144,7 +144,7 @@ class SysRole extends Base {
   static function RoleList(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, '');
+    $msg = AdminToken::Verify($token, '');
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 查询
     $m = new SysRoleM();
@@ -161,7 +161,7 @@ class SysRole extends Base {
   static function PermList(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, '');
+    $msg = AdminToken::Verify($token, '');
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $perm = self::Post('perm');

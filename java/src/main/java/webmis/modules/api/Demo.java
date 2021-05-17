@@ -22,7 +22,7 @@ public class Demo extends Base {
   String Token(String token) throws SQLException{
     HashMap<String,Object> res;
     // 验证
-    String msg = ApiToken.verify(token, "");
+    String msg = ApiToken.Verify(token, "");
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -41,7 +41,7 @@ public class Demo extends Base {
   String List(HttpServletRequest request, String token) throws SQLException{
     HashMap<String,Object> res;
     // 验证
-    String msg = ApiToken.verify(token, request.getRequestURI());
+    String msg = ApiToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -60,7 +60,7 @@ public class Demo extends Base {
   String Perm(HttpServletRequest request, String token) throws SQLException{
     HashMap<String,Object> res;
     // 验证
-    String msg = ApiToken.verify(token, request.getRequestURI());
+    String msg = ApiToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);

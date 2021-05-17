@@ -12,9 +12,9 @@ class UserPasswd extends Base {
   static function Edit(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    $tData = AdminToken::token($token);
+    $tData = AdminToken::Token($token);
     // 参数
     $passwd = self::Post('passwd');
     $passwdNew = self::Post('passwdNew');

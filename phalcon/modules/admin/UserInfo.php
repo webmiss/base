@@ -17,9 +17,9 @@ class UserInfo extends Base {
 	static function List(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    $tData = AdminToken::token($token);
+    $tData = AdminToken::Token($token);
     // 查询
     $model = new UserInfoM();
     $model->Columns('nickname', 'name', 'gender', 'FROM_UNIXTIME(birthday, "%Y-%m-%d") as birthday', 'position', 'img');
@@ -35,9 +35,9 @@ class UserInfo extends Base {
   static function Edit(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    $tData = AdminToken::token($token);
+    $tData = AdminToken::Token($token);
     // 参数
     $data = self::Post('data');
     if(empty($data)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
@@ -65,9 +65,9 @@ class UserInfo extends Base {
   static function Upimg(){
     // 验证
     $token = self::Post('token');
-    $msg = AdminToken::verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    $tData = AdminToken::token($token);
+    $tData = AdminToken::Token($token);
     // 参数
     $base64 = self::Post('base64');
     if(empty($base64)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);

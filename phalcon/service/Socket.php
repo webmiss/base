@@ -107,11 +107,11 @@ class Socket implements MessageComponentInterface {
     if($token==Env::$key){
       return '0';
     }elseif($type=='api'){
-      $tData = ApiToken::token($token);
+      $tData = ApiToken::Token($token);
       if(empty($tData)) return '';
       return (string)$tData->uid;
     }elseif($type=='admin'){
-      $tData = AdminToken::token($token);
+      $tData = AdminToken::Token($token);
       if(empty($tData)) return '';
       return (string)$tData->uid;
     }

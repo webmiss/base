@@ -59,7 +59,7 @@ class User extends Base {
     return self::GetJSON([
       'code'=> 0,
       'msg'=> '成功',
-      'token'=> ApiToken::create(['uid'=>$data['id'], 'uname'=>$uname]),
+      'token'=> ApiToken::Create(['uid'=>$data['id'], 'uname'=>$uname]),
       'uinfo'=>[
         'uid'=> $data['id'],
         'uname'=> $uname,
@@ -76,11 +76,11 @@ class User extends Base {
 	static function Token(){
     // 验证
     $token = self::Post('token');
-    $msg = ApiToken::verify($token, '');
+    $msg = ApiToken::Verify($token, '');
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
     $uinfo = self::Post('uinfo');
-    $tData = ApiToken::token($token);
+    $tData = ApiToken::Token($token);
     if($uinfo!='1') return self::GetJSON(['code'=>0, 'msg'=>'成功', 'token_time'=>$tData->time]);
     // 用户信息
     $model = new UserInfo();

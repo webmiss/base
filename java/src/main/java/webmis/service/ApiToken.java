@@ -15,7 +15,7 @@ import webmis.util.Util;
 public class ApiToken extends Base {
 
   /* 验证 */
-  public static String verify(String token, String urlPerm) {
+  public static String Verify(String token, String urlPerm) {
     Redis redis;
     // Token
     if(token.equals("")) return "Token不能为空!";
@@ -49,7 +49,7 @@ public class ApiToken extends Base {
     if(menuData.size()==0) return "菜单验证无效!";
     // 验证-菜单
     String id = menuData.get("id").toString();
-    HashMap<String, Long> permData= perm(token);
+    HashMap<String, Long> permData= Perm(token);
     if(!permData.containsKey(id)) return "无权访问菜单!";
     // 验证-动作
     long actionVal = permData.get(id);
@@ -66,7 +66,7 @@ public class ApiToken extends Base {
   }
 
   /* 权限数组 */
-  public static HashMap<String, Long> perm(String token) {
+  public static HashMap<String, Long> Perm(String token) {
     HashMap<String, Long> permAll = new HashMap<String, Long>();
     // Token
     HashMap<String, Object> tData = Safety.Decode(token);
@@ -86,7 +86,7 @@ public class ApiToken extends Base {
   }
 
   /* 生成 */
-  public static String create(HashMap<String, Object> data) {
+  public static String Create(HashMap<String, Object> data) {
     data.put("l_time", Util.Date("yyyy-MM-dd HH:mm:ss"));
     String token = Safety.Encode(data);
     // 缓存
@@ -99,7 +99,7 @@ public class ApiToken extends Base {
   }
 
   /* 获取 */
-  public static HashMap<String, Object> token(String token) {
+  public static HashMap<String, Object> Token(String token) {
     HashMap<String, Object> tData = Safety.Decode(token);
     if(tData!=null){
       Redis redis = new Redis("");

@@ -24,14 +24,14 @@ public class UserPasswd extends Base {
   String Edit(HttpServletRequest request, String token, String passwd, String passwdNew) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
       res.put("msg", msg);
       return GetJSON(res);
     }
-    HashMap<String, Object> tData = AdminToken.token(token);
+    HashMap<String, Object> tData = AdminToken.Token(token);
     // 参数
     if(passwd==passwdNew) {
       res = new HashMap<String,Object>();

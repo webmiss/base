@@ -10,7 +10,7 @@ use Model\ApiMenu;
 class ApiToken extends Base {
 
   /* 验证 */
-  static function verify(string $token, string $urlPerm): string {
+  static function Verify(string $token, string $urlPerm): string {
     // Token
     if($token=='') return 'Token不能为空!';
     $tData = Safety::Decode($token);
@@ -60,7 +60,7 @@ class ApiToken extends Base {
   }
   
   /* 权限数组 */
-  static function perm(string $token): array {
+  static function Perm(string $token): array {
     $permAll = [];
     // Token
     $tData = Safety::Decode($token);
@@ -79,7 +79,7 @@ class ApiToken extends Base {
   }
 
   /* 生成 */
-  static function create(array $data): ?string {
+  static function Create(array $data): ?string {
     $data['l_time'] = date('Y-m-d H:i:s');
     $token = Safety::Encode($data);
     // 缓存
@@ -92,7 +92,7 @@ class ApiToken extends Base {
   }
 
   /* 获取 */
-  static function token(string $token): ?object {
+  static function Token(string $token): ?object {
     $token = Safety::Decode($token);
     if($token){
       $redis = new Redis();

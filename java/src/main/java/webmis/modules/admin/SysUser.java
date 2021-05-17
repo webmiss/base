@@ -40,7 +40,7 @@ public class SysUser extends Base {
   String List(HttpServletRequest request, String token, String data, int page, int limit) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -98,7 +98,7 @@ public class SysUser extends Base {
   String Add(HttpServletRequest request, String token, String data) throws SQLException {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -197,7 +197,7 @@ public class SysUser extends Base {
   String Edit(HttpServletRequest request, String token, String uid, String data) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -255,7 +255,7 @@ public class SysUser extends Base {
   String Del(HttpServletRequest request, String token, String data) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -297,14 +297,14 @@ public class SysUser extends Base {
   String State(HttpServletRequest request, String token, String uid,  String state) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
       res.put("msg", msg);
       return GetJSON(res);
     }
-    HashMap<String, Object> tData = AdminToken.token(token);
+    HashMap<String, Object> tData = AdminToken.Token(token);
     // 参数
     state = state=="1"?"1":"0";
     if(uid==""){
@@ -343,14 +343,14 @@ public class SysUser extends Base {
   String Perm(HttpServletRequest request, String token, Integer uid, String type, Integer role, String perm) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
       res.put("msg", msg);
       return GetJSON(res);
     }
-    HashMap<String, Object> tData = AdminToken.token(token);
+    HashMap<String, Object> tData = AdminToken.Token(token);
     // 参数
     if(uid==null || type.isEmpty()){
       res = new HashMap<String,Object>();
@@ -441,7 +441,7 @@ public class SysUser extends Base {
   String Info(HttpServletRequest request, String token, String uid, String data) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);

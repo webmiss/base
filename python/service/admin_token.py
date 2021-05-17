@@ -9,7 +9,7 @@ from model.sys_menu import SysMenu
 class AdminToken:
 
   # 验证
-  def verify(self, token: str, urlPerm: str):
+  def Verify(token: str, urlPerm: str):
     # Token
     if token=='' : return 'Token不能为空!'
     tData = Safety.Decode(token)
@@ -39,7 +39,7 @@ class AdminToken:
     if not menuData : return '菜单验证无效!'
     # 验证-菜单
     id = str(menuData['id'])
-    permData = self.perm(token)
+    permData = AdminToken.Perm(token)
     if id not in permData.keys() : return '无权访问菜单!'
     # 验证-动作
     actionVal = permData[id]
@@ -53,7 +53,7 @@ class AdminToken:
     return ''
 
   # 权限数组
-  def perm(self, token: str):
+  def Perm(token: str):
     permAll = {}
     # Token
     tData = Safety.Decode(token)
@@ -70,7 +70,7 @@ class AdminToken:
     return permAll
 
   # 生成
-  def create(self, data: dict):
+  def Create(data: dict):
     data['l_time'] = Util.Date('%Y-%m-%d %H:%M:%S')
     token = Safety.Encode(data)
     # 缓存
@@ -82,7 +82,7 @@ class AdminToken:
     return token
     
   # 获取
-  def token(token: str):
+  def Token(token: str):
     tData = Safety.Decode(token)
     if tData :
       redis = Redis()

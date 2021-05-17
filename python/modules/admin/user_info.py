@@ -16,9 +16,9 @@ class UserInfo(Base):
   def List(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
-    tData = AdminToken.token(token)
+    tData = AdminToken.Token(token)
     # 查询
     model = UserInfoM()
     model.Columns('nickname', 'name', 'gender', 'FROM_UNIXTIME(birthday, %s) as birthday', 'position', 'img')
@@ -33,9 +33,9 @@ class UserInfo(Base):
   def Edit(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
-    tData = AdminToken.token(token)
+    tData = AdminToken.Token(token)
     # 参数
     data = self.Post('data')
     if not data : return self.GetJSON({'code':4000, 'msg':'参数错误!'})
@@ -62,9 +62,9 @@ class UserInfo(Base):
   def Upimg(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
-    tData = AdminToken.token(token)
+    tData = AdminToken.Token(token)
     # 参数
     base64 = self.Post('base64')
     if not base64 : return self.GetJSON({'code':4000, 'msg':'参数错误!'})

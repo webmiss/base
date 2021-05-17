@@ -20,7 +20,7 @@ const max10bit = uint(10) //机器位数
 const max12bit = uint(12) //序列数位数
 
 /* 薄雾算法 */
-func (d *Data) Mist(redisName string) int64 {
+func (Data) Mist(redisName string) int64 {
 	// 自增ID
 	redis := (&library.Redis{}).New("")
 	autoId = util.Int64(redis.Get(redisName))
@@ -37,7 +37,7 @@ func (d *Data) Mist(redisName string) int64 {
 }
 
 /* 雪花算法 */
-func (d *Data) Snowflake() int64 {
+func (Data) Snowflake() int64 {
 	// 时间戳
 	now := time.Now()
 	t := now.UnixNano() / 1e6
@@ -50,7 +50,7 @@ func (d *Data) Snowflake() int64 {
 
 /* 图片地址 */
 func (Data) Img(img interface{}) string {
-	str := img.(string)
+	str := util.Strval(img)
 	if str == "" {
 		return ""
 	}

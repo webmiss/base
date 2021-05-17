@@ -13,9 +13,9 @@ class UserPasswd(Base):
   def Edit(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
-    tData = AdminToken.token(token)
+    tData = AdminToken.Token(token)
     # 参数
     passwd = self.Post('passwd')
     passwdNew = self.Post('passwdNew')

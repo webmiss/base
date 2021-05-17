@@ -32,7 +32,7 @@ public class SysFile extends Base {
   String List(HttpServletRequest request, String token, String path) throws SQLException {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -63,7 +63,7 @@ public class SysFile extends Base {
   String Mkdir(HttpServletRequest request, String token, String path, String name) throws SQLException {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -97,7 +97,7 @@ public class SysFile extends Base {
   String Rename(HttpServletRequest request, String token, String path, String rename, String name) throws SQLException {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -131,7 +131,7 @@ public class SysFile extends Base {
   String Upload(HttpServletRequest request, String token, String path, @RequestParam("up") MultipartFile file) throws SQLException {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -167,7 +167,7 @@ public class SysFile extends Base {
   @RequestMapping("down")
   byte[] Down(HttpServletRequest request, String token, String path, String filename) throws SQLException {
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")) return null;
     // 参数
     if(path.isEmpty() || filename.isEmpty()) return null;
@@ -180,7 +180,7 @@ public class SysFile extends Base {
   String Remove(HttpServletRequest request, String token, String path, String data) throws SQLException {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);

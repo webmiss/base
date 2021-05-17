@@ -26,7 +26,7 @@ public class Tinymce extends Base {
   String Edit(HttpServletRequest request, String token, String content) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, "");
+    String msg = AdminToken.Verify(token, "");
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -50,7 +50,7 @@ public class Tinymce extends Base {
   String UpImg(HttpServletRequest request, String token, String base64) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, "");
+    String msg = AdminToken.Verify(token, "");
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);

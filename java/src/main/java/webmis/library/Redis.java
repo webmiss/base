@@ -45,6 +45,9 @@ public class Redis extends Base {
       return _conn;
     } catch (Exception e) {
       Print("[Redis] Conn:", e.getMessage());
+      // 重置
+      Redis.RedisDB = null;
+      Redis.RedisDBOther = null;
       return null;
     }
   }

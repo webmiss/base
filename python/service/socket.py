@@ -76,11 +76,11 @@ class Socket:
     if token == Env.key :
       return '0'
     elif type == 'api' :
-      tData = ApiToken.token(token)
+      tData = ApiToken.Token(token)
       if not tData : return ''
       return str(tData['uid'])
     elif type == 'admin' :
-      tData = AdminToken.token(token)
+      tData = AdminToken.Token(token)
       if not tData : return ''
       return str(tData['uid'])
     return ''

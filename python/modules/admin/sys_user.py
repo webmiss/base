@@ -21,7 +21,7 @@ class SysUser(Base):
   def List(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     data = self.Post('data')
@@ -69,7 +69,7 @@ class SysUser(Base):
   def Add(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     data = self.Post('data')
@@ -122,7 +122,7 @@ class SysUser(Base):
   def Edit(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     uid = self.Post('uid')
@@ -156,7 +156,7 @@ class SysUser(Base):
   def Del(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     data = self.Post('data')
@@ -182,9 +182,9 @@ class SysUser(Base):
   def State(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
-    tData = AdminToken.token(token)
+    tData = AdminToken.Token(token)
     # 参数
     uid = self.Post('uid')
     state = self.Post('state')
@@ -207,9 +207,9 @@ class SysUser(Base):
   def Perm(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
-    tData = AdminToken.token(token)
+    tData = AdminToken.Token(token)
     # 参数
     uid = self.Post('uid')
     type = self.Post('type')
@@ -271,7 +271,7 @@ class SysUser(Base):
   def Info(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     uid = self.Post('uid')

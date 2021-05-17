@@ -29,14 +29,14 @@ public class UserInfo extends Base {
   String List(HttpServletRequest request, String token, String data) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
       res.put("msg", msg);
       return GetJSON(res);
     }
-    HashMap<String, Object> tData = AdminToken.token(token);
+    HashMap<String, Object> tData = AdminToken.Token(token);
     // 查询
     webmis.model.UserInfo model = new webmis.model.UserInfo();
     model.Columns("nickname", "name", "gender", "FROM_UNIXTIME(birthday, '%Y-%m-%d') as birthday", "position", "img");
@@ -57,14 +57,14 @@ public class UserInfo extends Base {
   String Edit(HttpServletRequest request, String token, String data) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
       res.put("msg", msg);
       return GetJSON(res);
     }
-    HashMap<String, Object> tData = AdminToken.token(token);
+    HashMap<String, Object> tData = AdminToken.Token(token);
     // 参数
     if(data==""){
       res = new HashMap<String,Object>();
@@ -101,14 +101,14 @@ public class UserInfo extends Base {
   String Upimg(HttpServletRequest request, String token, String base64) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
       res.put("msg", msg);
       return GetJSON(res);
     }
-    HashMap<String, Object> tData = AdminToken.token(token);
+    HashMap<String, Object> tData = AdminToken.Token(token);
     // 参数
     if(base64==null || base64.isEmpty()){
       res = new HashMap<String,Object>();

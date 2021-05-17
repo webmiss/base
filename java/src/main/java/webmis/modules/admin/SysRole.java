@@ -30,7 +30,7 @@ public class SysRole extends Base {
   String List(HttpServletRequest request, String token, String data, int page, int limit) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -70,7 +70,7 @@ public class SysRole extends Base {
   String Add(HttpServletRequest request, String token, String data) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -115,7 +115,7 @@ public class SysRole extends Base {
   String Edit(HttpServletRequest request, String token, String id, String data) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -161,7 +161,7 @@ public class SysRole extends Base {
   String Del(HttpServletRequest request, String token, String data) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -197,7 +197,7 @@ public class SysRole extends Base {
   String Perm(HttpServletRequest request, String token, Integer id, String perm) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -235,7 +235,7 @@ public class SysRole extends Base {
   String RoleList(HttpServletRequest request, String token, String perm) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, "");
+    String msg = AdminToken.Verify(token, "");
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -269,7 +269,7 @@ public class SysRole extends Base {
   String PermList(HttpServletRequest request, String token, String perm) {
     HashMap<String,Object> res;
     // 验证
-    String msg = AdminToken.verify(token, "");
+    String msg = AdminToken.Verify(token, "");
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);

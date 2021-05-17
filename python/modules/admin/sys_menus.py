@@ -15,7 +15,7 @@ class SysMenus(Base):
   def List(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     data = self.Post('data')
@@ -48,7 +48,7 @@ class SysMenus(Base):
   def Add(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     data = self.Post('data')
@@ -78,7 +78,7 @@ class SysMenus(Base):
   def Edit(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     id = self.Post('id')
@@ -110,7 +110,7 @@ class SysMenus(Base):
   def Del(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     data = self.Post('data')
@@ -130,7 +130,7 @@ class SysMenus(Base):
   def Perm(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, request.path)
+    msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     id = self.Post('id')
@@ -150,7 +150,7 @@ class SysMenus(Base):
   def GetMenus(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, '')
+    msg = AdminToken.Verify(token, '')
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 全部菜单
     self.__menus = {}
@@ -163,7 +163,7 @@ class SysMenus(Base):
       if fid in self.__menus : self.__menus[fid] += [val]
       else : self.__menus[fid] = [val]
     # 用户权限
-    self.__permAll = AdminToken().perm(token)
+    self.__permAll = AdminToken.Perm(token)
     # 返回
     return self.GetJSON({'code':0, 'msg':'成功', 'menus':self._getMenu('0')})
 

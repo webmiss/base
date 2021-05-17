@@ -121,11 +121,11 @@ public class Socket extends Base {
     if(token.equals(Env.key)){
       return "0";
     }else if(type.equals("api")){
-      HashMap<String, Object> tData = ApiToken.token(token);
+      HashMap<String, Object> tData = ApiToken.Token(token);
       if(tData.isEmpty()) return "";
       return tData.get("uid").toString();
     }else if(type.equals("admin")){
-      HashMap<String, Object> tData = AdminToken.token(token);
+      HashMap<String, Object> tData = AdminToken.Token(token);
       if(tData.isEmpty()) return "";
       return tData.get("uid").toString();
     }

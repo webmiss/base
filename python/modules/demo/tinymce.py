@@ -12,7 +12,7 @@ class Tinymce(Base) :
   def Edit(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, '')
+    msg = AdminToken.Verify(token, '')
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     content = self.Post('content')
@@ -26,7 +26,7 @@ class Tinymce(Base) :
   def UpImg(self):
     # 验证
     token = self.Post('token')
-    msg = AdminToken().verify(token, '')
+    msg = AdminToken.Verify(token, '')
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
     base64 = self.Post('base64')
