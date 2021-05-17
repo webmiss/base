@@ -21,6 +21,7 @@ public class Redis extends Thread {
     while(true){
       webmis.library.Redis redis = new webmis.library.Redis("");
       List<String> data = redis.BLPop("logs", 10);
+      redis.Close();
       if(data==null) continue;
       // 保存
       String msg = data.get(1);
