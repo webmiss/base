@@ -13,8 +13,8 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Row',
   props: {
-    lineHeight: {type: String, default: '40px'}, //高
-    fontSize: {type: String, default: '14px'}, //字体大小
+    lineHeight: {type: String, default: '40px'},  //高
+    fontSize: {type: String, default: '14px'},    //字体大小
   },
 });
 </script>

@@ -20,12 +20,12 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Img',
   props: {
-    url: {type: String, default: ''}, //图片地址
-    size: {type: String, default: 'cover'}, //背景大小
-    width: {type: String, default: '90px'}, //宽
+    url: {type: String, default: ''},         //图片地址
+    size: {type: String, default: 'cover'},   //背景大小
+    width: {type: String, default: '90px'},   //宽
     height: {type: String, default: '40px'},  //高
-    radius: {type: String, default: '0px'}, //圆角
-    title: {type: String, default: ''}, //提示
+    radius: {type: String, default: '0px'},   //圆角
+    title: {type: String, default: ''},       //提示
     icoSize: {type: String, default: '32px'}, //图标大小
   },
   mounted(){

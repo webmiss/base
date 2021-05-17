@@ -140,7 +140,7 @@
           <td><wm-input :value="val.action" @update:value="val.action=$event" /></td>
           <td><wm-input :value="val.perm" @update:value="val.perm=$event" /></td>
           <td>
-            <div class="perm_an"  @click="permRemove(key)"><wm-close /></div>
+            <div class="perm_an" ><wm-close @click="permRemove(key)" /></div>
           </td>
         </wm-table-tr>
       </wm-table>

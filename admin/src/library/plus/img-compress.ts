@@ -6,7 +6,7 @@ export default (file: any, parm: any, callback: any)=>{
   let cut = parm.cut || true;
   let quality = parm.quality || 0.8;
   let ext = parm.ext || 'jpg';
-  const mimeType: any = {jpg:'image/jpeg',png:'image/png',gif:'image/gif'};
+  const mimeType: any = {jpg:'image/jpeg', png:'image/png', gif:'image/gif'};
   let w=1,h=1;
   let dst_x=0,dst_y=0;
   let dst_size = 1;

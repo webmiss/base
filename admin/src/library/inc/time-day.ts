@@ -1,5 +1,5 @@
 /* 获取日期 */
-export default (n: number,day?: any)=>{
+export default (n: number=0, day?: any)=>{
   let now = day?new Date(day):new Date();
   now.setDate(now.getDate()+n);
   let y = now.getFullYear();

@@ -72,10 +72,10 @@ import Storage from '../../library/ui/storage'
 export default defineComponent({
   name: 'Menu',
   props: {
-    data: {type: Array, default: []}, //数据: [{icon:'',label:'标题',value:'',children:[]}]
-    defaultIndex: {type: Array, default: []},  //默认选择
-    isSave: {type: Boolean, default: true},  //是否记录位置
-    height: {type: Number, default: 32},  //高度
+    data: {type: Array, default: []},                     //数据: [{icon:'',label:'标题',value:'',children:[]}]
+    defaultIndex: {type: Array, default: []},             //默认选择
+    isSave: {type: Boolean, default: true},               //是否记录位置
+    height: {type: Number, default: 32},                  //高度
     textColor: {type: String, default: Env.themes.text1}, //颜色
   },
   data(){

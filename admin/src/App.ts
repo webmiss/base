@@ -11,7 +11,6 @@ import Loading from '@/library/ui/ui-loading'
 import Storage from '@/library/ui/storage'
 import Reg from '@/library/inc/reg'
 import NavigateTo from '@/library/ui/ui-navigate-to'
-import HtmlLoad from '@/library/inc/html-load'
 /* UI组件 */
 import wmScrollView from '@/components/scroll-view/index.vue'
 import wmMenu from '@/components/menu/index.vue'
@@ -32,7 +31,6 @@ export default defineComponent({
     // 更新APP
     const update: any = {show:false, os:'', down:false, loading:'0%', msg:'检测更新', file:'', total:0};
     const updateCfg: any = Env.update;
-    const updateText: object = {title: Env.title, copy: Env.copy};
     // 信息
     const info: any = {title: Env.title, version: Env.version, copy: Env.copy};
     // 登录数据
@@ -77,8 +75,6 @@ export default defineComponent({
     this._enter();
     // 获取菜单
     if(Storage.getItem('token')) this.getMenus();
-    // 
-    // HtmlLoad(['/tinymce/tinymce.min.js']);
   },
   methods:{
 

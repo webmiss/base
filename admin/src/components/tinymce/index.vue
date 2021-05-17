@@ -17,9 +17,9 @@ import ImgReader from '../../library/plus/img-reader'
 export default defineComponent({
   name: 'TinyMCE',
   props: {
-    config: {default: {}},  //配置
-    content: {default: ''}, //内容
-    upload: {default: {start: false, width: 0, height: 0, url: ''}}, //图片上传
+    config: {default: {}},                                            //配置
+    content: {default: ''},                                           //内容
+    upload: {default: {start: false, width: 0, height: 0, url: ''}},  //图片上传
   },
   data(){
     let defInit: any = {

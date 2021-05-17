@@ -24,10 +24,10 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Checkbox',
   props: {
-    value: {default: ''}, //checkbox[value]
-    label: {type: String, default: ''}, //名称
-    checked: {type: Boolean, default: false}, //是否选中
-    disclick: {type: Boolean, default: false}, //禁用Click
+    value: {default: ''},                       //checkbox[value]
+    label: {type: String, default: ''},         //名称
+    checked: {type: Boolean, default: false},   //是否选中
+    disclick: {type: Boolean, default: false},  //禁用Click
   },
   watch:{
     checked(val: boolean){

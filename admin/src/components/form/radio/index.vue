@@ -24,7 +24,7 @@ export default defineComponent({
   name: 'Radio',
   props: {
     data: {type: Array, default: []}, //数据: [{label:'男',value:'男'},{label:'女',value:'女'}]
-    value: {default: ''}, //默认值: val
+    value: {default: ''},             //默认值: val
   },
   watch:{
     value(val){

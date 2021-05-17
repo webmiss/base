@@ -18,10 +18,10 @@ import ImgReader from '../../../library/plus/img-reader'
 export default defineComponent({
   name: 'ImgUpLoad',
   props: {
-    url: {type: String, default: ''}, //上传地址
-    width: {type: Number, default: 200},  //宽
-    height: {type: Number, default: 200}, //高
-    param: {type: Object, default: {}}, //提交参数
+    url: {type: String, default: ''},           //上传地址
+    width: {type: Number, default: 200},        //宽
+    height: {type: Number, default: 200},       //高
+    param: {type: Object, default: {}},         //提交参数
     title: {type: String, default: '上传图片'}, //提示
   },
   methods:{

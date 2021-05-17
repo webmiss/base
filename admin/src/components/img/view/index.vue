@@ -2,7 +2,7 @@
 <div v-if="show" ref="ImgBG" class="imgview_bg" :style="{backgroundColor: 'rgba(0,0,0,'+opacity+')'}">
   <!-- 加载 -->
   <div class="imgview_load" v-if="loading">
-    <i :class="iconLoading" :style="{color:color}"></i>
+    <i :class="iconLoading" :style="{color:loadColor}"></i>
   </div>
   <!-- 图片 -->
   <div class="imgview_img"><img id="img" :src="info.src" /></div>
@@ -59,14 +59,14 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'ImgView',
   props: {
-    show: {type: Boolean, default: false},
-    opacity: {type: Number, default: 0.8},
-    color: {type: String, default: '#6FB737'},
-    iconLoading: {type: String, default: 'ui ui_loading'},
-    iconLeft: {type: String, default: 'ui ui_left'},
-    iconRight: {type: String, default: 'ui ui_right'},
-    iconFull: {type: String, default: 'ui ui_full'},
-    iconClose: {type: String, default: 'ui ui_close'},
+    show: {type: Boolean, default: false},                  //显示
+    opacity: {type: Number, default: 0.8},                  //背景透明度
+    loadColor: {type: String, default: '#6FB737'},          //Load颜色
+    iconLoading: {type: String, default: 'ui ui_loading'},  //Load图标
+    iconLeft: {type: String, default: 'ui ui_left'},        //上一页
+    iconRight: {type: String, default: 'ui ui_right'},      //下一页
+    iconFull: {type: String, default: 'ui ui_full'},        //全屏
+    iconClose: {type: String, default: 'ui ui_close'},      //关闭
   },
   data(){
     const loading: boolean = true;

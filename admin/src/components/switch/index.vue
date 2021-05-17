@@ -1,9 +1,5 @@
 <template>
-  <div
-    ref="Switch"
-    class="wm-switch"
-    @click="click();"
-  >
+  <div ref="Switch" class="wm-switch" @click="click();">
     <div ref="SwitchCursor" class="wm-switch_cursor"></div>
   </div>
 </template>
@@ -18,9 +14,9 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'Switch',
   props: {
-    value: {type: Boolean, default: false}, //值
-    activeColor: {type: String, default: '#6FB737'}, //打开时的背景色
-    inactiveColor: {type: String, default: '#DCDFE6'}, //打开时的背景色
+    value: {type: Boolean, default: false},             //值
+    activeColor: {type: String, default: '#6FB737'},    //打开颜色
+    inactiveColor: {type: String, default: '#DCDFE6'},  //关闭颜色
   },
   data(){
     const show: Boolean = false;

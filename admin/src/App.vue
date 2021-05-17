@@ -81,7 +81,7 @@
     <!-- Right -->
     <div class="app_right">
       <wm-scroll-view class="app_top" :scroll-x="true" :scroll-y="false" :scrollbar="null">
-        <wm-action :url="state.action.url" :menus="state.action.menus"></wm-action>
+        <wm-action :menus="state.action.menus"></wm-action>
       </wm-scroll-view>
       <div class="app_main">
         <!-- 页面 -->

@@ -13,9 +13,9 @@ import { defineComponent } from 'vue'
 import Toast from '../../library/ui/ui-toast'
 import Post from '../../library/ui/request-post'
 export default defineComponent({
-  name:'Table',
+  name:'UpLoader',
   props: {
-    url: {type: String, default: ''}, //上传地址
+    url: {type: String, default: ''},   //上传地址
     param: {type: Object, default: {}}, //提交参数
   },
   methods:{

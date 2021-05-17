@@ -93,7 +93,7 @@ export default defineComponent({
   name: 'Tree',
   components: {wmCheckbox},
   props: {
-    data: {default: []}, //数据
+    data: {default: []}, //数据:  [{id: "1", label: "测试接口", checked: true, show: true, action: true, children: []}]
   },
   data(){
     let menus: any = [];
