@@ -12,3 +12,8 @@ import "webmis/library"
   "ext":      "png",     //后缀
 })
 ```
+
+## 图片回收
+```go
+(&library.Upload{}).HtmlImgClear(html string, dir string)
+```

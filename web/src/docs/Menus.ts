@@ -34,6 +34,13 @@ export default {
         {label: '安装&运行', value: 'docs/phalcon/install/index'},
         {label: '打包&发布', value: 'docs/phalcon/install/build'},
       ]},
+      {label:'Service 服务', children:[
+        {label: '基础 Base', value: 'docs/phalcon/service/base'},
+        {label: '数据 Data', value: 'docs/phalcon/service/data'},
+        {label: '日志 Logs', value: 'docs/phalcon/service/logs'},
+        {label: '验证 Token', value: 'docs/phalcon/service/token'},
+        {label: '通信 Socket', value: 'docs/phalcon/service/socket'},
+      ]},
       {label:'ORM 数据库', children:[
         {label: '模型 Model', value: 'docs/phalcon/db/model'},
         {label: '查询 Select', value: 'docs/phalcon/db/select'},
@@ -67,6 +74,13 @@ export default {
         {label: '安装&运行', value: 'docs/python/install/index'},
         {label: '打包&发布', value: 'docs/python/install/build'},
       ]},
+      {label:'Service 服务', children:[
+        {label: '基础 Base', value: 'docs/python/service/base'},
+        {label: '数据 Data', value: 'docs/python/service/data'},
+        {label: '日志 Logs', value: 'docs/python/service/logs'},
+        {label: '验证 Token', value: 'docs/python/service/token'},
+        {label: '通信 Socket', value: 'docs/python/service/socket'},
+      ]},
       {label:'ORM 数据库', children:[
         {label: '模型 Model', value: 'docs/python/db/model'},
         {label: '查询 Select', value: 'docs/python/db/select'},
@@ -99,6 +113,13 @@ export default {
         {label: '开发环境', value: 'docs/java/install/install'},
         {label: '安装&运行', value: 'docs/java/install/index'},
         {label: '打包&发布', value: 'docs/java/install/build'},
+      ]},
+      {label:'Service 服务', children:[
+        {label: '基础 Base', value: 'docs/java/service/base'},
+        {label: '数据 Data', value: 'docs/java/service/data'},
+        {label: '日志 Logs', value: 'docs/java/service/logs'},
+        {label: '验证 Token', value: 'docs/java/service/token'},
+        {label: '通信 Socket', value: 'docs/java/service/socket'},
       ]},
       {label:'ORM 数据库', children:[
         {label: '模型 Model', value: 'docs/java/db/model'},
@@ -134,6 +155,13 @@ export default {
         {label: '开发环境', value: 'docs/gin/install/install'},
         {label: '安装&运行', value: 'docs/gin/install/index'},
         {label: '打包&发布', value: 'docs/gin/install/build'},
+      ]},
+      {label:'Service 服务', children:[
+        {label: '基础 Base', value: 'docs/gin/service/base'},
+        {label: '数据 Data', value: 'docs/gin/service/data'},
+        {label: '日志 Logs', value: 'docs/gin/service/logs'},
+        {label: '验证 Token', value: 'docs/gin/service/token'},
+        {label: '通信 Socket', value: 'docs/gin/service/socket'},
       ]},
       {label:'ORM 数据库', children:[
         {label: '模型 Model', value: 'docs/gin/db/model'},

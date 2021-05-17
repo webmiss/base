@@ -22,3 +22,8 @@ Upload.File(
   'ext':'png',        #后缀
 )
 ```
+
+## 图片回收
+```python
+Upload.HtmlImgClear(html: str, dir: str)
+```

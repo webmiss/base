@@ -22,3 +22,8 @@ Upload::Base64([
   'ext'=>'png', //后缀
 ]);
 ```
+
+## 图片回收
+```php
+Upload::HtmlImgClear(string $html, string $dir);
+```

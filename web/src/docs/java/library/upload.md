@@ -39,3 +39,8 @@ Upload.Base64(
   HashMap<String, Object> params  //参数
 );
 ```
+
+## 图片回收
+```java
+Upload.HtmlImgClear(String html, String dir);
+```
