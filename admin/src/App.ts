@@ -3,14 +3,14 @@ import { useStore } from 'vuex';
 import Env from './env'
 import Start from '@/library/Start'
 /* JS组件 */
-import Toast from '@/library/ui/ui-toast'
-import Post from '@/library/ui/request-post'
-import VersionDiff from '@/library/inc/version-diff'
-import PlusReady from '@/library/plus/plus-ready'
-import Loading from '@/library/ui/ui-loading'
-import Storage from '@/library/ui/storage'
-import Reg from '@/library/inc/reg'
-import NavigateTo from '@/library/ui/ui-navigate-to'
+import Toast from '@/library/ui/toast'
+import Post from '@/library/request/post'
+import VersionDiff from '@/library/plus/version-diff'
+import PlusReady from '@/library/plus/ready'
+import Loading from '@/library/ui/loading'
+import Storage from '@/library/Storage'
+import RegRight from '@/library/reg/right'
+import NavigateTo from '@/library/ui/navigate-to'
 /* UI组件 */
 import wmScrollView from '@/components/scroll-view/index.vue'
 import wmMenu from '@/components/menu/index.vue'
@@ -178,8 +178,8 @@ export default defineComponent({
       // 验证
       let uname = this.login.uname;
       let passwd = this.login.passwd;
-      let reg_passwd = Reg('passwd',passwd);
-      if(Reg('uname',uname)!==true && Reg('email',uname)!==true && Reg('tel',uname)!==true) return Toast('请输入帐号/手机/邮箱');
+      let reg_passwd = RegRight('passwd',passwd);
+      if(RegRight('uname',uname)!==true && RegRight('email',uname)!==true && RegRight('tel',uname)!==true) return Toast('请输入帐号/手机/邮箱');
       else if(reg_passwd!==true) return Toast(reg_passwd);
       // 提交
       this.login.subText = '正在登录';

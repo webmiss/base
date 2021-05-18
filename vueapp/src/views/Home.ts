@@ -1,7 +1,7 @@
 import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
 /* JS组件 */
-import NavigateTo from '@/library/ui/ui-navigate-to'
+import NavigateTo from '@/library/ui/navigate-to'
 /* UI组件 */
 import WmTabbar from '@/components/tabbar/index.vue'
 import WmTabbarPage from '@/components/tabbar/page/index.vue'

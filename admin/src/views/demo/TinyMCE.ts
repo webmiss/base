@@ -1,11 +1,12 @@
 import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
 /* JS组件 */
-import Loading from '@/library/ui/ui-loading'
-import Toast from '../../library/ui/ui-toast'
-import Storage from '../..//library/ui/storage'
-import Post from '../../library/ui/request-post'
-import Url from '../../library/inc/url'
+import Loading from '@/library/ui/loading'
+import Toast from '../../library/ui/toast'
+import Storage from '../../library/Storage'
+import Post from '../../library/request/post'
+import UrlEncode from '../../library/url/encode'
+import UrlDecode from '../../library/url/decode'
 /* UI组件 */
 import wmMain from '@/components/main/index.vue'
 import wmTinymce from '@/components/tinymce/index.vue'
@@ -35,11 +36,11 @@ export default defineComponent({
       const load: any = Loading();
       Post('/demo/tinymce/edit', {
         token:Storage.getItem('token'),
-        content: Url.Encode(ct),
+        content: UrlEncode(ct),
       }, (res: any)=>{
         load.clear();
         const d = res.data;
-        if(d.code==0) console.log(Url.Decode(d.content));
+        if(d.code==0) console.log(UrlDecode(d.content));
         return Toast(d.msg);
       });
     },

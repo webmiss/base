@@ -3,10 +3,10 @@ import { useStore } from 'vuex';
 import Env from './env'
 import Start from '@/library/Start'
 
-import Toast from '@/library/ui/ui-toast'
-import Post from '@/library/ui/request-post'
-import VersionDiff from '@/library/inc/version-diff'
-import PlusReady from '@/library/plus/plus-ready'
+import Toast from '@/library/ui/toast'
+import Post from '@/library/request/post'
+import VersionDiff from '@/library/plus/version-diff'
+import PlusReady from '@/library/plus/ready'
 
 export default defineComponent({
   name: 'APP',

@@ -1,4 +1,4 @@
-import Storage from './library/ui/storage'
+import Storage from './library/Storage'
 
 /* 接口 */
 const title = 'WebMIS-后台框架';

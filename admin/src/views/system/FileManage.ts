@@ -1,11 +1,11 @@
 import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
 /* JS组件 */
-import Loading from '@/library/ui/ui-loading'
-import Toast from '@/library/ui/ui-toast'
-import Post from '@/library/ui/request-post'
-import Storage from '@/library/ui/storage'
-import DownBlob from '@/library/inc/down-blob'
+import Loading from '@/library/ui/loading'
+import Toast from '@/library/ui/toast'
+import Post from '@/library/request/post'
+import Storage from '@/library/Storage'
+import DownBlob from '@/library/down/blob'
 /* UI组件 */
 import wmRow from '@/components/main/row/index.vue'
 import wmDialog from '@/components/dialog/index.vue'

@@ -9,11 +9,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Toast from '../../library/ui/ui-toast'
-import Storage from '../..//library/ui/storage'
-import Post from '../../library/ui/request-post'
-import HtmlLoad from '../../library/inc/html-load'
-import ImgReader from '../../library/plus/img-reader'
+import Toast from '../../library/ui/toast'
+import Storage from '../../library/Storage'
+import Post from '../../library/request/post'
+import HtmlLoad from '../../library/html/load'
+import ImgReader from '../../library/plus/img/reader'
 export default defineComponent({
   name: 'TinyMCE',
   props: {

@@ -1,7 +1,5 @@
 import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
-/* JS组件 */
-import Base64 from '@/library/inc/base64'
 /* UI组件 */
 import wmMain from '@/components/main/index.vue'
 /* ElementUI */
@@ -19,10 +17,6 @@ export default defineComponent({
     return {state, data};
   },
   mounted(){
-    let res = Base64.encode('123456');
-    let data = Base64.decode(res);
-    let tp = Base64.getType('jpg');
-    console.log(res, data, tp);
   },
   activated(){
   },

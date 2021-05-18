@@ -1,6 +1,6 @@
 ## 引入
 ```javascript
-import MapGeolocation from '@/library/plus/map-geolocation'
+import MapGeolocation from '@/library/plus/map/geolocation'
 ```
 
 ## 定位信息

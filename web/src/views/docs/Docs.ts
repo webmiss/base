@@ -2,8 +2,8 @@ import { defineComponent } from 'vue';
 /* 菜单 */
 import Menus from '@/docs/Menus'
 /* JS组件 */
-import NavigateTo from '@/library/ui/ui-navigate-to'
-import LoadHtml from '@/library/inc/html-load'
+import NavigateTo from '@/library/ui/navigate-to'
+import HtmlLoad from '@/library/html/load'
 /* UI组件 */
 import WmScrollView from '@/components/scroll-view/index.vue'
 import wmMenu from '@/components/menu/index.vue'
@@ -91,7 +91,7 @@ export default defineComponent({
       let lm: any = this.$refs.leftMenus;
       if(lm.style.display=='block') this.showMenus();
       // 刷新样式
-      LoadHtml(['/docs/prism.css','/docs/prism.js'],true);
+      HtmlLoad(['/docs/prism.css','/docs/prism.js'],true);
     },
 
     /* 显示菜单 */

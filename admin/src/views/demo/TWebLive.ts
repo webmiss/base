@@ -2,7 +2,7 @@ import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
 import Env from '@/env'
 /* JS组件 */
-import Storage from '@/library/ui/storage'
+import Storage from '@/library/Storage'
 /* UI组件 */
 import wmMain from '@/components/main/index.vue'
 

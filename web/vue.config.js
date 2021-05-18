@@ -12,5 +12,15 @@ module.exports = {
     })
     // 加载Markdown文件
     config.module.rule('md').test(/.md$/).use('text-loader').loader('text-loader').end()
+  },
+  configureWebpack: (config) => {
+    if (process.env.NODE_ENV === 'production') {
+      config.mode = 'production';
+      // 打包体积配置
+      config["performance"] = {
+        "maxEntrypointSize": 10000000,
+        "maxAssetSize": 30000000
+      }
+    }
   }
 }

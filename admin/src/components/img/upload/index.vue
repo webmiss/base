@@ -10,11 +10,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Loading from '../../../library/ui/ui-loading'
-import Toast from '../../../library/ui/ui-toast'
-import Post from '../../../library/ui/request-post'
+import Loading from '../../../library/ui/loading'
+import Toast from '../../../library/ui/toast'
+import Post from '../../../library/request/post'
 import Camera from '../../../library/plus/camera'
-import ImgReader from '../../../library/plus/img-reader'
+import ImgReader from '../../../library/plus/img/reader'
 export default defineComponent({
   name: 'ImgUpLoad',
   props: {

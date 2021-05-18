@@ -10,8 +10,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Toast from '../../library/ui/ui-toast'
-import Post from '../../library/ui/request-post'
+import Toast from '../../library/ui/toast'
+import Post from '../../library/request/post'
 export default defineComponent({
   name:'UpLoader',
   props: {

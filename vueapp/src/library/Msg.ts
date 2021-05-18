@@ -1,5 +1,5 @@
-import Toast from '@/library/ui/ui-toast'
-import Storage from '@/library/ui/storage'
+import Toast from '@/library/ui/toast'
+import Storage from '@/library/Storage'
 import Notify from '@/library/plus/notify'
 
 /* Msg */

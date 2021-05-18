@@ -68,7 +68,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Env from '../../env'
-import Storage from '../../library/ui/storage'
+import Storage from '../../library/Storage'
 export default defineComponent({
   name: 'Menu',
   props: {

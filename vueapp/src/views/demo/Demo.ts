@@ -1,9 +1,6 @@
 import { defineComponent } from 'vue';
-import Env from '@/env'
-import Back from '@/library/ui/ui-back'
-import Toast from '@/library/ui/ui-toast'
-import NavigateTo from '@/library/ui/ui-navigate-to'
-import LoadHtml from '@/library/inc/html-load'
+import Back from '@/library/ui/back'
+import Toast from '@/library/ui/toast'
 /* 组件 */
 import wmTouch from '@/components/touch/index.vue'
 import wmPageView from '@/components/page-view/index.vue'
@@ -32,8 +29,6 @@ export default defineComponent({
   computed:{
   },
   mounted(){
-    // 高德地图
-    LoadHtml(['https://webapi.amap.com/maps?v=1.4.15&key=$key&plugin=AMap.Riding'],true,'js');
     // 折线图
     this.chartData.line = [
       {type: '收入', label:'1月', value:50},

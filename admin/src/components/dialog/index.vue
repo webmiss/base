@@ -40,7 +40,7 @@
 import { defineComponent } from 'vue'
 import { useStore } from 'vuex';
 import wmPopup from '../popup/index.vue'
-import HtmlObserve from '../../library/inc/html-observe'
+import HtmlObserve from '../../library/html/observe'
 export default defineComponent({
   name: 'Dialog',
   components: {wmPopup},

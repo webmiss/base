@@ -1,11 +1,11 @@
 import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
 /* JS组件 */
-import Loading from '@/library/ui/ui-loading'
-import Toast from '@/library/ui/ui-toast'
-import Post from '@/library/ui/request-post'
-import Storage from '@/library/ui/storage'
-import Reg from '@/library/inc/reg'
+import Loading from '@/library/ui/loading'
+import Toast from '@/library/ui/toast'
+import Post from '@/library/request/post'
+import Storage from '@/library/Storage'
+import RegRight from '@/library/reg/right'
 /* UI组件 */
 import wmMain from '@/components/main/index.vue'
 import wmForm from '@/components/form/index.vue'
@@ -36,8 +36,8 @@ export default defineComponent({
       const passwd1 = this.form.passwd1;
       const passwd2 = this.form.passwd2;
       // 验证
-      let reg_passwd = Reg('passwd',passwd);
-      let reg_passwd1 = Reg('passwd',passwd1);
+      let reg_passwd = RegRight('passwd',passwd);
+      let reg_passwd1 = RegRight('passwd',passwd1);
       if(reg_passwd!=true){
         return Toast('原'+reg_passwd);
       }else if(reg_passwd1!=true){

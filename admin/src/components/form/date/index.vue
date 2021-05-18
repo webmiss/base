@@ -23,7 +23,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import wmInput from '../input/index.vue'
-import TimeDay from '../../../library/inc/time-day'
+import TimeDay from '../../../library/time/day'
 export default defineComponent({
   name: 'Date',
   components: {wmInput},

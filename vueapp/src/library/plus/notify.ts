@@ -1,7 +1,7 @@
 import Env from '@/env'
-import Toast from '@/library/ui/ui-toast'
-import Post from '@/library/ui/request-post'
-import Storage from '@/library/ui/storage'
+import Toast from '@/library/ui/toast'
+import Post from '@/library/request//post'
+import Storage from '@/library/Storage'
 
 /* 本地消息 */
 export default (title: string, content: string, isRead: boolean)=>{

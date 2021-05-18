@@ -1,13 +1,13 @@
 import App from '@/main';
 import Env from '@/env'
 /* UI组件 */
-import Toast from '@/library/ui/ui-toast'
-import Storage from '@/library/ui/storage'
-import Post from '@/library/ui/request-post'
-import Back from '@/library/ui/ui-back'
+import Toast from '@/library/ui/toast'
+import Storage from '@/library/Storage'
+import Post from '@/library/request/post'
+import Back from '@/library/ui/back'
 /* JS组件 */
-import PlusReady from '@/library/plus/plus-ready'
-import PlusBack from '@/library/plus/plus-back'
+import PlusReady from '@/library/plus/ready'
+import PlusBack from '@/library/plus/back'
 import Socket from '@/library/Socket'
 
 /* 启动设置 */

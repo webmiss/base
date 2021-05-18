@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue';
 import Env from './env'
-import NavigateTo from '@/library/ui/ui-navigate-to'
+import NavigateTo from '@/library/ui/navigate-to'
 /* 组件 */
 import WmScrollView from '@/components/scroll-view/index.vue'
 

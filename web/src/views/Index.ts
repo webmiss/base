@@ -1,7 +1,7 @@
 import { defineComponent } from 'vue';
 import Env from '@/env'
-import NavigateTo from '@/library/ui/ui-navigate-to'
-import HtmlDownImg from '@/library/inc/html-down-img'
+import NavigateTo from '@/library/ui/navigate-to'
+import DownFile from '@/library/down/file'
 /* 组件 */
 import wmPopup from '@/components/popup/index.vue'
 
@@ -28,7 +28,7 @@ export default defineComponent({
     },
     /* 二维码-下载 */
     downCode(){
-      HtmlDownImg(this.code.img);
+      DownFile(this.code.img);
     },
 
   }

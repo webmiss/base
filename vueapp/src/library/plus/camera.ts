@@ -1,4 +1,4 @@
-import Toast from '@/library/ui/ui-toast'
+import Toast from '@/library/ui/toast'
 
 /* 拍照 */
 export default (callback: any, fail?: any)=>{

@@ -1,7 +1,7 @@
 ## 引入
 ```javascript
-import ImgCompress from '@/library/plus/img-compress'
-import ImgReader from '@/library/plus/img-reader'
+import ImgCompress from '@/library/plus/img/compress'
+import ImgReader from '@/library/plus/img/reader'
 ```
 
 ## 文件

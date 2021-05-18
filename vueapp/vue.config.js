@@ -10,5 +10,15 @@ module.exports = {
       args[0].description = 'WebMIS全栈开发基础框架.技术,PHP,Python,SpringBoot,Iris,Phalcon,Flutter,NodeJS,Vue,Socket,Redis,API'
       return args
     })
+  },
+  configureWebpack: (config) => {
+    if (process.env.NODE_ENV === 'production') {
+      config.mode = 'production';
+      // 打包体积配置
+      config["performance"] = {
+        "maxEntrypointSize": 10000000,
+        "maxAssetSize": 30000000
+      }
+    }
   }
 }
