@@ -18,12 +18,12 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'Popup',
   props: {
-    show: {type: Boolean, default: false},  //是否显示
-    position: {type: String, default: 'center'},  //位置
-    opacity: {type: Number, default: 0.4},  //背景透明度
-    bgColor: {type: String, default: ''}, //内容背景颜色
-    bgClose: {type: Boolean, default: true},  //点击背景关闭
-    time: {type: Number, default: 400},  //动画时间
+    show: {type: Boolean, default: false},        //是否显示
+    position: {type: String, default: 'center'},  //位置: left、right、top、bottom
+    opacity: {type: Number, default: 0.4},        //背景透明度
+    bgColor: {type: String, default: ''},         //内容背景颜色
+    bgClose: {type: Boolean, default: true},      //点击背景关闭
+    time: {type: Number, default: 400},           //动画时间
   },
   watch:{
     show(val: boolean){

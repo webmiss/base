@@ -23,13 +23,13 @@ export default defineComponent({
   name: 'PickerDate',
   components: {wmPicker},
   props: {
-    show: {type: Boolean, default: false},  //是否显示
-    title: {type: String, default: '选择年月日'},  //标题
-    maxDate: {type: Object, default: null},  //最大时间, 例如: new Date(2021,10,1)
-    minDate: {type: Object, default: null},  //最小时间, 例如: new Date(1970,1,1)
-    default: {type: Array, default: []},  //默认值
+    show: {type: Boolean, default: false},        //是否显示
+    title: {type: String, default: '选择年月日'}, //标题
+    maxDate: {type: Object, default: null},       //最大时间, 例如: new Date(2021,10,1)
+    minDate: {type: Object, default: null},       //最小时间, 例如: new Date(1970,1,1)
+    default: {type: Array, default: []},          //默认值: [2020,10,5]
     cancelText: {type: String, default: '取消'},  //取消文本
-    confirmText: {type: String, default: '确定'},  //确定文本
+    confirmText: {type: String, default: '确定'}, //确定文本
   },
   data(){
     const pickerData: any = [];

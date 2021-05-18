@@ -52,12 +52,12 @@ export default defineComponent({
   name: 'Picker',
   components: {wmPopup},
   props: {
-    show: {type: Boolean, default: false},  //是否显示
-    data: {type: Array, default: []},  //数据
+    show: {type: Boolean, default: false},          //是否显示
+    data: {type: Array, default: []},               //数据
     defaultIndex: {type: Array, default: [0,0,0]},  //是否显示
-    title: {type: String, default: ''},  //标题
-    cancelText: {type: String, default: '取消'},  //取消文本
-    confirmText: {type: String, default: '确定'},  //确定文本
+    title: {type: String, default: ''},             //标题
+    cancelText: {type: String, default: '取消'},    //取消文本
+    confirmText: {type: String, default: '确定'},   //确定文本
   },
   data(){
     const wheel: any = [];

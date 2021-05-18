@@ -4,7 +4,7 @@ import Get from '@/library/ui/request-get'
 import Post from '@/library/ui/request-post'
 import Put from '@/library/ui/request-put'
 import Delete from '@/library/ui/request-delete'
-import Request from '@/library/ui/request-request'
+import Patch from '@/library/ui/request-patch'
 ```
 
 ## 请求方式

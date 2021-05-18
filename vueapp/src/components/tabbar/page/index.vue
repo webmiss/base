@@ -13,10 +13,10 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'TabbarPage',
   props: {
-    show: {type: Boolean, default: false}, //显示
+    show: {type: Boolean, default: false},                //显示
     height: {type: String, default: 'calc(100% - 54px)'}, //高度
-    bgColor: {type: String, default: '#FFF'},  //背景颜色
-    time: {type: Number, default: 400},  //背景颜色
+    bgColor: {type: String, default: '#FFF'},             //背景颜色
+    time: {type: Number, default: 400},                   //动画时间
   },
   watch:{
     show(val){

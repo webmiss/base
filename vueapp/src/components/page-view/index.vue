@@ -39,10 +39,10 @@ import Env from '../../env'
 export default defineComponent({
   name: 'PageView',
   props: {
-    immersed: {type: Boolean, default: false},
-    header: {type: Boolean, default: true},
-    color: {type: String, default: Env.statusBar.color},
-    bgColor: {type: String, default: Env.statusBar.bgColor},
+    immersed: {type: Boolean, default: false},                //沉浸式
+    header: {type: Boolean, default: true},                   //隐藏头部
+    color: {type: String, default: Env.statusBar.color},      //文本颜色
+    bgColor: {type: String, default: Env.statusBar.bgColor},  //背景颜色
   },
   data(){
     // 状态

@@ -20,10 +20,10 @@ import Env from '../../env'
 export default defineComponent({
   name: 'Tabbar',
   props: {
-    data: {type: Object, default: []}, //数据: [{lable: '首页', icon: 'icons icon_home'}]
-    active: {type: Number, default: 0}, //默认菜单
+    data: {type: Object, default: []},                        //数据: [{lable: '首页', icon: 'icons icon_home'}]
+    active: {type: Number, default: 0},                       //默认菜单
     activeColor: {type: String, default: Env.themes.primary}, //默认菜单
-    height: {type: String, default: '54px'}, //高度
+    height: {type: String, default: '54px'},                  //高度
   },
   methods:{
 

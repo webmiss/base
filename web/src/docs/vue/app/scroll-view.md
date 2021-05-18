@@ -3,9 +3,11 @@
 import wmScrollView from '@/components/scroll-view/index.vue'
 ```
 
-#### 滑动层
+## 页面容器
 ```html
-<wm-scroll-view></wm-scroll-view>
+<wm-scroll-view>
+  内容
+</wm-scroll-view>
 ```
 - probeType: {type: Number, default: 3},                                  //派发Scroll事件: 0不派发、1间隔(手指)、2一直派发(手指)、3全部派发
 - scrollX: {type: Boolean, default: false},                               //滚动-横向
@@ -13,7 +15,7 @@ import wmScrollView from '@/components/scroll-view/index.vue'
 - startX: {type: Number, default: 0},                                     //初始化位置-横轴
 - startY: {type: Number, default: 0},                                     //初始化位置-纵轴
 - loading: {type: Number, default: 48},                                   //Loading高度
-- loadingTheme: {type: String, default: 'flow'},                          //样式: flow、swing、circle、wave
+- loadingTheme: {type: String, default: 'flow'},                          //Loading样式: flow、swing、circle、wave
 - loadingColor: {type: String, default: Env.themes.primary},              //Loading颜色
 - upper: {type: Number, default: 64},                                     //顶部距离
 - lower: {type: Number, default: 80},                                     //底部距离

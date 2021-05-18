@@ -10,9 +10,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 export default defineComponent({
-  name: 'PageView',
+  name: 'Touch',
   props: {
-    limit: {type: Number, default: 200},  //触发滑动方向
+    limit: {type: Number, default: 200},  //触发距离
   },
   data(){
     const startPage: any = {x:0,y:0};

@@ -4,7 +4,7 @@ import { useStore } from 'vuex';
 import NavigateTo from '@/library/ui/ui-navigate-to'
 /* UI组件 */
 import WmTabbar from '@/components/tabbar/index.vue'
-import WmTabbarPage from '@/components/tabbar/page.vue'
+import WmTabbarPage from '@/components/tabbar/page/index.vue'
 /* 页面 */
 import HomeIndex from './home/Index.vue'
 import HomeCode from './home/Code.vue'
