@@ -3,7 +3,7 @@
 import wmPopup from '@/components/popup/index.vue'
 ```
 
-#### 弹出层
+## 弹出层
 ```html
 <wm-popup></wm-popup>
 ```

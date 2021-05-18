@@ -5,14 +5,14 @@ import PlusBack from '@/library/plus/plus-back'
 ```
 
 ## 监听加载
-```javascript
+```typescript
 PlusReady(
   callback: any,  //回调函数
 );
 ```
 
 ## Android返回键
-```javascript
+```typescript
 PlusBack(
   callback: any,  //回调函数
 );

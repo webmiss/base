@@ -4,7 +4,7 @@ import Storage from '@/library/ui/storage'
 ```
 
 ## 本地硬盘
-```javascript
+```typescript
 // 保存
 Storage.setItem(key: string,data: string);
 // 获取

@@ -18,7 +18,7 @@ export default defineComponent({
 
     /* 打开URL */
     openUrl(url: string){
-      NavigateTo(this,url);
+      NavigateTo(url);
     },
 
     /* 二维码 */

@@ -1,7 +1,7 @@
 /* 本地硬盘 */
 export default {
   /* 保存 */
-  setItem(key: string,data: string){
+  setItem(key: string, data: string){
     return window.localStorage.setItem(key,data);
   },
   /* 获取 */

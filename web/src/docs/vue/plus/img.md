@@ -5,7 +5,7 @@ import ImgReader from '@/library/plus/img-reader'
 ```
 
 ## 文件
-```javascript
+```typescript
 ImgCompress(
   file: any,      //文件
   parm: any = {
@@ -20,7 +20,7 @@ ImgCompress(
 ```
 
 ## 文件对象
-```javascript
+```typescript
 ImgReader(
   fileObj: any,   //对象
   parm: any = {

@@ -3,7 +3,7 @@
 import wmPopover from '@/components/popover/index.vue'
 ```
 
-#### 弹出框
+## 弹出框
 ```html
 <wm-popover></wm-popover>
 ```

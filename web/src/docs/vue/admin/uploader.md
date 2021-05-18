@@ -3,7 +3,7 @@
 import wmUploader from '@/components/uploader/index.vue'
 ```
 
-#### 上传文件
+## 上传文件
 ```html
 <wm-uploader></wm-uploader>
 ```

@@ -1,4 +1,3 @@
-import Env from '@/env'
 import Storage from '@/library/ui/storage'
 
 /* 地图-定位 */

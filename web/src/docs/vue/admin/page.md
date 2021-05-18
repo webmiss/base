@@ -3,7 +3,7 @@
 import wmPage from '@/components/page/index.vue'
 ```
 
-#### 分页
+## 分页
 ```html
 <wm-page></wm-page>
 ```

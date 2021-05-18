@@ -3,7 +3,7 @@
 import wmScrollView from '@/components/scroll-view/index.vue'
 ```
 
-#### 滑动层
+## 滑动层
 ```html
 <wm-scroll-view>
   内容

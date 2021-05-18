@@ -8,7 +8,7 @@ import Patch from '@/library/ui/request-patch'
 ```
 
 ## 请求方式
-```javascript
+```typescript
 Request(
   url: string,    //请求地址
   data?: any,     //请求参数

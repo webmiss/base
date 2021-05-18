@@ -3,7 +3,7 @@
 import wmTinymce from '@/components/tinymce/index.vue'
 ```
 
-#### 编辑器
+## 编辑器
 ```html
 <wm-tinymce></wm-tinymce>
 ```

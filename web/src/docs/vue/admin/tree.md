@@ -3,7 +3,7 @@
 import wmTree from '@/components/tree/index.vue'
 ```
 
-#### 树形控件
+## 树形控件
 ```html
 <wm-tree></wm-tree>
 ```

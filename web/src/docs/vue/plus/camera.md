@@ -4,7 +4,7 @@ import Camera from '@/library/plus/camera'
 ```
 
 ## 相机
-```javascript
+```typescript
 Camera(
   callback: any,  //成功回调
   fail?: any,     //失败回调

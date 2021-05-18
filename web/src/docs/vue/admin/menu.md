@@ -3,7 +3,7 @@
 import wmMenu from '@/components/menu/index.vue'
 ```
 
-#### 导航菜单
+## 导航菜单
 ```html
 <wm-menu></wm-menu>
 ```

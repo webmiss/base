@@ -3,7 +3,7 @@
 import wmDialog from '@/components/dialog/index.vue'
 ```
 
-#### 对话框
+## 对话框
 ```html
 <wm-dialog></wm-dialog>
 ```

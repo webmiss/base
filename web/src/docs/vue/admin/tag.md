@@ -3,7 +3,7 @@
 import wmTag from '@/components/tag/index.vue'
 ```
 
-#### 标签
+## 标签
 ```html
 <wm-tag></wm-tag>
 ```

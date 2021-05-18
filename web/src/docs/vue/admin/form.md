@@ -9,27 +9,27 @@ import wmInput from '@/components/form/input/index.vue'
 import wmRadio from '@/components/form/radio/index.vue'
 ```
 
-#### 表单
+## 表单
 ```html
 <wm-form></wm-form>
 ```
 - labelWidth: {type: String, default: '90px'},
 - labelHeight: {type: String, default: '40px'},
 
-#### 表单-标题
+## 表单-标题
 ```html
 <wm-form-title></wm-form-title>
 ```
 - fontSize: {type: String, default: '15px'},
 
-#### 表单-行
+## 表单-行
 ```html
 <wm-form-item></wm-form-item>
 ```
 - type: {type: String, default: 'label'},
 - label: {type: String, default: ''},
 
-#### 按钮
+## 按钮
 ```html
 <wm-button></wm-button>
 ```
@@ -40,7 +40,7 @@ import wmRadio from '@/components/form/radio/index.vue'
 - fontSize: {type: String, default: '14px'},  //字体大小
 - disabled: {type: Boolean, default: false},  //是否禁用
 
-#### 多选
+## 多选
 ```html
 <wm-checkbox></wm-checkbox>
 ```
@@ -50,7 +50,7 @@ import wmRadio from '@/components/form/radio/index.vue'
 - disclick: {type: Boolean, default: false},  //禁用Click
 - @update:checked                             //事件
 
-#### 单选
+## 单选
 ```html
 <wm-radio></wm-radio>
 ```
@@ -58,7 +58,7 @@ import wmRadio from '@/components/form/radio/index.vue'
 - value: {default: ''},             //默认值: val
 - @update:value                     //事件
 
-#### 输入框
+## 输入框
 ```html
 <wm-input></wm-input>
 ```

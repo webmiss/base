@@ -5,7 +5,7 @@ import wmImgUpload from '@/components/img/upload/index.vue'
 import wmImgView from '@/components/img/view/index.vue'
 ```
 
-#### 图片
+## 图片
 ```html
 <wm-img></wm-img>
 ```
@@ -17,7 +17,7 @@ import wmImgView from '@/components/img/view/index.vue'
 - title: {type: String, default: ''},       //提示
 - icoSize: {type: String, default: '32px'}, //图标大小
 
-#### 上传
+## 上传
 ```html
 <wm-img-upload></wm-img-upload>
 ```
@@ -27,7 +27,7 @@ import wmImgView from '@/components/img/view/index.vue'
 - param: {type: Object, default: {}},         //提交参数
 - title: {type: String, default: '上传图片'}, //提示
 
-#### 预览
+## 预览
 ```html
 <wm-img-view></wm-img-view>
 ```

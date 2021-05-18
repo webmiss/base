@@ -17,8 +17,10 @@ export default (time: number = 10000, alpha: number = 0.1)=>{
   },time);
   return {
     clear:()=>{
-      try{ document.body.removeChild(obj); }catch(e){}
-      clearTimeout(loadingTime);
+      setTimeout(()=>{
+        try{ document.body.removeChild(obj); }catch(e){}
+        clearTimeout(loadingTime);
+      },300);
     }
   };
 }

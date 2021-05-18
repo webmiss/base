@@ -3,7 +3,7 @@
 import wmLoading from '@/components/loading/index.vue'
 ```
 
-#### Loading
+## Loading
 ```html
 <wm-loading></wm-loading>
 ```

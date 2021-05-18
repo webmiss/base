@@ -3,7 +3,7 @@
 import wmSwitch from '@/components/switch/index.vue'
 ```
 
-#### 开关
+## 开关
 ```html
 <wm-switch></wm-switch>
 ```

@@ -76,7 +76,7 @@ export default defineComponent({
     /* 选择菜单 */
     activeMenus(index: number[], vaule: string, label: string){
       this.position[2] = label;
-      NavigateTo(this,'/'+vaule);
+      NavigateTo('/'+vaule);
       // 打开文件
       try {
         this.docHtml = '';
