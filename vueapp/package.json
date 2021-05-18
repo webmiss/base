@@ -16,7 +16,7 @@
     "@better-scroll/pull-up": "^2.1.1",
     "@better-scroll/slide": "^2.1.1",
     "@better-scroll/wheel": "^2.1.1",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "vue": "^3.0.9",
     "vue-router": "^4.0.2",
