@@ -14,14 +14,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var Root string
-
 /* 文件类 */
-type FileEo struct{}
+type FileEo struct {
+	Root string
+}
 
 /* 创建 */
-func (FileEo) New(root string) {
-	Root = root
+func (fe *FileEo) New(root string) *FileEo {
+	fe.Root = root
+	return fe
 }
 
 /* 列表 */
@@ -46,7 +47,7 @@ func (fe FileEo) List(path string) map[string]interface{} {
 		"files":   files,
 	}
 	// 是否文件夹
-	root := Root + path
+	root := fe.Root + path
 	dir, err := os.Stat(root)
 	if err != nil {
 		return res
@@ -93,7 +94,7 @@ func (fe FileEo) List(path string) map[string]interface{} {
 func (fe FileEo) AllFile(path string) []string {
 	res := []string{}
 	// 是否文件夹
-	root := Root + path
+	root := fe.Root + path
 	dir, err := os.Stat(root)
 	if err != nil {
 		return res
@@ -193,8 +194,8 @@ func (FileEo) FormatBytes(bytes int64) string {
 }
 
 /* 是否文件 */
-func (FileEo) IsFile(file string) bool {
-	file = Root + file
+func (fe FileEo) IsFile(file string) bool {
+	file = fe.Root + file
 	_, err := os.Stat(file)
 	if err != nil {
 		return false
@@ -203,8 +204,8 @@ func (FileEo) IsFile(file string) bool {
 }
 
 /* 创建目录 */
-func (FileEo) Mkdir(path string) bool {
-	path = Root + path
+func (fe FileEo) Mkdir(path string) bool {
+	path = fe.Root + path
 	if err := os.MkdirAll(path, 0766); err != nil {
 		return false
 	}
@@ -212,9 +213,9 @@ func (FileEo) Mkdir(path string) bool {
 }
 
 /* 重命名 */
-func (FileEo) Rename(rename string, name string) bool {
-	src := Root + rename
-	dst := Root + name
+func (fe FileEo) Rename(rename string, name string) bool {
+	src := fe.Root + rename
+	dst := fe.Root + name
 	if err := os.Rename(src, dst); err != nil {
 		return false
 	}
@@ -222,8 +223,8 @@ func (FileEo) Rename(rename string, name string) bool {
 }
 
 /* 上传 */
-func (FileEo) Upload(c *gin.Context, file *multipart.FileHeader, filename string) bool {
-	dst := Root + filename
+func (fe FileEo) Upload(c *gin.Context, file *multipart.FileHeader, filename string) bool {
+	dst := fe.Root + filename
 	if err := c.SaveUploadedFile(file, dst); err != nil {
 		return false
 	}
@@ -231,8 +232,8 @@ func (FileEo) Upload(c *gin.Context, file *multipart.FileHeader, filename string
 }
 
 /* 写入 */
-func (FileEo) Writer(file string, content string) error {
-	file = Root + file
+func (fe FileEo) Writer(file string, content string) error {
+	file = fe.Root + file
 	f, err := os.OpenFile(file, os.O_CREATE|os.O_RDWR, 0766)
 	if err != nil {
 		return err
@@ -243,8 +244,8 @@ func (FileEo) Writer(file string, content string) error {
 }
 
 /* 追加 */
-func (FileEo) WriterEnd(file string, content string) error {
-	file = Root + file
+func (fe FileEo) WriterEnd(file string, content string) error {
+	file = fe.Root + file
 	f, err := os.OpenFile(file, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0766)
 	if err != nil {
 		return err
@@ -255,14 +256,14 @@ func (FileEo) WriterEnd(file string, content string) error {
 }
 
 /* 读取 */
-func (FileEo) Bytes(file string) []byte {
-	dst := Root + file
+func (fe FileEo) Bytes(file string) []byte {
+	dst := fe.Root + file
 	bytes, _ := ioutil.ReadFile(dst)
 	return bytes
 }
 
 /* 删除(文件夹&文件) */
-func (FileEo) RemoveAll(path string) error {
-	path = Root + path
+func (fe FileEo) RemoveAll(path string) error {
+	path = fe.Root + path
 	return os.RemoveAll(path)
 }
