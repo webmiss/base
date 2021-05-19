@@ -17,7 +17,7 @@ func (Base64) Encode(data string) string {
 
 /* 解码 */
 func (Base64) Decode(data string) []byte {
-	res, _ := base64.RawStdEncoding.DecodeString(data)
+	res, _ := base64.StdEncoding.DecodeString(data)
 	return res
 }
 
@@ -43,7 +43,7 @@ func (Base64) UrlDecode(data string) []byte {
 		data = reg.ReplaceAllString(data, v)
 	}
 	// 解码
-	res, _ := base64.RawStdEncoding.DecodeString(data)
+	res, _ := base64.StdEncoding.DecodeString(data)
 	return res
 }
 

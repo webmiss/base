@@ -5,9 +5,37 @@ use Service\Base;
 use Config\Tencent;
 use Util\Base64;
 use Util\Hmac;
+use Library\Curl;
 
 /* 即时通信 */
 class Im extends Base {
+
+  const Url = 'https://console.tim.qq.com/v4/';
+  const ContentType = 'json';
+
+  /* 群组-列表 */
+  static function GroupList() {
+    $url = self::GetURL('group_open_http_svc/get_appid_group_list');
+    return Curl::PostJson($url, []);
+  }
+  /* 群组-创建 */
+  static function GroupCreate(array $data) {
+    $url = self::GetURL('group_open_http_svc/create_group');
+    return Curl::PostJson($url, $data);
+  }
+  /* 群组-解散 */
+  static function GroupDestroy(array $data) {
+    $url = self::GetURL('group_open_http_svc/destroy_group');
+    return Curl::PostJson($url, $data);
+  }
+
+  /* 请求地址 */
+  static function GetURL(string $apiUrl) {
+    $cfg = Tencent::TRTC();
+    $userSig = self::UserSig($cfg['UserID']);
+    $random = time();
+    return self::Url.$apiUrl.'?sdkappid='.$cfg['SDKAppID'].'&identifier='.$cfg['UserID'].'&usersig='.$userSig.'&random='.$random.'&contenttype='.self::ContentType;
+  }
 
   /* 鉴权票据 */
   static function UserSig($userId, int $expire=0): string {
@@ -29,7 +57,7 @@ class Im extends Base {
     return Base64::UrlEncode($data);
   }
 
-  /* 验证 */
+  /* 验证签名 */
   static function VerifySig($userId, $userSig): int {
     // 解码
     $base64 = Base64::UrlDecode($userSig);
@@ -51,17 +79,12 @@ class Im extends Base {
     if($sig!=$data['TLS.sig']) return 0;
     return $out_time-$now_time;
   }
-
-  /* 获取Sig */
+  // 获取Sig
   private static function hmacsha256(array $param, string $key): string {
-    // 排序
-    ksort($param);
-    // 拼接
-    $content = '';
-    foreach($param as $k=>$v){
-      if($k=='TLS.ver' || $k=='TLS.sig') continue;
-      $content .= $k.':'.$v."\n";
-    }
+    $content = 'TLS.identifier:'.$param['TLS.identifier']."\n"
+    .'TLS.sdkappid:'.$param['TLS.sdkappid']."\n"
+    .'TLS.time:'.$param['TLS.time']."\n"
+    .'TLS.expire:'.$param['TLS.expire']."\n";
     return Base64::Encode(Hmac::Sha256($content, $key));
   }
 

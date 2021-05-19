@@ -1,12 +1,11 @@
 package webmis.library.tencent;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Set;
 
 import com.alibaba.fastjson.JSONObject;
 
 import webmis.config.Tencent;
+import webmis.library.Curl;
 import webmis.service.Base;
 import webmis.util.Base64;
 import webmis.util.Hmac;
@@ -15,11 +14,38 @@ import webmis.util.Util;
 /* 即时通信 */
 public class Im extends Base {
 
+  final static String Url = "https://console.tim.qq.com/v4/";
+  final static String ContentType = "json";
+
+  /* 群组-列表 */
+  public static JSONObject GroupList() {
+    String url = GetURL("group_open_http_svc/get_appid_group_list");
+    return Curl.PostJson(url, new JSONObject());
+  }
+  /* 群组-创建 */
+  public static JSONObject GroupCreate(JSONObject data) {
+    String url = GetURL("group_open_http_svc/create_group");
+    return Curl.PostJson(url, data);
+  }
+  /* 群组-解散 */
+  public static JSONObject GroupDestroy(JSONObject data) {
+    String url = GetURL("group_open_http_svc/destroy_group");
+    return Curl.PostJson(url, data);
+  }
+
+  /* 请求地址 */
+  public static String GetURL(String apiUrl) {
+    HashMap<String, Object> cfg = Tencent.TRTC();
+    String userSig = UserSig(cfg.get("UserID"));
+    String random = String.valueOf(Util.Time());
+    return Url+apiUrl+"?sdkappid="+cfg.get("SDKAppID")+"&identifier="+cfg.get("UserID")+"&usersig="+userSig+"&random="+random+"&contenttype="+ContentType;
+  }
+
   /* 鉴权票据 */
-  public static String UserSig(Long userId) {
+  public static String UserSig(Object userId) {
     return UserSig(userId, 0);
   }
-  public static String UserSig(Long userId, int expire) {
+  public static String UserSig(Object userId, int expire) {
     // 配置
     HashMap<String, Object> cfg = Tencent.TRTC();
     if(expire==0) expire=Integer.valueOf(cfg.get("ExpireTime").toString());
@@ -37,7 +63,7 @@ public class Im extends Base {
     return Base64.UrlEncode(data);
   }
 
-  /* 验证 */
+  /* 验证签名 */
   @SuppressWarnings("unchecked")
   public static long VerifySig(long userId, String userSig) {
     // 解码
@@ -62,16 +88,10 @@ public class Im extends Base {
 
   /* 获取Sig */
   private static String hmacsha256(HashMap<String, String> param, String key) {
-    // 排序
-    Set<String> arr = param.keySet();
-    String[] keys = arr.toArray(new String[arr.size()]);
-    Arrays.sort(keys);
-    // 拼接
-    String content = "";
-    for(String k:keys){
-      if(k.equals("TLS.ver") || k.equals("TLS.sig")) continue;
-      content += k + ":" + param.get(k).toString() + "\n";
-    }
+    String content = "TLS.identifier:"+param.get("TLS.identifier")+"\n"
+    +"TLS.sdkappid:"+param.get("TLS.sdkappid")+"\n"
+    +"TLS.time:"+param.get("TLS.time")+"\n"
+    +"TLS.expire:"+param.get("TLS.expire")+"\n";
     return Base64.Encode(Hmac.Sha256(content, key));
   }
   

@@ -1,16 +1,54 @@
 package tencent
 
 import (
-	"sort"
 	"webmis/config"
+	"webmis/library"
 	"webmis/util"
 )
 
+var __url string = "https://console.tim.qq.com/v4/"
+
 /* 即时通信 */
-type Im struct{}
+type Im struct {
+	Url         string
+	ContentType string
+}
+
+/* 构造函数 */
+func (i *Im) New() *Im {
+	i.Url = "https://console.tim.qq.com/v4/"
+	i.ContentType = "json"
+	return i
+}
+
+/* 群组-列表 */
+func (i Im) GroupList(data interface{}) map[string]interface{} {
+	url := i.GetURL("group_open_http_svc/get_appid_group_list")
+	return (&library.Curl{}).PostJson(url, data)
+}
+
+/* 群组-创建 */
+func (i Im) GroupCreate(data interface{}) map[string]interface{} {
+	url := i.GetURL("group_open_http_svc/create_group")
+	return (&library.Curl{}).PostJson(url, data)
+}
+
+/* 群组-解散 */
+func (i Im) GroupDestroy(data interface{}) map[string]interface{} {
+	url := i.GetURL("group_open_http_svc/destroy_group")
+	return (&library.Curl{}).PostJson(url, data)
+}
+
+/* 请求地址 */
+func (i Im) GetURL(apiUrl string) string {
+	cfg := config.TRTC()
+	userSig := i.UserSig(cfg.UserID)
+	random := util.Strval(util.Time())
+	return i.Url + apiUrl + "?sdkappid=" + util.Strval(cfg.SDKAppID) + "&identifier=" + cfg.UserID + "&usersig=" + userSig + "&random=" + random + "&contenttype=" + i.ContentType
+}
 
 /* 鉴权票据 */
-func (i Im) UserSig(userId int64, expire ...int) string {
+func (i Im) UserSig(userId interface{}, expire ...int) string {
 	// 配置
 	cfg := config.TRTC()
 	// 默认值
@@ -33,8 +71,8 @@ func (i Im) UserSig(userId int64, expire ...int) string {
 	return (&util.Base64{}).UrlEncode(res)
 }
 
-/* 验证 */
-func (i Im) VerifySig(userId int64, userSig string) int64 {
+/* 验证签名 */
+func (i Im) VerifySig(userId interface{}, userSig string) int64 {
 	// 解码
 	base64 := (&util.Base64{}).UrlDecode(userSig)
 	if base64 == nil {
@@ -46,7 +84,7 @@ func (i Im) VerifySig(userId int64, userSig string) int64 {
 		return 0
 	}
 	data := map[string]string{}
-	util.JsonDecode(string(un_sig), &data)
+	util.JsonDecode(un_sig, &data)
 	// 配置
 	cfg := config.TRTC()
 	if util.Strval(cfg.SDKAppID) != data["TLS.sdkappid"] {
@@ -70,20 +108,11 @@ func (i Im) VerifySig(userId int64, userSig string) int64 {
 }
 
 /* 获取Sig */
-func (Im) hmacsha256(param map[string]string, key string) string {
-	// 排序
-	var keys []string
-	for k := range param {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-	// 拼接
-	content := ""
-	for _, k := range keys {
-		if k == "TLS.ver" || k == "TLS.sig" {
-			continue
-		}
-		content += k + ":" + param[k] + "\n"
-	}
-	return (&util.Base64{}).Encode(util.Sha256(content, key))
+func (i Im) hmacsha256(param map[string]string, key string) string {
+	content := "TLS.identifier:" + param["TLS.identifier"] + "\n"
+	content += "TLS.sdkappid:" + param["TLS.sdkappid"] + "\n"
+	content += "TLS.time:" + param["TLS.time"] + "\n"
+	content += "TLS.expire:" + param["TLS.expire"] + "\n"
+	sig := string(util.Sha256(content, key))
+	return (&util.Base64{}).Encode(sig)
 }

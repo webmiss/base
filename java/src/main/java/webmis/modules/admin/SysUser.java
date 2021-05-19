@@ -314,7 +314,7 @@ public class SysUser extends Base {
       return GetJSON(res);
     }
     // 超级管理员
-    if(uid.equals(1) && !tData.get("uid").equals("1") ){
+    if(uid.equals("1") && !tData.get("uid").equals("1") ){
       res = new HashMap<String,Object>();
       res.put("code", 4000);
       res.put("msg", "您不是超级管理员!");

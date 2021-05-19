@@ -4,6 +4,7 @@ package config
 type TencentType struct {
 	SDKAppID   int
 	SecretKey  string
+	UserID     string
 	ExpireTime int
 	PlayDomain string
 	PlayType   string
@@ -14,6 +15,7 @@ func TRTC() *TencentType {
 	cfg := &TencentType{}
 	cfg.SDKAppID = 1400517751                                                          //AppID
 	cfg.SecretKey = "f47b43f0dc84c945b684fd3f0f11f818832e34df451757db48de5fd912264845" //AppKey
+	cfg.UserID = "administrator"                                                       //管理员账号
 	cfg.ExpireTime = 86400 * 180                                                       //userSig有效期
 	cfg.PlayDomain = "play.webmis.vip"                                                 //播放域名
 	cfg.PlayType = "http"                                                              //播放类型
