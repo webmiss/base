@@ -55,7 +55,7 @@ func (Kafka) LogsWrite(msg string) bool {
 	}
 	// 追加
 	file := path + day + ".text"
-	content := util.Strval(data["data"])
+	content := (&util.Type{}).Strval(data["data"])
 	err := (&library.FileEo{}).WriterEnd(file, "["+name+"] "+ctime+" "+content+"\n")
 	if err != nil {
 		return false

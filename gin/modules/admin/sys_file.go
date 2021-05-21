@@ -158,7 +158,7 @@ func (r SysFile) Remove(c *gin.Context) {
 	files := []interface{}{}
 	util.JsonDecode(data, &files)
 	for _, val := range files {
-		(&library.FileEo{}).RemoveAll(path + util.Strval(val))
+		(&library.FileEo{}).RemoveAll(path + (&util.Type{}).Strval(val))
 	}
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})

@@ -52,12 +52,12 @@ func (r SysUser) List(c *gin.Context) {
 	)
 	m.Where("a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?", "%"+uname+"%", "%"+uname+"%", "%"+uname+"%")
 	m.Order("a.id DESC")
-	m.Page(util.Int(page), util.Int(limit))
+	m.Page((&util.Type{}).Int(page), (&util.Type{}).Int(limit))
 	list := m.Find()
 	// 数据
 	for _, val := range list {
-		val["uid"] = util.Strval(val["uid"])
-		if util.Strval(val["state"]) == "1" {
+		val["uid"] = (&util.Type{}).Strval(val["uid"])
+		if (&util.Type{}).Strval(val["state"]) == "1" {
 			val["state"] = true
 		} else {
 			val["state"] = false
@@ -65,7 +65,7 @@ func (r SysUser) List(c *gin.Context) {
 		val["img"] = (&service.Data{}).Img(val["img"])
 	}
 	// 返回
-	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list, "total": util.Int(total["num"])})
+	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list, "total": (&util.Type{}).Int(total["num"])})
 }
 
 /* 添加 */
@@ -111,7 +111,7 @@ func (r SysUser) Add(c *gin.Context) {
 	tx, _ := conn.Begin()
 	// 用户
 	m1 := (&model.User{}).New()
-	m1.Values(map[string]interface{}{"id": uid, "tel": tel, "password": util.Md5(passwd)})
+	m1.Values(map[string]interface{}{"id": uid, "tel": tel, "password": (&util.Hash{}).Md5(passwd)})
 	sql, args := m1.InsertSQL()
 	_, err1 := tx.Exec(sql, args...)
 	// 详情
@@ -171,7 +171,7 @@ func (r SysUser) Edit(c *gin.Context) {
 	// 更新
 	uData := map[string]interface{}{"tel": tel}
 	if passwd != "" {
-		uData["password"] = util.Md5(passwd)
+		uData["password"] = (&util.Hash{}).Md5(passwd)
 	}
 	m.Set(uData)
 	m.Where("id=?", uid)
@@ -239,7 +239,7 @@ func (r SysUser) State(c *gin.Context) {
 		return
 	}
 	// 超级管理员
-	if uid == "1" && util.Strval(tData["uid"]) != "1" {
+	if uid == "1" && (&util.Type{}).Strval(tData["uid"]) != "1" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "您不是超级管理员!"})
 		return
 	}
@@ -274,7 +274,7 @@ func (r SysUser) Perm(c *gin.Context) {
 		return
 	}
 	// 超级管理员
-	if uid == "1" && util.Strval(tData["uid"]) != "1" {
+	if uid == "1" && (&util.Type{}).Strval(tData["uid"]) != "1" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "您不是超级管理员!"})
 		return
 	}
@@ -294,7 +294,7 @@ func (r SysUser) Perm(c *gin.Context) {
 				m1.Where("id=?", role)
 				data := m1.FindFirst()
 				if res, ok := data["perm"]; ok {
-					perm = util.Strval(res)
+					perm = (&util.Type{}).Strval(res)
 				}
 			}
 			// 更新权限
@@ -316,7 +316,7 @@ func (r SysUser) Perm(c *gin.Context) {
 				m1.Where("id=?", role)
 				data := m1.FindFirst()
 				if res, ok := data["perm"]; ok {
-					perm = util.Strval(res)
+					perm = (&util.Type{}).Strval(res)
 				}
 			}
 			// 更新权限

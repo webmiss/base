@@ -46,11 +46,11 @@ func (r SysMenus) List(c *gin.Context) {
 	m.Columns("id", "fid", "title", "ico", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "sort", "url", "controller", "action")
 	m.Where("fid like ? AND title like ? AND url like ?", "%"+fid+"%", "%"+title+"%", "%"+url+"%")
 	m.Order("sort DESC", "fid")
-	m.Page(util.Int(page), util.Int(limit))
+	m.Page((&util.Type{}).Int(page), (&util.Type{}).Int(limit))
 	list := m.Find()
 	// 数据
 	for _, val := range list {
-		if str := util.Strval(val["action"]); str != "" {
+		if str := (&util.Type{}).Strval(val["action"]); str != "" {
 			action := []map[string]interface{}{}
 			util.JsonDecode(str, &action)
 			val["action"] = action
@@ -59,7 +59,7 @@ func (r SysMenus) List(c *gin.Context) {
 		}
 	}
 	// 返回
-	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list, "total": util.Int(total["num"])})
+	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list, "total": (&util.Type{}).Int(total["num"])})
 }
 
 /* 添加 */
@@ -215,7 +215,7 @@ func (r *SysMenus) GetMenus(c *gin.Context) {
 	model.Order("sort DESC, id")
 	data := model.Find()
 	for _, val := range data {
-		fid := util.Strval(val["fid"])
+		fid := (&util.Type{}).Strval(val["fid"])
 		if _, ok := r.menus[fid]; !ok {
 			r.menus[fid] = []map[string]interface{}{}
 		}
@@ -236,7 +236,7 @@ func (r *SysMenus) _getMenu(fid string) []map[string]interface{} {
 	}
 	for _, val := range M {
 		// 菜单权限
-		id := util.Strval(val["id"])
+		id := (&util.Type{}).Strval(val["id"])
 		perm, ok := r.permAll[id]
 		if !ok {
 			continue
@@ -249,7 +249,7 @@ func (r *SysMenus) _getMenu(fid string) []map[string]interface{} {
 			util.JsonDecode(actionStr, &actionArr)
 		}
 		for _, v := range actionArr {
-			permVal := util.Int64(v["perm"])
+			permVal := (&util.Type{}).Int64(v["perm"])
 			if v["type"].(string) == "1" && perm&permVal > 0 {
 				action = append(action, v)
 			}

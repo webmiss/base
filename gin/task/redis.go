@@ -20,7 +20,7 @@ func (r Redis) Logs() {
 			continue
 		}
 		// 保存
-		msg := util.Strval(data[1])
+		msg := (&util.Type{}).Strval(data[1])
 		res := r._logsWrite(msg)
 		if !res {
 			fmt.Println("[Logs] Write:", "日志记录失败!")
@@ -49,7 +49,7 @@ func (Redis) _logsWrite(msg string) bool {
 	}
 	// 追加
 	file := path + day + ".text"
-	content := util.Strval(data["data"])
+	content := (&util.Type{}).Strval(data["data"])
 	err := (&library.FileEo{}).WriterEnd(file, "["+name+"] "+ctime+" "+content+"\n")
 	if err != nil {
 		return false

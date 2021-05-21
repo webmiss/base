@@ -16,5 +16,14 @@ public class Tencent {
     cfg.put("PlayType", "http");  //播放类型
     return cfg;
   }
+
+  /* API密钥 */
+  public static HashMap<String, Object> CAPI() {
+    HashMap<String, Object> cfg = new HashMap<String, Object>();
+    cfg.put("AppID", 1258966985);
+    cfg.put("SecretId", "AKIDd4HDsHRKwBDySfbGfneEXZKp47uRiiTx");
+    cfg.put("SecretKey", "FD0ZtwjFUS9ZhZBWaOwGLNBkBNM6brth");
+    return cfg;
+  }
   
 }

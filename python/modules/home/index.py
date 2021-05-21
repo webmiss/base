@@ -3,6 +3,7 @@ from config.env import Env
 from library.file_eo import FileEo
 from library.qrcode import Qrcode
 from library.captcha import Captcha
+from library.tencent.trtc import Trtc
 
 from flask import send_file
 
@@ -10,6 +11,7 @@ class Index(Base) :
 
   # 首页
   def Index(self):
+    Trtc.RoomList()
     # 返回
     return self.GetJSON({'code':0,'msg':'Web'})
 

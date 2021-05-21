@@ -18,6 +18,20 @@ go version
 go env -w GOPROXY=https://goproxy.cn
 ```
 
+#### 4) 热启动
+```bash
+# golang.org/x 超时问题
+mkdir -p $GOPATH/src/golang.org/x
+cd $GOPATH/src/golang.org/x
+git clone https://github.com/golang/sys.git
+# 工具
+go get github.com/pilu/fresh
+# 链接
+ln -s $GOPATH/bin/fresh /usr/bin/
+# 运行
+fresh
+```
+
 ## Windows
 #### 1) 安装Git
 - 下载: [Git](https://git-scm.com/download/win)

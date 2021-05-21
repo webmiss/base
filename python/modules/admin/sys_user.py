@@ -13,7 +13,7 @@ from model.api_role import ApiRole
 from model.sys_perm import SysPerm
 from model.sys_role import SysRole
 from util.util import Util
-from util.hmac import Hmac
+from util.hash import Hash
 
 class SysUser(Base):
 
@@ -98,7 +98,7 @@ class SysUser(Base):
       cs = conn.cursor()
       # 用户
       m1 = User()
-      m1.Values({'id':uid, 'tel':tel, 'password':Hmac.Md5(passwd)})
+      m1.Values({'id':uid, 'tel':tel, 'password':Hash.Md5(passwd)})
       sql, args = m1.InsertSql()
       cs.execute(sql, args)
       # 详情
@@ -144,7 +144,7 @@ class SysUser(Base):
       return self.GetJSON({'code':4000, 'msg':'该用户已存在!'})
     # 更新
     uData = {'tel': tel}
-    if passwd != '' : uData['password'] = Hmac.Md5(passwd)
+    if passwd != '' : uData['password'] = Hash.Md5(passwd)
     m.Set(uData)
     m.Where('id=%s', uid)
     if m.Update() :

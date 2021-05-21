@@ -3,6 +3,7 @@ package home
 import (
 	"webmis/config"
 	"webmis/library"
+	"webmis/library/tencent"
 	"webmis/service"
 
 	"github.com/gin-gonic/gin"
@@ -14,20 +15,22 @@ type Index struct {
 }
 
 /* 首页 */
-func (r *Index) Index(c *gin.Context) {
+func (r Index) Index(c *gin.Context) {
+	var trtc = &tencent.Trtc{}
+	trtc.RoomList()
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "Web"})
 }
 
 /* 验证码 */
-func (r *Index) Vcode(c *gin.Context) {
+func (r Index) Vcode(c *gin.Context) {
 	(&library.Captcha{}).Vcode()
 	// 返回
 	r.GetJSON(c, "")
 }
 
 /* 二维码 */
-func (r *Index) Qrcode(c *gin.Context) {
+func (r Index) Qrcode(c *gin.Context) {
 	name := c.Param("name")
 	var text string
 	if name == "docs" {

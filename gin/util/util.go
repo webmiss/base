@@ -43,7 +43,7 @@ func If(val bool, tVal interface{}, fVal interface{}) interface{} {
 */
 func Date(format string, timestamp ...interface{}) string {
 	if len(timestamp) > 0 {
-		ts, err := strconv.ParseInt(Strval(timestamp[0]), 10, 64)
+		ts, err := strconv.ParseInt((&Type{}).Strval(timestamp[0]), 10, 64)
 		if err != nil {
 			return ""
 		}
@@ -80,7 +80,7 @@ func Trim(str interface{}, charlist ...string) string {
 	if len(charlist) > 0 {
 		char = charlist[0]
 	}
-	return strings.Trim(Strval(str), char)
+	return strings.Trim((&Type{}).Strval(str), char)
 }
 
 /* String to List */
@@ -103,7 +103,7 @@ func JsonEncode(arr interface{}) []byte {
 
 /* String to interface{} */
 func JsonDecode(str interface{}, res interface{}) {
-	err := json.Unmarshal([]byte(Strval(str)), &res)
+	err := json.Unmarshal([]byte((&Type{}).Strval(str)), &res)
 	if err != nil {
 		fmt.Println(err)
 	}

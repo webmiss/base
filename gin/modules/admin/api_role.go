@@ -42,10 +42,10 @@ func (r ApiRole) List(c *gin.Context) {
 	// 查询
 	m.Columns("id", "name", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "perm")
 	m.Where("name LIKE ?", "%"+name+"%")
-	m.Page(util.Int(page), util.Int(limit))
+	m.Page((&util.Type{}).Int(page), (&util.Type{}).Int(limit))
 	list := m.Find()
 	// 返回
-	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list, "total": util.Int(total["num"])})
+	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list, "total": (&util.Type{}).Int(total["num"])})
 }
 
 /* 添加 */
@@ -185,7 +185,7 @@ func (r ApiRole) RoleList(c *gin.Context) {
 	lists := []map[string]interface{}{}
 	lists = append(lists, map[string]interface{}{"label": "无", "value": 0})
 	for _, val := range data {
-		lists = append(lists, map[string]interface{}{"label": val["name"], "value": util.Int(val["id"])})
+		lists = append(lists, map[string]interface{}{"label": val["name"], "value": (&util.Type{}).Int(val["id"])})
 	}
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": lists})
 }
@@ -208,7 +208,7 @@ func (r *ApiRole) PermList(c *gin.Context) {
 	model.Order("sort DESC, id")
 	data := model.Find()
 	for _, val := range data {
-		fid := util.Strval(val["fid"])
+		fid := (&util.Type{}).Strval(val["fid"])
 		if _, ok := r.menus[fid]; !ok {
 			r.menus[fid] = []map[string]interface{}{}
 		}
@@ -229,7 +229,7 @@ func (r ApiRole) permArr(perm string) map[string]int64 {
 	}
 	for _, val := range arr {
 		s := util.Explode(":", val)
-		permAll[s[0]] = util.Int64(s[1])
+		permAll[s[0]] = (&util.Type{}).Int64(s[1])
 	}
 	return permAll
 }
@@ -243,7 +243,7 @@ func (r *ApiRole) _getMenu(fid string) []map[string]interface{} {
 	}
 	for _, val := range M {
 		// 菜单权限
-		id := util.Strval(val["id"])
+		id := (&util.Type{}).Strval(val["id"])
 		perm, ok := r.permAll[id]
 		if !ok {
 			perm = 0
@@ -256,10 +256,10 @@ func (r *ApiRole) _getMenu(fid string) []map[string]interface{} {
 			util.JsonDecode(actionStr, &actionArr)
 		}
 		for _, v := range actionArr {
-			permVal := util.Int64(v["perm"])
+			permVal := (&util.Type{}).Int64(v["perm"])
 			checked := util.If(perm&permVal > 0, true, false)
 			action = append(action, map[string]interface{}{
-				"id":      util.Int64(val["id"]) + util.Int64(v["perm"]),
+				"id":      (&util.Type{}).Int64(val["id"]) + (&util.Type{}).Int64(v["perm"]),
 				"label":   v["name"],
 				"checked": checked,
 				"perm":    v["perm"],
@@ -268,7 +268,7 @@ func (r *ApiRole) _getMenu(fid string) []map[string]interface{} {
 		// 数据
 		_, checked := r.permAll[id]
 		tmp := map[string]interface{}{"id": val["id"], "label": val["title"], "checked": checked}
-		if util.Strval(val["fid"]) == "0" {
+		if (&util.Type{}).Strval(val["fid"]) == "0" {
 			tmp["show"] = true
 		}
 		// children

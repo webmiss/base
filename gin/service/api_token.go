@@ -27,7 +27,7 @@ func (s ApiToken) Verify(token string, urlPerm string) string {
 	}
 	// 是否过期
 	env := config.Env()
-	uid := util.Strval(tData["uid"])
+	uid := (&util.Type{}).Strval(tData["uid"])
 	redis = (&library.Redis{}).New("")
 	time := redis.TTL(env.ApiTokenPrefix + "_token_" + uid)
 	redis.Close()
@@ -57,7 +57,7 @@ func (s ApiToken) Verify(token string, urlPerm string) string {
 		return "菜单验证无效!"
 	}
 	// 验证-菜单
-	id := util.Strval(menuData["id"])
+	id := (&util.Type{}).Strval(menuData["id"])
 	permData := s.Perm(token)
 	actionVal, ok := permData[id]
 	if !ok {
@@ -69,7 +69,7 @@ func (s ApiToken) Verify(token string, urlPerm string) string {
 	var permVal int64
 	for _, val := range permArr {
 		if action == val["action"] {
-			permVal = util.Int64(val["perm"])
+			permVal = (&util.Type{}).Int64(val["perm"])
 			break
 		}
 	}
@@ -99,7 +99,7 @@ func (ApiToken) Perm(token string) map[string]int64 {
 	}
 	for _, val := range arr {
 		s := util.Explode(":", val)
-		permAll[s[0]] = util.Int64(s[1])
+		permAll[s[0]] = (&util.Type{}).Int64(s[1])
 	}
 	return permAll
 }
@@ -111,7 +111,7 @@ func (ApiToken) Create(data map[string]interface{}) string {
 	// 缓存
 	env := config.Env()
 	redis := (&library.Redis{}).New("")
-	key := env.ApiTokenPrefix + "_token_" + util.Strval(data["uid"])
+	key := env.ApiTokenPrefix + "_token_" + (&util.Type{}).Strval(data["uid"])
 	redis.Set(key, "1")
 	redis.Expire(key, env.ApiTokenTime)
 	redis.Close()
@@ -124,7 +124,7 @@ func (ApiToken) Token(token string) jwt.MapClaims {
 	if tData != nil {
 		env := config.Env()
 		redis := (&library.Redis{}).New("")
-		tData["time"] = redis.TTL(env.ApiTokenPrefix + "_token_" + util.Strval(tData["uid"]))
+		tData["time"] = redis.TTL(env.ApiTokenPrefix + "_token_" + (&util.Type{}).Strval(tData["uid"]))
 		redis.Close()
 	}
 	return tData

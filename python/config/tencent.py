@@ -11,3 +11,11 @@ class Tencent :
       'PlayDomain': 'play.webmis.vip', #播放域名
       'PlayType': 'http', #播放类型
     }
+
+  # API密钥
+  def CAPI():
+    return {
+      'AppID': 1258966985,
+      'SecretId': 'AKIDd4HDsHRKwBDySfbGfneEXZKp47uRiiTx',
+      'SecretKey': 'FD0ZtwjFUS9ZhZBWaOwGLNBkBNM6brth',
+    }

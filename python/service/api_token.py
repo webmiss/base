@@ -1,4 +1,3 @@
-from hashlib import md5
 from config.env import Env
 from library.safety import Safety
 from library.redis import Redis

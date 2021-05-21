@@ -23,7 +23,7 @@ const max12bit = uint(12) //序列数位数
 func (Data) Mist(redisName string) int64 {
 	// 自增ID
 	redis := (&library.Redis{}).New("")
-	autoId = util.Int64(redis.Get(redisName))
+	autoId = (&util.Type{}).Int64(redis.Get(redisName))
 	autoId++
 	// 随机数
 	randA, _ := rand.Int(rand.Reader, big.NewInt(255))
@@ -50,7 +50,7 @@ func (Data) Snowflake() int64 {
 
 /* 图片地址 */
 func (Data) Img(img interface{}) string {
-	str := util.Strval(img)
+	str := (&util.Type{}).Strval(img)
 	if str == "" {
 		return ""
 	}

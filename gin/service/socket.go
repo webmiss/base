@@ -113,13 +113,13 @@ func verify(tp string, token string) string {
 		if tData == nil {
 			return ""
 		}
-		return util.Strval(tData["uid"])
+		return (&util.Type{}).Strval(tData["uid"])
 	} else if tp == "admin" {
 		tData := (&AdminToken{}).Token(token)
 		if tData == nil {
 			return ""
 		}
-		return util.Strval(tData["uid"])
+		return (&util.Type{}).Strval(tData["uid"])
 	}
 	return ""
 }

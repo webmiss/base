@@ -18,6 +18,8 @@ public class Redis extends Thread {
 
   /* 消费者 */
   public void Logs() {
+    // 是否记录
+    if(!Env.log_on) return;
     while(true){
       webmis.library.Redis redis = new webmis.library.Redis("");
       List<String> data = redis.BLPop("logs", 10);

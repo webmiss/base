@@ -5,11 +5,25 @@ use Service\Base;
 use Library\Qrcode;
 use Library\FileEo;
 use Library\Captcha;
+use Library\Tencent\Im;
+use Library\Tencent\Trtc;
 
 class Index extends Base {
 
   /* 首页 */
   static function Index() {
+    // Im::GroupCreate([
+    //   'Type'=> 'AVChatRoom',
+    //   'Name'=> 'TestGroup',
+    // ]);
+    $room = Im::GroupList();
+    $list = Trtc::RoomList();
+    $res = Trtc::RoomDismiss('@TGS#aRHBAOFHK');
+    $room1 = Im::GroupList();
+    self::Print($room);
+    self::Print($list);
+    self::Print($res);
+    self::Print($room1);
     // 返回
     return self::GetJSON(['code'=>0, 'msg'=>'Web']);
   }

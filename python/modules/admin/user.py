@@ -7,7 +7,7 @@ from service.admin_token import AdminToken
 from model.user import User as UserM
 from model.user_info import UserInfo
 from util.util import Util
-from util.hmac import Hmac
+from util.hash import Hash
 
 class User(Base):
 
@@ -29,7 +29,7 @@ class User(Base):
     model.LeftJoin('sys_role AS d', 'c.role=d.id')
     model.Where(
       '(a.uname=%s OR a.tel=%s OR a.email=%s) AND a.password=%s',
-      uname, uname, uname, Hmac.Md5(passwd)
+      uname, uname, uname, Hash.Md5(passwd)
     )
     model.Columns('a.id', 'a.state', 'b.position', 'b.nickname', 'b.name', 'b.gender', 'b.birthday', 'b.img', 'c.perm', 'd.perm as role_perm')
     data = model.FindFirst()
