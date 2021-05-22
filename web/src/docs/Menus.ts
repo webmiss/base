@@ -110,7 +110,7 @@ export default {
         {label: '常用工具', value: 'docs/phalcon/util/util'},
         {label: '编码/解码 URL', value: 'docs/phalcon/util/url'},
         {label: '编码/解码 Base64', value: 'docs/phalcon/util/base64'},
-        {label: '加密算法 Hmac', value: 'docs/phalcon/util/hmac'},
+        {label: '加密算法 Hash', value: 'docs/phalcon/util/hash'},
       ]},
     ];
   },
@@ -150,7 +150,7 @@ export default {
         {label: '常用工具', value: 'docs/python/util/util'},
         {label: '编码/解码 URL', value: 'docs/python/util/url'},
         {label: '编码/解码 Base64', value: 'docs/python/util/base64'},
-        {label: '加密算法 Hmac', value: 'docs/python/util/hmac'},
+        {label: '加密算法 Hash', value: 'docs/python/util/hash'},
       ]},
     ];
   },
@@ -190,7 +190,7 @@ export default {
         {label: '常用工具', value: 'docs/java/util/util'},
         {label: '编码/解码 URL', value: 'docs/java/util/url'},
         {label: '编码/解码 Base64', value: 'docs/java/util/base64'},
-        {label: '加密算法 Hmac', value: 'docs/java/util/hmac'},
+        {label: '加密算法 Hash', value: 'docs/java/util/hash'},
         {label: '泛型 Dynamic', value: 'docs/java/util/dynamic'},
         {label: '请求响应 Http', value: 'docs/java/util/http'},
       ]},
@@ -233,7 +233,7 @@ export default {
         {label: '常用工具', value: 'docs/gin/util/util'},
         {label: '编码/解码 URL', value: 'docs/gin/util/url'},
         {label: '编码/解码 Base64', value: 'docs/gin/util/base64'},
-        {label: '加密算法 Hmac', value: 'docs/gin/util/hmac'},
+        {label: '加密算法 Hash', value: 'docs/gin/util/hash'},
         {label: '类型转换 Type', value: 'docs/gin/util/type'},
       ]},
     ];

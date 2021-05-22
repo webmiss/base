@@ -16,5 +16,5 @@ class Hash:
     return hmac.new(key, str.encode(data), hashlib.sha256).digest()
 
   # Bytes转为16进制
-  def HexEncode(bytes: bytes):
-    return binascii.b2a_hex(bytes).decode('utf-8')
+  def HexEncode(byte: bytes):
+    return binascii.b2a_hex(byte).decode('utf-8')

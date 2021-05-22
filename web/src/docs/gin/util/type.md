@@ -5,40 +5,40 @@ import "webmis/util"
 
 ## Bool
 ```go
-util.Bool(val interface{})
+(&util.Type{}).Bool(val interface{})
 ```
 
 ## Int
 ```go
-util.Int(val interface{})
+(&util.Type{}).Int(val interface{})
 ```
 
 ## Int64
 ```go
-util.Int64(val interface{})
+(&util.Type{}).Int64(val interface{})
 ```
 
 ## Float
 ```go
-util.Float(val interface{})
+(&util.Type{}).Float(val interface{})
 ```
 
 ## Float64
 ```go
-util.Float64(val interface{})
+(&util.Type{}).Float64(val interface{})
 ```
 
 ## Uint64
 ```go
-util.Uint64(val interface{})
+(&util.Type{}).Uint64(val interface{})
 ```
 
 ## Strval
 ```go
-util.Strval(val interface{})
+(&util.Type{}).Strval(val interface{})
 ```
 
 ## 获取类型
 ```go
-util.GetType(val interface{})
+(&util.Type{}).GetType(val interface{})
 ```
