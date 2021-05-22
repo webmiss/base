@@ -30,7 +30,6 @@ func TRTC() *TrtcType {
 /* API密钥 */
 func CAPI() *CapiType {
 	cfg := &CapiType{}
-	cfg.AppID = 1258966985
 	cfg.SecretId = "AKIDd4HDsHRKwBDySfbGfneEXZKp47uRiiTx"
 	cfg.SecretKey = "FD0ZtwjFUS9ZhZBWaOwGLNBkBNM6brth"
 	return cfg

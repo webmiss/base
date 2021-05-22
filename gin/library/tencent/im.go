@@ -9,8 +9,6 @@ import (
 /* 即时通信 */
 type Im struct {
 	Signature
-	Url         string
-	ContentType string
 }
 
 /* 请求地址 */

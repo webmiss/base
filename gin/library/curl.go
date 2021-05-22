@@ -2,7 +2,6 @@ package library
 
 import (
 	"bytes"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"webmis/util"
@@ -22,7 +21,6 @@ func (c Curl) PostJson(url string, data interface{}, header map[string]interface
 	}
 	// 数据
 	json := util.JsonEncode(data)
-	fmt.Println(url)
 	// 发送
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(json))
 	if err != nil {
