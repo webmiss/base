@@ -1,6 +1,7 @@
 webmis
 public/logs
 public/upload/*
+tmp
 
 # Editor directories and files
 .idea
