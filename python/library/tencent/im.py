@@ -4,12 +4,12 @@ from util.util import Util
 from .signature import Signature
 
 # 即时通信
-class Im(Signature):
+class Im:
 
   # 请求地址
   def GetURL(apiUrl: str):
     cfg = Tencent.TRTC()
-    userSig = Im.UserSig(cfg['UserID'])
+    userSig = Signature.UserSig(cfg['UserID'])
     random = str(Util.Time())
     return 'https://console.tim.qq.com/v4/'+apiUrl+'?sdkappid='+str(cfg['SDKAppID'])+'&identifier='+str(cfg['UserID'])+'&usersig='+userSig+'&random='+random+'&contenttype=json'
 

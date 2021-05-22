@@ -1,7 +1,6 @@
 package tencent
 
 import (
-	"fmt"
 	"time"
 	"webmis/config"
 	"webmis/util"
@@ -41,7 +40,7 @@ func (s *Signature) New() *Signature {
 }
 
 /* V3-Header */
-func (s Signature) V3Header(data map[string]interface{}) {
+func (s Signature) V3Header(data map[string]interface{}) map[string]interface{} {
 	var Hash = &util.Hash{}
 	// 数据
 	json := string(util.JsonEncode(data))
@@ -74,7 +73,16 @@ func (s Signature) V3Header(data map[string]interface{}) {
 	Authorization += "SignedHeaders=" + s.SignedHeaders + ", "
 	Authorization += "Signature=" + Sign
 	// 请求头
-	fmt.Println(Authorization)
+	header := map[string]interface{}{
+		"Authorization":  Authorization,
+		"Content-Type":   s.ContentType,
+		"Host":           s.Host,
+		"X-TC-Action":    s.Action,
+		"X-TC-Version":   s.Version,
+		"X-TC-Timestamp": (&util.Type{}).Strval(timeStamp),
+		"X-TC-Region":    s.Region,
+	}
+	return header
 }
 
 /* UserSig */

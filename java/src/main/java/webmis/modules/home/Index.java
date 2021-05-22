@@ -12,7 +12,6 @@ import webmis.config.Env;
 import webmis.library.Captcha;
 import webmis.library.FileEo;
 import webmis.library.Qrcode;
-import webmis.library.tencent.Trtc;
 import webmis.service.Base;
 
 @RestController
@@ -23,7 +22,6 @@ public class Index extends Base{
   /* 首页 */
   @RequestMapping("")
   String index() {
-    Trtc.RoomList();
     // 返回
     HashMap<String,Object> res;
     res = new HashMap<String,Object>();

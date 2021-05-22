@@ -30,7 +30,7 @@ public class Signature extends Base {
   public static String Region = "ap-guangzhou";                         //区域
 
   /* V3-Header */
-  public static String V3Header(JSONObject data) {
+  public static HashMap<String, Object> V3Header(JSONObject data) {
     // 数据
     String json = data.toString();
     String HashedRequestPayload = Hash.Sha256(json);
@@ -64,8 +64,15 @@ public class Signature extends Base {
     + "SignedHeaders="+SignedHeaders+", "
     + "Signature="+Sign;
     // 请求头
-    Print(Authorization);
-    return "";
+    HashMap<String, Object> header = new HashMap<String, Object>();
+    header.put("Authorization", Authorization);
+    header.put("Content-Type", ContentType);
+    header.put("Host", Host);
+    header.put("X-TC-Action", Action);
+    header.put("X-TC-Version", Version);
+    header.put("X-TC-Timestamp", timeStamp);
+    header.put("X-TC-Region", Region);
+    return header;
   }
 
   /* UserSig */

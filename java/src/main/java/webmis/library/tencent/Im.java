@@ -16,7 +16,7 @@ public class Im extends Signature {
     HashMap<String, Object> cfg = Tencent.TRTC();
     String userSig = UserSig(cfg.get("UserID"));
     String random = String.valueOf(Util.Time());
-    return "https://console.tim.qq.com/v4/"+"?sdkappid="+cfg.get("SDKAppID")+"&identifier="+cfg.get("UserID")+"&usersig="+userSig+"&random="+random+"&contenttype=json";
+    return "https://console.tim.qq.com/v4/"+apiUrl+"?sdkappid="+cfg.get("SDKAppID")+"&identifier="+cfg.get("UserID")+"&usersig="+userSig+"&random="+random+"&contenttype=json";
   }
 
   /* 群组-列表 */

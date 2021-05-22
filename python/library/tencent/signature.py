@@ -59,6 +59,10 @@ class Signature:
       'Authorization': Authorization,
       'Content-Type': Signature.ContentType,
       'Host': Signature.Host,
+      'X-TC-Action': Signature.Action,
+      'X-TC-Version': Signature.Version,
+      'X-TC-Timestamp': timeStamp,
+      'X-TC-Region': Signature.Region,
     }
     return header
 
@@ -104,5 +108,5 @@ class Signature:
     +'TLS.sdkappid:'+str(param['TLS.sdkappid'])+"\n"\
     +'TLS.time:'+str(param['TLS.time'])+"\n"\
     +'TLS.expire:'+str(param['TLS.expire'])+"\n"
-    sig = Base64.Encode(Hash.HmacSha256(content, key))
+    sig = Base64.Encode(Hash.HmacSha256(content, str.encode(key)))
     return bytes.decode(sig)

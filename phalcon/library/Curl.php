@@ -10,7 +10,7 @@ class Curl extends Base {
   static function PostJson(string $url, array $data=[], array $header=[]) {
     // 请求头
     $param = array_merge([
-      'Content-Type'=> 'application/json; charset=utf-8',
+      'Content-Type'=> 'application/json; charset=utf-8', //JSON方式
     ],$header);
     $headerArr = [];
     foreach($param as $k=>$v){

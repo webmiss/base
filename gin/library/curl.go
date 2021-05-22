@@ -2,6 +2,7 @@ package library
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"webmis/util"
@@ -11,13 +12,25 @@ import (
 type Curl struct{}
 
 /* PostJson */
-func (c Curl) PostJson(url string, data interface{}) map[string]interface{} {
+func (c Curl) PostJson(url string, data interface{}, header map[string]interface{}) map[string]interface{} {
+	// 请求头
+	param := map[string]interface{}{
+		"Content-Type": "application/json; charset=utf-8", //JSON方式
+	}
+	if header != nil {
+		param = util.ArrayMerge(param, header)
+	}
+	// 数据
 	json := util.JsonEncode(data)
+	fmt.Println(url)
+	// 发送
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(json))
 	if err != nil {
 		return nil
 	}
-	req.Header.Set("Content-Type", "application/json")
+	for k, v := range param {
+		req.Header.Set(k, (&util.Type{}).Strval(v))
+	}
 	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
 		return nil

@@ -11,37 +11,43 @@ class Trtc extends Signature {
 
   /* 公共配置 */
   static function Init() {
+    $cfg = Tencent::TRTC();
     self::$ApiUrl = 'https://trtc.tencentcloudapi.com/';
     self::$Host = 'trtc.tencentcloudapi.com';
     self::$Service = 'trtc';
     self::$Version = '2019-07-22';
-    $cfg = Tencent::TRTC();
     self::$SdkAppId = $cfg['SDKAppID'];
   }
 
   /* 房间-查询 */
-  static function RoomList() {
+  static function RoomList(int $StartTime, int $EndTime) {
+    // 参数
     self::Init();
-    Signature::$Action = 'DescribeRoomInformation';
+    self::$Action = 'DescribeRoomInformation';
+    // 数据
     $time = time();
     $data = [
       'SdkAppId'=> (string)self::$SdkAppId,
-      'StartTime'=> $time-3600*24*3,
-      'EndTime'=> $time,
+      'StartTime'=> $StartTime,
+      'EndTime'=> $EndTime,
     ];
-    $header = Signature::V3Header($data);
+    // 请求头
+    $header = self::V3Header($data);
     return Curl::PostJson(self::$ApiUrl, $data, $header);
   }
 
   /* 房间-解散 */
-  static function RoomDismiss($roomId) {
+  static function RoomDismiss(string $roomId) {
+    // 参数
     self::Init();
-    Signature::$Action = 'DismissRoomByStrRoomId';
+    self::$Action = 'DismissRoomByStrRoomId';
+    // 数据
     $data = [
       'SdkAppId'=> self::$SdkAppId,
       'RoomId'=> $roomId,
     ];
-    $header = Signature::V3Header($data);
+    // 请求头
+    $header = self::V3Header($data);
     return Curl::PostJson(self::$ApiUrl, $data, $header);
   }
 
