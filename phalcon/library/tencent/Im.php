@@ -3,6 +3,7 @@ namespace Library\Tencent;
 
 use Config\Tencent;
 use Library\Curl;
+use Util\Util;
 
 /* 即时通信 */
 class Im extends Signature {
@@ -18,17 +19,20 @@ class Im extends Signature {
   /* 群组-列表 */
   static function GroupList() {
     $url = self::GetURL('group_open_http_svc/get_appid_group_list');
-    return Curl::PostJson($url, []);
+    $dataStr = '{}';
+    return Curl::Request('POST', $url, $dataStr);
   }
   /* 群组-创建 */
   static function GroupCreate(array $data) {
     $url = self::GetURL('group_open_http_svc/create_group');
-    return Curl::PostJson($url, $data);
+    $dataStr = Util::JsonEncode($data);
+    return Curl::Request('POST', $url, $dataStr);
   }
   /* 群组-解散 */
   static function GroupDestroy(array $data) {
     $url = self::GetURL('group_open_http_svc/destroy_group');
-    return Curl::PostJson($url, $data);
+    $dataStr =  Util::JsonEncode($data);
+    return Curl::Request('POST', $url, $dataStr);
   }
 
 }

@@ -10,6 +10,18 @@ class Util {
     return $t>0?$t:0;
   }
 
+  /* Array to String */
+  static function JsonEncode($arr): string {
+    $res = json_encode($arr);
+    return $res?$res:'';
+  }
+
+  /* String to Array */
+  static function JsonDecode($arr): array {
+    $res = json_decode($arr, true);
+    return $res?$res:[];
+  }
+
   /* Url to Array */
   static function UrlToArray(string $url): array {
     if(empty($url)) return [];

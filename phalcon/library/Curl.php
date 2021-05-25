@@ -6,28 +6,34 @@ use Service\Base;
 /* 请求 */
 class Curl extends Base {
 
-  /* PostJson */
-  static function PostJson(string $url, array $data=[], array $header=[]) {
+  /* GET、POST、PUT、HEAD、DELETE */
+  static function Request(string $method='GET', string $url, string $data, array $headers=[], string $resType='json') {
     // 请求头
-    $param = array_merge([
-      'Content-Type'=> 'application/json; charset=utf-8', //JSON方式
-    ],$header);
     $headerArr = [];
-    foreach($param as $k=>$v){
+    foreach($headers as $k=>$v){
       $headerArr[] = $k.': '.$v;
     }
-    // 数据
-    $json = !empty($data)?json_encode($data):'{}';
     // 发送
-    $curl = curl_init($url);
-    curl_setopt($curl, CURLOPT_HEADER, false);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curl, CURLOPT_HTTPHEADER, $headerArr);
-    curl_setopt($curl, CURLOPT_POST, true);
-    curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
-    $res = curl_exec($curl);
-    curl_close($curl);
-    return !empty($res)?json_decode($res):null;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+    curl_setopt($ch,CURLOPT_HTTPHEADER,$headerArr);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // 数据
+    if($method!='GET'){
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    }
+    $text = curl_exec($ch);
+    curl_close($ch);
+    // 结果
+    if($resType=='json') {
+      $res = !empty($text)?json_decode($text):null;
+    } elseif ($resType=='xml'){
+      $res = $text;
+    } else {
+      $res = $text;
+    }
+    return $res;
   }
 
 }

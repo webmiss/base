@@ -2,10 +2,10 @@ import re
 import os
 import time
 import datetime
-import base64 as Base64
 from config.env import Env
 from library.file_eo import FileEo
 from util.util import Util
+from util.base64 import Base64
 
 # 上传类
 class Upload:
@@ -62,7 +62,7 @@ class Upload:
       return ''
     # 文件名
     filename = Upload._getName()+'.'+param['ext'] if not param['filename'] else param['filename']
-    if not FileEo.Writer(param['path']+filename, Base64.b64decode(base64)) :
+    if not FileEo.Writer(param['path']+filename, Base64.Decode(base64)) :
       print('[Upload] Writer:', '保存文件失败!')
       return ''
     return filename

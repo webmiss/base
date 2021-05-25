@@ -14,7 +14,8 @@
     "php": "^7.2",
     "textalk/websocket": "^1.4.2",
     "khanamiryan/qrcode-detector-decoder": "dev-master",
-    "cboden/ratchet": "dev-master"
+    "cboden/ratchet": "dev-master",
+    "aliyuncs/oss-sdk-php": "dev-master"
   },
   "autoload": {
     "psr-4": {

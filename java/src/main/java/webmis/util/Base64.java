@@ -10,8 +10,13 @@ import java.util.zip.Inflater;
 public class Base64 {
 
   /* 编码 */
-  public static String Encode(byte[] data) {
-    return (java.util.Base64.getEncoder().encodeToString(data)).replaceAll("\\s*", "");
+  public static byte[] Encode(byte[] data) {
+    return java.util.Base64.getEncoder().encode(data);
+  }
+
+  /* 解码 */
+  public static byte[] Decode(byte[] data) {
+    return java.util.Base64.getDecoder().decode(data);
   }
 
   /* 编码(URL) */

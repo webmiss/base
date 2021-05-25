@@ -5,7 +5,7 @@ REM 配置
 set s=%1%
 set index=main.py
 set cli=cli.py
-set package=flask flask_cors PyJWT redis wheel DBUtils pymysql websockets websocket-client qrcode Image zxing
+set package=flask flask_cors PyJWT redis wheel DBUtils pymysql websockets websocket-client qrcode Image zxing oss2
 
 REM 运行
  if "%s%"=="serve" (

@@ -1,7 +1,6 @@
 package webmis.library;
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,6 +8,7 @@ import java.util.regex.Pattern;
 import org.springframework.web.multipart.MultipartFile;
 
 import webmis.config.Env;
+import webmis.util.Base64;
 import webmis.util.Util;
 
 import java.time.LocalDateTime;
@@ -94,7 +94,7 @@ public class Upload {
     if(param.get("filename").equals("")) filename=_getName()+"."+param.get("ext").toString();
     else filename=param.get("filename").toString();
     // 保存文件
-    if(!FileEo.Writer(String.valueOf(param.get("path"))+filename, Base64.getDecoder().decode(base64))){
+    if(!FileEo.Writer(String.valueOf(param.get("path"))+filename, Base64.Decode(base64.getBytes()))){
       System.out.println("[Upload] Writer: 保存文件失败!");
       return "";
     }

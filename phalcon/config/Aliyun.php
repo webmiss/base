@@ -2,15 +2,16 @@
 namespace Config;
 
 /* 阿里云配置 */
-class Tencent {
+class Aliyun {
 
   /* RAM访问控制 */
   static function RAM(): array {
     return [
-      'UserId'=> 247834896167087138,
-      'UserName'=> 'AliyunOSSTokenGeneratorUser@mrcui.onaliyun.com',
-      'AccessKeyId'=> 'LTAI5tBpaEBk8Texmp2mjhQj',
-      'AccessKeySecret'=> 'DpocHAjH9z1FhO3lqJh8KSrrO3AcqO',
+      'AccessKeyId'=> 'LTAI5t9BgHZ11gu1WvTdTSns',
+      'AccessKeySecret'=> 'WIsk3M2U7MuE526SIuc5xAdxOc2Pge',
+      'Endpoint'=> 'oss-cn-chengdu.aliyuncs.com',
+      'Bucket'=> 'cuixs-upload-test',
+      'ImgUrl'=> 'http://img.cuixs.net/',
     ];
   }
 

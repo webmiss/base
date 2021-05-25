@@ -3,6 +3,7 @@ namespace Library\Tencent;
 
 use Config\Tencent;
 use Library\Curl;
+use Util\Util;
 
 /* 实时音视频 */
 class Trtc extends Signature {
@@ -31,9 +32,10 @@ class Trtc extends Signature {
       'StartTime'=> $StartTime,
       'EndTime'=> $EndTime,
     ];
+    $dataStr = Util::JsonEncode($data);
     // 请求头
     $header = self::V3Header($data);
-    return Curl::PostJson(self::$ApiUrl, $data, $header);
+    return Curl::Request('POST', self::$ApiUrl, $dataStr, $header);
   }
 
   /* 房间-解散 */
@@ -46,9 +48,10 @@ class Trtc extends Signature {
       'SdkAppId'=> self::$SdkAppId,
       'RoomId'=> $roomId,
     ];
+    $dataStr = Util::JsonEncode($data);
     // 请求头
     $header = self::V3Header($data);
-    return Curl::PostJson(self::$ApiUrl, $data, $header);
+    return Curl::Request('POST', self::$ApiUrl, $dataStr, $header);
   }
 
 }
