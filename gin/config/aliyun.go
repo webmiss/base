@@ -4,18 +4,26 @@ package config
 type RamType struct {
 	AccessKeyId     string
 	AccessKeySecret string
-	Endpoint        string
-	Bucket          string
-	ImgUrl          string
+}
+type OssType struct {
+	Endpoint string
+	Bucket   string
+	ImgUrl   string
 }
 
-/* API密钥 */
+/* RAM访问控制 */
 func RAM() *RamType {
 	cfg := &RamType{}
-	cfg.AccessKeyId = "LTAI5t9BgHZ11gu1WvTdTSns"
-	cfg.AccessKeySecret = "WIsk3M2U7MuE526SIuc5xAdxOc2Pge"
+	cfg.AccessKeyId = "LTAI5tBxpsyAoe2EV1goV8wW"
+	cfg.AccessKeySecret = "FhMQw6WRyZbMAsTc9jrlCw4efYh2Qx"
+	return cfg
+}
+
+/* 对象存储 */
+func OSS() *OssType {
+	cfg := &OssType{}
 	cfg.Endpoint = "oss-cn-chengdu.aliyuncs.com"
-	cfg.Bucket = "cuixs-upload-test"
-	cfg.ImgUrl = "http://img.cuixs.net/"
+	cfg.Bucket = "webmis-upload"
+	cfg.ImgUrl = "http://img.webmis.vip/"
 	return cfg
 }

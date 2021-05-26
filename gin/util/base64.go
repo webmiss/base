@@ -67,3 +67,16 @@ func (Base64) UnCompress(data []byte) []byte {
 	r.Close()
 	return b.Bytes()
 }
+
+/* 获取后缀 */
+func (Base64) GetExt(data string) string {
+	ext := ""
+	if data == "data:image/jpeg;base64" {
+		ext = "jpg"
+	} else if data == "data:image/png;base64" {
+		ext = "png"
+	} else if data == "data:image/gif;base64" {
+		ext = "gif"
+	}
+	return ext
+}

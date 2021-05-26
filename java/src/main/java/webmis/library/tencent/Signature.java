@@ -126,7 +126,7 @@ public class Signature extends Base {
     +"TLS.sdkappid:"+param.get("TLS.sdkappid")+"\n"
     +"TLS.time:"+param.get("TLS.time")+"\n"
     +"TLS.expire:"+param.get("TLS.expire")+"\n";
-    return Base64.Encode(Hash.HmacSha256(content, Hash.StrToByte(key)));
+    return (Base64.Encode(Hash.HmacSha256(content, Hash.StrToByte(key)))).toString();
   }
   
 }

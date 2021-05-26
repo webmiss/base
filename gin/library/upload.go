@@ -65,15 +65,9 @@ func (u Upload) Base64(params map[string]interface{}) string {
 	param = util.ArrayMerge(param, params)
 	// 内容
 	base64 := param["base64"].(string)
-	ct := strings.Split(base64, ",")
+	ct := util.Explode(",", base64)
 	if len(ct) > 1 {
-		if ct[0] == "data:image/jpeg;base64" {
-			param["ext"] = "jpg"
-		} else if ct[0] == "data:image/png;base64" {
-			param["ext"] = "png"
-		} else if ct[0] == "data:image/gif;base64" {
-			param["ext"] = "gif"
-		}
+		param["ext"] = (&util.Base64{}).GetExt(ct[0])
 		base64 = ct[1]
 	}
 	// 创建目录
@@ -97,7 +91,6 @@ func (u Upload) Base64(params map[string]interface{}) string {
 
 /* 图片回收 */
 func (u Upload) HtmlImgClear(html string, dir string) bool {
-	// pattern := "<img.*?src=[\\'|\"](.*?)[\\'|\"].*?[\\/]?>"
 	pattern := regexp.MustCompile(`<img.*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>`)
 	match := pattern.FindAllStringSubmatch(html, -1)
 	imgs := []string{}
