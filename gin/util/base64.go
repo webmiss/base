@@ -69,13 +69,13 @@ func (Base64) UnCompress(data []byte) []byte {
 }
 
 /* 获取后缀 */
-func (Base64) GetExt(data string) string {
+func (Base64) GetExt(base64Type string) string {
 	ext := ""
-	if data == "data:image/jpeg;base64" {
+	if base64Type == "data:image/jpeg;base64" {
 		ext = "jpg"
-	} else if data == "data:image/png;base64" {
+	} else if base64Type == "data:image/png;base64" {
 		ext = "png"
-	} else if data == "data:image/gif;base64" {
+	} else if base64Type == "data:image/gif;base64" {
 		ext = "gif"
 	}
 	return ext

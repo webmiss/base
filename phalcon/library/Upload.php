@@ -2,6 +2,7 @@
 namespace Library;
 
 use Service\Base;
+use Util\Base64;
 
 /* 上传类 */
 class Upload extends Base {
@@ -51,9 +52,7 @@ class Upload extends Base {
     // 否有类型
     $ct = explode(',',$param['base64']);
     if(count($ct)>1){
-      if($ct[0]=='data:image/jpeg;base64') $param['ext']='jpg';
-      elseif($ct[0]=='data:image/png;base64') $param['ext']='png';
-      elseif($ct[0]=='data:image/gif;base64') $param['ext']='gif';
+      $param['ext'] = Base64::GetExt($ct[0]);
       $base64 = $ct[1];
     }
     // 创建目录

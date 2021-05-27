@@ -5,6 +5,7 @@ use Config\Aliyun;
 use Service\Base;
 use OSS\OssClient;
 use OSS\Core\OssException;
+use Util\Base64;
 
 /* 对象存储 */
 class Oss extends Base {
@@ -109,7 +110,6 @@ class Oss extends Base {
     }
   }
 
-
   /* 删除-文件夹&文件 */
   static function DeleteObjectAll(string $path): bool {
     if(empty($path)) return false;
@@ -169,6 +169,25 @@ class Oss extends Base {
     }
     if(!empty($objects)) return self::DeleteObjects($objects);
     return true;
+  }
+
+  /* 上传Base64 */
+  static function UploadBase64(string $path, string $base64) {
+    if(empty($path) || empty($base64)) return '';
+    // 后缀
+    $ext = '';
+    $ct = explode(',', $base64);
+    if(count($ct)>1){
+      $ext = Base64::GetExt($ct[0]);
+      $base64 = $ct[1];
+    }
+    // 文件
+    $file = $path . self::GetFileName();
+    if($ext != '') $file .= "." . $ext;
+    // 保存
+    $res = self::PutObject($file, Base64::Decode($base64));
+    if($res) return $file;
+    return '';
   }
 
 }

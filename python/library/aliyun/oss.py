@@ -1,4 +1,6 @@
 from config.aliyun import Aliyun
+from util.util import Util
+from util.base64 import Base64
 import oss2
 import time, datetime, random, re, os
 
@@ -114,3 +116,20 @@ class Oss:
     for val in all['file'] :
       if val not in imgs : objects += [path+val]
     return Oss.DeleteObjects(objects)
+
+  # 上传Base64
+  def UploadBase64(path: str, base64: str):
+    if not path or not base64 : return ''
+    # 后缀
+    ext = ''
+    ct = Util.Explode(',', base64)
+    if len(ct)>1 :
+      ext = Base64.GetExt(ct[0])
+      base64 = ct[1]
+    # 文件
+    file = path + Oss.GetFileName()
+    if ext != '' : file += '.' + ext
+    # 保存
+    res = Oss.PutObject(file, Base64.Decode(base64))
+    if res : return file
+    return ''

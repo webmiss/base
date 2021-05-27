@@ -37,3 +37,11 @@ class Base64:
   # 解压
   def UnCompress(data: bytes):
     return zlib.decompress(data)
+
+  # 获取后缀
+  def GetExt(base64Type: str):
+    ext = ''
+    if base64Type=='data:image/jpeg;base64' : ext='jpg'
+    elif base64Type=='data:image/png;base64' : ext='png'
+    elif base64Type=='data:image/gif;base64' : ext='gif'
+    return ext

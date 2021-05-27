@@ -41,4 +41,13 @@ class Base64 {
     return gzuncompress($data);
   }
 
+  /* 获取后缀 */
+  static function GetExt(string $base64Type) {
+    $ext = '';
+    if($base64Type=='data:image/jpeg;base64') $ext='jpg';
+    elseif($base64Type=='data:image/png;base64') $ext='png';
+    elseif($base64Type=='data:image/gif;base64') $ext='gif';
+    return $ext;
+  }
+
 }

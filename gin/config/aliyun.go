@@ -1,15 +1,17 @@
 package config
 
 /* 腾讯云配置 */
-type RamType struct {
-	AccessKeyId     string
-	AccessKeySecret string
-}
-type OssType struct {
-	Endpoint string
-	Bucket   string
-	ImgUrl   string
-}
+type (
+	RamType struct {
+		AccessKeyId     string
+		AccessKeySecret string
+	}
+	OssType struct {
+		Endpoint string
+		Bucket   string
+		ImgUrl   string
+	}
+)
 
 /* RAM访问控制 */
 func RAM() *RamType {

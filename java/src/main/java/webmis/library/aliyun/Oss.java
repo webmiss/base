@@ -20,6 +20,8 @@ import com.aliyun.oss.model.ObjectListing;
 
 import webmis.config.Aliyun;
 import webmis.service.Base;
+import webmis.util.Base64;
+import webmis.util.Util;
 
 /* 对象存储 */
 public class Oss extends Base {
@@ -184,6 +186,25 @@ public class Oss extends Base {
       if(!imgs.contains(val)) objects.add(path+val);
     }
     return DeleteObjects(objects);
+  }
+
+  /* 上传Base64 */
+  static public String UploadBase64(String path, String base64) {
+    if(path.isEmpty() || base64.isEmpty()) return "";
+    // 后缀
+    String ext = "";
+    ArrayList<String> ct = Util.Explode(",", base64);
+    if (ct.size() > 1) {
+      ext = Base64.GetExt(ct.get(0));
+      base64 = ct.get(1);
+    }
+    // 文件
+    String file = path + GetFileName();
+    if(!ext.equals("")) file += "." + ext;
+    // 保存
+    boolean res = PutObject(file, Base64.Decode(base64.getBytes()));
+    if(res) return file;
+    return "";
   }
   
 }

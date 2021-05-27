@@ -1,6 +1,5 @@
 package webmis.modules.home;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.springframework.http.MediaType;
@@ -13,9 +12,7 @@ import webmis.config.Env;
 import webmis.library.Captcha;
 import webmis.library.FileEo;
 import webmis.library.Qrcode;
-import webmis.library.aliyun.Oss;
 import webmis.service.Base;
-import webmis.util.Base64;
 
 @RestController
 @Controller("Index")
@@ -25,12 +22,6 @@ public class Index extends Base{
   /* 首页 */
   @RequestMapping("")
   String index() {
-    // String object = "mytest/java.png";
-    // byte[] content = "iVBORw0KGgoAAAANSUhEUgAAABEAAAASCAYAAAC9+TVUAAAABHNCSVQICAgIfAhkiAAAABl0RVh0U29mdHdhcmUAZ25vbWUtc2NyZWVuc2hvdO8Dvz4AAAA9aVRYdENyZWF0aW9uIFRpbWUAAAAAADIwMjHlubQwNeaciDI05pelIOaYn+acn+S4gCAxN+aXtjQy5YiGMDjnp5IIYwcbAAADP0lEQVQ4jXWTu29cVRDGf3PO2fXu9d7NxvE7sYnZKMQExRQk6cApI1AqhJQGiYJ0/A00iJaakgIkHhKPAilFIoRIkCMSCWTsyNhOsPMgfqxj7+Pu7r3nDMXaQSkYaaQZab4ZfTPfyO5HZxSfosYCQm2nzWYXfOSotTwlB0UvjPRBpezAWshSRAwYi2YpDlVQaCWe1a4w+kaZmek++iIBBYCkEVif7zL/a5NqBEWnIAoagIDsfvyq7u11+Dt2nH2nRL5geIZ+zoR2K3D76zpTLaUUWTAGzVJMlgXuaeD85Zh8Qf6nQc8KkXDucpkVHwg+gCqiilnb6vLSpQqPVlLmfmyCSA+hsh/vu8DN7xs8Xu1y4mLMw60OBI8Gj2vGhsOuS/KkTvloERT2aoGNtZSn/wSOncqhCmNTOU5PeeTJDoVqzL2iZcLmEMD0jwuapLhuRtQXACgPWHZWHbn5Myxf62N40vXoGHBpgKC4IUvwCqo449vkqyPkq4ee4z/8omNv3TJUFawTuonyx2NHLlcmLAt0ugQPEjJc42GKNhIkjkAPlipMzij1YwvEAwYQth+n5LKEuGTYfODZXe3gTsSQCSZKSjz4bZvQaB3gAUUEyoMGsb187HiexBdodoskGwlHS9F+veCmBoXFn4VWfZORkxG1JGJoso94wO5fCVClVWuzsQLtRspwM89EVSDroD7Fic1jbYlb1wtMthJmZvP8dbvJcH+duGLQoNRrGYt3hph98xJPHz1h5+YNxDkQiyA4r9AoDvLWBxdZmLvK3WvbeG9Yqp+iXOnHZ4GdWsJrF6aJz17B/v4Z93+ae6YdBJwNKX6vTmnsJOfffoWwfp3gPcaa/8QrIAhh6StcSAhBwaegBw9oHUdcg7VfvmOiOgiqGGOeV7+Comj9IZoFMjWodYhYsAGDCM3UUK4U0aBsbbRIU9+bLtJTvsL2VkK3k+JyhsLYKEmndxkRg9EsI3ExlSMRjXqHbz//k/X7DWTkHM3K62Sjs7Q4zA9f3mV5cQNQxqtDbG4l4DPUZ7h2ZuifvoA9/S6HUd5/+T42HuXG1QVuffMFgnDl009478Pj2EMTSGGAkfE97swt8YK0QYR/ATsNfzHf0tKvAAAAAElFTkSuQmCC".getBytes();
-    // boolean data = Oss.PutObject(object, Base64.Decode(content));
-    // HashMap<String, ArrayList<String>> data = Oss.ListObject("mytest/");
-    String data = Oss.GetFileName();
-    Print(data);
     // 返回
     HashMap<String,Object> res;
     res = new HashMap<String,Object>();

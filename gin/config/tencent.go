@@ -1,19 +1,21 @@
 package config
 
 /* 腾讯云配置 */
-type TrtcType struct {
-	SDKAppID   int
-	SecretKey  string
-	UserID     string
-	ExpireTime int
-	PlayDomain string
-	PlayType   string
-}
-type CapiType struct {
-	AppID     int
-	SecretId  string
-	SecretKey string
-}
+type (
+	TrtcType struct {
+		SDKAppID   int
+		SecretKey  string
+		UserID     string
+		ExpireTime int
+		PlayDomain string
+		PlayType   string
+	}
+	CapiType struct {
+		AppID     int
+		SecretId  string
+		SecretKey string
+	}
+)
 
 /* 实时音视频 */
 func TRTC() *TrtcType {

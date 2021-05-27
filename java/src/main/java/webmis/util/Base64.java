@@ -81,5 +81,14 @@ public class Base64 {
       return null;
     }
   }
+
+  /* 获取后缀 */
+  static public String GetExt(String base64Type) {
+    String ext = "";
+    if(base64Type.equals("data:image/jpeg;base64")) ext="jpg";
+    else if (base64Type.equals("data:image/png;base64")) ext="png";
+    else if (base64Type.equals("data:image/gif;base64")) ext="gif";
+    return ext;
+  }
   
 }

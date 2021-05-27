@@ -226,16 +226,22 @@ func (o Oss) UploadBase64(path string, base64 string) string {
 	if path == "" || base64 == "" {
 		return ""
 	}
+	// 后缀
 	ext := ""
 	ct := util.Explode(",", base64)
 	if len(ct) > 1 {
 		ext = (&util.Base64{}).GetExt(ct[0])
 		base64 = ct[1]
 	}
+	// 文件
 	file := path + o.GetFileName()
 	if ext != "" {
 		file += "." + ext
 	}
-	o.PutObject(file, (&util.Base64{}).Decode(base64))
-	return file
+	// 保存
+	res := o.PutObject(file, (&util.Base64{}).Decode(base64))
+	if res {
+		return file
+	}
+	return ""
 }

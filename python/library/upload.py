@@ -49,11 +49,9 @@ class Upload:
     # 内容
     base64 = param['base64']
     # 否有类型
-    ct = param['base64'].split(',')
+    ct = Util.Explode(',', param['base64'])
     if len(ct)>1 :
-      if ct[0]=='data:image/jpeg;base64' : param['ext']='jpg'
-      elif ct[0]=='data:image/png;base64' : param['ext']='png'
-      elif ct[0]=='data:image/gif;base64' : param['ext']='gif'
+      param['ext'] = Base64.GetExt(ct[0])
       base64 = ct[1]
     # 创建目录
     FileEo.Root = Env.root_dir

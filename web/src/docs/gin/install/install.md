@@ -15,6 +15,9 @@ go version
 
 #### 3) 国内镜像
 ```bash
+export GO111MODULE=on
+export GOPROXY=https://goproxy.cn
+
 go env -w GOPROXY=https://goproxy.cn
 ```
 
@@ -23,7 +26,10 @@ go env -w GOPROXY=https://goproxy.cn
 # golang.org/x 超时问题
 mkdir -p $GOPATH/src/golang.org/x
 cd $GOPATH/src/golang.org/x
+git clone https://github.com/golang/net.git
 git clone https://github.com/golang/sys.git
+git clone https://github.com/golang/text.git
+git clone https://github.com/golang/tools.git
 # 工具
 go get github.com/pilu/fresh
 # 链接

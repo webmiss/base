@@ -73,15 +73,10 @@ public class Upload {
     // 内容
     String base64 = String.valueOf(param.get("base64"));
     // 否有类型
-    String[] ct = base64.split(",");
-    if (ct.length > 1) {
-      if (ct[0].equals("data:image/jpeg;base64"))
-        param.put("ext", "jpg");
-      else if (ct[0].equals("data:image/png;base64"))
-        param.put("ext", "png");
-      else if (ct[0].equals("data:image/gif;base64"))
-        param.put("ext", "gif");
-      base64 = ct[1];
+    ArrayList<String> ct = Util.Explode(",", base64);
+    if (ct.size() > 1) {
+      param.put("ext", ct.get(0));
+      base64 = ct.get(1);
     }
     // 创建目录
     FileEo.Root = Env.root_dir;
