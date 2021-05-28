@@ -16,5 +16,7 @@ func Demo(r *gin.Engine) {
 		// TinyMCE
 		g.POST("tinymce/edit", (&demo.Tinymce{}).Edit)
 		g.POST("tinymce/upImg", (&demo.Tinymce{}).UpImg)
+		// TWebLive
+		g.POST("tweblive/userInfo", (&demo.Tweblive{}).UserInfo)
 	}
 }

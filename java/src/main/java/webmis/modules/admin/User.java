@@ -134,6 +134,7 @@ public class User extends Base {
     model.Columns("nickname","position","name","img");
     model.Where("uid=?", tData.get("uid").toString());
     HashMap<String, Object> info = model.FindFirst();
+    info.put("uname", tData.get("uid").toString());
     info.put("uname", tData.get("uname"));
     info.put("img", Data.Img(info.get("img")));
     // 返回

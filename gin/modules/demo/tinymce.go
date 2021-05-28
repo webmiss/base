@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+/* TinyMCE编辑器 */
 type Tinymce struct {
 	service.Base
 }

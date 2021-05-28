@@ -86,6 +86,7 @@ class User extends Base {
     $model->Columns('nickname','position','name','img');
     $model->Where('uid=?',$tData->uid);
     $info = $model->FindFirst();
+    $info['uid'] = (string)$tData->uid;
     $info['uname'] = $tData->uname;
     $info['img'] = Data::Img($info['img']);
     return self::GetJSON(['code'=>0, 'msg'=>'成功', 'token_time'=>$tData->time, 'uinfo'=>$info]);

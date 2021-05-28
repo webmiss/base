@@ -124,7 +124,7 @@ CREATE TABLE `sys_role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统角色';
 
 INSERT INTO `sys_role` (`id`, `name`, `ctime`, `utime`, `perm`) VALUES
-(1,	'基础权限',	0,	0,	'1:0 3:0 4:0 5:7 6:3 14:0');
+(1,	'基础权限',	0,	0,	'1:0 3:0 4:0 5:7 6:3 14:0 15:0');
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (

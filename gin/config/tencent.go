@@ -25,6 +25,7 @@ func TRTC() *TrtcType {
 	cfg.UserID = "administrator"                                                       //管理员账号
 	cfg.ExpireTime = 86400 * 180                                                       //userSig有效期
 	cfg.PlayDomain = "play.webmis.vip"                                                 //播放域名
+	cfg.PlayDomain = "webrtc.cuixs.net"                                                //播放域名
 	cfg.PlayType = "http"                                                              //播放类型
 	return cfg
 }

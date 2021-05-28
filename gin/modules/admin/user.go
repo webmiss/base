@@ -109,6 +109,7 @@ func (r User) Token(c *gin.Context) {
 	model.Columns("nickname", "position", "name", "img")
 	model.Where("uid=?", tData["uid"])
 	info := model.FindFirst()
+	info["uid"] = (&util.Type{}).Strval(tData["uid"])
 	info["uname"] = tData["uname"]
 	info["img"] = r.Img(info["img"])
 	// 返回
