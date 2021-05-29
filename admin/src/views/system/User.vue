@@ -54,7 +54,7 @@
     <wm-page :page="page.page" :limit="page.limit" :total="page.total" @update:page="subPage"></wm-page>
 
     <!-- Sea -->
-    <wm-dialog title="搜索" width="420px" :show="sea.show" @update:show="sea.show=$event">
+    <wm-dialog title="搜索" width="420px" :show="sea.show" @update:close="sea.show=$event">
       <wm-form class="form">
         <wm-form-item label="账号">
           <wm-input :value="sea.form.uname" @update:value="sea.form.uname=$event" maxlength="16" placeholder="用户名/手机号码/邮箱" />
@@ -67,7 +67,7 @@
     <!-- Sea End -->
 
     <!-- Add -->
-    <wm-dialog title="添加" width="420px" :show="add.show" @update:show="add.show=$event">
+    <wm-dialog title="添加" width="420px" :show="add.show" @update:close="add.show=$event">
       <wm-form class="form">
         <wm-form-item label="手机">
           <wm-input :value="add.form.tel" @update:value="add.form.tel=$event" maxlength="11" placeholder="输入手机号码" />
@@ -83,7 +83,7 @@
     <!-- Add End -->
 
     <!-- Edit -->
-    <wm-dialog title="编辑" width="420px" :show="edit.show" @update:show="edit.show=$event">
+    <wm-dialog title="编辑" width="420px" :show="edit.show" @update:close="edit.show=$event">
       <wm-form class="form">
         <wm-form-item label="手机">
           <wm-input :value="edit.form.tel" @update:value="edit.form.tel=$event" maxlength="11" placeholder="输入手机号码" />
@@ -99,7 +99,7 @@
     <!-- Edit End -->
 
     <!-- Del -->
-    <wm-dialog title="删除" width="320px" :show="del.show" @update:show="del.show=$event">
+    <wm-dialog title="删除" width="320px" :show="del.show" @update:close="del.show=$event">
       <wm-row>是否删除已选择数据？</wm-row>
       <template #footer>
         <wm-button @click="subDel()">彻底删除</wm-button>
@@ -108,7 +108,7 @@
     <!-- Del End -->
 
     <!-- Info -->
-    <wm-dialog title="用户信息" width="420px" :show="info.show" @update:show="info.show=$event">
+    <wm-dialog title="用户信息" width="420px" :show="info.show" @update:close="info.show=$event">
       <wm-form class="form">
         <wm-form-item label="昵称">
           <wm-input :value="info.form.nickname" @update:value="info.form.nickname=$event" maxlength="12" placeholder="用户昵称" />
@@ -133,7 +133,7 @@
     <!-- Info End -->
 
     <!-- Perm -->
-    <wm-dialog title="权限" width="540px" :show="perm.show" @update:show="perm.show=$event">
+    <wm-dialog title="权限" width="540px" :show="perm.show" @update:close="perm.show=$event">
       <el-tabs v-model="perm.active">
         <el-tab-pane label="角色" name="role">
           <wm-radio :data="perm.roleList" :value="perm.role" @update:value="perm.role=$event"></wm-radio>

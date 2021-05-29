@@ -16,10 +16,10 @@
         <td>{{ 'room_'+val.id }}</td>
         <td>{{ val.name }}</td>
         <td>
-          <wm-button type="danger" height="32px" @click="RoomJoin(val.id, 'anchor')">主播</wm-button>
+          <wm-button type="danger" height="32px" @click="RoomJoin('anchor', val.id, val.group_id)">主播</wm-button>
         </td>
         <td>
-          <wm-button type="info" height="32px" @click="RoomJoin(val.id, 'audience')">观众</wm-button>
+          <wm-button type="info" height="32px" @click="RoomJoin('audience', val.id, val.group_id)">观众</wm-button>
         </td>
         <td></td>
       </wm-table-tr>
@@ -27,7 +27,7 @@
     <!-- List End -->
 
     <!-- 直播间 -->
-    <wm-dialog :title="room.title" width="640px" :show="room.show" @update:show="pusherClose($event)">
+    <wm-dialog :title="room.title" width="640px" :show="room.show" @update:close="pusherClose($event)">
       <wm-row>
         <div id="playerView" style="width:100%; height:auto;"></div>
       </wm-row>

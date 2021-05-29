@@ -39,7 +39,7 @@
     <wm-page :page="page.page" :limit="page.limit" :total="page.total" @update:page="subPage"></wm-page>
 
     <!-- Sea -->
-    <wm-dialog title="搜索" width="420px" :show="sea.show" @update:show="sea.show=$event">
+    <wm-dialog title="搜索" width="420px" :show="sea.show" @update:close="sea.show=$event">
       <wm-form class="form">
         <wm-form-item label="FID">
           <wm-input :value="sea.form.fid" @update:value="sea.form.fid=$event" placeholder="FID" />
@@ -58,7 +58,7 @@
     <!-- Sea End -->
 
     <!-- Add -->
-    <wm-dialog title="添加" width="540px" :show="add.show" @update:show="add.show=$event">
+    <wm-dialog title="添加" width="540px" :show="add.show" @update:close="add.show=$event">
       <wm-form class="form">
         <wm-form-item label="所属">
           <wm-input :value="add.form.fid" @update:value="add.form.fid=$event" maxlength="3" maxWidth="80px" placeholder="FID" />
@@ -86,7 +86,7 @@
     <!-- Add End -->
 
     <!-- Edit -->
-    <wm-dialog title="编辑" width="540px" :show="edit.show" @update:show="edit.show=$event">
+    <wm-dialog title="编辑" width="540px" :show="edit.show" @update:close="edit.show=$event">
       <wm-form class="form">
         <wm-form-item label="所属">
           <wm-input :value="edit.form.fid" @update:value="edit.form.fid=$event" maxlength="3" maxWidth="80px" placeholder="FID" />
@@ -114,7 +114,7 @@
     <!-- Edit End -->
 
     <!-- Del -->
-    <wm-dialog title="删除" width="320px" :show="del.show" @update:show="del.show=$event">
+    <wm-dialog title="删除" width="320px" :show="del.show" @update:close="del.show=$event">
       <wm-row>是否删除已选择数据？</wm-row>
       <template #footer>
         <wm-button @click="subDel()">彻底删除</wm-button>
@@ -123,7 +123,7 @@
     <!-- Del End -->
 
     <!-- Perm -->
-    <wm-dialog width="640px" :title="perm.title" :show="perm.show" @update:show="perm.show=$event">
+    <wm-dialog width="640px" :title="perm.title" :show="perm.show" @update:close="perm.show=$event">
       <wm-table>
         <wm-table-title :checkbox="false">
           <td>名称</td>

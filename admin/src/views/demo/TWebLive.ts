@@ -27,14 +27,15 @@ export default defineComponent({
     // 用户信息
     const uinfo: any = {};
     // 直播间
-    const room: any = {show: false, title: '', id: '', role: ''};
+    const room: any = {show: false, title: '', id: '', groupid: '', role: ''};
     // 推流
     let pusher: any = null;
     // 拉流
     let player: any = null;
     // 即时通信
+    let tim: any = null;
     let im: any = null;
-    return {state, page, uinfo, room, pusher, player, im}
+    return {state, page, uinfo, room, pusher, player, tim, im}
   },
   mounted(){
     // 加载数据
@@ -49,14 +50,17 @@ export default defineComponent({
     /* 加载数据 */
     loadData(){
       // 直播组件
-      HtmlLoad(['/tweblive/trtc.js', '/tweblive/tim-js.js']);
+      HtmlLoad(['/tweblive/trtc.js']);
+      setTimeout(()=>{
+        HtmlLoad(['/tweblive/tim-js.js']);
+      },300);
       setTimeout(()=>{
         HtmlLoad(['/tweblive/tweblive.js']);
       },600);
       // 测试数据
       this.page.list = [
-        {id: '1', name: 'xxx直播'},
-        {id: '2', name: 'xxx直播'},
+        {id: '1', group_id: '@TGS#aRHBAOFHK', name: 'xxx直播'},
+        {id: '2', group_id: '@TGS#aRHBAOFHK', name: 'xxx直播'},
       ];
       // 用户信息
       Post('/demo/tweblive/userInfo',{
@@ -69,72 +73,151 @@ export default defineComponent({
     },
 
     /* 进入房间 */
-    RoomJoin(roomid: string, role: string) {
+    RoomJoin(role: string, roomid: string, groupid: string) {
       const self = this;
       this.room.show = true;
       this.room.id = roomid;
+      this.room.groupid = groupid;
       this.room.role = role;
       const uid: string = this.state.uInfo.uid;
-      /* 即时通信 */
-      if(!this.im){
-        // @ts-ignore
-        this.im = TWebLive.createIM({ SDKAppID: this.uinfo.sdk_app_id });
-        this.im.createRoom({name: 'xxx直播间', roomID: roomid}).then((res: any) => {
-          console.log(res);
-        });
+      this.room.title = role=='anchor'?'主播ID: '+uid:'观众ID: '+uid;
 
-        
+      // @ts-ignore 主播
+      if(role=='anchor' && !this.pusher) this.pusher = TWebLive.createPusher({ userID: uid, useStringRoomId: true });
+      // @ts-ignore 观众
+      if(role!='anchor' && !this.player) this.player = TWebLive.createPlayer();
+      // 预览视频
+      this.renderView();
+
+      /* 即时通信 */
+      if(!this.tim){
         // @ts-ignore
-        // this.im.on(TWebLive.EVENT.IM_TEXT_MESSAGE_RECEIVED, (event: any) => {
-        //   event.data.forEach((message: any) => {
-        //     console.log((message.from || message.nick) + ' : ', message.payload.text);
-        //   });
-        // });
+        this.tim = TIM.create({ SDKAppID: this.uinfo.sdk_app_id });
+        // @ts-ignore 监听登录
+        this.tim.on(TIM.EVENT.SDK_READY, this.roomReady);
+        // @ts-ignore 监听消息
+        this.tim.on(TIM.EVENT.MESSAGE_RECEIVED, this.roomMassage);
+      }
+      // 加入直播间
+      this.roomJoin();
+    },
+
+    /* 直播间-加入 */
+    roomJoin() {
+      // @ts-ignore
+      this.tim.joinGroup({groupID: this.room.groupid, type: TIM.TYPES.GRP_AVCHATROOM}).then((res: any) => {
+        const status = res.data.status
+        console.log('直播间-加入:', status);
+        // 主播
+        if(this.room.role == 'anchor'){
+          // 登录
+          // const userID = this.uinfo.user_id;
+          // const userSig = this.uinfo.user_sig;
+          // this.tim.login({userID: userID, userSig: userSig}).then(()=>{
+          //   console.log('主播登录:', userID, userSig);
+          // }).catch((err: any)=>{
+          //   console.log('主播登录:', err);
+          // });
+        } else {
+          console.log('观众:', '游客身份!');
+        }
+      }).catch((err: any) => {
+        console.log('直播间-加入:', '失败!');
+      });
+    },
+
+    /* 直播间-登录 */
+    roomReady(event: any) {
+      // setInterval(()=>{
+      //   this.sendMsg();
+      // },10000);
+    },
+
+    /* 直播间-消息 */
+    roomMassage(event: any) {
+      const total = event.data.length
+      let msg;
+      for (let i = 0; i < total; i++) {
+        msg = event.data[i];
+        switch (msg.type) {
+          // @ts-ignore 文本消息
+          case TIM.TYPES.MSG_TEXT: this.msgText(msg); break;
+          // @ts-ignore 自定义消息
+          case TIM.TYPES.MSG_CUSTOM: this.msgCustom(msg); break;
+          // @ts-ignore 成员进群&退群
+          case TIM.TYPES.MSG_GRP_TIP: this.msgGroupTip(msg); break;
+          // @ts-ignore 系统通知
+          case TIM.TYPES.MSG_GRP_SYS_NOTICE: this.msgSystemNotice(msg); break;
+          default: break;
+        }
+      }
+    },
+
+    /* 消息-文本 */
+    msgText(msg: any) {
+      console.log('消息-文本:', msg);
+    },
+    /* 消息-自定义 */
+    msgCustom(msg: any) {
+      console.log('消息-自定义:', msg);
+    },
+    /* 消息-进群&退群 */
+    msgGroupTip(msg: any) {
+      console.log('消息-进群&退群:', msg);
+    },
+    /* 消息-系统通知 */
+    msgSystemNotice(msg: any) {
+      console.log('消息-系统通知:', msg);
+    },
+
+    /* 直播间-发送消息 */
+    sendMsg() {
+      // 消息
+      let message = this.tim.createTextMessage({
+        to: this.room.groupid,
         // @ts-ignore
-        // this.im.on(TWebLive.EVENT.IM_READY, (event: any) => {
-        //   this.im.sendTextMessage({ roomID: roomid, text: 'hello from TWebLive' });
-        // });
-        
-      }
-      // 类型
-      if(role=='anchor'){
-        this.room.title = '主播ID: '+uid;
-        if(!this.pusher){
-          // @ts-ignore
-          this.pusher = TWebLive.createPusher({ userID: uid });
-          // 显示视频
-          this.pusher.setRenderView({
-            elementID: 'playerView',
-            audio: true,
-            video: {
-              width: 480, height: 280, frameRate: 10, bitrate: 400
-            },
-          }).then(() => {
-            console.log('视频流: 创建成功!');
-          }).catch((error: any) => {
-            console.log('视频流:', error);
-          });
+        conversationType: TIM.TYPES.CONV_GROUP,
+        // @ts-ignore
+        priority: TIM.TYPES.MSG_PRIORITY_NORMAL,
+        payload: {
+          text: 'Hello world!'
         }
-      // 观众
-      } else {
-        this.room.title = '观众ID: '+uid;
-        if(!this.player){
-          // @ts-ignore
-          this.player = TWebLive.createPlayer();
-          this.player.setRenderView({ elementID: 'playerView' });
-          const roomID = this.room.id;
-          const SDKAppID = this.uinfo.sdk_app_id;
-          const userID = this.uinfo.user_id;
-          const userSig = this.uinfo.user_sig;
-          let url = `room://sdkappid=${SDKAppID}&roomid=${roomID}&userid=${userID}&usersig=${userSig}`;
-          this.player.startPlay(url).then(() => {
-            console.log('远程拉流: 成功!');
-          }).catch((error: any) => {
-            console.log('远程拉流:', error);
-          });
-        }
+      });
+      // 发送
+      this.tim.sendMessage(message).then((res: any)=>{
+        console.log('发送消息:', res);
+      }).catch((err: any)=>{
+        console.log('发送消息:', err);
+      });
+    },
+
+    /* 预览视频 */
+    renderView() {
+      if(this.room.role=='anchor'){
+        this.pusher.setRenderView({
+          elementID: 'playerView',
+          audio: true,
+          video: {
+            width: 480, height: 280, frameRate: 10, bitrate: 400
+          },
+        }).then(() => {
+          console.log('视频流: 创建成功!');
+        }).catch((error: any) => {
+          console.log('视频流:', error);
+        });
+      }else{
+        this.player.setRenderView({ elementID: 'playerView' });
+        const roomID = this.room.id;
+        const SDKAppID = this.uinfo.sdk_app_id;
+        const userID = this.uinfo.user_id;
+        const userSig = this.uinfo.user_sig;
+        let url = `room://sdkappid=${SDKAppID}&roomid=${roomID}&userid=${userID}&usersig=${userSig}`;
+        this.player.startPlay(url).then(() => {
+          console.log('远程拉流: 成功!');
+        }).catch((error: any) => {
+          console.log('远程拉流:', error);
+        });
       }
-      
     },
 
     /* 开始推流 */
@@ -169,11 +252,8 @@ export default defineComponent({
           console.log('停止推流:', error);
         });
       } else {
-        // this.player.stopPlay().then(() => {
-        //   console.log('停止播放: 成功!');
-        // }).catch((error: any) => {
-        //   console.log('停止播放:', error);
-        // });
+        // 观众
+        this.player.stopPlay();
       }
     }
 

@@ -2,7 +2,7 @@
   <wm-popup ref="Popup" :show="show" @update:show="updateShow" :bgClose="bgClose">
     <div class="wm-dialog" :style="{width:width, height:height, backgroundColor:bgColor}">
       <div class="wm-dialog_title">
-        <div class="wm-dialog_close" @click="$refs.Popup.close()"></div>
+        <div class="wm-dialog_close" @click="$emit('update:close', !show)"></div>
         <div class="title" :style="{textAlign:titleAlign}">{{title}}</div>
       </div>
       <div ref="DialogBody"  class="wm-dialog_body">

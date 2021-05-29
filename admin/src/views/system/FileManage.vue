@@ -49,7 +49,7 @@
     </div>
 
     <!-- 新建文件夹 -->
-    <wm-dialog title="新建文件夹" width="420px" :show="folder.show" @update:show="folder.show=$event">
+    <wm-dialog title="新建文件夹" width="420px" :show="folder.show" @update:close="folder.show=$event">
       <wm-form class="form">
         <wm-form-item label="名称">
           <wm-input :value="folder.form.name" @update:value="folder.form.name=$event" placeholder="文件夹名称" />
@@ -62,7 +62,7 @@
     <!-- 新建文件夹 End -->
 
     <!-- 重命名 -->
-    <wm-dialog title="重命名" width="420px" :show="rename.show" @update:show="rename.show=$event">
+    <wm-dialog title="重命名" width="420px" :show="rename.show" @update:chose="rename.show=$event">
       <wm-form class="form">
         <wm-form-item label="名称">
           <wm-input :value="rename.form.name" @update:value="rename.form.name=$event" placeholder="重命名的名称" />
@@ -78,7 +78,7 @@
     <wm-uploader class="hide" ref="Uploader" :url="upload.url" :param="upload.param" @progress="upProgress"></wm-uploader>
 
     <!-- 下载 -->
-    <wm-dialog title="下载文件" width="320px" :show="down.show" @update:show="down.show=$event">
+    <wm-dialog title="下载文件" width="320px" :show="down.show" @update:chose="down.show=$event">
       <wm-row>{{down.filename}}</wm-row>
       <template #footer>
         <wm-button @click="downFile()">确定</wm-button>
@@ -87,7 +87,7 @@
     <!-- 下载 End -->
 
     <!-- 删除 -->
-    <wm-dialog title="删除" width="320px" :show="del.show" @update:show="del.show=$event">
+    <wm-dialog title="删除" width="320px" :show="del.show" @update:chose="del.show=$event">
       <wm-row>是否删除已选择文件夹或文件？</wm-row>
       <template #footer>
         <wm-button @click="subDel()">彻底删除</wm-button>
@@ -96,7 +96,7 @@
     <!-- 删除 End -->
 
     <!-- 图片预览 -->
-    <wm-img-view ref="imgShow" :show="imgView.show" @update:show="imgView.show=$event"></wm-img-view>
+    <wm-img-view ref="imgShow" :show="imgView.show" @update:chose="imgView.show=$event"></wm-img-view>
 
   </div>
 </template>
