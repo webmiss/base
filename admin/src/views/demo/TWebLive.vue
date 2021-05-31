@@ -78,11 +78,14 @@
 /* 消息 */
 .player_msg{position: absolute; z-index: 99; width: 280px; height: 160px; left: 10px; bottom: 10px; border-radius: 4px; color: #fff; background-color: rgba(0, 0, 0, .3);}
 .player_msg_wrapper{position: relative; overflow: hidden; padding: 5px 10px; width: 100%; height: 100%; box-sizing: border-box; overflow-y: auto; -webkit-overflow-scrolling: touch;}
+.player_msg_wrapper::-webkit-scrollbar{width: 8px;}
+.player_msg_wrapper::-webkit-scrollbar-thumb{border-radius: 4px; background: rgba(136,136,136,0.4);}
+.player_msg_wrapper:hover::-webkit-scrollbar-track{background: rgba(136,136,136,0.1);}
 .player_msg_list{position: absolute; width: calc(100% - 20px);}
-.player_msg_box{padding: 4px 0;}
+.player_msg_box{padding: 2px 0;}
 .player_msg_box .img{width: 24px; height: 24px; border-radius: 50%; background-color: rgba(255, 255, 255, .6);}
 .player_msg_box .info{width: calc(100% - 30px); line-height: 24px;}
-.player_msg_box .content{line-height: 24px;}
+.player_msg_box .content{padding: 5px 0; line-height: 20px;}
 /* 工具 */
 .player_tools{position: absolute; z-index: 99; width: 40px; top: 10px; right: 10px; color: #FFF; font-size: 12px;}
 .player_tools li{cursor: pointer; height: 40px; line-height: 40px; margin: 10px 0; text-align: center; background-color: rgba(0, 0, 0, .3); border-radius: 50%;}

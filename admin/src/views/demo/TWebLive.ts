@@ -221,8 +221,8 @@ export default defineComponent({
       const scrollTop = res.target.scrollTop;
       const msgBox: any = this.$refs.MsgBox;
       const msgObj: any = this.$refs.MsgList;
-      console.log(scrollTop, msgObj.clientHeight, msgObj.scrollHeight);
-      console.log(msgObj.clientHeight - msgBox.clientHeight - scrollTop);
+      if(msgObj.clientHeight - msgBox.clientHeight - scrollTop < 10) this.form.isScroll = true;
+      else this.form.isScroll = false;
     },
 
     /* 直播群-追加信息 */
@@ -230,9 +230,11 @@ export default defineComponent({
       this.form.lists.push(data);
       // 触底
       if(this.form.isScroll){
-        const msgObj: any = this.$refs.MsgList;
-        console.log(msgObj.scrollTop, msgObj.scrollHeight);
-        msgObj.scrollTop = msgObj.scrollHeight;
+        setTimeout(()=>{
+          const msgBox: any = this.$refs.MsgBox;
+          const msgObj: any = this.$refs.MsgList;
+          msgBox.scrollTop = msgObj.scrollHeight;
+        }, 100);
       }
     },
 
