@@ -10,7 +10,7 @@
           <slot></slot>
         </div>
       </div>
-      <div class="wm-dialog_footer" :style="{textAlign:footerAlign}">
+      <div v-if="isFooter" class="wm-dialog_footer" :style="{textAlign:footerAlign}">
         <slot name="footer"></slot>
       </div>
     </div>
@@ -54,6 +54,7 @@ export default defineComponent({
     footerAlign: {type: String, default: 'center'}, //底部对齐方式
     bgColor: {type: String, default: '#FFF'},       //内容背景颜色
     bgClose: {type: Boolean, default: false},       //点击背景关闭
+    isFooter: {type: Boolean, default: true},       //是否底部
     
   },
   data(){

@@ -28,7 +28,9 @@ func (r Tweblive) UserInfo(c *gin.Context) {
 	cfg := config.TRTC()
 	userId := (&util.Type{}).Strval(tData["uid"])
 	userSin := (&tencent.Signature{}).UserSig(userId)
-	r.Print(userId, userSin)
+	// 导入
+	res := (&tencent.Im{}).UserImport(userId, "", "")
+	r.Print("导入", res)
 	// 返回
 	r.GetJSON(c, gin.H{
 		"code": 0,
