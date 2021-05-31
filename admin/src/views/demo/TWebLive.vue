@@ -79,8 +79,8 @@
 .player_msg{position: absolute; z-index: 99; width: 280px; height: 160px; left: 10px; bottom: 10px; border-radius: 4px; color: #fff; background-color: rgba(0, 0, 0, .3);}
 .player_msg_wrapper{position: relative; overflow: hidden; padding: 5px 10px; width: 100%; height: 100%; box-sizing: border-box; overflow-y: auto; -webkit-overflow-scrolling: touch;}
 .player_msg_wrapper::-webkit-scrollbar{width: 8px;}
-.player_msg_wrapper::-webkit-scrollbar-thumb{border-radius: 4px; background: rgba(136,136,136,0.4);}
-.player_msg_wrapper:hover::-webkit-scrollbar-track{background: rgba(136,136,136,0.1);}
+.player_msg_wrapper::-webkit-scrollbar-thumb{border-radius: 4px; background: rgba(0, 0, 0, 0.4);}
+.player_msg_wrapper:hover::-webkit-scrollbar-track{background: rgba(0, 0, 0, 0.1);}
 .player_msg_list{position: absolute; width: calc(100% - 20px);}
 .player_msg_box{padding: 2px 0;}
 .player_msg_box .img{width: 24px; height: 24px; border-radius: 50%; background-color: rgba(255, 255, 255, .6);}
