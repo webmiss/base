@@ -7,6 +7,7 @@ use Service\AdminToken;
 use Library\Upload;
 use Util\Url;
 
+/* TinyMCE编辑器 */
 class Tinymce extends Base {
 
   private static $ImgDir = 'upload/tinymce/';

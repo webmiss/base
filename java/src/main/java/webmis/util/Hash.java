@@ -29,7 +29,6 @@ public class Hash {
   /* HmacSha256 */
   public static byte[] HmacSha256(String data, byte[] key) {
     try {
-      // byte[] byteKey = key.getBytes("UTF-8");
       Mac hmac = Mac.getInstance("HmacSHA256");
       SecretKeySpec keySpec = new SecretKeySpec(key, "HmacSHA256");
       hmac.init(keySpec);
@@ -37,6 +36,9 @@ public class Hash {
     } catch (Exception e) {
       return null;
     }
+  }
+  public static String Base64Encode(byte[] data) {
+    return java.util.Base64.getEncoder().encodeToString(data);
   }
 
   /* Byte转为16进制 */

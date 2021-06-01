@@ -3,7 +3,6 @@ package home
 import (
 	"webmis/config"
 	"webmis/library"
-	"webmis/library/tencent"
 	"webmis/service"
 
 	"github.com/gin-gonic/gin"
@@ -16,8 +15,6 @@ type Index struct {
 
 /* 首页 */
 func (r Index) Index(c *gin.Context) {
-	res := (&tencent.Im{}).GroupList()
-	r.Print(res)
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "Web"})
 }

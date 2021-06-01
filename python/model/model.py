@@ -162,7 +162,6 @@ class Model :
   def Find(self) :
     res = []
     sql, args = self.SelectSql()
-    if(sql=='') : return res
     cs = self.Query(sql, args)
     if not cs : return res
     res = cs.fetchall()
@@ -173,7 +172,6 @@ class Model :
   def FindFirst(self) :
     res = {}
     sql, args = self.SelectSql()
-    if(sql=='') : return res
     cs = self.Query(sql, args)
     if not cs : return res
     res = cs.fetchone()
@@ -209,7 +207,6 @@ class Model :
   # 添加-执行
   def Insert(self) :
     sql, args = self.InsertSql()
-    if(sql=='') : return False
     cs = self.Exec(sql, args)
     if cs==None : return False
     self.__id = cs.lastrowid
@@ -246,7 +243,6 @@ class Model :
   # 更新-执行
   def Update(self) :
     sql, args = self.UpdateSql()
-    if(sql=='') : return False
     cs = self.Exec(sql, args)
     if cs == None : return False
     cs.close()
@@ -270,7 +266,6 @@ class Model :
   # 删除-执行
   def Delete(self) :
     sql, args = self.DeleteSql()
-    if(sql=='') : return False
     cs = self.Exec(sql, args)
     if cs == None : return False
     cs.close()

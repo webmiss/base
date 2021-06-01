@@ -54,7 +54,7 @@ public class Signature extends Base {
     + HashedCanonicalRequest;
     // 计算签名
     HashMap<String, Object> cfg = Tencent.CAPI();
-    byte[] SecretDate = Hash.HmacSha256(date, Hash.StrToByte("TC3"+cfg.get("SecretKey")));
+    byte[] SecretDate = Hash.HmacSha256(date, ("TC3"+cfg.get("SecretKey").toString()).getBytes());
     byte[] SecretService = Hash.HmacSha256(Service, SecretDate);
     byte[] SecretSigning = Hash.HmacSha256("tc3_request", SecretService);
     String Sign = Hash.HexEncode(Hash.HmacSha256(StringToSign, SecretSigning));
@@ -97,9 +97,19 @@ public class Signature extends Base {
     return Base64.UrlEncode(data);
   }
 
+  /* 获取Sig */
+  private static String hmacsha256(HashMap<String, String> param, String key) {
+    String content = "TLS.identifier:"+param.get("TLS.identifier")+"\n"
+    +"TLS.sdkappid:"+param.get("TLS.sdkappid")+"\n"
+    +"TLS.time:"+param.get("TLS.time")+"\n"
+    +"TLS.expire:"+param.get("TLS.expire")+"\n";
+    byte[] sig = Hash.HmacSha256(content, key.getBytes());
+    return Hash.Base64Encode(sig);
+  }
+
   /* UserSig-验证 */
   @SuppressWarnings("unchecked")
-  public static long VerifyUserSig(long userId, String userSig) {
+  public static long VerifyUserSig(Object userId, String userSig) {
     // 解码
     byte[] base64 = Base64.UrlDecode(userSig);
     // 解压
@@ -120,13 +130,6 @@ public class Signature extends Base {
     return out_time - now_time;
   }
 
-  /* 获取Sig */
-  private static String hmacsha256(HashMap<String, String> param, String key) {
-    String content = "TLS.identifier:"+param.get("TLS.identifier")+"\n"
-    +"TLS.sdkappid:"+param.get("TLS.sdkappid")+"\n"
-    +"TLS.time:"+param.get("TLS.time")+"\n"
-    +"TLS.expire:"+param.get("TLS.expire")+"\n";
-    return (Base64.Encode(Hash.HmacSha256(content, Hash.StrToByte(key)))).toString();
-  }
+  
   
 }

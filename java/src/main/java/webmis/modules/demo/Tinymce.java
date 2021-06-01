@@ -14,6 +14,7 @@ import webmis.service.Base;
 import webmis.service.Data;
 import webmis.util.Url;
 
+/* TinyMCE编辑器 */
 @RestController
 @Controller("DemoTinymce")
 @RequestMapping("/demo/tinymce")

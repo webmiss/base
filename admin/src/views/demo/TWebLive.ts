@@ -53,18 +53,18 @@ export default defineComponent({
     /* 加载数据 */
     loadData(){
       // 直播组件
-      HtmlLoad(['/tweblive/trtc.js']);
-      setTimeout(()=>{
-        HtmlLoad(['/tweblive/tim-js.js']);
-      },300);
+      HtmlLoad(['/tweblive/trtc.js', '/tweblive/tim-js.js']);
       setTimeout(()=>{
         HtmlLoad(['/tweblive/tweblive.js']);
-      },600);
-      // 测试数据
-      this.page.list = [
-        {id: '1', group_id: '@TGS#aRHBAOFHK', name: 'xxx直播'},
-        {id: '2', group_id: '@TGS#aRHBAOFHK', name: 'xxx直播'},
-      ];
+      },300);
+      // 用户信息
+      Post('/demo/tweblive/list',{
+        token: Storage.getItem('token'),
+      },(res: any)=>{
+        const d = res.data;
+        if(d.code!=0) return Toast(d.msg);
+        this.page.list = d.list;
+      });
       // 用户信息
       Post('/demo/tweblive/userInfo',{
         token: Storage.getItem('token'),

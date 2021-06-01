@@ -235,7 +235,6 @@ class Model extends Base {
   /* 添加-执行 */
   function Insert(): bool {
     list($sql, $args) = $this->InsertSql();
-    if(empty($sql)) return false;
     $res = $this->Exec($sql, $args);
     if($res){
        $this->id = $this->conn->lastInsertId();
@@ -279,7 +278,6 @@ class Model extends Base {
   /* 更新-执行 */
   function Update(): bool {
     list($sql, $args) = $this->UpdateSql();
-    if(empty($sql)) return false;
     $res = $this->Exec($sql, $args);
     if($res){
       $this->nums = $this->conn->affectedRows();
@@ -309,7 +307,6 @@ class Model extends Base {
   /* 删除-执行 */
   function Delete(): bool {
     list($sql, $args) = $this->DeleteSql();
-    if(empty($sql)) return false;
     $res = $this->Exec($sql, $args);
     if($res){
       $this->nums = $this->conn->affectedRows();

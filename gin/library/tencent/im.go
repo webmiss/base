@@ -19,17 +19,6 @@ func (i Im) GetURL(apiUrl string) string {
 	return "https://console.tim.qq.com/v4/" + apiUrl + "?sdkappid=" + (&util.Type{}).Strval(cfg.SDKAppID) + "&identifier=" + cfg.UserID + "&usersig=" + userSig + "&random=" + random + "&contenttype=json"
 }
 
-/* 帐号-单个 */
-func (i Im) UserImport(uid string, nick string, img string) map[string]interface{} {
-	url := i.GetURL("group_open_http_svc/get_appid_group_list")
-	data := map[string]interface{}{
-		"Identifier": uid,
-		"Nick":       nick,
-		"FaceUrl":    img,
-	}
-	return (&library.Curl{}).PostJson(url, data, nil)
-}
-
 /* 群组-列表 */
 func (i Im) GroupList() map[string]interface{} {
 	url := i.GetURL("group_open_http_svc/get_appid_group_list")

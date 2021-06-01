@@ -239,9 +239,6 @@ func (m *Model) SelectSQL() (string, []interface{}) {
 /* 查询-多条 */
 func (m *Model) Find() []map[string]interface{} {
 	sql, args := m.SelectSQL()
-	if sql == "" {
-		return nil
-	}
 	rows := m.Query(sql, args)
 	if rows == nil {
 		return nil
@@ -253,9 +250,6 @@ func (m *Model) Find() []map[string]interface{} {
 func (m *Model) FindFirst() map[string]interface{} {
 	m.limit = "0,1"
 	sql, args := m.SelectSQL()
-	if sql == "" {
-		return nil
-	}
 	rows := m.Query(sql, args)
 	if rows == nil {
 		return nil
@@ -393,9 +387,6 @@ func (m *Model) UpdateSQL() (string, []interface{}) {
 /* 更新-执行 */
 func (m *Model) Update() bool {
 	sql, args := m.UpdateSQL()
-	if sql == "" {
-		return false
-	}
 	rows := m.Exec(sql, args)
 	if rows == nil {
 		return false
@@ -429,9 +420,6 @@ func (m *Model) DeleteSQL() (string, []interface{}) {
 /* 删除-执行 */
 func (m *Model) Delete() bool {
 	sql, args := m.DeleteSQL()
-	if sql == "" {
-		return false
-	}
 	rows := m.Exec(sql, args)
 	if rows == nil {
 		return false

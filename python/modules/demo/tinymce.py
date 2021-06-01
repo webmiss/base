@@ -4,6 +4,7 @@ from service.admin_token import AdminToken
 from library.upload import Upload
 from util.url import Url
 
+# TinyMCE编辑器
 class Tinymce(Base) :
 
   ImgDir: str='upload/tinymce/'

@@ -100,7 +100,8 @@ func (s Signature) UserSig(userId interface{}, expire ...int) string {
 		"TLS.identifier": (&util.Type{}).Strval(userId),
 		"TLS.sdkappid":   (&util.Type{}).Strval(cfg.SDKAppID),
 		"TLS.expire":     (&util.Type{}).Strval(expire_time),
-		"TLS.time":       (&util.Type{}).Strval(util.Time()),
+		// "TLS.time":       (&util.Type{}).Strval(util.Time()),
+		"TLS.time": "1622537222",
 	}
 	param["TLS.sig"] = s.hmacsha256(param, cfg.SecretKey)
 	data := util.JsonEncode(param)
