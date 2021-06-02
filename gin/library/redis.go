@@ -82,8 +82,8 @@ func (r *Redis) RedisPool(cfg *config.RedisType) *redigo.Pool {
 }
 
 /* 添加 */
-func (r *Redis) Set(key string, val interface{}) []byte {
-	res, err := redigo.Bytes(r.conn.Do("SET", key, val))
+func (r *Redis) Set(val ...interface{}) []byte {
+	res, err := redigo.Bytes(r.conn.Do("SET", val...))
 	if err != nil {
 		fmt.Println("[Redis] Set:", err)
 		return nil
