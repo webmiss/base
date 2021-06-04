@@ -19,16 +19,13 @@ class Data extends Base {
   static function Mist(string $redisName) {
     // 自增ID
     $redis = new Redis();
-    Data::$autoId = floor($redis->Gets($redisName));
-    Data::$autoId++;
+    Data::$autoId = $redis->Incr($redisName);
+    $redis->Close();
     // 随机数
     $randA = mt_rand(0, 255);
     $randB = mt_rand(0, 255);
     // 位运算
     $mist = decbin((Data::$autoId << (self::max8bit + self::max8bit)) | ($randA << self::max8bit) | $randB);
-    // 保存
-    $redis->Set($redisName, Data::$autoId);
-    $redis->Close();
     return bindec($mist);
   }
 

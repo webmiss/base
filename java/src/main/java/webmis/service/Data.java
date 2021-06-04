@@ -20,18 +20,14 @@ public class Data extends Base {
   public static long Mist(String redisName) {
     // 获取
     Redis redis = new Redis("");
-    String _id = redis.Get(redisName);
-    Data.autoId = _id==null?0:Long.valueOf(_id);
-    Data.autoId++;
+    Data.autoId = redis.Incr(redisName);
+    redis.Close();
     // 随机数
     Random random = new Random();
     long randA = random.nextInt(255);
     long randB = random.nextInt(255);
     // 位运算
     long mist = (Data.autoId << (Data.max8bit + Data.max8bit) | (randA << Data.max8bit) | randB);
-    // 保存
-    redis.Set(redisName, String.valueOf(Data.autoId));
-    redis.Close();
     return mist;
   }
 

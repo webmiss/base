@@ -73,6 +73,11 @@ public class Redis extends Base {
     if(_conn==null) return "";
     return _conn.set(key, val);
   }
+  /* 自增 */
+  public Long Incr(String key) {
+    if(_conn==null) return null;
+    return _conn.incr(key);
+  }
   /* 获取 */
   public String Get(String key) {
     if(_conn==null) return "";
@@ -149,6 +154,10 @@ public class Redis extends Base {
   }
 
   /* 列表(List)-读取 */
+  public List<String> LRange(String key, int start, int end) {
+    if(_conn==null) return null;
+    return _conn.lrange(key, start, end);
+  }
   public List<String> BRPop(String key, int timeout) {
     if(_conn==null) return null;
     return _conn.brpop(timeout, key);

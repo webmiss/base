@@ -55,6 +55,11 @@ class Redis extends Base {
     if(!$this->conn) return;
     return $this->conn->set($key, $val);
   }
+  /* 自增 */
+  function Incr(string $key) {
+    if(!$this->conn) return;
+    return $this->conn->incr($key);
+  }
   /* 获取 */
   function Gets(string $key) {
     if(!$this->conn) return;
@@ -130,6 +135,10 @@ class Redis extends Base {
   }
 
   /* 列表(List)-读取 */
+  function LRange($key, $start, $end): array {
+    if(!$this->conn) return null;
+    return $this->conn->lRange($key, $start, $end);
+  }
   function BRPop($key, $timeout): array {
     if(!$this->conn) return null;
     return $this->conn->brPop($key, $timeout);

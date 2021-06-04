@@ -23,16 +23,13 @@ const max12bit = uint(12) //序列数位数
 func (Data) Mist(redisName string) int64 {
 	// 自增ID
 	redis := (&library.Redis{}).New("")
-	autoId = (&util.Type{}).Int64(redis.Get(redisName))
-	autoId++
+	autoId := redis.Incr(redisName)
+	redis.Close()
 	// 随机数
 	randA, _ := rand.Int(rand.Reader, big.NewInt(255))
 	randB, _ := rand.Int(rand.Reader, big.NewInt(255))
 	// 位运算
 	mist := int64((autoId << (max8bit + max8bit)) | (randA.Int64() << max8bit) | randB.Int64())
-	// 保存
-	redis.Set(redisName, autoId)
-	redis.Close()
 	return mist
 }
 

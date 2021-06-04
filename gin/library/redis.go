@@ -91,6 +91,16 @@ func (r *Redis) Set(val ...interface{}) []byte {
 	return res
 }
 
+/* 自增 */
+func (r *Redis) Incr(key string) int64 {
+	res, err := redigo.Int64(r.conn.Do("Incr", key))
+	if err != nil {
+		fmt.Println("[Redis] Incr:", err)
+		return 0
+	}
+	return res
+}
+
 /* 获取 */
 func (r *Redis) Get(key string) string {
 	res, err := redigo.String(r.conn.Do("Get", key))
@@ -240,6 +250,13 @@ func (r *Redis) LPush(key string, val interface{}) bool {
 }
 
 /* 列表(List)-读取 */
+func (r *Redis) LRange(key string, start int64, end int64) []interface{} {
+	res, err := redigo.Values(r.conn.Do("LRange", key, start, end))
+	if err != nil {
+		return nil
+	}
+	return res
+}
 func (r *Redis) BRPop(key string, timeout int) []interface{} {
 	res, err := redigo.Values(r.conn.Do("BRPOP", key, timeout))
 	if err != nil {

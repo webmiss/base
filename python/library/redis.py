@@ -58,6 +58,15 @@ class Redis(Base):
     except Exception as e:
       self.Print('[Redis] Set:', e)
       return False
+  # 自增
+  def Incr(self, key: str):
+    try:
+      res = self.__conn.incr(key)
+      if not res : return False
+      return res
+    except Exception as e:
+      self.Print('[Redis] Incr:', e)
+      return False
   # 获取
   def Get(self, key: str):
     try:
@@ -167,6 +176,14 @@ class Redis(Base):
       self.Print('[Redis] LPush:', e)
       return 0
   # 列表(List)-读取
+  def LRange(self, key: str, start: int, end: int):
+    try:
+      res = self.__conn.lrange(key, start, end)
+      if not res : return tuple(b'',b'')
+      return res
+    except Exception as e:
+      self.Print('[Redis] lRange:', e)
+      return tuple(b'',b'')
   def BRPop(self, key: str, timeout: float):
     try:
       res = self.__conn.brpop(key, timeout)

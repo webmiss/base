@@ -18,17 +18,13 @@ class Data:
   def Mist(redisName: str):
     # 自增ID
     redis = Redis()
-    _id = redis.Get(redisName)
-    Data.autoId = 0 if not _id else int(_id)
-    Data.autoId += 1
+    Data.autoId = redis.Incr(redisName)
+    redis.Close()
     # 随机数
     randA = random.randint(0,255)
     randB = random.randint(0,255)
     # 位运算
     mist = int((Data.autoId << (Data.max8bit + Data.max8bit)) | (randA << Data.max8bit) | randB)
-    # 保存
-    redis.Set(redisName, Data.autoId)
-    redis.Close()
     return mist
 
   # 雪花算法
