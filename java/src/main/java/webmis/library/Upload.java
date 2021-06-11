@@ -2,6 +2,7 @@ package webmis.library;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -75,7 +76,7 @@ public class Upload {
     // 否有类型
     ArrayList<String> ct = Util.Explode(",", base64);
     if (ct.size() > 1) {
-      param.put("ext", ct.get(0));
+      param.put("ext", Base64.GetExt(ct.get(0)));
       base64 = ct.get(1);
     }
     // 创建目录
@@ -86,7 +87,7 @@ public class Upload {
     }
     // 文件名
     String filename;
-    if(param.get("filename").equals("")) filename=_getName()+"."+param.get("ext").toString();
+    if(param.get("filename").equals("")) filename=GetFileName()+"."+param.get("ext").toString();
     else filename=param.get("filename").toString();
     // 保存文件
     if(!FileEo.Writer(String.valueOf(param.get("path"))+filename, Base64.Decode(base64.getBytes()))){
@@ -98,6 +99,28 @@ public class Upload {
 
   /* 图片回收 */
   public static Boolean HtmlImgClear(String html, String dir) {
+    // 全部图片
+    ArrayList<String> imgs = GetHtmlFile(html);
+    // 清理图片
+    FileEo.Root = Env.root_dir;
+    ArrayList<String> all = FileEo.AllFile(dir);
+    for(String val:all) {
+      if(!imgs.contains(val)) FileEo.RemoveAll(dir+val);
+    }
+    return true;
+  }
+
+  /* 文件名-生成 */
+  static public String GetFileName() {
+    DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
+    LocalDateTime now = LocalDateTime.now();
+    Random random = new Random();
+    String rand = String.valueOf(random.nextInt(255));
+    return df.format(now) + rand;
+  }
+
+  /* 图片地址-获取HTML */
+  static public ArrayList<String> GetHtmlFile(String html) {
     String img = "";
     String[] url;
     Pattern pattern = Pattern.compile("<img.*?src=[\'|\"](.*?)[\'|\"].*?[\\/]?>");
@@ -112,20 +135,7 @@ public class Upload {
         imgs.add(url[url.length-1]);
       }
     }
-    // 清理图片
-    FileEo.Root = Env.root_dir;
-    ArrayList<String> all = FileEo.AllFile(dir);
-    for(String val:all) {
-      if(!imgs.contains(val)) FileEo.RemoveAll(dir+val);
-    }
-    return true;
-  }
-
-  /* 获取名称 */
-  private static String _getName(){
-    DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSSS");
-    LocalDateTime now = LocalDateTime.now();
-    return df.format(now);
+    return imgs;
   }
 
 }

@@ -44,3 +44,13 @@ Upload.Base64(
 ```java
 Upload.HtmlImgClear(String html, String dir);
 ```
+
+## 文件名-生成
+```java
+Upload.GetFileName();
+```
+
+## 图片地址-获取HTML
+```java
+Upload.GetHtmlFile(String html);
+```

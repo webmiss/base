@@ -61,7 +61,7 @@ class Upload extends Base {
       return '';
     }
     // 文件名
-    $filename = empty($param['filename'])?self::_getName().'.'.$param['ext']:$param['filename'];
+    $filename = empty($param['filename'])?self::GetFileName().'.'.$param['ext']:$param['filename'];
     // 保存文件
     if(!FileEo::Writer($param['path'].$filename, base64_decode($base64))){
       self::Print('[Upload] Writer:', '保存文件失败!');
@@ -72,13 +72,8 @@ class Upload extends Base {
 
   /* 图片回收 */
   static function HtmlImgClear(string $html, string $dir): bool {
-    // 文件名
-    $pattern = '/<img.*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>/';
-    preg_match_all($pattern, htmlspecialchars_decode($html), $match);
-    $imgs = [];
-    foreach($match[1] as $val){
-      $imgs[] = basename($val);
-    }
+    // 全部图片
+    $imgs = self::GetHtmlFile($html);
     // 清理图片
     $all = FileEo::AllFile($dir);
     foreach($all as $val) {
@@ -87,10 +82,22 @@ class Upload extends Base {
     return true;
   }
 
-  // 获取名称
-  private static function _getName(){
+  /* 文件名-生成 */
+  static function GetFileName(): string {
     list($msec, $sec) = explode(' ', microtime());
-    return date('YmdHis').substr($msec,2,4);
+    $rand = (string)mt_rand(0, 255);
+    return date('YmdHis') . substr($msec,2,3) . $rand;
+  }
+
+  /* 图片地址-获取HTML */
+  static function GetHtmlFile(string $html): array {
+    $pattern = '/<img.*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>/';
+    preg_match_all($pattern, htmlspecialchars_decode($html), $match);
+    $imgs = [];
+    foreach($match[1] as $val){
+      $imgs[] = basename($val);
+    }
+    return $imgs;
   }
 
 }

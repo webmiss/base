@@ -1,8 +1,10 @@
 package library
 
 import (
+	"crypto/rand"
 	Base64 "encoding/base64"
 	"fmt"
+	"math/big"
 	"mime/multipart"
 	"regexp"
 	"strconv"
@@ -79,7 +81,7 @@ func (u Upload) Base64(params map[string]interface{}) string {
 	// 文件名
 	filename := param["filename"].(string)
 	if filename == "" {
-		filename = u._getName() + "." + param["ext"].(string)
+		filename = u.GetFileName() + "." + param["ext"].(string)
 	}
 	byt, _ := Base64.StdEncoding.DecodeString(base64)
 	if err := (&FileEo{}).Writer(param["path"].(string)+filename, string(byt)); err != nil {
@@ -91,14 +93,8 @@ func (u Upload) Base64(params map[string]interface{}) string {
 
 /* 图片回收 */
 func (u Upload) HtmlImgClear(html string, dir string) bool {
-	pattern := regexp.MustCompile(`<img.*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>`)
-	match := pattern.FindAllStringSubmatch(html, -1)
-	imgs := []string{}
-	for i := range match {
-		src := match[i][1]
-		index := strings.LastIndex(src, "/")
-		imgs = append(imgs, src[index+1:])
-	}
+	// 全部图片
+	imgs := u.GetHtmlFile(html)
 	// 清理图片
 	(&FileEo{}).New(config.Env().RootDir)
 	all := (&FileEo{}).AllFile(dir)
@@ -110,10 +106,25 @@ func (u Upload) HtmlImgClear(html string, dir string) bool {
 	return true
 }
 
-// 获取名称
-func (u Upload) _getName() string {
+/* 文件名-生成 */
+func (Upload) GetFileName() string {
 	d := time.Now().Format("20060102150405")
-	t := strconv.FormatInt(time.Now().UnixNano(), 10)
-	n := t[len(t)-4:]
-	return d + n
+	t := strconv.FormatInt(time.Now().UnixNano()/1e6, 10)
+	n := t[len(t)-3:]
+	// 随机数
+	rand, _ := rand.Int(rand.Reader, big.NewInt(255))
+	return d + n + rand.String()
+}
+
+/* 图片地址-获取HTML */
+func (Upload) GetHtmlFile(html string) []string {
+	pattern := regexp.MustCompile(`<img.*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>`)
+	match := pattern.FindAllStringSubmatch(html, -1)
+	imgs := []string{}
+	for i := range match {
+		src := match[i][1]
+		index := strings.LastIndex(src, "/")
+		imgs = append(imgs, src[index+1:])
+	}
+	return imgs
 }

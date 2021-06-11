@@ -27,3 +27,13 @@ Upload::Base64([
 ```php
 Upload::HtmlImgClear(string $html, string $dir);
 ```
+
+## 文件名-生成
+```php
+Upload::GetFileName();
+```
+
+## 图片地址-获取HTML
+```php
+Upload::GetHtmlFile(string $html);
+```

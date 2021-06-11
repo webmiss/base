@@ -1,14 +1,9 @@
 package webmis.library.aliyun;
 
 import java.io.ByteArrayInputStream;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
@@ -20,8 +15,6 @@ import com.aliyun.oss.model.ObjectListing;
 
 import webmis.config.Aliyun;
 import webmis.service.Base;
-import webmis.util.Base64;
-import webmis.util.Util;
 
 /* 对象存储 */
 public class Oss extends Base {
@@ -147,64 +140,6 @@ public class Oss extends Base {
       Print("[OSS] DelAll: ", e.getMessage());
       return false;
     }
-  }
-
-  /* 生成文件名 */
-  static public String GetFileName() {
-    DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
-    LocalDateTime now = LocalDateTime.now();
-    Random random = new Random();
-    String rand = String.valueOf(random.nextInt(255));
-    return df.format(now) + rand;
-  }
-
-  /* 获取HTML文件名 */
-  static public ArrayList<String> GetHtmlFile(String html) {
-    String img = "";
-    String[] url;
-    Pattern pattern = Pattern.compile("<img.*?src=[\'|\"](.*?)[\'|\"].*?[\\/]?>");
-    Matcher match = pattern.matcher(html);
-    ArrayList<String> imgs = new ArrayList<>();
-    while (match.find()) {
-      img = match.group();
-      // src数据
-      Matcher m = Pattern.compile("src\\s*=\\s*\"?(.*?)(\"|>|\\s+)").matcher(img);
-      while (m.find()) {
-        url = m.group(1).split("/");
-        imgs.add(url[url.length-1]);
-      }
-    }
-    return imgs;
-  }
-
-  /* 清除HTML图片 */
-  static public boolean HtmlFileClear(String path, String html) {
-    HashMap<String, ArrayList<String>> all = ListObject(path);
-    ArrayList<String> imgs = GetHtmlFile(html);
-    ArrayList<String> objects = new ArrayList<String>();
-    for(String val:all.get("file")) {
-      if(!imgs.contains(val)) objects.add(path+val);
-    }
-    return DeleteObjects(objects);
-  }
-
-  /* 上传Base64 */
-  static public String UploadBase64(String path, String base64) {
-    if(path.isEmpty() || base64.isEmpty()) return "";
-    // 后缀
-    String ext = "";
-    ArrayList<String> ct = Util.Explode(",", base64);
-    if (ct.size() > 1) {
-      ext = Base64.GetExt(ct.get(0));
-      base64 = ct.get(1);
-    }
-    // 文件
-    String file = path + GetFileName();
-    if(!ext.equals("")) file += "." + ext;
-    // 保存
-    boolean res = PutObject(file, Base64.Decode(base64.getBytes()));
-    if(res) return file;
-    return "";
   }
   
 }

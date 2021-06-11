@@ -27,3 +27,13 @@ Upload.File(
 ```python
 Upload.HtmlImgClear(html: str, dir: str)
 ```
+
+## 文件名-生成
+```python
+Upload.GetFileName()
+```
+
+## 图片地址-获取HTML
+```python
+Upload.GetHtmlFile(html: str)
+```

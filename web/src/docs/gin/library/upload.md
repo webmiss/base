@@ -17,3 +17,13 @@ import "webmis/library"
 ```go
 (&library.Upload{}).HtmlImgClear(html string, dir string)
 ```
+
+## 文件名-生成
+```go
+(&library.Upload{}).GetFileName()
+```
+
+## 图片地址-获取HTML
+```go
+(&library.Upload{}).GetHtmlFile(html string)
+```

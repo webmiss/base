@@ -1,7 +1,4 @@
-import re
-import os
-import time
-import datetime
+import time, datetime, random, re, os
 from config.env import Env
 from library.file_eo import FileEo
 from util.util import Util
@@ -59,7 +56,7 @@ class Upload:
       print('[Upload] Mkdir:', '创建目录失败!')
       return ''
     # 文件名
-    filename = Upload._getName()+'.'+param['ext'] if not param['filename'] else param['filename']
+    filename = Upload.GetFileName()+'.'+param['ext'] if not param['filename'] else param['filename']
     if not FileEo.Writer(param['path']+filename, Base64.Decode(base64)) :
       print('[Upload] Writer:', '保存文件失败!')
       return ''
@@ -67,11 +64,8 @@ class Upload:
 
   # 图片回收
   def HtmlImgClear(html: str, dir: str):
-    pattern = re.compile(r'<img.*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>')
-    match = pattern.findall(html)
-    imgs = []
-    for val in match:
-      imgs += [os.path.basename(val)]
+    # 全部图片
+    imgs = Upload.GetHtmlFile(html)
     # 清理图片
     FileEo.Root = Env.root_dir
     all = FileEo.AllFile(dir)
@@ -79,9 +73,19 @@ class Upload:
       if val not in imgs : FileEo.RemoveAll(dir+val)
     return True
 
-  # 获取名称
-  def _getName():
+  # 文件名-生成
+  def GetFileName():
     d = time.strftime('%Y%m%d%H%M%S',time.localtime())
     t = datetime.datetime.now()
-    n = str(t.microsecond)[2:6]
-    return d+n
+    n = str(t.microsecond)[2:5]
+    rand = str(random.randint(0,255))
+    return d + n + rand
+
+  # 图片地址-获取HTML
+  def GetHtmlFile(html: str):
+    pattern = re.compile(r'<img.*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>')
+    match = pattern.findall(html)
+    imgs = []
+    for val in match:
+      imgs += [os.path.basename(val)]
+    return imgs

@@ -14,19 +14,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var dirRoot string //根目录
+
 /* 文件类 */
 type FileEo struct {
-	Root string
 }
 
 /* 创建 */
 func (fe *FileEo) New(root string) *FileEo {
-	fe.Root = root
+	dirRoot = root
 	return fe
 }
 
 /* 列表 */
-func (fe FileEo) List(path string) map[string]interface{} {
+func (fe *FileEo) List(path string) map[string]interface{} {
 	// 路径
 	if path == "/" {
 		path = ""
@@ -47,7 +48,7 @@ func (fe FileEo) List(path string) map[string]interface{} {
 		"files":   files,
 	}
 	// 是否文件夹
-	root := fe.Root + path
+	root := dirRoot + path
 	dir, err := os.Stat(root)
 	if err != nil {
 		return res
@@ -94,7 +95,7 @@ func (fe FileEo) List(path string) map[string]interface{} {
 func (fe FileEo) AllFile(path string) []string {
 	res := []string{}
 	// 是否文件夹
-	root := fe.Root + path
+	root := dirRoot + path
 	dir, err := os.Stat(root)
 	if err != nil {
 		return res
@@ -195,7 +196,7 @@ func (FileEo) FormatBytes(bytes int64) string {
 
 /* 是否文件 */
 func (fe FileEo) IsFile(file string) bool {
-	file = fe.Root + file
+	file = dirRoot + file
 	_, err := os.Stat(file)
 	if err != nil {
 		return false
@@ -205,7 +206,7 @@ func (fe FileEo) IsFile(file string) bool {
 
 /* 创建目录 */
 func (fe FileEo) Mkdir(path string) bool {
-	path = fe.Root + path
+	path = dirRoot + path
 	if err := os.MkdirAll(path, 0766); err != nil {
 		return false
 	}
@@ -214,8 +215,8 @@ func (fe FileEo) Mkdir(path string) bool {
 
 /* 重命名 */
 func (fe FileEo) Rename(rename string, name string) bool {
-	src := fe.Root + rename
-	dst := fe.Root + name
+	src := dirRoot + rename
+	dst := dirRoot + name
 	if err := os.Rename(src, dst); err != nil {
 		return false
 	}
@@ -224,7 +225,7 @@ func (fe FileEo) Rename(rename string, name string) bool {
 
 /* 上传 */
 func (fe FileEo) Upload(c *gin.Context, file *multipart.FileHeader, filename string) bool {
-	dst := fe.Root + filename
+	dst := dirRoot + filename
 	if err := c.SaveUploadedFile(file, dst); err != nil {
 		return false
 	}
@@ -233,7 +234,7 @@ func (fe FileEo) Upload(c *gin.Context, file *multipart.FileHeader, filename str
 
 /* 写入 */
 func (fe FileEo) Writer(file string, content string) error {
-	file = fe.Root + file
+	file = dirRoot + file
 	f, err := os.OpenFile(file, os.O_CREATE|os.O_RDWR, 0766)
 	if err != nil {
 		return err
@@ -245,7 +246,7 @@ func (fe FileEo) Writer(file string, content string) error {
 
 /* 追加 */
 func (fe FileEo) WriterEnd(file string, content string) error {
-	file = fe.Root + file
+	file = dirRoot + file
 	f, err := os.OpenFile(file, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0766)
 	if err != nil {
 		return err
@@ -257,13 +258,13 @@ func (fe FileEo) WriterEnd(file string, content string) error {
 
 /* 读取 */
 func (fe FileEo) Bytes(file string) []byte {
-	dst := fe.Root + file
+	dst := dirRoot + file
 	bytes, _ := ioutil.ReadFile(dst)
 	return bytes
 }
 
 /* 删除(文件夹&文件) */
 func (fe FileEo) RemoveAll(path string) error {
-	path = fe.Root + path
+	path = dirRoot + path
 	return os.RemoveAll(path)
 }

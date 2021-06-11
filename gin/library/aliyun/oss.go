@@ -2,15 +2,8 @@ package aliyun
 
 import (
 	"bytes"
-	"crypto/rand"
 	"fmt"
-	"math/big"
-	"regexp"
-	"strconv"
-	"strings"
-	"time"
 	"webmis/config"
-	"webmis/util"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 )
@@ -180,68 +173,4 @@ func (o Oss) DeleteObjectAll(path string) bool {
 	}
 	// 执行
 	return o.DeleteObjects(objects)
-}
-
-/* 生成文件名 */
-func (Oss) GetFileName() string {
-	d := time.Now().Format("20060102150405")
-	t := strconv.FormatInt(time.Now().UnixNano()/1e6, 10)
-	n := t[len(t)-3:]
-	// 随机数
-	rand, _ := rand.Int(rand.Reader, big.NewInt(255))
-	return d + n + rand.String()
-}
-
-/* 获取HTML文件名 */
-func (Oss) GetHtmlFile(html string) []string {
-	pattern := regexp.MustCompile(`<img.*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>`)
-	match := pattern.FindAllStringSubmatch(html, -1)
-	imgs := []string{}
-	for i := range match {
-		src := match[i][1]
-		index := strings.LastIndex(src, "/")
-		imgs = append(imgs, src[index+1:])
-	}
-	return imgs
-}
-
-/* 清除HTML图片 */
-func (o Oss) HtmlFileClear(path string, html string) bool {
-	all := o.ListObject(path)
-	imgs := o.GetHtmlFile(html)
-	objects := []string{}
-	for _, val := range all["file"] {
-		if !util.InArray(val, imgs) {
-			objects = append(objects, path+val)
-		}
-	}
-	if len(objects) > 0 {
-		return o.DeleteObjects(objects)
-	}
-	return true
-}
-
-/* 上传Base64 */
-func (o Oss) UploadBase64(path string, base64 string) string {
-	if path == "" || base64 == "" {
-		return ""
-	}
-	// 后缀
-	ext := ""
-	ct := util.Explode(",", base64)
-	if len(ct) > 1 {
-		ext = (&util.Base64{}).GetExt(ct[0])
-		base64 = ct[1]
-	}
-	// 文件
-	file := path + o.GetFileName()
-	if ext != "" {
-		file += "." + ext
-	}
-	// 保存
-	res := o.PutObject(file, (&util.Base64{}).Decode(base64))
-	if res {
-		return file
-	}
-	return ""
 }

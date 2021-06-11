@@ -39,4 +39,4 @@ import wmImgView from '@/components/img/view/index.vue'
 - iconRight: {type: String, default: 'ui ui_right'},      //下一页
 - iconFull: {type: String, default: 'ui ui_full'},        //全屏
 - iconClose: {type: String, default: 'ui ui_close'},      //关闭
-- @update:show                                            //事件
+- @update:close                                           //事件-关闭

@@ -1,8 +1,5 @@
 from config.aliyun import Aliyun
-from util.util import Util
-from util.base64 import Base64
 import oss2
-import time, datetime, random, re, os
 
 # 对象存储
 class Oss:
@@ -90,46 +87,3 @@ class Oss:
     for val in lists :
       objects += [val.key]
     return Oss.DeleteObjects(objects)
-
-  # 生成文件名
-  def GetFileName():
-    d = time.strftime('%Y%m%d%H%M%S',time.localtime())
-    t = datetime.datetime.now()
-    n = str(t.microsecond)[2:5]
-    rand = str(random.randint(0,255))
-    return d + n + rand
-
-  # 获取HTML文件名
-  def GetHtmlFile(html: str):
-    pattern = re.compile(r'<img.*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>')
-    match = pattern.findall(html)
-    imgs = []
-    for val in match:
-      imgs += [os.path.basename(val)]
-    return imgs
-
-  # 清除HTML图片
-  def HtmlFileClear(path: str, html: str):
-    all = Oss.ListObject(path)
-    imgs = Oss.GetHtmlFile(html)
-    objects = []
-    for val in all['file'] :
-      if val not in imgs : objects += [path+val]
-    return Oss.DeleteObjects(objects)
-
-  # 上传Base64
-  def UploadBase64(path: str, base64: str):
-    if not path or not base64 : return ''
-    # 后缀
-    ext = ''
-    ct = Util.Explode(',', base64)
-    if len(ct)>1 :
-      ext = Base64.GetExt(ct[0])
-      base64 = ct[1]
-    # 文件
-    file = path + Oss.GetFileName()
-    if ext != '' : file += '.' + ext
-    # 保存
-    res = Oss.PutObject(file, Base64.Decode(base64))
-    if res : return file
-    return ''

@@ -293,21 +293,39 @@ func (m *Model) FindDataAll(rows *sql.Rows) []map[string]interface{} {
 	return res
 }
 
-/* 添加-数据 */
+/* 添加-单条 */
 func (m *Model) Values(data map[string]interface{}) {
-	keys, vals := "", ""
+	keys, vals := "", "("
 	m.args = make([]interface{}, 0, 10)
 	for k, v := range data {
 		keys += k + ", "
 		vals += "?, "
 		m.args = append(m.args, v)
 	}
-	if len(data) > 0 {
-		keys = keys[:len(keys)-2]
-		vals = vals[:len(vals)-2]
-	}
+	keys = keys[:len(keys)-2]
+	vals = vals[:len(vals)-2]
 	m.keys = keys
-	m.values = vals
+	m.values = vals + ")"
+}
+
+/* 添加-多条 */
+func (m *Model) ValuesAll(data []map[string]interface{}) {
+	keys, vals, alls := []string{}, "", ""
+	m.args = make([]interface{}, 0, 10)
+	for k := range data[0] {
+		keys = append(keys, k)
+		vals += "?, "
+	}
+	vals = vals[:len(vals)-2]
+	for i := range data {
+		for _, k := range keys {
+			m.args = append(m.args, data[i][k])
+		}
+		alls += "(" + vals + "), "
+	}
+	alls = alls[:len(alls)-2]
+	m.keys = util.Implode(",", keys)
+	m.values = alls
 }
 
 /* 添加-SQL */
@@ -320,7 +338,7 @@ func (m *Model) InsertSQL() (string, []interface{}) {
 		fmt.Println("[Model] Insert: 数据不能为空!")
 		return "", nil
 	}
-	m.sql = "INSERT INTO `" + m.table + "`(" + m.keys + ") values(" + m.values + ")"
+	m.sql = "INSERT INTO `" + m.table + "`(" + m.keys + ") values " + m.values
 	args := m.args
 	// 重置
 	m.keys = ""
