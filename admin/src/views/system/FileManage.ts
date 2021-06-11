@@ -30,7 +30,7 @@ export default defineComponent({
     const folder: any = {show:false, form:{name:''}};
     const rename: any = {show:false, form:{rename:'', name:''}};
     const upload: any = {url:'sysfile/upload', param:{}};
-    const down: any = {show:false,filename:''};
+    const down: any = {show:false, filename:''};
     const zip: any = {show:false, form:{name:'', files:[]}};
     const del: any = {show:false, data:[]};
     // 图片预览
