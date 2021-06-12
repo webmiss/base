@@ -3,6 +3,7 @@ namespace Library;
 
 use Service\Base;
 use Util\Base64;
+use Library\Aliyun\Oss;
 
 /* 上传类 */
 class Upload extends Base {
@@ -68,6 +69,20 @@ class Upload extends Base {
       return '';
     }
     return $filename;
+  }
+
+  /* OSS-签名直传 */
+  static function OssPolicy(string $ext, int $expireTime=0) {
+    // 类型
+    $extImg = ['jpg', 'png', 'gif'];
+    $extVod = ['mp4'];
+    // 目录
+    $dir = 'tmp/';
+    if(in_array($ext, $extImg)) $dir = 'img/';
+    elseif(in_array($ext, $extVod)) $dir = 'vod/';
+    // 文件名
+    $file = !empty($ext)?self::GetFileName().'.'.$ext:self::GetFileName();
+    return Oss::Policy($dir, $file, $expireTime);
   }
 
   /* 图片回收 */

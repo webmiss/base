@@ -1,13 +1,25 @@
 <?php
 namespace Util;
 
+use Service\Base;
+
 /* 工具 */
-class Util {
+class Util extends Base {
 
   /* String To Timestamp */
   static function Strtotime(string $day): int {
     $t = strtotime(trim($day));
     return $t>0?$t:0;
+  }
+
+  /* Timestamp To GmtIso8601 */
+  static function GmtISO8601(int $timestamp): string {
+    $dtStr = date("c", $timestamp);
+    $mydatetime = new \DateTime($dtStr);
+    $expiration = $mydatetime->format(\DateTime::ISO8601);
+    $pos = strpos($expiration, '+');
+    $expiration = substr($expiration, 0, $pos);
+    return $expiration.'Z';
   }
 
   /* Array to String */

@@ -5,7 +5,6 @@ use Config\Aliyun;
 use Service\Base;
 use OSS\OssClient;
 use OSS\Core\OssException;
-use Util\Base64;
 
 /* 对象存储 */
 class Oss extends Base {
@@ -15,6 +14,29 @@ class Oss extends Base {
   static string $AccessKeySecret = '';  //RAM: AccessKeySecret
   static string $Endpoint = '';         //地域节点
   static string $Bucket = '';           //Bucket名称
+
+  /* 签名直传 */
+  static function Policy(string $dir, string $file, int $expireTime=0, int $maxSize=0): array {
+    $cfg = Aliyun::OSS();
+    // 默认值
+    if($expireTime==0) $expireTime = $cfg['ExpireTime'];
+    if($maxSize==0) $maxSize = $cfg['MaxSize'];
+    // 数据
+    $res = Signature::PolicySign($expireTime, $maxSize);
+    $res['host'] = 'https://'.$cfg['Bucket'].'.'.$cfg['Endpoint'];
+    $res['dir'] = $dir;
+    $res['file'] = $file;
+    $res['max_size'] = $maxSize;
+    // 回调
+    $callbackData = [
+      'callbackUrl'=> $cfg['callbackUrl'],
+      'callbackBodyType'=> $cfg['callbackType'],
+      'callbackBody'=> 'filename=' . $dir.$file,
+    ];
+    $res['callback'] = base64_encode(json_encode($callbackData));
+    return $res;
+  }
+
 
   /* 初始化 */
   static function Init() {

@@ -5,13 +5,15 @@ use Service\Base;
 use Library\Qrcode;
 use Library\FileEo;
 use Library\Captcha;
+use Library\Upload;
 
 class Index extends Base {
 
   /* 首页 */
   static function Index() {
+    $ossPolicy = Upload::OssPolicy('mp4');
     // 返回
-    return self::GetJSON(['code'=>0, 'msg'=>'Web']);
+    return self::GetJSON(['code'=>0, 'msg'=>'Web', 'oss_policy'=>$ossPolicy]);
   }
 
   /* 验证码 */

@@ -3,6 +3,7 @@ import { useStore } from 'vuex';
 /* JS组件 */
 import Loading from '@/library/ui/loading'
 import Toast from '@/library/ui/toast'
+import Get from '@/library/request/get'
 import Post from '@/library/request/post'
 import Storage from '@/library/Storage'
 import DownBlob from '@/library/down/blob'
@@ -29,7 +30,7 @@ export default defineComponent({
     const lists: any = {url:'', folder:[], files:[], dirNum:0, fileNum:0, size:'0KB'};
     const folder: any = {show:false, form:{name:''}};
     const rename: any = {show:false, form:{rename:'', name:''}};
-    const upload: any = {url:'sysfile/upload', param:{}};
+    const upload: any = {url:'sysfile/upload', name:'file', param:{}};
     const down: any = {show:false, filename:''};
     const zip: any = {show:false, form:{name:'', files:[]}};
     const del: any = {show:false, data:[]};
@@ -59,7 +60,19 @@ export default defineComponent({
         this.rename.form.rename = names[0];
         this.rename.form.name = names[0];
       }else if(val=='upload'){
-        this.upload.param = {token: Storage.getItem('token'), path: this.info.path};
+        Get('http://localhost:9000/',{},(res: any)=>{
+          const d = res.data.oss_policy;
+          this.upload.url = d.host;
+          this.upload.param.OSSAccessKeyId = d.accessid;
+          this.upload.param.policy = d.policy;
+          this.upload.param.Signature = d.signature;
+          this.upload.param.key = d.dir + d.file;
+          this.upload.param.Expires = d.expire;
+          console.log(this.upload.url);
+          console.log(this.upload.param);
+        })
+
+        // this.upload.param = {token: Storage.getItem('token'), path: this.info.path};
         const obj: any = this.$refs.Uploader;
         obj.upload();
       }else if(val=='remove'){

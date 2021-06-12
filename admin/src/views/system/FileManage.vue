@@ -75,7 +75,7 @@
     <!-- 重命名 End -->
 
     <!-- 上传 -->
-    <wm-uploader class="hide" ref="Uploader" :url="upload.url" :param="upload.param" @progress="upProgress"></wm-uploader>
+    <wm-uploader class="hide" ref="Uploader" :url="upload.url" :name="upload.name" :param="upload.param" @progress="upProgress"></wm-uploader>
 
     <!-- 下载 -->
     <wm-dialog title="下载文件" width="320px" :show="down.show" @update:close="down.show=$event">
