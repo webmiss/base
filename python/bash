@@ -9,11 +9,7 @@ package="flask flask_cors PyJWT redis wheel DBUtils pymysql websockets websocket
 
 # 运行
 if [ "$s" == "serve" ]; then
-  {
-    python $index
-  } || {
-    echo "> 请安装'python'"
-  }
+  python $index
 # 安装
 elif [ "$s" == "install" ]; then
   {

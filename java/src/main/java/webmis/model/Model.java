@@ -12,8 +12,11 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.fastjson.JSONArray;
 
 import webmis.service.Base;
+import webmis.util.Type;
+import webmis.util.Util;
 import webmis.config.Db;
 
 /* 数据库 */
@@ -38,6 +41,7 @@ public class Model extends Base {
   private String _data = "";                        //更新-数据
   private int _id = 0;                              //自增ID
   private int _nums = 0;                            //条数
+  private HashMap<String, String> _columnsType = new HashMap<String, String>();   //字段类型
 
   /* 连接 */
   public Connection DBConn() {
@@ -93,37 +97,41 @@ public class Model extends Base {
   }
 
   /* 过滤 */
-  public PreparedStatement Bind(String sql) {
-    return Bind(sql, false);
+  public PreparedStatement Bind(Connection conn, Object sql, Object args) {
+    return Bind(conn, sql, args, false);
   }
-  public PreparedStatement Bind(String sql, Boolean insert) {
+  public PreparedStatement Bind(Connection conn, Object sql, Object args, Boolean insert) {
     PreparedStatement ps = null;
     String name;
+    String sqlStr = String.valueOf(sql);
     // 连接
     DBConn();
     // 类型
     _type = insert?"insert":"";
     try {
+      // 增加ID
       if(_type.equals("insert")){
-        ps = _conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        ps = conn.prepareStatement(sqlStr, Statement.RETURN_GENERATED_KEYS);
       }else{
-        ps = _conn.prepareStatement(sql);
+        ps = conn.prepareStatement(sqlStr);
       }
       // 参数
-      for(int i=0; i<_args.length; i++){
-        name = _args[i].getClass().getSimpleName();
+      Object v;
+      JSONArray data = (JSONArray)JSONArray.toJSON(args);
+      for(int i=0; i<data.size(); i++){
+        v = data.get(i);
+        name = v.getClass().getSimpleName();
         switch(name) {
-          case "String" : ps.setString(i+1, (String) _args[i]); break;
-          case "Integer" : ps.setInt(i+1, ((Integer) _args[i]).intValue()); break;
-          case "Double" : ps.setDouble(i+1, ((Double) _args[i]).doubleValue()); break;
-          case "Float" : ps.setFloat(i+1, ((Float) _args[i]).floatValue()); break;
-          case "Long" : ps.setLong(i+1, ((Long) _args[i]).longValue()); break;
-          case "Boolean" : ps.setBoolean(i+1, ((Boolean) _args[i]).booleanValue()); break;
-          case "Date" : ps.setDate(i+1, (Date) _args[i]); break;
+          case "String" : ps.setString(i+1, (String) v); break;
+          case "Integer" : ps.setInt(i+1, ((Integer) v).intValue()); break;
+          case "Double" : ps.setDouble(i+1, ((Double) v).doubleValue()); break;
+          case "Float" : ps.setFloat(i+1, ((Float) v).floatValue()); break;
+          case "Long" : ps.setLong(i+1, ((Long) v).longValue()); break;
+          case "Boolean" : ps.setBoolean(i+1, ((Boolean) v).booleanValue()); break;
+          case "Date" : ps.setDate(i+1, (Date) v); break;
         }
       }
       // 重置
-      _args = new Object[]{};
     } catch (SQLException e) {
       Print("[Model] Bind:", e.getMessage());
     }
@@ -163,6 +171,10 @@ public class Model extends Base {
   /* 获取-SQL */
   public String GetSql() {
     return _sql;
+  }
+  /* 获取-参数 */
+  public Object[] GetArgs() {
+    return _args;
   }
   /* 获取-自增ID */
   public int GetID() {
@@ -205,6 +217,10 @@ public class Model extends Base {
     }
     _columns = _columns.length()>0?_columns.substring(0,_columns.length()-2):"";
   }
+  /* 字段-返回类型 */
+  public void ResType(HashMap<String, String> type) {
+    _columnsType = type;
+  }
   /* 条件 */
   public void Where(String where, Object... args) {
     _where = where;
@@ -246,14 +262,14 @@ public class Model extends Base {
   }
 
   /* 查询-SQL */
-  public String SelectSql() {
+  public Object[] SelectSql() {
     if(_table.equals("")){
       Print("[Model] Select: 表不能为空!");
-      return "";
+      return null;
     }
     if(_table.equals("") || _columns.equals("")){
       Print("[Model] Select: 字段不能为空!");
-      return "";
+      return null;
     }
     // 合成
     _sql = "SELECT " + _columns + " FROM " + _table;
@@ -273,18 +289,20 @@ public class Model extends Base {
       _sql += " LIMIT "+_limit;
       _limit = "";
     }
-    return _sql;
+    Object[] args = _args;
+    _args = new Object[]{};
+    return new Object[]{_sql, args};
   }
   /* 查询-多条 */
   public ArrayList<HashMap<String,Object>> Find() {
-    String sql = SelectSql();
-    PreparedStatement ps = Bind(sql);
+    Object[] res = SelectSql();
+    PreparedStatement ps = Bind(_conn, res[0], res[1]);
     return FindDataAll(ps);
   }
   /* 查询-单条 */
   public HashMap<String,Object> FindFirst() {
-    String sql = SelectSql();
-    PreparedStatement ps = Bind(sql);
+    Object[] res = SelectSql();
+    PreparedStatement ps = Bind(_conn, res[0], res[1]);
     ArrayList<HashMap<String,Object>> data = FindDataAll(ps);
     if(data.isEmpty()) return new HashMap<String,Object>();
      return data.get(0);
@@ -301,11 +319,18 @@ public class Model extends Base {
       int n = data.getColumnCount();
       while (rs.next()) {
         tmp = new HashMap<String,Object>();
-        for (int i = 1; i<=n; i++) tmp.put(data.getColumnLabel(i), rs.getObject(i));
+        for (int i = 1; i<=n; i++){
+          if(_columnsType.containsKey(data.getColumnLabel(i))){
+            tmp.put(data.getColumnLabel(i), Type.ToType(data.getColumnLabel(i), rs.getObject(i)));
+          } else {
+            tmp.put(data.getColumnLabel(i), String.valueOf(rs.getObject(i)));
+          }
+        }
         res.add(tmp);
         num++;
       }
       _nums = num;
+      _columnsType = new HashMap<String, String>();
       // 释放
       rs.close();
       ps.close();
@@ -317,60 +342,58 @@ public class Model extends Base {
     }
   }
 
-  /* 添加-数据 */
-  public void Values(String... data) {
-    String keys = "";
-    String vals = "";
-    for(int i=0; i<data.length; i++) {
-      keys += data[i] + ", ";
-      vals += "?, ";
-    }
-    _keys = keys.length()>0?keys.substring(0,keys.length()-2):"";
-    _values = vals.length()>0?vals.substring(0,vals.length()-2):"";
-  }
+  /* 添加-单条 */
   public void Values(HashMap<String, Object> data) {
-    String keys = "";
-    String vals = "";
+    JSONArray keys = new JSONArray();
+    JSONArray vals = new JSONArray();
     Object[] args = new Object[data.size()];
     int n = 0;
     for(Entry<String, Object> entry : data.entrySet()){
-      keys += entry.getKey() + ", ";
-      vals += "?, ";
+      keys.add(entry.getKey());
+      vals.add("?");
       args[n] = entry.getValue();
       n++;
     }
-    _keys = keys.length()>0?keys.substring(0,keys.length()-2):"";
-    _values = vals.length()>0?vals.substring(0,vals.length()-2):"";
-    // 参数
-    int n1 = _args.length;
-    int n2 = data.size();
-    Object[] param = new Object[n1+n2];
-    for(int i=0; i<param.length; i++){
-      if(i<n1) param[i] = _args[i];
-      else param[i] = args[i-n1];
+    _keys = Util.Implode(", ", keys);
+    _values = Util.Implode(", ", vals);
+  }
+  /* 添加-多条 */
+  public void ValuesAll(ArrayList<HashMap<String, Object>> data) {
+    JSONArray keys = new JSONArray();
+    JSONArray vals = new JSONArray();
+    Object[] args = new Object[data.size()];
+    int n = 0;
+    for(Entry<String, Object> entry : data.get(0).entrySet()){
+      keys.add(entry.getKey());
+      vals.add("?");
+      args[n] = entry.getValue();
+      n++;
     }
-    _args = param;
+    _keys = Util.Implode(", ", keys);
+    _values = Util.Implode(", ", vals);
   }
   /* 添加-SQL */
-  public String InsertSql() {
+  public Object[] InsertSql() {
     if(_table.equals("")){
       Print("[Model] Insert: 表不能为空!");
-      return "";
+      return null;
     }
     if(_keys.equals("") || _values.equals("")){
       Print("[Model] Insert: 数据不能为空!");
-      return "";
+      return null;
     }
-    _sql = "INSERT INTO `" + _table + "`(" + _keys + ") values(" + _values + ")";
+    _sql = "INSERT INTO `" + _table + "`(" + _keys + ") VALUES " + _values;
+    Object[] args = _args;
     // 重置
     _keys = "";
     _values = "";
-    return _sql;
+    _args = new Object[]{};
+    return new Object[]{_sql, args};
   }
   /* 添加-执行 */
   public boolean Insert() {
-    String sql = InsertSql();
-    PreparedStatement ps = Bind(sql, true);
+    Object[] res = InsertSql();
+    PreparedStatement ps = Bind(_conn, res[0], res[1], true);
     try{
       if(Exec(ps)!=null){
         ps.close();
@@ -415,29 +438,31 @@ public class Model extends Base {
     _args = param;
   }
   /* 更新-SQL */
-  public String UpdateSql() {
+  public Object[] UpdateSql() {
     if(_table.equals("")){
       Print("[Model] Update: 表不能为空!");
-      return "";
+      return null;
     }
     if(_data.equals("")){
       Print("[Model] Update: 数据不能为空!");
-      return "";
+      return null;
     }
     if(_where.equals("")){
       Print("[Model] Update: 条件不能为空!");
-      return "";
+      return null;
     }
     _sql = "UPDATE `" + _table + "` SET " + _data + " WHERE " + _where;
+    Object[] args = _args;
     // 重置
     _data = "";
     _where = "";
-    return _sql;
+    _args = new Object[]{};
+    return new Object[]{_sql, args};
   }
   /* 更新-执行 */
   public boolean Update() {
-    String sql = UpdateSql();
-    PreparedStatement ps = Bind(sql);
+    Object[] res = UpdateSql();
+    PreparedStatement ps = Bind(_conn, res[0], res[1]);
     try{
       if(Exec(ps)!=null){
         ps.close();
@@ -454,24 +479,26 @@ public class Model extends Base {
   }
 
   /* 删除-SQL */
-  public String DeleteSql() {
+  public Object[] DeleteSql() {
     if(_table.equals("")){
       Print("[Model] Delete: 表不能为空!");
-      return "";
+      return null;
     }
     if(_where.equals("")){
       Print("[Model] Delete: 条件不能为空!");
-      return "";
+      return null;
     }
     _sql = "DELETE FROM `" + _table + "` WHERE " + _where;
+    Object[] args = _args;
     // 重置
     _where = "";
-    return _sql;
+    _args = new Object[]{};
+    return new Object[]{_sql, args};
   }
   /* 删除-执行 */
   public boolean Delete() {
-    String sql = DeleteSql();
-    PreparedStatement ps = Bind(sql);
+    Object[] res = DeleteSql();
+    PreparedStatement ps = Bind(_conn, res[0], res[1]);
     try{
       if(Exec(ps)!=null){
         ps.close();

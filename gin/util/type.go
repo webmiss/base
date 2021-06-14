@@ -68,6 +68,26 @@ func (t Type) Uint64(val interface{}) uint64 {
 	return res
 }
 
+/* 转换: string、int、int64、float、float64、uint64 */
+func (t Type) ToType(tp string, val interface{}) interface{} {
+	switch tp {
+	case "string":
+		return t.Strval(val)
+	case "int":
+		return t.Int(val)
+	case "int64":
+		return t.Int64(val)
+	case "float":
+		return t.Float(val)
+	case "float64":
+		return t.Float64(val)
+	case "uint64":
+		return t.Uint64(val)
+	default:
+		return val
+	}
+}
+
 /* Interface 转 String */
 func (Type) Strval(val interface{}) string {
 	var res string

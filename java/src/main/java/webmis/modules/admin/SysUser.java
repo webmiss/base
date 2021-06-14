@@ -147,33 +147,33 @@ public class SysUser extends Base {
     try {
       conn.setAutoCommit(false);
       // 用户
-      User m1 = new User();
-      m1.Values("id", "tel", "password");
-      sql = m1.InsertSql();
-      ps = conn.prepareStatement(sql);
-      ps.setLong(1, uid);
-      ps.setString(2, tel);
-      ps.setString(3, Hash.Md5(passwd));
-      ps.executeUpdate();
-      ps.close();
+      // User m1 = new User();
+      // m1.Values("id", "tel", "password");
+      // sql = m1.InsertSql();
+      // ps = conn.prepareStatement(sql);
+      // ps.setLong(1, uid);
+      // ps.setString(2, tel);
+      // ps.setString(3, Hash.Md5(passwd));
+      // ps.executeUpdate();
+      // ps.close();
       // 详情
-      UserInfo m2 = new UserInfo();
-      m2.Values("uid");
-      sql = m2.InsertSql();
-      ps = conn.prepareStatement(sql);
-      ps.setLong(1, uid);
-      ps.executeUpdate();
-      ps.close();
+      // UserInfo m2 = new UserInfo();
+      // m2.Values("uid");
+      // sql = m2.InsertSql();
+      // ps = conn.prepareStatement(sql);
+      // ps.setLong(1, uid);
+      // ps.executeUpdate();
+      // ps.close();
       // 权限
-      ApiPerm m3 = new ApiPerm();
-      m3.Values("uid", "role", "utime");
-      sql = m3.InsertSql();
-      ps = conn.prepareStatement(sql);
-      ps.setLong(1, uid);
-      ps.setInt(2, 1);
-      ps.setLong(3, Util.Time());
-      ps.executeUpdate();
-      ps.close();
+      // ApiPerm m3 = new ApiPerm();
+      // m3.Values("uid", "role", "utime");
+      // sql = m3.InsertSql();
+      // ps = conn.prepareStatement(sql);
+      // ps.setLong(1, uid);
+      // ps.setInt(2, 1);
+      // ps.setLong(3, Util.Time());
+      // ps.executeUpdate();
+      // ps.close();
       // 提交
       conn.commit();
       // 返回

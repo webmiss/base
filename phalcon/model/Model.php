@@ -3,6 +3,7 @@ namespace Model;
 
 use Service\Base;
 use Config\Db;
+use Util\Type;
 
 /* 数据库 */
 class Model extends Base {
@@ -25,6 +26,7 @@ class Model extends Base {
   private $data = '';            //更新-数据
   private $id = 0;               //自增ID
   private $nums = 0;             //条数
+  private $columnsType = [];     //字段类型
 
   /* 连接 */
   function DBConn() {
@@ -126,6 +128,10 @@ class Model extends Base {
   function Columns(...$columns): void {
     $this->columns = implode(',', $columns);
   }
+  /* 字段-返回类型 */
+  function ResType(array $type) {
+    $this->columnsType = $type;
+  }
   /* 条件 */
   function Where(string $where, ...$values): void {
     $this->where = $where;
@@ -188,31 +194,67 @@ class Model extends Base {
     list($sql, $args) = $this->SelectSql();
     if(empty($sql)) return $res;
     $this->DBConn();
-    $res = $this->conn->fetchAll($sql, 2, $args);
-    return $res?$res:[];
+    $data = $this->conn->fetchAll($sql, 2, $args);
+    if(count($this->columnsType)==0) return $data;
+    // 转换类型
+    foreach($data as $k1=>$v1) {
+      foreach($v1 as $k2=>$v2){
+        if(isset($this->columnsType[$k2])){
+          $data[$k1][$k2] = Type::ToType($this->columnsType[$k2], $v2);
+        }
+      }
+    }
+    $this->columnsType = [];
+    return $data;
   }
   /* 查询-单条 */
-  function FindFirst(): array {
+  function FindFirst() {
     $res = [];
     $this->limit = '0,1';
     list($sql, $args) = $this->SelectSql();
     if(empty($sql)) return $res;
     $this->DBConn();
-    $res = $this->conn->fetchOne($sql, 2, $args);
-    return $res?$res:[];
+    $data = $this->conn->fetchOne($sql, 2, $args);
+    if(!$data) return (object)[];
+    if(count($this->columnsType)==0) return $data;
+    // 转换类型
+    foreach($data as $k=>$v) {
+      if(isset($this->columnsType[$k])){
+        $data[$k] = Type::ToType($this->columnsType[$k], $v);
+      }
+    }
+    $this->columnsType = [];
+    return $data;
   }
 
-  /* 添加-数据 */
+  /* 添加-单条 */
   function Values(array $data) {
-    list($keys, $vals) = ['', ''];
+    list($keys, $vals) = [[], []];
     $this->args = [];
     foreach($data as $k=>$v){
-      $keys .= $k.', ';
-		  $vals .= '?, ';
+      $keys[] = $k;
+		  $vals[] = '?';
       $this->args[] = $v;
     }
-    $this->keys = !empty($keys)?rtrim($keys, ', '):'';
-    $this->values = !empty($vals)?rtrim($vals, ', '):'';
+    $this->keys = implode(', ', $keys);
+    $this->values = '(' . implode(', ', $vals). ')';
+  }
+  /* 添加-多条 */
+  function ValuesAll(array $data) {
+    list($keys, $vals, $alls) = [[], [], []];
+    $this->args = [];
+    foreach($data[0] as $k=>$v){
+      $keys[] = $k;
+		  $vals[] = '?';
+    }
+    foreach ($data as $i=>$v) {
+      foreach ($keys as $k) {
+        $this->args[] = $data[$i][$k];
+      }
+      $alls[] = '(' . implode(', ', $vals) . ')';
+    }
+    $this->keys = implode(', ', $keys);
+    $this->values = implode(', ', $alls);
   }
   /* 添加-SQL */
   function InsertSql(): ?array {
@@ -224,7 +266,7 @@ class Model extends Base {
       $this->Print('[Model] Insert: 数据不能为空!');
       return ['',$this->args];
     }
-    $this->sql = 'INSERT INTO `' . $this->table . '`(' . $this->keys . ') values(' . $this->values . ')';
+    $this->sql = 'INSERT INTO `' . $this->table . '`(' . $this->keys . ') VALUES ' . $this->values;
     $args = $this->args;
     // 重置
     $this->keys = '';

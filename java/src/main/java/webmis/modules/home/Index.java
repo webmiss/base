@@ -1,5 +1,7 @@
 package webmis.modules.home;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.HashMap;
 
 import org.springframework.http.MediaType;
@@ -12,6 +14,7 @@ import webmis.config.Env;
 import webmis.library.Captcha;
 import webmis.library.FileEo;
 import webmis.library.Qrcode;
+import webmis.model.Demo;
 import webmis.service.Base;
 
 @RestController
@@ -22,6 +25,15 @@ public class Index extends Base{
   /* 首页 */
   @RequestMapping("")
   String index() {
+    Demo model = new Demo();
+    HashMap<String, Object> data = new HashMap<String, Object>();
+    data.put("title", "测试1");
+    data.put("ctime", 1);
+    model.Values(data);
+    Object[] sql = model.InsertSql();
+    // Connection conn = model.DBConn();
+    // PreparedStatement ps = model.Bind(conn, sql[0], sql[1]);
+    Print(sql[0], sql[1]);
     // 返回
     HashMap<String,Object> res;
     res = new HashMap<String,Object>();

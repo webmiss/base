@@ -5,15 +5,28 @@ use Service\Base;
 use Library\Qrcode;
 use Library\FileEo;
 use Library\Captcha;
-use Library\Upload;
+use Model\Demo;
 
 class Index extends Base {
 
   /* 首页 */
   static function Index() {
-    $ossPolicy = Upload::OssPolicy('mp4');
+    $model = new Demo();
+    $model->ValuesAll([
+      [
+        'title'=>'测试1',
+        'ctime'=>1,
+      ],
+      [
+        'title'=>'测试2',
+        'ctime'=>2,
+      ],
+    ]);
+    list($sql, $args) = $model->InsertSql();
+    self::Print($sql, $args);
+    // $model->Insert();
     // 返回
-    return self::GetJSON(['code'=>0, 'msg'=>'Web', 'oss_policy'=>$ossPolicy]);
+    return self::GetJSON(['code'=>0, 'msg'=>'Web']);
   }
 
   /* 验证码 */

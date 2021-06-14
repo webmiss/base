@@ -16,21 +16,22 @@ var DBOther *sql.DB   //其它池
 
 /* 数据库 */
 type Model struct {
-	conn    *sql.DB       //连接
-	sql     string        //SQL
-	db      string        //数据库
-	table   string        //数据表
-	columns string        //字段
-	where   string        //条件
-	group   string        //分组
-	order   string        //排序
-	limit   string        //限制
-	args    []interface{} //参数
-	keys    string        //新增-名
-	values  string        //新增-值
-	data    string        //更新-数据
-	id      int64         //自增ID
-	nums    int64         //条数
+	conn        *sql.DB           //连接
+	sql         string            //SQL
+	db          string            //数据库
+	table       string            //数据表
+	columns     string            //字段
+	where       string            //条件
+	group       string            //分组
+	order       string            //排序
+	limit       string            //限制
+	args        []interface{}     //参数
+	keys        string            //新增-名
+	values      string            //新增-值
+	data        string            //更新-数据
+	id          int64             //自增ID
+	nums        int64             //条数
+	columnsType map[string]string //字段类型
 }
 
 /* 连接 */
@@ -162,6 +163,11 @@ func (m *Model) Columns(columns ...string) {
 	}
 }
 
+/* 字段-返回类型 */
+func (m *Model) ResType(tp map[string]string) {
+	m.columnsType = tp
+}
+
 /* 条件 */
 func (m *Model) Where(where string, values ...interface{}) {
 	m.where = where
@@ -267,65 +273,61 @@ func (m *Model) FindDataAll(rows *sql.Rows) []map[string]interface{} {
 	columns, _ := rows.Columns()
 	key := make([]interface{}, len(columns))
 	val := make([]interface{}, len(columns))
-	for n := range val {
+	for n := range key {
 		key[n] = &val[n]
 	}
 	// 数据处理
 	var i int = 0
-	res := make([]map[string]interface{}, 0, 10)
+	res := []map[string]interface{}{}
 	for rows.Next() {
 		rows.Scan(key...)
-		tmp := make(map[string]interface{})
+		item := map[string]interface{}{}
 		for k, v := range val {
-			tp := (&util.Type{}).GetType(v)
-			if v == nil {
-				tmp[columns[k]] = ""
-			} else if tp == "byte" || tp == "uint" || tp == "uint8" || tp == "uint16" || tp == "uint32" || tp == "uint64" {
-				tmp[columns[k]] = (&util.Type{}).Strval(v)
+			if tp, ok := m.columnsType[columns[k]]; ok {
+				// 转换类型
+				item[columns[k]] = (&util.Type{}).ToType(tp, v)
 			} else {
-				tmp[columns[k]] = v
+				// 默认字符型
+				item[columns[k]] = (&util.Type{}).Strval(v)
 			}
 		}
-		res = append(res, tmp)
+		res = append(res, item)
 		i++
 	}
+	m.columnsType = map[string]string{}
 	defer rows.Close()
 	return res
 }
 
 /* 添加-单条 */
 func (m *Model) Values(data map[string]interface{}) {
-	keys, vals := "", "("
+	keys, vals := []string{}, []string{}
 	m.args = make([]interface{}, 0, 10)
 	for k, v := range data {
-		keys += k + ", "
-		vals += "?, "
+		keys = append(keys, k)
+		vals = append(vals, "?")
 		m.args = append(m.args, v)
 	}
-	keys = keys[:len(keys)-2]
-	vals = vals[:len(vals)-2]
-	m.keys = keys
-	m.values = vals + ")"
+	m.keys = util.Implode(", ", keys)
+	m.values = "(" + util.Implode(", ", vals) + ")"
 }
 
 /* 添加-多条 */
 func (m *Model) ValuesAll(data []map[string]interface{}) {
-	keys, vals, alls := []string{}, "", ""
+	keys, vals, alls := []string{}, []string{}, []string{}
 	m.args = make([]interface{}, 0, 10)
 	for k := range data[0] {
 		keys = append(keys, k)
-		vals += "?, "
+		vals = append(vals, "?")
 	}
-	vals = vals[:len(vals)-2]
 	for i := range data {
 		for _, k := range keys {
 			m.args = append(m.args, data[i][k])
 		}
-		alls += "(" + vals + "), "
+		alls = append(alls, "("+util.Implode(", ", vals)+")")
 	}
-	alls = alls[:len(alls)-2]
 	m.keys = util.Implode(",", keys)
-	m.values = alls
+	m.values = util.Implode(", ", alls)
 }
 
 /* 添加-SQL */
@@ -338,7 +340,7 @@ func (m *Model) InsertSQL() (string, []interface{}) {
 		fmt.Println("[Model] Insert: 数据不能为空!")
 		return "", nil
 	}
-	m.sql = "INSERT INTO `" + m.table + "`(" + m.keys + ") values " + m.values
+	m.sql = "INSERT INTO `" + m.table + "`(" + m.keys + ") VALUES " + m.values
 	args := m.args
 	// 重置
 	m.keys = ""

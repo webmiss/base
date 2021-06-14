@@ -1,6 +1,7 @@
 import pymysql
 from dbutils.pooled_db import PooledDB
 from config.db import Db
+from util.type import  Type
 
 # 数据库
 class Model :
@@ -23,6 +24,7 @@ class Model :
   __data: str=''       #更新-数据
   __id: int=0          #自增ID
   __nums: int=0        #条数
+  __columnsType={}     #字段类型
 
   # 连接
   def DBConn(self):
@@ -114,6 +116,9 @@ class Model :
   # 字段
   def Columns(self, *columns) :
     self.__columns = ','.join(columns)
+  # 字段-返回类型
+  def ResType(self, type: dict) :
+    self.__columnsType = type
   # 条件
   def Where(self, where: str, *values) :
     self.__where = where
@@ -164,22 +169,38 @@ class Model :
     sql, args = self.SelectSql()
     cs = self.Query(sql, args)
     if not cs : return res
-    res = cs.fetchall()
+    data = cs.fetchall()
     cs.close()
+    # 转换类型
+    for v1 in data :
+      for k2,v2 in v1.items():
+        if k2 in self.__columnsType.keys():
+          v1[k2] = Type.ToType(k2, v2)
+        else:
+          v1[k2] = str(v2)
+    self.__columnsType = {}
     self.__conn.close()
-    return res
+    return data
   #查询-单条
   def FindFirst(self) :
     res = {}
     sql, args = self.SelectSql()
     cs = self.Query(sql, args)
     if not cs : return res
-    res = cs.fetchone()
+    data = cs.fetchone()
+    if not data : return res
     cs.close()
+    # 转换类型
+    for k,v in data.items() :
+      if k in self.__columnsType.keys():
+        data[k] = Type.ToType(k, v)
+      else:
+        data[k] = str(v)
+    self.__columnsType = {}
     self.__conn.close()
-    return res
+    return data
 
-  # 添加-数据
+  # 添加-单条
   def Values(self, data: dict = {}) :
     keys, vals = '', ''
     self.__args = ()
@@ -197,7 +218,7 @@ class Model :
     if self.__keys=='' or self.__values=='' :
       print('Model[Insert]: 数据不能为空!')
       return '', None
-    self.__sql = 'INSERT INTO `' + self.__table + '`(' + self.__keys + ') values(' + self.__values + ')'
+    self.__sql = 'INSERT INTO `' + self.__table + '`(' + self.__keys + ') VALUES ' + self.__values
     # 重置
     self.__keys = ''
     self.__values = ''

@@ -3,6 +3,7 @@ from config.env import Env
 from library.file_eo import FileEo
 from library.qrcode import Qrcode
 from library.captcha import Captcha
+from model.demo import Demo
 
 from flask import send_file
 
@@ -10,8 +11,13 @@ class Index(Base) :
 
   # 首页
   def Index(self):
+    model = Demo()
+    model.Columns('*')
+    model.ResType({'uid':'int'})
+    model.Where('uid=1')
+    list = model.FindFirst()
     # 返回
-    return self.GetJSON({'code':0,'msg':'Web'})
+    return self.GetJSON({'code':0,'msg':'Web', 'list':list})
 
   # 验证码
   def Vcode(self):
