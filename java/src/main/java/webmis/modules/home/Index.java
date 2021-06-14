@@ -1,7 +1,5 @@
 package webmis.modules.home;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.util.HashMap;
 
 import org.springframework.http.MediaType;
@@ -31,8 +29,6 @@ public class Index extends Base{
     data.put("ctime", 1);
     model.Values(data);
     Object[] sql = model.InsertSql();
-    // Connection conn = model.DBConn();
-    // PreparedStatement ps = model.Bind(conn, sql[0], sql[1]);
     Print(sql[0], sql[1]);
     // 返回
     HashMap<String,Object> res;
