@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import webmis.model.SysMenu;
 import webmis.service.AdminToken;
 import webmis.service.Base;
+import webmis.util.Type;
 import webmis.util.Util;
 
 @RestController
@@ -61,7 +62,7 @@ public class SysRole extends Base {
     res.put("code", 0);
     res.put("msg", "成功");
     res.put("list", list);
-    res.put("total", total.get("num"));
+    res.put("total", Type.Int(total.get("num")));
     return GetJSON(res);
   }
 

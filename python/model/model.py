@@ -1,7 +1,8 @@
 import pymysql
 from dbutils.pooled_db import PooledDB
 from config.db import Db
-from util.type import  Type
+from util.util import Util
+from util.type import Type
 
 # 数据库
 class Model :
@@ -53,14 +54,13 @@ class Model :
     if self.__conn !=None : self.__conn.close()
 
   # 查询
-  def Query(self, sql: str, args: tuple = ()) :
+  def Query(self, conn, sql: str, args: tuple) :
     if sql == '' :
       print('[Model] Query: SQL不能为空!')
       return None
     # 游标
     try :
-      self.DBConn()
-      cs = self.__conn.cursor(cursor=pymysql.cursors.DictCursor)
+      cs = conn.cursor(cursor=pymysql.cursors.DictCursor)
       self.__nums = cs.execute(sql, args)
       return cs
     except Exception as e :
@@ -69,16 +69,15 @@ class Model :
       return None
   
   # 执行
-  def Exec(self, sql: str, args: tuple = ()) :
+  def Exec(self, conn, sql: str, args: tuple) :
     if sql == '' :
       print('[Model] Exec: SQL不能为空!')
       return None
     # 游标
     try :
-      self.DBConn()
-      cs = self.__conn.cursor()
+      cs = conn.cursor()
       self.__nums = cs.execute(sql, args)
-      self.__conn.commit()
+      conn.commit()
       return cs
     except Exception as e :
       print('[Model] Exec:', e)
@@ -167,7 +166,8 @@ class Model :
   def Find(self) :
     res = []
     sql, args = self.SelectSql()
-    cs = self.Query(sql, args)
+    self.DBConn()
+    cs = self.Query(self.__conn, sql, args)
     if not cs : return res
     data = cs.fetchall()
     cs.close()
@@ -185,7 +185,8 @@ class Model :
   def FindFirst(self) :
     res = {}
     sql, args = self.SelectSql()
-    cs = self.Query(sql, args)
+    self.DBConn()
+    cs = self.Query(self.__conn, sql, args)
     if not cs : return res
     data = cs.fetchone()
     if not data : return res
@@ -201,15 +202,28 @@ class Model :
     return data
 
   # 添加-单条
-  def Values(self, data: dict = {}) :
-    keys, vals = '', ''
+  def Values(self, data: dict) :
+    keys, vals = [], []
     self.__args = ()
     for k,v in data.items() :
-      keys += k+', '
-      vals += '%s, '
+      keys += [k]
+      vals += ['%s']
       self.__args += (v,)
-    self.__keys = keys[:-2] if len(keys)>0 else ''
-    self.__values = vals[:-2] if len(vals)>0 else ''
+    self.__keys = Util.Implode(', ', keys)
+    self.__values = '(' + Util.Implode(', ', vals) + ')'
+  # 添加-多条
+  def ValuesAll(self, data: list) :
+    keys, vals, alls = [], [], []
+    self.__args = ()
+    for k,v in data[0].items() :
+      keys += [k]
+      vals += ['%s']
+    for i in range(len(data)):
+      for k in keys :
+        self.__args += (data[i][k],)
+      alls += ['(' + Util.Implode(', ', vals) + ')']
+    self.__keys = Util.Implode(', ', keys)
+    self.__values = Util.Implode(', ', alls)
   # 添加-SQL
   def InsertSql(self) :
     if self.__table=='' :
@@ -228,7 +242,8 @@ class Model :
   # 添加-执行
   def Insert(self) :
     sql, args = self.InsertSql()
-    cs = self.Exec(sql, args)
+    self.DBConn()
+    cs = self.Exec(self.__conn, sql, args)
     if cs==None : return False
     self.__id = cs.lastrowid
     cs.close()
@@ -264,7 +279,8 @@ class Model :
   # 更新-执行
   def Update(self) :
     sql, args = self.UpdateSql()
-    cs = self.Exec(sql, args)
+    self.DBConn()
+    cs = self.Exec(self.__conn, sql, args)
     if cs == None : return False
     cs.close()
     self.__conn.close()
@@ -287,7 +303,8 @@ class Model :
   # 删除-执行
   def Delete(self) :
     sql, args = self.DeleteSql()
-    cs = self.Exec(sql, args)
+    self.DBConn()
+    cs = self.Exec(self.__conn, sql, args)
     if cs == None : return False
     cs.close()
     self.__conn.close()

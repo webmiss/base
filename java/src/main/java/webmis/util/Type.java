@@ -3,6 +3,11 @@ package webmis.util;
 /* 类型转换 */
 public class Type {
 
+  /* Int */
+  static public int Int(Object val) {
+    return Integer.valueOf(String.valueOf(val));
+  }
+
   /* 转换: string、int、float */
   static public Object ToType(String type, Object val) {
     switch(type) {

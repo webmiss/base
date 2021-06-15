@@ -16,6 +16,7 @@ import webmis.service.Base;
 import webmis.model.ApiMenu;
 import webmis.service.AdminToken;
 import webmis.service.ApiToken;
+import webmis.util.Type;
 import webmis.util.Util;
 
 /* 系统菜单 */
@@ -70,7 +71,7 @@ public class ApiMenus extends Base {
     res.put("code", 0);
     res.put("msg", "成功");
     res.put("list", list);
-    res.put("total", total.get("num"));
+    res.put("total", Type.Int(total.get("num")));
     return GetJSON(res);
   }
 

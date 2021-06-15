@@ -73,14 +73,12 @@ func (m *Model) Conn() *sql.DB {
 }
 
 /* 查询 */
-func (m *Model) Query(sql string, args []interface{}) *sql.Rows {
+func (Model) Query(conn *sql.DB, sql string, args []interface{}) *sql.Rows {
 	if sql == "" {
 		fmt.Println("[Model] Query: SQL不能为空!")
 		return nil
 	}
-	// 连接
-	m.DBConn()
-	rows, err := m.conn.Query(sql, args...)
+	rows, err := conn.Query(sql, args...)
 	if err != nil {
 		fmt.Println("[Model] Query:", err)
 		fmt.Println("[Model] SQL:", sql)
@@ -90,15 +88,12 @@ func (m *Model) Query(sql string, args []interface{}) *sql.Rows {
 }
 
 /* 执行 */
-func (m *Model) Exec(sql string, args []interface{}) sql.Result {
+func (Model) Exec(conn *sql.DB, sql string, args []interface{}) sql.Result {
 	if sql == "" {
 		fmt.Println("[Model] Exec: SQL不能为空!")
 		return nil
 	}
-	// 连接
-	m.DBConn()
-	rows, err := m.conn.Exec(sql, args...)
-	m.args = make([]interface{}, 0, 10)
+	rows, err := conn.Exec(sql, args...)
 	if err != nil {
 		fmt.Println("[Model] Exec:", err)
 		fmt.Println("[Model] SQL:", sql)
@@ -243,9 +238,10 @@ func (m *Model) SelectSQL() (string, []interface{}) {
 }
 
 /* 查询-多条 */
-func (m *Model) Find() []map[string]interface{} {
+func (m Model) Find() []map[string]interface{} {
 	sql, args := m.SelectSQL()
-	rows := m.Query(sql, args)
+	m.DBConn()
+	rows := m.Query(m.conn, sql, args)
 	if rows == nil {
 		return nil
 	}
@@ -256,7 +252,8 @@ func (m *Model) Find() []map[string]interface{} {
 func (m *Model) FindFirst() map[string]interface{} {
 	m.limit = "0,1"
 	sql, args := m.SelectSQL()
-	rows := m.Query(sql, args)
+	m.DBConn()
+	rows := m.Query(m.conn, sql, args)
 	if rows == nil {
 		return nil
 	}
@@ -302,7 +299,7 @@ func (m *Model) FindDataAll(rows *sql.Rows) []map[string]interface{} {
 /* 添加-单条 */
 func (m *Model) Values(data map[string]interface{}) {
 	keys, vals := []string{}, []string{}
-	m.args = make([]interface{}, 0, 10)
+	m.args = []interface{}{}
 	for k, v := range data {
 		keys = append(keys, k)
 		vals = append(vals, "?")
@@ -315,7 +312,7 @@ func (m *Model) Values(data map[string]interface{}) {
 /* 添加-多条 */
 func (m *Model) ValuesAll(data []map[string]interface{}) {
 	keys, vals, alls := []string{}, []string{}, []string{}
-	m.args = make([]interface{}, 0, 10)
+	m.args = []interface{}{}
 	for k := range data[0] {
 		keys = append(keys, k)
 		vals = append(vals, "?")
@@ -345,7 +342,7 @@ func (m *Model) InsertSQL() (string, []interface{}) {
 	// 重置
 	m.keys = ""
 	m.values = ""
-	m.args = make([]interface{}, 0, 10)
+	m.args = []interface{}{}
 	return m.sql, args
 }
 
@@ -355,7 +352,8 @@ func (m *Model) Insert() bool {
 	if sql == "" {
 		return false
 	}
-	rows := m.Exec(sql, args)
+	m.DBConn()
+	rows := m.Exec(m.conn, sql, args)
 	if rows == nil {
 		return false
 	}
@@ -369,8 +367,8 @@ func (m *Model) Insert() bool {
 
 /* 更新-数据 */
 func (m *Model) Set(data map[string]interface{}) {
-	m.args = make([]interface{}, 0, 10)
 	vals := ""
+	m.args = []interface{}{}
 	for k, v := range data {
 		vals += k + "=?, "
 		m.args = append(m.args, v)
@@ -400,14 +398,15 @@ func (m *Model) UpdateSQL() (string, []interface{}) {
 	// 重置
 	m.data = ""
 	m.where = ""
-	m.args = make([]interface{}, 0, 10)
+	m.args = []interface{}{}
 	return m.sql, args
 }
 
 /* 更新-执行 */
 func (m *Model) Update() bool {
 	sql, args := m.UpdateSQL()
-	rows := m.Exec(sql, args)
+	m.DBConn()
+	rows := m.Exec(m.conn, sql, args)
 	if rows == nil {
 		return false
 	}
@@ -433,14 +432,15 @@ func (m *Model) DeleteSQL() (string, []interface{}) {
 	args := m.args
 	// 重置
 	m.where = ""
-	m.args = make([]interface{}, 0, 10)
+	m.args = []interface{}{}
 	return m.sql, args
 }
 
 /* 删除-执行 */
 func (m *Model) Delete() bool {
 	sql, args := m.DeleteSQL()
-	rows := m.Exec(sql, args)
+	m.DBConn()
+	rows := m.Exec(m.conn, sql, args)
 	if rows == nil {
 		return false
 	}

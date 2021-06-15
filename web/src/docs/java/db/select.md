@@ -1,26 +1,13 @@
-### 执行SQL
+### 查询
 ```java
 @RequestMapping("")
-String index() throws SQLException{
+String index() {
   ArrayList<HashMap<String,Object>> data = null;
   // 查询
-  Demo demo = new Demo();
-  demo.Columns("uid", "title");
-  demo.Where("title LIKE ?");
-  String sql = demo.SelectSql();
-  // 参数
-  PreparedStatement ps = demo.Bind(sql);
-  ps.setString(1, "%事务%");
-  // 数据
-  ResultSet rs = demo.Query(ps);
-  data = new ArrayList<HashMap<String,Object>>();
-  HashMap<String,Object> tmp;
-  while (rs.next()) {
-    tmp = new HashMap<String,Object>();
-    tmp.put("uid", rs.getInt(1));
-    tmp.put("title", rs.getString(2));
-    data.add(tmp);
-  }
+  Demo model = new Demo();
+  model.Columns("uid", "title");
+  model.Where("title LIKE ?", "%查询%");
+  data = model.Find();
   // 返回数据
   HashMap<String,Object> res = new HashMap<String,Object>();
   res.put("code",0);
@@ -32,15 +19,21 @@ String index() throws SQLException{
 
 ### 多条
 ```java
-ArrayList<HashMap<String,Object>> data = demo.Find(ps);
+demo.Find();
 ```
 
 ### 单条
 ```java
-HashMap<String,Object> data = demo.FindFirst(ps);
+demo.FindFirst();
+```
+
+### 返回类型
+```java
+demo.ResType();
 ```
 
 ### 生成SQL
 ```java
-String sql = demo.SelectSql();
+// sql、args
+Object[] sql = demo.SelectSql();
 ```

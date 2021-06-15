@@ -63,7 +63,7 @@ class SysUser(Base):
       if not val['sys_role'] : val['sys_role']=''
       if not val['sys_perm'] : val['sys_perm']=''
     # 返回
-    return self.GetJSON({'code':0, 'msg':'成功', 'list':list, 'total':total['num']})
+    return self.GetJSON({'code':0, 'msg':'成功', 'list':list, 'total':int(total['num'])})
     
   # 添加
   def Add(self):

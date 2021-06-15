@@ -15,5 +15,15 @@ class Demo(Model) :
 ```python
 from model.demo import Demo
 # 对象
-demo = Demo()
+model = Demo()
+```
+
+### 查询
+```python
+model.Query(conn, sql: str, args: tuple)
+```
+
+### 执行
+```python
+model.Exec(conn, sql: str, args: tuple)
 ```

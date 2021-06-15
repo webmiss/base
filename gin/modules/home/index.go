@@ -3,7 +3,6 @@ package home
 import (
 	"webmis/config"
 	"webmis/library"
-	"webmis/model"
 	"webmis/service"
 
 	"github.com/gin-gonic/gin"
@@ -16,20 +15,6 @@ type Index struct {
 
 /* 首页 */
 func (r Index) Index(c *gin.Context) {
-	model := (&model.Demo{}).New()
-	model.ValuesAll([]map[string]interface{}{
-		{
-			"title": "测试1",
-			"ctime": 1,
-		},
-		{
-			"title": "测试2",
-			"ctime": 2,
-		},
-	})
-	// sql, args := model.InsertSQL()
-	// r.Print(sql, args)
-	model.Insert()
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "Web"})
 }

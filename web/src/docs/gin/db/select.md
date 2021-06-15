@@ -1,26 +1,11 @@
-### 执行SQL
+### 查询
 ```go
 func Index(c *gin.Context) {
 	// 查询
-	demo := (&model.Demo{}).New()
-	demo.Columns("uid", "title")
-	demo.Where("title LIKE ?", "%事务%")
-	// 执行
-	sql, args := demo.SelectSql()
-	rows, _ := demo.Query(sql, args)
-	defer rows.close()
-	// 数据
-	var uid int
-	var title string
-	data := make([]map[string]interface{}, 0, 10)
-	for rows.Next() {
-		rows.Scan(&uid, &title)
-		tmp := map[string]interface{}{
-			"uid":   uid,
-			"title": title,
-		}
-		data = append(data, tmp)
-	}
+	model := (&model.Demo{}).New()
+	model.Columns("uid", "title")
+	model.Where("title LIKE ?", "%查询%")
+	data := model.Find()
 	// 返回
 	c.JSON(200, gin.H{"code": 0, "msg": "Web", "data": data})
 }
@@ -28,12 +13,17 @@ func Index(c *gin.Context) {
 
 ### 多条
 ```go
-data := demo.Find()
+demo.Find()
 ```
 
 ### 单条
 ```go
-data := demo.FindFirst()
+demo.FindFirst()
+```
+
+### 返回类型
+```go
+demo.ResType()
 ```
 
 ### 生成SQL

@@ -1,15 +1,11 @@
-### 执行SQL
+### 查询
 ```php
 static function Index() {
   // 查询
-  $demo = new Demo();
-  $demo->Columns('uid','title');
-  $demo->Where('title LIKE ?','%事务%');
-  list($sql, $args) = $demo->SelectSql();
-  // 执行
-  $query = $demo->Query($sql, $args);
-  // 数据
-  $data = $query->fetchAll();
+  $model = new Demo();
+  $model->Columns('uid','title');
+  $model->Where('title LIKE ?','%查询%');
+  $data = $model->Find();
   // 返回
   return self::getJSON(['code'=>0, 'msg'=>'Web', 'data'=>$data]);
 }
@@ -17,15 +13,20 @@ static function Index() {
 
 ### 多条
 ```php
-$data = $demo->Find();
+$model->Find();
 ```
 
 ### 单条
 ```php
-$data = $demo->FindFirst();
+$model->FindFirst();
+```
+
+### 返回类型
+```php
+$model->ResType();
 ```
 
 ### 生成SQL
 ```php
-list($sql, $args) = $demo->SelectSql();
+list($sql, $args) = $model->SelectSql();
 ```

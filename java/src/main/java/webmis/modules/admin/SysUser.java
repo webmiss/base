@@ -28,6 +28,7 @@ import webmis.service.AdminToken;
 import webmis.service.Base;
 import webmis.service.Data;
 import webmis.util.Hash;
+import webmis.util.Type;
 import webmis.util.Util;
 
 @RestController
@@ -89,7 +90,7 @@ public class SysUser extends Base {
     res.put("code", 0);
     res.put("msg", "成功");
     res.put("list", list);
-    res.put("total", total.get("num"));
+    res.put("total", Type.Int(total.get("num")));
     return GetJSON(res);
   }
 
@@ -140,40 +141,44 @@ public class SysUser extends Base {
       return GetJSON(res);
     }
     // 新增
-    String sql;
+    Object[] sql;
     PreparedStatement ps;
     long uid = Data.Mist("ID");
     Connection conn = m.DBConn();
+    HashMap<String, Object> uData;
     try {
       conn.setAutoCommit(false);
       // 用户
-      // User m1 = new User();
-      // m1.Values("id", "tel", "password");
-      // sql = m1.InsertSql();
-      // ps = conn.prepareStatement(sql);
-      // ps.setLong(1, uid);
-      // ps.setString(2, tel);
-      // ps.setString(3, Hash.Md5(passwd));
-      // ps.executeUpdate();
-      // ps.close();
+      User m1 = new User();
+      uData = new HashMap<String, Object>();
+      uData.put("id", uid);
+      uData.put("tel", tel);
+      uData.put("password", Hash.Md5(passwd));
+      m1.Values(uData);
+      sql = m1.InsertSql();
+      ps = m1.Bind(conn, sql[0], sql[1]);
+      ps.executeUpdate();
+      ps.close();
       // 详情
-      // UserInfo m2 = new UserInfo();
-      // m2.Values("uid");
-      // sql = m2.InsertSql();
-      // ps = conn.prepareStatement(sql);
-      // ps.setLong(1, uid);
-      // ps.executeUpdate();
-      // ps.close();
+      UserInfo m2 = new UserInfo();
+      uData = new HashMap<String, Object>();
+      uData.put("uid", uid);
+      m2.Values(uData);
+      sql = m2.InsertSql();
+      ps = m2.Bind(conn, sql[0], sql[1]);
+      ps.executeUpdate();
+      ps.close();
       // 权限
-      // ApiPerm m3 = new ApiPerm();
-      // m3.Values("uid", "role", "utime");
-      // sql = m3.InsertSql();
-      // ps = conn.prepareStatement(sql);
-      // ps.setLong(1, uid);
-      // ps.setInt(2, 1);
-      // ps.setLong(3, Util.Time());
-      // ps.executeUpdate();
-      // ps.close();
+      ApiPerm m3 = new ApiPerm();
+      uData = new HashMap<String, Object>();
+      uData.put("uid", uid);
+      uData.put("role", 1);
+      uData.put("utime", Util.Time());
+      m3.Values(uData);
+      sql = m3.InsertSql();
+      ps = m3.Bind(conn, sql[0], sql[1]);
+      ps.executeUpdate();
+      ps.close();
       // 提交
       conn.commit();
       // 返回

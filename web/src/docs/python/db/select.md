@@ -1,31 +1,32 @@
-### 执行SQL
+### 查询
 ```python
   # 首页
   def index(self):
     # 查询
-    demo = Demo()
-    demo.Columns('uid','title')
-    demo.Where('title LIKE %s','%事务%')
-    sql, args = demo.SelectSql()
-    # 执行
-    cs, num = demo.Query(sql, args)
-    # 数据
-    data = cs.fetchall()
+    model = Demo()
+    model.Columns('uid','title')
+    model.Where('title LIKE %s','%查询%')
+    data = model.Find()
     # 返回
     return self.getJSON({'code':0,'msg':'Web', 'data':data})
 ```
 
 ### 多条
 ```python
-data = demo.Find()
+model.Find()
 ```
 
 ### 单条
 ```python
-data = demo.FindFirst()
+model.FindFirst()
+```
+
+### 返回类型
+```python
+model.ResType()
 ```
 
 ### 生成SQL
 ```python
-sql, args = demo.SelectSql()
+sql, args = model.SelectSql()
 ```

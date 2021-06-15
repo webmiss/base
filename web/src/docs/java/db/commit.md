@@ -2,24 +2,28 @@
 ```java
 import webmis.model.Demo;
 
+Object[] sql;
+PreparedStatement ps;
+HashMap<String, Object> uData;
 Demo model = new Demo();
 Connection conn = model.DBConn();
 try {
   // 开始
   conn.setAutoCommit(false);
   // SQL1
-  demo.Values("uid","title1");
-  String sql = demo.InsertSql();
-  PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-  ps.setNull(1, 0);
-  ps.setString(2, "Java-事件");
+  Demo m1 = new Demo();
+  uData = new HashMap<String, Object>();
+  uData.put("id", uid);
+  m1.Values(uData);
+  sql = m1.InsertSql();
+  ps = m1.Bind(conn, sql[0], sql[1]);
   ps.executeUpdate();
   ps.close();
   // SQL2
-  demo.Where("uid=?");
-  sql = demo.DeleteSql();
-  ps = conn.prepareStatement(sql);
-  ps.setInt(1, id);
+  Demo m2 = new Demo();
+  m2.Where("id=?", uid);
+  sql = m2.DeleteSql();
+  ps = m2.Bind(conn, sql[0], sql[1]);
   ps.executeUpdate();
   ps.close();
   // 提交

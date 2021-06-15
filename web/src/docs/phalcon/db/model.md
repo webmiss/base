@@ -18,5 +18,15 @@ class Demo extends Model {
 ```php
 use Model\Demo;
 // 对象
-$demo = new Demo();
+$model = new Demo();
+```
+
+### 查询
+```php
+$model->Query($conn, string $sql, array $args=[]);
+```
+
+### 执行
+```php
+$model->Exec($conn, string $sql, array $args=[]);
 ```

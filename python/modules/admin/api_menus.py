@@ -39,7 +39,7 @@ class ApiMenus(Base):
     for val in list :
       val['action'] = Util.JsonDecode(val['action']) if str(val['action'])!='' else ''
     # 返回
-    return self.GetJSON({'code':0, 'msg':'成功', 'list':list, 'total':total['num']})
+    return self.GetJSON({'code':0, 'msg':'成功', 'list':list, 'total':int(total['num'])})
     
   # 添加
   def Add(self):

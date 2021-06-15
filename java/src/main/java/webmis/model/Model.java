@@ -35,7 +35,7 @@ public class Model extends Base {
   private String _group = "";                       //分组
   private String _order = "";                       //排序
   private String _limit = "";                       //限制
-  private Object[] _args = new Object[]{};          //参数
+  private JSONArray _args = new JSONArray();        //参数
   private String _keys = "";                        //新增-名
   private String _values = "";                      //新增-值
   private String _data = "";                        //更新-数据
@@ -104,8 +104,6 @@ public class Model extends Base {
     PreparedStatement ps = null;
     String name;
     String sqlStr = String.valueOf(sql);
-    // 连接
-    DBConn();
     // 类型
     _type = insert?"insert":"";
     try {
@@ -172,10 +170,6 @@ public class Model extends Base {
   public String GetSql() {
     return _sql;
   }
-  /* 获取-参数 */
-  public Object[] GetArgs() {
-    return _args;
-  }
   /* 获取-自增ID */
   public int GetID() {
     return _id;
@@ -224,15 +218,9 @@ public class Model extends Base {
   /* 条件 */
   public void Where(String where, Object... args) {
     _where = where;
-    // 参数
-    int n1 = _args.length;
-    int n2 = args.length;
-    Object[] param = new Object[n1+n2];
-    for(int i=0; i<param.length; i++){
-      if(i<n1) param[i] = _args[i];
-      else param[i] = args[i-n1];
+    for(Object v: args) {
+      _args.add(v);
     }
-    _args = param;
   }
   /* 限制 */
   public void Limit(int start, int limit) {
@@ -289,19 +277,21 @@ public class Model extends Base {
       _sql += " LIMIT "+_limit;
       _limit = "";
     }
-    Object[] args = _args;
-    _args = new Object[]{};
+    JSONArray args = _args;
+    _args = new JSONArray();
     return new Object[]{_sql, args};
   }
   /* 查询-多条 */
   public ArrayList<HashMap<String,Object>> Find() {
     Object[] res = SelectSql();
+    DBConn();
     PreparedStatement ps = Bind(_conn, res[0], res[1]);
     return FindDataAll(ps);
   }
   /* 查询-单条 */
   public HashMap<String,Object> FindFirst() {
     Object[] res = SelectSql();
+    DBConn();
     PreparedStatement ps = Bind(_conn, res[0], res[1]);
     ArrayList<HashMap<String,Object>> data = FindDataAll(ps);
     if(data.isEmpty()) return new HashMap<String,Object>();
@@ -346,31 +336,33 @@ public class Model extends Base {
   public void Values(HashMap<String, Object> data) {
     JSONArray keys = new JSONArray();
     JSONArray vals = new JSONArray();
-    Object[] args = new Object[data.size()];
-    int n = 0;
+    _args = new JSONArray();
     for(Entry<String, Object> entry : data.entrySet()){
       keys.add(entry.getKey());
       vals.add("?");
-      args[n] = entry.getValue();
-      n++;
+      _args.add(entry.getValue());
     }
     _keys = Util.Implode(", ", keys);
-    _values = Util.Implode(", ", vals);
+    _values = "(" + Util.Implode(", ", vals) + ")";
   }
   /* 添加-多条 */
   public void ValuesAll(ArrayList<HashMap<String, Object>> data) {
     JSONArray keys = new JSONArray();
     JSONArray vals = new JSONArray();
-    Object[] args = new Object[data.size()];
-    int n = 0;
+    JSONArray alls = new JSONArray();
+    _args = new JSONArray();
     for(Entry<String, Object> entry : data.get(0).entrySet()){
       keys.add(entry.getKey());
       vals.add("?");
-      args[n] = entry.getValue();
-      n++;
+    }
+    for(int i=0; i<data.size(); i++) {
+      for(Entry<String, Object> entry : data.get(i).entrySet()) {
+        _args.add(entry.getValue());
+      }
+      alls.add("(" + Util.Implode(", ", vals) + ")");
     }
     _keys = Util.Implode(", ", keys);
-    _values = Util.Implode(", ", vals);
+    _values = Util.Implode(", ", alls);
   }
   /* 添加-SQL */
   public Object[] InsertSql() {
@@ -383,16 +375,17 @@ public class Model extends Base {
       return null;
     }
     _sql = "INSERT INTO `" + _table + "`(" + _keys + ") VALUES " + _values;
-    Object[] args = _args;
+    JSONArray args = _args;
     // 重置
     _keys = "";
     _values = "";
-    _args = new Object[]{};
+    _args = new JSONArray();
     return new Object[]{_sql, args};
   }
   /* 添加-执行 */
   public boolean Insert() {
     Object[] res = InsertSql();
+    DBConn();
     PreparedStatement ps = Bind(_conn, res[0], res[1], true);
     try{
       if(Exec(ps)!=null){
@@ -410,32 +403,14 @@ public class Model extends Base {
   }
 
   /* 更新-数据 */
-  public void Set(String... data) {
-    String vals = "";
-    for(int i=0; i<data.length; i++) {
-      vals += data[i] + "=?, ";
-    }
-    _data = vals.length()>0?vals.substring(0,vals.length()-2):"";
-  }
   public void Set(HashMap<String, Object> data) {
     String vals = "";
-    Object[] args = new Object[data.size()];
-    int n = 0;
+    _args = new JSONArray();
     for(Entry<String, Object> entry : data.entrySet()){
       vals += entry.getKey() + "=?, ";
-      args[n] = entry.getValue();
-      n++;
+      _args.add(entry.getValue());
     }
     _data = vals.length()>0?vals.substring(0,vals.length()-2):"";
-    // 参数
-    int n1 = _args.length;
-    int n2 = data.size();
-    Object[] param = new Object[n1+n2];
-    for(int i=0; i<param.length; i++){
-      if(i<n1) param[i] = _args[i];
-      else param[i] = args[i-n1];
-    }
-    _args = param;
   }
   /* 更新-SQL */
   public Object[] UpdateSql() {
@@ -452,16 +427,17 @@ public class Model extends Base {
       return null;
     }
     _sql = "UPDATE `" + _table + "` SET " + _data + " WHERE " + _where;
-    Object[] args = _args;
+    JSONArray args = _args;
     // 重置
     _data = "";
     _where = "";
-    _args = new Object[]{};
+    _args = new JSONArray();
     return new Object[]{_sql, args};
   }
   /* 更新-执行 */
   public boolean Update() {
     Object[] res = UpdateSql();
+    DBConn();
     PreparedStatement ps = Bind(_conn, res[0], res[1]);
     try{
       if(Exec(ps)!=null){
@@ -489,15 +465,16 @@ public class Model extends Base {
       return null;
     }
     _sql = "DELETE FROM `" + _table + "` WHERE " + _where;
-    Object[] args = _args;
+    JSONArray args = _args;
     // 重置
     _where = "";
-    _args = new Object[]{};
+    _args = new JSONArray();
     return new Object[]{_sql, args};
   }
   /* 删除-执行 */
   public boolean Delete() {
     Object[] res = DeleteSql();
+    DBConn();
     PreparedStatement ps = Bind(_conn, res[0], res[1]);
     try{
       if(Exec(ps)!=null){

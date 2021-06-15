@@ -14,5 +14,6 @@ demo.Insert();
 
 ### 生成SQL
 ```java
-String sql = db.InsertSql()
+// sql、args
+Object[] sql = db.InsertSql()
 ```

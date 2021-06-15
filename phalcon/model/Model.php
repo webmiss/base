@@ -56,14 +56,13 @@ class Model extends Base {
   }
 
   /* 查询 */
-  function Query(string $sql, array $args=[]) {
+  function Query($conn, string $sql, array $args) {
     if(empty($sql)){
       $this->Print('[Model] Query: SQL不能为空!');
       return null;
     }
     try {
-      $this->DBConn();
-      return $this->conn->query($sql, $args);
+      return $conn->query($sql, $args);
     }catch (\Exception $e){
       $this->Print('[Model] Query:', $e->getMessage());
       $this->Print('[Model] SQL:', $sql);
@@ -72,14 +71,13 @@ class Model extends Base {
   }
 
   /* 执行 */
-  function Exec(string $sql, array $args=[]) {
+  function Exec($conn, string $sql, array $args) {
     if(empty($sql)){
       $this->Print('[Model] Exec: SQL不能为空!');
       return null;
     }
     try {
-      $this->DBConn();
-      return $this->conn->execute($sql, $args);
+      return $conn->execute($sql, $args);
     }catch (\Exception $e){
       $this->Print('[Model] Exec:', $e->getMessage());
       $this->Print('[Model] SQL:', $sql);
@@ -192,7 +190,6 @@ class Model extends Base {
   function Find(): array {
     $res = [];
     list($sql, $args) = $this->SelectSql();
-    if(empty($sql)) return $res;
     $this->DBConn();
     $data = $this->conn->fetchAll($sql, 2, $args);
     if(count($this->columnsType)==0) return $data;
@@ -212,7 +209,6 @@ class Model extends Base {
     $res = [];
     $this->limit = '0,1';
     list($sql, $args) = $this->SelectSql();
-    if(empty($sql)) return $res;
     $this->DBConn();
     $data = $this->conn->fetchOne($sql, 2, $args);
     if(!$data) return (object)[];
@@ -277,7 +273,8 @@ class Model extends Base {
   /* 添加-执行 */
   function Insert(): bool {
     list($sql, $args) = $this->InsertSql();
-    $res = $this->Exec($sql, $args);
+    $this->DBConn();
+    $res = $this->Exec($this->conn, $sql, $args);
     if($res){
        $this->id = $this->conn->lastInsertId();
       return true;
@@ -320,7 +317,8 @@ class Model extends Base {
   /* 更新-执行 */
   function Update(): bool {
     list($sql, $args) = $this->UpdateSql();
-    $res = $this->Exec($sql, $args);
+    $this->DBConn();
+    $res = $this->Exec($this->conn, $sql, $args);
     if($res){
       $this->nums = $this->conn->affectedRows();
       return true;
@@ -349,7 +347,8 @@ class Model extends Base {
   /* 删除-执行 */
   function Delete(): bool {
     list($sql, $args) = $this->DeleteSql();
-    $res = $this->Exec($sql, $args);
+    $this->DBConn();
+    $res = $this->Exec($this->conn, $sql, $args);
     if($res){
       $this->nums = $this->conn->affectedRows();
       return true;

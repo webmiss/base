@@ -14,5 +14,6 @@ demo.Update();
 
 ### 生成SQL
 ```java
-String sql = db.UpdateSql()
+// sql、args
+Object[] sql = db.UpdateSql()
 ```
