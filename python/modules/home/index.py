@@ -3,6 +3,7 @@ from config.env import Env
 from library.file_eo import FileEo
 from library.qrcode import Qrcode
 from library.captcha import Captcha
+from library.upload import Upload
 
 from flask import send_file
 
@@ -10,8 +11,9 @@ class Index(Base) :
 
   # 首页
   def Index(self):
+    oss = Upload.OssPolicy('jpg')
     # 返回
-    return self.GetJSON({'code':0,'msg':'Web'})
+    return self.GetJSON({'code':0,'msg':'Web', 'oss_policy':oss})
 
   # 验证码
   def Vcode(self):

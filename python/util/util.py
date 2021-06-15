@@ -1,4 +1,3 @@
-import hashlib
 import time
 import json
 from typing import Any
@@ -20,6 +19,11 @@ class Util:
     tArr = time.strptime(day, format)
     t = time.mktime(tArr)
     return t if t>0 else 0
+
+  # Timestamp To GmtIso8601
+  def GmtISO8601(timestamp: int):
+    t = time.localtime(timestamp)
+    return time.strftime("%Y-%m-%dT%H:%M:%S", t) + 'Z'
 
   # 去首尾空格
   def Trim(content, charlist: str = None):

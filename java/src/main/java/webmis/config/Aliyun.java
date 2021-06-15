@@ -16,9 +16,13 @@ public class Aliyun {
   /* 对象存储 */
   public static HashMap<String, Object> OSS() {
     HashMap<String, Object> cfg = new HashMap<String, Object>();
-    cfg.put("Endpoint", "oss-cn-chengdu.aliyuncs.com");
-    cfg.put("Bucket", "webmis-upload");
-    cfg.put("ImgUrl", "http://img.webmis.vip/");
+    cfg.put("Endpoint", "oss-cn-chengdu.aliyuncs.com");           //区域
+    cfg.put("Bucket", "webmis-upload");                           //存储空间
+    cfg.put("MaxSize", 100*1024*1024);                            //最大文件
+    cfg.put("ExpireTime", 30);                                    //签名有效时间(秒)
+    cfg.put("callbackUrl", "https://api.webmis.vip/");            //回调URL
+    cfg.put("callbackType", "application/x-www-form-urlencoded"); //回调数据类型
+    cfg.put("ImgUrl", "http://img.webmis.vip/");                  //图片域名
     return cfg;
   }
   

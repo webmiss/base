@@ -26,6 +26,18 @@ public class Hash {
     }
   }
 
+  /* HmacSha1 */
+  public static byte[] HmacSha1(String data, byte[] key) {
+    try {
+      Mac hmac = Mac.getInstance("HmacSHA1");
+      SecretKeySpec keySpec = new SecretKeySpec(key, "HmacSHA1");
+      hmac.init(keySpec);
+      return hmac.doFinal(data.getBytes("UTF-8"));
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
   /* HmacSha256 */
   public static byte[] HmacSha256(String data, byte[] key) {
     try {

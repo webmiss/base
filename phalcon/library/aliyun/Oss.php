@@ -37,7 +37,6 @@ class Oss extends Base {
     return $res;
   }
 
-
   /* 初始化 */
   static function Init() {
     if(!extension_loaded('iconv')) self::Error('请开启 iconv 扩展!');

@@ -6,9 +6,12 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.alibaba.fastjson.JSONObject;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import webmis.config.Env;
+import webmis.library.aliyun.Oss;
 import webmis.util.Base64;
 import webmis.util.Util;
 
@@ -95,6 +98,24 @@ public class Upload {
       return "";
     }
     return filename;
+  }
+
+  /* OSS-签名直传 */
+  public static JSONObject OssPolicy(String ext, long expireTime) {
+    // 类型
+    ArrayList<String> extImg = new ArrayList<String>();
+    extImg.add("jpg");
+    extImg.add("png");
+    extImg.add("gif");
+    ArrayList<String> extVod = new ArrayList<String>();
+    extVod.add("mp4");
+    // 目录
+    String dir = "tmp/";
+    if(extImg.contains(ext)) dir = "img/";
+    else if(extImg.contains(ext)) dir = "vod/";
+    // 文件名
+    String file = !ext.isEmpty()?GetFileName()+"."+ext:GetFileName();
+    return Oss.Policy(dir, file, expireTime, 0);
   }
 
   /* 图片回收 */

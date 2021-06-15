@@ -1,6 +1,7 @@
 import time, datetime, random, re, os
 from config.env import Env
 from library.file_eo import FileEo
+from library.aliyun.oss import Oss
 from util.util import Util
 from util.base64 import Base64
 
@@ -61,6 +62,19 @@ class Upload:
       print('[Upload] Writer:', '保存文件失败!')
       return ''
     return filename
+
+  # OSS-签名直传
+  def OssPolicy(ext: str, expireTime: int=0):
+    # 类型
+    extImg = ['jpg', 'png', 'gif']
+    extVod = ['mp4']
+    # 目录
+    dir = 'tmp/'
+    if ext in extImg : dir = 'img/'
+    elif ext in extVod : dir = 'vod/'
+    # 文件名
+    file = Upload.GetFileName()+'.'+ext if ext!='' else Upload.GetFileName()
+    return Oss.Policy(dir, file, expireTime)
 
   # 图片回收
   def HtmlImgClear(html: str, dir: str):

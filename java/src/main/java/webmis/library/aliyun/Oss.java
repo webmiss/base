@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONObject;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.DeleteObjectsRequest;
@@ -14,16 +15,33 @@ import com.aliyun.oss.model.OSSObjectSummary;
 import com.aliyun.oss.model.ObjectListing;
 
 import webmis.config.Aliyun;
-import webmis.service.Base;
+import webmis.util.Type;
 
 /* 对象存储 */
-public class Oss extends Base {
+public class Oss extends Signature {
 
   public static OSS OssConn = null;           //连接
   public static String AccessKeyId = "";      //RAM: AccessKeyId
   public static String AccessKeySecret = "";  //RAM: AccessKeySecret
   public static String Endpoint = "";         //地域节点
   public static String Bucket = "";           //Bucket名称
+
+  /* 签名直传 */
+  static public JSONObject Policy(String dir, String file, long expireTime, long maxSize) {
+    HashMap<String, Object> cfg = Aliyun.OSS();
+    // 默认值
+    if(expireTime==0) expireTime = Type.Long(cfg.get("ExpireTime"));
+    if(maxSize==0) maxSize = Type.Long(cfg.get("MaxSize"));
+    // 数据
+    JSONObject res = PolicySign(expireTime, maxSize);
+    res.put("host", "https://"+cfg.get("Bucket").toString()+"."+cfg.get("Endpoint").toString());
+    res.put("dir", dir);
+    res.put("file", file);
+    res.put("max_size", maxSize);
+    // 回调
+    res.put("callback", "");
+    return res;
+  }
 
   /* 初始化 */
   public static OSS Init() {

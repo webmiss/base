@@ -3,8 +3,16 @@ import zlib
 
 class Base64:
 
+  # String To Bytes
+  def ToByte(data: str):
+    return str.encode(data)
+
+  # Bytes To String
+  def ToStr(data: bytes):
+    return bytes.decode(data)
+
   # 编码
-  def Encode(data: str):
+  def Encode(data: bytes):
     return base64.b64encode(data)
 
   # 解码

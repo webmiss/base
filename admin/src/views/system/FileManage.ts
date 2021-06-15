@@ -60,7 +60,7 @@ export default defineComponent({
         this.rename.form.rename = names[0];
         this.rename.form.name = names[0];
       }else if(val=='upload'){
-        Get('http://localhost:9000/',{},(res: any)=>{
+        Get('http://localhost:9020/',{},(res: any)=>{
           const d = res.data.oss_policy;
           this.upload.url = d.host;
           this.upload.param.OSSAccessKeyId = d.accessid;

@@ -74,6 +74,12 @@ func Strtotime(day string, format string) int64 {
 	}
 }
 
+/* Timestamp To GmtIso8601 */
+func GmtISO8601(timestamp int64) string {
+
+	return ""
+}
+
 /* 去首尾空格 */
 func Trim(str interface{}, charlist ...string) string {
 	char := " "

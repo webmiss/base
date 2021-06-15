@@ -9,6 +9,16 @@ import java.util.zip.Inflater;
 
 public class Base64 {
 
+  /* String To Bytes */
+  public static byte[] ToByte(String data) {
+    return data.getBytes();
+  }
+
+  /* Bytes To String */
+  public static String ToStr(byte[] data) {
+    return new String(data);
+  }
+
   /* 编码 */
   public static byte[] Encode(byte[] data) {
     return java.util.Base64.getEncoder().encode(data);

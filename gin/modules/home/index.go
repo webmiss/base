@@ -15,8 +15,9 @@ type Index struct {
 
 /* 首页 */
 func (r Index) Index(c *gin.Context) {
+	data := (&library.Upload{}).OssPolicy("jpg", 0)
 	// 返回
-	r.GetJSON(c, gin.H{"code": 0, "msg": "Web"})
+	r.GetJSON(c, gin.H{"code": 0, "msg": "Web", "oss_policy": data})
 }
 
 /* 验证码 */

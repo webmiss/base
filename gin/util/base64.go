@@ -11,7 +11,7 @@ import (
 type Base64 struct{}
 
 /* 编码 */
-func (Base64) Encode(data string) string {
+func (Base64) Encode(data []byte) string {
 	return base64.StdEncoding.EncodeToString([]byte(data))
 }
 

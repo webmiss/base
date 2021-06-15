@@ -10,11 +10,33 @@ import (
 
 /* 对象存储 */
 type Oss struct {
+	Signature
 	OssConn         *oss.Bucket //连接
 	AccessKeyId     string      //RAM: AccessKeyId
 	AccessKeySecret string      //RAM: AccessKeySecret
 	Endpoint        string      //地域节点
 	Bucket          string      //Bucket名称
+}
+
+/* 签名直传 */
+func (o *Oss) Policy(dir string, file string, expireTime int64, maxSize int64) map[string]interface{} {
+	cfg := config.OSS()
+	// 默认值
+	if expireTime == 0 {
+		expireTime = cfg.ExpireTime
+	}
+	if maxSize == 0 {
+		maxSize = cfg.MaxSize
+	}
+	// 数据
+	res := o.PolicySign(expireTime, maxSize)
+	res["host"] = "https://" + cfg.Bucket + "." + cfg.Endpoint
+	res["dir"] = dir
+	res["file"] = file
+	res["max_size"] = maxSize
+	// 回调
+	res["callback"] = ""
+	return res
 }
 
 /* 初始化 */

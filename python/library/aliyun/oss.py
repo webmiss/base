@@ -1,4 +1,5 @@
 from config.aliyun import Aliyun
+from .signature import Signature
 import oss2
 
 # 对象存储
@@ -9,6 +10,22 @@ class Oss:
   AccessKeySecret: str = ''   #RAM: AccessKeySecret
   Endpoint: str = ''          #地域节点
   Bucket: str = ''            #Bucket名称
+
+  # 签名直传
+  def Policy(dir: str, file: str, expireTime: int=0, maxSize: int=0):
+    cfg = Aliyun.OSS()
+    # 默认值
+    if expireTime == 0 : expireTime = cfg['ExpireTime']
+    if maxSize == 0 : maxSize = cfg['MaxSize']
+    # 数据
+    res = Signature.PolicySign(expireTime, maxSize)
+    res['host'] = 'https://'+cfg['Bucket']+'.'+cfg['Endpoint']
+    res['dir'] = dir
+    res['file'] = file
+    res['max_size'] = maxSize
+    # 回调
+    res['callback'] = ''
+    return res
 
   # 初始化
   def Init():

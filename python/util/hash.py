@@ -11,6 +11,10 @@ class Hash:
   def Sha256(data: str):
     return hashlib.sha256(data.encode(encoding='utf-8')).hexdigest()
 
+  # HmacSha1
+  def HmacSha1(data: str, key: bytes):
+    return hmac.new(key, str.encode(data), hashlib.sha1).digest()
+
   # HmacSha256
   def HmacSha256(data: str, key: bytes):
     return hmac.new(key, str.encode(data), hashlib.sha256).digest()

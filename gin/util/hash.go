@@ -3,6 +3,7 @@ package util
 import (
 	"crypto/hmac"
 	"crypto/md5"
+	"crypto/sha1"
 	"crypto/sha256"
 	"encoding/hex"
 )
@@ -21,6 +22,13 @@ func (Hash) Md5(data string) string {
 func (Hash) Sha256(data string) string {
 	b := sha256.Sum256([]byte(data))
 	return hex.EncodeToString(b[:])
+}
+
+/* HmacSha1 */
+func (Hash) HmacSha1(data string, key []byte) []byte {
+	h := hmac.New(sha1.New, key)
+	h.Write([]byte(data))
+	return h.Sum(nil)
 }
 
 /* HmacSha256 */

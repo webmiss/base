@@ -109,4 +109,4 @@ class Signature:
     +'TLS.time:'+str(param['TLS.time'])+"\n"\
     +'TLS.expire:'+str(param['TLS.expire'])+"\n"
     sig = Base64.Encode(Hash.HmacSha256(content, str.encode(key)))
-    return bytes.decode(sig)
+    return Base64.ToStr(sig)

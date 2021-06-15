@@ -2,6 +2,8 @@ package webmis.modules.home;
 
 import java.util.HashMap;
 
+import com.alibaba.fastjson.JSONObject;
+
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +14,7 @@ import webmis.config.Env;
 import webmis.library.Captcha;
 import webmis.library.FileEo;
 import webmis.library.Qrcode;
+import webmis.library.Upload;
 import webmis.service.Base;
 
 @RestController
@@ -22,11 +25,13 @@ public class Index extends Base{
   /* 首页 */
   @RequestMapping("")
   String index() {
+    JSONObject data = Upload.OssPolicy("jpg", 0);
     // 返回
     HashMap<String,Object> res;
     res = new HashMap<String,Object>();
-    res.put("code",0);
-    res.put("msg","Web");
+    res.put("code", 0);
+    res.put("msg", "Web");
+    res.put("oss_policy", data);
     return GetJSON(res);
   }
 

@@ -8,6 +8,11 @@ public class Type {
     return Integer.valueOf(String.valueOf(val));
   }
 
+  /* Long */
+  static public long Long(Object val) {
+    return Long.valueOf(String.valueOf(val));
+  }
+
   /* 转换: string、int、float */
   static public Object ToType(String type, Object val) {
     switch(type) {

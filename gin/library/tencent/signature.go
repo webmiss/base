@@ -152,6 +152,6 @@ func (Signature) hmacsha256(param map[string]string, key string) string {
 	content += "TLS.sdkappid:" + param["TLS.sdkappid"] + "\n"
 	content += "TLS.time:" + param["TLS.time"] + "\n"
 	content += "TLS.expire:" + param["TLS.expire"] + "\n"
-	sig := string((&util.Hash{}).HmacSha256(content, []byte(key)))
+	sig := (&util.Hash{}).HmacSha256(content, []byte(key))
 	return (&util.Base64{}).Encode(sig)
 }
