@@ -1,5 +1,6 @@
 # 公共配置
 class Env :
+  machine_id: int = 1                                   #机器标识
   debug: bool = False                                   #模式
   host: str = '127.0.0.1'                               #主机
   port: int = 9010                                      #端口

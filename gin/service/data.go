@@ -12,12 +12,14 @@ import (
 /* 数据类 */
 type Data struct{}
 
-var autoId int64        //自增ID
-const max8bit = uint(8) //随机数位数
+// 机器标识
+var machineId int64 = config.Env().MachineId
 
-var machineId int64 = 1   //机器标识
-const max10bit = uint(10) //机器位数
-const max12bit = uint(12) //序列数位数
+const (
+	max8bit  = uint(8)  //随机数位数
+	max10bit = uint(10) //机器位数
+	max12bit = uint(12) //序列数位数
+)
 
 /* 薄雾算法 */
 func (Data) Mist(redisName string) int64 {

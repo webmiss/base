@@ -2,11 +2,15 @@
 namespace Library;
 
 use Service\Base;
+use Config\Env;
 use Util\Base64;
 use Library\Aliyun\Oss;
 
 /* 上传类 */
 class Upload extends Base {
+
+  // 机器标识
+  const machineId = (string)Env::$machine_id;
 
   /* 单文件 */
   static function File($file, array $param=[]): string {
@@ -100,8 +104,9 @@ class Upload extends Base {
   /* 文件名-生成 */
   static function GetFileName(): string {
     list($msec, $sec) = explode(' ', microtime());
-    $rand = (string)mt_rand(0, 255);
-    return date('YmdHis') . substr($msec,2,3) . $rand;
+    $randA = (string)mt_rand(0, 255);
+    $randB = (string)mt_rand(0, 255);
+    return date('YmdHis') . substr($msec,2,3) . self::machineId . $randA . $randB;
   }
 
   /* 图片地址-获取HTML */

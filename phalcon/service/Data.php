@@ -7,10 +7,9 @@ use Library\Redis;
 /* 数据类 */
 class Data extends Base {
 
-  static $autoId = 0;     //自增ID
+  // 机器标识
+  const machineId = Env::$machine_id;
   const max8bit = 8;      //随机数位数
-
-  static $machineId = 1;  //机器标识
   const max10bit = 10;    //机器位数
   const max12bit = 12;    //序列数位数
   
@@ -19,13 +18,13 @@ class Data extends Base {
   static function Mist(string $redisName) {
     // 自增ID
     $redis = new Redis();
-    Data::$autoId = $redis->Incr($redisName);
+    $autoId = $redis->Incr($redisName);
     $redis->Close();
     // 随机数
     $randA = mt_rand(0, 255);
     $randB = mt_rand(0, 255);
     // 位运算
-    $mist = decbin((Data::$autoId << (self::max8bit + self::max8bit)) | ($randA << self::max8bit) | $randB);
+    $mist = decbin(($autoId << (self::max8bit + self::max8bit)) | ($randA << self::max8bit) | $randB);
     return bindec($mist);
   }
 
@@ -36,7 +35,7 @@ class Data extends Base {
     // 随机数
     $rand = mt_rand(0, 4095);
     // 位运算
-    $mist = decbin(($t << (self::max10bit + self::max12bit)) | (Data::$machineId << self::max12bit) | $rand);
+    $mist = decbin(($t << (self::max10bit + self::max12bit)) | (self::machineId << self::max12bit) | $rand);
     return bindec($mist);
   }
 

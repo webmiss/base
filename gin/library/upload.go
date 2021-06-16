@@ -20,6 +20,9 @@ import (
 /* 上传类 */
 type Upload struct{}
 
+// 机器标识
+var machineId string = (&util.Type{}).Strval(config.Env().MachineId)
+
 /* 单文件 */
 func (u Upload) File(c *gin.Context, file *multipart.FileHeader, params map[string]interface{}) string {
 	param := map[string]interface{}{
@@ -129,12 +132,14 @@ func (u Upload) HtmlImgClear(html string, dir string) bool {
 
 /* 文件名-生成 */
 func (Upload) GetFileName() string {
+	// 时间
 	d := time.Now().Format("20060102150405")
 	t := strconv.FormatInt(time.Now().UnixNano()/1e6, 10)
 	n := t[len(t)-3:]
 	// 随机数
-	rand, _ := rand.Int(rand.Reader, big.NewInt(255))
-	return d + n + rand.String()
+	randA, _ := rand.Int(rand.Reader, big.NewInt(255))
+	randB, _ := rand.Int(rand.Reader, big.NewInt(255))
+	return d + n + machineId + randA.String() + randB.String()
 }
 
 /* 图片地址-获取HTML */

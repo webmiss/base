@@ -3,6 +3,7 @@ namespace Config;
 
 /* 公共配置 */
 class Env {
+  static $machine_id = 1;                                   //机器标识
   static $key = 'e4b99adec618e653400966be536c45f8';         //KEY
   static $password = '123456';                              //默认密码
   // 资源

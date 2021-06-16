@@ -22,6 +22,9 @@ import java.time.format.DateTimeFormatter;
 @SuppressWarnings("unchecked")
 public class Upload {
 
+  //机器标识
+  final static String machineId = String.valueOf(Env.machine_id);
+
   /* 单文件 */
   public static String File(MultipartFile file, HashMap<String, Object> params) {
     // 参数
@@ -136,8 +139,9 @@ public class Upload {
     DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
     LocalDateTime now = LocalDateTime.now();
     Random random = new Random();
-    String rand = String.valueOf(random.nextInt(255));
-    return df.format(now) + rand;
+    String randA = String.valueOf(random.nextInt(255));
+    String randB = String.valueOf(random.nextInt(255));
+    return df.format(now) + machineId + randA + randB;
   }
 
   /* 图片地址-获取HTML */

@@ -2,6 +2,7 @@ package webmis.config;
 
 /* 公共配置 */
 public class Env {
+  public static final long machine_id = 1;                                    //机器标识
   public static final String key = "e4b99adec618e653400966be536c45f8";        //KEY
   public static final String password = "123456";                             //默认密码
   /* 资源 */

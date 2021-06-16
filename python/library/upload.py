@@ -8,6 +8,9 @@ from util.base64 import Base64
 # 上传类
 class Upload:
 
+  # 机器标识
+  machineId: str = str(Env.machine_id)
+
   # 单文件
   def File(file, params={}):
     # 参数
@@ -92,8 +95,9 @@ class Upload:
     d = time.strftime('%Y%m%d%H%M%S',time.localtime())
     t = datetime.datetime.now()
     n = str(t.microsecond)[2:5]
-    rand = str(random.randint(0,255))
-    return d + n + rand
+    randA = str(random.randint(0,255))
+    randB = str(random.randint(0,255))
+    return d + n + Upload.machineId + randA + randB
 
   # 图片地址-获取HTML
   def GetHtmlFile(html: str):

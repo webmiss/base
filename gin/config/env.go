@@ -1,10 +1,10 @@
 package config
 
 type EnvType struct {
+	MachineId        int64
 	Mode             string
 	Host             string
 	Port             string
-	MachineId        string
 	Key              string
 	Password         string
 	BaseURL          string
@@ -21,6 +21,7 @@ type EnvType struct {
 /* 公共配置 */
 func Env() *EnvType {
 	cfg := &EnvType{}
+	cfg.MachineId = 1                            //机器标识
 	cfg.Mode = "release"                         //模式: debug, release, test
 	cfg.Host = "127.0.0.1"                       //主机
 	cfg.Port = "9030"                            //端口

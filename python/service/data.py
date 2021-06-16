@@ -7,10 +7,9 @@ from library.redis import Redis
 # 数据类
 class Data:
 
-  autoId: int = 0      #自增ID
+  # 机器标识
+  machineId: int = Env.machine_id
   max8bit: int = 8     #随机数位数
-
-  machineId: int = 1   #机器标识
   max10bit: int = 10   #机器位数
   max12bit: int = 12   #序列数位数
 
@@ -18,13 +17,13 @@ class Data:
   def Mist(redisName: str):
     # 自增ID
     redis = Redis()
-    Data.autoId = redis.Incr(redisName)
+    autoId = redis.Incr(redisName)
     redis.Close()
     # 随机数
     randA = random.randint(0,255)
     randB = random.randint(0,255)
     # 位运算
-    mist = int((Data.autoId << (Data.max8bit + Data.max8bit)) | (randA << Data.max8bit) | randB)
+    mist = int((autoId << (Data.max8bit + Data.max8bit)) | (randA << Data.max8bit) | randB)
     return mist
 
   # 雪花算法
