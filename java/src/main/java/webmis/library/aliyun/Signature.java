@@ -29,8 +29,6 @@ public class Signature extends Base {
     long now = Util.Time();
     long expire = now + expireTime;
     String expiration = Util.GmtISO8601(expire);
-    Print(expire);
-    // expiration = "2021-06-15T19:44:41Z";
     // 签名数据
     JSONObject policyData = new JSONObject();
     policyData.put("expiration", expiration);

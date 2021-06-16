@@ -13,6 +13,11 @@ Hash.Md5(data: str)
 Hash.Sha256(data: str)
 ```
 
+## HmacSha1
+```python
+Hash.HmacSha1(data: str, key: bytes)
+```
+
 ## HmacSha256
 ```python
 Hash.HmacSha256(data: str, key: bytes)

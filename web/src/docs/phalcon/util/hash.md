@@ -13,6 +13,11 @@ Hash::Md5(string $data);
 Hash::Sha256(string $data);
 ```
 
+## HmacSha1
+```php
+Hash::HmacSha1(string $data, string $key, bool $binary=true);
+```
+
 ## HmacSha256
 ```php
 Hash::HmacSha256(string $data, string $key, bool $binary=true);

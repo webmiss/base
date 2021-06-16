@@ -3,6 +3,16 @@
 import webmis.util.Base64;
 ```
 
+## String To Bytes
+```java
+Base64.ToByte(String data);
+```
+
+## Bytes To String
+```java
+Base64.ToStr(byte[] data);
+```
+
 ## 编码
 ```java
 Base64.Encode(byte[] data);

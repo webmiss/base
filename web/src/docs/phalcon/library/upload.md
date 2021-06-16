@@ -23,6 +23,16 @@ Upload::Base64([
 ]);
 ```
 
+## OSS-签名直传
+```php
+Upload::OssPolicy(
+  string $ext,        //扩展名
+  int $expireTime=0   //有效时间(秒)
+);
+```
+- ext: "jpg", "png", "gif"
+- expireTime: 0 默认30秒
+
 ## 图片回收
 ```php
 Upload::HtmlImgClear(string $html, string $dir);

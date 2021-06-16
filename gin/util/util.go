@@ -76,8 +76,7 @@ func Strtotime(day string, format string) int64 {
 
 /* Timestamp To GmtIso8601 */
 func GmtISO8601(timestamp int64) string {
-
-	return ""
+	return time.Unix(timestamp, 0).Format("2006-01-02T15:04:05Z")
 }
 
 /* 去首尾空格 */

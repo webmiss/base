@@ -3,6 +3,20 @@
 import "webmis/library"
 ```
 
+## 单文件
+```go
+(&library.Upload{}).File(
+  c *gin.Context,
+  file *multipart.FileHeader,
+  map[string]interface{}{
+    "path":     "upload/",      //上传目录
+    "filename": "",             //文件名
+    "bind":     []string{},     //后缀
+  },
+)
+```
+- bind: "svg", "jpg", "jpeg", "png", "gif", "mov", "mp4", "wav", "mp3"
+
 ## Base64
 ```go
 (&library.Upload{}).Base64(map[string]interface{}{
@@ -12,6 +26,16 @@ import "webmis/library"
   "ext":      "png",     //后缀
 })
 ```
+
+## OSS-签名直传
+```go
+(&library.Upload{}).Base64(
+  ext string,         //扩展名
+  expireTime int64,   //有效时间(秒)
+)
+```
+- ext: "jpg", "png", "gif"
+- expireTime: 0 默认30秒
 
 ## 图片回收
 ```go

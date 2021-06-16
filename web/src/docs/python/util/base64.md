@@ -3,6 +3,16 @@
 from util.base64 import Base64
 ```
 
+## String To Bytes
+```python
+Base64.ToByte(data: str)
+```
+
+## Bytes To String
+```python
+Base64.ToStr(data: bytes)
+```
+
 ## 编码
 ```python
 Base64.Encode(data: str)

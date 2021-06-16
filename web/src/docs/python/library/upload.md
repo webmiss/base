@@ -23,6 +23,16 @@ Upload.File(
 )
 ```
 
+## OSS-签名直传
+```python
+Upload.OssPolicy(
+  ext: str,           #扩展名
+  expireTime: int=0   #有效时间(秒)
+)
+```
+- ext: "jpg", "png", "gif"
+- expireTime: 0 默认30秒
+
 ## 图片回收
 ```python
 Upload.HtmlImgClear(html: str, dir: str)

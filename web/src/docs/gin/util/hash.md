@@ -13,6 +13,11 @@ import "webmis/util"
 (&util.Hash{}).Sha256(data string)
 ```
 
+## HmacSha1
+```go
+(&util.Hash{}).HmacSha1(data string, key []byte)
+```
+
 ## HmacSha256
 ```go
 (&util.Hash{}).HmacSha256(data string, key []byte)

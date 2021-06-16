@@ -33,6 +33,12 @@ import "webmis/util"
 (&util.Type{}).Uint64(val interface{})
 ```
 
+## 转换
+```go
+(&util.Type{}).ToType(tp string, val interface{})
+```
+- tp: string、int、int64、float、float64、uint64
+
 ## Strval
 ```go
 (&util.Type{}).Strval(val interface{})

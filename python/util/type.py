@@ -12,3 +12,7 @@ class Type:
       return float(val)
     else:
       return val
+
+  # Interface 转 String
+  def Strval(val):
+    return str(val)

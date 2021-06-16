@@ -49,6 +49,8 @@ public class Hash {
       return null;
     }
   }
+
+  /* Byte转为String */
   public static String Base64Encode(byte[] data) {
     return java.util.Base64.getEncoder().encodeToString(data);
   }

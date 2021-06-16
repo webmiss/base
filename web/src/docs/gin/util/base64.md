@@ -5,7 +5,7 @@ import "webmis/util"
 
 ## 编码
 ```go
-(&util.Base64{}).Encode(data string)
+(&util.Base64{}).Encode(data []byte)
 ```
 
 ## 解码

@@ -40,6 +40,16 @@ Upload.Base64(
 );
 ```
 
+## OSS-签名直传
+```java
+Upload.OssPolicy(
+  String ext,       //扩展名
+  long expireTime   //有效时间(秒)
+);
+```
+- ext: "jpg", "png", "gif"
+- expireTime: 0 默认30秒
+
 ## 图片回收
 ```java
 Upload.HtmlImgClear(String html, String dir);

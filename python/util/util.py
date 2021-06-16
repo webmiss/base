@@ -23,7 +23,7 @@ class Util:
   # Timestamp To GmtIso8601
   def GmtISO8601(timestamp: int):
     t = time.localtime(timestamp)
-    return time.strftime("%Y-%m-%dT%H:%M:%S", t) + 'Z'
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", t)
 
   # 去首尾空格
   def Trim(content, charlist: str = None):

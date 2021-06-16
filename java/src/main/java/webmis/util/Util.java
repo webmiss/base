@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.TimeZone;
 import java.util.Map.Entry;
 
 import com.alibaba.fastjson.JSON;
@@ -50,9 +49,7 @@ public class Util {
   /* Timestamp To GmtIso8601 */
   public static String GmtISO8601(long timestamp) {
     Date date = new Date(timestamp*1000);
-    TimeZone tz = TimeZone.getTimeZone("UTC");
-    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    df.setTimeZone(tz);
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     String str = df.format(date);
     return str;
   }

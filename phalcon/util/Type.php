@@ -19,7 +19,7 @@ class Type {
   }
 
   /* Interface 转 String */
-  static function Strval($val ): string {
+  static function Strval($val): string {
     return (string)$val;
   }
 
