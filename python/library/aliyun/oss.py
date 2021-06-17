@@ -39,7 +39,7 @@ class Oss:
       'callbackBodyType': cfg['CallbackType'],
       'callbackBody': callbackBody,
     })
-    res['callback'] = Base64.ToStr(Base64.Encode(callbackData))
+    res['callback'] = Base64.ToStr(Base64.Encode(Base64.ToByte(callbackData)))
     return res
 
   # 签名直传-验证

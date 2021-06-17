@@ -12,8 +12,9 @@ class Index(Base) :
 
   # 首页
   def Index(self):
+    oss = Upload.OssPolicy('jpg')
     # 返回
-    return self.GetJSON({'code':0,'msg':'Web'})
+    return self.GetJSON({'code':0,'msg':'Web', 'oss': oss})
 
   # 验证码
   def Vcode(self):
