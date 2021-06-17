@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,13 +26,13 @@ public class Index extends Base{
   /* 首页 */
   @RequestMapping("")
   String index() {
-    JSONObject data = Upload.OssPolicy("jpg", 0);
+    JSONObject oss = Upload.OssPolicy("jpg", 0);
     // 返回
     HashMap<String,Object> res;
     res = new HashMap<String,Object>();
     res.put("code", 0);
     res.put("msg", "Web");
-    res.put("oss_policy", data);
+    res.put("oss", oss);
     return GetJSON(res);
   }
 
@@ -65,6 +66,20 @@ public class Index extends Base{
       FileEo.Writer(file, ct);
     }
     return FileEo.Bytes(file);
+  }
+
+  /* OSS-上传回调 */
+  @RequestMapping("ossCallback")
+  String OssCallback(@RequestBody JSONObject param) {
+    // 验证
+    if(!Upload.OssPolicyVerify(param)) return "";
+    // 数据处理: public/upload/callback.txt
+    Print(param);
+    // 返回
+    HashMap<String,Object> res;
+    res = new HashMap<String,Object>();
+    res.put("Status", "Ok");
+    return GetJSON(res);
   }
 
 }

@@ -15,7 +15,10 @@ import com.aliyun.oss.model.OSSObjectSummary;
 import com.aliyun.oss.model.ObjectListing;
 
 import webmis.config.Aliyun;
+import webmis.util.Base64;
+import webmis.util.Hash;
 import webmis.util.Type;
+import webmis.util.Util;
 
 /* 对象存储 */
 public class Oss extends Signature {
@@ -28,6 +31,7 @@ public class Oss extends Signature {
 
   /* 签名直传 */
   static public JSONObject Policy(String dir, String file, long expireTime, long maxSize) {
+    HashMap<String, Object> ram = Aliyun.RAM();
     HashMap<String, Object> cfg = Aliyun.OSS();
     // 默认值
     if(expireTime==0) expireTime = Type.Long(cfg.get("ExpireTime"));
@@ -39,8 +43,31 @@ public class Oss extends Signature {
     res.put("file", file);
     res.put("max_size", maxSize);
     // 回调
-    res.put("callback", "");
+    JSONObject callbackBody = new JSONObject();
+    callbackBody.put("dir", dir);
+    callbackBody.put("file", file);
+    callbackBody.put("expire", res.get("expire"));
+    callbackBody.put("sign", Hash.Md5(dir+"&"+file+"&"+String.valueOf(res.get("expire"))+"&"+ram.get("AccessKeySecret").toString()));
+    JSONObject callbackData = new JSONObject();
+    callbackData.put("callbackUrl", cfg.get("CallbackUrl"));
+    callbackData.put("callbackBodyType", cfg.get("CallbackType"));
+    callbackData.put("callbackBody", Util.JsonEncode(callbackBody));
+    res.put("callback", Base64.ToStr(Base64.Encode(Base64.ToByte(Util.JsonEncode(callbackData)))));
     return res;
+  }
+
+  /* 签名直传-验证 */
+  public static Boolean PolicyVerify(String dir, String file, String expire, String sign) {
+    // 配置
+    HashMap<String, Object> ram = Aliyun.RAM();
+    // 验证
+    String signTmp = Hash.Md5(dir+"&"+file+"&"+expire+"&"+ram.get("AccessKeySecret").toString());
+    if(sign != signTmp) return false;
+    // 是否超时
+    long now = Util.Time();
+    long etime = Long.valueOf(expire);
+    if(now > etime) return false;
+    return true;
   }
 
   /* 初始化 */
