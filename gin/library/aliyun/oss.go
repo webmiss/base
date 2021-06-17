@@ -55,9 +55,9 @@ func (o *Oss) Policy(dir string, file string, expireTime int64, maxSize int64) m
 /* 签名直传-验证 */
 func (Oss) PolicyVerify(dir string, file string, expire string, sign string) bool {
 	// 配置
-	cfg := config.RAM()
+	ram := config.RAM()
 	// 验证
-	signTmp := (&util.Hash{}).Md5(dir + "&" + file + "&" + expire + "&" + cfg.AccessKeySecret)
+	signTmp := (&util.Hash{}).Md5(dir + "&" + file + "&" + expire + "&" + ram.AccessKeySecret)
 	if sign != signTmp {
 		return false
 	}

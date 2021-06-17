@@ -5,13 +5,15 @@ use Service\Base;
 use Library\Qrcode;
 use Library\FileEo;
 use Library\Captcha;
+use Library\Upload;
 
 class Index extends Base {
 
   /* 首页 */
   static function Index() {
+    $oss = Upload::OssPolicy('jpg');
     // 返回
-    return self::GetJSON(['code'=>0, 'msg'=>'Web']);
+    return self::GetJSON(['code'=>0, 'msg'=>'Web', 'oss'=>$oss]);
   }
 
   /* 验证码 */
@@ -41,6 +43,18 @@ class Index extends Base {
     self::getJSON();
     header('content-type: image/png');
     return FileEo::Bytes($file);
+  }
+
+  /* OSS-上传回调 */
+  static function OssCallback() {
+    // 参数
+    $param = self::Json();
+    self::Print('Data1:', $param);
+    // 验证
+    if(!Upload::OssPolicyVerify($param)) return '';
+    // 数据处理
+    self::Print('Data:', $param);
+    return json_encode(['Status'=>'Ok']);
   }
 
 }

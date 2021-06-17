@@ -18,6 +18,11 @@ class Base {
     return isset($_POST[$name])?$_POST[$name]:'';
   }
 
+  /* JSON参数 */
+  static function Json() {
+    return json_decode(file_get_contents('php://input'), true);
+  }
+
   /* 输出到控制台 */
   static function Print(...$content): void {
     foreach($content as $val){

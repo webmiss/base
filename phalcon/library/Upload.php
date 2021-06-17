@@ -9,9 +9,6 @@ use Library\Aliyun\Oss;
 /* 上传类 */
 class Upload extends Base {
 
-  // 机器标识
-  const machineId = (string)Env::$machine_id;
-
   /* 单文件 */
   static function File($file, array $param=[]): string {
     // 参数
@@ -89,6 +86,15 @@ class Upload extends Base {
     return Oss::Policy($dir, $file, $expireTime);
   }
 
+  /* OSS-签名验证 */
+  static function OssPolicyVerify(array $param): bool {
+    $dir = isset($param['dir'])?(string)$param['dir']:'';
+    $file = isset($param['file'])?(string)$param['file']:'';
+    $expire = isset($param['expire'])?(string)$param['expire']:'';
+    $sign = isset($param['sign'])?(string)$param['sign']:'';
+    return Oss::PolicyVerify($dir, $file, $expire, $sign);
+  }
+
   /* 图片回收 */
   static function HtmlImgClear(string $html, string $dir): bool {
     // 全部图片
@@ -106,7 +112,7 @@ class Upload extends Base {
     list($msec, $sec) = explode(' ', microtime());
     $randA = (string)mt_rand(0, 255);
     $randB = (string)mt_rand(0, 255);
-    return date('YmdHis') . substr($msec,2,3) . self::machineId . $randA . $randB;
+    return date('YmdHis') . substr($msec,2,3) . Env::$machine_id . $randA . $randB;
   }
 
   /* 图片地址-获取HTML */
