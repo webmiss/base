@@ -2,11 +2,9 @@ package home
 
 import (
 	"fmt"
-	"io/ioutil"
 	"webmis/config"
 	"webmis/library"
 	"webmis/service"
-	"webmis/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,25 +22,9 @@ func (r Index) Index(c *gin.Context) {
 
 func (r Index) UpFileCallback(c *gin.Context) {
 	// 参数
-	// publicKeyUrlBase64 := c.Request.Header.Get("x-oss-pub-key-url")
-	// authorizationBase64 := c.Request.Header.Get("authorization")
-	bodyContent, _ := ioutil.ReadAll(c.Request.Body)
-	callbackBody := string(bodyContent)
-	// 验证
-	// publicKeyUrlBase64 = "aHR0cHM6Ly9nb3NzcHVibGljLmFsaWNkbi5jb20vY2FsbGJhY2tfcHViX2tleV92MS5wZW0="
-	// authorizationBase64 = "lRwZVdeqeee91Ma6k+Wafk0dRw8HfMJOJLQEom8eLW4CZbk89I+8dQfhgQLbbYbZAlnBSMobnt3BmT8KLfKonA=="
-	// callbackBody = `{"dir":"img/","file":"20210617101029468110173.jpg"}`
-	// (&aliyun.Signature{}).VerifySignature(publicKeyUrlBase64, authorizationBase64, callbackBody)
-	// 数据
-	data := map[string]interface{}{}
-	util.JsonDecode(callbackBody, &data)
-	fmt.Println(c.Request.Header.Get("content-type"))
-	fmt.Println(c.Request.Header.Get("Content-Type"))
-	fmt.Println(callbackBody)
-	fmt.Println(data)
 	json := map[string]interface{}{}
-	c.Bind(&json)
-	fmt.Println(data)
+	c.BindJSON(&json)
+	fmt.Println(json)
 	// text := string(util.JsonEncode(map[string]interface{}{
 	// 	"dir":  c.PostForm("dir"),
 	// 	"file": c.PostForm("file"),
