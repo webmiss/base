@@ -3,10 +3,8 @@ package home
 import (
 	"fmt"
 	"io/ioutil"
-	"os/exec"
 	"webmis/config"
 	"webmis/library"
-	"webmis/library/aliyun"
 	"webmis/service"
 	"webmis/util"
 
@@ -26,24 +24,28 @@ func (r Index) Index(c *gin.Context) {
 
 func (r Index) UpFileCallback(c *gin.Context) {
 	// 参数
-	publicKeyUrlBase64 := c.Request.Header.Get("x-oss-pub-key-url")
-	authorizationBase64 := c.Request.Header.Get("authorization")
+	// publicKeyUrlBase64 := c.Request.Header.Get("x-oss-pub-key-url")
+	// authorizationBase64 := c.Request.Header.Get("authorization")
 	bodyContent, _ := ioutil.ReadAll(c.Request.Body)
 	callbackBody := string(bodyContent)
 	// 验证
 	// publicKeyUrlBase64 = "aHR0cHM6Ly9nb3NzcHVibGljLmFsaWNkbi5jb20vY2FsbGJhY2tfcHViX2tleV92MS5wZW0="
 	// authorizationBase64 = "lRwZVdeqeee91Ma6k+Wafk0dRw8HfMJOJLQEom8eLW4CZbk89I+8dQfhgQLbbYbZAlnBSMobnt3BmT8KLfKonA=="
 	// callbackBody = `{"dir":"img/","file":"20210617101029468110173.jpg"}`
-	(&aliyun.Signature{}).VerifySignature(publicKeyUrlBase64, authorizationBase64, callbackBody)
+	// (&aliyun.Signature{}).VerifySignature(publicKeyUrlBase64, authorizationBase64, callbackBody)
 	// 数据
-	text := string(util.JsonEncode(map[string]interface{}{
-		"dir":  c.PostForm("dir"),
-		"file": c.PostForm("file"),
-	}))
-	// 写入文件
-	cmd := exec.Command("/bin/bash", "-c", "echo "+text+" > public/upload/callback.txt")
-	cmd.Run()
-	fmt.Println(text)
+	data := map[string]interface{}{}
+	util.JsonDecode(callbackBody, &data)
+	fmt.Println(callbackBody)
+	fmt.Println(data)
+	// text := string(util.JsonEncode(map[string]interface{}{
+	// 	"dir":  c.PostForm("dir"),
+	// 	"file": c.PostForm("file"),
+	// }))
+	// // 写入文件
+	// cmd := exec.Command("/bin/bash", "-c", "echo "+text+" > public/upload/callback.txt")
+	// cmd.Run()
+	// fmt.Println(text)
 	// 返回
 	c.JSON(200, gin.H{"Status": "Ok"})
 }
