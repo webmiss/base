@@ -1,5 +1,8 @@
 from config.aliyun import Aliyun
 from .signature import Signature
+from util.util import Util
+from util.hash import Hash
+from util.base64 import Base64
 import oss2
 
 # 对象存储
@@ -13,6 +16,7 @@ class Oss:
 
   # 签名直传
   def Policy(dir: str, file: str, expireTime: int=0, maxSize: int=0):
+    ram = Aliyun.RAM()
     cfg = Aliyun.OSS()
     # 默认值
     if expireTime == 0 : expireTime = cfg['ExpireTime']
@@ -24,8 +28,32 @@ class Oss:
     res['file'] = file
     res['max_size'] = maxSize
     # 回调
-    res['callback'] = ''
+    callbackBody = Util.JsonEncode({
+      'dir': dir,
+      'file': file,
+      'expire': res['expire'],
+      'sign': Hash.Md5(dir+'&'+file+'&'+str(res['expire'])+'&'+ram['AccessKeySecret']),
+    })
+    callbackData = Util.JsonEncode({
+      'callbackUrl': cfg['CallbackUrl'],
+      'callbackBodyType': cfg['CallbackType'],
+      'callbackBody': callbackBody,
+    })
+    res['callback'] = Base64.ToStr(Base64.Encode(callbackData))
     return res
+
+  # 签名直传-验证
+  def PolicyVerify(dir: str, file: str, expire: str, sign: str):
+    # 配置
+    ram = Aliyun.RAM()
+    # 验证
+    signTmp = Hash.Md5(dir+'&'+file+'&'+expire+'&'+ram['AccessKeySecret'])
+    if sign != signTmp : return False
+    # 是否超时
+    now = Util.Time()
+    etime = int(expire)
+    if now > etime : return False
+    return True
 
   # 初始化
   def Init():

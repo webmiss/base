@@ -79,6 +79,14 @@ class Upload:
     file = Upload.GetFileName()+'.'+ext if ext!='' else Upload.GetFileName()
     return Oss.Policy(dir, file, expireTime)
 
+  # OSS-签名验证
+  def OssPolicyVerify(param: dict):
+    dir = str(param['dir']) if 'dir' in param.keys() else ''
+    file = str(param['file']) if 'file' in param.keys() else ''
+    expire = str(param['expire']) if 'expire' in param.keys() else ''
+    sign = str(param['sign']) if 'sign' in param.keys() else ''
+    return Oss.PolicyVerify(dir, file, expire, sign)
+
   # 图片回收
   def HtmlImgClear(html: str, dir: str):
     # 全部图片

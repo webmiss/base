@@ -3,6 +3,8 @@ from config.env import Env
 from library.file_eo import FileEo
 from library.qrcode import Qrcode
 from library.captcha import Captcha
+from library.upload import Upload
+from util.util import Util
 
 from flask import send_file
 
@@ -37,3 +39,13 @@ class Index(Base) :
       FileEo.Writer(file, ct)
     # 返回
     return send_file(Env.root_dir+file, mimetype='image/png')
+  
+  # OSS-上传回调
+  def OssCallback(self):
+    # 参数
+    param = self.Json()
+    # 验证
+    if not Upload.OssPolicyVerify(param) : return ''
+    # 数据处理: public/upload/callback.txt
+    self.TmpCallback(Util.JsonEncode(param))
+    return self.GetJSON({'Status':'Ok'})

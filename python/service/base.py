@@ -1,4 +1,4 @@
-import json
+import json, os
 from flask import request
 
 class Base :
@@ -15,6 +15,14 @@ class Base :
   def Post(self, name: str):
     val = request.form.get(name)
     return val if val else ''
+
+  # Json参数
+  def Json(self):
+    return request.json if request.method == "POST" else request.args
+
+  # 记录回调
+  def TmpCallback(self, text: str):
+    os.system('echo '+text+' > public/upload/callback.txt')
 
   # 输出到控制台
   def Print(self, *content) :

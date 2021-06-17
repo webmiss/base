@@ -43,12 +43,12 @@ func (o *Oss) Policy(dir string, file string, expireTime int64, maxSize int64) m
 		"expire": (&util.Type{}).Strval(res["expire"]),
 		"sign":   (&util.Hash{}).Md5(dir + "&" + file + "&" + (&util.Type{}).Strval(res["expire"]) + "&" + ram.AccessKeySecret),
 	}))
-	callbackData := map[string]string{
+	callbackData := util.JsonEncode(map[string]string{
 		"callbackUrl":      cfg.CallbackUrl,
 		"callbackBodyType": cfg.CallbackType,
 		"callbackBody":     callbackBody,
-	}
-	res["callback"] = (&util.Base64{}).Encode(util.JsonEncode(callbackData))
+	})
+	res["callback"] = (&util.Base64{}).Encode(callbackData)
 	return res
 }
 

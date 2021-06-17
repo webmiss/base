@@ -23,9 +23,9 @@ class Base {
     return json_decode(file_get_contents('php://input'), true);
   }
 
-  /* 临时日志文件 */
-  static function TmpLogs(string $text) {
-    exec('echo '.$text.' > upload/logs.txt');
+  /* 记录回调 */
+  static function TmpCallback(string $text) {
+    exec('echo '.$text.' > upload/callback.txt');
   }
 
   /* 输出到控制台 */

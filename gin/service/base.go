@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"os/exec"
 
 	"github.com/gin-gonic/gin"
 )
@@ -10,11 +11,17 @@ import (
 type Base struct{}
 
 /* 返回JSON */
-func (self *Base) GetJSON(c *gin.Context, data interface{}) {
+func (Base) GetJSON(c *gin.Context, data interface{}) {
 	c.JSON(200, data)
 }
 
+/* 记录回调 */
+func (Base) TmpCallback(text string) {
+	cmd := exec.Command("/bin/bash", "-c", "echo "+text+" > public/upload/callback.txt")
+	cmd.Run()
+}
+
 /* 输出到控制台 */
-func (self *Base) Print(content ...interface{}) {
+func (Base) Print(content ...interface{}) {
 	fmt.Println(content...)
 }

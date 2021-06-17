@@ -1,10 +1,10 @@
 package home
 
 import (
-	"fmt"
 	"webmis/config"
 	"webmis/library"
 	"webmis/service"
+	"webmis/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -69,8 +69,8 @@ func (r Index) OssCallback(c *gin.Context) {
 	if !(&library.Upload{}).OssPolicyVerify(param) {
 		return
 	}
-	// 数据处理
-	fmt.Println(param)
+	// 数据处理: public/upload/callback.txt
+	r.TmpCallback(string(util.JsonEncode(param)))
 	// 返回
 	c.JSON(200, gin.H{"Status": "Ok"})
 }

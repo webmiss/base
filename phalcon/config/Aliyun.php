@@ -19,8 +19,8 @@ class Aliyun {
       'Bucket'=> 'webmis-upload',                                 //存储空间
       'MaxSize'=> 100*1024*1024,                                  //最大文件
       'ExpireTime'=> 30,                                          //签名有效时间(秒)
-      'callbackUrl'=> 'https://demo-php.webmis.vip/ossCallback',  //回调URL
-      'callbackType'=> 'application/json',                        //回调数据类型
+      'CallbackUrl'=> 'https://demo-php.webmis.vip/ossCallback',  //回调URL
+      'CallbackType'=> 'application/json',                        //回调数据类型
       'ImgUrl'=> 'http://img.webmis.vip/',                        //图片域名
     ];
   }

@@ -35,12 +35,12 @@ class Oss extends Base {
       'expire'=> $res['expire'],
       'sign'=> md5($dir.'&'.$file.'&'.$res['expire'].'&'.$ram['AccessKeySecret']),
     ]);
-    $callbackData = [
-      'callbackUrl'=> $cfg['callbackUrl'],
-      'callbackBodyType'=> $cfg['callbackType'],
+    $callbackData = json_encode([
+      'callbackUrl'=> $cfg['CallbackUrl'],
+      'callbackBodyType'=> $cfg['CallbackType'],
       'callbackBody'=> $callbackBody,
-    ];
-    $res['callback'] = base64_encode(json_encode($callbackData));
+    ]);
+    $res['callback'] = base64_encode($callbackData);
     return $res;
   }
 

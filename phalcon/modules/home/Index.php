@@ -49,12 +49,11 @@ class Index extends Base {
   static function OssCallback() {
     // 参数
     $param = self::Json();
-    self::TmpLogs('Data:'.json_encode($param));
     // 验证
     if(!Upload::OssPolicyVerify($param)) return '';
-    // 数据处理
-    self::TmpLogs(json_encode($param));
-    return json_encode(['Status'=>'Ok']);
+    // 数据处理: public/upload/callback.txt
+    self::TmpCallback(json_encode($param));
+    return self::GetJSON(['Status'=>'Ok']);
   }
 
 }
