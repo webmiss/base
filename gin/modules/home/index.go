@@ -67,7 +67,6 @@ func (r Index) OssCallback(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	fmt.Println(json)
 	// 验证
 	dir := (&util.Type{}).Strval(json["dir"])
 	file := (&util.Type{}).Strval(json["file"])
