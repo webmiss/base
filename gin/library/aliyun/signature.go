@@ -1,7 +1,6 @@
 package aliyun
 
 import (
-	"fmt"
 	"webmis/config"
 	"webmis/util"
 )
@@ -36,7 +35,7 @@ func (Signature) PolicySign(expireTime int64, maxSize int64) map[string]interfac
 
 /* 验证签名 */
 func (Signature) VerifySignature(publicKeyUrlBase64 string, authorizationBase64 string, callbackBody string) {
-	fmt.Println(publicKeyUrlBase64)
-	fmt.Println(authorizationBase64)
-	fmt.Println(callbackBody)
+	// fmt.Println(publicKeyUrlBase64)
+	// fmt.Println(authorizationBase64)
+	// fmt.Println(callbackBody)
 }

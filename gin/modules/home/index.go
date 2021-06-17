@@ -31,6 +31,7 @@ func (r Index) UpFileCallback(c *gin.Context) {
 	bodyContent, _ := ioutil.ReadAll(c.Request.Body)
 	callbackBody := string(bodyContent)
 	fmt.Printf("RawPath={%s}, Query()={%s}, CallbackBody={%s}\n", c.Request.URL.RawPath, c.Request.RequestURI, callbackBody)
+	fmt.Println(c.Request)
 	// 验证
 	publicKeyUrlBase64 = "aHR0cHM6Ly9nb3NzcHVibGljLmFsaWNkbi5jb20vY2FsbGJhY2tfcHViX2tleV92MS5wZW0="
 	authorizationBase64 = "lRwZVdeqeee91Ma6k+Wafk0dRw8HfMJOJLQEom8eLW4CZbk89I+8dQfhgQLbbYbZAlnBSMobnt3BmT8KLfKonA=="
