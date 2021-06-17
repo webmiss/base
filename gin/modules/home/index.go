@@ -28,14 +28,14 @@ func (r Index) UpFileCallback(c *gin.Context) {
 	// 	"file": c.PostForm("file"),
 	// }))
 	json := map[string]interface{}{}
-	c.Bind(&json)
+	c.BindJSON(&json)
 	text := string(util.JsonEncode(json))
 
 	cmd := exec.Command("/bin/bash", "-c", "echo "+text+" > public/upload/callback.txt")
 	cmd.Run()
 	fmt.Println(text)
 	// 返回
-	c.JSON(200, gin.H{"String value": "ok", "Key": "Status", "test": "Test"})
+	c.JSON(200, gin.H{"Status": "Ok"})
 }
 
 /* 验证码 */
