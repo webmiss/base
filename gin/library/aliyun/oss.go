@@ -48,7 +48,7 @@ func (o *Oss) Policy(dir string, file string, expireTime int64, maxSize int64) m
 		"callbackBodyType": cfg.CallbackType,
 		"callbackBody":     callbackBody,
 	}
-	res["callback"] = util.JsonEncode(callbackData)
+	res["callback"] = (&util.Base64{}).Encode(util.JsonEncode(callbackData))
 	return res
 }
 
