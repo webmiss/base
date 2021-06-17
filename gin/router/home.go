@@ -14,5 +14,6 @@ func Home(r *gin.Engine) {
 		g.GET("", (&home.Index{}).Index)
 		g.GET("vcode", (&home.Index{}).Vcode)
 		g.GET("index/qrcode/:name", (&home.Index{}).Qrcode)
+		g.POST("files-callback", (&home.Index{}).UpFileCallback)
 	}
 }

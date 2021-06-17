@@ -1,9 +1,12 @@
 package home
 
 import (
+	"fmt"
+	"os/exec"
 	"webmis/config"
 	"webmis/library"
 	"webmis/service"
+	"webmis/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,6 +20,18 @@ type Index struct {
 func (r Index) Index(c *gin.Context) {
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "Web"})
+}
+
+func (r Index) UpFileCallback(c *gin.Context) {
+	text := string(util.JsonEncode(map[string]interface{}{
+		"dir":  c.PostForm("dir"),
+		"file": c.PostForm("file"),
+	}))
+	cmd := exec.Command("/bin/bash", "-c", "echo "+text+" > public/upload/callback.txt")
+	cmd.Run()
+	fmt.Println(text)
+	// 返回
+	c.JSON(200, gin.H{"String value": "ok", "Key": "Status", "test": "Test"})
 }
 
 /* 验证码 */
