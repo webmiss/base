@@ -18,6 +18,13 @@ func (Hash) Md5(data string) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
+/* Md5-Byte */
+func (Hash) Md5Byte(data string) []byte {
+	h := md5.New()
+	h.Write([]byte(data))
+	return h.Sum(nil)
+}
+
 /* Sha256 */
 func (Hash) Sha256(data string) string {
 	b := sha256.Sum256([]byte(data))
