@@ -72,10 +72,11 @@ func (r Index) OssCallback(c *gin.Context) {
 	file := (&util.Type{}).Strval(json["file"])
 	expire := (&util.Type{}).Strval(json["expire"])
 	sign := (&util.Type{}).Strval(json["sign"])
-	if (&aliyun.Oss{}).PolicyVerify(dir, file, expire, sign) {
-		// 数据处理
-		fmt.Println(json)
+	if !(&aliyun.Oss{}).PolicyVerify(dir, file, expire, sign) {
+		return
 	}
+	// 数据处理
+	fmt.Println(json)
 	// 返回
 	c.JSON(200, gin.H{"Status": "Ok"})
 }
