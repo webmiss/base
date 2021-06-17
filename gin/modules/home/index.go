@@ -36,6 +36,8 @@ func (r Index) UpFileCallback(c *gin.Context) {
 	// 数据
 	data := map[string]interface{}{}
 	util.JsonDecode(callbackBody, &data)
+	fmt.Println(c.Request.Header.Get("content-type"))
+	fmt.Println(c.Request.Header.Get("Content-Type"))
 	fmt.Println(callbackBody)
 	fmt.Println(data)
 	json := map[string]interface{}{}
