@@ -4,9 +4,7 @@ import (
 	"fmt"
 	"webmis/config"
 	"webmis/library"
-	"webmis/library/aliyun"
 	"webmis/service"
-	"webmis/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -65,18 +63,14 @@ func (r Index) Qrcode(c *gin.Context) {
 /* OSS-上传回调 */
 func (r Index) OssCallback(c *gin.Context) {
 	// 参数
-	json := map[string]interface{}{}
-	c.BindJSON(&json)
+	param := map[string]interface{}{}
+	c.BindJSON(&param)
 	// 验证
-	dir := (&util.Type{}).Strval(json["dir"])
-	file := (&util.Type{}).Strval(json["file"])
-	expire := (&util.Type{}).Strval(json["expire"])
-	sign := (&util.Type{}).Strval(json["sign"])
-	if !(&aliyun.Oss{}).PolicyVerify(dir, file, expire, sign) {
+	if !(&library.Upload{}).OssPolicyVerify(param) {
 		return
 	}
 	// 数据处理
-	fmt.Println(json)
+	fmt.Println(param)
 	// 返回
 	c.JSON(200, gin.H{"Status": "Ok"})
 }

@@ -115,6 +115,15 @@ func (u Upload) OssPolicy(ext string, expireTime int64) map[string]interface{} {
 	return (&aliyun.Oss{}).Policy(dir, file, expireTime, 0)
 }
 
+/* OSS-签名验证 */
+func (Upload) OssPolicyVerify(param map[string]interface{}) bool {
+	dir := (&util.Type{}).Strval(param["dir"])
+	file := (&util.Type{}).Strval(param["file"])
+	expire := (&util.Type{}).Strval(param["expire"])
+	sign := (&util.Type{}).Strval(param["sign"])
+	return (&aliyun.Oss{}).PolicyVerify(dir, file, expire, sign)
+}
+
 /* 图片回收 */
 func (u Upload) HtmlImgClear(html string, dir string) bool {
 	// 全部图片
