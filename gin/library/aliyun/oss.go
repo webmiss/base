@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"webmis/config"
+	"webmis/util"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 )
@@ -18,8 +19,9 @@ type Oss struct {
 	Bucket          string      //Bucket名称
 }
 
-/* 签名直传 */
+/* 签名直传-参数 */
 func (o *Oss) Policy(dir string, file string, expireTime int64, maxSize int64) map[string]interface{} {
+	ram := config.RAM()
 	cfg := config.OSS()
 	// 默认值
 	if expireTime == 0 {
@@ -35,8 +37,37 @@ func (o *Oss) Policy(dir string, file string, expireTime int64, maxSize int64) m
 	res["file"] = file
 	res["max_size"] = maxSize
 	// 回调
-	res["callback"] = ""
+	callbackBody := string(util.JsonEncode(map[string]interface{}{
+		"dir":    dir,
+		"file":   file,
+		"expire": (&util.Type{}).Strval(res["expire"]),
+		"sign":   (&util.Hash{}).Md5(dir + "&" + file + "&" + (&util.Type{}).Strval(res["expire"]) + "&" + ram.AccessKeySecret),
+	}))
+	callbackData := map[string]string{
+		"callbackUrl":      cfg.CallbackUrl,
+		"callbackBodyType": cfg.CallbackType,
+		"callbackBody":     callbackBody,
+	}
+	res["callback"] = util.JsonEncode(callbackData)
 	return res
+}
+
+/* 签名直传-验证 */
+func (Oss) PolicyVerify(dir string, file string, expire string, sign string) bool {
+	// 配置
+	cfg := config.RAM()
+	// 验证
+	signTmp := (&util.Hash{}).Md5(dir + "&" + file + "&" + expire + "&" + cfg.AccessKeySecret)
+	if sign != signTmp {
+		return false
+	}
+	// 是否超时
+	now := util.Time()
+	etime := (&util.Type{}).Int64(expire)
+	if now > etime {
+		return false
+	}
+	return true
 }
 
 /* 初始化 */

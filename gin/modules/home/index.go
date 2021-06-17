@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"webmis/config"
 	"webmis/library"
+	"webmis/library/aliyun"
 	"webmis/service"
+	"webmis/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,25 +18,9 @@ type Index struct {
 
 /* 首页 */
 func (r Index) Index(c *gin.Context) {
+	oss := (&library.Upload{}).OssPolicy("jpg", 0)
 	// 返回
-	r.GetJSON(c, gin.H{"code": 0, "msg": "Web"})
-}
-
-func (r Index) UpFileCallback(c *gin.Context) {
-	// 参数
-	json := map[string]interface{}{}
-	c.BindJSON(&json)
-	fmt.Println(json)
-	// text := string(util.JsonEncode(map[string]interface{}{
-	// 	"dir":  c.PostForm("dir"),
-	// 	"file": c.PostForm("file"),
-	// }))
-	// // 写入文件
-	// cmd := exec.Command("/bin/bash", "-c", "echo "+text+" > public/upload/callback.txt")
-	// cmd.Run()
-	// fmt.Println(text)
-	// 返回
-	c.JSON(200, gin.H{"Status": "Ok"})
+	r.GetJSON(c, gin.H{"code": 0, "msg": "Web", "oss": oss})
 }
 
 /* 验证码 */
@@ -74,4 +60,23 @@ func (r Index) Qrcode(c *gin.Context) {
 	// 返回
 	img := (&library.FileEo{}).Bytes(file)
 	c.Writer.WriteString(string(img))
+}
+
+/* OSS-上传回调 */
+func (r Index) OssCallback(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	fmt.Println(json)
+	// 验证
+	dir := (&util.Type{}).Strval(json["dir"])
+	file := (&util.Type{}).Strval(json["file"])
+	expire := (&util.Type{}).Strval(json["expire"])
+	sign := (&util.Type{}).Strval(json["sign"])
+	if (&aliyun.Oss{}).PolicyVerify(dir, file, expire, sign) {
+		// 数据处理
+		fmt.Println(json)
+	}
+	// 返回
+	c.JSON(200, gin.H{"Status": "Ok"})
 }

@@ -28,12 +28,12 @@ func RAM() *RamType {
 /* 对象存储 */
 func OSS() *OssType {
 	cfg := &OssType{}
-	cfg.Endpoint = "oss-cn-chengdu.aliyuncs.com"           //区域
-	cfg.Bucket = "webmis-upload"                           //存储空间
-	cfg.MaxSize = 100 * 1024 * 1024                        //最大文件
-	cfg.ExpireTime = 30                                    //签名有效时间(秒)
-	cfg.CallbackUrl = "https://api.webmis.vip/"            //回调URL
-	cfg.CallbackType = "application/x-www-form-urlencoded" //回调数据类型
-	cfg.ImgUrl = "http://img.webmis.vip/"                  //图片域名
+	cfg.Endpoint = "oss-cn-chengdu.aliyuncs.com"               //区域
+	cfg.Bucket = "webmis-upload"                               //存储空间
+	cfg.MaxSize = 100 * 1024 * 1024                            //最大文件
+	cfg.ExpireTime = 30                                        //签名有效时间(秒)
+	cfg.CallbackUrl = "https://demo-go.webmis.vip/ossCallback" //回调URL
+	cfg.CallbackType = "application/json"                      //回调数据类型
+	cfg.ImgUrl = "http://img.webmis.vip/"                      //图片域名
 	return cfg
 }
