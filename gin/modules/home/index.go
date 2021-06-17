@@ -39,7 +39,7 @@ func (r Index) UpFileCallback(c *gin.Context) {
 	fmt.Println(callbackBody)
 	fmt.Println(data)
 	json := map[string]interface{}{}
-	c.BindJSON(&json)
+	c.Bind(&json)
 	fmt.Println(data)
 	// text := string(util.JsonEncode(map[string]interface{}{
 	// 	"dir":  c.PostForm("dir"),
