@@ -23,14 +23,12 @@ func (r Index) Index(c *gin.Context) {
 }
 
 func (r Index) UpFileCallback(c *gin.Context) {
-	// text := string(util.JsonEncode(map[string]interface{}{
-	// 	"dir":  c.PostForm("dir"),
-	// 	"file": c.PostForm("file"),
-	// }))
-	json := map[string]interface{}{}
-	c.BindJSON(&json)
-	text := string(util.JsonEncode(json))
-
+	// 参数
+	text := string(util.JsonEncode(map[string]interface{}{
+		"dir":  c.PostForm("dir"),
+		"file": c.PostForm("file"),
+	}))
+	// 写入文件
 	cmd := exec.Command("/bin/bash", "-c", "echo "+text+" > public/upload/callback.txt")
 	cmd.Run()
 	fmt.Println(text)
