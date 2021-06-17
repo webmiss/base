@@ -31,6 +31,7 @@ func (r Index) UpFileCallback(c *gin.Context) {
 	// 写入文件
 	cmd := exec.Command("/bin/bash", "-c", "echo "+text+" > public/upload/callback.txt")
 	cmd.Run()
+	fmt.Println(c.Request.Header.Get("x-oss-pub-key-url"))
 	fmt.Println(c.Request.Header.Get("authorization"))
 	fmt.Println(text)
 	// 返回
