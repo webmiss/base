@@ -75,7 +75,6 @@ public class Index extends Base{
     // 验证
     if(!Upload.OssPolicyVerify(param)) return "";
     // 数据处理: public/upload/callback.txt
-    Print(param);
     TmpCallback(Util.JsonEncode(param));
     // 返回
     HashMap<String,Object> res;

@@ -1,9 +1,8 @@
 package webmis.service;
 
-import java.io.IOException;
 import java.util.HashMap;
-
 import com.alibaba.fastjson.JSON;
+import webmis.library.FileEo;
 
 public class Base {
 
@@ -14,9 +13,7 @@ public class Base {
 
   /* 记录回调 */
   static protected void TmpCallback(String text) {
-    try {
-      Runtime.getRuntime().exec("echo "+text+" > public/upload/callback.txt");
-    } catch (IOException e) {}
+    FileEo.Writer("public/upload/callback.txt", text.getBytes());
   }
 
   /* 输出到控制台 */
