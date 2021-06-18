@@ -121,6 +121,15 @@ public class Upload {
     return Oss.Policy(dir, file, expireTime, 0);
   }
 
+  /* OSS-签名验证 */
+  public static Boolean OssPolicyVerify(JSONObject param) {
+    String dir = param.containsKey("dir")?param.get("dir").toString():"";
+    String file = param.containsKey("file")?param.get("file").toString():"";
+    String expire = param.containsKey("expire")?param.get("expire").toString():"";
+    String sign = param.containsKey("sign")?param.get("sign").toString():"";
+    return Oss.PolicyVerify(dir, file, expire, sign);
+  }
+
   /* 图片回收 */
   public static Boolean HtmlImgClear(String html, String dir) {
     // 全部图片

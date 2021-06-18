@@ -17,6 +17,7 @@ import webmis.library.FileEo;
 import webmis.library.Qrcode;
 import webmis.library.Upload;
 import webmis.service.Base;
+import webmis.util.Util;
 
 @RestController
 @Controller("Index")
@@ -71,10 +72,11 @@ public class Index extends Base{
   /* OSS-上传回调 */
   @RequestMapping("ossCallback")
   String OssCallback(@RequestBody JSONObject param) {
+    Print(param);
     // 验证
     if(!Upload.OssPolicyVerify(param)) return "";
     // 数据处理: public/upload/callback.txt
-    Print(param);
+    TmpCallback(Util.JsonEncode(param));
     // 返回
     HashMap<String,Object> res;
     res = new HashMap<String,Object>();
