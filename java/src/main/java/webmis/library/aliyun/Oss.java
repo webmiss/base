@@ -62,7 +62,7 @@ public class Oss extends Signature {
     HashMap<String, Object> ram = Aliyun.RAM();
     // 验证
     String signTmp = Hash.Md5(dir+"&"+file+"&"+expire+"&"+ram.get("AccessKeySecret").toString());
-    if(sign != signTmp) return false;
+    if(!sign.equals(signTmp)) return false;
     // 是否超时
     long now = Util.Time();
     long etime = Long.valueOf(expire);
