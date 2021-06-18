@@ -72,5 +72,5 @@ func (r Index) OssCallback(c *gin.Context) {
 	text := string(util.JsonEncode(param))
 	util.Exec("echo " + text + " > public/upload/callback.txt")
 	// 返回
-	c.JSON(200, gin.H{"Status": "Ok"})
+	r.GetJSON(c, gin.H{"Status": "Ok"})
 }
