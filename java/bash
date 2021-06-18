@@ -7,25 +7,13 @@ log=tmp/logs.txt
 
 # 运行
 if [ "$s" == "serve" ]; then
-  {
-    java -jar $jar
-  } || {
-    echo "> 请安装'java'"
-  }
+  java -jar $jar
 # 安装
 elif [ "$s" == "install" ]; then
-  {
-    mvn clean install -e -U -DskipTests
-  } || {
-    echo "> 请安装'mvn'"
-  }
+  mvn clean install -e -U -DskipTests
 # 打包
 elif [ "$s" == "build" ]; then
-  {
-    mvn package -DskipTests && rm "./$jar" && cp "target/$jar" ./
-  } || {
-    echo "> 请安装'maven'"
-  }
+  mvn package -DskipTests && rm "./$jar" && cp "target/$jar" ./
 # 启动
 elif [ "$s" == "start" ]; then
   nohup java -jar $jar >> $log 2>&1 &

@@ -7,13 +7,13 @@ set jar="java-1.0.0.jar"
 
 REM 运行
 if "%s%"=="serve" (
-  ( java -jar %jar% ) || ( echo ^> 请安装'java' )
+  java -jar %jar%
 REM 安装
 ) else if "%s%"=="install" (
-  ( mvn clean install -e -U -DskipTests ) || ( echo ^> 请安装'mvn' )
+  mvn clean install -e -U -DskipTests
 REM 打包
 ) else if "%s%"=="build" (
-  ( mvn package -DskipTests && del .\%jar% && copy target\%jar% .\ ) || ( echo ^> 请安装'maven' )
+  mvn package -DskipTests && del .\%jar% && copy target\%jar% .\
 ) else (
   echo ----------------------------------------------------
   echo [use] .\cmd ^<command^>
