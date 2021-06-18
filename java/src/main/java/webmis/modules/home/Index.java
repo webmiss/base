@@ -27,13 +27,11 @@ public class Index extends Base{
   /* 首页 */
   @RequestMapping("")
   String index() {
-    JSONObject oss = Upload.OssPolicy("jpg", 0);
     // 返回
     HashMap<String,Object> res;
     res = new HashMap<String,Object>();
     res.put("code", 0);
     res.put("msg", "Web");
-    res.put("oss", oss);
     return GetJSON(res);
   }
 
@@ -74,9 +72,9 @@ public class Index extends Base{
   String OssCallback(@RequestBody JSONObject param) {
     // 验证
     if(!Upload.OssPolicyVerify(param)) return "";
-    // 数据处理: public/upload/callback.txt
-    Print(param);
-    TmpCallback(Util.JsonEncode(param));
+    // 数据处理
+    String text = Util.JsonEncode(param);
+    Util.Exec("echo "+text+" > public/upload/callback.txt");
     // 返回
     HashMap<String,Object> res;
     res = new HashMap<String,Object>();

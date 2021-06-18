@@ -16,9 +16,8 @@ type Index struct {
 
 /* 首页 */
 func (r Index) Index(c *gin.Context) {
-	oss := (&library.Upload{}).OssPolicy("jpg", 0)
 	// 返回
-	r.GetJSON(c, gin.H{"code": 0, "msg": "Web", "oss": oss})
+	r.GetJSON(c, gin.H{"code": 0, "msg": "Web"})
 }
 
 /* 验证码 */
@@ -69,8 +68,9 @@ func (r Index) OssCallback(c *gin.Context) {
 	if !(&library.Upload{}).OssPolicyVerify(param) {
 		return
 	}
-	// 数据处理: public/upload/callback.txt
-	r.TmpCallback(string(util.JsonEncode(param)))
+	// 数据处理
+	text := string(util.JsonEncode(param))
+	util.Exec("echo " + text + " > public/upload/callback.txt")
 	// 返回
 	c.JSON(200, gin.H{"Status": "Ok"})
 }

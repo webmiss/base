@@ -33,6 +33,13 @@ Upload::OssPolicy(
 - ext: "jpg", "png", "gif"
 - expireTime: 0 默认30秒
 
+## OSS-签名验证
+```php
+Upload::OssPolicyVerify(
+  array $param,   //回调参数
+);
+```
+
 ## 图片回收
 ```php
 Upload::HtmlImgClear(string $html, string $dir);

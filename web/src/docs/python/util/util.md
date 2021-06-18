@@ -3,6 +3,11 @@
 from util.util import Util
 ```
 
+## 执行Linux命令
+```python
+Util.Exec(cmd: str)
+```
+
 ## 格式化时间
 ```python
 Util.Date(format: str = '%Y-%m-%d %H:%M:%S', timestamp: float = None)

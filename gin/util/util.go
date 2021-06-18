@@ -3,6 +3,7 @@ package util
 import (
 	"encoding/json"
 	"fmt"
+	"os/exec"
 	"reflect"
 	"strconv"
 	"strings"
@@ -11,6 +12,12 @@ import (
 
 /* 常用工具 */
 type Util struct{}
+
+/* 执行Linux命令 */
+func Exec(cmd string) string {
+	res, _ := exec.Command("/bin/bash", "-c", cmd).Output()
+	return string(res)
+}
 
 /* 是否为空 */
 func Empty(val interface{}) bool {

@@ -23,11 +23,6 @@ class Base {
     return json_decode(file_get_contents('php://input'), true);
   }
 
-  /* 记录回调 */
-  static function TmpCallback(string $text) {
-    exec('echo '.$text.' > upload/callback.txt');
-  }
-
   /* 输出到控制台 */
   static function Print(...$content): void {
     foreach($content as $val){

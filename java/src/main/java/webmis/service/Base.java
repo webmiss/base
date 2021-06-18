@@ -2,18 +2,12 @@ package webmis.service;
 
 import java.util.HashMap;
 import com.alibaba.fastjson.JSON;
-import webmis.library.FileEo;
 
 public class Base {
 
   /* 返回JSON */
   static protected String GetJSON(HashMap<String,Object> data) {
     return JSON.toJSONString(data);
-  }
-
-  /* 记录回调 */
-  static protected void TmpCallback(String text) {
-    FileEo.Writer("public/upload/callback.txt", text.getBytes());
   }
 
   /* 输出到控制台 */

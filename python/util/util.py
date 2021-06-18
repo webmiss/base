@@ -1,9 +1,12 @@
-import time
-import json
-from typing import Any
+import time,json,os
 
 # 常用工具
 class Util:
+
+  # 执行Linux命令
+  def Exec(cmd: str):
+    res = os.popen(cmd)
+    return res.readlines()
 
   # 格式化时间
   def Date(format: str = '%Y-%m-%d %H:%M:%S', timestamp: float = None):

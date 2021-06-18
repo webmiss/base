@@ -29,13 +29,20 @@ import "webmis/library"
 
 ## OSS-签名直传
 ```go
-(&library.Upload{}).Base64(
+(&library.Upload{}).OssPolicy(
   ext string,         //扩展名
   expireTime int64,   //有效时间(秒)
 )
 ```
 - ext: "jpg", "png", "gif"
 - expireTime: 0 默认30秒
+
+## OSS-签名验证
+```go
+(&library.Upload{}).OssPolicyVerify(
+  param map[string]interface{},  //回调参数
+)
+```
 
 ## 图片回收
 ```go

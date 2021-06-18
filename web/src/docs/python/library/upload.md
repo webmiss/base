@@ -33,6 +33,13 @@ Upload.OssPolicy(
 - ext: "jpg", "png", "gif"
 - expireTime: 0 默认30秒
 
+## OSS-签名验证
+```python
+Upload.OssPolicyVerify(
+  param: dict,    #回调参数
+)
+```
+
 ## 图片回收
 ```python
 Upload.HtmlImgClear(html: str, dir: str)

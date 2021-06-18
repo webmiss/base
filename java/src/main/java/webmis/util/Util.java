@@ -1,5 +1,8 @@
 package webmis.util;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,6 +19,24 @@ import com.alibaba.fastjson.JSONObject;
 /* 常用工具 */
 @SuppressWarnings("unchecked")
 public class Util {
+
+  /* 执行Linux命令 */
+  public static JSONArray Exec(String cmd) {
+    JSONArray res = new JSONArray();
+    try {
+      Process ps = Runtime.getRuntime().exec(new String[]{"sh", "-c", cmd});
+      InputStreamReader ir = new InputStreamReader(ps.getInputStream());
+      LineNumberReader input = new LineNumberReader(ir);
+      String line;
+      while ((line = input.readLine ()) != null){
+        res.add(line);
+      }
+      ir.close();
+      input.close();
+      ps.destroy();
+    } catch (IOException e) {}
+    return res;
+  }
 
   /* 格式化时间 */
   public static String Date(String format) {

@@ -3,6 +3,11 @@
 import "webmis/util"
 ```
 
+## 执行Linux命令
+```go
+util.Exec(cmd string)
+```
+
 ## 是否为空
 ```go
 util.Empty(val interface{})

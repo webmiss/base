@@ -3,6 +3,11 @@
 import webmis.util.Util;
 ```
 
+## 执行Linux命令
+```java
+Util.Exec(String cmd);
+```
+
 ## 格式化时间
 ```java
 Util.Date(String format);

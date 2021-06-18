@@ -12,9 +12,8 @@ class Index(Base) :
 
   # 首页
   def Index(self):
-    oss = Upload.OssPolicy('jpg')
     # 返回
-    return self.GetJSON({'code':0,'msg':'Web', 'oss': oss})
+    return self.GetJSON({'code':0,'msg':'Web'})
 
   # 验证码
   def Vcode(self):
@@ -47,6 +46,7 @@ class Index(Base) :
     param = self.Json()
     # 验证
     if not Upload.OssPolicyVerify(param) : return ''
-    # 数据处理: public/upload/callback.txt
-    self.TmpCallback(Util.JsonEncode(param))
+    # 数据处理
+    text = Util.JsonEncode(param)
+    Util.Exec('echo '+text+' > public/upload/callback.txt')
     return self.GetJSON({'Status':'Ok'})

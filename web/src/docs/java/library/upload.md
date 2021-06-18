@@ -50,6 +50,13 @@ Upload.OssPolicy(
 - ext: "jpg", "png", "gif"
 - expireTime: 0 默认30秒
 
+## OSS-签名验证
+```java
+Upload.OssPolicyVerify(
+  JSONObject param,   //回调参数
+);
+```
+
 ## 图片回收
 ```java
 Upload.HtmlImgClear(String html, String dir);

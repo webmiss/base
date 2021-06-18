@@ -6,6 +6,12 @@ use Service\Base;
 /* 工具 */
 class Util extends Base {
 
+  /* 执行Linux命令 */
+  static function Exec(string $cmd) {
+    $res = shell_exec($cmd);
+    return $res;
+  }
+
   /* String To Timestamp */
   static function Strtotime(string $day): int {
     $t = strtotime(trim($day));
