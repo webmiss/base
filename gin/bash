@@ -29,7 +29,7 @@ elif [ "$s" == "http" ]; then
   ./$name
 # Server-启动
 elif [ "$s" == "start" ]; then
-  go build && ./$name &
+  go build && ./$name > public/upload/server.log &
 # Server-停止
 elif [ "$s" == "stop" ]; then
   ps -aux | grep ./$name | grep -v grep | awk {'print $2'} | xargs kill
