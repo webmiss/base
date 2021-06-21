@@ -5,6 +5,7 @@ s=$1
 name='webmis'                 #项目名称
 index='main.go'               #入口文件
 cli='cli/main.go'             #Cli命令行
+log='public/upload/server.log'
 
 # 运行
 if [ "$s" == "serve" ]; then
@@ -29,7 +30,7 @@ elif [ "$s" == "http" ]; then
   ./$name
 # Server-启动
 elif [ "$s" == "start" ]; then
-  go build && ./$name > public/upload/server.log &
+  go build && ./$name > $log &
 # Server-停止
 elif [ "$s" == "stop" ]; then
   ps -aux | grep ./$name | grep -v grep | awk {'print $2'} | xargs kill

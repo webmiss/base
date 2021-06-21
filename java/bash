@@ -2,8 +2,8 @@
 
 # 配置
 s=$1
-jar=java-1.0.0.jar
-log=tmp/logs.txt
+jar='java-1.0.0.jar'
+log='public/upload/server.log'
 
 # 运行
 if [ "$s" == "serve" ]; then
@@ -16,7 +16,7 @@ elif [ "$s" == "build" ]; then
   mvn package -DskipTests && rm "./$jar" && cp "target/$jar" ./
 # 启动
 elif [ "$s" == "start" ]; then
-  nohup java -jar $jar >> $log 2>&1 &
+  nohup java -jar $jar > $log 2>&1 &
 # 停止
 elif [ "$s" == "stop" ]; then
   ps -aux | grep java | grep -v grep | awk {'print $2'} | xargs kill
