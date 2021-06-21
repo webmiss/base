@@ -29,10 +29,10 @@ elif [ "$s" == "http" ]; then
   ./$name
 # Server-启动
 elif [ "$s" == "start" ]; then
-  go build && ./$name &
+  go build && ./webmis &
 # Server-停止
 elif [ "$s" == "stop" ]; then
-  ps -aux | grep ./$name | grep -v grep | awk {'print $2'} | xargs kill
+  ps -aux | grep "webmis" | grep -v grep | awk {'print $2'} | xargs kill
 # Socket-运行
 elif [ "$s" == "socket" ]; then
   go run $cli socket start
