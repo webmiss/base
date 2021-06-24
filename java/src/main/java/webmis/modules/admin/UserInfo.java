@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.alibaba.fastjson.JSONObject;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,8 +27,10 @@ public class UserInfo extends Base {
 
   /* 列表 */
   @RequestMapping("list")
-  String List(HttpServletRequest request, String token, String data) {
+  String List(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -54,8 +57,11 @@ public class UserInfo extends Base {
 
   /* 编辑 */
   @RequestMapping("edit")
-  String Edit(HttpServletRequest request, String token, String data) {
+  String Edit(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String data = JsonName(json, "data");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -72,8 +78,8 @@ public class UserInfo extends Base {
       res.put("msg", "参数错误!");
       return GetJSON(res);
     }
-    JSONObject param = Util.JsonDecode(data);
     // 数据
+    JSONObject param = Util.JsonDecode(data);
     webmis.model.UserInfo model = new webmis.model.UserInfo();
     HashMap<String,Object> info = new HashMap<String,Object>();
     info.put("nickname", Util.Trim(param.get("nickname").toString()));
@@ -98,8 +104,11 @@ public class UserInfo extends Base {
 
   /* 头像 */
   @RequestMapping("upimg")
-  String Upimg(HttpServletRequest request, String token, String base64) {
+  String Upimg(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String base64 = JsonName(json, "base64");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -108,8 +117,6 @@ public class UserInfo extends Base {
       res.put("msg", msg);
       return GetJSON(res);
     }
-    HashMap<String, Object> tData = AdminToken.Token(token);
-    // 参数
     if(base64==null || base64.isEmpty()){
       res = new HashMap<String,Object>();
       res.put("code", 4000);
@@ -128,6 +135,7 @@ public class UserInfo extends Base {
       return GetJSON(res);
     }
     // 数据
+    HashMap<String, Object> tData = AdminToken.Token(token);
     webmis.model.UserInfo model = new webmis.model.UserInfo();
     model.Columns("img");
     model.Where("uid=?", tData.get("uid").toString());

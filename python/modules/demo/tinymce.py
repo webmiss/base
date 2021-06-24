@@ -11,13 +11,15 @@ class Tinymce(Base) :
 
   # 编辑
   def Edit(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, '')
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    content = self.Post('content')
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    content = self.JsonName(json, 'content')
     content = Url.Decode(content)
+    # 验证
+    msg = AdminToken.Verify(token, '')
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     # 图片回收
     Upload.HtmlImgClear(content, self.ImgDir)
     # 返回
@@ -25,12 +27,14 @@ class Tinymce(Base) :
 
   # 图片
   def UpImg(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, '')
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    base64 = self.Post('base64')
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    base64 = self.JsonName(json, 'base64')
+    # 验证
+    msg = AdminToken.Verify(token, '')
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     if not base64 : return self.GetJSON({'code':4000, 'msg':'参数错误!'})
     # 上传
     img = Upload.Base64({'path':self.ImgDir, 'base64':base64})

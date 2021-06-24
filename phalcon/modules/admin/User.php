@@ -14,8 +14,10 @@ class User extends Base {
 
   /* 登录 */
 	static function Login(){
-    $uname = self::Post('uname');
-    $passwd = self::Post('passwd');
+    // 参数
+    $json = self::Json();
+    $uname = self::JsonName($json, 'uname');
+    $passwd = self::JsonName($json, 'passwd');
     // 验证用户名
     if(!Safety::IsRight('uname',$uname) && !Safety::IsRight('tel',$uname) && !Safety::IsRight('email',$uname)){
       return self::GetJSON(['code'=>4000, 'msg'=>'请输入用户名/手机/邮箱!']);
@@ -73,12 +75,13 @@ class User extends Base {
 
   /* Token验证 */
 	static function Token(){
+    // 参数
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $uinfo = self::JsonName($json, 'uinfo');
     // 验证
-    $token = self::Post('token');
     $msg = AdminToken::Verify($token, '');
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    // 参数
-    $uinfo = self::Post('uinfo');
     $tData = AdminToken::Token($token);
     if($uinfo!='1') return self::GetJSON(['code'=>0, 'msg'=>'成功', 'token_time'=>$tData->time]);
     // 用户信息

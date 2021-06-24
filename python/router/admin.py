@@ -16,7 +16,7 @@ Admin = Blueprint('admin', __name__)
 # 首页
 @Admin.route('/',methods=['GET'])
 def index() : return Index().Index()
-@Admin.route('/index/getConfig',methods=['POST'])
+@Admin.route('/index/getConfig',methods=['GET'])
 def getConfig() : return Index().GetConfig()
 # 登录
 @Admin.route('/user/<a>',methods=['POST'])

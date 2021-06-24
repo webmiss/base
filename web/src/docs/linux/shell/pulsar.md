@@ -1,52 +1,97 @@
+## Docker容器
+```bash
+# 下载镜像
+docker pull ubuntu
+# 运行镜像
+docker run --name pulsar01 -it ubuntu
+docker run --name pulsar02 -it ubuntu
+docker run --name pulsar03 -it ubuntu
+# 查看IP
+apt update
+apt install net-tools
+ifconfig
+# 退出容器
+exit        #停止
+Ctrl+P+Q    #不停止
+# 进入容器
+docker ps -a
+docker start 容器ID
+docker attach 容器ID
+```
+
+## 安装Java
+```bash
+apt install default-jre default-jdk
+```
+
 ## Pulsar安装
 ```bash
-cd /opt
+cd /home
 wget https://archive.apache.org/dist/pulsar/pulsar-2.8.0/apache-pulsar-2.8.0-bin.tar.gz
 tar xvfz apache-pulsar-2.8.0-bin.tar.gz
 mv apache-pulsar-2.8.0 pulsar
 rm -fr apache-pulsar-2.8.0-bin.tar.gz
 cd pulsar
 ```
+### 单机模式
+```bash
+# 后台/前台
+pulsar-daemon start standalone
+pulsar standalone
+```
+
+### 主机名解析( vi /etc/hosts )
+```bash
+172.17.0.2   pulsar01
+172.17.0.3   pulsar02
+172.17.0.4   pulsar03
+```
+### 环境变量( vi /etc/profile )
+```bash
+#PULSAR_HOME
+export PULSAR_HOME=/home/pulsar
+export PATH=$PATH:$PULSAR_HOME/bin
+```
+- source /etc/profile   //生效
 
 ## 一、ZooKeeper( vi conf/zookeeper.conf )
 ```bash
-# 端口
-clientPort=2181
 # 数据
-dataDir=/home/data/zookeeper
+dataDir=data/zookeeper
 # 心跳间隔(毫秒)
 tickTime=1000
 initLimit=5
 syncLimit=2
-# 集群(本机: 0.0.0.0)
-server.1=0.0.0.0:2888:3888
-server.2=192.168.1.11:2888:3888
-server.3=192.168.1.12:2888:3888
+clientPort=2181
+# 集群
+server.1=172.17.0.2:2888:3888
+server.2=172.17.0.3:2888:3888
+server.3=172.17.0.4:2888:3888
 ```
 ### myid
 ```bash
 # 集群(本机1, 其它两台分别添加2 3到myid)
-mkdir -p /home/data/zookeeper
-echo 1 > /home/data/zookeeper/myid
+mkdir -p /home/pulsar/data/zookeeper
+echo 1 > /home/pulsar/data/zookeeper/myid
 ```
 ### 启动
 ```bash
-# 后台
-./bin/pulsar-daemon start zookeeper
-# 前台
-./bin/pulsar zookeeper
+# 后台/前台
+pulsar-daemon start zookeeper
+pulsar zookeeper
+# 查看(QuorumPeerMain)
+jps
+netstat -tnlpu|grep 4043
 ```
 
 ### 初始化元数据
 ```bash
-./bin/pulsar initialize-cluster-metadata \
-  --cluster WebMIS \
-  --zookeeper localhost:2181 \
-  --configuration-store localhost:2181 \
-  --web-service-url http://pulsar.test.com:8080 \
-  --web-service-url-tls https://pulsar.test.com:8443 \
-  --broker-service-url pulsar://pulsar.test.com:6650 \
-  --broker-service-url-tls pulsar+ssl://pulsar.test.com:6651
+pulsar initialize-cluster-metadata \
+  --cluster webmis \
+  --zookeeper 172.17.0.2:2181 \
+  --configuration-store 172.17.0.2:2181 \
+  --web-service-url http://172.17.0.2:8080,172.17.0.3:8080,172.17.0.4:8080 \
+  --broker-service-url pulsar://172.17.0.2:6650,172.17.0.3:6650,172.17.0.4:6650
 ```
 - --cluster 集群名称
 - --zookeeper 集群节点(其中1个)
@@ -56,63 +101,96 @@ echo 1 > /home/data/zookeeper/myid
 - --broker-service-url 集群brokers服务URL
 - --broker-service-url-tls 集群brokers提供TLS服务的URL
 
+### 验证初始化元数据
+```bash
+pulsar zookeeper-shell
+```
+- help  //命令
+- ls /  //查看
+- quit  //退出
+
 ## 二、BookKeeper( vi conf/bookkeeper.conf )
 ```bash
-zkServers=192.168.1.10,192.168.1.11:2181,192.168.1.12:2181
+advertisedAddress=172.17.0.2
+zkServers=172.17.0.2:2181,172.17.0.3:2181,172.17.0.4:2181
+```
+### 初始化元数据
+```bash
+mkdir -p /home/pulsar/data/bookkeeper
+bookkeeper shell metaformat
 ```
 ### 启动
 ```bash
-# 后台
-./bin/pulsar-daemon start bookie
-# 前台
-./bin/bookkeeper bookie
+# 后台/前台
+pulsar-daemon start bookie
+bookkeeper bookie
+# 查看状态
+cat /home/pulsar/data/bookkeeper/ledgers/current/VERSION
 # 测试
-./bin/bookkeeper shell bookiesanity
+bookkeeper shell bookiesanity
 # 恢复
-./bin/bookkeeper autorecovery
+# bookkeeper autorecovery
 ```
+- ackQuorum   //当指定数量的 bookie ack 响应时，认为消息写入成功
+- ensemble    //写入数据的 bookie 节点数量
+- numEntries  //一批消息的消息数量
+- writeQuorum //每条消息副本数量
 
 ## 三、Broker( vi conf/broker.conf )
 ```bash
 # 集群节点
-zookeeperServers=192.168.1.10:2181,192.168.1.11:2181,192.168.1.12:2181
-configurationStoreServers=192.168.1.10:2181,192.168.1.11:2181,192.168.1.12:2181
+zookeeperServers=172.17.0.2:2181,172.17.0.3:2181,172.17.0.4:2181
+configurationStoreServers=172.17.0.2:2181,172.17.0.3:2181,172.17.0.4:2181
 # 集群名称
-clusterName=WebMIS
+clusterName=webmis
 ```
 
 ### 启动
 ```bash
-# 后台
-./bin/pulsar-daemon start broker
-# 前台
-./bin/pulsar broker
+# 后台/前台
+pulsar-daemon start broker
+pulsar broker
+# 查看
+pulsar-admin brokers list webmis
 ```
 
-## 四、日志( vi conf/log4j2.yaml )
+## 四、客户端( vi conf/client.conf )
 ```bash
-immediateFlush: true
+webServiceUrl=http://172.17.0.2:8080,172.17.0.3:8080,172.17.0.4:8080
+brokerServiceUrl=pulsar://172.17.0.2:6650,172.17.0.3:6650,172.17.0.4:6650
 ```
-
-## 五、创建
+### 测试
 ```bash
-# 租户
-./bin/pulsar-admin tenants create <MyTenant> --allowed-clusters WebMIS
-# 空间、设置集群
-./bin/pulsar-admin namespaces create <MyTenant/MyNameSpace>
-./bin/pulsar-admin namespaces set-clusters <MyTenant/MyNameSpace> --clusters WebMIS
-# 主题
-./bin/pulsar-admin topics create-partitioned-topic persistent://MyTenant/MyNameSpace/MyTopic --partitions 4
-./bin/pulsar-admin topics create persistent://MyTenant/MyNameSpace/MyTopic
-./bin/pulsar-admin persistent list MyTenant/MyNameSpace
-# 授权
-./bin/pulsar-admin topics grant-permission --actions produce,consume --role AppHmsAlert persistent://MyTenant/MyNameSpace/MyTopic
-```
+# 查看主题
+pulsar-admin persistent list public/default
 
-## 六、客户端
-```bash
-# 生产者
-./bin/pulsar-client produce MyTopic --messages "hello-pulsar"
 # 消费者
-./bin/pulsar-client consume MyTopic -s "first-subscription"
+pulsar-client consume persistent://public/default/pulsar-test \
+-n 100 \
+-s "consumer-test" \
+-t "Exclusive"
+
+# 生产者
+pulsar-client produce persistent://public/default/pulsar-test \
+-n 1 \
+-m "Hello Pulsar"
+```
+
+## 基本操作
+```bash
+# 租户: 列表、创建、更新、删除
+pulsar-admin tenants list
+pulsar-admin tenants create <MyTenant>
+pulsar-admin tenants update <MyTenant>
+pulsar-admin tenants delete <MyTenant>
+# 命名空间: 列表、创建、设置集群
+pulsar-admin namespaces list <MyTenant>
+pulsar-admin namespaces create <MyTenant/MyNameSpace>
+pulsar-admin namespaces set-clusters <MyTenant/MyNameSpace> --clusters webmis
+# 主题: 列表、无分区、有分区
+pulsar-admin topics list <MyTenant/MyNameSpace>
+pulsar-admin topics create persistent://MyTenant/MyNameSpace/MyTopic
+pulsar-admin topics create-partitioned-topic persistent://MyTenant/MyNameSpace/MyTopic --partitions 4
+# 授权
+pulsar-admin topics grant-permission --actions produce,consume --role AppHmsAlert persistent://MyTenant/MyNameSpace/MyTopic
 ```

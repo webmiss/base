@@ -206,12 +206,11 @@ class Model extends Base {
   }
   /* 查询-单条 */
   function FindFirst() {
-    $res = [];
     $this->limit = '0,1';
     list($sql, $args) = $this->SelectSql();
     $this->DBConn();
     $data = $this->conn->fetchOne($sql, 2, $args);
-    if(!$data) return (object)[];
+    if(!$data) return [];
     if(count($this->columnsType)==0) return $data;
     // 转换类型
     foreach($data as $k=>$v) {

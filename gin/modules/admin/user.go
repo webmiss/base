@@ -18,8 +18,11 @@ type User struct {
 
 /* 登录 */
 func (r User) Login(c *gin.Context) {
-	uname := c.PostForm("uname")
-	passwd := c.PostForm("passwd")
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	uname, _ := r.JsonName(json, "uname")
+	passwd, _ := r.JsonName(json, "passwd")
 	// 验证用户名
 	safety := (&library.Safety{})
 	if safety.IsRight("uname", uname) != true && safety.IsRight("tel", uname) != true && safety.IsRight("email", uname) != true {
@@ -90,15 +93,17 @@ func (r User) Login(c *gin.Context) {
 
 /* Token验证 */
 func (r User) Token(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	uinfo, _ := r.JsonName(json, "uinfo")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	uinfo := c.PostForm("uinfo")
 	tData := (&service.AdminToken{}).Token(token)
 	if uinfo != "1" {
 		r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "token_time": tData["time"]})

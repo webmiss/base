@@ -5,7 +5,10 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.alibaba.fastjson.JSONObject;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,8 +25,10 @@ public class Tweblive extends Base {
 
   /* 列表 */
   @RequestMapping("list")
-  String List(HttpServletRequest request, String token) {
+  String List(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
     // 验证
     String msg = AdminToken.Verify(token, "");
     if(!msg.equals("")){
@@ -55,8 +60,10 @@ public class Tweblive extends Base {
 
   /* 用户信息 */
   @RequestMapping("userInfo")
-  String UserInfo(HttpServletRequest request, String token) {
+  String UserInfo(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
     // 验证
     String msg = AdminToken.Verify(token, "");
     if(!msg.equals("")){
@@ -65,18 +72,17 @@ public class Tweblive extends Base {
       res.put("msg", msg);
       return GetJSON(res);
     }
-    HashMap<String, Object> tData = AdminToken.Token(token);
     // 配置
+    HashMap<String, Object> tData = AdminToken.Token(token);
     HashMap<String, Object> cfg = Tencent.TRTC();
     String userId = String.valueOf(tData.get("uid"));
     String userSin = Signature.UserSig(userId);
-    // 数据
+    // 返回
     HashMap<String, Object> uinfo = new HashMap<String, Object>();
     uinfo.put("sdk_app_id", cfg.get("SDKAppID"));
     uinfo.put("user_id", userId);
     uinfo.put("user_sig", userSin);
     uinfo.put("sdk_app_id", cfg.get("SDKAppID"));
-    // 返回
     res = new HashMap<String,Object>();
     res.put("code", 0);
     res.put("msg", "成功");

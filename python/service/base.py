@@ -19,6 +19,8 @@ class Base :
   # Json参数
   def Json(self):
     return request.json if request.method == "POST" else request.args
+  def JsonName(self, param: dict, name: str):
+    return param[name] if name in param.keys() else None
 
   # 输出到控制台
   def Print(self, *content) :

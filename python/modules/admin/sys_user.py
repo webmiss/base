@@ -19,16 +19,18 @@ class SysUser(Base):
 
   # 列表
   def List(self):
+    # 参数
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    data = self.JsonName(json, 'data')
+    page = self.JsonName(json, 'page')
+    limit = self.JsonName(json, 'limit')
     # 验证
-    token = self.Post('token')
     msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
-    # 参数
-    data = self.Post('data')
-    page = self.Post('page')
-    limit = self.Post('limit')
     if not data or not page or not limit :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 条件
     param = Util.JsonDecode(data)
     uname = Util.Trim(param['uname']) if 'uname' in param.keys() else ''
     # 统计
@@ -67,14 +69,17 @@ class SysUser(Base):
     
   # 添加
   def Add(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, request.path)
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    data = self.Post('data')
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    data = self.JsonName(json, 'data')
+    # 验证
+    msg = AdminToken.Verify(token, request.path)
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     if not data :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 数据
     param = Util.JsonDecode(data)
     tel = Util.Trim(param['tel']) if 'tel' in param.keys() else ''
     passwd = Util.Trim(param['passwd']) if 'passwd' in param.keys() else Env.password
@@ -106,11 +111,6 @@ class SysUser(Base):
       m2.Values({'uid':uid})
       sql, args = m2.InsertSql()
       cs.execute(sql, args)
-      # 权限
-      m3 = ApiPerm()
-      m3.Values({'uid':uid, 'role':1, 'utime':Util.Time()})
-      sql, args = m3.InsertSql()
-      cs.execute(sql, args)
       # 提交
       conn.commit()
       return self.GetJSON({'code':0, 'msg':'成功'})
@@ -120,15 +120,18 @@ class SysUser(Base):
 
   # 编辑
   def Edit(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, request.path)
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    uid = self.Post('uid')
-    data = self.Post('data')
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    uid = self.JsonName(json, 'uid')
+    data = self.JsonName(json, 'data')
+    # 验证
+    msg = AdminToken.Verify(token, request.path)
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     if not uid or not data :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 数据
     param = Util.JsonDecode(data)
     tel = Util.Trim(param['tel']) if 'tel' in param.keys() else ''
     passwd = Util.Trim(param['passwd']) if 'passwd' in param.keys() else ''
@@ -154,17 +157,20 @@ class SysUser(Base):
 
   # 删除
   def Del(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, request.path)
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    data = self.Post('data')
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    data = self.JsonName(json, 'data')
+    # 验证
+    msg = AdminToken.Verify(token, request.path)
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     if not data :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 数据
     param = Util.JsonDecode(data)
     ids = Util.Implode(',', param)
-    # 执行
+    # 模型
     m1 = User()
     m1.Where('id in('+ids+')')
     m2 = UserInfo()
@@ -180,21 +186,23 @@ class SysUser(Base):
 
   # 状态
   def State(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, request.path)
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
-    tData = AdminToken.Token(token)
     # 参数
-    uid = self.Post('uid')
-    state = self.Post('state')
-    state = "1" if state=='1' else '0'
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    uid = self.JsonName(json, 'uid')
+    state = self.JsonName(json, 'state')
+    # 验证
+    msg = AdminToken.Verify(token, request.path)
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     if not uid :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
     # 超级管理员
+    tData = AdminToken.Token(token)
     if uid==1 and tData['uid']!=1 :
       return self.GetJSON({'code':4000, 'msg':'您不是超级管理员!'})
     # 更新
+    state = "1" if state=='1' else '0'
     m = User()
     m.Set({'state': state})
     m.Where('id=%s', uid)
@@ -269,13 +277,15 @@ class SysUser(Base):
 
   # 个人信息
   def Info(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, request.path)
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    uid = self.Post('uid')
-    data = self.Post('data')
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    uid = self.JsonName(json, 'uid')
+    data = self.JsonName(json, 'data')
+    # 验证
+    msg = AdminToken.Verify(token, request.path)
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     if not uid or not data :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
     # 数据
@@ -287,7 +297,7 @@ class SysUser(Base):
       'birthday': Util.Strtotime(param['birthday'], '%Y-%m-%d') if 'birthday' in param.keys() else 0,
       'position': Util.Trim(param['position']) if 'position' in param.keys() else '',
     }
-    # 执行
+    # 模型
     m = UserInfo()
     m.Set(info)
     m.Where('uid=%s', uid)

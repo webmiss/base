@@ -4,6 +4,7 @@ import Env from './env'
 import Start from '@/library/Start'
 /* JS组件 */
 import Toast from '@/library/ui/toast'
+import Get from '@/library/request/get'
 import Post from '@/library/request/post'
 import VersionDiff from '@/library/plus/version-diff'
 import PlusReady from '@/library/plus/ready'
@@ -163,7 +164,7 @@ export default defineComponent({
     /* 系统信息 */
     getConfig(){
       const load = Loading();
-      Post('index/getConfig',{},(res: any)=>{
+      Get('index/getConfig',{test:'123',t2:'456'},(res: any)=>{
         load.clear();
         const d = res.data;
         if(d.code==0) this.state.system = d.list;

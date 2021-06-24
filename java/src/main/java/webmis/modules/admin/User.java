@@ -2,7 +2,10 @@ package webmis.modules.admin;
 
 import java.util.HashMap;
 
+import com.alibaba.fastjson.JSONObject;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,8 +26,11 @@ public class User extends Base {
 
   /* 登录 */
   @RequestMapping("login")
-  String login(String uname, String passwd) {
+  String login(@RequestBody JSONObject json) {
     HashMap<String,Object> res;
+    // 参数
+    String uname = JsonName(json, "uname");
+    String passwd = JsonName(json, "passwd");
     // 验证用户名
     if(!Safety.IsRight("uname",uname) && !Safety.IsRight("tel",uname) && !Safety.IsRight("email",uname)){
       res = new HashMap<String, Object>();
@@ -110,8 +116,11 @@ public class User extends Base {
 
   /* Token验证 */
   @RequestMapping("token")
-  String Token(String token, String uinfo) {
+  String Token(@RequestBody JSONObject json) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String uinfo = JsonName(json, "uinfo");
     // 验证
     String msg = AdminToken.Verify(token, "");
     if(!msg.equals("")){
@@ -120,7 +129,6 @@ public class User extends Base {
       res.put("msg", msg);
       return GetJSON(res);
     }
-    // 参数
     HashMap<String, Object> tData = AdminToken.Token(token);
     if(!uinfo.equals("1")){
       res = new HashMap<String,Object>();

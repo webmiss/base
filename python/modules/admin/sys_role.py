@@ -13,16 +13,18 @@ class SysRole(Base):
 
   # 列表
   def List(self):
+    # 参数
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    data = self.JsonName(json, 'data')
+    page = self.JsonName(json, 'page')
+    limit = self.JsonName(json, 'limit')
     # 验证
-    token = self.Post('token')
     msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
-    # 参数
-    data = self.Post('data')
-    page = self.Post('page')
-    limit = self.Post('limit')
     if not data or not page or not limit :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 条件
     param = Util.JsonDecode(data)
     name = Util.Trim(param['name']) if 'name' in param.keys() else ''
     # 统计
@@ -40,19 +42,22 @@ class SysRole(Base):
     
   # 添加
   def Add(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, request.path)
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    data = self.Post('data')
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    data = self.JsonName(json, 'data')
+    # 验证
+    msg = AdminToken.Verify(token, request.path)
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     if not data :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 数据
     param = Util.JsonDecode(data)
     name = Util.Trim(param['name']) if 'name' in param.keys() else ''
     if name == '' :
       return self.GetJSON({'code':4000, 'msg':'名称不能为空!'})
-    # 数据
+    # 模型
     m = SysRoleM()
     m.Values({'name': name, 'ctime': Util.Time()})
     if m.Insert() :
@@ -62,20 +67,23 @@ class SysRole(Base):
 
   # 编辑
   def Edit(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, request.path)
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    id = self.Post('id')
-    data = self.Post('data')
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    id = self.JsonName(json, 'id')
+    data = self.JsonName(json, 'data')
+    # 验证
+    msg = AdminToken.Verify(token, request.path)
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     if not id or not data :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 数据
     param = Util.JsonDecode(data)
     name = Util.Trim(param['name']) if 'name' in param.keys() else ''
     if name == '' :
       return self.GetJSON({'code':4000, 'msg':'名称不能为空!'})
-    # 数据
+    # 模型
     m = SysRoleM()
     m.Set({'name': name, 'utime': Util.Time()})
     m.Where('id=%s', id)
@@ -86,17 +94,20 @@ class SysRole(Base):
 
   # 删除
   def Del(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, request.path)
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    data = self.Post('data')
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    data = self.JsonName(json, 'data')
+    # 验证
+    msg = AdminToken.Verify(token, request.path)
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     if not data :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 数据
     param = Util.JsonDecode(data)
     ids = Util.Implode(',', param)
-    # 执行
+    # 模型
     m = SysRoleM()
     m.Where('id in('+ids+')')
     if m.Delete() :
@@ -106,16 +117,18 @@ class SysRole(Base):
 
   # 权限
   def Perm(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, request.path)
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    id = self.Post('id')
-    perm = self.Post('perm')
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    id = self.JsonName(json, 'id')
+    perm = self.JsonName(json, 'perm')
+    # 验证
+    msg = AdminToken.Verify(token, request.path)
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     if not id :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
-    # 数据
+    # 模型
     m = SysRoleM()
     m.Set({'perm': perm, 'utime': Util.Time()})
     m.Where('id=%s', id)
@@ -126,10 +139,13 @@ class SysRole(Base):
 
   # 角色-列表
   def RoleList(self):
+    # 参数
+    json = self.Json()
+    token = self.JsonName(json, 'token')
     # 验证
-    token = self.Post('token')
     msg = AdminToken.Verify(token, '')
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     # 查询
     m = SysRoleM()
     m.Columns('id', 'name')
@@ -141,12 +157,14 @@ class SysRole(Base):
 
   # 权限-列表
   def PermList(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, '')
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    perm = self.Post('perm')
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    perm = self.JsonName(json, 'perm')
+    # 验证
+    msg = AdminToken.Verify(token, '')
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     # 全部菜单
     self.__menus = {}
     model = SysMenu()

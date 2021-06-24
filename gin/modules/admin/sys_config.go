@@ -15,8 +15,11 @@ type SysConfig struct {
 
 /* 列表 */
 func (r SysConfig) List(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
@@ -41,15 +44,17 @@ func (r SysConfig) List(c *gin.Context) {
 
 /* 编辑 */
 func (r SysConfig) Edit(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	data, _ := r.JsonName(json, "data")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	data := c.PostForm("data")
 	if data == "" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
@@ -74,16 +79,18 @@ func (r SysConfig) Edit(c *gin.Context) {
 
 /* 头像 */
 func (r SysConfig) Upimg(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	name, _ := r.JsonName(json, "name")
+	base64, _ := r.JsonName(json, "base64")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	name := c.PostForm("name")
-	base64 := c.PostForm("base64")
 	if base64 == "" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return

@@ -2,7 +2,6 @@ from library.safety import Safety
 from service.base import Base
 from service.admin_token import AdminToken
 from model.user import User
-from util.util import Util
 from util.hash import Hash
 
 from flask import request
@@ -11,18 +10,21 @@ class UserPasswd(Base):
 
   # 编辑
   def Edit(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, request.path)
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
-    tData = AdminToken.Token(token)
     # 参数
-    passwd = self.Post('passwd')
-    passwdNew = self.Post('passwdNew')
-    if passwd==passwdNew : return self.GetJSON({'code':4000, 'msg':'不能与原密码相同!'})
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    passwd = self.JsonName(json, 'passwd')
+    passwdNew = self.JsonName(json, 'passwdNew')
+    # 验证
+    msg = AdminToken.Verify(token, request.path)
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
+    if passwd==passwdNew :
+      return self.GetJSON({'code':4000, 'msg':'不能与原密码相同!'})
     if not Safety.IsRight('passwd', passwd) or not Safety.IsRight('passwd', passwdNew) :
       return self.GetJSON({'code':4000, 'msg':'密码为6～16位!'})
     # 数据
+    tData = AdminToken.Token(token)
     model = User()
     model.Columns('id')
     model.Where('id=%s AND password=%s', str(tData['uid']), Hash.Md5(passwd))

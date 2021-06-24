@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,8 +29,13 @@ public class SysRole extends Base {
 
   /* 列表 */
   @RequestMapping("list")
-  String List(HttpServletRequest request, String token, String data, int page, int limit) {
+  String List(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String data = JsonName(json, "data");
+    int page = Integer.valueOf(JsonName(json, "page"));
+    int limit = Integer.valueOf(JsonName(json, "limit"));
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -38,13 +44,13 @@ public class SysRole extends Base {
       res.put("msg", msg);
       return GetJSON(res);
     }
-    // 参数
     if(data=="" || page==0 || limit==0){
       res = new HashMap<String,Object>();
       res.put("code", 4000);
       res.put("msg", "参数错误!");
       return GetJSON(res);
     }
+    // 条件
     JSONObject param = Util.JsonDecode(data);
     String name = param.containsKey("name")?String.valueOf(param.get("name")).trim():"";
     // 统计
@@ -68,8 +74,11 @@ public class SysRole extends Base {
 
   /* 添加 */
   @RequestMapping("add")
-  String Add(HttpServletRequest request, String token, String data) {
+  String Add(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String data = JsonName(json, "data");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -78,13 +87,13 @@ public class SysRole extends Base {
       res.put("msg", msg);
       return GetJSON(res);
     }
-    // 参数
     if(data==""){
       res = new HashMap<String,Object>();
       res.put("code", 4000);
       res.put("msg", "参数错误!");
       return GetJSON(res);
     }
+    // 数据
     JSONObject param = Util.JsonDecode(data);
     String name = param.containsKey("name")?String.valueOf(param.get("name")).trim():"";
     if(name.equals("")){
@@ -93,7 +102,7 @@ public class SysRole extends Base {
       res.put("msg", "名称不能为空!");
       return GetJSON(res);
     }
-    // 数据
+    // 模型
     webmis.model.SysRole m = new webmis.model.SysRole();
     HashMap<String,Object> uData = new HashMap<String,Object>();
     uData.put("name", name);
@@ -113,8 +122,12 @@ public class SysRole extends Base {
 
   /* 编辑 */
   @RequestMapping("edit")
-  String Edit(HttpServletRequest request, String token, String id, String data) {
+  String Edit(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String id = JsonName(json, "id");
+    String data = JsonName(json, "data");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -123,13 +136,13 @@ public class SysRole extends Base {
       res.put("msg", msg);
       return GetJSON(res);
     }
-    // 参数
     if(id=="" || data==""){
       res = new HashMap<String,Object>();
       res.put("code", 4000);
       res.put("msg", "参数错误!");
       return GetJSON(res);
     }
+    // 数据
     JSONObject param = Util.JsonDecode(data);
     String name = param.containsKey("name")?String.valueOf(param.get("name")).trim():"";
     if(name.equals("")){
@@ -138,7 +151,7 @@ public class SysRole extends Base {
       res.put("msg", "名称不能为空!");
       return GetJSON(res);
     }
-    // 数据
+    // 模型
     webmis.model.SysRole m = new webmis.model.SysRole();
     HashMap<String,Object> uData = new HashMap<String,Object>();
     uData.put("name", name);
@@ -159,8 +172,11 @@ public class SysRole extends Base {
 
   /* 删除 */
   @RequestMapping("del")
-  String Del(HttpServletRequest request, String token, String data) {
+  String Del(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String data = JsonName(json, "data");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -169,16 +185,16 @@ public class SysRole extends Base {
       res.put("msg", msg);
       return GetJSON(res);
     }
-    // 参数
     if(data==""){
       res = new HashMap<String,Object>();
       res.put("code", 4000);
       res.put("msg", "参数错误!");
       return GetJSON(res);
     }
+    // 数据
     JSONArray param = Util.JsonDecodeArray(data);
     String ids = Util.Implode(",", JSONArray.parseArray(param.toJSONString()));
-    // 执行
+    // 模型
     webmis.model.SysRole m = new webmis.model.SysRole();
     m.Where("id in("+ids+")");
     if(m.Delete()){
@@ -195,8 +211,12 @@ public class SysRole extends Base {
 
   /* 权限 */
   @RequestMapping("perm")
-  String Perm(HttpServletRequest request, String token, Integer id, String perm) {
+  String Perm(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String id = JsonName(json, "id");
+    String perm = JsonName(json, "perm");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -205,14 +225,13 @@ public class SysRole extends Base {
       res.put("msg", msg);
       return GetJSON(res);
     }
-    // 参数
     if(id==null){
       res = new HashMap<String,Object>();
       res.put("code", 4000);
       res.put("msg", "参数错误!");
       return GetJSON(res);
     }
-    // 数据
+    // 模型
     webmis.model.SysRole m = new webmis.model.SysRole();
     HashMap<String,Object> uData = new HashMap<String,Object>();
     uData.put("perm", perm);
@@ -233,8 +252,10 @@ public class SysRole extends Base {
 
   /* 角色-列表 */
   @RequestMapping("roleList")
-  String RoleList(HttpServletRequest request, String token, String perm) {
+  String RoleList(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
     // 验证
     String msg = AdminToken.Verify(token, "");
     if(!msg.equals("")){
@@ -267,8 +288,11 @@ public class SysRole extends Base {
 
   /* 权限-列表 */
   @RequestMapping("permList")
-  String PermList(HttpServletRequest request, String token, String perm) {
+  String PermList(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String perm = JsonName(json, "perm");
     // 验证
     String msg = AdminToken.Verify(token, "");
     if(!msg.equals("")){

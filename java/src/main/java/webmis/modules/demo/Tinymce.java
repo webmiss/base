@@ -4,7 +4,10 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.alibaba.fastjson.JSONObject;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,8 +27,12 @@ public class Tinymce extends Base {
 
   /* 编辑 */
   @RequestMapping("edit")
-  String Edit(HttpServletRequest request, String token, String content) {
+  String Edit(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String content = JsonName(json, "content");
+    content = Url.Decode(content);
     // 验证
     String msg = AdminToken.Verify(token, "");
     if(!msg.equals("")){
@@ -34,8 +41,6 @@ public class Tinymce extends Base {
       res.put("msg", msg);
       return GetJSON(res);
     }
-    // 参数
-    content = Url.Decode(content);
     // 图片回收
     Upload.HtmlImgClear(content, ImgDir);
     // 返回
@@ -48,8 +53,11 @@ public class Tinymce extends Base {
 
   /* 图片 */
   @RequestMapping("upImg")
-  String UpImg(HttpServletRequest request, String token, String base64) {
+  String UpImg(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String base64 = JsonName(json, "base64");
     // 验证
     String msg = AdminToken.Verify(token, "");
     if(!msg.equals("")){
@@ -58,7 +66,6 @@ public class Tinymce extends Base {
       res.put("msg", msg);
       return GetJSON(res);
     }
-    // 参数
     if(base64==null || base64.isEmpty()){
       res = new HashMap<String,Object>();
       res.put("code", 4000);

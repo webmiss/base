@@ -34,10 +34,6 @@ func main() {
 		if a == "logs" {
 			(&task.Redis{}).Logs()
 		}
-	case c == "kafka":
-		if a == "logs" {
-			(&task.Kafka{}).Logs()
-		}
 	default:
 		(&task.Main{}).New()
 	}

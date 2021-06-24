@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,8 +39,13 @@ public class SysUser extends Base {
 
   /* 列表 */
   @RequestMapping("list")
-  String List(HttpServletRequest request, String token, String data, int page, int limit) {
+  String List(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String data = JsonName(json, "data");
+    int page = Integer.valueOf(JsonName(json, "page"));
+    int limit = Integer.valueOf(JsonName(json, "limit"));
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -96,8 +102,11 @@ public class SysUser extends Base {
 
   /* 添加 */
   @RequestMapping("add")
-  String Add(HttpServletRequest request, String token, String data) throws SQLException {
+  String Add(@RequestBody JSONObject json, HttpServletRequest request) throws SQLException {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String data = JsonName(json, "data");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -168,17 +177,6 @@ public class SysUser extends Base {
       ps = m2.Bind(conn, sql[0], sql[1]);
       ps.executeUpdate();
       ps.close();
-      // 权限
-      ApiPerm m3 = new ApiPerm();
-      uData = new HashMap<String, Object>();
-      uData.put("uid", uid);
-      uData.put("role", 1);
-      uData.put("utime", Util.Time());
-      m3.Values(uData);
-      sql = m3.InsertSql();
-      ps = m3.Bind(conn, sql[0], sql[1]);
-      ps.executeUpdate();
-      ps.close();
       // 提交
       conn.commit();
       // 返回
@@ -199,8 +197,12 @@ public class SysUser extends Base {
 
   /* 编辑 */
   @RequestMapping("edit")
-  String Edit(HttpServletRequest request, String token, String uid, String data) {
+  String Edit(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String uid = JsonName(json, "uid");
+    String data = JsonName(json, "data");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -257,8 +259,11 @@ public class SysUser extends Base {
 
   /* 删除 */
   @RequestMapping("del")
-  String Del(HttpServletRequest request, String token, String data) {
+  String Del(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String data = JsonName(json, "data");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -299,8 +304,12 @@ public class SysUser extends Base {
 
   /* 状态 */
   @RequestMapping("state")
-  String State(HttpServletRequest request, String token, String uid,  String state) {
+  String State(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String uid = JsonName(json, "uid");
+    String state = JsonName(json, "state");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -443,8 +452,12 @@ public class SysUser extends Base {
 
   /* 个人信息 */
   @RequestMapping("info")
-  String Info(HttpServletRequest request, String token, String uid, String data) {
+  String Info(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String uid = JsonName(json, "uid");
+    String data = JsonName(json, "data");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){

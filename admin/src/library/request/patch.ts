@@ -7,9 +7,6 @@ export default (url: string, data?: any, success?: any, fail?: any, config?: any
   if(url.substr(0,4)=='http') url=url;
   else if(url.substr(0,1)=='/') url=Env.baseUrl+url.substr(1);
   else url=Env.apiUrl+url;
-  // 表单
-  let param = new FormData();
-  for(let i in data) param.append(i,data[i]);
   // 配置
   const cfg: AxiosRequestConfig = config || <AxiosRequestConfig>{
     headers: Env.request.headers,
@@ -19,5 +16,5 @@ export default (url: string, data?: any, success?: any, fail?: any, config?: any
   if(config && config.responseType) cfg.responseType = config.responseType;
   if(config && config.onUploadProgress) cfg.onUploadProgress = config.onUploadProgress;
   // 请求
-  axios.patch(url,param,cfg).then(success).catch(fail);
+  axios.patch(url, JSON.stringify(data), cfg).then(success).catch(fail);
 }

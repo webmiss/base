@@ -4,7 +4,10 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.alibaba.fastjson.JSONObject;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,8 +24,12 @@ public class UserPasswd extends Base {
 
   /* 编辑 */
   @RequestMapping("edit")
-  String Edit(HttpServletRequest request, String token, String passwd, String passwdNew) {
+  String Edit(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String passwd = JsonName(json, "passwd");
+    String passwdNew = JsonName(json, "passwdNew");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -31,8 +38,6 @@ public class UserPasswd extends Base {
       res.put("msg", msg);
       return GetJSON(res);
     }
-    HashMap<String, Object> tData = AdminToken.Token(token);
-    // 参数
     if(passwd==passwdNew) {
       res = new HashMap<String,Object>();
       res.put("code", 4000);
@@ -46,6 +51,7 @@ public class UserPasswd extends Base {
       return GetJSON(res);
     }
     // 数据
+    HashMap<String, Object> tData = AdminToken.Token(token);
     User model = new User();
     model.Columns("id");
     model.Where("id=? AND password=?", tData.get("uid").toString(), Hash.Md5(passwd));

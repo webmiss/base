@@ -10,19 +10,20 @@ class UserPasswd extends Base {
 
   /* 编辑 */
   static function Edit(){
+    // 参数
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $passwd = self::JsonName($json, 'passwd');
+    $passwdNew = self::JsonName($json, 'passwdNew');
     // 验证
-    $token = self::Post('token');
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    $tData = AdminToken::Token($token);
-    // 参数
-    $passwd = self::Post('passwd');
-    $passwdNew = self::Post('passwdNew');
     if($passwd == $passwdNew) return self::GetJSON(['code'=>4000, 'msg'=>'不能与原密码相同!']);
     if(!Safety::IsRight('passwd', $passwd) || !Safety::IsRight('passwd', $passwdNew)){
       return self::GetJSON(['code'=>4000, 'msg'=>'密码为6～16位!']);
     }
     // 数据
+    $tData = AdminToken::Token($token);
     $model = new User();
     $model->Columns('id');
     $model->where('id=? AND password=?', $tData->uid, md5($passwd));

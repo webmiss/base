@@ -15,8 +15,11 @@ type UserInfo struct {
 
 /* 列表 */
 func (r UserInfo) List(c *gin.Context) {
+	// 参数
+	param := map[string]interface{}{}
+	c.BindJSON(&param)
+	token, _ := r.JsonName(param, "token")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
@@ -36,8 +39,12 @@ func (r UserInfo) List(c *gin.Context) {
 
 /* 编辑 */
 func (r UserInfo) Edit(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	data, _ := r.JsonName(json, "data")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
@@ -45,14 +52,13 @@ func (r UserInfo) Edit(c *gin.Context) {
 	}
 	tData := (&service.AdminToken{}).Token(token)
 	// 参数
-	data := c.PostForm("data")
 	if data == "" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
+	// 数据
 	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
-	// 数据
 	model := (&model.UserInfo{}).New()
 	info := map[string]interface{}{
 		"nickname": util.Trim(param["nickname"]),
@@ -73,16 +79,17 @@ func (r UserInfo) Edit(c *gin.Context) {
 
 /* 头像 */
 func (r UserInfo) Upimg(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	base64, _ := r.JsonName(json, "base64")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	tData := (&service.AdminToken{}).Token(token)
-	// 参数
-	base64 := c.PostForm("base64")
 	if base64 == "" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
@@ -95,6 +102,7 @@ func (r UserInfo) Upimg(c *gin.Context) {
 		return
 	}
 	// 数据
+	tData := (&service.AdminToken{}).Token(token)
 	model := (&model.UserInfo{}).New()
 	model.Columns("img")
 	model.Where("uid=?", tData["uid"])

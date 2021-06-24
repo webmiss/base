@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.alibaba.fastjson.JSONObject;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,8 +29,10 @@ public class SysConfig extends Base {
 
   /* 列表 */
   @RequestMapping("list")
-  String List(HttpServletRequest request, String token) {
+  String List(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -61,8 +64,11 @@ public class SysConfig extends Base {
 
   /* 编辑 */
   @RequestMapping("edit")
-  String Edit(HttpServletRequest request, String token, String data) {
+  String Edit(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String data = JsonName(json, "data");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -71,14 +77,13 @@ public class SysConfig extends Base {
       res.put("msg", msg);
       return GetJSON(res);
     }
-    // 参数
     if(data==""){
       res = new HashMap<String,Object>();
       res.put("code", 4000);
       res.put("msg", "参数错误!");
       return GetJSON(res);
     }
-    // 数据
+    // 模型
     webmis.model.SysConfig m = new webmis.model.SysConfig();
     JSONObject param = Util.JsonDecode(data);
     String key;
@@ -108,8 +113,12 @@ public class SysConfig extends Base {
 
   /* 头像 */
   @RequestMapping("upimg")
-  String Upimg(HttpServletRequest request, String token, String name, String base64) {
+  String Upimg(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String name = JsonName(json, "name");
+    String base64 = JsonName(json, "base64");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -118,14 +127,12 @@ public class SysConfig extends Base {
       res.put("msg", msg);
       return GetJSON(res);
     }
-    // 参数
     if(base64==null || base64.isEmpty()){
       res = new HashMap<String,Object>();
       res.put("code", 4000);
       res.put("msg", "参数错误!");
       return GetJSON(res);
     }
-    // 类型
     if(name.equals("logo") && name.equals("login_bg")) {
       res = new HashMap<String,Object>();
       res.put("code", 4000);
@@ -143,7 +150,7 @@ public class SysConfig extends Base {
       res.put("msg", "上传失败!");
       return GetJSON(res);
     }
-    // 数据
+    // 模型
     webmis.model.SysConfig m = new webmis.model.SysConfig();
     m.Columns("val");
     m.Where("name=?", name);

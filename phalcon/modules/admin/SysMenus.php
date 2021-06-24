@@ -164,8 +164,10 @@ class SysMenus extends Base {
 
   /* 获取菜单 */
   static function GetMenus() {
+    // 参数
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
     // 验证
-    $token = self::Post('token');
     $msg = AdminToken::Verify($token, '');
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 全部菜单

@@ -16,17 +16,18 @@ type UserPasswd struct {
 
 /* 编辑 */
 func (r UserPasswd) Edit(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	passwd, _ := r.JsonName(json, "passwd")
+	passwdNew, _ := r.JsonName(json, "passwdNew")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	tData := (&service.AdminToken{}).Token(token)
-	// 参数
-	passwd := c.PostForm("passwd")
-	passwdNew := c.PostForm("passwdNew")
 	if passwd == passwdNew {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "不能与原密码相同!"})
 		return
@@ -36,6 +37,7 @@ func (r UserPasswd) Edit(c *gin.Context) {
 		return
 	}
 	// 数据
+	tData := (&service.AdminToken{}).Token(token)
 	model := (&model.User{}).New()
 	model.Columns("id")
 	model.Where("id=? AND password=?", tData["uid"], (&util.Hash{}).Md5(passwd))

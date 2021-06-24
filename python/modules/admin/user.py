@@ -13,8 +13,10 @@ class User(Base):
 
   # 登录
   def Login(self):
-    uname = self.Post('uname')
-    passwd = self.Post('passwd')
+    # 参数
+    json = self.Json()
+    uname = self.JsonName(json, 'uname')
+    passwd = self.JsonName(json, 'passwd')
     # 验证用户名
     if not Safety.IsRight('uname',uname) and not Safety.IsRight('tel',uname) and not Safety.IsRight('email',uname):
       return self.GetJSON({'code':4000, 'msg':'请输入用户名/手机/邮箱'})
@@ -69,14 +71,18 @@ class User(Base):
 
   # Token验证
   def Token(self):
-    # 验证 request.path
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, '')
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    uinfo = self.Post('uinfo')
+    json = self.Json()
+    print(json)
+    token = self.JsonName(json, 'token')
+    uinfo = self.JsonName(json, 'uinfo')
+    # 验证
+    msg = AdminToken.Verify(token, '')
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     tData = AdminToken.Token(token)
-    if uinfo!='1' : return self.GetJSON({'code':0, 'msg':'成功', 'token_time':tData['time']})
+    if uinfo!='1' :
+      return self.GetJSON({'code':0, 'msg':'成功', 'token_time':tData['time']})
     # 用户信息
     model = UserInfo()
     model.Columns('nickname','position','name','img')

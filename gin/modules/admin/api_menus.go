@@ -18,21 +18,24 @@ type ApiMenus struct {
 
 /* 列表 */
 func (r ApiMenus) List(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	data, _ := r.JsonName(json, "data")
+	page, _ := r.JsonName(json, "page")
+	limit, _ := r.JsonName(json, "limit")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	data := c.PostForm("data")
-	page := c.PostForm("page")
-	limit := c.PostForm("limit")
 	if util.Empty(data) || util.Empty(page) || util.Empty(limit) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
+	// 条件
 	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
 	fid := util.Trim(util.If(util.InKey("fid", param), param["fid"], ""))
@@ -65,19 +68,22 @@ func (r ApiMenus) List(c *gin.Context) {
 
 /* 添加 */
 func (r ApiMenus) Add(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	data, _ := r.JsonName(json, "data")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	data := c.PostForm("data")
 	if util.Empty(data) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
+	// 数据
 	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
 	title := util.Trim(util.If(util.InKey("title", param), param["title"], ""))
@@ -85,7 +91,7 @@ func (r ApiMenus) Add(c *gin.Context) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "名称不能为空!"})
 		return
 	}
-	// 数据
+	// 模型
 	m := (&model.ApiMenu{}).New()
 	m.Values(map[string]interface{}{
 		"fid":        util.Trim(util.If(util.InKey("fid", param), param["fid"], 0)),
@@ -105,20 +111,23 @@ func (r ApiMenus) Add(c *gin.Context) {
 
 /* 编辑 */
 func (r ApiMenus) Edit(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	id, _ := r.JsonName(json, "id")
+	data, _ := r.JsonName(json, "data")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	id := c.PostForm("id")
-	data := c.PostForm("data")
 	if util.Empty(id) || util.Empty(data) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
+	// 数据
 	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
 	title := util.Trim(util.If(util.InKey("title", param), param["title"], ""))
@@ -126,7 +135,7 @@ func (r ApiMenus) Edit(c *gin.Context) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "名称不能为空!"})
 		return
 	}
-	// 数据
+	// 模型
 	m := (&model.ApiMenu{}).New()
 	m.Set(map[string]interface{}{
 		"fid":        util.Trim(util.If(util.InKey("fid", param), param["fid"], 0)),
@@ -147,23 +156,27 @@ func (r ApiMenus) Edit(c *gin.Context) {
 
 /* 删除 */
 func (r ApiMenus) Del(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	data, _ := r.JsonName(json, "data")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
 	// 参数
-	data := c.PostForm("data")
 	if util.Empty(data) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
+	// 数据
 	param := []string{}
 	util.JsonDecode(data, &param)
 	ids := util.Implode(",", param)
-	// 执行
+	// 模型
 	m := (&model.ApiMenu{}).New()
 	m.Where("id in(" + ids + ")")
 	if m.Delete() {
@@ -175,21 +188,23 @@ func (r ApiMenus) Del(c *gin.Context) {
 
 /* 动作权限 */
 func (r ApiMenus) Perm(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	id, _ := r.JsonName(json, "id")
+	data, _ := r.JsonName(json, "data")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	id := c.PostForm("id")
-	data := c.PostForm("data")
 	if util.Empty(id) || util.Empty(data) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
-	// 执行
+	// 模型
 	m := (&model.ApiMenu{}).New()
 	m.Set(map[string]interface{}{"action": data})
 	m.Where("id=?", id)
@@ -202,8 +217,11 @@ func (r ApiMenus) Perm(c *gin.Context) {
 
 /* 获取菜单 */
 func (r *ApiMenus) GetMenus(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})

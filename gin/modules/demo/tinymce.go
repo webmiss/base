@@ -15,16 +15,18 @@ type Tinymce struct {
 
 /* 编辑 */
 func (r Tinymce) Edit(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	content, _ := r.JsonName(json, "content")
+	content = (&util.Url{}).Decode(content)
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	content := c.PostForm("content")
-	content = (&util.Url{}).Decode(content)
 	// 图片回收
 	ImgDir := "upload/tinymce/"
 	(&library.Upload{}).HtmlImgClear(content, ImgDir)
@@ -34,15 +36,17 @@ func (r Tinymce) Edit(c *gin.Context) {
 
 /* 图片 */
 func (r Tinymce) UpImg(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	base64, _ := r.JsonName(json, "base64")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	base64 := c.PostForm("base64")
 	if base64 == "" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return

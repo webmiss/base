@@ -16,21 +16,24 @@ type ApiRole struct {
 
 /* 列表 */
 func (r ApiRole) List(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	data, _ := r.JsonName(json, "data")
+	page, _ := r.JsonName(json, "page")
+	limit, _ := r.JsonName(json, "limit")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	data := c.PostForm("data")
-	page := c.PostForm("page")
-	limit := c.PostForm("limit")
 	if util.Empty(data) || util.Empty(page) || util.Empty(limit) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
+	// 条件
 	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
 	name := util.Trim(util.If(util.InKey("name", param), param["name"], ""))
@@ -50,19 +53,22 @@ func (r ApiRole) List(c *gin.Context) {
 
 /* 添加 */
 func (r ApiRole) Add(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	data, _ := r.JsonName(json, "data")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	data := c.PostForm("data")
 	if util.Empty(data) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
+	// 数据
 	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
 	name := util.Trim(util.If(util.InKey("name", param), param["name"], ""))
@@ -70,7 +76,7 @@ func (r ApiRole) Add(c *gin.Context) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "名称不能为空!"})
 		return
 	}
-	// 数据
+	// 模型
 	m := (&model.ApiRole{}).New()
 	m.Values(map[string]interface{}{"name": name, "ctime": util.Time()})
 	if m.Insert() {
@@ -82,20 +88,23 @@ func (r ApiRole) Add(c *gin.Context) {
 
 /* 编辑 */
 func (r ApiRole) Edit(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	id, _ := r.JsonName(json, "id")
+	data, _ := r.JsonName(json, "data")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	id := c.PostForm("id")
-	data := c.PostForm("data")
 	if util.Empty(id) || util.Empty(data) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
+	// 数据
 	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
 	name := util.Trim(util.If(util.InKey("name", param), param["name"], ""))
@@ -103,7 +112,7 @@ func (r ApiRole) Edit(c *gin.Context) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "名称不能为空!"})
 		return
 	}
-	// 数据
+	// 模型
 	m := (&model.ApiRole{}).New()
 	m.Set(map[string]interface{}{"name": name, "utime": util.Time()})
 	m.Where("id=?", id)
@@ -116,23 +125,26 @@ func (r ApiRole) Edit(c *gin.Context) {
 
 /* 删除 */
 func (r ApiRole) Del(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	data, _ := r.JsonName(json, "data")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	data := c.PostForm("data")
 	if util.Empty(data) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
+	// 数据
 	param := []string{}
 	util.JsonDecode(data, &param)
 	ids := util.Implode(",", param)
-	// 执行
+	// 模型
 	m := (&model.ApiRole{}).New()
 	m.Where("id in(" + ids + ")")
 	if m.Delete() {
@@ -144,21 +156,23 @@ func (r ApiRole) Del(c *gin.Context) {
 
 /* 权限 */
 func (r ApiRole) Perm(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	id, _ := r.JsonName(json, "id")
+	perm, _ := r.JsonName(json, "perm")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	id := c.PostForm("id")
-	perm := c.PostForm("perm")
 	if util.Empty(id) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
-	// 数据
+	// 模型
 	m := (&model.ApiRole{}).New()
 	m.Set(map[string]interface{}{"perm": perm, "utime": util.Time()})
 	m.Where("id=?", id)
@@ -171,8 +185,11 @@ func (r ApiRole) Perm(c *gin.Context) {
 
 /* 权限-列表 */
 func (r ApiRole) RoleList(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
@@ -192,15 +209,17 @@ func (r ApiRole) RoleList(c *gin.Context) {
 
 /* 权限-列表 */
 func (r *ApiRole) PermList(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	perm, _ := r.JsonName(json, "perm")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	perm := c.PostForm("perm")
 	// 全部菜单
 	r.menus = map[string][]map[string]interface{}{}
 	model := (&model.ApiMenu{}).New()

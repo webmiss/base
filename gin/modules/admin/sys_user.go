@@ -16,21 +16,24 @@ type SysUser struct {
 
 /* 列表 */
 func (r SysUser) List(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	data, _ := r.JsonName(json, "data")
+	page, _ := r.JsonName(json, "page")
+	limit, _ := r.JsonName(json, "limit")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	data := c.PostForm("data")
-	page := c.PostForm("page")
-	limit := c.PostForm("limit")
 	if util.Empty(data) || util.Empty(page) || util.Empty(limit) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
+	// 条件
 	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
 	uname := util.Trim(util.If(util.InKey("uname", param), param["uname"], ""))
@@ -70,19 +73,22 @@ func (r SysUser) List(c *gin.Context) {
 
 /* 添加 */
 func (r SysUser) Add(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	data, _ := r.JsonName(json, "data")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	data := c.PostForm("data")
 	if util.Empty(data) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
+	// 数据
 	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
 	tel := util.Trim(util.If(util.InKey("tel", param), param["tel"], ""))
@@ -119,12 +125,7 @@ func (r SysUser) Add(c *gin.Context) {
 	m2.Values(map[string]interface{}{"uid": uid})
 	sql, args = m2.InsertSQL()
 	_, err2 := tx.Exec(sql, args...)
-	// 权限
-	m3 := (&model.ApiPerm{}).New()
-	m3.Values(map[string]interface{}{"uid": uid, "role": 1, "utime": util.Time()})
-	sql, args = m3.InsertSQL()
-	_, err3 := tx.Exec(sql, args...)
-	if err1 != nil || err2 != nil || err3 != nil {
+	if err1 != nil || err2 != nil {
 		tx.Rollback()
 		r.GetJSON(c, gin.H{"code": 5000, "msg": "添加失败!"})
 	} else {
@@ -136,20 +137,23 @@ func (r SysUser) Add(c *gin.Context) {
 
 /* 编辑 */
 func (r SysUser) Edit(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	uid, _ := r.JsonName(json, "uid")
+	data, _ := r.JsonName(json, "data")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	uid := c.PostForm("uid")
-	data := c.PostForm("data")
 	if util.Empty(uid) || util.Empty(data) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
+	// 数据
 	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
 	tel := util.Trim(util.If(util.InKey("tel", param), param["tel"], ""))
@@ -184,19 +188,22 @@ func (r SysUser) Edit(c *gin.Context) {
 
 /* 删除 */
 func (r SysUser) Del(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	data, _ := r.JsonName(json, "data")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	data := c.PostForm("data")
 	if util.Empty(data) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
+	// 数据
 	param := []string{}
 	util.JsonDecode(data, &param)
 	ids := util.Implode(",", param)
@@ -218,32 +225,30 @@ func (r SysUser) Del(c *gin.Context) {
 
 /* 状态 */
 func (r SysUser) State(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	uid, _ := r.JsonName(json, "uid")
+	state, _ := r.JsonName(json, "state")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
-	}
-	tData := (&service.AdminToken{}).Token(token)
-	// 参数
-	uid := c.PostForm("uid")
-	state := c.PostForm("state")
-	if state == "1" {
-		state = "1"
-	} else {
-		state = "0"
 	}
 	if util.Empty(uid) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
 	// 超级管理员
+	tData := (&service.AdminToken{}).Token(token)
 	if uid == "1" && (&util.Type{}).Strval(tData["uid"]) != "1" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "您不是超级管理员!"})
 		return
 	}
 	// 更新
+	state = (&util.Type{}).Strval(util.If(state == "1", "1", "0"))
 	m := (&model.User{}).New()
 	m.Set(map[string]interface{}{"state": state})
 	m.Where("id=?", uid)
@@ -256,24 +261,26 @@ func (r SysUser) State(c *gin.Context) {
 
 /* 权限 */
 func (r SysUser) Perm(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	uid, _ := r.JsonName(json, "uid")
+	tp, _ := r.JsonName(json, "type")
+	role, _ := r.JsonName(json, "role")
+	perm, _ := r.JsonName(json, "perm")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	tData := (&service.AdminToken{}).Token(token)
-	// 参数
-	uid := c.PostForm("uid")
-	tp := c.PostForm("type")
-	role := c.PostForm("role")
-	perm := c.PostForm("perm")
 	if util.Empty(uid) || util.Empty(tp) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
 	}
 	// 超级管理员
+	tData := (&service.AdminToken{}).Token(token)
 	if uid == "1" && (&util.Type{}).Strval(tData["uid"]) != "1" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "您不是超级管理员!"})
 		return
@@ -281,12 +288,14 @@ func (r SysUser) Perm(c *gin.Context) {
 	// 类型
 	env := config.Env()
 	uData := map[string]interface{}{"role": role, "perm": perm, "utime": util.Time()}
+	r.Print(uData)
 	if tp == "admin" {
 		// 系统权限
 		m := (&model.SysPerm{}).New()
 		m.Set(uData)
 		m.Where("uid=?", uid)
 		if m.Update() {
+			r.Print(m.GetSQL())
 			// 角色权限
 			if util.Empty(perm) {
 				m1 := (&model.SysRole{}).New()
@@ -339,16 +348,18 @@ func (r SysUser) _setPerm(key string, perm string) {
 
 /* 个人信息 */
 func (r SysUser) Info(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	uid, _ := r.JsonName(json, "uid")
+	data, _ := r.JsonName(json, "data")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	uid := c.PostForm("uid")
-	data := c.PostForm("data")
 	if util.Empty(data) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return

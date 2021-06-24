@@ -14,10 +14,13 @@ class SysConfig(Base):
 
   # 列表
   def List(self):
+    # 参数
+    json = self.Json()
+    token = self.JsonName(json, 'token')
     # 验证
-    token = self.Post('token')
     msg = AdminToken.Verify(token, request.path)
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     # 查询
     m = SysConfigM()
     m.Columns('name', 'val')
@@ -34,14 +37,17 @@ class SysConfig(Base):
 
   # 编辑
   def Edit(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, request.path)
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    data = self.Post('data')
-    if not data : return self.GetJSON({'code':4000, 'msg':'参数错误!'})
-    # 数据
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    data = self.JsonName(json, 'data')
+    # 验证
+    msg = AdminToken.Verify(token, request.path)
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
+    if not data :
+      return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 模型
     m = SysConfigM()
     param = Util.JsonDecode(data)
     for key, val in param.items() :
@@ -54,21 +60,23 @@ class SysConfig(Base):
 
   # 头像
   def Upimg(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, request.path)
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    name = self.Post('name')
-    base64 = self.Post('base64')
-    if not base64 : return self.GetJSON({'code':4000, 'msg':'参数错误!'})
-    # 类型
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    name = self.JsonName(json, 'name')
+    base64 = self.JsonName(json, 'base64')
+    # 验证
+    msg = AdminToken.Verify(token, request.path)
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
+    if not base64 :
+      return self.GetJSON({'code':4000, 'msg':'参数错误!'})
     if name!='logo' and name!='login_bg' :
       return self.GetJSON({'code':4000, 'msg':'类型错误!'})
     # 上传
     img = Upload.Base64({'path':self.ImgDir, 'base64':base64})
     if not img : return self.GetJSON({'code':5000, 'msg':'上传失败!'})
-    # 数据
+    # 模型
     m = SysConfigM()
     m.Columns('val')
     m.Where('name=%s', name)

@@ -14,8 +14,10 @@ class UserInfo(Base):
 
   # 列表
   def List(self):
+    # 参数
+    json = self.Json()
+    token = self.JsonName(json, 'token')
     # 验证
-    token = self.Post('token')
     msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     tData = AdminToken.Token(token)
@@ -31,16 +33,17 @@ class UserInfo(Base):
 
   # 编辑
   def Edit(self):
+    # 参数
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    data = self.JsonName(json, 'data')
     # 验证
-    token = self.Post('token')
     msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     tData = AdminToken.Token(token)
-    # 参数
-    data = self.Post('data')
     if not data : return self.GetJSON({'code':4000, 'msg':'参数错误!'})
-    param = Util.JsonDecode(data)
     # 数据
+    param = Util.JsonDecode(data)
     model = UserInfoM()
     info = {
       'nickname': Util.Trim(param['nickname']),
@@ -60,18 +63,19 @@ class UserInfo(Base):
 
   # 头像
   def Upimg(self):
+    # 参数
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    base64 = self.JsonName(json, 'base64')
     # 验证
-    token = self.Post('token')
     msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
-    tData = AdminToken.Token(token)
-    # 参数
-    base64 = self.Post('base64')
     if not base64 : return self.GetJSON({'code':4000, 'msg':'参数错误!'})
     # 上传
     img = Upload.Base64({'path':self.ImgDir, 'base64':base64})
     if not img : return self.GetJSON({'code':5000, 'msg':'上传失败!'})
     # 数据
+    tData = AdminToken.Token(token)
     model = UserInfoM()
     model.Columns('img')
     model.Where('uid=%s', tData['uid'])

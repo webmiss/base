@@ -10,17 +10,20 @@ class Base {
 
   /* Get参数 */
   static function Get(string $name) {
-    return isset($_GET[$name])?$_GET[$name]:'';
+    return isset($_GET[$name])?$_GET[$name]:null;
   }
 
   /* Post参数 */
   static function Post(string $name) {
-    return isset($_POST[$name])?$_POST[$name]:'';
+    return isset($_POST[$name])?$_POST[$name]:null;
   }
 
   /* JSON参数 */
   static function Json() {
     return json_decode(file_get_contents('php://input'), true);
+  }
+  static function JsonName(array $param, string $name) {
+    return isset($param[$name])?$param[$name]:null;
   }
 
   /* 输出到控制台 */

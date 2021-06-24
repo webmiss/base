@@ -15,8 +15,10 @@ class UserInfo extends Base {
 
   /* 列表 */
 	static function List(){
+    // 参数
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
     // 验证
-    $token = self::Post('token');
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     $tData = AdminToken::Token($token);
@@ -33,16 +35,17 @@ class UserInfo extends Base {
 
   /* 编辑 */
   static function Edit(){
+    // 参数
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $data = self::JsonName($json, 'data');
     // 验证
-    $token = self::Post('token');
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     $tData = AdminToken::Token($token);
-    // 参数
-    $data = self::Post('data');
     if(empty($data)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
-    $param = json_decode($data);
     // 数据
+    $param = json_decode($data);
     $model = new UserInfoM();
     $info = [
       'nickname'=> trim($param->nickname),
@@ -63,18 +66,19 @@ class UserInfo extends Base {
 
   /* 头像 */
   static function Upimg(){
+    // 参数
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $base64 = self::JsonName($json, 'base64');
     // 验证
-    $token = self::Post('token');
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    $tData = AdminToken::Token($token);
-    // 参数
-    $base64 = self::Post('base64');
     if(empty($base64)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     // 上传
     $img = Upload::Base64(['path'=>self::$ImgDir, 'base64'=>$base64]);
     if(empty($img)) return self::GetJSON(['code'=>5000, 'msg'=>'上传失败!']);
     // 数据
+    $tData = AdminToken::Token($token);
     $model = new UserInfoM();
     $model->Columns('img');
     $model->Where('uid=?', $tData->uid);

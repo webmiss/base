@@ -10,16 +10,18 @@ class ApiMenus(Base):
 
   # 列表
   def List(self):
+    # 参数
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    data = self.JsonName(json, 'data')
+    page = self.JsonName(json, 'page')
+    limit = self.JsonName(json, 'limit')
     # 验证
-    token = self.Post('token')
     msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
-    # 参数
-    data = self.Post('data')
-    page = self.Post('page')
-    limit = self.Post('limit')
     if not data or not page or not limit :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 条件
     param = Util.JsonDecode(data)
     fid = Util.Trim(param['fid']) if 'fid' in param.keys() else ''
     title = Util.Trim(param['title']) if 'title' in param.keys() else ''
@@ -43,12 +45,14 @@ class ApiMenus(Base):
     
   # 添加
   def Add(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, request.path)
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    data = self.Post('data')
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    data = self.JsonName(json, 'data')
+    # 验证
+    msg = AdminToken.Verify(token, request.path)
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     if not data :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
     param = Util.JsonDecode(data)
@@ -73,20 +77,23 @@ class ApiMenus(Base):
 
   # 编辑
   def Edit(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, request.path)
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    id = self.Post('id')
-    data = self.Post('data')
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    id = self.JsonName(json, 'id')
+    data = self.JsonName(json, 'data')
+    # 验证
+    msg = AdminToken.Verify(token, request.path)
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     if not id or not data :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 数据
     param = Util.JsonDecode(data)
     title = Util.Trim(param['title']) if 'title' in param.keys() else ''
     if title == '' :
       return self.GetJSON({'code':4000, 'msg':'名称不能为空!'})
-    # 数据
+    # 模型
     m = ApiMenu()
     m.Set({
       'fid': Util.Trim(param['fid']) if 'fid' in param.keys() else 0,
@@ -105,17 +112,20 @@ class ApiMenus(Base):
 
   # 删除
   def Del(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, request.path)
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    data = self.Post('data')
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    data = self.JsonName(json, 'data')
+    # 验证
+    msg = AdminToken.Verify(token, request.path)
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     if not data :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
+    # 数据
     param = Util.JsonDecode(data)
     ids = Util.Implode(',', param)
-    # 执行
+    # 模型
     m = ApiMenu()
     m.Where('id in('+ids+')')
     if m.Delete() :
@@ -125,16 +135,18 @@ class ApiMenus(Base):
 
   # 动作权限
   def Perm(self):
-    # 验证
-    token = self.Post('token')
-    msg = AdminToken.Verify(token, request.path)
-    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 参数
-    id = self.Post('id')
-    data = self.Post('data')
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    id = self.JsonName(json, 'id')
+    data = self.JsonName(json, 'data')
+    # 验证
+    msg = AdminToken.Verify(token, request.path)
+    if msg != '' :
+      return self.GetJSON({'code':4001, 'msg':msg})
     if not id or not data :
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
-    # 执行
+    # 模型
     m = ApiMenu()
     m.Set({'action':data})
     m.Where('id=%s', id)
