@@ -8,18 +8,22 @@ use Model\ApiMenu;
 class ApiMenus extends Base {
 
   /* 列表 */
-	static function List(){
-    // 验证
-    $token = self::Post('token');
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+	static function List() {
     // 参数
-    $data = self::Post('data');
-    $page = self::Post('page');
-    $limit = self::Post('limit');
-    if(empty($data) || empty($page) || empty($limit)){
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $data = self::JsonName($json, 'data');
+    $page = self::JsonName($json, 'page');
+    $limit = self::JsonName($json, 'limit');
+    // 验证
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') {
+      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    }
+    if(empty($data) || empty($page) || empty($limit)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
+    // 条件
     $param = json_decode($data);
     $fid = isset($param->fid)?trim($param->fid):'';
     $title = isset($param->title)?trim($param->title):'';
@@ -44,22 +48,26 @@ class ApiMenus extends Base {
   }
 
   /* 添加 */
-  static function Add(){
-    // 验证
-    $token = self::Post('token');
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+  static function Add() {
     // 参数
-    $data = self::Post('data');
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $data = self::JsonName($json, 'data');
+    // 验证
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') {
+      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    }
     if(empty($data)){
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
+    // 数据
     $param = json_decode($data);
     $title = isset($param->title)?trim($param->title):'';
     if($title==''){
       return self::GetJSON(['code'=>4000, 'msg'=>'名称不能为空!']);
     }
-    // 数据
+    // 模型
     $m = new ApiMenu();
     $m->Values([
       'fid'=> isset($param->fid)?trim($param->fid):0,
@@ -70,7 +78,7 @@ class ApiMenus extends Base {
       'controller'=> isset($param->controller)?trim($param->controller):'',
       'ctime'=> time(),
     ]);
-    if($m->Insert()){
+    if($m->Insert()) {
       return self::GetJSON(['code'=>0,'msg'=>'成功']);
     } else {
       return self::GetJSON(['code'=>5000,'msg'=>'添加失败!']);
@@ -79,22 +87,26 @@ class ApiMenus extends Base {
 
   /* 编辑 */
   static function Edit(){
-    // 验证
-    $token = self::Post('token');
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
-    $id = self::Post('id');
-    $data = self::Post('data');
-    if(empty($id) || empty($data)){
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $id = self::JsonName($json, 'id');
+    $data = self::JsonName($json, 'data');
+    // 验证
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') {
+      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    }
+    if(empty($id) || empty($data)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
+    // 数据
     $param = json_decode($data);
     $title = isset($param->title)?trim($param->title):'';
-    if($title==''){
+    if($title=='') {
       return self::GetJSON(['code'=>4000, 'msg'=>'名称不能为空!']);
     }
-    // 数据
+    // 模型
     $m = new ApiMenu();
     $m->Set([
       'fid'=> isset($param->fid)?trim($param->fid):0,
@@ -106,7 +118,7 @@ class ApiMenus extends Base {
       'utime'=> time(),
     ]);
     $m->Where('id=?', $id);
-    if($m->Update()){
+    if($m->Update()) {
       return self::GetJSON(['code'=>0,'msg'=>'成功']);
     } else {
       return self::GetJSON(['code'=>5000,'msg'=>'更新失败!']);
@@ -115,21 +127,25 @@ class ApiMenus extends Base {
 
   /* 删除 */
   static function Del(){
-    // 验证
-    $token = self::Post('token');
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
-    $data = self::Post('data');
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $data = self::JsonName($json, 'data');
+    // 验证
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') {
+      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    }
     if(empty($data)){
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
+    // 数据
     $param = json_decode($data);
     $ids = implode(',',$param);
-    // 执行
+    // 模型
     $m = new ApiMenu();
     $m->Where('id in('.$ids.')');
-    if($m->Delete()){
+    if($m->Delete()) {
       return self::GetJSON(['code'=>0,'msg'=>'成功']);
     } else {
       return self::GetJSON(['code'=>5000,'msg'=>'删除失败!']);
@@ -137,22 +153,25 @@ class ApiMenus extends Base {
   }
 
   /* 动作权限 */
-  static function Perm(){
-    // 验证
-    $token = self::Post('token');
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+  static function Perm() {
     // 参数
-    $id = self::Post('id');
-    $data = self::Post('data');
-    if(empty($id) || empty($data)){
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $id = self::JsonName($json, 'id');
+    $data = self::JsonName($json, 'data');
+    // 验证
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') {
+      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    }
+    if(empty($id) || empty($data)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
-    // 执行
+    // 模型
     $m = new ApiMenu();
     $m->Set(['action'=>$data]);
     $m->Where('id=?', $id);
-    if($m->Update()){
+    if($m->Update()) {
       return self::GetJSON(['code'=>0,'msg'=>'成功']);
     } else {
       return self::GetJSON(['code'=>5000,'msg'=>'更新失败!']);

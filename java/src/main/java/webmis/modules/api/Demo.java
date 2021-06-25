@@ -1,11 +1,13 @@
 package webmis.modules.api;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.alibaba.fastjson.JSONObject;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,8 +21,10 @@ public class Demo extends Base {
 
   /* 验证Token */
   @RequestMapping("token")
-  String Token(String token) throws SQLException{
+  String Token(@RequestBody JSONObject json) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
     // 验证
     String msg = ApiToken.Verify(token, "");
     if(!msg.equals("")){
@@ -38,8 +42,10 @@ public class Demo extends Base {
 
   /* 验证Url */
   @RequestMapping("list")
-  String List(HttpServletRequest request, String token) throws SQLException{
+  String List(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
     // 验证
     String msg = ApiToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -57,8 +63,10 @@ public class Demo extends Base {
 
   /* 验证Url */
   @RequestMapping("perm")
-  String Perm(HttpServletRequest request, String token) throws SQLException{
+  String Perm(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
     // 验证
     String msg = ApiToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){

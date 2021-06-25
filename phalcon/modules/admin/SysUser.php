@@ -18,18 +18,22 @@ use Util\Util;
 class SysUser extends Base {
 
   /* 列表 */
-	static function List(){
-    // 验证
-    $token = self::Post('token');
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+	static function List() {
     // 参数
-    $data = self::Post('data');
-    $page = self::Post('page');
-    $limit = self::Post('limit');
-    if(empty($data) || empty($page) || empty($limit)){
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $data = self::JsonName($json, 'data');
+    $page = self::JsonName($json, 'page');
+    $limit = self::JsonName($json, 'limit');
+    // 验证
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') {
+      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    }
+    if(empty($data) || empty($page) || empty($limit)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
+    // 条件
     $param = json_decode($data);
     $uname = isset($param->uname)?trim($param->uname):'';
     // 统计
@@ -64,16 +68,20 @@ class SysUser extends Base {
   }
 
   /* 添加 */
-  static function Add(){
-    // 验证
-    $token = self::Post('token');
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+  static function Add() {
     // 参数
-    $data = self::Post('data');
-    if(empty($data)){
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $data = self::JsonName($json, 'data');
+    // 验证
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') {
+      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    }
+    if(empty($data)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
+    // 数据
     $param = json_decode($data);
     $tel = isset($param->tel)?trim($param->tel):'';
     $passwd = isset($param->passwd)?$param->passwd:Env::$password;
@@ -122,17 +130,21 @@ class SysUser extends Base {
   }
 
   /* 编辑 */
-  static function Edit(){
-    // 验证
-    $token = self::Post('token');
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+  static function Edit() {
     // 参数
-    $uid = self::Post('uid');
-    $data = self::Post('data');
-    if(empty($uid) || empty($data)){
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $uid = self::JsonName($json, 'uid');
+    $data = self::JsonName($json, 'data');
+    // 验证
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') {
+      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    }
+    if(empty($uid) || empty($data)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
+    // 数据
     $param = json_decode($data);
     $tel = isset($param->tel)?trim($param->tel):'';
     $passwd = isset($param->passwd)?$param->passwd:'';
@@ -148,12 +160,12 @@ class SysUser extends Base {
     if(!empty($user)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'该用户已存在!']);
     }
-    // 更新
+    // 模型
     $uData = ['tel'=>$tel];
     if($passwd!='') $uData['password'] = md5($passwd);
     $m->Set($uData);
     $m->Where('id=?', $uid);
-    if($m->Update()){
+    if($m->Update()) {
       return self::GetJSON(['code'=>0,'msg'=>'成功']);
     } else {
       return self::GetJSON(['code'=>5000,'msg'=>'更新失败!']);
@@ -161,19 +173,23 @@ class SysUser extends Base {
   }
 
   /* 删除 */
-  static function Del(){
-    // 验证
-    $token = self::Post('token');
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+  static function Del() {
     // 参数
-    $data = self::Post('data');
-    if(empty($data)){
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $data = self::JsonName($json, 'data');
+    // 验证
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') {
+      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    }
+    if(empty($data)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
+    // 数据
     $param = json_decode($data);
     $ids = implode(',',$param);
-    // 执行
+    // 模型
     $m1 = new User();
     $m1->Where('id in('.$ids.')');
     $m2 = new UserInfo();
@@ -182,7 +198,7 @@ class SysUser extends Base {
     $m3->Where('uid in('.$ids.')');
     $m4 = new ApiPerm();
     $m4->Where('uid in('.$ids.')');
-    if($m1->Delete() && $m2->Delete() && $m3->Delete() && $m4->Delete()){
+    if($m1->Delete() && $m2->Delete() && $m3->Delete() && $m4->Delete()) {
       return self::GetJSON(['code'=>0,'msg'=>'成功']);
     } else {
       return self::GetJSON(['code'=>5000,'msg'=>'删除失败!']);
@@ -191,27 +207,30 @@ class SysUser extends Base {
 
   /* 状态 */
   static function State(){
-    // 验证
-    $token = self::Post('token');
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    $tData = AdminToken::Token($token);
     // 参数
-    $uid = self::Post('uid');
-    $state = self::Post('state');
-    $state = $state=='1'?'1':'0';
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $uid = self::JsonName($json, 'uid');
+    $state = self::JsonName($json, 'state');
+    // 验证
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') {
+      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    }
     if(empty($uid)){
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
     // 超级管理员
+    $tData = AdminToken::Token($token);
     if($uid==1 && $tData->uid!=1){
       return self::GetJSON(['code'=>4000, 'msg'=>'您不是超级管理员!']);
     }
-    // 更新
+    // 模型
+    $state = $state=='1'?'1':'0';
     $m = new User();
     $m->Set(['state'=>$state]);
     $m->Where('id=?', $uid);
-    if($m->Update()){
+    if($m->Update()) {
       return self::GetJSON(['code'=>0,'msg'=>'成功']);
     } else {
       return self::GetJSON(['code'=>5000,'msg'=>'更新失败!']);
@@ -292,14 +311,17 @@ class SysUser extends Base {
 
   /* 个人信息 */
   static function Info() {
-    // 验证
-    $token = self::Post('token');
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 参数
-    $uid = self::Post('uid');
-    $data = self::Post('data');
-    if(empty($uid) || empty($data)){
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $uid = self::JsonName($json, 'uid');
+    $data = self::JsonName($json, 'data');
+    // 验证
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') {
+      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    }
+    if(empty($uid) || empty($data)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
     // 数据
@@ -311,11 +333,11 @@ class SysUser extends Base {
       'birthday'=> isset($param->birthday)?Util::Strtotime($param->birthday):0,
       'position'=> isset($param->position)?trim($param->position):'',
     ];
-    // 执行
+    // 模型
     $m = new UserInfo();
     $m->Set($info);
     $m->Where('uid=?', $uid);
-    if($m->Update()){
+    if($m->Update()) {
       return self::GetJSON(['code'=>0,'msg'=>'成功']);
     } else {
       return self::GetJSON(['code'=>5000,'msg'=>'更新失败!']);

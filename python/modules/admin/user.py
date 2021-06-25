@@ -73,7 +73,6 @@ class User(Base):
   def Token(self):
     # 参数
     json = self.Json()
-    print(json)
     token = self.JsonName(json, 'token')
     uinfo = self.JsonName(json, 'uinfo')
     # 验证

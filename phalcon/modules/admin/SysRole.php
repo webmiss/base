@@ -12,18 +12,20 @@ class SysRole extends Base {
   private static $permAll = []; //用户权限
 
   /* 列表 */
-	static function List(){
-    // 验证
-    $token = self::Post('token');
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+	static function List() {
     // 参数
-    $data = self::Post('data');
-    $page = self::Post('page');
-    $limit = self::Post('limit');
-    if(empty($data) || empty($page) || empty($limit)){
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $data = self::JsonName($json, 'data');
+    $page = self::JsonName($json, 'page');
+    $limit = self::JsonName($json, 'limit');
+    // 验证
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '')
+      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    if(empty($data) || empty($page) || empty($limit))
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
-    }
+    // 条件
     $param = json_decode($data);
     $name = isset($param->name)?trim($param->name):'';
     // 统计
@@ -41,16 +43,20 @@ class SysRole extends Base {
   }
 
   /* 添加 */
-  static function Add(){
-    // 验证
-    $token = self::Post('token');
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+  static function Add() {
     // 参数
-    $data = self::Post('data');
-    if(empty($data)){
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $data = self::JsonName($json, 'data');
+    // 验证
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') {
+      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    }
+    if(empty($data)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
+    // 数据
     $param = json_decode($data);
     $name = isset($param->name)?trim($param->name):'';
     if($name==''){
@@ -59,7 +65,7 @@ class SysRole extends Base {
     // 数据
     $m = new SysRoleM();
     $m->Values(['name'=> $name, 'ctime'=> time()]);
-    if($m->Insert()){
+    if($m->Insert()) {
       return self::GetJSON(['code'=>0,'msg'=>'成功']);
     } else {
       return self::GetJSON(['code'=>5000,'msg'=>'添加失败!']);
@@ -67,27 +73,31 @@ class SysRole extends Base {
   }
 
   /* 编辑 */
-  static function Edit(){
-    // 验证
-    $token = self::Post('token');
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+  static function Edit() {
     // 参数
-    $id = self::Post('id');
-    $data = self::Post('data');
-    if(empty($id) || empty($data)){
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $id = self::JsonName($json, 'id');
+    $data = self::JsonName($json, 'data');
+    // 验证
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') {
+      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    }
+    if(empty($id) || empty($data)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
+    // 数据
     $param = json_decode($data);
     $name = isset($param->name)?trim($param->name):'';
-    if($name==''){
+    if($name=='') {
       return self::GetJSON(['code'=>4000, 'msg'=>'名称不能为空!']);
     }
-    // 数据
+    // 模型
     $m = new SysRoleM();
     $m->Set(['name'=>$name, 'utime'=>time()]);
     $m->Where('id=?', $id);
-    if($m->Update()){
+    if($m->Update()) {
       return self::GetJSON(['code'=>0,'msg'=>'成功']);
     } else {
       return self::GetJSON(['code'=>5000,'msg'=>'更新失败!']);
@@ -95,22 +105,27 @@ class SysRole extends Base {
   }
 
   /* 删除 */
-  static function Del(){
+  static function Del() {
+    // 参数
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $data = self::JsonName($json, 'data');
     // 验证
     $token = self::Post('token');
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    // 参数
-    $data = self::Post('data');
-    if(empty($data)){
+    if($msg != '') {
+      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    }
+    if(empty($data)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
+    // 数据
     $param = json_decode($data);
     $ids = implode(',',$param);
-    // 执行
+    // 模型
     $m = new SysRoleM();
     $m->Where('id in('.$ids.')');
-    if($m->Delete()){
+    if($m->Delete()) {
       return self::GetJSON(['code'=>0,'msg'=>'成功']);
     } else {
       return self::GetJSON(['code'=>5000,'msg'=>'删除失败!']);
@@ -118,22 +133,25 @@ class SysRole extends Base {
   }
 
   /* 权限 */
-  static function Perm(){
-    // 验证
-    $token = self::Post('token');
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+  static function Perm() {
     // 参数
-    $id = self::Post('id');
-    $perm = self::Post('perm');
-    if(empty($id)){
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $id = self::JsonName($json, 'id');
+    $perm = self::JsonName($json, 'perm');
+    // 验证
+    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    if($msg != '') {
+      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    }
+    if(empty($id)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
-    // 数据
+    // 模型
     $m = new SysRoleM();
     $m->Set(['perm'=>$perm, 'utime'=>time()]);
     $m->Where('id=?', $id);
-    if($m->Update()){
+    if($m->Update()) {
       return self::GetJSON(['code'=>0,'msg'=>'成功']);
     } else {
       return self::GetJSON(['code'=>5000,'msg'=>'更新失败!']);
@@ -141,11 +159,15 @@ class SysRole extends Base {
   }
 
   /* 角色-列表 */
-  static function RoleList(){
+  static function RoleList() {
+    // 参数
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
     // 验证
-    $token = self::Post('token');
     $msg = AdminToken::Verify($token, '');
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    if($msg != '') {
+      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    }
     // 查询
     $m = new SysRoleM();
     $m->Columns('id', 'name');
@@ -158,13 +180,16 @@ class SysRole extends Base {
   }
 
   /* 权限-列表 */
-  static function PermList(){
-    // 验证
-    $token = self::Post('token');
-    $msg = AdminToken::Verify($token, '');
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+  static function PermList() {
     // 参数
-    $perm = self::Post('perm');
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $perm = self::JsonName($json, 'perm');
+    // 验证
+    $msg = AdminToken::Verify($token, '');
+    if($msg != '') {
+      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    }
     // 全部菜单
     $model = new SysMenu();
     $model->Columns('id', 'fid', 'title', 'url', 'ico', 'controller', 'action');
