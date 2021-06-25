@@ -13,9 +13,10 @@ public class Cors {
     /* 规则 */
     public CorsConfiguration buildConfig() {
         CorsConfiguration cors = new CorsConfiguration();
-        cors.addAllowedOrigin("*"); // 允许域名
-        cors.addAllowedHeader("*"); // 允许任何头
-        cors.addAllowedMethod("*"); // 允许请求方式
+        cors.addAllowedOrigin("*"); //域名
+        cors.addAllowedMethod("*"); //请求方式
+        cors.addAllowedHeader("*"); //预检响应
+        cors.setMaxAge((long) 2592000); //OPTIONS(30天)
         return cors;
     }
  

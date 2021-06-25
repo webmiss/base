@@ -177,6 +177,28 @@ public class SysUser extends Base {
       ps = m2.Bind(conn, sql[0], sql[1]);
       ps.executeUpdate();
       ps.close();
+      // 权限-System
+      SysPerm m3 = new SysPerm();
+      uData = new HashMap<String, Object>();
+      uData.put("uid", uid);
+      uData.put("role", 1);
+      uData.put("utime", Util.Time());
+      m3.Values(uData);
+      sql = m3.InsertSql();
+      ps = m3.Bind(conn, sql[0], sql[1]);
+      ps.executeUpdate();
+      ps.close();
+      // 权限-Api
+      ApiPerm m4 = new ApiPerm();
+      uData = new HashMap<String, Object>();
+      uData.put("uid", uid);
+      uData.put("role", 1);
+      uData.put("utime", Util.Time());
+      m4.Values(uData);
+      sql = m4.InsertSql();
+      ps = m4.Bind(conn, sql[0], sql[1]);
+      ps.executeUpdate();
+      ps.close();
       // 提交
       conn.commit();
       // 返回
@@ -354,8 +376,14 @@ public class SysUser extends Base {
 
   /* 权限 */
   @RequestMapping("perm")
-  String Perm(HttpServletRequest request, String token, Integer uid, String type, Integer role, String perm) {
+  String Perm(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String type = JsonName(json, "type");
+    String uid = JsonName(json, "uid");
+    String role = JsonName(json, "role");
+    String perm = JsonName(json, "perm");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -373,81 +401,87 @@ public class SysUser extends Base {
       return GetJSON(res);
     }
     // 超级管理员
-    if(uid.equals(1) && !tData.get("uid").equals("1") ){
+    if(uid.equals("1") && !tData.get("uid").equals("1") ){
       res = new HashMap<String,Object>();
       res.put("code", 4000);
       res.put("msg", "您不是超级管理员!");
       return GetJSON(res);
     }
     // 类型
+    if(type.equals("admin") && _permSys(uid, role, perm)) {
+      res = new HashMap<String,Object>();
+      res.put("code", 0);
+      res.put("msg", "成功");
+      return GetJSON(res);
+    } else if(type.equals("api") && _permApi(uid, role, perm)) {
+      res = new HashMap<String,Object>();
+      res.put("code", 0);
+      res.put("msg", "成功");
+      return GetJSON(res);
+    } else {
+      res = new HashMap<String,Object>();
+      res.put("code", 5000);
+      res.put("msg", "更新失败!");
+      return GetJSON(res);
+    }
+  }
+  // 权限-System
+  private boolean _permSys(String uid, String role, String perm) {
+    // 数据
     HashMap<String,Object> uData = new HashMap<String,Object>();
     uData.put("role", role);
     uData.put("perm", perm);
     uData.put("utime", Util.Time());
-    if(type.equals("admin")) {
-      // 系统权限
-      SysPerm m = new SysPerm();
-      m.Set(uData);
-      m.Where("uid=?", uid);
-      if(m.Update()){
-        // 角色权限
-        if(perm.isEmpty()) {
-          SysRole m1 = new SysRole();
-          m1.Columns("perm");
-          m1.Where("id=?", role);
-          HashMap<String, Object> data = m1.FindFirst();
-          perm = data.containsKey("perm")?data.get("perm").toString():"";
-        }
-        // 更新权限
-        _setPerm(Env.admin_token_prefix+"_perm_"+String.valueOf(uid), perm);
-        res = new HashMap<String,Object>();
-        res.put("code", 0);
-        res.put("msg", "成功");
-        return GetJSON(res);
-      } else {
-        res = new HashMap<String,Object>();
-        res.put("code", 5000);
-        res.put("msg", "更新失败!");
-        return GetJSON(res);
+    // 模型
+    SysPerm m = new SysPerm();
+    m.Set(uData);
+    m.Where("uid=?", uid);
+    if(m.Update()){
+      // 角色权限
+      if(perm.isEmpty()) {
+        SysRole m1 = new SysRole();
+        m1.Columns("perm");
+        m1.Where("id=?", role);
+        HashMap<String, Object> data = m1.FindFirst();
+        perm = data.containsKey("perm")?data.get("perm").toString():"";
       }
-    } else if(type.equals("api")) {
-      // API权限
-      ApiPerm m = new ApiPerm();
-      m.Set(uData);
-      m.Where("uid=?", uid);
-      if(m.Update()){
-        // 角色权限
-        if(perm.isEmpty()) {
-          ApiRole m1 = new ApiRole();
-          m1.Columns("perm");
-          m1.Where("id=?", role);
-          HashMap<String, Object> data = m1.FindFirst();
-          perm = data.containsKey("perm")?data.get("perm").toString():"";
-        }
-        // 更新权限
-        _setPerm(Env.api_token_prefix+"_perm_"+String.valueOf(uid), perm);
-        res = new HashMap<String,Object>();
-        res.put("code", 0);
-        res.put("msg", "成功");
-        return GetJSON(res);
-      } else {
-        res = new HashMap<String,Object>();
-        res.put("code", 5000);
-        res.put("msg", "更新失败!");
-        return GetJSON(res);
-      }
-    } else {
-      res = new HashMap<String,Object>();
-      res.put("code", 4000);
-      res.put("msg", "参数错误!");
-      return GetJSON(res);
+      // 更新权限
+      return _setPerm(Env.admin_token_prefix+"_perm_"+String.valueOf(uid), perm);
+      
     }
+    return false;
+  }
+  // 权限-Api
+  private boolean _permApi(String uid, String role, String perm) {
+    // 数据
+    HashMap<String,Object> uData = new HashMap<String,Object>();
+    uData.put("role", role);
+    uData.put("perm", perm);
+    uData.put("utime", Util.Time());
+    // 模型
+    ApiPerm m = new ApiPerm();
+    m.Set(uData);
+    m.Where("uid=?", uid);
+    if(m.Update()){
+      // 角色权限
+      if(perm.isEmpty()) {
+        ApiRole m1 = new ApiRole();
+        m1.Columns("perm");
+        m1.Where("id=?", role);
+        HashMap<String, Object> data = m1.FindFirst();
+        perm = data.containsKey("perm")?data.get("perm").toString():"";
+      }
+      // 更新权限
+      return _setPerm(Env.api_token_prefix+"_perm_"+String.valueOf(uid), perm);
+    }
+    return false;
   }
   // 更新权限
-  private void _setPerm(String key, String perm) {
+  private boolean _setPerm(String key, String perm) {
     Redis redis = new Redis("");
     redis.Set(key, perm);
     redis.Close();
+    return true;
   }
 
   /* 个人信息 */

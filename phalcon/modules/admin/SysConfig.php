@@ -19,9 +19,7 @@ class SysConfig extends Base {
     $token = self::JsonName($json, 'token');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') {
-      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    }
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     // 查询
     $m = new SysConfigM();
     $m->Columns('name', 'val');
@@ -46,9 +44,7 @@ class SysConfig extends Base {
     $data = self::JsonName($json, 'data');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') {
-      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    }
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     if(empty($data)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
@@ -75,9 +71,7 @@ class SysConfig extends Base {
     $base64 = self::JsonName($json, 'base64');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') {
-      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    }
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     if(empty($base64)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }

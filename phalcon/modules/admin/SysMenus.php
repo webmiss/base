@@ -20,9 +20,7 @@ class SysMenus extends Base {
     $limit = self::JsonName($json, 'limit');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') {
-      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    }
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     if(empty($data) || empty($page) || empty($limit)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
@@ -59,9 +57,7 @@ class SysMenus extends Base {
     // 验证
     $token = self::Post('token');
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') {
-      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    }
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     if(empty($data)){
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
@@ -99,9 +95,7 @@ class SysMenus extends Base {
     // 验证
     $token = self::Post('token');
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') {
-      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    }
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     if(empty($id) || empty($data)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
@@ -138,9 +132,7 @@ class SysMenus extends Base {
     $data = self::JsonName($json, 'data');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') {
-      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    }
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     if(empty($data)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
@@ -166,9 +158,7 @@ class SysMenus extends Base {
     $data = self::JsonName($json, 'data');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') {
-      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    }
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     if(empty($id) || empty($data)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }

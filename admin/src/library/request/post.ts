@@ -1,6 +1,5 @@
 import Env from '@/env'
 import axios, { AxiosRequestConfig } from 'axios'
-import qs from 'qs'
 
 /* Post请求 */
 export default (url: string, data?: any, success?: any, fail?: any, config?: any)=>{
@@ -11,11 +10,10 @@ export default (url: string, data?: any, success?: any, fail?: any, config?: any
   // 配置
   const cfg: AxiosRequestConfig = <AxiosRequestConfig>{
     headers: Env.request.headers,
-    responseType: Env.request.responseType,
+    responseType: config&&config.responseType?config.responseType:Env.request.responseType,
     timeout: Env.request.timeout,
   };
-  if(config && config.responseType) cfg.responseType = config.responseType;
   if(config && config.onUploadProgress) cfg.onUploadProgress = config.onUploadProgress;
   // 请求
-  axios.post(url, JSON.stringify(data), cfg).then(success).catch(fail);
+  axios.post(url, data, cfg).then(success).catch(fail);
 }

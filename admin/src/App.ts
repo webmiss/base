@@ -164,7 +164,7 @@ export default defineComponent({
     /* 系统信息 */
     getConfig(){
       const load = Loading();
-      Get('index/getConfig',{test:'123',t2:'456'},(res: any)=>{
+      Get('index/getConfig',{},(res: any)=>{
         load.clear();
         const d = res.data;
         if(d.code==0) this.state.system = d.list;

@@ -125,7 +125,17 @@ func (r SysUser) Add(c *gin.Context) {
 	m2.Values(map[string]interface{}{"uid": uid})
 	sql, args = m2.InsertSQL()
 	_, err2 := tx.Exec(sql, args...)
-	if err1 != nil || err2 != nil {
+	// 权限-System
+	m3 := (&model.SysPerm{}).New()
+	m3.Values(map[string]interface{}{"uid": uid})
+	sql, args = m3.InsertSQL()
+	_, err3 := tx.Exec(sql, args...)
+	// 权限-Api
+	m4 := (&model.ApiPerm{}).New()
+	m4.Values(map[string]interface{}{"uid": uid})
+	sql, args = m4.InsertSQL()
+	_, err4 := tx.Exec(sql, args...)
+	if err1 != nil || err2 != nil || err3 != nil || err4 != nil {
 		tx.Rollback()
 		r.GetJSON(c, gin.H{"code": 5000, "msg": "添加失败!"})
 	} else {
@@ -265,8 +275,8 @@ func (r SysUser) Perm(c *gin.Context) {
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
 	token, _ := r.JsonName(json, "token")
-	uid, _ := r.JsonName(json, "uid")
 	tp, _ := r.JsonName(json, "type")
+	uid, _ := r.JsonName(json, "uid")
 	role, _ := r.JsonName(json, "role")
 	perm, _ := r.JsonName(json, "perm")
 	// 验证
@@ -286,64 +296,74 @@ func (r SysUser) Perm(c *gin.Context) {
 		return
 	}
 	// 类型
-	env := config.Env()
-	uData := map[string]interface{}{"role": role, "perm": perm, "utime": util.Time()}
-	r.Print(uData)
-	if tp == "admin" {
-		// 系统权限
-		m := (&model.SysPerm{}).New()
-		m.Set(uData)
-		m.Where("uid=?", uid)
-		if m.Update() {
-			r.Print(m.GetSQL())
-			// 角色权限
-			if util.Empty(perm) {
-				m1 := (&model.SysRole{}).New()
-				m1.Columns("perm")
-				m1.Where("id=?", role)
-				data := m1.FindFirst()
-				if res, ok := data["perm"]; ok {
-					perm = (&util.Type{}).Strval(res)
-				}
-			}
-			// 更新权限
-			r._setPerm(env.AdminTokenPrefix+"_perm_"+uid, perm)
-			r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
-		} else {
-			r.GetJSON(c, gin.H{"code": 5000, "msg": "更新失败!"})
-		}
-	} else if tp == "api" {
-		// API权限
-		m := (&model.ApiPerm{}).New()
-		m.Set(uData)
-		m.Where("uid=?", uid)
-		if m.Update() {
-			// 角色权限
-			if util.Empty(perm) {
-				m1 := (&model.ApiRole{}).New()
-				m1.Columns("perm")
-				m1.Where("id=?", role)
-				data := m1.FindFirst()
-				if res, ok := data["perm"]; ok {
-					perm = (&util.Type{}).Strval(res)
-				}
-			}
-			// 更新权限
-			r._setPerm(env.ApiTokenPrefix+"_perm_"+uid, perm)
-			r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
-		} else {
-			r.GetJSON(c, gin.H{"code": 5000, "msg": "更新失败!"})
-		}
+	if tp == "admin" && r._permSys(uid, role, perm) {
+		r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
+	} else if tp == "api" && r._permApi(uid, role, perm) {
+		r.GetJSON(c, gin.H{"code": 0, "msg": "成功"})
 	} else {
-		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
+		r.GetJSON(c, gin.H{"code": 5000, "msg": "更新失败!"})
 	}
 }
 
+// 权限-System
+func (r SysUser) _permSys(uid string, role string, perm string) bool {
+	// 数据
+	env := config.Env()
+	uData := map[string]interface{}{"role": role, "perm": perm, "utime": util.Time()}
+	// 系统权限
+	m := (&model.SysPerm{}).New()
+	m.Set(uData)
+	m.Where("uid=?", uid)
+	if m.Update() {
+		r.Print(m.GetSQL())
+		// 角色权限
+		if util.Empty(perm) {
+			m1 := (&model.SysRole{}).New()
+			m1.Columns("perm")
+			m1.Where("id=?", role)
+			data := m1.FindFirst()
+			if res, ok := data["perm"]; ok {
+				perm = (&util.Type{}).Strval(res)
+			}
+		}
+		// 更新权限
+		return r._setPerm(env.AdminTokenPrefix+"_perm_"+uid, perm)
+	}
+	return false
+}
+
+// 权限-Api
+func (r SysUser) _permApi(uid string, role string, perm string) bool {
+	// 数据
+	env := config.Env()
+	uData := map[string]interface{}{"role": role, "perm": perm, "utime": util.Time()}
+	// 模型
+	m := (&model.ApiPerm{}).New()
+	m.Set(uData)
+	m.Where("uid=?", uid)
+	if m.Update() {
+		// 角色权限
+		if util.Empty(perm) {
+			m1 := (&model.ApiRole{}).New()
+			m1.Columns("perm")
+			m1.Where("id=?", role)
+			data := m1.FindFirst()
+			if res, ok := data["perm"]; ok {
+				perm = (&util.Type{}).Strval(res)
+			}
+		}
+		// 更新权限
+		return r._setPerm(env.ApiTokenPrefix+"_perm_"+uid, perm)
+	}
+	return false
+}
+
 // 更新权限
-func (r SysUser) _setPerm(key string, perm string) {
+func (r SysUser) _setPerm(key string, perm string) bool {
 	redis := (&library.Redis{}).New("")
 	redis.Set(key, perm)
 	redis.Close()
+	return true
 }
 
 /* 个人信息 */

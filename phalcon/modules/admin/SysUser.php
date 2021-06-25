@@ -27,9 +27,7 @@ class SysUser extends Base {
     $limit = self::JsonName($json, 'limit');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') {
-      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    }
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     if(empty($data) || empty($page) || empty($limit)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
@@ -75,9 +73,7 @@ class SysUser extends Base {
     $data = self::JsonName($json, 'data');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') {
-      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    }
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     if(empty($data)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
@@ -115,10 +111,15 @@ class SysUser extends Base {
       $m2->Values(['uid'=>$uid]);
       list($sql, $args) = $m2->InsertSql();
       $conn->execute($sql, $args);
-      // 权限
-      $m3 = new ApiPerm();
+      // 权限-System
+      $m3 = new SysPerm();
       $m3->Values(['uid'=>$uid, 'role'=>1, 'utime'=>time()]);
       list($sql, $args) = $m3->InsertSql();
+      $conn->execute($sql, $args);
+      // 权限-Api
+      $m4 = new ApiPerm();
+      $m4->Values(['uid'=>$uid, 'role'=>1, 'utime'=>time()]);
+      list($sql, $args) = $m4->InsertSql();
       $conn->execute($sql, $args);
       // 提交
       $conn->commit();
@@ -138,9 +139,7 @@ class SysUser extends Base {
     $data = self::JsonName($json, 'data');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') {
-      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    }
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     if(empty($uid) || empty($data)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
@@ -180,9 +179,7 @@ class SysUser extends Base {
     $data = self::JsonName($json, 'data');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') {
-      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    }
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     if(empty($data)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
@@ -214,9 +211,7 @@ class SysUser extends Base {
     $state = self::JsonName($json, 'state');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') {
-      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    }
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     if(empty($uid)){
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
@@ -239,74 +234,83 @@ class SysUser extends Base {
 
   /* 权限 */
   static function Perm(){
+    // 参数
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $type = self::JsonName($json, 'type');
+    $uid = self::JsonName($json, 'uid');
+    $role = self::JsonName($json, 'role');
+    $perm = self::JsonName($json, 'perm');
     // 验证
-    $token = self::Post('token');
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    $tData = AdminToken::Token($token);
-    // 参数
-    $uid = self::Post('uid');
-    $type = self::Post('type');
-    $role = self::Post('role');
-    $perm = self::Post('perm');
-    if(empty($uid) || empty($type)){
+    if(empty($type) || empty($uid)){
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
     // 超级管理员
+    $tData = AdminToken::Token($token);
     if($uid==1 && $tData->uid!=1){
       return self::GetJSON(['code'=>4000, 'msg'=>'您不是超级管理员!']);
     }
     // 类型
-    $uData = ['perm'=>$perm, 'role'=>$role, 'utime'=>time()];
-    if($type=='admin'){
-      // 系统权限
-      $m = new SysPerm();
-      $m->Set($uData);
-      $m->Where('uid=?', $uid);
-      if($m->Update()){
-        // 角色权限
-        if(empty($perm)){
-          $m1 = new SysRole();
-          $m1->Columns('perm');
-          $m1->Where('id=?', $role);
-          $data = $m1->FindFirst();
-          $perm = isset($data['perm'])?$data['perm']:'';
-        }
-        // 更新权限
-        self::_setPerm(Env::$admin_token_prefix.'_perm_'.$uid, $perm);
-        return self::GetJSON(['code'=>0,'msg'=>'成功']);
-      } else {
-        return self::GetJSON(['code'=>5000,'msg'=>'更新失败!']);
-      }
-    }else if($type=='api'){
-      // API权限
-      $m = new ApiPerm();
-      $m->Set($uData);
-      $m->Where('uid=?', $uid);
-      if($m->Update()){
-        // 角色权限
-        if(empty($perm)){
-          $m1 = new ApiRole();
-          $m1->Columns('perm');
-          $m1->Where('id=?', $role);
-          $data = $m1->FindFirst();
-          $perm = isset($data['perm'])?$data['perm']:'';
-        }
-        // 更新权限
-        self::_setPerm(Env::$api_token_prefix.'_perm_'.$uid, $perm);
-        return self::GetJSON(['code'=>0,'msg'=>'成功']);
-      } else {
-        return self::GetJSON(['code'=>5000,'msg'=>'更新失败!']);
-      }
+    if($type=='admin' && self::_permSys($uid, $role, $perm)){
+      return self::GetJSON(['code'=>0,'msg'=>'成功']);
+    }else if($type=='api' && self::_permApi($uid, $role, $perm)){
+      return self::GetJSON(['code'=>0,'msg'=>'成功']);
     }else{
-      return self::GetJSON(['code'=>4000, 'msg'=>'类型错误!']);
+      return self::GetJSON(['code'=>5000,'msg'=>'更新失败!']);
     }
   }
+  // 权限-System
+  private static function _permSys($uid, $role, $perm) {
+    // 数据
+    $uData = ['perm'=>$perm, 'role'=>$role, 'utime'=>time()];
+    // 模型
+    $m = new SysPerm();
+    $m->Set($uData);
+    $m->Where('uid=?', $uid);
+    if($m->Update()){
+      // 角色权限
+      if(empty($perm)){
+        $m1 = new SysRole();
+        $m1->Columns('perm');
+        $m1->Where('id=?', $role);
+        $data = $m1->FindFirst();
+        $perm = isset($data['perm'])?$data['perm']:'';
+      }
+      // 更新权限
+      return self::_setPerm(Env::$admin_token_prefix.'_perm_'.$uid, $perm);
+    }
+    return false;
+  }
+  // 权限-System
+  private static function _permApi($uid, $role, $perm) {
+    // 数据
+    $uData = ['perm'=>$perm, 'role'=>$role, 'utime'=>time()];
+    // 模型
+    $m = new ApiPerm();
+    $m->Set($uData);
+    $m->Where('uid=?', $uid);
+    if($m->Update()){
+      // 角色权限
+      if(empty($perm)){
+        $m1 = new ApiRole();
+        $m1->Columns('perm');
+        $m1->Where('id=?', $role);
+        $data = $m1->FindFirst();
+        $perm = isset($data['perm'])?$data['perm']:'';
+      }
+      // 更新权限
+      return self::_setPerm(Env::$api_token_prefix.'_perm_'.$uid, $perm);
+    }
+    return false;
+  }
   // 更新权限
-  private static function _setPerm(string $key, string $perm) {
+  private static function _setPerm(string $key, string $perm): bool {
     $redis = new Redis();
     $redis->Set($key, $perm);
     $redis->Close();
+    return true;
   }
 
   /* 个人信息 */
@@ -318,9 +322,7 @@ class SysUser extends Base {
     $data = self::JsonName($json, 'data');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
-    if($msg != '') {
-      return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    }
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     if(empty($uid) || empty($data)) {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     }
