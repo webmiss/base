@@ -35,7 +35,7 @@ export default {
   /* 请求 */
   request: {
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded"  // 表单方式
+      "Content-Type": "application/json;charset=utf-8"  // 表单方式
     },
     responseType: 'json', //返回类型
     timeout: 10000, //超时设置

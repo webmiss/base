@@ -9,7 +9,7 @@ export default (url: string, data?: any, success?: any, fail?: any, config?: any
   else url=Env.apiUrl+url;
   // 配置
   const cfg: AxiosRequestConfig = <AxiosRequestConfig>{
-    headers: Env.request.headers,
+    headers: config&&config.headers?config.headers:Env.request.headers,
     responseType: config&&config.responseType?config.responseType:Env.request.responseType,
     timeout: Env.request.timeout,
   };

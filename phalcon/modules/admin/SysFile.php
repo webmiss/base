@@ -13,12 +13,13 @@ class SysFile extends Base {
 
   /* 列表 */
   static function List(){
+    // 参数
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $path = self::JsonName($json, 'path');
     // 验证
-    $token = self::Post('token');
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    // 参数
-    $path = self::Post('path');
     if(empty($path)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     // 数据
     FileEo::$Root = self::$dirRoot;
@@ -29,13 +30,14 @@ class SysFile extends Base {
 
   /* 新建文件夹 */
   static function Mkdir(){
+    // 参数
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $path = self::JsonName($json, 'path');
+    $name = self::JsonName($json, 'name');
     // 验证
-    $token = self::Post('token');
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    // 参数
-    $path = self::Post('path');
-    $name = self::Post('name');
     if(empty($path) || empty($name)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     // 数据
     FileEo::$Root = self::$dirRoot;
@@ -46,14 +48,15 @@ class SysFile extends Base {
 
   /* 重命名 */
   static function Rename(){
+    // 参数
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $path = self::JsonName($json, 'path');
+    $rename = self::JsonName($json, 'rename');
+    $name = self::JsonName($json, 'name');
     // 验证
-    $token = self::Post('token');
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    // 参数
-    $path = self::Post('path');
-    $rename = self::Post('rename');
-    $name = self::Post('name');
     if(empty($path) || empty($rename) || empty($name)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     // 数据
     FileEo::$Root = self::$dirRoot;
@@ -64,12 +67,12 @@ class SysFile extends Base {
 
   /* 上传 */
   static function Upload(){
-    // 验证
+    // 参数
     $token = self::Post('token');
+    $path = self::Post('path');
+    // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    // 参数
-    $path = self::Post('path');
     if(empty($path)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     // 数据
     $file = $_FILES['up'];
@@ -81,14 +84,14 @@ class SysFile extends Base {
 
   /* 下载 */
   static function Down(){
-    
+    // 参数
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $path = self::JsonName($json, 'path');
+    $filename = self::JsonName($json, 'filename');
     // 验证
-    $token = self::Post('token');
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    // 参数
-    $path = self::Post('path');
-    $filename = self::Post('filename');
     if(empty($path) || empty($filename)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     // 返回
     self::GetJSON();
@@ -98,13 +101,14 @@ class SysFile extends Base {
 
   /* 删除 */
   static function Remove(){
+    // 参数
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    $path = self::JsonName($json, 'path');
+    $data = self::JsonName($json, 'data');
     // 验证
-    $token = self::Post('token');
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    // 参数
-    $path = self::Post('path');
-    $data = self::Post('data');
     if(empty($path) || empty($data)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     // 数据
     FileEo::$Root = self::$dirRoot;

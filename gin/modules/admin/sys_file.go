@@ -18,15 +18,17 @@ type SysFile struct {
 
 /* 列表 */
 func (r SysFile) List(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	path, _ := r.JsonName(json, "path")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	path := c.PostForm("path")
 	if path == "" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
@@ -40,16 +42,18 @@ func (r SysFile) List(c *gin.Context) {
 
 /* 新建文件夹 */
 func (r SysFile) Mkdir(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	path, _ := r.JsonName(json, "path")
+	name, _ := r.JsonName(json, "name")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	path := c.PostForm("path")
-	name := c.PostForm("name")
 	if path == "" || name == "" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
@@ -66,17 +70,19 @@ func (r SysFile) Mkdir(c *gin.Context) {
 
 /* 重命名 */
 func (r SysFile) Rename(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	path, _ := r.JsonName(json, "path")
+	rename, _ := r.JsonName(json, "rename")
+	name, _ := r.JsonName(json, "name")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	path := c.PostForm("path")
-	rename := c.PostForm("rename")
-	name := c.PostForm("name")
 	if path == "" || rename == "" || name == "" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
@@ -93,15 +99,15 @@ func (r SysFile) Rename(c *gin.Context) {
 
 /* 上传 */
 func (r SysFile) Upload(c *gin.Context) {
-	// 验证
+	// 参数
 	token := c.PostForm("token")
+	path := c.PostForm("path")
+	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	path := c.PostForm("path")
 	if path == "" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return

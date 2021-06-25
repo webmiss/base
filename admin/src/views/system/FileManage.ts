@@ -3,7 +3,6 @@ import { useStore } from 'vuex';
 /* JS组件 */
 import Loading from '@/library/ui/loading'
 import Toast from '@/library/ui/toast'
-import Get from '@/library/request/get'
 import Post from '@/library/request/post'
 import Storage from '@/library/Storage'
 import DownBlob from '@/library/down/blob'

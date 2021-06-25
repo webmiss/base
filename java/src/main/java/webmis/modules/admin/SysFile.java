@@ -1,13 +1,14 @@
 package webmis.modules.admin;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,8 +30,11 @@ public class SysFile extends Base {
 
   /* 列表 */
   @RequestMapping("list")
-  String List(HttpServletRequest request, String token, String path) throws SQLException {
+  String List(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String path = JsonName(json, "path");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -39,7 +43,6 @@ public class SysFile extends Base {
       res.put("msg", msg);
       return GetJSON(res);
     }
-    // 参数
     if(path.isEmpty()) {
       res = new HashMap<String,Object>();
       res.put("code", 4000);
@@ -60,8 +63,12 @@ public class SysFile extends Base {
 
   /* 新建文件夹 */
   @RequestMapping("mkdir")
-  String Mkdir(HttpServletRequest request, String token, String path, String name) throws SQLException {
+  String Mkdir(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String path = JsonName(json, "path");
+    String name = JsonName(json, "name");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -94,8 +101,13 @@ public class SysFile extends Base {
 
   /* 重命名 */
   @RequestMapping("rename")
-  String Rename(HttpServletRequest request, String token, String path, String rename, String name) throws SQLException {
+  String Rename(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String path = JsonName(json, "path");
+    String rename = JsonName(json, "rename");
+    String name = JsonName(json, "name");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -104,7 +116,6 @@ public class SysFile extends Base {
       res.put("msg", msg);
       return GetJSON(res);
     }
-    // 参数
     if(path.isEmpty() || rename.isEmpty() || name.isEmpty()) {
       res = new HashMap<String,Object>();
       res.put("code", 4000);
@@ -128,7 +139,7 @@ public class SysFile extends Base {
 
   /* 上传 */
   @RequestMapping("upload")
-  String Upload(HttpServletRequest request, String token, String path, @RequestParam("up") MultipartFile file) throws SQLException {
+  String Upload(HttpServletRequest request, String token, String path, @RequestParam("up") MultipartFile file) {
     HashMap<String,Object> res;
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
@@ -138,7 +149,6 @@ public class SysFile extends Base {
       res.put("msg", msg);
       return GetJSON(res);
     }
-    // 参数
     if(path.isEmpty()) {
       res = new HashMap<String,Object>();
       res.put("code", 4000);
@@ -165,7 +175,11 @@ public class SysFile extends Base {
 
   /* 下载 */
   @RequestMapping("down")
-  byte[] Down(HttpServletRequest request, String token, String path, String filename) throws SQLException {
+  byte[] Down(@RequestBody JSONObject json, HttpServletRequest request) {
+    // 参数
+    String token = JsonName(json, "token");
+    String path = JsonName(json, "path");
+    String filename = JsonName(json, "filename");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")) return null;
@@ -177,8 +191,12 @@ public class SysFile extends Base {
 
   /* 删除 */
   @RequestMapping("remove")
-  String Remove(HttpServletRequest request, String token, String path, String data) throws SQLException {
+  String Remove(@RequestBody JSONObject json, HttpServletRequest request) {
     HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    String path = JsonName(json, "path");
+    String data = JsonName(json, "data");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){

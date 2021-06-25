@@ -1,7 +1,6 @@
 import Storage from './library/Storage'
 
 /* 接口 */
-const title = 'WebMIS-后台框架';
 const platform: string = Storage.getItem('platform') || '';
 const lag: any = platform?JSON.parse(platform):'';
 let baseUrl: string, socket: string;
@@ -30,7 +29,7 @@ if(lag && lag.name=='python'){
 /* 配置 */
 export default {
   title: 'WebMIS-后台框架', // 应用名称
-  version: '1.0.0', // 应用版本
+  version: '2.0.0', // 应用版本
   copy: 'Copyright © WebMIS.vip 2021',  // 版权信息
   baseUrl: baseUrl, //数据地址
   apiUrl: baseUrl+'admin/', //数据接口地址
@@ -57,7 +56,7 @@ export default {
   /* 请求 */
   request: {
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded"  // 表单方式
+      "Content-Type": "application/json;charset=utf-8"  // 表单方式
     },
     responseType: 'json', //返回类型
     timeout: 10000, //超时设置

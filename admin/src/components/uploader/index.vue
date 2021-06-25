@@ -33,8 +33,11 @@ export default defineComponent({
         // 多选
         for(let i=0; i<fileObj.files.length; i++){
           this.param[this.name] = fileObj.files[i];
+          // 表单
+          let form = new FormData();
+          for(let i in this.param) form.append(i,this.param[i]);
           // 提交
-          Post(this.url,this.param,(res: any)=>{
+          Post(this.url, form, (res: any)=>{
             const d = res.data;
             Toast(d.msg);
           },()=>{
