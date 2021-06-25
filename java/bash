@@ -2,7 +2,7 @@
 
 # 配置
 s=$1
-jar='java-1.0.0.jar'
+jar='java-2.0.0.jar'
 log='public/upload/server.log'
 
 # 运行
@@ -13,7 +13,7 @@ elif [ "$s" == "install" ]; then
   mvn clean install -e -U -DskipTests
 # 打包
 elif [ "$s" == "build" ]; then
-  mvn package -DskipTests && rm "./$jar" && cp "target/$jar" ./
+  mvn package -DskipTests && rm -fr "./$jar" && cp "target/$jar" ./
 # 启动
 elif [ "$s" == "start" ]; then
   nohup java -jar $jar > $log 2>&1 &
