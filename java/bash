@@ -2,7 +2,7 @@
 
 # 配置
 s=$1
-jar='java-2.0.0.jar'
+jar='java-2.0.1.jar'
 log='public/upload/server.log'
 
 # 运行

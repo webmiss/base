@@ -56,7 +56,7 @@ export default defineComponent({
       {type: '收入', label:'12月', value:52},
       {type: '支出', label:'12月', value:70},
     ];
-    // 折线图
+    // 柱状图
     this.chartData.interval = [
       {type: '收入', label:'1月', value:50},
       {type: '支出', label:'1月', value:10},
