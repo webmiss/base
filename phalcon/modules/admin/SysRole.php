@@ -107,7 +107,6 @@ class SysRole extends Base {
     $token = self::JsonName($json, 'token');
     $data = self::JsonName($json, 'data');
     // 验证
-    $token = self::Post('token');
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     if(empty($data)) {

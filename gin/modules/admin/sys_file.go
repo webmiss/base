@@ -125,16 +125,18 @@ func (r SysFile) Upload(c *gin.Context) {
 
 /* 下载 */
 func (r SysFile) Down(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	path, _ := r.JsonName(json, "path")
+	filename, _ := r.JsonName(json, "filename")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	path := c.PostForm("path")
-	filename := c.PostForm("filename")
 	if path == "" || filename == "" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
@@ -145,16 +147,18 @@ func (r SysFile) Down(c *gin.Context) {
 
 /* 删除 */
 func (r SysFile) Remove(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	path, _ := r.JsonName(json, "path")
+	data, _ := r.JsonName(json, "data")
 	// 验证
-	token := c.PostForm("token")
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
 	}
-	// 参数
-	path := c.PostForm("path")
-	data := c.PostForm("data")
 	if path == "" || data == "" {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "参数错误!"})
 		return
