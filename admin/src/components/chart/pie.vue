@@ -1,8 +1,12 @@
 <template>
-  <div ref="chart"></div>
+  <div ref="chart" class="chart_pie">
+    <div class="chart_pie_html" v-html="html"></div>
+  </div>
 </template>
 
 <style scoped>
+.chart_pie{position: relative;}
+.chart_pie_html{position: absolute; left: 50%; top: 50%; transform: translate(-50%, calc(-50% - 15px));}
 </style>
 
 <script lang="ts">
@@ -16,8 +20,7 @@ export default defineComponent({
     width: {type: Number, default: 600},          //宽
     height: {type: Number, default: 240},         //高
     position: {type: String, default: 'bottom'},  //位置: top、bootom、left、right
-    html: {type: String, default: '<div style="text-align: center;"><p>积分</p><h2>888</h2></div>'},  //中部内容
-    htmlPosition: {type: Array, default: ['46%', '40%']},  //数据
+    html: {type: String, default: ''},            //中部内容
   },
   data(){
     const chart: any = null;
@@ -35,31 +38,26 @@ export default defineComponent({
     /* 初始化 */
     init(){
       // 对象
-      const config: any = {container: this.$refs.chart, width: this.width, height: this.height};
-      if(!this.chart) this.chart = new G2.Chart(config);
+      if(!this.chart){
+        const config: any = {container: this.$refs.chart, width: this.width, height: this.height};
+        this.chart = new G2.Chart(config);
+        // 显示
+        this.chart.legend({position: this.position});
+        this.chart.coord('theta', {radius: 0.75, innerRadius: 0.6});
+        // 创建
+        this.chart.axis(false);
+        this.chart.interval().position('value').color('label').label('percent', {
+          formatter: (val: any, item: any)=>{
+            return item.point.item + ': ' + val;
+          }
+        }).tooltip('label*value', (label: any, value: any)=>{
+          value = value * 100 + '%';
+          return {name: label, value: value};
+        }).style({lineWidth: 1, stroke: '#fff'});
+      }
       // 数据
-      this.chart.clear();
       this.chart.data(this.data);
-      // 显示
-      this.chart.legend({position: this.position});
-      this.chart.coord('theta', {radius: 0.75, innerRadius: 0.6});
-      // 创建
-      this.chart.axis(false);
-      this.chart.interval().position('value').color('label').label('percent', {
-        formatter: (val: any, item: any)=>{
-          return item.point.item + ': ' + val;
-        }
-      }).tooltip('label*value', (label: any, value: any)=>{
-        value = value * 100 + '%';
-        return {name: label, value: value};
-      }).style({lineWidth: 1, stroke: '#fff'});
-      // 中间内容
-      if(this.html) this.chart.guide().html({
-        position: this.htmlPosition,
-        html: this.html,
-        alignX: 'middle',
-        alignY: 'middle',
-      });
+      // 加载
       this.chart.render();
     },
 

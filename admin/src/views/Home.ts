@@ -1,5 +1,10 @@
 import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
+/* JS组件 */
+import Loading from '@/library/ui/loading'
+import Toast from '@/library/ui/toast'
+import Post from '@/library/request/post'
+import Storage from '@/library/Storage'
 /* UI组件 */
 import wmMain from '@/components/main/index.vue'
 import wmChartLine from '@/components/chart/line.vue'
@@ -19,66 +24,43 @@ export default defineComponent({
     const store: any = useStore();
     const state: any = store.state;
     const chartData: any = {line: [], interval:[]};
-    return {state, chartData};
+    const time: any = null;
+    return {state, chartData, time};
   },
   mounted(){
-    this.loadChart();
   },
   activated(){
+    // 加载数据
+    if(Storage.getItem('token')){
+      this.loadData();
+      // 30刷新
+      clearInterval(this.time);
+      this.time = setInterval(()=>{
+        this.loadData();
+      }, 30000);
+    }
+  },
+  // 离开
+  beforeRouteLeave(to, form, next) {
+    clearInterval(this.time);
+    next();
   },
   methods:{
 
-    /* 图表数据 */
-    loadChart() {
-      // 折线图
-      this.chartData.line = [
-        {type: '收入', label:'1月', value:50},
-        {type: '支出', label:'1月', value:10},
-        {type: '收入', label:'2月', value:20},
-        {type: '支出', label:'2月', value:30},
-        {type: '收入', label:'3月', value:36},
-        {type: '支出', label:'3月', value:10},
-        {type: '收入', label:'4月', value:82},
-        {type: '支出', label:'4月', value:20},
-        {type: '收入', label:'5月', value:32},
-        {type: '支出', label:'5月', value:49},
-        {type: '收入', label:'6月', value:48},
-        {type: '支出', label:'6月', value:59},
-        {type: '收入', label:'7月', value:92},
-        {type: '支出', label:'7月', value:60},
-        {type: '收入', label:'8月', value:73},
-        {type: '支出', label:'8月', value:70},
-        {type: '收入', label:'9月', value:85},
-        {type: '支出', label:'9月', value:39},
-        {type: '收入', label:'10月', value:62},
-        {type: '支出', label:'10月', value:94},
-        {type: '收入', label:'11月', value:68},
-        {type: '支出', label:'11月', value:36},
-        {type: '收入', label:'12月', value:52},
-        {type: '支出', label:'12月', value:70},
-      ];
-      // 柱状图
-      this.chartData.interval = [
-        {type: '收入', label:'1月', value:50},
-        {type: '支出', label:'1月', value:10},
-        {type: '收入', label:'2月', value:20},
-        {type: '支出', label:'2月', value:30},
-        {type: '收入', label:'3月', value:36},
-        {type: '支出', label:'3月', value:46},
-        {type: '收入', label:'4月', value:82},
-        {type: '支出', label:'4月', value:20},
-        {type: '收入', label:'5月', value:32},
-        {type: '支出', label:'5月', value:49},
-        {type: '收入', label:'6月', value:48},
-        {type: '支出', label:'6月', value:59},
-      ];
-      // 饼状图
-      this.chartData.pie = [
-        {type: '1', label:'手机', value:0.60},
-        {type: '1', label:'笔记本', value:0.20},
-        {type: '1', label:'家具', value:0.16},
-        {type: '1', label:'其他', value:0.04},
-      ];
+    /* 加载数据 */
+    loadData() {
+      const load: any = Loading();
+      Post('index/getChart',{
+        token: Storage.getItem('token'),
+      },(res: any)=>{
+        load.clear();
+        const d = res.data;
+        if(d.code==0){
+          this.chartData.interval = d.chart1;
+          this.chartData.line = d.chart2;
+          this.chartData.pie = d.chart3;
+        }else return Toast(d.msg);
+      });
     },
 
   }

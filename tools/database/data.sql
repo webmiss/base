@@ -190,6 +190,20 @@ CREATE TABLE `user_oauth` (
 INSERT INTO `user_oauth` (`id`, `client_id`, `client_secret`, `state`, `name`) VALUES
 (1,	'base@webmis.vip',	'00fb626bbabfdd903231acf6639cddfb',	'1',	'基础系统');
 
+DROP TABLE IF EXISTS `logs`;
+CREATE TABLE `logs` (
+  `id` bigint(19) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `source` varchar(8) NOT NULL COMMENT '来源',
+  `ip` varchar(16) NOT NULL COMMENT 'IP',
+  `os` varchar(16) NOT NULL COMMENT 'OS',
+  `browser` varchar(16) NOT NULL COMMENT 'Browser',
+  `ctime` int(10) unsigned NOT NULL COMMENT '访问时间',
+  `method` varchar(8) NOT NULL DEFAULT '' COMMENT '请求类型',
+  `url` varchar(256) NOT NULL DEFAULT '' COMMENT '访问地址',
+  `user_agent` varchar(512) NOT NULL DEFAULT '' COMMENT '用户信息',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 DROP TABLE IF EXISTS `test`;
 CREATE TABLE `test` (
   `uid` int(3) NOT NULL AUTO_INCREMENT,

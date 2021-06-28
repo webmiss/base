@@ -1,8 +1,31 @@
+from config.env import Env
 from library.redis import Redis
 from util.util import Util
+from util.os import Os
+from model.logs import Logs as LogsModel
 
 # 日志
 class Logs:
+
+  # 写入数据库
+  def LogsDB(ip: str, method: str, path: str, user_agent: str):
+    # 数据
+    os = Os.System(user_agent)
+    browser = Os.Browser(user_agent)
+    time = Util.Time()
+    # 模型
+    model = LogsModel()
+    model.Values({
+      'source': Env.log_source,
+      'ip': ip,
+      'os': os,
+      'browser': browser,
+      'ctime': time,
+      'method': method,
+      'url': path,
+      'user_agent': user_agent,
+    })
+    model.Insert()
 
   # 访问日志
   def Log(data):

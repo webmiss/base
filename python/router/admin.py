@@ -18,6 +18,8 @@ Admin = Blueprint('admin', __name__)
 def index() : return Index().Index()
 @Admin.route('/index/getConfig',methods=['GET'])
 def getConfig() : return Index().GetConfig()
+@Admin.route('/index/getChart',methods=['POST'])
+def getChart() : return Index().GetChart()
 # 登录
 @Admin.route('/user/<a>',methods=['POST'])
 def user(a) :

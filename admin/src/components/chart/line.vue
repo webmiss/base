@@ -1,9 +1,8 @@
 <template>
-  <div ref="chart" class="chart"></div>
+  <div ref="chart"></div>
 </template>
 
 <style scoped>
-.chart{width: 100%;}
 </style>
 
 <script lang="ts">
@@ -52,6 +51,7 @@ export default defineComponent({
         value = value + this.unit;
         return {name: label, value: value};
       }).color('type');
+      // 加载
       this.chart.render();
     },
 

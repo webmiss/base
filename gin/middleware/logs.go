@@ -11,17 +11,24 @@ import (
 /* 访问日志 */
 func Logs() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// 是否记录
-		if !config.Env().LogOn {
-			return
+		// 参数
+		ip := c.ClientIP()
+		method := c.Request.Method
+		path := c.Request.URL.Path
+		user_agent := c.Request.UserAgent()
+		// 写入-文件
+		if config.Env().LogDb {
+			(&service.Logs{}).LogsDB(ip, method, path, user_agent)
 		}
-		// 数据
-		(&service.Logs{}).Log(gin.H{
-			"ip":         c.ClientIP(),
-			"method":     c.Request.Method,
-			"path":       c.Request.URL.Path,
-			"user_agent": c.Request.UserAgent(),
-			"time":       time.Now().UnixNano(),
-		})
+		// 写入-文件
+		if config.Env().LogFile {
+			(&service.Logs{}).Log(gin.H{
+				"ip":         ip,
+				"method":     method,
+				"path":       path,
+				"user_agent": user_agent,
+				"time":       time.Now().UnixNano(),
+			})
+		}
 	}
 }

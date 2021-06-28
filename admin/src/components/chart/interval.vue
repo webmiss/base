@@ -46,6 +46,7 @@ export default defineComponent({
         type: this.type,
         marginRatio: 0.08,
       });
+      // 加载
       this.chart.render();
     },
 
