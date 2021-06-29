@@ -205,11 +205,9 @@ public class Model extends Base {
   }
   /* 字段 */
   public void Columns(String... columns) {
-    _columns = "";
-    for(int i=0; i<columns.length; i++){
-      _columns += columns[i] + ", ";
-    }
-    _columns = _columns.length()>0?_columns.substring(0,_columns.length()-2):"";
+    JSONArray vals = new JSONArray();
+    for(int i=0; i<columns.length; i++) vals.add(columns[i]);
+    _columns = Util.Implode(", ", vals);
   }
   /* 字段-返回类型 */
   public void ResType(HashMap<String, String> type) {
@@ -228,19 +226,15 @@ public class Model extends Base {
   }
   /* 排序 */
   public void Order(String... order) {
-    _order = "";
-    for(int i=0; i<order.length; i++){
-      _order += order[i] + ",";
-    }
-    _order = _order.substring(0,_order.length()-1);
+    JSONArray vals = new JSONArray();
+    for(int i=0; i<order.length; i++) vals.add(order[i]);
+    _order = Util.Implode(", ", vals);
   }
   /* 分组 */
   public void Group(String... group) {
-    _group = "";
-    for(int i=0; i<group.length; i++){
-      _group += group[i] + ",";
-    }
-    _group = _group.substring(0,_order.length()-1);
+    JSONArray vals = new JSONArray();
+    for(int i=0; i<group.length; i++) vals.add(group[i]);
+    _group = Util.Implode(", ", vals);
   }
 
   /* 分页 */

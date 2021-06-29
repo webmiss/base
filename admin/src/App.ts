@@ -200,7 +200,11 @@ export default defineComponent({
           // 用户菜单
           this.getMenus();
           // 刷新路由
-          this.$router.replace({path:'/refresh'});
+          if(this.$route.path=='/'){
+            window.location.reload();
+          } else {
+            this.$router.replace({path:'/refresh'});
+          }
         }else{
           this.state.isLogin = false;
           this.state.uInfo = {};

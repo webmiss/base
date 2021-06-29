@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,6 +46,12 @@ public class Util {
   }
   public static String Date(String format, String timestamp) {
     return new SimpleDateFormat(format).format(new Date(Long.valueOf(timestamp)*1000));
+  }
+  public static String DateFormat(String format, int calendar, int num) {
+    SimpleDateFormat sf = new SimpleDateFormat(format);
+    Calendar c = Calendar.getInstance();
+    c.add(calendar, num);
+    return sf.format(c.getTime());
   }
 
   /* 时间戳 */

@@ -81,20 +81,20 @@ class Index extends Base {
     // 统计图2
     $chart2 = [];
     $year = date('Y');
-    $last1 = date('Y', strtotime('1 years'));
-    $last2 = date('Y', strtotime('-1 years'));
+    $last1 = strval($year+1);
+    $last2 = strval($year-1);
     for($i=0; $i<12; $i++) {
       // 时间
       if($i==11){
-        $dt1 = $year . '-' . $i . '-00';
-        $dt2 = $last1 . '-00-00';
-        $dt3 = $last2.'-' . $i . '-00';
-        $dt4 = $year . '-00-00';
+        $dt1 = $year . '-' . ($i+1) . '-01';
+        $dt2 = $last1 . '-01-01';
+        $dt3 = $last2.'-' . ($i+1) . '-01';
+        $dt4 = $year . '-01-01';
       } else {
-        $dt1 = $year . '-' . $i . '-00';
-        $dt2 = $year . '-' . ($i+1) . '-00';
-        $dt3 = $last2 . '-' . $i . '-00';
-        $dt4 = $last2 . '-' . ($i+1) . '-00';
+        $dt1 = $year . '-' . ($i+1) . '-01';
+        $dt2 = $year . '-' . ($i+2) . '-01';
+        $dt3 = $last2 . '-' . ($i+1) . '-01';
+        $dt4 = $last2 . '-' . ($i+2) . '-01';
       }
       $t1 = Util::Strtotime($dt1);
       $t2 = Util::Strtotime($dt2);
@@ -105,22 +105,27 @@ class Index extends Base {
       $m1->Columns('count(*) as total');
       $m1->Where('ctime>=? AND ctime<? AND source=?', $t1, $t2, Env::$log_source);
       $d1 = $m1->FindFirst();
-      $chart2[] = ['type'=>'今年(PV)', 'label'=>(string)$i, 'value'=>(int)$d1['total']];
+      $chart2[] = ['type'=>'今年(PV)', 'label'=>(string)($i+1), 'value'=>(int)$d1['total']];
       $m2 = new Logs();
       $m2->Columns('count(*) as total');
       $m2->Where('ctime>=? AND ctime<? AND source=?', $t3, $t4, Env::$log_source);
       $d2 = $m2->FindFirst();
-      $chart2[] = ['type'=>$last1.'年(PV)', 'label'=>(string)$i, 'value'=>(int)$d2['total']];
+      $chart2[] = ['type'=>$last2.'年(PV)', 'label'=>(string)($i+1), 'value'=>(int)$d2['total']];
     }
     // 统计图3
     $chart3 = [];
-    $m3 = new Logs();
-    $m3->Columns('count(*) as total, browser');
-    $m3->Where('source=?', Env::$log_source);
-    $m3->Group('browser');
-    $data = $m3->Find();
-    foreach($data as $val) {
-      $chart3[] = ['type'=>'1', 'label'=>$val['browser'], 'value'=>(int)$val['total']];
+    $m1 = new Logs();
+    $m1->Columns('count(*) as total');
+    $m1->Where('source=?', Env::$log_source);
+    $d1 = $m1->FindFirst();
+    $m2 = new Logs();
+    $m2->Columns('count(*) as total', 'browser');
+    $m2->Where('source=?', Env::$log_source);
+    $m2->Group('browser');
+    $d2 = $m2->Find();
+    foreach($d2 as $val) {
+      $ratio = intval($val['total']/$d1['total']*100)/100;
+      $chart3[] = ['label'=>$val['browser'], 'value'=>$ratio];
     }
     // 返回
     return self::GetJSON(['code'=>0, 'msg'=>'成功', 'chart1'=>$chart1, 'chart2'=>$chart2, 'chart3'=>$chart3]);

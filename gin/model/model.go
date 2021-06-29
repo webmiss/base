@@ -149,13 +149,7 @@ func (m *Model) FullJoin(table string, on string) {
 
 /* 字段 */
 func (m *Model) Columns(columns ...string) {
-	m.columns = ""
-	for _, v := range columns {
-		m.columns += v + ", "
-	}
-	if m.columns != "" {
-		m.columns = m.columns[:len(m.columns)-2]
-	}
+	m.columns = util.Implode(", ", columns)
 }
 
 /* 字段-返回类型 */
@@ -178,24 +172,12 @@ func (m *Model) Limit(start int, limit int) {
 
 /* 排序 */
 func (m *Model) Order(order ...string) {
-	m.order = ""
-	for _, v := range order {
-		m.order += v + ","
-	}
-	if m.order != "" {
-		m.order = m.order[:len(m.order)-1]
-	}
+	m.order = util.Implode(", ", order)
 }
 
 /* 分组 */
 func (m *Model) Group(group ...string) {
-	m.order = ""
-	for _, v := range group {
-		m.group += v + ","
-	}
-	if m.group != "" {
-		m.group = m.group[:len(m.group)-1]
-	}
+	m.group = util.Implode(", ", group)
 }
 
 /* 分页 */

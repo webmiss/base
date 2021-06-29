@@ -190,8 +190,7 @@ CREATE TABLE `user_oauth` (
 INSERT INTO `user_oauth` (`id`, `client_id`, `client_secret`, `state`, `name`) VALUES
 (1,	'base@webmis.vip',	'00fb626bbabfdd903231acf6639cddfb',	'1',	'基础系统');
 
-DROP TABLE IF EXISTS `logs`;
-CREATE TABLE `logs` (
+CREATE TABLE IF NOT EXISTS `logs` (
   `id` bigint(19) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `source` varchar(8) NOT NULL COMMENT '来源',
   `ip` varchar(16) NOT NULL COMMENT 'IP',

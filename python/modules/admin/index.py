@@ -69,4 +69,50 @@ class Index(Base):
       m2.Where('ctime>=%s AND ctime<%s AND source=%s', t3, t4, Env.log_source)
       d2 = m2.FindFirst()
       chart1 += [{'type':'昨日(PV)', 'label':str(i), 'value':int(d2['total'])}]
-    return self.GetJSON({'code':0,'msg':'成功', 'chart1':chart1, 'chart2':[], 'chart3':[]})
+    # 统计图1
+    chart2 = []
+    year = Util.Date('%Y')
+    last1 = str(int(year)+1)
+    last2 = str(int(year)-1)
+    for i in range(12):
+      # 时间
+      if i==11 :
+        dt1 = year + '-' + str(i+1) +'-01'
+        dt2 = last1 + '-01-01'
+        dt3 = last2 + '-' + str(i+1) + '-01'
+        dt4 = year + '-01-01'
+      else :
+        dt1 = year + '-' + str(i+1) + '-01'
+        dt2 = year + '-' + str(i+2) + '-01'
+        dt3 = last2 + '-' + str(i+1) + '-01'
+        dt4 = last2 + '-' + str(i+2) + '-01'
+      t1 = Util.Strtotime(dt1, '%Y-%m-%d')
+      t2 = Util.Strtotime(dt2, '%Y-%m-%d')
+      t3 = Util.Strtotime(dt3, '%Y-%m-%d')
+      t4 = Util.Strtotime(dt4, '%Y-%m-%d')
+      # 统计
+      m1 = Logs()
+      m1.Columns('count(*) as total')
+      m1.Where('ctime>=%s AND ctime<%s AND source=%s', t1, t2, Env.log_source)
+      d1 = m1.FindFirst()
+      chart2 += [{'type':'今年(PV)', 'label':str(i+1), 'value':int(d1['total'])}]
+      m2 = Logs()
+      m2.Columns('count(*) as total')
+      m2.Where('ctime>=%s AND ctime<%s AND source=%s', t3, t4, Env.log_source)
+      d2 = m2.FindFirst()
+      chart2 += [{'type':last2+'年(PV)', 'label':str(i+1), 'value':int(d2['total'])}]
+    # 统计图3
+    chart3 = []
+    m1 = Logs()
+    m1.Columns('count(*) as total')
+    m1.Where('source=%s', Env.log_source)
+    d1 = m1.FindFirst()
+    m2 = Logs()
+    m2.Columns('count(*) as total', 'browser')
+    m2.Where('source=%s', Env.log_source)
+    m2.Group('browser')
+    d2 = m2.Find()
+    for val in d2:
+      ratio = float(int(val['total'])/int(d1['total'])*100)/100
+      chart3 += [{'label':val['browser'], 'value': ratio}]
+    return self.GetJSON({'code':0,'msg':'成功', 'chart1':chart1, 'chart2':chart2, 'chart3':chart3})

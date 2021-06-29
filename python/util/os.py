@@ -12,7 +12,7 @@ class Os:
     elif 'unix' in user_agent or 'Unix' in user_agent or 'BSD' in user_agent or 'HPUX' in user_agent :
       return 'Unix'
     else :
-      return ""
+      return 'Other'
 
   # Browser
   def Browser(user_agent):
@@ -29,4 +29,4 @@ class Os:
     elif 'Netscape' in user_agent :
       return 'Netscape'
     else :
-      return ""
+      return 'Other'

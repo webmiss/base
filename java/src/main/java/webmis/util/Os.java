@@ -13,7 +13,8 @@ public class Os {
       return "MacOS";
     else if(user_agent.contains("unix") || user_agent.contains("Unix") || user_agent.contains("BSD") || user_agent.contains("HPUX"))
       return "Unix";
-    return "";
+    else
+      return "Other";
   }
 
   /* Browser */
@@ -31,7 +32,7 @@ public class Os {
     else if(user_agent.contains("Netscape"))
       return "Netscape";
     else
-      return "";
+      return "Other";
   }
   
 }

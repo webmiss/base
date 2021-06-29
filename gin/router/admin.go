@@ -13,6 +13,7 @@ func Admin(r *gin.Engine) {
 		// 首页
 		g.GET("", (&admin.Index{}).Index)
 		g.GET("index/getConfig", (&admin.Index{}).GetConfig)
+		g.POST("index/getChart", (&admin.Index{}).GetChart)
 		// 登录
 		g.POST("user/login", (&admin.User{}).Login)
 		g.POST("user/token", (&admin.User{}).Token)

@@ -17,7 +17,7 @@ func (Os) System(user_agent string) string {
 	case strings.Contains(user_agent, "unix") || strings.Contains(user_agent, "Unix") || strings.Contains(user_agent, "BSD") || strings.Contains(user_agent, "HPUX"):
 		return "Unix"
 	default:
-		return ""
+		return "Other"
 	}
 }
 
@@ -37,6 +37,6 @@ func (Os) Browser(user_agent string) string {
 	case strings.Contains(user_agent, "Netscape"):
 		return "Netscape"
 	default:
-		return ""
+		return "Other"
 	}
 }

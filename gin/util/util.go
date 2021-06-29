@@ -1,6 +1,7 @@
 package util
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"os/exec"
@@ -58,6 +59,10 @@ func Date(format string, timestamp ...interface{}) string {
 	}
 	return time.Now().Format(format)
 }
+func DateFormat(format string, duration string) string {
+	dd, _ := time.ParseDuration(duration)
+	return time.Now().Add(dd).Format(format)
+}
 
 /* 时间戳 */
 func Time() int64 {
@@ -103,8 +108,15 @@ func Explode(delimiter string, str string) []string {
 
 /* List to String */
 func Implode(glue string, pieces []string) string {
-	res := strings.Join(pieces, glue)
-	return res
+	b := bytes.Buffer{}
+	t := len(pieces)
+	for i := 0; i < t; i++ {
+		b.WriteString(pieces[i])
+		if i+1 != t {
+			b.WriteString(glue)
+		}
+	}
+	return b.String()
 }
 
 /* Array to []byte */

@@ -40,7 +40,7 @@ export default defineComponent({
       }, 30000);
     }
   },
-  // 离开
+  // 离开页面
   beforeRouteLeave(to, form, next) {
     clearInterval(this.time);
     next();
@@ -49,9 +49,11 @@ export default defineComponent({
 
     /* 加载数据 */
     loadData() {
+      let token = Storage.getItem('token');
+      if(!token) return clearInterval(this.time);
       const load: any = Loading();
       Post('index/getChart',{
-        token: Storage.getItem('token'),
+        token: token,
       },(res: any)=>{
         load.clear();
         const d = res.data;
