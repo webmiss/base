@@ -5,7 +5,7 @@ namespace Util;
 class Os {
 
   /* OS */
-  static function System($user_agent): string {
+  static function System(string $user_agent): string {
     switch(true) {
       case strpos($user_agent, 'win') || strpos($user_agent, 'Win') :
         return 'Windows';
@@ -21,7 +21,7 @@ class Os {
   }
 
   /* Browser */
-  static function Browser($user_agent): string {
+  static function Browser(string $user_agent): string {
     switch(true) {
       case strpos($user_agent, 'Maxthon') || strpos($user_agent, 'MSIE') :
         return 'IE';

@@ -3,7 +3,7 @@
 use Util\Util;
 ```
 
-## 日期转时间戳
+## 执行Linux命令
 ```php
 Util::Exec(string $cmd);
 ```

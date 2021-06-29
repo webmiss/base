@@ -111,6 +111,8 @@ export default {
         {label: '编码/解码 URL', value: 'docs/phalcon/util/url'},
         {label: '编码/解码 Base64', value: 'docs/phalcon/util/base64'},
         {label: '加密算法 Hash', value: 'docs/phalcon/util/hash'},
+        {label: '类型转换 Type', value: 'docs/phalcon/util/type'},
+        {label: '设备信息 Os', value: 'docs/phalcon/util/os'},
       ]},
     ];
   },
@@ -151,6 +153,8 @@ export default {
         {label: '编码/解码 URL', value: 'docs/python/util/url'},
         {label: '编码/解码 Base64', value: 'docs/python/util/base64'},
         {label: '加密算法 Hash', value: 'docs/python/util/hash'},
+        {label: '类型转换 Type', value: 'docs/python/util/type'},
+        {label: '设备信息 Os', value: 'docs/python/util/os'},
       ]},
     ];
   },
@@ -191,6 +195,8 @@ export default {
         {label: '编码/解码 URL', value: 'docs/java/util/url'},
         {label: '编码/解码 Base64', value: 'docs/java/util/base64'},
         {label: '加密算法 Hash', value: 'docs/java/util/hash'},
+        {label: '类型转换 Type', value: 'docs/java/util/type'},
+        {label: '设备信息 Os', value: 'docs/java/util/os'},
         {label: '泛型 Dynamic', value: 'docs/java/util/dynamic'},
         {label: '请求响应 Http', value: 'docs/java/util/http'},
       ]},
@@ -235,6 +241,7 @@ export default {
         {label: '编码/解码 Base64', value: 'docs/gin/util/base64'},
         {label: '加密算法 Hash', value: 'docs/gin/util/hash'},
         {label: '类型转换 Type', value: 'docs/gin/util/type'},
+        {label: '设备信息 Os', value: 'docs/gin/util/os'},
       ]},
     ];
   },

@@ -2,7 +2,7 @@
 class Os:
 
   # OS
-  def System(user_agent):
+  def System(user_agent: str):
     if 'win' in user_agent or 'Win' in user_agent :
       return 'Windows'
     elif 'linux' in user_agent or 'Linux' in user_agent :
@@ -15,7 +15,7 @@ class Os:
       return 'Other'
 
   # Browser
-  def Browser(user_agent):
+  def Browser(user_agent: str):
     if 'Maxthon' in user_agent or 'MSIE' in user_agent :
       return 'IE'
     elif 'Chrome' in user_agent :
