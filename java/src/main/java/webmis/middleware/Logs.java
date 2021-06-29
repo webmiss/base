@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpServletRequest;
 
 import webmis.config.Env;
+import webmis.util.Http;
 
 /* 日志 */
 @WebListener
@@ -18,7 +19,7 @@ public class Logs implements ServletRequestListener {
   public void requestInitialized(ServletRequestEvent se) {
     HttpServletRequest request = (HttpServletRequest) se.getServletRequest();
     // 参数
-    String ip = request.getRemoteAddr();
+    String ip = Http.IpAddress(request);
     String method = request.getMethod();
     String path = request.getRequestURI();
     String user_agent = request.getHeader("User-Agent");
