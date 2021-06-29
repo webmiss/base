@@ -13,8 +13,8 @@ public class Db {
     cfg.put("user","webmis");  //用户名
     cfg.put("password","e4b99adec618e653400966be536c45f8");  //密码
     cfg.put("driver","com.mysql.cj.jdbc.Driver");  //驱动
-    cfg.put("min",5);  //初始连接数
-    cfg.put("max",10);  //最大连接数
+    cfg.put("min",100);  //初始连接数
+    cfg.put("max",200);  //最大连接数
     cfg.put("time",30000);  //等待超时(毫秒)
     return cfg;
   }
@@ -27,8 +27,8 @@ public class Db {
     cfg.put("user","webmis");  //用户名
     cfg.put("password","e4b99adec618e653400966be536c45f8");  //密码
     cfg.put("driver","com.mysql.cj.jdbc.Driver");  //驱动
-    cfg.put("min",5);  //初始连接数
-    cfg.put("max",10);  //最大连接数
+    cfg.put("min",100);  //初始连接数
+    cfg.put("max",200);  //最大连接数
     cfg.put("time",30000);  //等待超时(毫秒)
     return cfg;
   }
