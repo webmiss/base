@@ -8,6 +8,5 @@ class Home {
     $app->get('/vcode', 'App\Home\Index::Vcode');
     $app->get('/index/qrcode/{name}', 'App\Home\Index::Qrcode');
     $app->post('/ossCallback', 'App\Home\Index::OssCallback');
-    $app->post('/imCallback', 'App\Home\Index::ImCallback');
   }
 }
