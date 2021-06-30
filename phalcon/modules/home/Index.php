@@ -59,4 +59,14 @@ class Index extends Base {
     return self::GetJSON(['Status'=>'Ok']);
   }
 
+  /* IM-消息回调 */
+  static function ImCallback() {
+    // 参数
+    $param = self::Json();
+    // 数据处理
+    $text = json_encode($param);
+    Util::Exec('echo '.$text.' > upload/callback.txt');
+    return self::GetJSON(['ActionStatus'=>'Ok', 'ErrorCode'=>0, 'ErrorInfo'=>'']);
+  }
+
 }
