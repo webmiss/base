@@ -62,9 +62,10 @@ class Index extends Base {
   /* IM-消息回调 */
   static function ImCallback() {
     // 参数
-    $param = self::Json();
+    // $param = self::Json();
     // 数据处理
-    $text = json_encode($param);
+    // $text = json_encode($param);
+    $text = json_encode($_POST);
     Util::Exec('echo '.$text.' > upload/callback.txt');
     return self::GetJSON(['ActionStatus'=>'Ok', 'ErrorCode'=>0, 'ErrorInfo'=>'']);
   }
