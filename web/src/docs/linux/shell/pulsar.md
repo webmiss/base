@@ -25,16 +25,8 @@ bin/pulsar standalone
 ```
 <br/>
 
-## 客户端( vi conf/client.conf )
-```bash
-webServiceUrl=http://172.17.0.2:8080,172.17.0.3:8080,172.17.0.4:8080
-brokerServiceUrl=pulsar://172.17.0.2:6650,172.17.0.3:6650,172.17.0.4:6650
-```
 ### 测试
 ```bash
-# 查看主题
-bin/pulsar-admin persistent list public/default
-
 # 消费者
 bin/pulsar-client consume persistent://public/default/pulsar-test \
 -n 100 \
@@ -207,4 +199,12 @@ bin/pulsar-daemon start broker
 bin/pulsar broker
 # 查看
 bin/pulsar-admin brokers list webmis
+```
+
+<br/>
+
+## 五、客户端( vi conf/client.conf )
+```bash
+webServiceUrl=http://172.17.0.2:8080,172.17.0.3:8080,172.17.0.4:8080
+brokerServiceUrl=pulsar://172.17.0.2:6650,172.17.0.3:6650,172.17.0.4:6650
 ```
