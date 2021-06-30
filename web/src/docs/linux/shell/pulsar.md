@@ -1,4 +1,81 @@
-## Docker容器
+## 安装Java
+```bash
+apt install default-jre default-jdk
+```
+
+<br/>
+
+## Pulsar安装
+```bash
+cd /home
+wget https://archive.apache.org/dist/pulsar/pulsar-2.8.0/apache-pulsar-2.8.0-bin.tar.gz
+tar xvfz apache-pulsar-2.8.0-bin.tar.gz
+mv apache-pulsar-2.8.0 pulsar
+rm -fr apache-pulsar-2.8.0-bin.tar.gz
+cd pulsar
+```
+
+<br/>
+
+## 单机
+```bash
+# 后台/前台
+bin/pulsar-daemon start standalone
+bin/pulsar standalone
+```
+<br/>
+
+## 客户端( vi conf/client.conf )
+```bash
+webServiceUrl=http://172.17.0.2:8080,172.17.0.3:8080,172.17.0.4:8080
+brokerServiceUrl=pulsar://172.17.0.2:6650,172.17.0.3:6650,172.17.0.4:6650
+```
+### 测试
+```bash
+# 查看主题
+bin/pulsar-admin persistent list public/default
+
+# 消费者
+bin/pulsar-client consume persistent://public/default/pulsar-test \
+-n 100 \
+-s "consumer-test" \
+-t "Exclusive"
+
+# 生产者
+bin/pulsar-client produce persistent://public/default/pulsar-test \
+-n 1 \
+-m "Hello Pulsar"
+```
+
+<br/>
+
+## 基本操作
+```bash
+# 租户: 列表、创建、更新、删除
+bin/pulsar-admin tenants list
+bin/pulsar-admin tenants create <MyTenant>
+bin/pulsar-admin tenants update <MyTenant>
+bin/pulsar-admin tenants delete <MyTenant>
+# 命名空间: 列表、创建、设置集群、删除
+bin/pulsar-admin namespaces list <MyTenant>
+bin/pulsar-admin namespaces create <MyTenant/MyNameSpace>
+bin/pulsar-admin namespaces set-clusters <MyTenant/MyNameSpace> --clusters webmis
+bin/pulsar-admin namespaces delete <MyTenant/MyNameSpace>
+# 主题: 列表、无分区、有分区、卸载(已订阅)、删除无分区、删除有分区
+bin/pulsar-admin topics list <MyTenant/MyNameSpace>
+bin/pulsar-admin topics create persistent://MyTenant/MyNameSpace/MyTopic
+bin/pulsar-admin topics create-partitioned-topic persistent://MyTenant/MyNameSpace/MyTopic --partitions 4
+bin/pulsar-admin topics unload persistent://MyTenant/MyNameSpace/MyTopic
+bin/pulsar-admin topics delete persistent://MyTenant/MyNameSpace/MyTopic
+bin/pulsar-admin topics delete-partitioned-topic persistent://MyTenant/MyNameSpace/MyTopic
+# 授权
+bin/pulsar-admin topics grant-permission --actions produce,consume --role AppHmsAlert persistent://MyTenant/MyNameSpace/MyTopic
+```
+
+<br/>
+
+## 集群
+### Docker容器
 ```bash
 # 下载镜像
 docker pull ubuntu
@@ -19,42 +96,15 @@ docker start 容器ID
 docker attach 容器ID
 ```
 
-## 安装Java
-```bash
-apt install default-jre default-jdk
-```
-
-## Pulsar安装
-```bash
-cd /home
-wget https://archive.apache.org/dist/pulsar/pulsar-2.8.0/apache-pulsar-2.8.0-bin.tar.gz
-tar xvfz apache-pulsar-2.8.0-bin.tar.gz
-mv apache-pulsar-2.8.0 pulsar
-rm -fr apache-pulsar-2.8.0-bin.tar.gz
-cd pulsar
-```
-### 单机模式
-```bash
-# 后台/前台
-pulsar-daemon start standalone
-pulsar standalone
-```
-
 ### 主机名解析( vi /etc/hosts )
 ```bash
 172.17.0.2   pulsar01
 172.17.0.3   pulsar02
 172.17.0.4   pulsar03
 ```
-### 环境变量( vi /etc/profile )
-```bash
-#PULSAR_HOME
-export PULSAR_HOME=/home/pulsar
-export PATH=$PATH:$PULSAR_HOME/bin
-```
-- source /etc/profile   //生效
+<br/>
 
-## 一、ZooKeeper( vi conf/zookeeper.conf )
+### 一、ZooKeeper( vi conf/zookeeper.conf )
 ```bash
 # 数据
 dataDir=data/zookeeper
@@ -68,25 +118,26 @@ server.1=172.17.0.2:2888:3888
 server.2=172.17.0.3:2888:3888
 server.3=172.17.0.4:2888:3888
 ```
-### myid
+#### myid
 ```bash
 # 集群(本机1, 其它两台分别添加2 3到myid)
 mkdir -p /home/pulsar/data/zookeeper
 echo 1 > /home/pulsar/data/zookeeper/myid
 ```
-### 启动
+#### 启动
 ```bash
 # 后台/前台
-pulsar-daemon start zookeeper
-pulsar zookeeper
+bin/pulsar-daemon start zookeeper
+bin/pulsar zookeeper
 # 查看(QuorumPeerMain)
 jps
 netstat -tnlpu|grep 4043
 ```
+<br/>
 
-### 初始化元数据
+### 二、初始化元数据
 ```bash
-pulsar initialize-cluster-metadata \
+bin/pulsar initialize-cluster-metadata \
   --cluster webmis \
   --zookeeper 172.17.0.2:2181 \
   --configuration-store 172.17.0.2:2181 \
@@ -101,33 +152,35 @@ pulsar initialize-cluster-metadata \
 - --broker-service-url 集群brokers服务URL
 - --broker-service-url-tls 集群brokers提供TLS服务的URL
 
-### 验证初始化元数据
+#### 验证初始化元数据
 ```bash
-pulsar zookeeper-shell
+bin/pulsar zookeeper-shell
 ```
 - help  //命令
 - ls /  //查看
 - quit  //退出
 
-## 二、BookKeeper( vi conf/bookkeeper.conf )
+<br/>
+
+### 三、BookKeeper( vi conf/bookkeeper.conf )
 ```bash
 advertisedAddress=172.17.0.2
 zkServers=172.17.0.2:2181,172.17.0.3:2181,172.17.0.4:2181
 ```
-### 初始化元数据
+#### 初始化元数据
 ```bash
 mkdir -p /home/pulsar/data/bookkeeper
-bookkeeper shell metaformat
+bin/bookkeeper shell metaformat
 ```
-### 启动
+#### 启动
 ```bash
 # 后台/前台
-pulsar-daemon start bookie
-bookkeeper bookie
+bin/pulsar-daemon start bookie
+bin/bookkeeper bookie
 # 查看状态
 cat /home/pulsar/data/bookkeeper/ledgers/current/VERSION
 # 测试
-bookkeeper shell bookiesanity
+bin/bookkeeper shell bookiesanity
 # 恢复
 # bookkeeper autorecovery
 ```
@@ -136,7 +189,9 @@ bookkeeper shell bookiesanity
 - numEntries  //一批消息的消息数量
 - writeQuorum //每条消息副本数量
 
-## 三、Broker( vi conf/broker.conf )
+<br/>
+
+### 四、Broker( vi conf/broker.conf )
 ```bash
 # 集群节点
 zookeeperServers=172.17.0.2:2181,172.17.0.3:2181,172.17.0.4:2181
@@ -145,52 +200,11 @@ configurationStoreServers=172.17.0.2:2181,172.17.0.3:2181,172.17.0.4:2181
 clusterName=webmis
 ```
 
-### 启动
+#### 启动
 ```bash
 # 后台/前台
-pulsar-daemon start broker
-pulsar broker
+bin/pulsar-daemon start broker
+bin/pulsar broker
 # 查看
-pulsar-admin brokers list webmis
-```
-
-## 四、客户端( vi conf/client.conf )
-```bash
-webServiceUrl=http://172.17.0.2:8080,172.17.0.3:8080,172.17.0.4:8080
-brokerServiceUrl=pulsar://172.17.0.2:6650,172.17.0.3:6650,172.17.0.4:6650
-```
-### 测试
-```bash
-# 查看主题
-pulsar-admin persistent list public/default
-
-# 消费者
-pulsar-client consume persistent://public/default/pulsar-test \
--n 100 \
--s "consumer-test" \
--t "Exclusive"
-
-# 生产者
-pulsar-client produce persistent://public/default/pulsar-test \
--n 1 \
--m "Hello Pulsar"
-```
-
-## 基本操作
-```bash
-# 租户: 列表、创建、更新、删除
-pulsar-admin tenants list
-pulsar-admin tenants create <MyTenant>
-pulsar-admin tenants update <MyTenant>
-pulsar-admin tenants delete <MyTenant>
-# 命名空间: 列表、创建、设置集群
-pulsar-admin namespaces list <MyTenant>
-pulsar-admin namespaces create <MyTenant/MyNameSpace>
-pulsar-admin namespaces set-clusters <MyTenant/MyNameSpace> --clusters webmis
-# 主题: 列表、无分区、有分区
-pulsar-admin topics list <MyTenant/MyNameSpace>
-pulsar-admin topics create persistent://MyTenant/MyNameSpace/MyTopic
-pulsar-admin topics create-partitioned-topic persistent://MyTenant/MyNameSpace/MyTopic --partitions 4
-# 授权
-pulsar-admin topics grant-permission --actions produce,consume --role AppHmsAlert persistent://MyTenant/MyNameSpace/MyTopic
+bin/pulsar-admin brokers list webmis
 ```
