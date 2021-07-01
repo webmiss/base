@@ -26,8 +26,9 @@ func Empty(val interface{}) bool {
 	res := reflect.Zero(r.Type())
 	if !reflect.DeepEqual(r.Interface(), res.Interface()) {
 		return false
+	} else {
+		return true
 	}
-	return true
 }
 
 /* 是否KEY */
