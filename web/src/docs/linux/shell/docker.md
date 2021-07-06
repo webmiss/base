@@ -79,6 +79,9 @@ docker inspect 容器ID
 # 进入正在运行的容器
 docker attach 容器ID
 
+# 在运行的容器中执行命令
+docker exec -it 容器ID /bin/bash
+
 # 将容器储存为镜像
 docker commit 容器ID 名称
 ```

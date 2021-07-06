@@ -355,9 +355,6 @@ func (m *Model) Set(data map[string]interface{}) {
 		vals += k + "=?, "
 		m.args = append(m.args, v)
 	}
-	if len(data) > 0 {
-		vals = vals[:len(vals)-2]
-	}
 	m.data = vals
 }
 

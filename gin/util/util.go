@@ -127,11 +127,8 @@ func JsonEncode(arr interface{}) []byte {
 }
 
 /* String to interface{} */
-func JsonDecode(str interface{}, res interface{}) {
-	err := json.Unmarshal([]byte((&Type{}).Strval(str)), &res)
-	if err != nil {
-		fmt.Println(err)
-	}
+func JsonDecode(str interface{}, res interface{}) error {
+	return json.Unmarshal([]byte((&Type{}).Strval(str)), &res)
 }
 
 /* 合并数组 */
@@ -153,4 +150,22 @@ func InArray(needle string, haystack []string) bool {
 		}
 	}
 	return false
+}
+
+/* 截取小数位数-四舍五入 */
+func FloatRound(f float64, n int) float64 {
+	format := "%." + strconv.Itoa(n) + "f"
+	res, _ := strconv.ParseFloat(fmt.Sprintf(format, f), 64)
+	return res
+}
+
+/* 截取小数位数-不四舍五入 */
+func FloatFloor(f float64, n int) float64 {
+	s := strconv.FormatFloat(f, 'f', -1, 64)
+	index := strings.LastIndex(s, ".")
+	if len(s[index+1:]) < n {
+		return f
+	}
+	res, _ := strconv.ParseFloat(s[:index+1+n], 64)
+	return res
 }

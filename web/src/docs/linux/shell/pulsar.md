@@ -53,8 +53,9 @@ bin/pulsar-admin namespaces list <MyTenant>
 bin/pulsar-admin namespaces create <MyTenant/MyNameSpace>
 bin/pulsar-admin namespaces set-clusters <MyTenant/MyNameSpace> --clusters webmis
 bin/pulsar-admin namespaces delete <MyTenant/MyNameSpace>
-# 主题: 列表、无分区、有分区、卸载(已订阅)、删除无分区、删除有分区
+# 主题: 列表、状态、创建(无分区)、创建(有分区)、卸载(已订阅)、删除(无分区)、删除(有分区)
 bin/pulsar-admin topics list <MyTenant/MyNameSpace>
+bin/pulsar-admin topics stats/partitioned-stats persistent://MyTenant/MyNameSpace/MyTopic
 bin/pulsar-admin topics create persistent://MyTenant/MyNameSpace/MyTopic
 bin/pulsar-admin topics create-partitioned-topic persistent://MyTenant/MyNameSpace/MyTopic --partitions 4
 bin/pulsar-admin topics unload persistent://MyTenant/MyNameSpace/MyTopic

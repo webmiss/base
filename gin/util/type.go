@@ -39,13 +39,13 @@ func (t Type) Int64(val interface{}) int64 {
 }
 
 /* Float */
-func (t Type) Float(val interface{}) float64 {
+func (t Type) Float(val interface{}) float32 {
 	str := t.Strval(val)
 	res, err := strconv.ParseFloat(str, 32)
 	if err != nil {
 		return 0
 	}
-	return res
+	return float32(res)
 }
 
 /* Float64 */

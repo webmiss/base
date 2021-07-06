@@ -255,6 +255,7 @@ export default {
         {label: 'VBox安装MacOS', value: 'docs/linux/shell/macos'},
         {label: 'Docker 容器', value: 'docs/linux/shell/docker'},
         {label: 'MariaDB 数据库', value: 'docs/linux/shell/mariadb'},
+        {label: 'MaxScale 中间件', value: 'docs/linux/shell/maxscale'},
         {label: 'Pulsar 消息列队', value: 'docs/linux/shell/pulsar'},
       ]},
       {label:'CentOS', children:[
