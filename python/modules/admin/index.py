@@ -69,7 +69,7 @@ class Index(Base):
       m2.Where('ctime>=%s AND ctime<%s AND source=%s', t3, t4, Env.log_source)
       d2 = m2.FindFirst()
       chart1 += [{'type':'昨日(PV)', 'label':str(i), 'value':int(d2['total'])}]
-    # 统计图1
+    # 统计图2
     chart2 = []
     year = Util.Date('%Y')
     last1 = str(int(year)+1)

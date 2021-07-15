@@ -1,6 +1,6 @@
 <template>
   <div ref="chart" class="chart_pie">
-    <div class="chart_pie_html" v-html="html"></div>
+    <div class="chart_pie_html" v-if="isHtml" v-html="html"></div>
   </div>
 </template>
 
@@ -24,7 +24,8 @@ export default defineComponent({
   },
   data(){
     const chart: any = null;
-    return {chart}
+    const isHtml: any = false;
+    return {chart, isHtml}
   },
   watch:{
     data(val){
@@ -59,6 +60,8 @@ export default defineComponent({
       this.chart.data(this.data);
       // 加载
       this.chart.render();
+      // 显示Html
+      setTimeout(()=>{ this.isHtml=true; },1000);
     },
 
   }

@@ -23,7 +23,7 @@ def After(res):
   res = make_response(res)
   res.headers['Access-Control-Allow-Origin'] = '*'
   res.headers['Access-Control-Allow-Methods'] = '*'
-  res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
+  res.headers['Access-Control-Allow-Headers'] = '*'
   res.headers['Access-Control-Max-Age'] = '2592000'
   return res
 

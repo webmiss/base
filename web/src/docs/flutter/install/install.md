@@ -8,10 +8,10 @@ pacman -S git
 
 #### 2) 安装JavaJdk
 ```bash
-pacman -S jdk8-openjdk jre8-openjdk
+pacman -S jdk-openjdk jre-openjdk maven
 # 查看
-java --version
-javac --version
+java -version
+javac -version
 ```
 
 #### 3) 安装AndroidSdk
@@ -21,7 +21,6 @@ pacman -S android-studio
 mkdir /opt/android-sdk
 chmod -R 777 /opt/android-sdk
 ```
-- 打开AndroidStudio，按提示安装SDK到 “/opt/android-sdk” 目录。
 **环境变量** ( vi /etc/profile )
 ```bash
 export ANDROID_HOME=/opt/android-sdk
@@ -31,11 +30,26 @@ export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
 ```bash
 source /etc/profile
 ```
+**SDK Manager**
+打开 AndroidStudio > Configure > SDK Manager
+```bash
+# SDK Location
+/opt/android-sdk
+# SDK Platforms
+Android 10.0
+Android 6.0
+# SDK Tools
+Android SDK Build-Tools
+Android SDK Command-line Tools
+Android Emulator
+Android SDK Platform-Tools
+```
 
 #### 4) 模拟器
 ```bash
 pacman -S genymotion
 ```
+- Custom Phone 6.0  480x854  160-MDPI
 
 
 #### 5) 安装Flutter
@@ -52,9 +66,6 @@ export FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
 
 #### 6) 依赖
 ```bash
-# Android许可证
-flutter doctor --android-licenses
-# 检测依赖
 flutter doctor -v
 ```
 
@@ -99,9 +110,6 @@ git clone https://github.com/flutter/flutter.git -b stable --depth 1
 
 #### 6) 依赖
 ```bash
-# Android许可证
-flutter doctor --android-licenses
-# 检测依赖
 flutter doctor -v
 ```
 

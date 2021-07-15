@@ -1,3 +1,43 @@
+## 优化( mysql -uroot -p )
+```bash
+# 开启表InnoDB: 1开启、0关闭
+set global innodb_file_per_table = 1;
+# 缓冲池(kb): 查询专用(物理内存*75%)、默认(134217728=128M)
+set global innodb_buffer_pool_size = 1*1024*1024*1024*0.75;
+# 最大连接数: 小网站(100~200)、中型(500~800)、大型(1000~2000)
+set global max_connections = 300;
+# 查询缓存容量: 通常设置为(200-300)MB
+set global query_cache_type = 1;
+set global query_cache_limit = 256;
+set global query_cache_min_res_unit = 2;
+set global query_cache_size = 200*1024*1024;
+# 临时表容量和内存表最大容量: 建议(64M/1G)
+set global tmp_table_size = 4*64*1024*1024;
+set global max_heap_table_size = 4*64*1024*1024;
+# 检查空闲连接: 建议(60秒/次)
+set global wait_timeout = 60;
+```
+
+#### 配置文件( vi /etc/my.cnf.d/server.cnf )
+```bash
+[mysqld]
+# 禁用DNS反向查询
+skip-name-resolve
+# 慢查询日志: 优化查询语句
+slow-query-log = 1
+long_query_time = 2
+slow-query-log-file = /var/lib/mysql/mysql-slow.log
+```
+
+#### 其他
+```bash
+# 避免使用交换空间
+sysctl vm.swappiness
+sysctl -w vm.swappiness=0
+```
+
+<br/>
+
 ## 常用命令
 ### 设置root账户
 ``` bash
@@ -13,8 +53,12 @@ mysqladmin -u root -password <新密码>
 # 修改密码
 mysqladmin -u root -p <旧密码> password <新密码>
 
-# 重启MariaDB
-systemctl restart mariadb
+# 查看配置
+show global variables like 'innodb_file_per_table';
+show global status like 'innodb_file_per_table';
+
+# 更改配置
+set global innodb_file_per_table = 1;
 ```
 ### 创建用户
 ``` bash

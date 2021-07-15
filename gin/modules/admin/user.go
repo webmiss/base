@@ -25,12 +25,12 @@ func (r User) Login(c *gin.Context) {
 	passwd, _ := r.JsonName(json, "passwd")
 	// 验证用户名
 	safety := (&library.Safety{})
-	if safety.IsRight("uname", uname) != true && safety.IsRight("tel", uname) != true && safety.IsRight("email", uname) != true {
+	if !safety.IsRight("uname", uname) && !safety.IsRight("tel", uname) && !safety.IsRight("email", uname) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "请输入用户名/手机/邮箱"})
 		return
 	}
 	// 密码长度
-	if safety.IsRight("passwd", passwd) != true {
+	if !safety.IsRight("passwd", passwd) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "请输入6~16位密码"})
 		return
 	}
