@@ -27,10 +27,11 @@ if(lag && lag.name=='python'){
 }
 
 /* 配置 */
+const now = new Date();
 export default {
   title: 'WebMIS-后台框架', // 应用名称
-  version: '2.0.0', // 应用版本
-  copy: 'Copyright © WebMIS.vip 2021',  // 版权信息
+  version: '2.0.1', // 应用版本
+  copy: 'Copyright © WebMIS.vip ' + now.getFullYear(),  // 版权信息
   baseUrl: baseUrl, //数据地址
   apiUrl: baseUrl+'admin/', //数据接口地址
   /* Token */

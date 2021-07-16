@@ -80,7 +80,7 @@ class User(Base):
     if msg != '' :
       return self.GetJSON({'code':4001, 'msg':msg})
     tData = AdminToken.Token(token)
-    if uinfo!='1' :
+    if uinfo!=1 :
       return self.GetJSON({'code':0, 'msg':'成功', 'token_time':tData['time']})
     # 用户信息
     model = UserInfo()
