@@ -257,6 +257,10 @@ export default {
         {label: 'MariaDB 数据库', value: 'docs/linux/shell/mariadb'},
         {label: 'MaxScale 中间件', value: 'docs/linux/shell/maxscale'},
         {label: 'Pulsar 消息列队', value: 'docs/linux/shell/pulsar'},
+        {label: 'ElasticSearch 全文搜索', value: 'docs/linux/shell/elasticsearch'},
+      ]},
+      {label:'Service', children:[
+        {label: 'FTP 文件传输', value: 'docs/linux/service/ftp'},
       ]},
       {label:'CentOS', children:[
         {label: '基础配置', value: 'docs/linux/centos/config'},

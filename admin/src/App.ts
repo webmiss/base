@@ -68,8 +68,6 @@ export default defineComponent({
     if(Env.update.start) this.isUpdate();
     // 用户名
     this.login.uname = Storage.getItem('uname');
-    // 系统信息
-    this.getConfig();
     // 默认语言
     this.setLanguage(); 
     // Enter事件
@@ -161,26 +159,13 @@ export default defineComponent({
       this.languageNum = lagData.index || 0;
     },
 
-    /* 系统信息 */
-    getConfig(){
-      const load = Loading();
-      Get('index/getConfig',{},(res: any)=>{
-        load.clear();
-        const d = res.data;
-        if(d.code==0) this.state.system = d.list;
-      },()=>{
-        load.clear();
-        Toast('网络加载失败!');
-      });
-    },
-
     /* 登录 */
     loginSub(){
       // 验证
       let uname = this.login.uname;
       let passwd = this.login.passwd;
       let reg_passwd = RegRight('passwd',passwd);
-      if(RegRight('uname',uname)!==true && RegRight('email',uname)!==true && RegRight('tel',uname)!==true) return Toast('请输入帐号/手机/邮箱');
+      if(RegRight('uname',uname)!==true && RegRight('email',uname)!==true && RegRight('tel',uname)!==true) return Toast('请输入手机号码');
       else if(reg_passwd!==true) return Toast(reg_passwd);
       // 提交
       this.login.subText = '正在登录';

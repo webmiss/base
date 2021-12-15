@@ -25,17 +25,17 @@ import wmButton from '@/components/form/button/index.vue'
 import wmPage from '@/components/page/index.vue'
 import wmTree from '@/components/tree/index.vue'
 /* ElementUI */
-import { ElTabs, ElTabPane } from 'element-plus';
-import '@/assets/themes/tabs.css'
-import '@/assets/themes/tab-pane.css'
-import '@/assets/themes/select.css'
-import '@/assets/themes/option.css'
+// import { ElTabs, ElTabPane } from 'element-plus';
+// import '@/assets/themes/tabs.css'
+// import '@/assets/themes/tab-pane.css'
+// import '@/assets/themes/select.css'
+// import '@/assets/themes/option.css'
 
 /* 用户管理 */
 export default defineComponent({
   components: {
     wmMain,wmRow,wmTable,wmTableTitle,wmTableTr,wmImg,wmTag,wmPopover,wmSwitch,wmDialog,wmForm,wmFormItem,wmInput,wmRadio,wmDate,wmButton,wmPage,wmTree,
-    ElTabs,ElTabPane,
+    // ElTabs,ElTabPane,
   },
   data(){
     // 状态

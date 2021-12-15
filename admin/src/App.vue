@@ -16,11 +16,11 @@
     <!-- 更新APP End -->
 
     <!-- Login -->
-    <div v-show="state.isLogin===false" class="login_bg bgImg bgcover" :style="{backgroundImage:'url('+(state.system.login_bg?state.system.login_bg:'')+')'}">
+    <div v-show="state.isLogin===false" class="login_bg bgImg bgcover" :style="{backgroundImage:'url('+require('./assets/bg.jpg')+')'}">
       <div class="login_body">
         <div class="login_logo flex_center">
-          <div class="bgImg" :style="{backgroundImage:'url('+(state.system.logo?state.system.logo:require('./assets/logo.svg'))+')', backgroundSize: state.system.logo?'cover':''}"></div>
-          <h2 class="nowrap">{{state.system.title}}</h2>
+          <div class="bgImg" :style="{backgroundImage:'url('+require('./assets/logo.svg')+')', backgroundSize: state.system.logo?'cover':''}"></div>
+          <h2 class="nowrap">{{info.title}}</h2>
         </div>
         <div class="login_ct">
           <div class="login_type">
@@ -38,8 +38,9 @@
           </wm-popover>
           </div>
           <h3>会员登录</h3>
+          <ComponentYouAreDeveloping />
           <div class="login_input">
-            <wm-input :value="login.uname" @update:value="login.uname=$event" placeholder="用户名/手机/邮箱" />
+            <wm-input :value="login.uname" @update:value="login.uname=$event" placeholder="请输入手机号码" />
           </div>
           <div class="login_input">
             <wm-input :value="login.passwd" @update:value="login.passwd=$event" type="password" placeholder="密码" />
@@ -48,7 +49,7 @@
             <wm-button @click="loginSub()" :disabled="login.dis">{{login.subText}}</wm-button>
           </div>
         </div>
-        <div class="login_copy nowrap">&copy; {{state.system.copy}}&nbsp;&nbsp;版本：{{info.version}}</div>
+        <div class="login_copy nowrap">{{info.copy}}&nbsp;&nbsp;版本：{{info.version}}</div>
       </div>
     </div>
     <!-- Login End -->

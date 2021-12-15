@@ -54,8 +54,9 @@ pacman -S ibus ibus-libpinyin
 ## 美化桌面
 ``` bash
 # 优化工具
-pacman -S gnome-tweak-tool
+pacman -S gnome-tweaks
 ```
+- 安装: 软件 > 实用工具 > 扩展
 - 下载: [Shell主题](https://github.com/webmiss/gnome-shell)
 - 字体: 优化工具 > 字体 > "文泉驿微米黑"
 - Shell主题: 优化工具 > 扩展 > User themes
