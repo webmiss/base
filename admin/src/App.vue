@@ -1,44 +1,23 @@
 <template>
   <div id="app">
 
-    <!-- 更新APP -->
-    <div v-if="update.show" class="update_body" :style="{backgroundColor: updateCfg.bg}">
-      <div class="update_ct verticalCenter">
-        <div class="logo" :style="{backgroundColor: updateCfg.logoBg}"><div></div></div>
-        <div class="loading" :style="{backgroundImage: 'linear-gradient(to right, '+updateCfg.loading+', '+updateCfg.loading+' '+update.loading+', '+updateCfg.loaded+' '+update.loading+', '+updateCfg.loaded+' 100%)'}"></div>
-        <div class="load_msg" :style="{color:updateCfg.msgColor}">{{update.msg}}</div>
-        <div class="load_button">
-          <button class="Button" v-if="update.down" @click="updateDown()" :style="{color:updateCfg.butColor,backgroundColor:updateCfg.butBg,}">{{updateCfg.butText}}</button>
-        </div>
-      </div>
-      <div class="update_logo" :style="{color:updateCfg.copy}"><h1>{{info.title}}</h1><h2>{{info.copy}}</h2></div>
-    </div>
-    <!-- 更新APP End -->
-
     <!-- Login -->
     <div v-show="state.isLogin===false" class="login_bg bgImg bgcover" :style="{backgroundImage:'url('+require('./assets/bg.jpg')+')'}">
-      <div class="login_body">
-        <div class="login_logo flex_center">
-          <div class="bgImg" :style="{backgroundImage:'url('+require('./assets/logo.svg')+')', backgroundSize: state.system.logo?'cover':''}"></div>
-          <h2 class="nowrap">{{info.title}}</h2>
+      <div class="language">
+        <div class="language_text">语言: {{language.list[language.num].val}}</div>
+        <div class="language_box">
+          <div class="arrow"></div>
+          <ul class="language_list">
+            <template v-for="(v,k) in language.list" :key="k">
+              <li v-if="language.list[language.num].val!=v.val" @click="Language(k)">{{v.val}}</li>
+            </template>
+          </ul>
         </div>
+      </div>
+      <div class="login_body">
+        <div class="login_logo ctCenter bgImg" :style="{backgroundImage:'url('+require('./assets/logo.svg')+')'}"></div>
         <div class="login_ct">
-          <div class="login_type">
-          <wm-popover type="bottom" effect="dark" width="180px">
-            <template #body>
-              <ul class="login_type_list">
-                <template v-for="(val,index) in language">
-                  <li :key="index" v-if="language[languageNum].val!=val.val" @click="platform(index)" >{{val.val}}</li>
-                </template>
-              </ul>
-            </template>
-            <template #reference>
-              <div class="login_type_title">&lt; {{language[languageNum].val}} &gt;</div>
-            </template>
-          </wm-popover>
-          </div>
-          <h3>会员登录</h3>
-          <ComponentYouAreDeveloping />
+          <h2 class="login_title">{{info.title}}</h2>
           <div class="login_input">
             <wm-input :value="login.uname" @update:value="login.uname=$event" placeholder="请输入手机号码" />
           </div>
@@ -55,57 +34,78 @@
     <!-- Login End -->
 
     <!-- Main -->
-  <div class="app_body flex" v-show="state.isLogin===true" :style="{paddingTop: state.statusHeight}">
-    <!-- Left -->
-    <div class="app_left">
-      <wm-scroll-view style="height: 100%;" ref="menusScroll" :isUpper="false" :isLower="false">
-        <!-- 用户信息 -->
-        <div class="app_user">
-          <div class="img">
-            <div v-if="state.uInfo.img" class="bgImg" :style="{backgroundImage:'url('+state.uInfo.img+')'}"></div>
-            <div v-else class="bgImg tu"></div>
+    <div class="app_body flex" v-show="state.isLogin===true">
+      <!-- Left -->
+      <div class="app_left scrollbar">
+        <div class="app_logo bgImg" :style="{backgroundImage:'url('+require('./assets/logo.svg')+')'}"></div>
+        <div class="app_title nowrap">{{info.title}}</div>
+        <ul class="app_menus">
+          <li v-for="(m,k) in menus" :key="k" @click="menusClick([k,0,0])" :class="menusPos[0]==k?'active':''">
+            <div><i :class="m.icon"></i></div>
+            <p>{{m.label}}</p>
+          </li>
+        </ul>
+        <div class="app_copy">&copy; 2022</div>
+      </div>
+      <!-- Left End -->
+      <!-- Right -->
+      <div class="app_right">
+        <!-- Top -->
+        <div class="app_right_top flex">
+          <!-- Search -->
+          <div class="app_search">
+            <wm-search :data="menusSeaList" @update:active="menusClick(JSON.parse($event))" />
           </div>
-          <div class="info nowrap">
-            {{state.uInfo.nickname || '昵称'}}({{state.uInfo.name || '姓名'}})
+          <!-- User -->
+          <div class="app_user">
+            <div class="flex_left">
+              <span class="tu bgImg" :style="{backgroundImage:'url('+state.uInfo.img+')'}"></span>
+              <span class="name">{{state.uInfo.nickname || '会员昵称'}}</span>
+              <span class="ico"><i class="icons icon_arrow_down_bold"></i></span>
+            </div>
+            <div class="box">
+              <div class="user_info flex_left">
+                <div class="ico bgImg" :style="{backgroundImage:'url('+state.uInfo.img+')'}"></div>
+                <div class="info"><h2>{{state.uInfo.uname}}</h2><p>ID:{{state.uInfo.uid}}</p></div>
+              </div>
+              <ul class="user_list">
+                <li @click="menusClick([0],'/UserInfo')">基本信息</li>
+                <li @click="menusClick([0],'/UserPasswd')">修改密码</li>
+              </ul>
+              <div class="user_logout" @click="logout()">退出登录</div>
+            </div>
           </div>
         </div>
-        <!-- 菜单 -->
-        <wm-menu class="app_menus" ref="Menus" textColor="#A2A4A8" :data="menus" :defaultIndex="menusActive" @active="menuClick"></wm-menu>
-        <!-- 登录信息 -->
-        <div class="app_login nowrap">
-          <span class="config">{{state.uInfo.uname}}</span>&gt;
-          <span class="logout" @click="logout()">退出</span>
+        <!-- Top End -->
+        <div class="app_right_ct flex">
+          <!-- Menus -->
+          <div class="app_right_menus scrollbar" v-if="menusChildren.length>0">
+            <div v-for="(m1,k1) in menusChildren" :key="k1">
+              <div class="title flex" @click="menusStyle(m1)">
+                <span>{{m1.label}}</span>
+                <i class="icons icon_arrow_up_bold" :style="{transform: m1.checked?'rotate(-180deg)':'rotate(0deg)'}"></i>
+              </div>
+              <ul class="list" v-if="m1.children" :style="{height: m1.checked?'0px':'auto'}">
+                <li v-for="(m2,k2) in m1.children" :key="k2" :class="menusPos[1]==k1 && menusPos[2]==k2?'active':''" @click="menusClick([menusPos[0],k1,k2])">{{m2.label}}</li>
+              </ul>
+            </div>
+          </div>
+          <!-- Content -->
+          <div class="app_right_body" :style="{width: menusChildren.length>0?'calc(100% - 150px)':'100%'}">
+            <router-view v-slot="{ Component }">
+              <transition :name="transitionName">
+                <keep-alive :include="state.keepAlive">
+                  <component :is="Component" class="view" />
+                </keep-alive>
+              </transition>
+            </router-view>
+          </div>
+          <!-- Content End -->
         </div>
-      </wm-scroll-view>
-    </div>
-    <!-- Left End -->
-    <!-- Right -->
-    <div class="app_right">
-      <wm-scroll-view class="app_top" :scroll-x="true" :scroll-y="false" :scrollbar="null">
-        <wm-action :menus="state.action.menus"></wm-action>
-      </wm-scroll-view>
-      <div class="app_main">
-        <!-- 页面 -->
-        <router-view v-slot="{ Component }">
-          <transition :name="transitionName">
-            <keep-alive :include="state.keepAlive">
-              <component :is="Component" class="view" />
-            </keep-alive>
-          </transition>
-        </router-view>
-        <!-- 页面 End -->
       </div>
-      <div class="app_copy">
-        所属：{{state.system.title}}&nbsp;&nbsp;&copy; {{state.system.copy}}&nbsp;&nbsp;版本：{{info.version}}
-      </div>
+      <!-- Right End -->
     </div>
-    <!-- Right End -->
-  </div>
-  <!-- Main End -->
-
-
-    
-
+    <!-- Main End -->
   </div>
 </template>
 
@@ -114,26 +114,22 @@
 @media only screen and (min-device-width : 320px) and (max-device-width : 1024px) {
   select:focus, textarea:focus, input:focus { font-size: 16px !important; }
 }
-/* 字体图标 */
+/* 样式 */
 @import url('./assets/style/icon.css');
-/* UI */
 @import url('./assets/style/ui.css');
-/* APP */
 @import url('./assets/style/app.css');
 </style>
 <style scoped>
-/* 更新 */
-.update_body{position: absolute; z-index: 999; width: 100%; height: 100%}
-.update_logo{position: fixed; width: 100%; left: 0; bottom: 15px; line-height: 20px; text-align: center; padding: 10px 0;}
-.update_logo h1{font-size: 16px;}
-.update_logo h2{font-size: 10px; font-weight: normal;}
-.update_ct{width: 220px;}
-.update_ct .logo{width: 100px; height: 100px; margin: 0px auto 20px; border-radius: 50%;}
-.update_ct .logo div{height: 100%; background: url('./assets/logo.svg') no-repeat center; background-size: 65%;}
-.update_ct .loading{height: 4px; background: none;}
-.update_ct .load_msg{color: #FFF; text-align: center; padding: 8px 0; font-size: 14px;}
-.update_ct .load_button{text-align: center; padding-top: 16px;}
-.update_ct .load_button button{width: auto; height: 36px; line-height: 36px; padding: 0 20px; font-size: 14px;}
+.language{position: absolute; padding: 10px 0; top: 16px; right: 16px;}
+.language_text{cursor: pointer; line-height: 40px; padding: 0 16px; border-radius: 20px; color: #CCC; border-radius: 20px; background-color: rgba(0,0,0,.7);}
+.language_text:hover{color: #595;}
+.language_box{display: none; position: absolute; z-index: 1; width: 180px; left: 50%; transform: translate(-50%, 0); margin-left: -4px;}
+.language_box .arrow{position: absolute; top: -6px; left: 50%; transform: translate(-50%, 0); width: 0px; height: 0px; border: 8px solid; border-color: transparent; border-bottom-color: rgba(0,0,0,.7);}
+.language_list{position: absolute; padding: 4px; width: 100%; top: 9px; border-radius: 4px; color: #FFF; background-color: rgba(0,0,0,.7);}
+.language_list li{cursor: pointer; line-height: 40px; padding: 0 16px; border-radius: 4px;}
+.language_list li:hover{background-color: #595;}
+.language_list .active{background-color: #595;}
+.language:hover .language_box{display: block;}
 </style>
 
 <script lang="ts" src="./App.ts"></script>

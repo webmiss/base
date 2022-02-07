@@ -2,6 +2,7 @@
 
 # 配置
 s=$1
+dbHost=localhost
 dbUname=root
 dbPasswd=123456
 dbName=data
@@ -28,16 +29,16 @@ if [ "$s" == "adminer" ]; then
 # MySQL备份
 elif [ "$s" == "dbExport" ]; then
   {
-    mysqldump -u$dbUname -p$dbPasswd --databases $dbName --lock-all-tables --flush-logs > $dbPathBackup
+    mysqldump -h$dbHost -u$dbUname -p$dbPasswd --databases $dbName --lock-all-tables --flush-logs > $dbPathBackup
   } || {
-    echo "> 请安装'MySQL'或'MariaDB'"
+    echo "> 无法执行“mysqldump”命令"
   }
 # MySQL恢复
 elif [ "$s" == "dbImport" ]; then
   {
-    mysql -u$dbUname -p$dbPasswd $dbName < $dbPath
+    mysql -h$dbHost -u$dbUname -p$dbPasswd $dbName < $dbPath
   } || {
-    echo "> 请安装'MySQL'或'MariaDB'"
+    echo "> 无法执行“mysql”命令"
   }
 else
   echo "----------------------------------------------------"

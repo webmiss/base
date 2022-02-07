@@ -22,8 +22,8 @@ export default defineComponent({
   data(){
     const color: any = {
         primary:{
-          plain:['#C2E7B0','#F0F9EB','#6FB737'],
-          dark:['#595','#6FB737','#FFF'],
+          plain:['#C2E7B0','#F0F9EB','#595'],
+          dark:['#595','#595','#FFF'],
         },
         info:{
           plain:['#DCDFE6','#F4F6F8','#909399'],

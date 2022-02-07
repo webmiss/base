@@ -1,0 +1,88 @@
+<template>
+  <div class="wm-select" :style="{width: width}">
+    <div class="wm-select_input" @click="checked=!checked">
+      <div class="wm-select_input_ico" :style="{transform: checked?'rotate(-180deg)':'rotate(0deg)'}">
+        <i class="icons icon_arrow_down_bold"></i>
+      </div>
+      <input type="text" readonly :placeholder="placeholder" :value="text" :style="{borderColor: checked?'#6FB737':''}">
+    </div>
+    <div class="wm-select_body" v-if="checked">
+      <div class="wm-select_arrow"></div>
+      <ul class="wm-select_list">
+        <li v-for="(v,k) in dataList" :key="k" :class="v.value==value?'wm-select_active':''" @click="selectClick(v.value)">{{v.label}}</li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<style>
+.wm-select{position: relative; font-size: 14px;}
+.wm-select_input{position: relative; width: 100%; height: 40px;}
+.wm-select_input input{cursor: pointer; width: 100%; height: 100%; padding: 0 32px 0 16px; display: flex; box-sizing: border-box; border-radius: 4px; border: #DCDFE6 1px solid; background-color: #FFF;}
+.wm-select_input input:focus{outline: none;}
+.wm-select_input input:hover{border-color: #C2C4C6;}
+.wm-select_input_ico{cursor: pointer; position: absolute; width: 32px; height: 100%; right: 0; text-align: center; transition-duration: .3s;}
+.wm-select_input_ico i{font-size: 12px; color: #DCDFE6;}
+.wm-select_body{position: absolute; z-index: 9999; width: 100%; margin-top: 10px; box-sizing: border-box; border: #E2E4E6 1px solid; border-radius: 4px; background-color: #FFF; box-shadow: 0 0 12px rgba(0,0,0,.12);}
+.wm-select_arrow{position: absolute; top: -16px; left: 50%; transform: translate(-50%, 0); width: 0px; height: 0px; border: 8px solid; border-color: transparent; border-bottom-color: #FFF;}
+.wm-select_list{padding: 8px 0;}
+.wm-select_list li{cursor: pointer; line-height: 32px; padding: 0 16px;}
+.wm-select_list li:hover{background-color: #F5F7FA; color: #595;}
+.wm-select_active{background-color: #F5F7FA; color: #595; font-weight: bold;}
+</style>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
+  name:'Select',
+  props: {
+    value: {type:String, default:''},              //默认选择
+    data: {type:Array, default:[]},                 //数据: [{label:'Option1', value:'option1'},{label:'Option2', value:'option2'}]
+    width: {type:String, default:'240px'},          //宽度: 240px
+    placeholder: {type:String, default:'请输入'},   //提示信息
+  },
+  data(){
+    const checked: boolean = false;
+    const text: string = '';
+    const dataList: any = null;
+    return {checked, text, dataList}
+  },
+  watch:{
+    data(val: any){
+      this.dataList = val;
+    }
+  },
+  mounted(){
+    // 默认值
+    this.dataList = this.data;
+    this.selectDisplay(this.value);
+    // 阻止穿透
+    const obj: any = document.getElementsByClassName('wm-select');
+    for(let i=0; i<obj.length; i++){
+      obj[i].addEventListener('click',(event: any)=>{
+        event.stopPropagation();
+      });
+    }
+    // 监听外部
+    document.addEventListener('click',()=>{ this.checked = false; });
+  },
+  methods:{
+
+    /* 选择 */
+    selectClick(val: string){
+      this.checked = false;
+      this.selectDisplay(val);
+      this.$emit('update:value', val);
+    },
+
+    /* 显示值 */
+    selectDisplay(val: string){
+      const data: any = this.data;
+      for(let i in data){
+        if(data[i]['value']==val) return this.text=data[i]['label'];
+      }
+    }
+
+  },
+});
+</script>

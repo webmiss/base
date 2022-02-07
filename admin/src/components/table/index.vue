@@ -5,7 +5,7 @@
 </template>
 
 <style>
-.wm-table{width: 100%; border-collapse:collapse; box-sizing: border-box; border-radius: 4px;}
+.wm-table{width: 100%; border-collapse:collapse; box-sizing: border-box; border-radius: 4px; margin: 8px 0;}
 .wm-table tr:nth-child(odd){background-color: #F8F8F8;}
 .wm-table tr:nth-child(even){background-color: #FFF;}
 .wm-table tr:hover{background-color: #F2F4F6;}

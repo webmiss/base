@@ -79,11 +79,11 @@
 .wm-tree_content{user-select: none; cursor: pointer; display: flex; align-items: center; height: 26px;}
 .wm-tree_content:hover{background-color: #F2F4F8;}
 .wm-tree_node{white-space: nowrap; outline: none;}
-.wm-tree_arrow{width: 8px; margin-top: -2px; text-align: center; font-size: 13px; font-weight: 600; color: #A2A4A8;}
+.wm-tree_arrow{width: 8px; margin-top: -2px; text-align: center; font-size: 14px; font-weight: 600; color: #A2A4A8;}
 .wm-tree_arrow_none{width: 8px;}
 .wm-tree_checkbox{position: relative; width: 24px;}
-.wm-tree_checkbox .wm-checkbox{position: absolute; margin-left: -3px; transform: scale(0.9, 0.9);}
-.wm-tree_label{font-size: 14px; color: #606266;}
+.wm-tree_checkbox .wm-checkbox{position: absolute; margin: 1px 0 0 -3px;}
+.wm-tree_label{font-size: 14px; color: #606266; padding: 0 4px;}
 </style>
 
 <script lang="ts">

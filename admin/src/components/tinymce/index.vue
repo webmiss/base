@@ -1,10 +1,14 @@
 <template>
-  <div>
-    <div class="wm-tinymce" v-html="content"></div>
+  <div class="wm-tinymce_body">
+    <div class="wm-tinymce">
+      <div class="wm-tinymce_load">{{placeholder}}</div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.wm-tinymce_body{width: 100%;}
+.wm-tinymce_load{line-height: 40px; text-align: center; font-size: 12px; color: #999;}
 </style>
 
 <script lang="ts">
@@ -18,11 +22,13 @@ export default defineComponent({
   name: 'TinyMCE',
   props: {
     config: {default: {}},                                            //配置
-    content: {default: ''},                                           //内容
+    value: {type: String, default: ''},                               //内容
     upload: {default: {start: false, width: 0, height: 0, url: ''}},  //图片上传
+    placeholder: {type: String, default: 'TinyMCE...'},               //提示
   },
   data(){
-    let defInit: any = {
+    const editor: any = null;
+    const defInit: any = {
       selector: '.wm-tinymce',
       language: 'zh_CN',
       height: 480,  //高度
@@ -38,13 +44,20 @@ export default defineComponent({
       ],
       content_style: "img {max-width:100%;}",
       init_instance_callback: (editor: any)=>{
+        // 编辑器
+        this.editor = editor;
         // 监听内容
-        editor.on('NodeChange Change KeyUp SetContent', ()=>{
-          this.$emit('update:value', editor.getContent());
-        });
+        // editor.on('NodeChange Change KeyUp SetContent', ()=>{
+        //   this.$emit('update:value', editor.getContent());
+        // });
       }
     };
-    return {defInit};
+    return {editor, defInit};
+  },
+  watch:{
+    value(val){
+      this.editor.setContent(val);
+    }
   },
   mounted(){
     this.init();
@@ -89,6 +102,11 @@ export default defineComponent({
       } catch(e){
         setTimeout(()=>{ this.start(cfg); }, 1000);
       }
+    },
+
+    /* 获取内容 */
+    getContent(){
+      return this.editor.getContent();
     },
 
   },

@@ -3,6 +3,7 @@ CHCP 65001 >nul
 
 REM 配置
 set s=%1%
+set dbHost=localhost
 set dbUname=root
 set dbPasswd=123456
 set dbName=data
@@ -33,16 +34,16 @@ if "%s%"=="adminer" (
 REM MySQL备份
 ) else if "%s%"=="dbExport" (
   (
-    mysqldump -u%dbUname% -p%dbPasswd% --databases %dbName% --lock-all-tables --flush-logs > %dbPathBackup%
+    mysqldump -h%dbHost% -u%dbUname% -p%dbPasswd% --databases %dbName% --lock-all-tables --flush-logs > %dbPathBackup%
   ) || (
-    echo ^> 请安装'MySQL'或'MariaDB'
+    echo ^> 无法执行“mysqldump”命令
   )
 REM MySQL恢复
 ) else if "%s%"=="dbImport" (
   (
-    mysql -u%dbUname% -p%dbPasswd% %dbName% < %dbPath%
+    mysql -h%dbHost% -u%dbUname% -p%dbPasswd% %dbName% < %dbPath%
   ) || (
-    echo ^> 请安装'MySQL'或'MariaDB'
+    echo ^> 无法执行“mysql”命令
   )
 ) else (
   echo ----------------------------------------------------

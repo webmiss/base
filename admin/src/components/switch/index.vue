@@ -22,6 +22,12 @@ export default defineComponent({
     const show: Boolean = false;
     return {show};
   },
+  watch:{
+    value(val: any){
+      this.show = val;
+      this.switch();
+    }
+  },
   mounted(){
     // 初始化
     this.show = this.value;

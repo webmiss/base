@@ -29,8 +29,9 @@ export default defineComponent({
       const body: any = form.getElementsByClassName('wm-form_item_body');
       for(let i=0; i<label.length; i++){
         label[i].style.width = this.labelWidth;
-        body[i].style.marginLeft = this.labelWidth;
         label[i].style.height = this.labelHeight;
+        // body[i].style.width = 'calc(100% - '+this.labelWidth+')';
+        // body[i].style.marginLeft = this.labelWidth;
       }
     },
 

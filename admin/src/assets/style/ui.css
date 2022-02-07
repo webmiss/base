@@ -4,7 +4,7 @@ html,body,#app{height: 100%;}
 body{
   font-family:Microsoft YaHei,SimHei,helvetica,arial,verdana,tahoma,sans-serif;
   font-size: 14px;
-  color: #333;
+  color: #262626;
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
@@ -35,8 +35,12 @@ h3{font-size: 16px; font-weight: 500;}
 .hide{display: none;}
 .mTop1{margin-top: 1px;}
 .mTop10{margin-top: 10px;}
-/* 公共-深色 */
-.back_dark.icons{color: #FFF;}
+
+/* 滚动条 */
+.scrollbar::-webkit-scrollbar{width: 8px; height: 8px;}
+.scrollbar::-webkit-scrollbar-thumb{border-radius: 4px; background: transparent;}
+.scrollbar:hover::-webkit-scrollbar-thumb{background: rgba(136,136,136,0.4);}
+.scrollbar:hover::-webkit-scrollbar-track{background: rgba(136,136,136,0.1);}
 
 /* 切换动画 */
 .view{position: absolute; z-index: 0; width:100%; height: 100%; background-color: #FFF; box-shadow: 0 0 2px rgba(0,0,0,.1); animation-duration: 400ms; animation-timing-function: cubic-bezier(0.165,0.84,0.44,1);}

@@ -5,9 +5,7 @@
 # Epel源
 dnf install epel-release
 # 安装Pip
-dnf install python3-pip
-# Nginx插件
-pip3 install certbot-nginx
+dnf install dnf install python3-certbot-nginx
 ```
 
 ## Nginx

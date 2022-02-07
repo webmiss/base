@@ -3,7 +3,7 @@
 ## JRE
 ```bash
 # CentOS
-dnf install openjdk-jre
+dnf install java-latest-openjdk
 # Ubuntu
 apt install default-jre
 ```

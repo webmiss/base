@@ -3,7 +3,7 @@
     <div class="checked" :class="show?'active':''">
       <input type="checkbox" class="checkbox" :value="value">
     </div>
-    <div v-if="label" class="name">label</div>
+    <div v-if="label" class="name">{{label}}</div>
   </div>
 </template>
 

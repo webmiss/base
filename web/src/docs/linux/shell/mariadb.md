@@ -63,10 +63,11 @@ set global innodb_file_per_table = 1;
 ### 创建用户
 ``` bash
 # 创建新用户
-'<用户名>'@'<localhost>' IDENTIFIED BY '<密码>';
+CREATE USER '<用户名>'@'<localhost>' IDENTIFIED BY '<密码>';
 
 # 添加权限
-grant SELECT,INSERT,UPDATE,DELETE on '<指定数据库>' to '<用户名>'@'localhost';
+GRANT ALL PRIVILEGES ON '<指定数据库>.*' TO '<用户名>'@'<localhost>';
+FLUSH PRIVILEGES;
 
 # 显示所有用户
 select host,user from mysql.user;

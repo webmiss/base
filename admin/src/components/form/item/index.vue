@@ -1,7 +1,7 @@
 <template>
   <div class="wm-form_item" :style="{margin:margin}">
-    <label class="wm-form_item_label">{{label}}</label>
-    <div class="wm-form_item_body">
+    <label class="wm-form_item_label" v-if="label!='none'" :style="{height: height}">{{label}}</label>
+    <div class="wm-form_item_body" :style="{height: height}">
       <slot></slot>
     </div>
   </div>
@@ -10,7 +10,7 @@
 <style scoped>
 .wm-form_item{line-height: 40px;}
 .wm-form_item_label{float: left; text-align: right; padding-right: 16px; color: #666; font-size: 14px; box-sizing: border-box;}
-.wm-form_item_body{margin-left: 80px;}
+.wm-form_item_body{display: flex; align-items: center;}
 </style>
 
 <script lang="ts">
@@ -20,6 +20,7 @@ export default defineComponent({
   props: {
     type: {type: String, default: 'label'},
     label: {type: String, default: ''},
+    height: {type: String, default: '40px'},
   },
   data(){
     const margin: string = '';
