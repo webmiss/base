@@ -34,7 +34,7 @@ import webmis.util.Util;
 
 @RestController
 @Controller("AdminSysUser")
-@RequestMapping("/admin/sysuser")
+@RequestMapping("/admin/sys_user")
 public class SysUser extends Base {
 
   /* 列表 */

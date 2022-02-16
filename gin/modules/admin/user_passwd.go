@@ -23,7 +23,7 @@ func (r UserPasswd) Edit(c *gin.Context) {
 	passwd, _ := r.JsonName(json, "passwd")
 	passwdNew, _ := r.JsonName(json, "passwdNew")
 	// 验证
-	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
+	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return

@@ -16,7 +16,7 @@ class UserPasswd(Base):
     passwd = self.JsonName(json, 'passwd')
     passwdNew = self.JsonName(json, 'passwdNew')
     # 验证
-    msg = AdminToken.Verify(token, request.path)
+    msg = AdminToken.Verify(token, '')
     if msg != '' :
       return self.GetJSON({'code':4001, 'msg':msg})
     if passwd==passwdNew :

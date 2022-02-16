@@ -13,23 +13,36 @@ import wmInput from '@/components/form/input/index.vue'
 import wmButton from '@/components/form/button/index.vue'
 import wmImg from '@/components/img/index.vue'
 import wmImgUpload from '@/components/img/upload/index.vue'
+import wmSelect from '@/components/form/select/index.vue'
+import wmRadio from '@/components/form/radio/index.vue'
+import wmCheckbox from '@/components/form/checkbox/index.vue'
+import wmSwitch from '@/components/switch/index.vue'
+import wmTinymce from '@/components/tinymce/index.vue'
 
 /* 系统配置 */
 export default defineComponent({
-  components: {wmMain,wmForm,wmFormItem,wmInput,wmButton,wmImg,wmImgUpload},
+  components: {wmMain,wmForm,wmFormItem,wmInput,wmButton,wmImg,wmImgUpload,wmSelect,wmRadio,wmCheckbox,wmSwitch,wmTinymce},
   data(){
     // 状态
     const store: any = useStore();
     const state: any = store.state;
-    // 表单
-    const form: any = {logo:'',title:'',http:'',copy:'',login_bg:''};
     // 上传
     const upload: any = {
-      url: 'sysconfig/upimg',
-      param_logo: {name:'logo', token:Storage.getItem('token')},
-      param_login_bg: {name:'login_bg', token:Storage.getItem('token')},
+      url: 'sys_config/upimg',
+      param: {name:'logo', token:Storage.getItem('token')},
     };
-    return {state, form, upload}
+    // 表单
+    const form: any = {logo:'', input:'', select1:'option2', select2:'option1', radio:'女', switch:true, tinymce:'<b>测试</b>'};
+    const checkbox: any = [{label:'游戏', value: 1, checked: false}, {label:'购物', value: 2, checked: true}];
+    // 编辑器: UrlEncode('编码')、UrlDecode('解码')
+    const tinymce: any = {
+      // 配置
+      init:{menubar: true, height: 260},
+      // 上传图片
+      upload: {start: true, width: 640, url: '/demo/tinymce/upImg'},
+    };
+    
+    return {state, upload, form, checkbox, tinymce}
   },
   mounted(){
     // 加载数据
@@ -40,21 +53,35 @@ export default defineComponent({
     /* 加载数据 */
     loadData(){
       const load: any = Loading();
-      Post('sysconfig/list',{
+      Post('sys_config/list',{
         token: Storage.getItem('token')
       },(res: any)=>{
         load.clear();
         const d = res.data;
         if(d.code!=0) return Toast(d.msg);
-        else this.form = d.list;
+        setTimeout(()=>{
+          this.form.tinymce = '<b>测试1</b>';
+          this.form.select2 = 'option2';
+          setTimeout(()=>{
+            this.form.tinymce = '<b>测试2</b>';
+            setTimeout(()=>{
+              this.form.tinymce = '<b>测试3</b>';
+            }, 1000);
+          }, 1000);
+        }, 3000);
+        // else this.form = d.list;
       });
     },
 
     /* 提交表单 */
     onSubmit(){
       const data: string = JSON.stringify(this.form);
+      console.log(this.form);
+      console.log(JSON.stringify(this.checkbox));
+      console.log((this.$refs.tinymce as any).getContent());
+      return;
       const load: any = Loading();
-      Post('sysconfig/edit',{
+      Post('sys_config/edit',{
         token: Storage.getItem('token'),
         data: data
       },(res: any)=>{
@@ -66,9 +93,7 @@ export default defineComponent({
 
     /* 上传头像 */
     upImg(res: any, type: string){
-      if(res.code==0){
-        this.form[type] = res.img;
-      }
+      if(res.code==0) this.form.logo = res.img;
       return Toast(res.msg);
     }
 

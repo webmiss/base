@@ -21,7 +21,7 @@ import webmis.util.Util;
 
 @RestController
 @Controller("AdminSysRole")
-@RequestMapping("/admin/sysrole")
+@RequestMapping("/admin/sys_role")
 public class SysRole extends Base {
 
   private static HashMap<String, ArrayList<HashMap<String, Object>>> menus = null;  //全部菜单
@@ -357,10 +357,9 @@ public class SysRole extends Base {
       for(int i=0; i<actionArr.size(); i++){
         Long permVal = Long.valueOf(actionArr.getJSONObject(i).get("perm").toString());
         boolean checked = (perm&permVal)>0?true:false;
-        String tName = actionArr.getJSONObject(i).get("type").toString().equals("1")?"S":"H";
         actionTmp = new HashMap<String, Object>();
         actionTmp.put("id", Long.valueOf(val.get("id").toString())+Long.valueOf(actionArr.getJSONObject(i).get("perm").toString()));
-        actionTmp.put("label", actionArr.getJSONObject(i).get("name").toString()+"->"+tName);
+        actionTmp.put("label", actionArr.getJSONObject(i).get("name"));
         actionTmp.put("checked", checked);
         actionTmp.put("perm", actionArr.getJSONObject(i).get("perm"));
         action.add(actionTmp);

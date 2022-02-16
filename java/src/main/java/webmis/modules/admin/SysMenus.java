@@ -22,7 +22,7 @@ import webmis.util.Util;
 /* 系统菜单 */
 @RestController
 @Controller("AdminSysMenus")
-@RequestMapping("/admin/sysmenus")
+@RequestMapping("/admin/sys_menus")
 public class SysMenus extends Base {
 
   private static HashMap<String, ArrayList<HashMap<String, Object>>> menus = null;  //全部菜单
@@ -64,7 +64,7 @@ public class SysMenus extends Base {
     // 查询
     m.Columns("id", "fid", "title", "ico", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "sort", "url", "controller", "action");
     m.Where("fid like ? AND title like ? AND url like ?", "%"+fid+"%", "%"+title+"%", "%"+url+"%");
-    m.Order("sort DESC", "fid");
+    m.Order("sort DESC", "id DESC", "fid");
     m.Page(page, limit);
     ArrayList<HashMap<String,Object>> list = m.Find();
     // 数据
@@ -325,7 +325,7 @@ public class SysMenus extends Base {
       if(!actionStr.equals("")) actionArr = Util.JsonDecodeArray(actionStr);
       for(int i=0; i<actionArr.size(); i++){
         long permVal = Long.valueOf(actionArr.getJSONObject(i).get("perm").toString());
-        if(actionArr.getJSONObject(i).get("type").toString().equals("1") && (perm&permVal)>0){
+        if((perm&permVal)>0){
           action.add(actionArr.getJSONObject(i));
         }
       }

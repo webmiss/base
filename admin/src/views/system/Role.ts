@@ -30,6 +30,7 @@ export default defineComponent({
     // 状态
     const store: any = useStore();
     const state: any = store.state;
+    const getters: any = store.getters;
     // 分页
     const page: any = {list:[], page:1, limit:10, total:0};
     // 搜索、添加、编辑、删除
@@ -39,31 +40,7 @@ export default defineComponent({
     const del: any = {show:false, ids:''};
     // 权限
     const perm: any = {show:false, id:'', perm:'', permList:[]};
-    return {state, page, sea, add, edit, del, perm}
-  },
-  computed: {
-    // 动作菜单-监听
-    actionType(){
-      const active: any = this.state.action.active;
-      return active;
-    }
-  },
-  watch:{
-    // 动作菜单-点击
-    actionType(val){
-      if(!val) return false;
-      if(val=='list'){
-        this.loadData();
-      }else if(val=='sea'){
-        this.sea.show = true;
-      }else if(val=='add'){
-        this.add.show = true;
-      }else if(val=='edit'){
-        this.editData();
-      }else if(val=='del'){
-        this.delData();
-      }
-    }
+    return {state, getters, page, sea, add, edit, del, perm}
   },
   mounted(){
     // 加载数据
@@ -76,7 +53,7 @@ export default defineComponent({
       this.page.list = [];
       this.page.total = 0;
       const load: any = Loading();
-      Post('sysrole/list',{
+      Post('sys_role/list',{
         token: Storage.getItem('token'),
         page: this.page.page,
         limit: this.page.limit,
@@ -99,7 +76,6 @@ export default defineComponent({
 
     /* 搜索 */
     subSea(){
-      this.sea.show = false;
       this.page.page = 1;
       this.loadData();
     },
@@ -110,7 +86,7 @@ export default defineComponent({
       // 提交
       const data: string = JSON.stringify(this.add.form);
       const load: any = Loading();
-      Post('sysrole/add',{
+      Post('sys_role/add',{
         token: Storage.getItem('token'),
         data:data
       },(res: any)=>{
@@ -137,7 +113,7 @@ export default defineComponent({
       const id: number = this.edit.id;
       const data: string = JSON.stringify(this.edit.form);
       const load: any = Loading();
-      Post('sysrole/edit',{
+      Post('sys_role/edit',{
         token: Storage.getItem('token'),
         id: id,
         data: data
@@ -161,7 +137,7 @@ export default defineComponent({
       this.del.show = false;
       // 提交
       const load = Loading();
-      Post('sysrole/del',{
+      Post('sys_role/del',{
         token: Storage.getItem('token'),
         data: this.del.ids
       },(res: any)=>{
@@ -178,7 +154,7 @@ export default defineComponent({
       this.perm.id = id;
       // 权限列表
       const load = Loading();
-      Post('sysrole/permList',{
+      Post('sys_role/permList',{
         token: Storage.getItem('token'),
         perm: perm,
       },(res: any)=>{
@@ -193,7 +169,7 @@ export default defineComponent({
       // 提交
       const obj: any = this.$refs.perm;
       const load = Loading();
-      Post('sysrole/perm',{
+      Post('sys_role/perm',{
         token: Storage.getItem('token'),
         id: this.perm.id,
         perm: obj.getPerms()

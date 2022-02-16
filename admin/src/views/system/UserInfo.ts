@@ -27,7 +27,7 @@ export default defineComponent({
     const gender: any = [{label:'男',value:'男'},{label:'女',value:'女'}];
     // 上传
     const upload: any = {
-      url:'userinfo/upimg',
+      url:'user_info/upimg',
       param:{token:Storage.getItem('token')}
     };
     return {state,form,gender,upload}
@@ -41,7 +41,7 @@ export default defineComponent({
     /* 加载数据 */
     loadData(){
       const load = Loading();
-      Post('userinfo/list',{token:Storage.getItem('token')},(res: any)=>{
+      Post('user_info/list',{token:Storage.getItem('token')},(res: any)=>{
         load.clear();
         const d = res.data;
         if(d.code!=0) return Toast(d.msg);
@@ -53,7 +53,7 @@ export default defineComponent({
     onSubmit(){
       const data = JSON.stringify(this.form);
       const load = Loading();
-      Post('userinfo/edit',{token:Storage.getItem('token'),data:data},(res: any)=>{
+      Post('user_info/edit',{token:Storage.getItem('token'),data:data},(res: any)=>{
         load.clear();
         const d = res.data;
         if(d.code==0) this.state.uInfo = d.uinfo;

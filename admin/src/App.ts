@@ -107,8 +107,6 @@ export default defineComponent({
           Storage.setItem('token',d.token);
           Storage.setItem('uname',d.uinfo.uname);
           Storage.setItem('uinfo',JSON.stringify(d.uinfo));
-          // 用户菜单
-          this.getMenus();
           // 刷新路由
           if(this.$route.path=='/'){
             window.location.reload();
@@ -170,6 +168,8 @@ export default defineComponent({
           }
           this.menusSeaList = data;
         }
+      },()=>{
+        this.logout();
       });
     },
     /* 点击菜单 */

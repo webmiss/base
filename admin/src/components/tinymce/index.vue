@@ -1,6 +1,6 @@
 <template>
   <div class="wm-tinymce_body">
-    <div class="wm-tinymce">
+    <div class="wm-tinymce" :class="classId">
       <div class="wm-tinymce_load">{{placeholder}}</div>
     </div>
   </div>
@@ -21,6 +21,7 @@ import ImgReader from '../../library/plus/img/reader'
 export default defineComponent({
   name: 'TinyMCE',
   props: {
+    classId: {type: String, default: 'TinyMCE'},                      //标识
     config: {default: {}},                                            //配置
     value: {type: String, default: ''},                               //内容
     upload: {default: {start: false, width: 0, height: 0, url: ''}},  //图片上传
@@ -29,7 +30,7 @@ export default defineComponent({
   data(){
     const editor: any = null;
     const defInit: any = {
-      selector: '.wm-tinymce',
+      selector: '.'+this.classId,
       language: 'zh_CN',
       height: 480,  //高度
       menubar: false,  //菜单条

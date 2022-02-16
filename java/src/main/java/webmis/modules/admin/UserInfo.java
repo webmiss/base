@@ -20,7 +20,7 @@ import webmis.util.Util;
 
 @RestController
 @Controller("AdminUserInfo")
-@RequestMapping("/admin/userinfo")
+@RequestMapping("/admin/user_info")
 public class UserInfo extends Base {
 
   private static final String ImgDir = "upload/user/img/";
@@ -32,7 +32,7 @@ public class UserInfo extends Base {
     // 参数
     String token = JsonName(json, "token");
     // 验证
-    String msg = AdminToken.Verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, "");
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -63,7 +63,7 @@ public class UserInfo extends Base {
     String token = JsonName(json, "token");
     String data = JsonName(json, "data");
     // 验证
-    String msg = AdminToken.Verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, "");
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);
@@ -110,7 +110,7 @@ public class UserInfo extends Base {
     String token = JsonName(json, "token");
     String base64 = JsonName(json, "base64");
     // 验证
-    String msg = AdminToken.Verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, "");
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);

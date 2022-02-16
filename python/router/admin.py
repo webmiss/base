@@ -26,13 +26,13 @@ def user(a) :
   if a=='login' : return User().Login()
   elif a=='token' : return User().Token()
 # 个人资料
-@Admin.route('/userinfo/<a>',methods=['POST'])
+@Admin.route('/user_info/<a>',methods=['POST'])
 def userInfo(a) :
   if a=='list' : return UserInfo().List()
   elif a=='edit' : return UserInfo().Edit()
   elif a=='upimg' : return UserInfo().Upimg()
 # 修改密码
-@Admin.route('/userpasswd/<a>',methods=['POST'])
+@Admin.route('/user_passwd/<a>',methods=['POST'])
 def userPasswd(a) :
   if a=='edit' : return UserPasswd().Edit()
 # 文件管理
@@ -45,7 +45,7 @@ def sysFile(a) :
   elif a=='down' : return SysFile().Down()
   elif a=='remove' : return SysFile().Remove()
 # 用户管理
-@Admin.route('/sysuser/<a>',methods=['POST'])
+@Admin.route('/sys_user/<a>',methods=['POST'])
 def sysUser(a) :
   if a=='list' : return SysUser().List()
   elif a=='add' : return SysUser().Add()
@@ -63,7 +63,7 @@ def apiMenus(a) :
   elif a=='del' : return ApiMenus().Del()
   elif a=='perm' : return ApiMenus().Perm()
 # API角色
-@Admin.route('/apirole/<a>',methods=['POST'])
+@Admin.route('/api_role/<a>',methods=['POST'])
 def sysRole(a) :
   if a=='list' : return ApiRole().List()
   elif a=='add' : return ApiRole().Add()
@@ -73,7 +73,7 @@ def sysRole(a) :
   elif a=='permList' : return ApiRole().PermList()
   elif a=='roleList' : return ApiRole().RoleList()
 # 系统菜单
-@Admin.route('/sysmenus/<a>',methods=['POST'])
+@Admin.route('/sys_menus/<a>',methods=['POST'])
 def sysMenus(a) :
   if a=='list' : return SysMenus().List()
   elif a=='add' : return SysMenus().Add()

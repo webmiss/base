@@ -59,13 +59,17 @@
           <!-- User -->
           <div class="app_user">
             <div class="flex_left">
-              <span class="tu bgImg" :style="{backgroundImage:'url('+state.uInfo.img+')'}"></span>
+              <span class="tu bgImg" :style="{backgroundImage:'url('+state.uInfo.img+')'}">
+                <i class="icons icon_image" v-if="state.uInfo.img==''"></i>
+              </span>
               <span class="name">{{state.uInfo.nickname || '会员昵称'}}</span>
               <span class="ico"><i class="icons icon_arrow_down_bold"></i></span>
             </div>
             <div class="box">
               <div class="user_info flex_left">
-                <div class="ico bgImg" :style="{backgroundImage:'url('+state.uInfo.img+')'}"></div>
+                <div class="ico bgImg" :style="{backgroundImage:'url('+state.uInfo.img+')'}">
+                  <i class="icons icon_image" v-if="state.uInfo.img==''"></i>
+                </div>
                 <div class="info"><h2>{{state.uInfo.uname}}</h2><p>ID:{{state.uInfo.uid}}</p></div>
               </div>
               <ul class="user_list">
@@ -121,9 +125,9 @@
 </style>
 <style scoped>
 .language{position: absolute; padding: 10px 0; top: 16px; right: 16px;}
-.language_text{cursor: pointer; line-height: 40px; padding: 0 16px; border-radius: 20px; color: #CCC; border-radius: 20px; background-color: rgba(0,0,0,.7);}
+.language_text{cursor: pointer; width: 200px; line-height: 40px; text-align: center; border-radius: 20px; color: #CCC; border-radius: 20px; background-color: rgba(0,0,0,.7);}
 .language_text:hover{color: #595;}
-.language_box{display: none; position: absolute; z-index: 1; width: 180px; left: 50%; transform: translate(-50%, 0); margin-left: -4px;}
+.language_box{display: none; position: absolute; z-index: 1; width: 200px; left: 50%; transform: translate(-50%, 0); margin-left: -4px;}
 .language_box .arrow{position: absolute; top: -6px; left: 50%; transform: translate(-50%, 0); width: 0px; height: 0px; border: 8px solid; border-color: transparent; border-bottom-color: rgba(0,0,0,.7);}
 .language_list{position: absolute; padding: 4px; width: 100%; top: 9px; border-radius: 4px; color: #FFF; background-color: rgba(0,0,0,.7);}
 .language_list li{cursor: pointer; line-height: 40px; padding: 0 16px; border-radius: 4px;}

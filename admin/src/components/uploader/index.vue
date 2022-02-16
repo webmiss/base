@@ -39,7 +39,7 @@ export default defineComponent({
           // 提交
           Post(this.url, form, (res: any)=>{
             const d = res.data;
-            Toast(d.msg);
+            this.$emit('upload',d);
           },()=>{
             Toast('网络加载错误!');
           },{

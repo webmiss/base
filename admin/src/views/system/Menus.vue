@@ -1,16 +1,49 @@
 <template>
   <wm-main>
 
+    <!-- Action -->
+    <div class="app_action flex_left">
+      <ul class="app_action_list flex_left">
+        <li v-if="getters.actionShow('add')" @click="add.show=true">添加</li>
+        <li v-if="getters.actionShow('edit')" @click="editData()">编辑</li>
+        <li v-if="getters.actionShow('del')" @click="delData()">删除</li>
+      </ul>
+      <div class="app_action_sea" @click="sea.show=!sea.show">
+        <div class="arrow_up" v-if="sea.show"></div>
+        <i class="icons icon_search"></i>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <ul class="action_sea flex_left" v-if="sea.show">
+      <li class="flex_left">
+        <div class="title">FID</div>
+        <div class="input"><wm-input :value="sea.form.fid" @update:value="sea.form.fid=$event" placeholder="请输入" /></div>
+      </li>
+      <li class="flex_left">
+        <div class="title">名称</div>
+        <div class="input"><wm-input :value="sea.form.title" @update:value="sea.form.title=$event" placeholder="菜单名称" /></div>
+      </li>
+      <li class="flex_left">
+        <div class="title">API</div>
+        <div class="input"><wm-input :value="sea.form.url" @update:value="sea.form.url=$event" placeholder="API关键字" /></div>
+      </li>
+      <li class="an">
+        <wm-button @click="subSea()">搜 索</wm-button>
+      </li>
+    </ul>
+
     <!-- List -->
     <wm-table class="table" ref="Table" :data="page.list">
       <wm-table-title>
-        <td width="30">ID</td>
-        <td width="30">FID</td>
+        <td width="40">ID</td>
+        <td width="40">FID</td>
         <td width="120">名称</td>
         <td width="80">权限</td>
+        <td width="40">图标</td>
         <td width="60" style="text-align: center;">排序</td>
-        <td>URL</td>
-        <td>图标</td>
+        <td width="120">URL</td>
+        <td>API</td>
       </wm-table-title>
       <wm-table-tr v-for="(val,key) in page.list" :key="key" :value="val.id+''">
         <td>{{ val.id }}</td>
@@ -26,36 +59,22 @@
             </template>
           </wm-popover>
         </td>
-        <td>
-          <wm-button v-if="val.controller && !val.action" type="danger" height="32px" @click="permData(val.id, val.title, val.controller, val.action)">设置</wm-button>
-          <wm-button v-else-if="val.controller && val.action" height="32px" @click="permData(val.id, val.title, val.controller, val.action)">动作</wm-button>
+        <td style="text-align: center;">
+          <wm-button v-if="getters.actionShow('perm') && val.controller && !val.action" type="danger" height="32px" @click="permData(val.id, val.title, val.controller, val.action)">设置</wm-button>
+          <wm-button v-else-if="getters.actionShow('perm') && val.controller && val.action" height="32px" @click="permData(val.id, val.title, val.controller, val.action)">动作</wm-button>
+          <span v-else>-</span>
+        </td>
+        <td style="text-align: center;">
+          <div class="menus_icon" v-if="val.ico"><i :class="val.ico"></i></div>
+          <span v-else>-</span>
         </td>
         <td style="text-align: center;">{{ val.sort }}</td>
         <td>{{ val.url }}</td>
-        <td>{{ val.ico }}</td>
+        <td>{{ val.controller }}</td>
       </wm-table-tr>
     </wm-table>
     <!-- List End -->
     <wm-page :page="page.page" :limit="page.limit" :total="page.total" @update:page="subPage"></wm-page>
-
-    <!-- Sea -->
-    <wm-dialog title="搜索" width="420px" :show="sea.show" @update:close="sea.show=$event">
-      <wm-form class="form">
-        <wm-form-item label="FID">
-          <wm-input :value="sea.form.fid" @update:value="sea.form.fid=$event" placeholder="FID" />
-        </wm-form-item>
-        <wm-form-item label="名称">
-          <wm-input :value="sea.form.title" @update:value="sea.form.title=$event" placeholder="菜单名称" />
-        </wm-form-item>
-        <wm-form-item label="控制器">
-          <wm-input :value="sea.form.url" @update:value="sea.form.url=$event" placeholder="菜单名称" />
-        </wm-form-item>
-      </wm-form>
-      <template #footer>
-        <wm-button @click="subSea()">搜 索</wm-button>
-      </template>
-    </wm-dialog>
-    <!-- Sea End -->
 
     <!-- Add -->
     <wm-dialog title="添加" width="540px" :show="add.show" @update:close="add.show=$event">
@@ -67,7 +86,7 @@
           <wm-input :value="add.form.title" @update:value="add.form.title=$event" maxlength="8" maxWidth="320px" placeholder="菜单名称" />
         </wm-form-item>
         <wm-form-item label="控制器">
-          <wm-input :value="add.form.controller" @update:value="add.form.controller=$event" maxlength="2" placeholder="例如: /admin/sysmenus" />
+          <wm-input :value="add.form.controller" @update:value="add.form.controller=$event" maxlength="20" placeholder="例如: /admin/sysmenus" />
         </wm-form-item>
         <wm-form-item label="URL">
           <wm-input :value="add.form.url" @update:value="add.form.url=$event" maxlength="24" maxWidth="320px" placeholder="URL" />
@@ -95,7 +114,7 @@
           <wm-input :value="edit.form.title" @update:value="edit.form.title=$event" maxlength="8" maxWidth="320px" placeholder="菜单名称" />
         </wm-form-item>
         <wm-form-item label="控制器">
-          <wm-input :value="edit.form.controller" @update:value="edit.form.controller=$event" maxlength="2" placeholder="例如: /admin/sysmenus" />
+          <wm-input :value="edit.form.controller" @update:value="edit.form.controller=$event" maxlength="20" placeholder="例如: /admin/sysmenus" />
         </wm-form-item>
         <wm-form-item label="URL">
           <wm-input :value="edit.form.url" @update:value="edit.form.url=$event" maxlength="24" maxWidth="320px" placeholder="URL" />
@@ -126,7 +145,6 @@
     <wm-dialog width="640px" :title="perm.title" :show="perm.show" @update:close="perm.show=$event">
       <wm-table>
         <wm-table-title :checkbox="false">
-          <td width="60">类型</td>
           <td>名称</td>
           <td>动作</td>
           <td width="100">权限</td>
@@ -135,7 +153,6 @@
           </td>
         </wm-table-title>
         <wm-table-tr :checkbox="false" v-for="(val,key) in perm.list" :key="key">
-          <td><wm-input :value="val.type" @update:value="val.type=$event" /></td>
           <td><wm-input :value="val.name" @update:value="val.name=$event" /></td>
           <td><wm-input :value="val.action" @update:value="val.action=$event" /></td>
           <td><wm-input :value="val.perm" @update:value="val.perm=$event" /></td>
@@ -156,7 +173,9 @@
 <style scoped>
 .table{min-width: 800px;}
 .form{padding-right: 24px;}
-.perm_an{position: absolute; margin-top: -11px; white-space: nowrap;}
+.perm_an{position: absolute; margin-top: -14px; white-space: nowrap;}
+.menus_icon{width: 40px; height: 40px; text-align: center; background-color: #FFF; border-radius: 50%;}
+.menus_icon i{position: absolute; font-size: 24px; color: #595; transform: translate(-50%, 0);}
 </style>
 
 <script lang="ts" src="./Menus.ts"></script>

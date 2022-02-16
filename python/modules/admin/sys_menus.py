@@ -198,7 +198,7 @@ class SysMenus(Base):
       if actionStr != '' : actionArr = Util.JsonDecode(actionStr)
       for v in actionArr :
         permVal = int(v['perm'])
-        if v['type']=='1' and perm&permVal>0 : action += [v]
+        if (perm&permVal)>0 : action += [v]
       # 数据
       value = {'url': val['url'], 'controller': val['controller'], 'action': action}
       tmp = {'icon': val['ico'], 'label': val['title'], 'value': value}

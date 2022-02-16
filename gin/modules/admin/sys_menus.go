@@ -267,7 +267,7 @@ func (r *SysMenus) _getMenu(fid string) []map[string]interface{} {
 		}
 		for _, v := range actionArr {
 			permVal := (&util.Type{}).Int64(v["perm"])
-			if v["type"].(string) == "1" && perm&permVal > 0 {
+			if (perm & permVal) > 0 {
 				action = append(action, v)
 			}
 		}

@@ -29,6 +29,7 @@ export default defineComponent({
     // 状态
     const store: any = useStore();
     const state: any = store.state;
+    const getters: any = store.getters;
     // 分页
     const page: any = {list:[], page:1, limit:10, total:0};
     // 搜索、添加、编辑、删除
@@ -38,31 +39,7 @@ export default defineComponent({
     const del: any = {show:false, ids:''};
     // 权限
     const perm: any = {show:false, id:'', title:'权限', list:[]};
-    return {state, page, sea, add, edit, del, perm};
-  },
-  computed: {
-    // 动作菜单-监听
-    actionType(){
-      const active: any = this.state.action.active;
-      return active;
-    }
-  },
-  watch:{
-    // 动作菜单-点击
-    actionType(val){
-      if(!val) return false;
-      if(val=='list'){
-        this.loadData();
-      }else if(val=='sea'){
-        this.sea.show = true;
-      }else if(val=='add'){
-        this.add.show = true;
-      }else if(val=='edit'){
-        this.editData();
-      }else if(val=='del'){
-        this.delData();
-      }
-    }
+    return {store, getters, state, page, sea, add, edit, del, perm};
   },
   mounted(){
     // 加载数据
@@ -75,7 +52,7 @@ export default defineComponent({
       this.page.list = [];
       this.page.total = 0;
       const load: any = Loading();
-      Post('sysmenus/list',{
+      Post('sys_menus/list',{
         token: Storage.getItem('token'),
         page: this.page.page,
         limit: this.page.limit,
@@ -98,7 +75,6 @@ export default defineComponent({
 
     /* 搜索 */
     subSea(){
-      this.sea.show = false;
       this.page.page = 1;
       this.loadData();
     },
@@ -109,7 +85,7 @@ export default defineComponent({
       // 提交
       const data: string = JSON.stringify(this.add.form);
       const load: any = Loading();
-      Post('sysmenus/add',{
+      Post('sys_menus/add',{
         token: Storage.getItem('token'),
         data: data
       },(res: any)=>{
@@ -141,7 +117,7 @@ export default defineComponent({
       const id: number = this.edit.id;
       const data: string = JSON.stringify(this.edit.form);
       const load: any = Loading();
-      Post('sysmenus/edit',{
+      Post('sys_menus/edit',{
         token: Storage.getItem('token'),
         id: id,
         data: data
@@ -165,7 +141,7 @@ export default defineComponent({
       this.del.show = false;
       // 提交
       const load: any = Loading();
-      Post('sysmenus/del',{
+      Post('sys_menus/del',{
         token: Storage.getItem('token'),
         data: this.del.ids
       },(res: any)=>{
@@ -194,7 +170,7 @@ export default defineComponent({
       this.perm.show = false;
       // 提交
       const load: any = Loading();
-      Post('sysmenus/perm',{
+      Post('sys_menus/perm',{
         token: Storage.getItem('token'),
         id: this.perm.id,
         data: JSON.stringify(data)
@@ -209,7 +185,7 @@ export default defineComponent({
     permAdd(){
       const list = this.perm.list;
       const perm = list[list.length-1].perm;
-      list.push({type:'1', name:'', action:'', perm:perm*2});
+      list.push({name:'', action:'', perm:perm*2});
     },
     /* 删除 */
     permRemove(key: number){

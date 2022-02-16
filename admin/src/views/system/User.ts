@@ -24,23 +24,19 @@ import wmDate from '@/components/form/date/index.vue'
 import wmButton from '@/components/form/button/index.vue'
 import wmPage from '@/components/page/index.vue'
 import wmTree from '@/components/tree/index.vue'
-/* ElementUI */
-// import { ElTabs, ElTabPane } from 'element-plus';
-// import '@/assets/themes/tabs.css'
-// import '@/assets/themes/tab-pane.css'
-// import '@/assets/themes/select.css'
-// import '@/assets/themes/option.css'
+import wmTabs from '@/components/tabs/index.vue'
 
 /* 用户管理 */
 export default defineComponent({
   components: {
     wmMain,wmRow,wmTable,wmTableTitle,wmTableTr,wmImg,wmTag,wmPopover,wmSwitch,wmDialog,wmForm,wmFormItem,wmInput,wmRadio,wmDate,wmButton,wmPage,wmTree,
-    // ElTabs,ElTabPane,
+    wmTabs,
   },
   data(){
     // 状态
     const store: any = useStore();
     const state: any = store.state;
+    const getters: any = store.getters;
     // 分页
     const page: any = {list:[], page:1, limit:10, total:0};
     // 搜索、添加、编辑、删除
@@ -53,31 +49,7 @@ export default defineComponent({
     // 用户信息
     const info: any = {show:false, id:'', form:{}};
     const gender: any = [{label:'男',value:'男'},{label:'女',value:'女'}];
-    return {state, page, sea, add, edit, del, perm, info, gender};
-  },
-  computed: {
-    // 动作菜单-监听
-    actionType(){
-      const active: any = this.state.action.active;
-      return active;
-    }
-  },
-  watch:{
-    // 动作菜单-点击
-    actionType(val){
-      if(!val) return false;
-      if(val=='list'){
-        this.loadData();
-      }else if(val=='sea'){
-        this.sea.show = true;
-      }else if(val=='add'){
-        this.add.show = true;
-      }else if(val=='edit'){
-        this.editData();
-      }else if(val=='del'){
-        this.delData();
-      }
-    }
+    return {state, getters, page, sea, add, edit, del, perm, info, gender};
   },
   mounted(){
     // 加载数据
@@ -90,7 +62,7 @@ export default defineComponent({
       this.page.list = [];
       this.page.total = 0;
       const load: any = Loading();
-      Post('sysuser/list',{
+      Post('sys_user/list',{
         token: Storage.getItem('token'),
         page: this.page.page,
         limit: this.page.limit,
@@ -113,7 +85,6 @@ export default defineComponent({
 
     /* 搜索 */
     subSea(){
-      this.sea.show = false;
       this.page.page = 1;
       this.loadData();
     },
@@ -124,7 +95,7 @@ export default defineComponent({
       // 提交
       const data: string = JSON.stringify(this.add.form);
       const load: any = Loading();
-      Post('sysuser/add',{
+      Post('sys_user/add',{
         token: Storage.getItem('token'),
         data: data
       },(res: any)=>{
@@ -152,7 +123,7 @@ export default defineComponent({
       const uid: number = this.edit.uid;
       const data: string = JSON.stringify(this.edit.form);
       const load: any = Loading();
-      Post('sysuser/edit',{
+      Post('sys_user/edit',{
         token: Storage.getItem('token'),
         uid: uid,
         data: data
@@ -176,7 +147,7 @@ export default defineComponent({
       this.del.show = false;
       // 提交
       const load = Loading();
-      Post('sysuser/del',{
+      Post('sys_user/del',{
         token: Storage.getItem('token'),
         data: this.del.ids
       },(res: any)=>{
@@ -191,7 +162,7 @@ export default defineComponent({
     setState(val: boolean, uid: string){
       const state = val?'1':'0';
       const load = Loading();
-      Post('sysuser/state',{
+      Post('sys_user/state',{
         token: Storage.getItem('token'),
         uid: uid,
         state: state
@@ -213,11 +184,11 @@ export default defineComponent({
       let roleUrl: string = '';
       let permUrl: string = '';
       if(m=='admin'){
-        roleUrl = 'sysrole/roleList';
-        permUrl = 'sysrole/permList';
+        roleUrl = 'sys_role/roleList';
+        permUrl = 'sys_role/permList';
       }else if(m=='api'){
-        roleUrl = 'apirole/roleList';
-        permUrl = 'apirole/permList';
+        roleUrl = 'api_role/roleList';
+        permUrl = 'api_role/permList';
       }
       // 角色列表
       Post(roleUrl, {
@@ -244,7 +215,7 @@ export default defineComponent({
       // 提交
       const obj: any = this.$refs.perm;
       const load = Loading();
-      Post('sysuser/perm',{
+      Post('sys_user/perm',{
         token: Storage.getItem('token'),
         type: this.perm.m,
         uid: this.perm.uid,
@@ -275,7 +246,7 @@ export default defineComponent({
       const uid = this.info.uid;
       const data = JSON.stringify(this.info.form);
       const load = Loading();
-      Post('sysuser/info',{
+      Post('sys_user/info',{
         token: Storage.getItem('token'),
         uid: uid,
         data: data

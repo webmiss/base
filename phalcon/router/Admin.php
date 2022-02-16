@@ -12,11 +12,11 @@ class Admin {
     $app->post('/admin/user/login', 'App\Admin\User::Login');
     $app->post('/admin/user/token', 'App\Admin\User::Token');
     // 个人资料
-    $app->post('/admin/userinfo/list', 'App\Admin\UserInfo::List');
-    $app->post('/admin/userinfo/edit', 'App\Admin\UserInfo::Edit');
-    $app->post('/admin/userinfo/upimg', 'App\Admin\UserInfo::Upimg');
+    $app->post('/admin/user_info/list', 'App\Admin\UserInfo::List');
+    $app->post('/admin/user_info/edit', 'App\Admin\UserInfo::Edit');
+    $app->post('/admin/user_info/upimg', 'App\Admin\UserInfo::Upimg');
     // 修改密码
-    $app->post('/admin/userpasswd/edit', 'App\Admin\UserPasswd::Edit');
+    $app->post('/admin/user_passwd/edit', 'App\Admin\UserPasswd::Edit');
     // 文件管理
     $app->post('/admin/sysfile/list', 'App\Admin\SysFile::List');
     $app->post('/admin/sysfile/mkdir', 'App\Admin\SysFile::Mkdir');
@@ -25,13 +25,13 @@ class Admin {
     $app->post('/admin/sysfile/down', 'App\Admin\SysFile::Down');
     $app->post('/admin/sysfile/remove', 'App\Admin\SysFile::Remove');
     // 用户管理
-    $app->post('/admin/sysuser/list', 'App\Admin\SysUser::List');
-    $app->post('/admin/sysuser/add', 'App\Admin\SysUser::Add');
-    $app->post('/admin/sysuser/edit', 'App\Admin\SysUser::Edit');
-    $app->post('/admin/sysuser/del', 'App\Admin\SysUser::Del');
-    $app->post('/admin/sysuser/state', 'App\Admin\SysUser::State');
-    $app->post('/admin/sysuser/perm', 'App\Admin\SysUser::Perm');
-    $app->post('/admin/sysuser/info', 'App\Admin\SysUser::Info');
+    $app->post('/admin/sys_user/list', 'App\Admin\SysUser::List');
+    $app->post('/admin/sys_user/add', 'App\Admin\SysUser::Add');
+    $app->post('/admin/sys_user/edit', 'App\Admin\SysUser::Edit');
+    $app->post('/admin/sys_user/del', 'App\Admin\SysUser::Del');
+    $app->post('/admin/sys_user/state', 'App\Admin\SysUser::State');
+    $app->post('/admin/sys_user/perm', 'App\Admin\SysUser::Perm');
+    $app->post('/admin/sys_user/info', 'App\Admin\SysUser::Info');
     // API菜单
     $app->post('/admin/apimenus/list', 'App\Admin\ApiMenus::List');
     $app->post('/admin/apimenus/add', 'App\Admin\ApiMenus::Add');
@@ -47,20 +47,20 @@ class Admin {
     $app->post('/admin/apirole/permList', 'App\Admin\ApiRole::PermList');
     $app->post('/admin/apirole/roleList', 'App\Admin\ApiRole::RoleList');
     // 系统菜单
-    $app->post('/admin/sysmenus/list', 'App\Admin\SysMenus::List');
-    $app->post('/admin/sysmenus/add', 'App\Admin\SysMenus::Add');
-    $app->post('/admin/sysmenus/edit', 'App\Admin\SysMenus::Edit');
-    $app->post('/admin/sysmenus/del', 'App\Admin\SysMenus::Del');
-    $app->post('/admin/sysmenus/perm', 'App\Admin\SysMenus::Perm');
-    $app->post('/admin/sysmenus/getMenus', 'App\Admin\SysMenus::GetMenus');
+    $app->post('/admin/sys_menus/list', 'App\Admin\SysMenus::List');
+    $app->post('/admin/sys_menus/add', 'App\Admin\SysMenus::Add');
+    $app->post('/admin/sys_menus/edit', 'App\Admin\SysMenus::Edit');
+    $app->post('/admin/sys_menus/del', 'App\Admin\SysMenus::Del');
+    $app->post('/admin/sys_menus/perm', 'App\Admin\SysMenus::Perm');
+    $app->post('/admin/sys_menus/getMenus', 'App\Admin\SysMenus::GetMenus');
     // 系统角色
-    $app->post('/admin/sysrole/list', 'App\Admin\SysRole::List');
-    $app->post('/admin/sysrole/add', 'App\Admin\SysRole::Add');
-    $app->post('/admin/sysrole/edit', 'App\Admin\SysRole::Edit');
-    $app->post('/admin/sysrole/del', 'App\Admin\SysRole::Del');
-    $app->post('/admin/sysrole/perm', 'App\Admin\SysRole::Perm');
-    $app->post('/admin/sysrole/permList', 'App\Admin\SysRole::PermList');
-    $app->post('/admin/sysrole/roleList', 'App\Admin\SysRole::RoleList');
+    $app->post('/admin/sys_role/list', 'App\Admin\SysRole::List');
+    $app->post('/admin/sys_role/add', 'App\Admin\SysRole::Add');
+    $app->post('/admin/sys_role/edit', 'App\Admin\SysRole::Edit');
+    $app->post('/admin/sys_role/del', 'App\Admin\SysRole::Del');
+    $app->post('/admin/sys_role/perm', 'App\Admin\SysRole::Perm');
+    $app->post('/admin/sys_role/permList', 'App\Admin\SysRole::PermList');
+    $app->post('/admin/sys_role/roleList', 'App\Admin\SysRole::RoleList');
     // 系统配置
     $app->post('/admin/sysconfig/list', 'App\Admin\SysConfig::List');
     $app->post('/admin/sysconfig/edit', 'App\Admin\SysConfig::Edit');

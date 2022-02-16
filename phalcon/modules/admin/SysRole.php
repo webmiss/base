@@ -221,10 +221,9 @@ class SysRole extends Base {
       foreach($actionArr as $v){
         $permVal = (int)$v['perm'];
         $checked = ($perm&$permVal)>0?true:false;
-        $tName = $v['type']=='1'?'S':'H';
         $action[]=[
           'id'=> $val['id']+$v['perm'],
-          'label'=> $v['name'].'->'.$tName,
+          'label'=> $v['name'],
           'checked'=> $checked,
           'perm'=> $v['perm'],
         ];

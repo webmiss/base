@@ -19,7 +19,7 @@ import webmis.util.Hash;
 
 @RestController
 @Controller("AdminUserPasswd")
-@RequestMapping("/admin/userpasswd")
+@RequestMapping("/admin/user_passwd")
 public class UserPasswd extends Base {
 
   /* 编辑 */
@@ -31,7 +31,7 @@ public class UserPasswd extends Base {
     String passwd = JsonName(json, "passwd");
     String passwdNew = JsonName(json, "passwdNew");
     // 验证
-    String msg = AdminToken.Verify(token, request.getRequestURI());
+    String msg = AdminToken.Verify(token, "");
     if(!msg.equals("")){
       res = new HashMap<String,Object>();
       res.put("code", 4001);

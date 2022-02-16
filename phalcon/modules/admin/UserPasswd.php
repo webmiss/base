@@ -16,7 +16,7 @@ class UserPasswd extends Base {
     $passwd = self::JsonName($json, 'passwd');
     $passwdNew = self::JsonName($json, 'passwdNew');
     // 验证
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, '');
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     if($passwd == $passwdNew) return self::GetJSON(['code'=>4000, 'msg'=>'不能与原密码相同!']);
     if(!Safety::IsRight('passwd', $passwd) || !Safety::IsRight('passwd', $passwdNew)){

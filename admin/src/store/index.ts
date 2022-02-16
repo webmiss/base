@@ -14,14 +14,19 @@ export default createStore({
     geolocation: {},    //定位
     socket: null,       //Socket
     /* 菜单 */
-    controller: '',
-    action: {
-      title:'',         //名称
-      active:'',        //动作
-      menus:[],         //列表
-    },
+    menuAction: [],     //动作菜单
     /* 缓存路由 */
     keepAlive: ['Home'],
+  },
+  getters: {
+    /* 动作菜单 */
+    actionShow: (state) => (action: string) => {
+      let res: boolean = false;
+      state.menuAction.map(v=>{
+        if((v['action'] as any)==action) res=true;
+      });
+      return res;
+    }
   },
   mutations: {
   },

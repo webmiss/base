@@ -1,24 +1,31 @@
 <template>
   <wm-main>
-    <wm-form class="max_width">
-      <wm-form-item label="LOGO">
-        <wm-img-upload :url="upload.url" :param="upload.param_logo" @upload="upImg($event,'logo')">
+    <wm-form>
+      <wm-form-item label="Upload" height="auto">
+        <wm-img-upload :width="200" :height="200" :url="upload.url" :param="upload.param" @upload="upImg($event,'logo')">
           <wm-img width="80px" height="80px" radius="50%" :url="form.logo"></wm-img>
         </wm-img-upload>
       </wm-form-item>
-      <wm-form-item label="系统名称">
-        <wm-input :value="form.title" @update:value="form.title=$event" maxlength="32" placeholder="请输入系统名称" />
+      <wm-form-item label="Input">
+        <wm-input v-model:value="form.input" maxlength="32" placeholder="请输名称" />
       </wm-form-item>
-      <wm-form-item label="网站域名">
-        <wm-input :value="form.http" @update:value="form.http=$event" maxlength="16" placeholder="例如: https://webmis.vip" />
+      <wm-form-item label="Select">
+        <wm-select v-model:value="form.select1" placeholder="选择所属" :data="[{label:'Option1', value:'option1'},{label:'Option2', value:'option2'}]" />
       </wm-form-item>
-      <wm-form-item label="版权信息">
-        <wm-input :value="form.copy" @update:value="form.copy=$event" maxlength="64" placeholder="请输入版权信息" />
+      <wm-form-item label="Select">
+        <wm-select v-model:value="form.select2" :data="[{label:'Option1', value:'option1'},{label:'Option2', value:'option2'}]" />
       </wm-form-item>
-      <wm-form-item label="登录背景">
-        <wm-img-upload :width="0" :height="0" :url="upload.url" :param="upload.param_login_bg" @upload="upImg($event,'login_bg')">
-          <wm-img width="80px" height="80px" radius="4px" :url="form.login_bg"></wm-img>
-        </wm-img-upload>
+      <wm-form-item label="Radio">
+        <wm-radio v-model:value="form.radio" :data="[{label:'男',value:'男'},{label:'女',value:'女'}]"></wm-radio>
+      </wm-form-item>
+      <wm-form-item label="Checkbox">
+        <wm-checkbox v-for="(v,k) in checkbox" :key="k" :label="v.label" :value="v.value" v-model:checked="v.checked"></wm-checkbox>
+      </wm-form-item>
+      <wm-form-item label="Switch">
+        <wm-switch :value="form.switch" @update:value="form.switch=$event"></wm-switch>
+      </wm-form-item>
+      <wm-form-item label="none" height="auto">
+        <wm-tinymce ref="tinymce" v-model:value="form.tinymce" :config="tinymce.init" :upload="tinymce.upload"></wm-tinymce>
       </wm-form-item>
       <wm-form-item type="botton">
         <wm-button @click="onSubmit()">保存设置</wm-button>
@@ -28,7 +35,6 @@
 </template>
 
 <style scoped>
-.max_width{max-width: 400px;}
 </style>
 
 <script lang="ts" src="./Config.ts"></script>

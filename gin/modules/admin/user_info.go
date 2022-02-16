@@ -20,7 +20,7 @@ func (r UserInfo) List(c *gin.Context) {
 	c.BindJSON(&param)
 	token, _ := r.JsonName(param, "token")
 	// 验证
-	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
+	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
@@ -45,7 +45,7 @@ func (r UserInfo) Edit(c *gin.Context) {
 	token, _ := r.JsonName(json, "token")
 	data, _ := r.JsonName(json, "data")
 	// 验证
-	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
+	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return
@@ -85,7 +85,7 @@ func (r UserInfo) Upimg(c *gin.Context) {
 	token, _ := r.JsonName(json, "token")
 	base64, _ := r.JsonName(json, "base64")
 	// 验证
-	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
+	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
 		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
 		return

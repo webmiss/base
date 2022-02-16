@@ -205,10 +205,9 @@ class SysRole(Base):
       for v in actionArr :
         permVal = int(v['perm'])
         checked = True if perm&permVal>0 else False
-        tName = 'S' if v['type']=='1' else 'H'
         action += [{
           'id': int(val['id'])+int(v['perm']),
-          'label': str(v['name'])+'->'+tName,
+          'label': str(v['name']),
           'checked': checked,
           'perm': v['perm'],
         }]

@@ -39,36 +39,36 @@ export default defineComponent({
   },
   computed: {
     // 动作菜单-监听
-    actionType(){
-      const active: any = this.state.action.active;
-      return active;
-    }
+    // actionType(){
+    //   const active: any = this.state.action.active;
+    //   return active;
+    // }
   },
   watch:{
     // 动作菜单-点击
-    actionType(val){
-      if(!val) return false;
-      if(val=='list'){
-        this.loadData();
-      }else if(val=='mkdir'){
-        this.folder.show = true;
-      }else if(val=='rename'){
-        const names = this.getCheckName();
-        if(!names) return ;
-        this.rename.show = true;
-        this.rename.form.rename = names[0];
-        this.rename.form.name = names[0];
-      }else if(val=='upload'){
-        this.upload.param = {token: Storage.getItem('token'), path: this.info.path};
-        const obj: any = this.$refs.Uploader;
-        obj.upload();
-      }else if(val=='remove'){
-        const names: any = this.getCheckName();
-        if(!names) return ;
-        this.del.show = true;
-        this.del.data = names;
-      }
-    }
+    // actionType(val){
+    //   if(!val) return false;
+    //   if(val=='list'){
+    //     this.loadData();
+    //   }else if(val=='mkdir'){
+    //     this.folder.show = true;
+    //   }else if(val=='rename'){
+    //     const names = this.getCheckName();
+    //     if(!names) return ;
+    //     this.rename.show = true;
+    //     this.rename.form.rename = names[0];
+    //     this.rename.form.name = names[0];
+    //   }else if(val=='upload'){
+    //     this.upload.param = {token: Storage.getItem('token'), path: this.info.path};
+    //     const obj: any = this.$refs.Uploader;
+    //     obj.upload();
+    //   }else if(val=='remove'){
+    //     const names: any = this.getCheckName();
+    //     if(!names) return ;
+    //     this.del.show = true;
+    //     this.del.data = names;
+    //   }
+    // }
   },
   mounted(){
     // 加载数据

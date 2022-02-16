@@ -277,10 +277,9 @@ func (r *SysRole) _getMenu(fid string) []map[string]interface{} {
 		for _, v := range actionArr {
 			permVal := (&util.Type{}).Int64(v["perm"])
 			checked := util.If(perm&permVal > 0, true, false)
-			tName := util.If((&util.Type{}).Strval(v["type"]) == "1", "S", "H")
 			action = append(action, map[string]interface{}{
 				"id":      (&util.Type{}).Int64(val["id"]) + (&util.Type{}).Int64(v["perm"]),
-				"label":   (&util.Type{}).Strval(v["name"]) + "->" + (&util.Type{}).Strval(tName),
+				"label":   (&util.Type{}).Strval(v["name"]),
 				"checked": checked,
 				"perm":    v["perm"],
 			})

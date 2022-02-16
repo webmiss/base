@@ -209,7 +209,7 @@ class SysMenus extends Base {
       if($actionStr != '') $actionArr=json_decode($actionStr, true);
       foreach($actionArr as $v){
         $permVal = (int)$v['perm'];
-        if($v['type']=='1' && ($perm&$permVal)>0) $action[]=$v;
+        if(($perm&$permVal)>0) $action[]=$v;
       }
       // 数据
       $value = ['url'=>$val['url'], 'controller'=>$val['controller'], 'action'=>$action];

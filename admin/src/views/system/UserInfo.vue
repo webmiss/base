@@ -1,13 +1,13 @@
 <template>
   <wm-main>
     <wm-form class="max_width">
-      <wm-form-item label="头像">
+      <wm-form-item label="头像" height="auto">
         <wm-img-upload :url="upload.url" :param="upload.param" @upload="upImg">
           <wm-img width="80px" height="80px" radius="50%" :url="form.img"></wm-img>
         </wm-img-upload>
       </wm-form-item>
       <wm-form-item label="昵称">
-        <wm-input :value="form.nickname" @update:value="form.nickname=$event" maxlength="12" placeholder="用户昵称" />
+        <wm-input v-model:value="form.nickname" maxlength="12" placeholder="用户昵称" />
       </wm-form-item>
       <wm-form-item label="姓名">
         <wm-input :value="form.name" @update:value="form.name=$event" maxlength="8" placeholder="填写姓名" />

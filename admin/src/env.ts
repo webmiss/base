@@ -1,8 +1,8 @@
 import Storage from './library/Storage'
 
 /* 接口 */
-const platform: string = Storage.getItem('platform') || '';
-const lag: any = platform?JSON.parse(platform):'';
+const language: string = Storage.getItem('language') || '';
+const lag: any = language?JSON.parse(language):'';
 let baseUrl: string, socket: string;
 if(lag && lag.name=='python'){
   baseUrl = 'http://localhost:9010/';

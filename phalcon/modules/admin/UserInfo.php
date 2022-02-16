@@ -19,7 +19,7 @@ class UserInfo extends Base {
     $json = self::Json();
     $token = self::JsonName($json, 'token');
     // 验证
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, '');
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     $tData = AdminToken::Token($token);
     // 查询
@@ -40,7 +40,7 @@ class UserInfo extends Base {
     $token = self::JsonName($json, 'token');
     $data = self::JsonName($json, 'data');
     // 验证
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, '');
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     $tData = AdminToken::Token($token);
     if(empty($data)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
@@ -71,7 +71,7 @@ class UserInfo extends Base {
     $token = self::JsonName($json, 'token');
     $base64 = self::JsonName($json, 'base64');
     // 验证
-    $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
+    $msg = AdminToken::Verify($token, '');
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
     if(empty($base64)) return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     // 上传

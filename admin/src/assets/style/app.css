@@ -50,7 +50,8 @@
 /* 用户 */
 .app_user{cursor: default; border-left: rgba(0,0,0,.04) 1px solid; padding: 16px;}
 .app_user span{height: 28px; line-height: 28px;}
-.app_user .tu{width: 28px; border-radius: 50%;}
+.app_user .tu{width: 28px; border-radius: 50%; background-color: #F2F4F6; text-align: center;}
+.app_user .tu i{font-size: 14px; color: #A2A4A6;}
 .app_user .name{padding-left: 5px; font-size: 14px;}
 .app_user .ico{width: 20px; text-align: center;}
 .app_user .ico i{position: absolute; font-size: 10px; transition-duration: .3s; transform: translate(-50%,0) rotate(0deg);}
@@ -59,7 +60,8 @@
 .app_user:hover i{transform: translate(-50%,0) rotate(180deg);}
 .app_user:hover .box{display: block;}
 .user_info{overflow: hidden; padding: 16px;}
-.user_info .ico{width: 48px; height: 48px; border-radius: 50%;}
+.user_info .ico{width: 48px; height: 48px; line-height: 48px; border-radius: 50%; background-color: #F2F4F6;}
+.user_info .ico i{font-size: 24px; color: #A2A4A6;}
 .user_info .info{padding-left: 10px;}
 .user_info .info h2{line-height: 26px; font-size: 16px;}
 .user_info .info p{font-size: 12px; color: #999;}
