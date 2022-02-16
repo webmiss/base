@@ -57,15 +57,19 @@ export default {
             this.state.uInfo = d[Env.login.uinfo];
           }
         }else{
-          this.state.isLogin = false;
-          this.state.uInfo = {};
-          Storage.setItem('token','');
+          this.logout();
         }
+      },()=>{
+        this.logout();
       });
     }else{
-      this.state.isLogin = false;
-      Storage.removeItem('token');
+      this.logout();
     }
+  },
+  logout(){
+    this.state.isLogin = false;
+    this.state.uInfo = {};
+    Storage.setItem('token','');
   },
 
   /* APP设置 */
