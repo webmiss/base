@@ -7,8 +7,8 @@ class Env :
   key: str = 'e4b99adec618e653400966be536c45f8'         #KEY
   password: str = '123456'                              #默认密码
   # 资源
-  base_url: str = 'https://demo-python.webmis.vip/'
-  # base_url: str = 'http://localhost/python/public/'
+  # base_url: str = 'https://demo-python.webmis.vip/'
+  base_url: str = 'http://localhost/python/public/'
   root_dir: str = 'public/'
   # Token
   admin_token_prefix: str = 'Admin'                     #前缀
@@ -19,5 +19,5 @@ class Env :
   api_token_auto: bool = True                           #自动续期
   # Logs
   log_source: str = 'python'                            #访问日志-来源
-  log_db: bool = True                                   #访问日志-数据库
+  log_db: bool = False                                  #访问日志-数据库
   log_file: bool = False                                #访问日志-文件

@@ -30,8 +30,8 @@ func Env() *EnvType {
 	cfg.Key = "e4b99adec618e653400966be536c45f8" //Key
 	cfg.Password = "123456"                      //默认密码
 	/* 资源 */
-	cfg.BaseURL = "https://demo-go.webmis.vip/"
-	// cfg.BaseURL = "http://localhost/gin/public/"
+	// cfg.BaseURL = "https://demo-go.webmis.vip/"
+	cfg.BaseURL = "http://localhost/gin/public/"
 	cfg.RootDir = "public/"
 	/* Token */
 	cfg.AdminTokenPrefix = "Admin"   //前缀
@@ -42,7 +42,7 @@ func Env() *EnvType {
 	cfg.ApiTokenAuto = true          //自动续期
 	/* Logs */
 	cfg.LogSource = "go" //访问日志-来源
-	cfg.LogDb = true     //访问日志-数据库
+	cfg.LogDb = false    //访问日志-数据库
 	cfg.LogFile = false  //访问日志-文件
 	return cfg
 }

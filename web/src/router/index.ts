@@ -13,4 +13,13 @@ const router: any = createRouter({
   routes
 })
 
+/* 百度统计 */
+router.beforeEach(async (to: any, from: any, next: any)=>{
+  if(to.path){
+    // @ts-ignore
+    if(window._hmt) window._hmt.push(['_trackPageview',to.fullPath]);
+  }
+  next();
+});
+
 export default router

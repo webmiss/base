@@ -7,6 +7,7 @@ import Post from '@/library/request/post'
 import Storage from '@/library/Storage'
 import DownBlob from '@/library/down/blob'
 /* UI组件 */
+import wmMain from '@/components/main/index.vue'
 import wmRow from '@/components/main/row/index.vue'
 import wmDialog from '@/components/dialog/index.vue'
 import wmForm from '@/components/form/index.vue'
@@ -18,57 +19,25 @@ import wmImgView from '@/components/img/view/index.vue'
 
 /* 文件管理 */
 export default defineComponent({
-  components: {wmRow,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmUploader,wmImgView},
+  components: {wmMain, wmRow,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmUploader,wmImgView},
   data(){
     // 状态
     const store: any = useStore();
     const state: any = store.state;
+    const getters: any = store.getters;
     // 信息
     const info: any = {url:'', path:'/', loaded:'0%'};
     // 列表、新建、重命名、上传、下载、打包、删除
     const lists: any = {url:'', folder:[], files:[], dirNum:0, fileNum:0, size:'0KB'};
     const folder: any = {show:false, form:{name:''}};
     const rename: any = {show:false, form:{rename:'', name:''}};
-    const upload: any = {url:'sysfile/upload', name:'up', param:{}};
+    const upload: any = {url:'sys_file/upload', name:'up', param:{}};
     const down: any = {show:false, filename:''};
     const zip: any = {show:false, form:{name:'', files:[]}};
     const del: any = {show:false, data:[]};
     // 图片预览
     const imgView: any = {show: false, imgs:[], index: 0};
-    return {state, info, lists, folder, rename, upload, down, zip, del, imgView};
-  },
-  computed: {
-    // 动作菜单-监听
-    // actionType(){
-    //   const active: any = this.state.action.active;
-    //   return active;
-    // }
-  },
-  watch:{
-    // 动作菜单-点击
-    // actionType(val){
-    //   if(!val) return false;
-    //   if(val=='list'){
-    //     this.loadData();
-    //   }else if(val=='mkdir'){
-    //     this.folder.show = true;
-    //   }else if(val=='rename'){
-    //     const names = this.getCheckName();
-    //     if(!names) return ;
-    //     this.rename.show = true;
-    //     this.rename.form.rename = names[0];
-    //     this.rename.form.name = names[0];
-    //   }else if(val=='upload'){
-    //     this.upload.param = {token: Storage.getItem('token'), path: this.info.path};
-    //     const obj: any = this.$refs.Uploader;
-    //     obj.upload();
-    //   }else if(val=='remove'){
-    //     const names: any = this.getCheckName();
-    //     if(!names) return ;
-    //     this.del.show = true;
-    //     this.del.data = names;
-    //   }
-    // }
+    return {state, getters, info, lists, folder, rename, upload, down, zip, del, imgView};
   },
   mounted(){
     // 加载数据
@@ -79,7 +48,7 @@ export default defineComponent({
     /* 加载数据 */
     loadData(){
       const load = Loading();
-      Post('sysfile/list',{
+      Post('sys_file/list',{
         token: Storage.getItem('token'),
         path: this.info.path
       },(res: any)=>{
@@ -128,6 +97,13 @@ export default defineComponent({
     },
 
     /* 重命名 */
+    renameData(){
+      const names = this.getCheckName();
+      if(!names) return ;
+      this.rename.show = true;
+      this.rename.form.rename = names[0];
+      this.rename.form.name = names[0];
+    },
     subRename(){
       const rename = this.rename.form.rename;
       const name = this.rename.form.name;
@@ -140,6 +116,11 @@ export default defineComponent({
     },
 
     /* 上传 */
+    uploadData(){
+      this.upload.param = {token: Storage.getItem('token'), path: this.info.path};
+      const obj: any = this.$refs.Uploader;
+      obj.upload();
+    },
     upProgress(event: any){
       let complete = (event.loaded/event.total*100 | 0);
       if(complete<100){
@@ -153,7 +134,7 @@ export default defineComponent({
     /* 下载 */
     downFile(){
       this.down.show = false;
-      DownBlob('sysfile/down',{
+      DownBlob('sys_file/down',{
         token:Storage.getItem('token'),
         path: this.info.path,
         filename: this.down.filename,
@@ -161,6 +142,12 @@ export default defineComponent({
     },
 
     /* 删除 */
+    delData(){
+      const names: any = this.getCheckName();
+      if(!names) return ;
+      this.del.show = true;
+      this.del.data = names;
+    },
     subDel(){
       const data = JSON.stringify(this.del.data);
       // 提交
@@ -258,7 +245,7 @@ export default defineComponent({
     subAjax(action: string, parameter: any, callback?: any, config?: any){
       parameter.token = Storage.getItem('token');
       const load = Loading();
-      Post('sysfile/'+action,parameter,(res: any)=>{
+      Post('sys_file/'+action,parameter,(res: any)=>{
         load.clear();
         const d = res.data;
         // 回调

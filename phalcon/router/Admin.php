@@ -18,12 +18,12 @@ class Admin {
     // 修改密码
     $app->post('/admin/user_passwd/edit', 'App\Admin\UserPasswd::Edit');
     // 文件管理
-    $app->post('/admin/sysfile/list', 'App\Admin\SysFile::List');
-    $app->post('/admin/sysfile/mkdir', 'App\Admin\SysFile::Mkdir');
-    $app->post('/admin/sysfile/rename', 'App\Admin\SysFile::Rename');
-    $app->post('/admin/sysfile/upload', 'App\Admin\SysFile::Upload');
-    $app->post('/admin/sysfile/down', 'App\Admin\SysFile::Down');
-    $app->post('/admin/sysfile/remove', 'App\Admin\SysFile::Remove');
+    $app->post('/admin/sys_file/list', 'App\Admin\SysFile::List');
+    $app->post('/admin/sys_file/mkdir', 'App\Admin\SysFile::Mkdir');
+    $app->post('/admin/sys_file/rename', 'App\Admin\SysFile::Rename');
+    $app->post('/admin/sys_file/upload', 'App\Admin\SysFile::Upload');
+    $app->post('/admin/sys_file/down', 'App\Admin\SysFile::Down');
+    $app->post('/admin/sys_file/remove', 'App\Admin\SysFile::Remove');
     // 用户管理
     $app->post('/admin/sys_user/list', 'App\Admin\SysUser::List');
     $app->post('/admin/sys_user/add', 'App\Admin\SysUser::Add');
@@ -33,19 +33,19 @@ class Admin {
     $app->post('/admin/sys_user/perm', 'App\Admin\SysUser::Perm');
     $app->post('/admin/sys_user/info', 'App\Admin\SysUser::Info');
     // API菜单
-    $app->post('/admin/apimenus/list', 'App\Admin\ApiMenus::List');
-    $app->post('/admin/apimenus/add', 'App\Admin\ApiMenus::Add');
-    $app->post('/admin/apimenus/edit', 'App\Admin\ApiMenus::Edit');
-    $app->post('/admin/apimenus/del', 'App\Admin\ApiMenus::Del');
-    $app->post('/admin/apimenus/perm', 'App\Admin\ApiMenus::Perm');
+    $app->post('/admin/api_menus/list', 'App\Admin\ApiMenus::List');
+    $app->post('/admin/api_menus/add', 'App\Admin\ApiMenus::Add');
+    $app->post('/admin/api_menus/edit', 'App\Admin\ApiMenus::Edit');
+    $app->post('/admin/api_menus/del', 'App\Admin\ApiMenus::Del');
+    $app->post('/admin/api_menus/perm', 'App\Admin\ApiMenus::Perm');
     // API角色
-    $app->post('/admin/apirole/list', 'App\Admin\ApiRole::List');
-    $app->post('/admin/apirole/add', 'App\Admin\ApiRole::Add');
-    $app->post('/admin/apirole/edit', 'App\Admin\ApiRole::Edit');
-    $app->post('/admin/apirole/del', 'App\Admin\ApiRole::Del');
-    $app->post('/admin/apirole/perm', 'App\Admin\ApiRole::Perm');
-    $app->post('/admin/apirole/permList', 'App\Admin\ApiRole::PermList');
-    $app->post('/admin/apirole/roleList', 'App\Admin\ApiRole::RoleList');
+    $app->post('/admin/api_role/list', 'App\Admin\ApiRole::List');
+    $app->post('/admin/api_role/add', 'App\Admin\ApiRole::Add');
+    $app->post('/admin/api_role/edit', 'App\Admin\ApiRole::Edit');
+    $app->post('/admin/api_role/del', 'App\Admin\ApiRole::Del');
+    $app->post('/admin/api_role/perm', 'App\Admin\ApiRole::Perm');
+    $app->post('/admin/api_role/permList', 'App\Admin\ApiRole::PermList');
+    $app->post('/admin/api_role/roleList', 'App\Admin\ApiRole::RoleList');
     // 系统菜单
     $app->post('/admin/sys_menus/list', 'App\Admin\SysMenus::List');
     $app->post('/admin/sys_menus/add', 'App\Admin\SysMenus::Add');
@@ -62,9 +62,9 @@ class Admin {
     $app->post('/admin/sys_role/permList', 'App\Admin\SysRole::PermList');
     $app->post('/admin/sys_role/roleList', 'App\Admin\SysRole::RoleList');
     // 系统配置
-    $app->post('/admin/sysconfig/list', 'App\Admin\SysConfig::List');
-    $app->post('/admin/sysconfig/edit', 'App\Admin\SysConfig::Edit');
-    $app->post('/admin/sysconfig/upimg', 'App\Admin\SysConfig::Upimg');
+    $app->post('/admin/sys_config/list', 'App\Admin\SysConfig::List');
+    $app->post('/admin/sys_config/edit', 'App\Admin\SysConfig::Edit');
+    $app->post('/admin/sys_config/upimg', 'App\Admin\SysConfig::Upimg');
   }
 
 }

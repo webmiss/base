@@ -39,7 +39,7 @@ export default defineComponent({
     const del: any = {show:false, ids:''};
     // 权限
     const perm: any = {show:false, id:'', title:'权限', list:[]};
-    return {store, getters, state, page, sea, add, edit, del, perm};
+    return {state, getters, page, sea, add, edit, del, perm};
   },
   mounted(){
     // 加载数据

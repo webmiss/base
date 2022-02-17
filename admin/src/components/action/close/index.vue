@@ -5,9 +5,9 @@
 <style scoped>
 .wm-action_close{cursor: pointer; position: relative; display: inline-block; width: 0; height: 0; border-radius: 50%; margin: 0 5px; opacity: 0.8;}
 .wm-action_close:hover{opacity: 1;}
-.wm-action_close::after,.wm-action_close::before{content: ''; position: absolute; width: 60%; height: 0.12rem; background-color: #FFF; left: 50%; top: 50%; transform-origin: center;}
-.wm-action_close::after{transform: rotate(45deg); margin-left: -30%;}
-.wm-action_close::before{transform: rotate(-45deg); margin-left: -30%;}
+.wm-action_close::after,.wm-action_close::before{content: ''; position: absolute; width: 50%; height: 0.1rem; background-color: #FFF; left: 50%; top: 50%; transform-origin: center;}
+.wm-action_close::after{transform: translate(-50%, -50%) rotate(45deg);}
+.wm-action_close::before{transform: translate(-50%, -50%) rotate(-45deg);}
 </style>
 
 <script lang="ts">

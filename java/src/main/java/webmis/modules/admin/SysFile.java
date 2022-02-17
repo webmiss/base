@@ -23,7 +23,7 @@ import webmis.library.Upload;
 
 @RestController
 @Controller("AdminSysFile")
-@RequestMapping("/admin/sysfile")
+@RequestMapping("/admin/sys_file")
 public class SysFile extends Base {
 
   private static final String dirRoot="upload/";

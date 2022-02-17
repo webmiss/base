@@ -18,7 +18,7 @@
 </template>
 
 <style scoped>
-.wm-dialog{border-radius: 4px;}
+.wm-dialog{border-radius: 4px; padding-bottom: 4px;}
 .wm-dialog_title{position: relative; height: 48px; font-size: 16px; padding: 0 16px; text-align: center;}
 .wm-dialog_title .title{line-height: 48px; user-select: none;}
 .wm-dialog_close{cursor: pointer; position: absolute; right: 8px; top: 8px; width: 32px; height: 32px;}

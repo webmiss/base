@@ -6,8 +6,8 @@ public class Env {
   public static final String key = "e4b99adec618e653400966be536c45f8";        //KEY
   public static final String password = "123456";                             //默认密码
   /* 资源 */
-  public static final String base_url = "https://demo-java.webmis.vip/";
-  // public static final String base_url = "http://localhost/java/public/";
+  // public static final String base_url = "https://demo-java.webmis.vip/";
+  public static final String base_url = "http://localhost/java/public/";
   public static final String root_dir = "public/";
   /* Token */
   public static final String admin_token_prefix = "AdminToken_";              //前缀
@@ -18,6 +18,6 @@ public class Env {
   public static final boolean api_token_auto = true;                          //自动续期
   /* Logs */
   public static final String log_source = "java";     //访问日志-来源
-  public static final boolean log_db = true;          //访问日志-数据库
+  public static final boolean log_db = false;         //访问日志-数据库
   public static final boolean log_file = false;       //访问日志-文件
 }

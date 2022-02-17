@@ -24,12 +24,12 @@ func Admin(r *gin.Engine) {
 		// 修改密码
 		g.POST("user_passwd/edit", (&admin.UserPasswd{}).Edit)
 		// 文件管理
-		g.POST("sysfile/list", (&admin.SysFile{}).List)
-		g.POST("sysfile/mkdir", (&admin.SysFile{}).Mkdir)
-		g.POST("sysfile/rename", (&admin.SysFile{}).Rename)
-		g.POST("sysfile/upload", (&admin.SysFile{}).Upload)
-		g.POST("sysfile/down", (&admin.SysFile{}).Down)
-		g.POST("sysfile/remove", (&admin.SysFile{}).Remove)
+		g.POST("sys_file/list", (&admin.SysFile{}).List)
+		g.POST("sys_file/mkdir", (&admin.SysFile{}).Mkdir)
+		g.POST("sys_file/rename", (&admin.SysFile{}).Rename)
+		g.POST("sys_file/upload", (&admin.SysFile{}).Upload)
+		g.POST("sys_file/down", (&admin.SysFile{}).Down)
+		g.POST("sys_file/remove", (&admin.SysFile{}).Remove)
 		// 用户管理
 		g.POST("sys_user/list", (&admin.SysUser{}).List)
 		g.POST("sys_user/add", (&admin.SysUser{}).Add)
@@ -39,11 +39,11 @@ func Admin(r *gin.Engine) {
 		g.POST("sys_user/perm", (&admin.SysUser{}).Perm)
 		g.POST("sys_user/info", (&admin.SysUser{}).Info)
 		// API菜单
-		g.POST("apimenus/list", (&admin.ApiMenus{}).List)
-		g.POST("apimenus/add", (&admin.ApiMenus{}).Add)
-		g.POST("apimenus/edit", (&admin.ApiMenus{}).Edit)
-		g.POST("apimenus/del", (&admin.ApiMenus{}).Del)
-		g.POST("apimenus/perm", (&admin.ApiMenus{}).Perm)
+		g.POST("api_menus/list", (&admin.ApiMenus{}).List)
+		g.POST("api_menus/add", (&admin.ApiMenus{}).Add)
+		g.POST("api_menus/edit", (&admin.ApiMenus{}).Edit)
+		g.POST("api_menus/del", (&admin.ApiMenus{}).Del)
+		g.POST("api_menus/perm", (&admin.ApiMenus{}).Perm)
 		// API角色
 		g.POST("api_role/list", (&admin.ApiRole{}).List)
 		g.POST("api_role/add", (&admin.ApiRole{}).Add)
@@ -60,16 +60,16 @@ func Admin(r *gin.Engine) {
 		g.POST("sys_menus/perm", (&admin.SysMenus{}).Perm)
 		g.POST("sys_menus/getMenus", (&admin.SysMenus{}).GetMenus)
 		// 系统角色
-		g.POST("sysrole/list", (&admin.SysRole{}).List)
-		g.POST("sysrole/add", (&admin.SysRole{}).Add)
-		g.POST("sysrole/edit", (&admin.SysRole{}).Edit)
-		g.POST("sysrole/del", (&admin.SysRole{}).Del)
-		g.POST("sysrole/perm", (&admin.SysRole{}).Perm)
-		g.POST("sysrole/permList", (&admin.SysRole{}).PermList)
-		g.POST("sysrole/roleList", (&admin.SysRole{}).RoleList)
+		g.POST("sys_role/list", (&admin.SysRole{}).List)
+		g.POST("sys_role/add", (&admin.SysRole{}).Add)
+		g.POST("sys_role/edit", (&admin.SysRole{}).Edit)
+		g.POST("sys_role/del", (&admin.SysRole{}).Del)
+		g.POST("sys_role/perm", (&admin.SysRole{}).Perm)
+		g.POST("sys_role/permList", (&admin.SysRole{}).PermList)
+		g.POST("sys_role/roleList", (&admin.SysRole{}).RoleList)
 		// 系统配置
-		g.POST("sysconfig/list", (&admin.SysConfig{}).List)
-		g.POST("sysconfig/edit", (&admin.SysConfig{}).Edit)
-		g.POST("sysconfig/upimg", (&admin.SysConfig{}).Upimg)
+		g.POST("sys_config/list", (&admin.SysConfig{}).List)
+		g.POST("sys_config/edit", (&admin.SysConfig{}).Edit)
+		g.POST("sys_config/upimg", (&admin.SysConfig{}).Upimg)
 	}
 }

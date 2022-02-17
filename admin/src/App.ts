@@ -111,6 +111,7 @@ export default defineComponent({
           if(this.$route.path=='/'){
             window.location.reload();
           } else {
+            this.getMenus();
             this.$router.replace({path:'/refresh'});
           }
         }else{

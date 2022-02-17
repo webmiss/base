@@ -1,5 +1,15 @@
 <template>
-  <div class="html">
+  <wm-main>
+
+    <!-- Action -->
+    <div class="app_action flex_left">
+      <ul class="app_action_list flex_left">
+        <li v-if="getters.actionShow('upload')" @click="uploadData()">上传</li>
+        <li v-if="getters.actionShow('mkdir')" @click="folder.show=true">新建文件夹</li>
+        <li v-if="getters.actionShow('rename')" @click="renameData()">重命名</li>
+        <li v-if="getters.actionShow('remove')" @click="delData()">删除</li>
+      </ul>
+    </div>
 
     <!-- 文件信息 -->
     <div class="file_path">
@@ -14,7 +24,7 @@
       <span class="info">文件夹( {{ lists.dirNum }} ) 文件( {{ lists.fileNum }} ) 大小( {{ lists.size }} )</span>
     </div>
     <!-- 上传进度 -->
-    <div class="file_load" :style="{backgroundImage: 'linear-gradient(to right, #6FB737, #6FB737 '+info.loaded+', #F2F4F6 '+info.loaded+', #F2F4F6 100%)'}">
+    <div class="file_load" :style="{backgroundImage: 'linear-gradient(to right, #595, #595 '+info.loaded+', #F2F4F6 '+info.loaded+', #F2F4F6 100%)'}">
       <span class="text" :style="{width:info.loaded}">{{info.loaded!='0%'&&info.loaded!='100%'?info.loaded:''}}</span>
     </div>
     <!-- 文件信息 End -->
@@ -49,10 +59,10 @@
     </div>
 
     <!-- 新建文件夹 -->
-    <wm-dialog title="新建文件夹" width="420px" :show="folder.show" @update:close="folder.show=$event">
+    <wm-dialog title="新建文件夹" width="480px" :show="folder.show" @update:close="folder.show=$event">
       <wm-form class="form">
         <wm-form-item label="名称">
-          <wm-input :value="folder.form.name" @update:value="folder.form.name=$event" placeholder="文件夹名称" />
+          <wm-input v-model:value="folder.form.name" width="90%" placeholder="文件夹名称" />
         </wm-form-item>
       </wm-form>
       <template #footer>
@@ -62,10 +72,10 @@
     <!-- 新建文件夹 End -->
 
     <!-- 重命名 -->
-    <wm-dialog title="重命名" width="420px" :show="rename.show" @update:close="rename.show=$event">
+    <wm-dialog title="重命名" width="480px" :show="rename.show" @update:close="rename.show=$event">
       <wm-form class="form">
         <wm-form-item label="名称">
-          <wm-input :value="rename.form.name" @update:value="rename.form.name=$event" placeholder="重命名的名称" />
+          <wm-input v-model:value="rename.form.name" width="90%" placeholder="重命名的名称" />
         </wm-form-item>
       </wm-form>
       <template #footer>
@@ -78,7 +88,7 @@
     <wm-uploader class="hide" ref="Uploader" :url="upload.url" :name="upload.name" :param="upload.param" @progress="upProgress"></wm-uploader>
 
     <!-- 下载 -->
-    <wm-dialog title="下载文件" width="320px" :show="down.show" @update:close="down.show=$event">
+    <wm-dialog title="下载文件" width="480px" :show="down.show" @update:close="down.show=$event">
       <wm-row>{{down.filename}}</wm-row>
       <template #footer>
         <wm-button @click="downFile()">确定</wm-button>
@@ -87,7 +97,7 @@
     <!-- 下载 End -->
 
     <!-- 删除 -->
-    <wm-dialog title="删除" width="320px" :show="del.show" @update:close="del.show=$event">
+    <wm-dialog title="删除" width="400px" :show="del.show" @update:close="del.show=$event">
       <wm-row>是否删除已选择文件夹或文件？</wm-row>
       <template #footer>
         <wm-button @click="subDel()">彻底删除</wm-button>
@@ -98,7 +108,7 @@
     <!-- 图片预览 -->
     <wm-img-view ref="imgShow" :show="imgView.show" @update:close="imgView.show=$event"></wm-img-view>
 
-  </div>
+  </wm-main>
 </template>
 
 <style scoped>
@@ -106,17 +116,17 @@
 /* 信息 */
 .file_path{line-height: 20px; padding: 16px;}
 .file_path a{color: #333; user-select: none;}
-.file_path a:hover{color: #6FB737;}
+.file_path a:hover{color: #595;}
 .file_path .path{color: #999;}
 .file_path .path span{padding: 5px 8px;}
 .file_path .info{position: absolute; right: 16px; color: #999; background-color: #FFF; font-size: 12px;}
-.file_load{width: 100%; height: 4px; line-height: 4px; font-size: 12px; background-color: #F2F4F6;}
+.file_load{width: 100%; height: 2px; line-height: 2px; font-size: 12px; background-color: #F2F4F6;}
 .file_load span{display: inline-block;}
 .file_load .text{position: absolute; padding-top: 10px; text-align: right;}
 
 /* 列表 */
-.file_body{overflow: auto; height: calc(100% - 56px); padding: 0 16px;}
-.file_body ul{overflow: hidden; padding: 20px 0;}
+.file_body{padding: 16px;}
+.file_body ul{overflow: hidden;}
 .file_body li{position: relative; float: left; margin: 5px;}
 .file{width: 128px; height: 128px; border: #FFF 1px solid; border-radius: 5px;}
 .file:hover{background-color: #F2F4F6;}
@@ -126,13 +136,12 @@
 .check{position: absolute; width: 18px; height: 18px; margin: 10px 0 0 -10px; background-color: #24292E; border-radius: 50%;}
 .check:after{content: ""; position: absolute; width: 4px; height: 6px; border: 2px solid #fff; border-left: 0; border-top: 0; left: 6px; top: 4px; transform-origin: center; transform: rotate(45deg) scaleY(1);}
 
-.file_click{position: absolute; z-index: 10; opacity: 0.1; color: #6FB737; width: 40px; height: 40px; line-height: 40px; font-size: 20px; text-align: center;}
-.file_state:hover .file_click{opacity: 0.5;}
-.file_state:hover .file_click .check{background-color: #6FB737;}
+.file_click{position: absolute; z-index: 10; opacity: 0; color: #595; width: 40px; height: 40px; line-height: 40px; font-size: 20px; text-align: center;}
+.file_state:hover .file_click{opacity: 0.7;}
 .file_active .file_click{opacity: 1;}
-.file_active .file_click .check{background-color: #6FB737;}
+.file_active .file_click .check{background-color: #595;}
 .file_active:hover .file_click{opacity: 1;}
-.file_active .file{border-color: #6FB737; background-color: #F2F4F6;}
+.file_active .file{border-color: #595; background-color: #F2F4F6;}
 
 /* 文件夹 */
 .file_ct{width: 100%; height: 84px; line-height: 84px; text-align: center;}

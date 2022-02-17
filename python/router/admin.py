@@ -36,7 +36,7 @@ def userInfo(a) :
 def userPasswd(a) :
   if a=='edit' : return UserPasswd().Edit()
 # 文件管理
-@Admin.route('/sysfile/<a>',methods=['POST'])
+@Admin.route('/sys_file/<a>',methods=['POST'])
 def sysFile(a) :
   if a=='list' : return SysFile().List()
   elif a=='mkdir' : return SysFile().Mkdir()
@@ -55,7 +55,7 @@ def sysUser(a) :
   elif a=='perm' : return SysUser().Perm()
   elif a=='info' : return SysUser().Info()
 # API菜单
-@Admin.route('/apimenus/<a>',methods=['POST'])
+@Admin.route('/api_menus/<a>',methods=['POST'])
 def apiMenus(a) :
   if a=='list' : return ApiMenus().List()
   elif a=='add' : return ApiMenus().Add()
@@ -82,7 +82,7 @@ def sysMenus(a) :
   elif a=='perm' : return SysMenus().Perm()
   elif a=='getMenus' : return SysMenus().GetMenus()
 # 系统角色
-@Admin.route('/sysrole/<a>',methods=['POST'])
+@Admin.route('/sys_role/<a>',methods=['POST'])
 def apiRole(a) :
   if a=='list' : return SysRole().List()
   elif a=='add' : return SysRole().Add()
@@ -92,7 +92,7 @@ def apiRole(a) :
   elif a=='permList' : return SysRole().PermList()
   elif a=='roleList' : return SysRole().RoleList()
 # 系统配置
-@Admin.route('/sysconfig/<a>',methods=['POST'])
+@Admin.route('/sys_config/<a>',methods=['POST'])
 def sysConfig(a) :
   if a=='list' : return SysConfig().List()
   elif a=='edit' : return SysConfig().Edit()
