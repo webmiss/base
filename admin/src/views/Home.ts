@@ -31,14 +31,14 @@ export default defineComponent({
   },
   activated(){
     // 加载数据
-    if(Storage.getItem('token')){
-      this.loadData();
-      // 30刷新
-      clearInterval(this.time);
-      this.time = setInterval(()=>{
-        this.loadData();
-      }, 30000);
-    }
+    // if(Storage.getItem('token')){
+    //   this.loadData();
+    //   // 30刷新
+    //   clearInterval(this.time);
+    //   this.time = setInterval(()=>{
+    //     this.loadData();
+    //   }, 30000);
+    // }
   },
   // 离开页面
   beforeRouteLeave(to, form, next) {
