@@ -23,7 +23,7 @@ import webmis.util.Util;
 /* 系统菜单 */
 @RestController
 @Controller("AdminApiMenus")
-@RequestMapping("/admin/apimenus")
+@RequestMapping("/admin/api_menus")
 public class ApiMenus extends Base {
 
   private static HashMap<String, ArrayList<HashMap<String, Object>>> menus = null;  //全部菜单

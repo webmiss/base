@@ -11,11 +11,12 @@ const routes: Array<RouteRecordRaw> = [
   // 设置
   {path:'/SysFileManage', name:'SysFileManage', component:()=>import('../views/system/FileManage.vue')},
   {path:'/SysUser', name:'SysUser', component:()=>import('../views/system/User.vue')},
-  {path:'/ApiMenus', name:'ApiMenus', component:()=>import('../views/system/ApiMenus.vue')},
-  {path:'/ApiRole', name:'ApiRole', component:()=>import('../views/system/ApiRole.vue')},
   {path:'/SysRole', name:'SysRole', component:()=>import('../views/system/Role.vue')},
   {path:'/SysMenus', name:'SysMenus', component:()=>import('../views/system/Menus.vue')},
+  {path:'/ApiMenus', name:'ApiMenus', component:()=>import('../views/system/ApiMenus.vue')},
+  {path:'/ApiRole', name:'ApiRole', component:()=>import('../views/system/ApiRole.vue')},
   {path:'/SysConfig', name:'SysConfig', component:()=>import('../views/system/Config.vue')},
+  {path:'/SysHelp', name:'SysHelp', component:()=>import('../views/system/Help.vue')},
   // Demo
   {path:'/demo/TinyMCE', name:'DemoTinyMCE', component:()=>import('../views/demo/TinyMCE.vue')},
   {path:'/demo/TWebLive', name:'DemoTWebLive', component:()=>import('../views/demo/TWebLive.vue')},

@@ -2,7 +2,7 @@ import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
 import Env from '@/env'
 /* JS组件 */
-import Storage from '@/library/Storage'
+import NavigateTo from '@/library/ui/navigate-to'
 /* UI组件 */
 import wmMain from '@/components/main/index.vue'
 
@@ -10,28 +10,17 @@ export default defineComponent({
   components: {wmMain},
   data(){
     // 状态
-    // 状态
     const store: any = useStore();
     const state: any = store.state;
-    const getters: any = store.getters;
-    return {state, getters}
-  },
-  computed: {
-  },
-  watch:{
+    return {state}
   },
   mounted(){
-    // 加载数据
-    if(Storage.getItem('token')) this.loadData();
-  },
-  beforeUnmount(){
-    // 页面销毁
   },
   methods:{
 
-    /* 加载数据 */
-    loadData(){
-
+    /* 打开URL */
+    openUrl(url: string) {
+      NavigateTo(url);
     },
 
   }

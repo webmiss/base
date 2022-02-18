@@ -21,7 +21,7 @@ import webmis.util.Util;
 
 @RestController
 @Controller("AdminApiRole")
-@RequestMapping("/admin/apirole")
+@RequestMapping("/admin/api_role")
 public class ApiRole extends Base {
 
   private static HashMap<String, ArrayList<HashMap<String, Object>>> menus = null;  //全部菜单

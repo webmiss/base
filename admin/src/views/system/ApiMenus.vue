@@ -86,7 +86,7 @@
           <wm-input v-model:value="add.form.title" maxlength="8" maxWidth="320px" placeholder="菜单名称" />
         </wm-form-item>
         <wm-form-item label="控制器">
-          <wm-input v-model:value="add.form.controller" maxlength="2" placeholder="例如: /admin/sysmenus" />
+          <wm-input v-model:value="add.form.controller" maxlength="2" placeholder="例如: /api/test" />
         </wm-form-item>
         <wm-form-item label="URL">
           <wm-input v-model:value="add.form.url" maxlength="24" maxWidth="320px" placeholder="URL" />
@@ -114,7 +114,7 @@
           <wm-input v-model:value="edit.form.title" maxlength="8" maxWidth="320px" placeholder="菜单名称" />
         </wm-form-item>
         <wm-form-item label="控制器">
-          <wm-input v-model:value="edit.form.controller" maxlength="2" placeholder="例如: /admin/sysmenus" />
+          <wm-input v-model:value="edit.form.controller" maxlength="2" placeholder="例如: /api/test" />
         </wm-form-item>
         <wm-form-item label="URL">
           <wm-input v-model:value="edit.form.url" maxlength="24" maxWidth="320px" placeholder="URL" />
