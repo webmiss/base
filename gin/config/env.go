@@ -30,8 +30,8 @@ func Env() *EnvType {
 	cfg.Key = "e4b99adec618e653400966be536c45f8" //Key
 	cfg.Password = "123456"                      //默认密码
 	/* 资源 */
-	// cfg.BaseURL = "https://demo-go.webmis.vip/"
-	cfg.BaseURL = "http://localhost/gin/public/"
+	cfg.BaseURL = "https://demo-go.webmis.vip/"
+	// cfg.BaseURL = "http://localhost/gin/public/"
 	cfg.RootDir = "public/"
 	/* Token */
 	cfg.AdminTokenPrefix = "Admin"   //前缀
