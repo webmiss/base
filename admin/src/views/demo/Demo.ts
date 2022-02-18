@@ -5,9 +5,6 @@ import Env from '@/env'
 import Storage from '@/library/Storage'
 /* UI组件 */
 import wmMain from '@/components/main/index.vue'
-/* ElementUI */
-// import { ElButton } from 'element-plus';
-// import '@/assets/themes/button.css'
 
 export default defineComponent({
   components: {wmMain},
@@ -18,18 +15,8 @@ export default defineComponent({
     return {state}
   },
   computed: {
-    // 动作菜单-监听
-    actionType(){
-      const active: any = this.state.action.active;
-      return active;
-    }
   },
   watch:{
-    // 动作菜单-点击
-    actionType(val){
-      if(!val) return false;
-      console.log(val);
-    }
   },
   mounted(){
     // 加载数据

@@ -73,29 +73,29 @@
         <td>{{ val.controller }}</td>
       </wm-table-tr>
     </wm-table>
-    <!-- List End -->
     <wm-page :page="page.page" :limit="page.limit" :total="page.total" @update:page="subPage"></wm-page>
+    <!-- List End -->
 
     <!-- Add -->
     <wm-dialog title="添加" width="540px" :show="add.show" @update:close="add.show=$event">
       <wm-form class="form">
         <wm-form-item label="所属">
-          <wm-input :value="add.form.fid" @update:value="add.form.fid=$event" maxlength="3" maxWidth="80px" placeholder="FID" />
+          <wm-input v-model:value="add.form.fid" maxlength="3" maxWidth="80px" placeholder="FID" />
         </wm-form-item>
         <wm-form-item label="名称">
-          <wm-input :value="add.form.title" @update:value="add.form.title=$event" maxlength="8" maxWidth="320px" placeholder="菜单名称" />
+          <wm-input v-model:value="add.form.title" maxlength="8" maxWidth="320px" placeholder="菜单名称" />
         </wm-form-item>
         <wm-form-item label="控制器">
-          <wm-input :value="add.form.controller" @update:value="add.form.controller=$event" maxlength="20" placeholder="例如: /admin/sysmenus" />
+          <wm-input v-model:value="add.form.controller" maxlength="20" placeholder="例如: /admin/sysmenus" />
         </wm-form-item>
         <wm-form-item label="URL">
-          <wm-input :value="add.form.url" @update:value="add.form.url=$event" maxlength="24" maxWidth="320px" placeholder="URL" />
+          <wm-input v-model:value="add.form.url" maxlength="24" maxWidth="320px" placeholder="URL" />
         </wm-form-item>
         <wm-form-item label="图标样式">
-          <wm-input :value="add.form.ico" @update:value="add.form.ico=$event" maxlength="32" maxWidth="240px" placeholder="图标样式" />
+          <wm-input v-model:value="add.form.ico" maxlength="32" maxWidth="240px" placeholder="图标样式" />
         </wm-form-item>
         <wm-form-item label="排序">
-          <wm-input :value="add.form.sort" @update:value="add.form.sort=$event" maxlength="2" maxWidth="240px" placeholder="例如: 1、2、3" />
+          <wm-input v-model:value="add.form.sort" maxlength="2" maxWidth="240px" placeholder="例如: 1、2、3" />
         </wm-form-item>
       </wm-form>
       <template #footer>
@@ -108,22 +108,22 @@
     <wm-dialog title="编辑" width="540px" :show="edit.show" @update:close="edit.show=$event">
       <wm-form class="form">
         <wm-form-item label="所属">
-          <wm-input :value="edit.form.fid" @update:value="edit.form.fid=$event" maxlength="3" maxWidth="80px" placeholder="FID" />
+          <wm-input v-model:value="edit.form.fid" maxlength="3" maxWidth="80px" placeholder="FID" />
         </wm-form-item>
         <wm-form-item label="名称">
-          <wm-input :value="edit.form.title" @update:value="edit.form.title=$event" maxlength="8" maxWidth="320px" placeholder="菜单名称" />
+          <wm-input v-model:value="edit.form.title" maxlength="8" maxWidth="320px" placeholder="菜单名称" />
         </wm-form-item>
         <wm-form-item label="控制器">
-          <wm-input :value="edit.form.controller" @update:value="edit.form.controller=$event" maxlength="20" placeholder="例如: /admin/sysmenus" />
+          <wm-input v-model:value="edit.form.controller" maxlength="20" placeholder="例如: /admin/sysmenus" />
         </wm-form-item>
         <wm-form-item label="URL">
-          <wm-input :value="edit.form.url" @update:value="edit.form.url=$event" maxlength="24" maxWidth="320px" placeholder="URL" />
+          <wm-input v-model:value="edit.form.url" maxlength="24" maxWidth="320px" placeholder="URL" />
         </wm-form-item>
         <wm-form-item label="图标样式">
-          <wm-input :value="edit.form.ico" @update:value="edit.form.ico=$event" maxlength="32" maxWidth="240px" placeholder="图标样式" />
+          <wm-input v-model:value="edit.form.ico" maxlength="32" maxWidth="240px" placeholder="图标样式" />
         </wm-form-item>
         <wm-form-item label="排序">
-          <wm-input :value="edit.form.sort" @update:value="edit.form.sort=$event" maxlength="2" maxWidth="240px" placeholder="例如: 1、2、3" />
+          <wm-input v-model:value="edit.form.sort" maxlength="2" maxWidth="240px" placeholder="例如: 1、2、3" />
         </wm-form-item>
       </wm-form>
       <template #footer>

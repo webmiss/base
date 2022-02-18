@@ -52,14 +52,14 @@
         </td>
       </wm-table-tr>
     </wm-table>
-    <!-- List End -->
     <wm-page :page="page.page" :limit="page.limit" :total="page.total" @update:page="subPage"></wm-page>
+    <!-- List End -->
 
     <!-- Add -->
     <wm-dialog title="添加" width="420px" :show="add.show" @update:close="add.show=$event">
       <wm-form class="form">
         <wm-form-item label="名称">
-          <wm-input :value="add.form.name" @update:value="add.form.name=$event" maxlength="16" placeholder="角色名称" />
+          <wm-input v-model:value="add.form.name" maxlength="16" placeholder="角色名称" />
         </wm-form-item>
       </wm-form>
       <template #footer>
@@ -72,7 +72,7 @@
     <wm-dialog title="编辑" width="420px" :show="edit.show" @update:close="edit.show=$event">
       <wm-form class="form">
         <wm-form-item label="名称">
-          <wm-input :value="edit.form.name" @update:value="edit.form.name=$event" maxlength="16" placeholder="角色名称" />
+          <wm-input v-model:value="edit.form.name" maxlength="16" placeholder="角色名称" />
         </wm-form-item>
       </wm-form>
       <template #footer>
