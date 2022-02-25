@@ -84,6 +84,26 @@ mysql_secure_installation
 #### 3) 数据库工具
 - [Adminer](https://github.com/vrana/adminer/releases/)
 
+#### 4) 允许Root远程访问
+```bash
+# 登录
+mysql -uroot -p
+# 设置权限
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'IDENTIFIED BY '登录密码' WITH GRANT OPTION;
+# 刷新
+flush privileges;
+```
+
+#### 5) Redis 远程访问
+```bash
+# 登录
+dnf install redis -y
+# 配置
+vi /etc/redis.conf
+```
+- 远程访问: (1)注释 # bind 127.0.0.1  (2)protected-mode no
+- 设置密码: requirepass 新密码
+
 <br/>
 
 ## PHP
