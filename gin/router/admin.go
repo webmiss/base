@@ -71,5 +71,11 @@ func Admin(r *gin.Engine) {
 		g.POST("sys_config/list", (&admin.SysConfig{}).List)
 		g.POST("sys_config/edit", (&admin.SysConfig{}).Edit)
 		g.POST("sys_config/upimg", (&admin.SysConfig{}).Upimg)
+		// 新闻分类
+		g.POST("news_class/list", (&admin.WebNewsClass{}).List)
+		g.POST("news_class/add", (&admin.WebNewsClass{}).Add)
+		g.POST("news_class/edit", (&admin.WebNewsClass{}).Edit)
+		g.POST("news_class/del", (&admin.WebNewsClass{}).Del)
+		g.POST("news_class/state", (&admin.WebNewsClass{}).State)
 	}
 }

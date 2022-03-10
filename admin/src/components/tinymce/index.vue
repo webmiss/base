@@ -1,8 +1,6 @@
 <template>
   <div class="wm-tinymce_body">
-    <div class="wm-tinymce" :class="classId">
-      <div class="wm-tinymce_load">{{placeholder}}</div>
-    </div>
+    <div class="wm-tinymce" :class="classId">{{placeholder}}</div>
   </div>
 </template>
 
@@ -21,11 +19,11 @@ import ImgReader from '../../library/plus/img/reader'
 export default defineComponent({
   name: 'TinyMCE',
   props: {
-    classId: {type: String, default: 'TinyMCE'},                      //标识
-    config: {default: {}},                                            //配置
-    value: {type: String, default: ''},                               //内容
-    upload: {default: {start: false, width: 0, height: 0, url: ''}},  //图片上传
-    placeholder: {type: String, default: 'TinyMCE...'},               //提示
+    classId: {type: String, default: 'TinyMCE'},                    //标识
+    config: {default: {}},                                          //配置
+    value: {type: String, default: ''},                             //内容
+    upload: {default: {url: '', width: 0, height: 0, param: {}}},   //上传
+    placeholder: {type: String, default: ''},                       //提示
   },
   data(){
     const editor: any = null;
@@ -75,14 +73,21 @@ export default defineComponent({
         this.defInit[key] = cfg[key];
       }
       // 图片上传
-      if(this.upload.start) {
+      if(this.upload.url!='') {
         this.defInit.paste_data_images = true;
         this.defInit.images_upload_handler = (blobInfo: any, succFun: any, failFun: any)=>{
           // 压缩
           const fileObj = blobInfo.blob();
           ImgReader(fileObj, {width: this.upload.width, height: this.upload.height}, (base64: string)=>{
+            // 参数
+            const form: any = {
+              token: Storage.getItem('token'),
+              base64: base64,
+            }
+            const param: any = this.upload.param || {};
+            for(let i in param) form[i]=param[i];
             // 提交
-            Post(this.upload.url, {token:Storage.getItem('token'), base64: base64}, (res: any)=>{
+            Post(this.upload.url, form, (res: any)=>{
               const d = res.data;
               if(d.code==0) succFun(d.img);
               else succFun('');

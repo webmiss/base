@@ -10,7 +10,6 @@ class Model :
   DBDefault = None     #默认池
   DBOther = None       #其它池
 
-  __conn = None        #连接
   __sql: str=''        #SQL
   __db = ''            #数据库
   __table: str=''      #数据表
@@ -29,17 +28,17 @@ class Model :
 
   # 连接
   def DBConn(self):
+    conn = None
     try :
       if self.__db=='other' :
         if not Model.DBOther : Model.DBOther=self.DBPool(Db.Default())
-        self.__conn = self.DBOther.connection()
+        conn = self.DBOther.connection()
       else :
         if not Model.DBDefault : Model.DBDefault=self.DBPool(Db.Default())
-        self.__conn = self.DBDefault.connection()
-      return self.__conn
+        conn = self.DBDefault.connection()
     except Exception as e :
       print('[Model] Conn:', e)
-      return None
+    return conn
 
   # 连接池
   def DBPool(self, cfg: dict):
@@ -48,10 +47,6 @@ class Model :
     except Exception as e :
       print('[Model] Pool:', e)
       return None
-
-  # 关闭
-  def Close(self):
-    if self.__conn !=None : self.__conn.close()
 
   # 查询
   def Query(self, conn, sql: str, args: tuple) :
@@ -166,8 +161,8 @@ class Model :
   def Find(self) :
     res = []
     sql, args = self.SelectSql()
-    self.DBConn()
-    cs = self.Query(self.__conn, sql, args)
+    conn = self.DBConn()
+    cs = self.Query(conn, sql, args)
     if not cs : return res
     data = cs.fetchall()
     cs.close()
@@ -179,14 +174,14 @@ class Model :
         else:
           v1[k2] = str(v2)
     self.__columnsType = {}
-    self.__conn.close()
+    conn.close()
     return data
   #查询-单条
   def FindFirst(self) :
     res = {}
     sql, args = self.SelectSql()
-    self.DBConn()
-    cs = self.Query(self.__conn, sql, args)
+    conn = self.DBConn()
+    cs = self.Query(conn, sql, args)
     if not cs : return res
     data = cs.fetchone()
     if not data : return res
@@ -198,7 +193,7 @@ class Model :
       else:
         data[k] = str(v)
     self.__columnsType = {}
-    self.__conn.close()
+    conn.close()
     return data
 
   # 添加-单条
@@ -242,13 +237,16 @@ class Model :
   # 添加-执行
   def Insert(self) :
     sql, args = self.InsertSql()
-    self.DBConn()
-    cs = self.Exec(self.__conn, sql, args)
+    conn = self.DBConn()
+    cs = self.Exec(conn, sql, args)
     if cs==None : return False
     self.__id = cs.lastrowid
     cs.close()
-    self.__conn.close()
+    conn.close()
     return True
+  # 添加-自增ID
+  def LastInsertId(cs: any) :
+    return cs.lastrowid
 
   # 更新-数据
   def Set(self, data: dict) :
@@ -279,11 +277,11 @@ class Model :
   # 更新-执行
   def Update(self) :
     sql, args = self.UpdateSql()
-    self.DBConn()
-    cs = self.Exec(self.__conn, sql, args)
+    conn = self.DBConn()
+    cs = self.Exec(conn, sql, args)
     if cs == None : return False
     cs.close()
-    self.__conn.close()
+    conn.close()
     return True
 
   # 删除-SQL
@@ -303,10 +301,10 @@ class Model :
   # 删除-执行
   def Delete(self) :
     sql, args = self.DeleteSql()
-    self.DBConn()
-    cs = self.Exec(self.__conn, sql, args)
+    conn = self.DBConn()
+    cs = self.Exec(conn, sql, args)
     if cs == None : return False
     cs.close()
-    self.__conn.close()
+    conn.close()
     return True
     

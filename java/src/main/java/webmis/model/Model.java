@@ -25,7 +25,6 @@ public class Model extends Base {
   public static DruidDataSource DBDefault = null;   //默认池
   public static DruidDataSource DBOther = null;     //其它池
 
-  private Connection _conn = null;                  //链接
   private String _type = "";                        //类型: insert
   private String _sql = "";                         //SQL
   private String _db = "";                          //数据库
@@ -45,26 +44,26 @@ public class Model extends Base {
 
   /* 连接 */
   public Connection DBConn() {
+    Connection conn=null;
     try {
       if(_db.equals("other")){
         if(Model.DBOther==null) Model.DBOther=DBPool(Db.Other());
-        _conn = DBOther.getConnection();
+        conn = DBOther.getConnection();
       }else{
         if(Model.DBDefault==null) Model.DBDefault=DBPool(Db.Default());
-        _conn = DBDefault.getConnection();
+        conn = DBDefault.getConnection();
       }
-      return _conn;
     } catch (Exception e) {
       Print("[Model] Conn:", e.getMessage());
-      return null;
     }
+    return conn;
   }
 
   /* 数据池 */
   public DruidDataSource DBPool(HashMap<String, Object> cfg) {
+    DruidDataSource source = new DruidDataSource();
     try {
       // 配置
-      DruidDataSource source = new DruidDataSource();
       source.setUrl("jdbc:"+(String)cfg.get("jdbc"));
       source.setUsername((String)cfg.get("user"));
       source.setPassword((String)cfg.get("password"));
@@ -80,20 +79,10 @@ public class Model extends Base {
       source.setTimeBetweenEvictionRunsMillis(60000);
       // 等待超时(毫秒)
       source.setMaxWait((int)cfg.get("time"));
-      return source;
     } catch (Exception e) {
       Print("[Model] Pool:", e.getMessage());
-      return null;
     }
-  }
-
-  /* 关闭 */
-  public void Close() {
-    try {
-      _conn.close();
-    } catch (SQLException e) {
-      Print("[Model] Close:", e.getMessage());
-    }
+    return source;
   }
 
   /* 过滤 */
@@ -158,12 +147,11 @@ public class Model extends Base {
         _id = rs.next()?rs.getInt(1):0;
         rs.close();
       }
-      return ps;
     } catch (SQLException e) {
       Print("[Model] Exec:", e.getMessage());
       Print("[Model] SQL:", ps);
-      return null;
     }
+    return ps;
   }
 
   /* 获取-SQL */
@@ -278,21 +266,21 @@ public class Model extends Base {
   /* 查询-多条 */
   public ArrayList<HashMap<String,Object>> Find() {
     Object[] res = SelectSql();
-    DBConn();
-    PreparedStatement ps = Bind(_conn, res[0], res[1]);
-    return FindDataAll(ps);
+    Connection conn = DBConn();
+    PreparedStatement ps = Bind(conn, res[0], res[1]);
+    return FindDataAll(conn, ps);
   }
   /* 查询-单条 */
   public HashMap<String,Object> FindFirst() {
     Object[] res = SelectSql();
-    DBConn();
-    PreparedStatement ps = Bind(_conn, res[0], res[1]);
-    ArrayList<HashMap<String,Object>> data = FindDataAll(ps);
+    Connection conn = DBConn();
+    PreparedStatement ps = Bind(conn, res[0], res[1]);
+    ArrayList<HashMap<String,Object>> data = FindDataAll(conn, ps);
     if(data.isEmpty()) return new HashMap<String,Object>();
      return data.get(0);
   }
   /* 获取查询结果 */
-  public ArrayList<HashMap<String,Object>> FindDataAll(PreparedStatement ps) {
+  public ArrayList<HashMap<String,Object>> FindDataAll(Connection conn, PreparedStatement ps) {
     ArrayList<HashMap<String,Object>> res = new ArrayList<HashMap<String,Object>>();
     HashMap<String,Object> tmp ;
     ResultSetMetaData data;
@@ -318,7 +306,7 @@ public class Model extends Base {
       // 释放
       rs.close();
       ps.close();
-      _conn.close();
+      conn.close();
       return res;
     } catch (SQLException e) {
       Print("[Model] Find: ", e.getMessage());
@@ -378,22 +366,22 @@ public class Model extends Base {
   }
   /* 添加-执行 */
   public boolean Insert() {
-    Object[] res = InsertSql();
-    DBConn();
-    PreparedStatement ps = Bind(_conn, res[0], res[1], true);
     try{
-      if(Exec(ps)!=null){
-        ps.close();
-        _conn.close();
-        return true;
-      } else {
-        _conn.close();
-        return false;
-      }
+      Connection conn = DBConn();
+      Object[] param = InsertSql();
+      PreparedStatement ps = Bind(conn, param[0], param[1], true);
+      ps.close();
+      conn.close();
+      return true;
     } catch (SQLException e) {
       Print("[Model] Insert: ", e.getMessage());
       return false;
     }
+  }
+  /* 添加-自增ID */
+  public int LastInsertId(PreparedStatement ps) throws SQLException {
+    ResultSet rs = ps.getGeneratedKeys();
+    return rs.next()?rs.getInt(1):0;
   }
 
   /* 更新-数据 */
@@ -430,18 +418,14 @@ public class Model extends Base {
   }
   /* 更新-执行 */
   public boolean Update() {
-    Object[] res = UpdateSql();
-    DBConn();
-    PreparedStatement ps = Bind(_conn, res[0], res[1]);
     try{
-      if(Exec(ps)!=null){
-        ps.close();
-        _conn.close();
-        return true;
-      } else {
-        _conn.close();
-        return false;
-      }
+      Connection conn = DBConn();
+      Object[] param = UpdateSql();
+      PreparedStatement ps = Bind(conn, param[0], param[1]);
+      Exec(ps);
+      ps.close();
+      conn.close();
+      return true;
     } catch (SQLException e) {
       Print("[Model] Update: ", e.getMessage());
       return false;
@@ -467,18 +451,14 @@ public class Model extends Base {
   }
   /* 删除-执行 */
   public boolean Delete() {
-    Object[] res = DeleteSql();
-    DBConn();
-    PreparedStatement ps = Bind(_conn, res[0], res[1]);
     try{
-      if(Exec(ps)!=null){
-        ps.close();
-        _conn.close();
-        return true;
-      } else {
-        _conn.close();
-        return false;
-      }
+      Connection conn = DBConn();
+      Object[] param = DeleteSql();
+      PreparedStatement ps = Bind(conn, param[0], param[1]);
+      Exec(ps);
+      ps.close();
+      conn.close();
+      return true;
     } catch (SQLException e) {
       Print("[Model] Delete: ", e.getMessage());
       return false;

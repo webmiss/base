@@ -9,7 +9,7 @@
 
 <style scoped>
 .wm-img{overflow: hidden; border: #DCDFE6 1px solid;}
-.wm-img:hover{border-color: #6FB737;}
+.wm-img:hover{border-color: #6FB737; box-shadow: 0 0 4px rgba(0,0,0,.1);}
 .wm-img:hover i{color: #6FB737;}
 .wm-img div{width: 100%; height: 100%; background-color: #F6F8FA; color: #666; text-align: center; background-size: cover; background-position: center; background-repeat: no-repeat;}
 .wm-img_null i{color: #ABADAF;}

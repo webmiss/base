@@ -79,12 +79,15 @@ export default defineComponent({
       let body: any = this.$refs.DialogBody;
       let content: any = this.$refs.DialogContent;
       HtmlObserve(body, () => {
-        let val: string = getComputedStyle(content).getPropertyValue('height');
-        let bh: number = this.state.height;
-        let h: number = parseInt(val.replace(/(px)/g, ''))+48+60+this.hMargin*2;
-        if(h>bh) body.style.height = bh-48-60-this.hMargin*2+'px';
-        else body.style.height = '';
+        setTimeout(()=>{
+          let val: string = getComputedStyle(content).getPropertyValue('height');
+          let bh: number = this.state.height;
+          let h: number = parseInt(val.replace(/(px)/g, ''))+48+60+this.hMargin*2;
+          if(h>bh) body.style.height = bh-48-60-this.hMargin*2+'px';
+          else body.style.height = '';
+        }, 300);
       });
+      
     },
 
     /* 更新状态 */

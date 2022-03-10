@@ -65,6 +65,22 @@ class Admin {
     $app->post('/admin/sys_config/list', 'App\Admin\SysConfig::List');
     $app->post('/admin/sys_config/edit', 'App\Admin\SysConfig::Edit');
     $app->post('/admin/sys_config/upimg', 'App\Admin\SysConfig::Upimg');
+    // 新闻
+    $app->post('/admin/news/list', 'App\Admin\WebNews::List');
+    $app->post('/admin/news/add', 'App\Admin\WebNews::Add');
+    $app->post('/admin/news/edit', 'App\Admin\WebNews::Edit');
+    $app->post('/admin/news/del', 'App\Admin\WebNews::Del');
+    $app->post('/admin/news/state', 'App\Admin\WebNews::State');
+    $app->post('/admin/news/get_class', 'App\Admin\WebNews::GetClass');
+    $app->post('/admin/news/get_content', 'App\Admin\WebNews::GetContent');
+    $app->post('/admin/news/content', 'App\Admin\WebNews::Content');
+    $app->post('/admin/news/up_img', 'App\Admin\WebNews::UpImg');
+    // 新闻-分类
+    $app->post('/admin/news_class/list', 'App\Admin\WebNewsClass::List');
+    $app->post('/admin/news_class/add', 'App\Admin\WebNewsClass::Add');
+    $app->post('/admin/news_class/edit', 'App\Admin\WebNewsClass::Edit');
+    $app->post('/admin/news_class/del', 'App\Admin\WebNewsClass::Del');
+    $app->post('/admin/news_class/state', 'App\Admin\WebNewsClass::State');
   }
 
 }

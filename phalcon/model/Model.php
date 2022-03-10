@@ -11,7 +11,6 @@ class Model extends Base {
   static $DBDefault = null;      //默认池
   static $DBOther = null;        //其它池
 
-  private $conn = null;          //连接
   private $sql = '';             //SQL
   private $db = '';              //数据库
   private $table = '';           //数据表
@@ -32,12 +31,12 @@ class Model extends Base {
   function DBConn() {
     if($this->db=='other'){
       if(!Model::$DBOther) Model::$DBOther=$this->DBPool(Db::Other());
-      $this->conn = self::$DBOther;
+      $conn = self::$DBOther;
     } else {     
       if(!Model::$DBDefault) Model::$DBDefault=$this->DBPool(Db::Default());
-      $this->conn = self::$DBDefault;
+      $conn = self::$DBDefault;
     }
-    return $this->conn;
+    return $conn;
   }
 
   /* 连接池 */
@@ -190,8 +189,8 @@ class Model extends Base {
   function Find(): array {
     $res = [];
     list($sql, $args) = $this->SelectSql();
-    $this->DBConn();
-    $data = $this->conn->fetchAll($sql, 2, $args);
+    $conn = $this->DBConn();
+    $data = $conn->fetchAll($sql, 2, $args);
     if(count($this->columnsType)==0) return $data;
     // 转换类型
     foreach($data as $k1=>$v1) {
@@ -208,8 +207,8 @@ class Model extends Base {
   function FindFirst() {
     $this->limit = '0,1';
     list($sql, $args) = $this->SelectSql();
-    $this->DBConn();
-    $data = $this->conn->fetchOne($sql, 2, $args);
+    $conn = $this->DBConn();
+    $data = $conn->fetchOne($sql, 2, $args);
     if(!$data) return [];
     if(count($this->columnsType)==0) return $data;
     // 转换类型
@@ -272,13 +271,17 @@ class Model extends Base {
   /* 添加-执行 */
   function Insert(): bool {
     list($sql, $args) = $this->InsertSql();
-    $this->DBConn();
-    $res = $this->Exec($this->conn, $sql, $args);
+    $conn = $this->DBConn();
+    $res = $this->Exec($conn, $sql, $args);
     if($res){
-       $this->id = $this->conn->lastInsertId();
+       $this->id = $conn->lastInsertId();
       return true;
     }
     return false;
+  }
+  /* 添加-自增ID */
+  function LastInsertId($conn): int {
+    return $conn->lastInsertId();
   }
 
   /* 更新-数据 */
@@ -316,10 +319,10 @@ class Model extends Base {
   /* 更新-执行 */
   function Update(): bool {
     list($sql, $args) = $this->UpdateSql();
-    $this->DBConn();
-    $res = $this->Exec($this->conn, $sql, $args);
+    $conn = $this->DBConn();
+    $res = $this->Exec($conn, $sql, $args);
     if($res){
-      $this->nums = $this->conn->affectedRows();
+      $this->nums = $conn->affectedRows();
       return true;
     }
     return false;
@@ -346,10 +349,10 @@ class Model extends Base {
   /* 删除-执行 */
   function Delete(): bool {
     list($sql, $args) = $this->DeleteSql();
-    $this->DBConn();
-    $res = $this->Exec($this->conn, $sql, $args);
+    $conn = $this->DBConn();
+    $res = $this->Exec($conn, $sql, $args);
     if($res){
-      $this->nums = $this->conn->affectedRows();
+      $this->nums = $conn->affectedRows();
       return true;
     }
     return false;

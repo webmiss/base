@@ -29,6 +29,7 @@ public class Qrcode {
 
   /* 生成 */
   public static byte[] Create(HashMap<String, Object> params) {
+    FileEo.Root = Env.root_dir;
     // 参数
     HashMap<String, Object> param = new HashMap<String, Object>();
     param.put("text", "");                      //内容
@@ -37,7 +38,6 @@ public class Qrcode {
     param.put("filename", _getName()+".png");   //文件名
     param = Util.ArrayMerge(param, params);
     // 创建目录
-    FileEo.Root = Env.root_dir;
     if(!FileEo.Mkdir(String.valueOf(param.get("tmpPath")))) return null;
     // 文件
     String file = param.get("tmpPath").toString() + param.get("filename").toString();

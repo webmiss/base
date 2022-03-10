@@ -18,6 +18,7 @@ try {
   sql = m1.InsertSql();
   ps = m1.Bind(conn, sql[0], sql[1]);
   ps.executeUpdate();
+  int id = model.LastInsertId(ps);
   ps.close();
   // SQL2
   Demo m2 = new Demo();

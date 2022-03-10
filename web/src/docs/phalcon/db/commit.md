@@ -12,6 +12,7 @@ try {
   $m1->Values(['uid'=>null,'title'=>'PHP-事件']);
   list($sql, $args) = $m1->InsertSql();
   $conn->execute($sql, $args);
+  $id = $model->LastInsertId($conn);
   // SQL2
   $m2 = new Demo();
   $m2->Where('uid=?', $id);

@@ -4,11 +4,11 @@
       <div class="wm-select_input_ico" :style="{transform: checked?'rotate(-180deg)':'rotate(0deg)'}">
         <i class="icons icon_arrow_down_bold"></i>
       </div>
-      <input type="text" readonly :placeholder="placeholder" :value="text" :style="{borderColor: checked?'#6FB737':''}">
+      <input type="text" readonly :placeholder="placeholder" :value="text" :style="{borderColor: checked?'#6FB737':'', boxShadow: checked?'0 0 4px rgba(0,0,0,.1)':''}">
     </div>
     <div class="wm-select_body" v-if="checked">
       <div class="wm-select_arrow"></div>
-      <ul class="wm-select_list">
+      <ul class="wm-select_list scrollbar" :style="{maxHeight: maxHeight}">
         <li v-for="(v,k) in dataList" :key="k" :class="v.value==value?'wm-select_active':''" @click="selectClick(v.value)">{{v.label}}</li>
       </ul>
     </div>
@@ -24,8 +24,8 @@
 .wm-select_input_ico{cursor: pointer; position: absolute; width: 32px; height: 100%; right: 0; text-align: center; transition-duration: .3s;}
 .wm-select_input_ico i{font-size: 12px; color: #DCDFE6;}
 .wm-select_body{position: absolute; z-index: 9999; width: 100%; margin-top: 10px; box-sizing: border-box; border: #E2E4E6 1px solid; border-radius: 4px; background-color: #FFF; box-shadow: 0 0 12px rgba(0,0,0,.12);}
-.wm-select_arrow{position: absolute; top: -16px; left: 50%; transform: translate(-50%, 0); width: 0px; height: 0px; border: 8px solid; border-color: transparent; border-bottom-color: #FFF;}
-.wm-select_list{padding: 8px 0;}
+.wm-select_arrow{position: absolute; top: -16px; left: 50%; transform: translate(-50%, 0); width: 0px; height: 0px; border: 8px solid; border-color: transparent; border-bottom-color: #E2E4E6;}
+.wm-select_list{padding: 8px 0; overflow-y: auto;}
 .wm-select_list li{cursor: pointer; line-height: 32px; padding: 0 16px;}
 .wm-select_list li:hover{background-color: #F5F7FA; color: #595;}
 .wm-select_active{background-color: #F5F7FA; color: #595; font-weight: bold;}
@@ -36,10 +36,11 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name:'Select',
   props: {
-    value: {type:String, default:''},              //默认选择
+    value: {type:String, default:''},               //默认选择
     data: {type:Array, default:[]},                 //数据: [{label:'Option1', value:'option1'},{label:'Option2', value:'option2'}]
-    width: {type:String, default:'240px'},          //宽度: 240px
+    width: {type:String, default:'240px'},          //宽度
     placeholder: {type:String, default:'请输入'},   //提示信息
+    maxHeight: {type:String, default:'160px'},      //最大高度
   },
   data(){
     const checked: boolean = false;
@@ -48,8 +49,12 @@ export default defineComponent({
     return {checked, text, dataList}
   },
   watch:{
+    value(val: any){
+      this.selectDisplay(val);
+    },
     data(val: any){
       this.dataList = val;
+      this.selectDisplay(this.value);
     }
   },
   mounted(){
@@ -78,6 +83,7 @@ export default defineComponent({
     /* 显示值 */
     selectDisplay(val: string){
       const data: any = this.data;
+      if(val=='') return this.text='';
       for(let i in data){
         if(data[i]['value']==val) return this.text=data[i]['label'];
       }

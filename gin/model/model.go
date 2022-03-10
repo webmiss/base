@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 	"webmis/config"
 	"webmis/util"
@@ -16,7 +17,6 @@ var DBOther *sql.DB   //其它池
 
 /* 数据库 */
 type Model struct {
-	conn        *sql.DB           //连接
 	sql         string            //SQL
 	db          string            //数据库
 	table       string            //数据表
@@ -36,18 +36,19 @@ type Model struct {
 
 /* 连接 */
 func (m *Model) DBConn() *sql.DB {
+	var conn *sql.DB
 	if m.db == "other" {
 		if DBOther == nil {
 			DBOther = m.DBPool((&config.MySQL{}).Other())
 		}
-		m.conn = DBOther
+		conn = DBOther
 	} else {
 		if DBDefault == nil {
 			DBDefault = m.DBPool((&config.MySQL{}).Default())
 		}
-		m.conn = DBDefault
+		conn = DBDefault
 	}
-	return m.conn
+	return conn
 }
 
 /* 连接池 */
@@ -65,11 +66,6 @@ func (m *Model) DBPool(cfg *config.MySQL) *sql.DB {
 	pool.SetMaxOpenConns(cfg.Max)
 	pool.SetConnMaxLifetime(time.Second * time.Duration(cfg.Time))
 	return pool
-}
-
-/* 实例 */
-func (m *Model) Conn() *sql.DB {
-	return m.conn
 }
 
 /* 查询 */
@@ -160,9 +156,7 @@ func (m *Model) ResType(tp map[string]string) {
 /* 条件 */
 func (m *Model) Where(where string, values ...interface{}) {
 	m.where = where
-	for _, v := range values {
-		m.args = append(m.args, v)
-	}
+	m.args = append(m.args, values...)
 }
 
 /* 限制 */
@@ -222,8 +216,8 @@ func (m *Model) SelectSQL() (string, []interface{}) {
 /* 查询-多条 */
 func (m Model) Find() []map[string]interface{} {
 	sql, args := m.SelectSQL()
-	m.DBConn()
-	rows := m.Query(m.conn, sql, args)
+	conn := m.DBConn()
+	rows := m.Query(conn, sql, args)
 	if rows == nil {
 		return nil
 	}
@@ -234,8 +228,8 @@ func (m Model) Find() []map[string]interface{} {
 func (m *Model) FindFirst() map[string]interface{} {
 	m.limit = "0,1"
 	sql, args := m.SelectSQL()
-	m.DBConn()
-	rows := m.Query(m.conn, sql, args)
+	conn := m.DBConn()
+	rows := m.Query(conn, sql, args)
 	if rows == nil {
 		return nil
 	}
@@ -334,8 +328,8 @@ func (m *Model) Insert() bool {
 	if sql == "" {
 		return false
 	}
-	m.DBConn()
-	rows := m.Exec(m.conn, sql, args)
+	conn := m.DBConn()
+	rows := m.Exec(conn, sql, args)
 	if rows == nil {
 		return false
 	}
@@ -355,7 +349,7 @@ func (m *Model) Set(data map[string]interface{}) {
 		vals += k + "=?, "
 		m.args = append(m.args, v)
 	}
-	m.data = vals
+	m.data = strings.TrimRight(vals, ", ")
 }
 
 /* 更新-SQL */
@@ -384,8 +378,8 @@ func (m *Model) UpdateSQL() (string, []interface{}) {
 /* 更新-执行 */
 func (m *Model) Update() bool {
 	sql, args := m.UpdateSQL()
-	m.DBConn()
-	rows := m.Exec(m.conn, sql, args)
+	conn := m.DBConn()
+	rows := m.Exec(conn, sql, args)
 	if rows == nil {
 		return false
 	}
@@ -418,8 +412,8 @@ func (m *Model) DeleteSQL() (string, []interface{}) {
 /* 删除-执行 */
 func (m *Model) Delete() bool {
 	sql, args := m.DeleteSQL()
-	m.DBConn()
-	rows := m.Exec(m.conn, sql, args)
+	conn := m.DBConn()
+	rows := m.Exec(conn, sql, args)
 	if rows == nil {
 		return false
 	}

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import webmis.service.Base;
 import webmis.service.Data;
+import webmis.config.Env;
 import webmis.library.FileEo;
 import webmis.library.Upload;
 import webmis.service.AdminToken;
@@ -166,6 +167,7 @@ public class SysConfig extends Base {
       return GetJSON(res);
     }
     // 清理
+    FileEo.Root = Env.root_dir;
     String rmImg = imgData.get("val").toString();
     FileEo.RemoveAll(rmImg);
     // 返回

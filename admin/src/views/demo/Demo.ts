@@ -10,7 +10,6 @@ export default defineComponent({
   components: {wmMain},
   data(){
     // 状态
-    // 状态
     const store: any = useStore();
     const state: any = store.state;
     const getters: any = store.getters;

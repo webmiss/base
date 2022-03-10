@@ -22,7 +22,7 @@
 <style scoped>
 .wm-input{border: none; background: none; -webkit-appearance: none; outline: none; font: 400 14px Arial; caret-color: #595;}
 .wm-input{box-sizing: border-box; border-radius: 4px; border: #DCDFE6 1px solid; background-color: #FFF;}
-.wm-input:hover{border: #6FB737 1px solid;}
+.wm-input:hover{border: #6FB737 1px solid; box-shadow: 0 0 4px rgba(0,0,0,.1);}
 .wm-input:focus{outline: none;}
 </style>
 
@@ -34,7 +34,7 @@ export default defineComponent({
     value: {default: ''},                             //值
     type: {type: String, default: 'text'},            //类型: input属性
     maxlength: {type: String, default: ''},           //最大字符: 默认
-    placeholder: {type: String, default: ''},         //提示: 无
+    placeholder: {type: String, default: '请输入'},   //提示: 无
     width: {type: String, default: '100%'},           //宽度: '100%'
     maxWidth: {type: String, default: 'auto'},        //宽度: '100%'
     height: {type: String, default: '40px'},          //高度: '40px'

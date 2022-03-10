@@ -7,8 +7,8 @@ class Env {
   static $key = 'e4b99adec618e653400966be536c45f8';         //KEY
   static $password = '123456';                              //默认密码
   // 资源
-  static $base_url = 'https://demo-php.webmis.vip/';
-  // static $base_url = 'http://localhost/phalcon/public/';
+  // static $base_url = 'https://demo-php.webmis.vip/';
+  static $base_url = 'http://localhost/phalcon/public/';
   static $root_dir = 'public/';                             //根目录
   /* Token */
   static $admin_token_prefix = 'Admin';                     //前缀

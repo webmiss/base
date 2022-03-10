@@ -53,8 +53,8 @@ public class Index extends Base{
     else if(name.equals("server1")) text="https://u.wechat.com/MNFMyg4xN7d6ihWrfoWD7So";
     else if(name.equals("server2")) text="https://u.wechat.com/MC35ApmM-JB7K6cJD6CaYJo";
     // 创建目录
-    String path = "upload/qrcode/";
     FileEo.Root = Env.root_dir;
+    String path = "upload/qrcode/";
     if(!FileEo.Mkdir(path)) return null;
     // 是否生成
     String file = path + name + ".png";

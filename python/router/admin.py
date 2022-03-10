@@ -10,6 +10,8 @@ from modules.admin.api_role import ApiRole
 from modules.admin.sys_menus import SysMenus
 from modules.admin.sys_role import SysRole
 from modules.admin.sys_config import SysConfig
+from modules.admin.web_news import WebNews
+from modules.admin.web_news_class import WebNewsClass
 
 Admin = Blueprint('admin', __name__)
 
@@ -97,3 +99,23 @@ def sysConfig(a) :
   if a=='list' : return SysConfig().List()
   elif a=='edit' : return SysConfig().Edit()
   elif a=='upimg' : return SysConfig().Upimg()
+# 新闻
+@Admin.route('/news/<a>',methods=['POST'])
+def webNews(a) :
+  if a=='list' : return WebNews().List()
+  elif a=='add' : return WebNews().Add()
+  elif a=='edit' : return WebNews().Edit()
+  elif a=='del' : return WebNews().Del()
+  elif a=='state' : return WebNews().State()
+  elif a=='get_class' : return WebNews().GetClass()
+  elif a=='get_content' : return WebNews().GetContent()
+  elif a=='content' : return WebNews().Content()
+  elif a=='up_img' : return WebNews().UpImg()
+# 新闻-分类
+@Admin.route('/news_class/<a>',methods=['POST'])
+def webNewsClass(a) :
+  if a=='list' : return WebNewsClass().List()
+  elif a=='add' : return WebNewsClass().Add()
+  elif a=='edit' : return WebNewsClass().Edit()
+  elif a=='del' : return WebNewsClass().Del()
+  elif a=='state' : return WebNewsClass().State()

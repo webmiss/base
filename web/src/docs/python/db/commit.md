@@ -13,13 +13,19 @@ try:
   m1.Values({'uid':None,'title':'Python-事件'})
   sql, args = demo.InsertSql()
   cs.execute(sql, args)
+  id = model.LastInsertId()
+  cs.close()
   # SQL2
   m2 = Demo()
   m2.Where('uid=%s', id)
   sql, args = m2.DeleteSql()
   cs.execute(sql, args)
+  cs.close()
   # 提交
-  model.commit()
+  conn.commit()
 except Exception as e:
-  model.rollback()
+  conn.rollback()
+finally :
+  conn.close()
+
 ```

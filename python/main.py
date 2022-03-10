@@ -1,8 +1,9 @@
+import json
 from flask import Flask
 from flask.helpers import make_response
 from werkzeug.exceptions import HTTPException
-import json
 from flask_cors import CORS
+from middleware.cors import Cors
 
 from config.env import Env
 from middleware.logs import Logs
@@ -17,21 +18,16 @@ app.debug=Env.debug
 # 允许跨域请求
 CORS(app, supports_credentials=True)
 
-# 响应
-@app.after_request
-def After(res):
-  res = make_response(res)
-  res.headers['Access-Control-Allow-Origin'] = '*'
-  res.headers['Access-Control-Allow-Methods'] = '*'
-  res.headers['Access-Control-Allow-Headers'] = '*'
-  res.headers['Access-Control-Max-Age'] = '2592000'
-  return res
-
 # 中间件
 @app.before_request
 def Before():
   # 访问日志
   Logs.Init()
+
+# 响应
+@app.after_request
+def After(res):
+  return Cors.Init(res)
 
 # 错误返回
 @app.errorhandler(HTTPException)

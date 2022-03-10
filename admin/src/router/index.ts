@@ -8,7 +8,7 @@ const routes: Array<RouteRecordRaw> = [
   // 首页
   {path:'/UserInfo', name:'UserInfo', component:()=>import('../views/system/UserInfo.vue')},
   {path:'/UserPasswd', name:'UserPasswd', component:()=>import('../views/system/UserPasswd.vue')},
-  // 设置
+  // 系统
   {path:'/SysFileManage', name:'SysFileManage', component:()=>import('../views/system/FileManage.vue')},
   {path:'/SysUser', name:'SysUser', component:()=>import('../views/system/User.vue')},
   {path:'/SysRole', name:'SysRole', component:()=>import('../views/system/Role.vue')},
@@ -17,9 +17,9 @@ const routes: Array<RouteRecordRaw> = [
   {path:'/ApiRole', name:'ApiRole', component:()=>import('../views/system/ApiRole.vue')},
   {path:'/SysConfig', name:'SysConfig', component:()=>import('../views/system/Config.vue')},
   {path:'/SysHelp', name:'SysHelp', component:()=>import('../views/system/Help.vue')},
-  // Demo
-  {path:'/demo/TinyMCE', name:'DemoTinyMCE', component:()=>import('../views/demo/TinyMCE.vue')},
-  {path:'/demo/TWebLive', name:'DemoTWebLive', component:()=>import('../views/demo/TWebLive.vue')},
+  // 内容
+  {path:'/News', name:'News', component:()=>import('../views/web/News.vue')},
+  {path:'/NewsClass', name:'NewsClass', component:()=>import('../views/web/NewsClass.vue')},
 ]
 
 /* 配置 */

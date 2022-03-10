@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>vip.webmis</groupId>
 	<artifactId>java</artifactId>
-	<version>2.0.1</version>
+	<version>1.0.0</version>
 	<name>java</name>
 	<description>Demo project for Spring Boot</description>
 

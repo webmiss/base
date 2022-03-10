@@ -27,6 +27,7 @@ public class Upload {
 
   /* 单文件 */
   public static String File(MultipartFile file, HashMap<String, Object> params) {
+    FileEo.Root = Env.root_dir;
     // 参数
     HashMap<String, Object> param = new HashMap<String, Object>();
     param.put("path", "upload/");   //上传目录
@@ -55,7 +56,6 @@ public class Upload {
     // 是否重命名
     param.put("filename", param.get("filename").equals("")?fileName:param.get("filename").toString()+"."+ext);
     // 创建目录
-    FileEo.Root = Env.root_dir;
     if(!FileEo.Mkdir(String.valueOf(param.get("path")))){
       System.out.println("[Upload] Mkdir: 创建目录失败!");
       return "";
@@ -70,6 +70,7 @@ public class Upload {
 
   /* Base64 */
   public static String Base64(HashMap<String, Object> params) {
+    FileEo.Root = Env.root_dir;
     // 参数
     HashMap<String, Object> param = new HashMap<String, Object>();
     param.put("path", "upload/"); //上传目录
@@ -86,7 +87,6 @@ public class Upload {
       base64 = ct.get(1);
     }
     // 创建目录
-    FileEo.Root = Env.root_dir;
     if(!FileEo.Mkdir(String.valueOf(param.get("path")))){
       System.out.println("[Upload] Mkdir: 创建目录失败!");
       return "";
@@ -132,10 +132,10 @@ public class Upload {
 
   /* 图片回收 */
   public static Boolean HtmlImgClear(String html, String dir) {
+    FileEo.Root = Env.root_dir;
     // 全部图片
     ArrayList<String> imgs = GetHtmlFile(html);
     // 清理图片
-    FileEo.Root = Env.root_dir;
     ArrayList<String> all = FileEo.AllFile(dir);
     for(String val:all) {
       if(!imgs.contains(val)) FileEo.RemoveAll(dir+val);

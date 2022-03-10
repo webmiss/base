@@ -54,7 +54,7 @@
         <div class="app_right_top flex">
           <!-- Search -->
           <div class="app_search">
-            <wm-search :data="menusSeaList" @update:active="menusClick(JSON.parse($event))" />
+            <wm-search :data="menusSeaList" @update:active="menusClick(JSON.parse($event))" placeholder="菜单功能" />
           </div>
           <!-- User -->
           <div class="app_user">

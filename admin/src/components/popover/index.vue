@@ -67,7 +67,7 @@
 .wm-popover_top .tip_body{bottom: 0; padding-bottom: 10px; transform: translate(-50%,0);}
 .wm-popover_top .arrow{position: absolute; top: -10px; left: -8px; width: 0px; height: 0px; border: 8px solid; border-color: transparent;}
 .wm-popover_top .arrow_plain{border-top-color: #DCDFE6;}
-.wm-popover_top .arrow_dark{border-top-color: #000;}
+.wm-popover_top .arrow_dark{border-top-color: rgba(0,0,0,.8);}
 .wm-popover_top_body:hover .wm-popover_top{display: block;}
 /* bottom */
 .wm-popover_bottom_body{display: inline-flex; flex-direction: column;}
@@ -75,7 +75,7 @@
 .wm-popover_bottom .tip_body{top: 0; padding-top: 10px; transform: translate(-50%,0);}
 .wm-popover_bottom .arrow{position: absolute; top: -6px; left: -8px; width: 0px; height: 0px; border: 8px solid; border-color: transparent;}
 .wm-popover_bottom .arrow_plain{border-bottom-color: #DCDFE6;}
-.wm-popover_bottom .arrow_dark{border-bottom-color: #000;}
+.wm-popover_bottom .arrow_dark{border-bottom-color: rgba(0,0,0,.8);}
 .wm-popover_bottom_body:hover .wm-popover_bottom{display: block;}
 /* Left */
 .wm-popover_left_body{display: inline-flex; flex-direction: row;}
@@ -83,7 +83,7 @@
 .wm-popover_left .tip_body{left: 0; padding-right: 10px; transform: translate(-100%,-50%);}
 .wm-popover_left .arrow{position: absolute; left: -11px; top: -8px; width: 0px; height: 0px; border: 8px solid; border-color: transparent;}
 .wm-popover_left .arrow_plain{border-left-color: #DCDFE6;}
-.wm-popover_left .arrow_dark{border-left-color: #000;}
+.wm-popover_left .arrow_dark{border-left-color: rgba(0,0,0,.8);}
 .wm-popover_left_body:hover .wm-popover_left{display: block;}
 /* Right */
 .wm-popover_right_body{display: inline-flex; flex-direction: row-reverse;}
@@ -91,7 +91,7 @@
 .wm-popover_right .tip_body{right: 0; padding-left: 10px; transform: translate(100%,-50%);}
 .wm-popover_right .arrow{position: absolute; right: -11px; top: -8px; width: 0px; height: 0px; border: 8px solid; border-color: transparent;}
 .wm-popover_right .arrow_plain{border-right-color: #DCDFE6;}
-.wm-popover_right .arrow_dark{border-right-color: #000;}
+.wm-popover_right .arrow_dark{border-right-color: rgba(0,0,0,.8);}
 .wm-popover_right_body:hover .wm-popover_right{display: block;}
 </style>
 
