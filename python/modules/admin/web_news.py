@@ -1,5 +1,6 @@
 from flask import request
 
+from config.env import Env
 from service.base import Base
 from service.admin_token import AdminToken
 from service.data import Data
@@ -72,7 +73,8 @@ class WebNews(Base):
     if cid=='' : return self.GetJSON({'code':4000, 'msg':'请选择分类!'})
     if len(title)<2 or len(title)>30 : return self.GetJSON({'code':4000, 'msg':'新闻标题2～30字符!'})
     # 封面图
-    img = Upload.Base64({'path':self.ImgDir+'img/', 'base64':base64})
+    path = self.ImgDir+'img/'
+    img = Upload.Base64({'path':path, 'base64':base64})
     # 模型
     model = WebNewsM()
     conn = model.DBConn()
@@ -81,22 +83,23 @@ class WebNews(Base):
       cs = conn.cursor()
       # 信息
       m1 = WebNewsM()
-      m1.Values({'cid':cid, 'title':title, 'source':source, 'author':author, 'summary':summary, 'ctime':Util.Time(), 'utime':Util.Time(), 'img':self.ImgDir+'img/'+img})
-      sql, args = m1.InsertSql()
+      m1.Values({'cid':cid, 'title':title, 'source':source, 'author':author, 'summary':summary, 'ctime':Util.Time(), 'utime':Util.Time(), 'img':path+img})
+      sql, args = m1.InsertSQL()
       cs.execute(sql, args)
-      id = model.LastInsertId()
-      cs.close()
+      id = model.LastInsertId(cs)
       # 内容
       m2 = WebNewsHtml()
       m2.Values({'nid':id})
-      sql, args = m2.InsertSql()
+      sql, args = m2.InsertSQL()
       cs.execute(sql, args)
-      cs.close()
       # 提交
+      cs.close()
       conn.commit()
       res = {'code':0, 'msg':'成功'}
     except Exception as e:
       conn.rollback()
+      FileEo.Root = Env.root_dir
+      FileEo.RemoveAll(path+img)
       res = {'code':5000, 'msg':'添加失败!'}
     finally :
       conn.close()
@@ -127,8 +130,10 @@ class WebNews(Base):
     if len(title)<2 or len(title)>30 : return self.GetJSON({'code':4000, 'msg':'新闻标题2～30字符!'})
     # 封面图
     img = ''
+    path = self.ImgDir+'img/'
+    FileEo.Root = Env.root_dir
     if base64[0:4]!='http' :
-      img = Upload.Base64({'path':self.ImgDir+'img/', 'base64':base64})
+      img = Upload.Base64({'path':path, 'base64':base64})
       # 清理封面
       m1 = WebNewsM()
       m1.Columns('img')
@@ -138,12 +143,13 @@ class WebNews(Base):
     # 模型
     m = WebNewsM()
     data = {'cid':cid, 'title':title, 'source':source, 'author':author, 'summary':summary, 'utime':Util.Time()}
-    if img!='' : data['img']=self.ImgDir+'img/'+img
+    if img!='' : data['img']=path+img
     m.Set(data)
     m.Where('id=%s', id)
     if m.Update() :
       return self.GetJSON({'code':0, 'msg':'成功'})
     else :
+      if img!='' : FileEo.RemoveAll(path+img)
       return self.GetJSON({'code':5000, 'msg':'更新失败!'})
 
   # 删除
@@ -173,16 +179,17 @@ class WebNews(Base):
       # 信息
       m1 = WebNewsM()
       m1.Where('id in('+ids+')')
-      sql, args = m1.DeleteSql()
+      sql, args = m1.DeleteSQL()
       cs.execute(sql, args)
       # 内容
       m2 = WebNewsHtml()
       m2.Where('nid in('+ids+')')
-      sql, args = m2.DeleteSql()
+      sql, args = m2.DeleteSQL()
       cs.execute(sql, args)
       # 提交
       conn.commit()
       # 清理图片
+      FileEo.Root = Env.root_dir
       for v in imgList :
         FileEo.RemoveAll(v['img'])
         FileEo.RemoveAll(self.ImgDir+v['id']+'/')
@@ -217,7 +224,7 @@ class WebNews(Base):
     else :
       return self.GetJSON({'code':5000, 'msg':'更新失败!'})
 
-  # 获取分类
+  # 分类-获取
   def GetClass(self):
     # 参数
     json = self.Json()

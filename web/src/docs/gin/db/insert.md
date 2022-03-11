@@ -12,5 +12,5 @@ demo.Insert()
 
 ### 生成SQL
 ```go
-sql,args := db.InsertSql()
+sql,args := db.InsertSQL()
 ```

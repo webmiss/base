@@ -154,7 +154,7 @@ class Model extends Base {
   }
 
   /* 查询-SQL */
-  function SelectSql(): array {
+  function SelectSQL(): array {
     if($this->table==''){
       $this->Print('Model[Select]: 表不能为空!');
       return ['', $this->args];
@@ -188,7 +188,7 @@ class Model extends Base {
   /* 查询-多条 */
   function Find(): array {
     $res = [];
-    list($sql, $args) = $this->SelectSql();
+    list($sql, $args) = $this->SelectSQL();
     $conn = $this->DBConn();
     $data = $conn->fetchAll($sql, 2, $args);
     if(count($this->columnsType)==0) return $data;
@@ -206,7 +206,7 @@ class Model extends Base {
   /* 查询-单条 */
   function FindFirst() {
     $this->limit = '0,1';
-    list($sql, $args) = $this->SelectSql();
+    list($sql, $args) = $this->SelectSQL();
     $conn = $this->DBConn();
     $data = $conn->fetchOne($sql, 2, $args);
     if(!$data) return [];
@@ -251,7 +251,7 @@ class Model extends Base {
     $this->values = implode(', ', $alls);
   }
   /* 添加-SQL */
-  function InsertSql(): ?array {
+  function InsertSQL(): ?array {
     if($this->table==''){
       $this->Print('[Model] Insert: 表不能为空!');
       return ['',$this->args];
@@ -270,7 +270,7 @@ class Model extends Base {
   }
   /* 添加-执行 */
   function Insert(): bool {
-    list($sql, $args) = $this->InsertSql();
+    list($sql, $args) = $this->InsertSQL();
     $conn = $this->DBConn();
     $res = $this->Exec($conn, $sql, $args);
     if($res){
@@ -295,7 +295,7 @@ class Model extends Base {
     $this->data = !empty($vals)?rtrim($vals, ', '):'';
   }
   /* 更新-SQL */
-  function UpdateSql(): array {
+  function UpdateSQL(): array {
     if($this->table == ''){
       $this->Print('[Model] Update: 表不能为空!');
       return ['', null];
@@ -318,7 +318,7 @@ class Model extends Base {
   }
   /* 更新-执行 */
   function Update(): bool {
-    list($sql, $args) = $this->UpdateSql();
+    list($sql, $args) = $this->UpdateSQL();
     $conn = $this->DBConn();
     $res = $this->Exec($conn, $sql, $args);
     if($res){
@@ -329,7 +329,7 @@ class Model extends Base {
   }
 
   /* 删除-SQL */
-  function DeleteSql(): array {
+  function DeleteSQL(): array {
     if($this->table == ''){
       $this->Print('[Model] Delete: 表不能为空!');
       return ['', null];
@@ -348,7 +348,7 @@ class Model extends Base {
 
   /* 删除-执行 */
   function Delete(): bool {
-    list($sql, $args) = $this->DeleteSql();
+    list($sql, $args) = $this->DeleteSQL();
     $conn = $this->DBConn();
     $res = $this->Exec($conn, $sql, $args);
     if($res){

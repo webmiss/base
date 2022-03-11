@@ -1,12 +1,10 @@
-import os
-import re
-from config.env import  Env
+import os,re
 from util.util import Util
 
 # 文件类
 class FileEo:
 
-  Root: str=Env.root_dir
+  Root: str=''
 
   # 列表
   def List(path: str=''):
@@ -141,9 +139,9 @@ class FileEo:
       list = os.listdir(obj)
       for f in list :
         ff = path+'/'+f
-        if os.path.isdir(FileEo.Root+ff) : FileEo.delAll(ff)
+        if os.path.isdir(FileEo.Root+ff) : FileEo.RemoveAll(ff)
         else : os.remove(FileEo.Root+ff)
       # 空目录
-      os.removedirs(obj)
+      if os.path.isdir(obj) : os.removedirs(obj)
     elif os.path.isfile(obj) :
       os.remove(obj)

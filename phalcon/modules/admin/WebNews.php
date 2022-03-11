@@ -9,6 +9,7 @@ use Model\WebNewsHtml;
 use Model\WebNewsClass;
 use Library\FileEo;
 use Library\Upload;
+use Util\Util;
 
 class WebNews extends Base {
 
@@ -74,9 +75,10 @@ class WebNews extends Base {
     // 验证
     if($base64=='') return self::GetJSON(['code'=>4000, 'msg'=>'请上传封面图!']);
     if($cid=='') return self::GetJSON(['code'=>4000, 'msg'=>'请选择分类!']);
-    if(mb_strlen($title)<2 || mb_strlen($title)>30) return self::GetJSON(['code'=>4000, 'msg'=>'新闻标题2～30字符!']);
+    if(Util::Len($title)<2 || Util::Len($title)>30) return self::GetJSON(['code'=>4000, 'msg'=>'新闻标题2～30字符!']);
     // 封面图
-    $img = Upload::Base64(['path'=>self::$ImgDir.'img/', 'base64'=>$base64]);
+    $path = self::$ImgDir.'img/';
+    $img = Upload::Base64(['path'=>$path, 'base64'=>$base64]);
     // 模型
     $model = new WebNewsM();
     $conn = $model->DBConn();
@@ -84,20 +86,21 @@ class WebNews extends Base {
       $conn->begin();
       // 信息
       $m1 = new WebNewsM();
-      $m1->Values(['cid'=>$cid, 'title'=>$title, 'source'=>$source, 'author'=>$author, 'summary'=>$summary, 'ctime'=>time(), 'utime'=>time(), 'img'=>self::$ImgDir.'img/'.$img]);
-      list($sql, $args) = $m1->InsertSql();
+      $m1->Values(['cid'=>$cid, 'title'=>$title, 'source'=>$source, 'author'=>$author, 'summary'=>$summary, 'ctime'=>time(), 'utime'=>time(), 'img'=>$path.$img]);
+      list($sql, $args) = $m1->InsertSQL();
       $conn->execute($sql, $args);
       $id = $model->LastInsertId($conn);
       // 内容
       $m2 = new WebNewsHtml();
       $m2->Values(['nid'=>$id]);
-      list($sql, $args) = $m2->InsertSql();
+      list($sql, $args) = $m2->InsertSQL();
       $conn->execute($sql, $args);
       // 提交
       $conn->commit();
       $res = ['code'=>0,'msg'=>'成功'];
     } catch (\Exception $e) {
       $conn->rollback();
+      FileEo::RemoveAll($path.$img);
       $res = ['code'=>5000,'msg'=>'添加失败!'];
     }
     return self::GetJSON($res);
@@ -127,11 +130,12 @@ class WebNews extends Base {
     // 验证
     if($base64=='') return self::GetJSON(['code'=>4000, 'msg'=>'请上传封面图!']);
     if($cid=='') return self::GetJSON(['code'=>4000, 'msg'=>'请选择分类!']);
-    if(mb_strlen($title)<2 || mb_strlen($title)>30) return self::GetJSON(['code'=>4000, 'msg'=>'新闻标题2～30字符!']);
+    if(Util::Len($title)<2 || Util::Len($title)>30) return self::GetJSON(['code'=>4000, 'msg'=>'新闻标题2～30字符!']);
     // 封面图
     $img = '';
     if(substr($base64,0,4)!='http'){
-      $img = Upload::Base64(['path'=>self::$ImgDir.'img/', 'base64'=>$base64]);
+      $path = self::$ImgDir.'img/';
+      $img = Upload::Base64(['path'=>$path, 'base64'=>$base64]);
       // 清理封面
       $m1 = new WebNewsM();
       $m1->Columns('img');
@@ -142,12 +146,13 @@ class WebNews extends Base {
     // 模型
     $m = new WebNewsM();
     $data = ['cid'=>$cid, 'title'=>$title, 'source'=>$source, 'author'=>$author, 'summary'=>$summary, 'utime'=>time()];
-    if($img!='') $data['img'] = self::$ImgDir.'img/'.$img;
+    if($img!='') $data['img'] = $path.$img;
     $m->Set($data);
     $m->Where('id=?', $id);
     if($m->Update()) {
       return self::GetJSON(['code'=>0,'msg'=>'成功']);
     } else {
+      if($img!='') FileEo::RemoveAll($path.$img);
       return self::GetJSON(['code'=>5000,'msg'=>'更新失败!']);
     }
   }
@@ -180,12 +185,12 @@ class WebNews extends Base {
       // 信息
       $m1 = new WebNewsM();
       $m1->Where('id in('.$ids.')');
-      list($sql, $args) = $m1->DeleteSql();
+      list($sql, $args) = $m1->DeleteSQL();
       $conn->execute($sql, $args);
       // 内容
       $m2 = new WebNewsHtml();
       $m2->Where('nid in('.$ids.')');
-      list($sql, $args) = $m2->DeleteSql();
+      list($sql, $args) = $m2->DeleteSQL();
       $conn->execute($sql, $args);
       // 提交
       $conn->commit();

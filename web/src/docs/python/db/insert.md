@@ -9,5 +9,5 @@ demo.Insert()
 
 ### 生成SQL
 ```python
-sql, args = demo.InsertSql()
+sql, args = demo.InsertSQL()
 ```

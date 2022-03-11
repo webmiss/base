@@ -9,5 +9,5 @@ $demo->Insert();
 
 ### 生成SQL
 ```php
-list($sql, $args) = $demo->InsertSql();
+list($sql, $args) = $demo->InsertSQL();
 ```

@@ -13,5 +13,5 @@ self.Print(num)
 
 ### 生成SQL
 ```go
-sql,args := db.UpdateSql()
+sql,args := db.UpdateSQL()
 ```

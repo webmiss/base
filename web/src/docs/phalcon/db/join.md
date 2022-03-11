@@ -6,7 +6,7 @@ $demo = new Demo();
 $demo->Table('test1 as a');
 $demo->LeftJoin('test2 as b', 'a.id=b.uid');
 $demo->Columns('a.title', 'b.name');
-list($sql, $args) = $demo->SelectSql();
+list($sql, $args) = $demo->SelectSQL();
 self::Print($sql, $args);
 ```
 

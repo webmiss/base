@@ -39,6 +39,11 @@ public class Util {
     return res;
   }
 
+  /* 字符串长度 */
+  public static int Len(String val) {
+    return val.length();
+  }
+
   /* 格式化时间 */
   public static String Date(String format) {
     if(format.equals("")) format = "yyyy-MM-dd HH:mm:ss";

@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unicode/utf8"
 )
 
 /* 常用工具 */
@@ -44,6 +45,11 @@ func If(val bool, tVal interface{}, fVal interface{}) interface{} {
 	} else {
 		return fVal
 	}
+}
+
+/* 字符串长度 */
+func Len(val string) int {
+	return utf8.RuneCountInString(val)
 }
 
 /*

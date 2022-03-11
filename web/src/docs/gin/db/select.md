@@ -28,5 +28,5 @@ demo.ResType()
 
 ### 生成SQL
 ```go
-sql,args := db.SelectSql()
+sql,args := db.SelectSQL()
 ```

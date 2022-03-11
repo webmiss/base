@@ -153,8 +153,7 @@ public class UserInfo extends Base {
     }
     // 清理
     FileEo.Root = Env.root_dir;
-    String rmImg = imgData.get("img").toString();
-    FileEo.RemoveAll(rmImg);
+    FileEo.RemoveAll(imgData.get("img").toString());
     // 返回
     res = new HashMap<String,Object>();
     res.put("code", 0);

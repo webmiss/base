@@ -1,4 +1,5 @@
 import time, datetime, random, re, os
+
 from config.env import Env
 from library.file_eo import FileEo
 from library.aliyun.oss import Oss
@@ -28,6 +29,7 @@ class Upload:
     # 是否重命名
     param['filename'] = file.filename if not param['filename'] else param['filename']+'.'+ext
     # 创建目录
+    FileEo.Root = Env.root_dir
     if not FileEo.Mkdir(param['path']):
       print('[Upload] Mkdir:', '创建目录失败!')
       return ''
@@ -54,6 +56,7 @@ class Upload:
       param['ext'] = Base64.GetExt(ct[0])
       base64 = ct[1]
     # 创建目录
+    FileEo.Root = Env.root_dir
     if not FileEo.Mkdir(param['path']) :
       print('[Upload] Mkdir:', '创建目录失败!')
       return ''
@@ -90,6 +93,7 @@ class Upload:
     # 全部图片
     imgs = Upload.GetHtmlFile(html)
     # 清理图片
+    FileEo.Root = Env.root_dir
     all = FileEo.AllFile(dir)
     for val in all :
       if val not in imgs : FileEo.RemoveAll(dir+val)

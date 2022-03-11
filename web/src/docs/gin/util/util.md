@@ -8,6 +8,11 @@ import "webmis/util"
 util.Exec(cmd string)
 ```
 
+## 字符串长度
+```go
+util.Len(val string)
+```
+
 ## 是否为空
 ```go
 util.Empty(val interface{})

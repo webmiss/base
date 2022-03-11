@@ -11,5 +11,5 @@ self::Print($num);
 
 ### 生成SQL
 ```php
-list($sql, $args) = $demo->UpdateSql();
+list($sql, $args) = $demo->UpdateSQL();
 ```

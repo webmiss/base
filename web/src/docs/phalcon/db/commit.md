@@ -10,13 +10,13 @@ try {
   // SQL1
   $m1 = new Demo();
   $m1->Values(['uid'=>null,'title'=>'PHP-事件']);
-  list($sql, $args) = $m1->InsertSql();
+  list($sql, $args) = $m1->InsertSQL();
   $conn->execute($sql, $args);
   $id = $model->LastInsertId($conn);
   // SQL2
   $m2 = new Demo();
   $m2->Where('uid=?', $id);
-  list($sql, $args) = $m2->DeleteSql();
+  list($sql, $args) = $m2->DeleteSQL();
   $conn->execute($sql, $args);
   // 提交
   $conn->commit();

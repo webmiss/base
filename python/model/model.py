@@ -133,7 +133,7 @@ class Model :
     self.__limit = str(start) + ',' + str(limit)
 
   # 查询-SQL
-  def SelectSql(self) :
+  def SelectSQL(self) :
     if self.__table=='' :
       print('[Model] Select: 表不能为空!')
       return '', ()
@@ -160,7 +160,7 @@ class Model :
   # 查询-多条
   def Find(self) :
     res = []
-    sql, args = self.SelectSql()
+    sql, args = self.SelectSQL()
     conn = self.DBConn()
     cs = self.Query(conn, sql, args)
     if not cs : return res
@@ -179,7 +179,7 @@ class Model :
   #查询-单条
   def FindFirst(self) :
     res = {}
-    sql, args = self.SelectSql()
+    sql, args = self.SelectSQL()
     conn = self.DBConn()
     cs = self.Query(conn, sql, args)
     if not cs : return res
@@ -220,7 +220,7 @@ class Model :
     self.__keys = Util.Implode(', ', keys)
     self.__values = Util.Implode(', ', alls)
   # 添加-SQL
-  def InsertSql(self) :
+  def InsertSQL(self) :
     if self.__table=='' :
       print('Model[Insert]: 表不能为空!')
       return '', None
@@ -236,7 +236,7 @@ class Model :
     return self.__sql, args
   # 添加-执行
   def Insert(self) :
-    sql, args = self.InsertSql()
+    sql, args = self.InsertSQL()
     conn = self.DBConn()
     cs = self.Exec(conn, sql, args)
     if cs==None : return False
@@ -245,7 +245,7 @@ class Model :
     conn.close()
     return True
   # 添加-自增ID
-  def LastInsertId(cs: any) :
+  def LastInsertId(self, cs: any) :
     return cs.lastrowid
 
   # 更新-数据
@@ -257,7 +257,7 @@ class Model :
       self.__args += (v,)
     self.__data = vals[:-2] if len(vals)>0 else ''
   # 更新-SQL
-  def UpdateSql(self) :
+  def UpdateSQL(self) :
     if self.__table=='' :
       print('Model[Update]: 表不能为空!')
       return '', None
@@ -276,7 +276,7 @@ class Model :
     return self.__sql, args
   # 更新-执行
   def Update(self) :
-    sql, args = self.UpdateSql()
+    sql, args = self.UpdateSQL()
     conn = self.DBConn()
     cs = self.Exec(conn, sql, args)
     if cs == None : return False
@@ -285,7 +285,7 @@ class Model :
     return True
 
   # 删除-SQL
-  def DeleteSql(self) :
+  def DeleteSQL(self) :
     if self.__table=='' :
       print('Model[Delete]: 表不能为空!')
       return '', None
@@ -300,7 +300,7 @@ class Model :
     return self.__sql, args
   # 删除-执行
   def Delete(self) :
-    sql, args = self.DeleteSql()
+    sql, args = self.DeleteSQL()
     conn = self.DBConn()
     cs = self.Exec(conn, sql, args)
     if cs == None : return False

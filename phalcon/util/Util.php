@@ -12,6 +12,11 @@ class Util extends Base {
     return $res;
   }
 
+  /* 字符串长度 */
+  static function Len(string $val): int {
+    return mb_strlen($val);
+  }
+
   /* String To Timestamp */
   static function Strtotime(string $day): int {
     $t = strtotime(trim($day));

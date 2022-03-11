@@ -10,5 +10,5 @@ demo.Delete();
 ### 生成SQL
 ```java
 // sql、args
-Object[] sql = db.DeleteSql()
+Object[] sql = db.DeleteSQL()
 ```

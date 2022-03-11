@@ -6,7 +6,7 @@ demo := (&model.Demo{}).New()
 demo.Table("test1 as a")
 demo.LeftJoin("test2 as b", "a.id=b.uid")
 demo.Columns("a.title", "b.name")
-sql, args := demo.SelectSql()
+sql, args := demo.SelectSQL()
 self.Print(sql, args)
 ```
 

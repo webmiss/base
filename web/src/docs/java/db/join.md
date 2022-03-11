@@ -6,7 +6,7 @@ Demo demo = new Demo();
 demo.Table("test1 as a");
 demo.LeftJoin("test2 as b", "a.id=b.uid");
 demo.Columns("a.title", "b.name");
-String sql = demo.SelectSql();
+String sql = demo.SelectSQL();
 Print(sql);
 ```
 

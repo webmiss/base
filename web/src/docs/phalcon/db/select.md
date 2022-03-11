@@ -28,5 +28,5 @@ $model->ResType();
 
 ### 生成SQL
 ```php
-list($sql, $args) = $model->SelectSql();
+list($sql, $args) = $model->SelectSQL();
 ```

@@ -15,7 +15,7 @@ try {
   uData = new HashMap<String, Object>();
   uData.put("id", uid);
   m1.Values(uData);
-  sql = m1.InsertSql();
+  sql = m1.InsertSQL();
   ps = m1.Bind(conn, sql[0], sql[1]);
   ps.executeUpdate();
   int id = model.LastInsertId(ps);
@@ -23,7 +23,7 @@ try {
   // SQL2
   Demo m2 = new Demo();
   m2.Where("id=?", uid);
-  sql = m2.DeleteSql();
+  sql = m2.DeleteSQL();
   ps = m2.Bind(conn, sql[0], sql[1]);
   ps.executeUpdate();
   ps.close();

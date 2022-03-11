@@ -11,5 +11,5 @@ self.Print(num)
 
 ### 生成SQL
 ```python
-sql, args = db.UpdateSql()
+sql, args = db.UpdateSQL()
 ```

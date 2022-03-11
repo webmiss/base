@@ -104,22 +104,22 @@ class SysUser(Base):
       # 用户
       m1 = User()
       m1.Values({'id':uid, 'tel':tel, 'password':Hash.Md5(passwd)})
-      sql, args = m1.InsertSql()
+      sql, args = m1.InsertSQL()
       cs.execute(sql, args)
       # 详情
       m2 = UserInfo()
       m2.Values({'uid':uid})
-      sql, args = m2.InsertSql()
+      sql, args = m2.InsertSQL()
       cs.execute(sql, args)
       # 权限-System
       m3 = SysPerm()
       m3.Values({'uid':uid, 'role':1, 'utime':Util.Time()})
-      sql, args = m3.InsertSql()
+      sql, args = m3.InsertSQL()
       cs.execute(sql, args)
       # 权限-Api
       m4 = ApiPerm()
       m4.Values({'uid':uid, 'role':1, 'utime':Util.Time()})
-      sql, args = m4.InsertSql()
+      sql, args = m4.InsertSQL()
       cs.execute(sql, args)
       # 提交
       conn.commit()

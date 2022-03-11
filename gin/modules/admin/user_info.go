@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"webmis/config"
 	"webmis/library"
 	"webmis/model"
 	"webmis/service"
@@ -115,6 +116,7 @@ func (r UserInfo) Upimg(c *gin.Context) {
 	}
 	// 清理
 	rmImg := imgData["img"].(string)
+	(&library.FileEo{}).New(config.Env().RootDir)
 	(&library.FileEo{}).RemoveAll(rmImg)
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "img": (&service.Data{}).Img(ImgDir + img)})

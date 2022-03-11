@@ -8,6 +8,11 @@ import webmis.util.Util;
 Util.Exec(String cmd);
 ```
 
+## 字符串长度
+```java
+Util.Len(String val);
+```
+
 ## 格式化时间
 ```java
 Util.Date(String format);

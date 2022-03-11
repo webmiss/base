@@ -232,7 +232,7 @@ public class Model extends Base {
   }
 
   /* 查询-SQL */
-  public Object[] SelectSql() {
+  public Object[] SelectSQL() {
     if(_table.equals("")){
       Print("[Model] Select: 表不能为空!");
       return null;
@@ -265,14 +265,14 @@ public class Model extends Base {
   }
   /* 查询-多条 */
   public ArrayList<HashMap<String,Object>> Find() {
-    Object[] res = SelectSql();
+    Object[] res = SelectSQL();
     Connection conn = DBConn();
     PreparedStatement ps = Bind(conn, res[0], res[1]);
     return FindDataAll(conn, ps);
   }
   /* 查询-单条 */
   public HashMap<String,Object> FindFirst() {
-    Object[] res = SelectSql();
+    Object[] res = SelectSQL();
     Connection conn = DBConn();
     PreparedStatement ps = Bind(conn, res[0], res[1]);
     ArrayList<HashMap<String,Object>> data = FindDataAll(conn, ps);
@@ -347,7 +347,7 @@ public class Model extends Base {
     _values = Util.Implode(", ", alls);
   }
   /* 添加-SQL */
-  public Object[] InsertSql() {
+  public Object[] InsertSQL() {
     if(_table.equals("")){
       Print("[Model] Insert: 表不能为空!");
       return null;
@@ -368,7 +368,7 @@ public class Model extends Base {
   public boolean Insert() {
     try{
       Connection conn = DBConn();
-      Object[] param = InsertSql();
+      Object[] param = InsertSQL();
       PreparedStatement ps = Bind(conn, param[0], param[1], true);
       ps.close();
       conn.close();
@@ -395,7 +395,7 @@ public class Model extends Base {
     _data = vals.length()>0?vals.substring(0,vals.length()-2):"";
   }
   /* 更新-SQL */
-  public Object[] UpdateSql() {
+  public Object[] UpdateSQL() {
     if(_table.equals("")){
       Print("[Model] Update: 表不能为空!");
       return null;
@@ -420,7 +420,7 @@ public class Model extends Base {
   public boolean Update() {
     try{
       Connection conn = DBConn();
-      Object[] param = UpdateSql();
+      Object[] param = UpdateSQL();
       PreparedStatement ps = Bind(conn, param[0], param[1]);
       Exec(ps);
       ps.close();
@@ -433,7 +433,7 @@ public class Model extends Base {
   }
 
   /* 删除-SQL */
-  public Object[] DeleteSql() {
+  public Object[] DeleteSQL() {
     if(_table.equals("")){
       Print("[Model] Delete: 表不能为空!");
       return null;
@@ -453,7 +453,7 @@ public class Model extends Base {
   public boolean Delete() {
     try{
       Connection conn = DBConn();
-      Object[] param = DeleteSql();
+      Object[] param = DeleteSQL();
       PreparedStatement ps = Bind(conn, param[0], param[1]);
       Exec(ps);
       ps.close();

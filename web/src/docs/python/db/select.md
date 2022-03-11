@@ -28,5 +28,5 @@ model.ResType()
 
 ### 生成SQL
 ```python
-sql, args = model.SelectSql()
+sql, args = model.SelectSQL()
 ```

@@ -9,5 +9,5 @@ demo.Delete()
 
 ### 生成SQL
 ```python
-sql, args = db.DeleteSql()
+sql, args = db.DeleteSQL()
 ```

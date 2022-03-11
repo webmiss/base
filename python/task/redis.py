@@ -34,6 +34,7 @@ class Redis(Base):
     # 目录
     name = data['type']
     path = 'upload/logs/' + name + '/' + year + '/' + month + '/'
+    FileEo.Root = Env.root_dir
     if not FileEo.Mkdir(path) :
       print('[Logs] Mkdir:', '创建目录失败!')
       return False

@@ -124,15 +124,16 @@ public class WebNews extends Base {
       res.put("msg", "请选择分类!");
       return GetJSON(res);
     }
-    if(title.length()<2 || title.length()>30){
+    if(Util.Len(title)<2 || Util.Len(title)>30){
       res = new HashMap<String,Object>();
       res.put("code", 4000);
       res.put("msg", "新闻标题2～30字符!");
       return GetJSON(res);
     }
     // 封面图
+    String path = ImgDir+"img/";
     HashMap<String, Object> imgParam = new HashMap<String, Object>();
-    imgParam.put("path",ImgDir+"img/");
+    imgParam.put("path",path);
     imgParam.put("base64",base64);
     String img = Upload.Base64(imgParam);
     // 模型
@@ -153,9 +154,9 @@ public class WebNews extends Base {
       uData.put("summary", summary);
       uData.put("ctime", Util.Time());
       uData.put("utime", Util.Time());
-      uData.put("img", ImgDir+"img/"+img);
+      uData.put("img", path+img);
       m1.Values(uData);
-      sql = m1.InsertSql();
+      sql = m1.InsertSQL();
       ps = m1.Bind(conn, sql[0], sql[1], true);
       ps.executeUpdate();
       int id = model.LastInsertId(ps);
@@ -165,7 +166,7 @@ public class WebNews extends Base {
       uData = new HashMap<String,Object>();
       uData.put("nid", id);
       m2.Values(uData);
-      sql = m2.InsertSql();
+      sql = m2.InsertSQL();
       ps = m2.Bind(conn, sql[0], sql[1]);
       ps.executeUpdate();
       ps.close();
@@ -177,6 +178,8 @@ public class WebNews extends Base {
       res.put("msg", "成功");
     } catch (SQLException e) {
       conn.rollback();
+      FileEo.Root = Env.root_dir;
+      FileEo.RemoveAll(path+img);
       // 返回
       res = new HashMap<String,Object>();
       res.put("code", 5000);
@@ -229,7 +232,7 @@ public class WebNews extends Base {
       res.put("msg", "请选择分类!");
       return GetJSON(res);
     }
-    if(title.length()<2 || title.length()>30){
+    if(Util.Len(title)<2 || Util.Len(title)>30){
       res = new HashMap<String,Object>();
       res.put("code", 4000);
       res.put("msg", "新闻标题2～30字符!");
@@ -237,9 +240,11 @@ public class WebNews extends Base {
     }
     // 封面图
     String img = "";
+    String path = ImgDir+"img/";
+    FileEo.Root = Env.root_dir;
     if(!base64.substring(0,4).equals("http")){
       HashMap<String, Object> imgParam = new HashMap<String, Object>();
-      imgParam.put("path",ImgDir+"img/");
+      imgParam.put("path",path);
       imgParam.put("base64",base64);
       img = Upload.Base64(imgParam);
       // 清理封面
@@ -247,7 +252,6 @@ public class WebNews extends Base {
       m1.Columns("img");
       m1.Where("id=?", id);
       HashMap<String, Object> tmp = m1.FindFirst();
-      FileEo.Root = Env.root_dir;
       FileEo.RemoveAll(tmp.get("img").toString());
     }
     // 模型
@@ -259,7 +263,7 @@ public class WebNews extends Base {
     uData.put("author", author);
     uData.put("summary", summary);
     uData.put("utime", Util.Time());
-    if(!img.equals("")) uData.put("img", ImgDir+"img/"+img);
+    if(!img.equals("")) uData.put("img", path+img);
     m.Set(uData);
     m.Where("id=?", id);
     if(m.Update()){
@@ -267,6 +271,7 @@ public class WebNews extends Base {
       res.put("code", 0);
       res.put("msg", "成功");
     } else {
+      if(!img.equals("")) FileEo.RemoveAll(path+img);
       res = new HashMap<String,Object>();
       res.put("code", 5000);
       res.put("msg", "更新失败!");
@@ -313,14 +318,14 @@ public class WebNews extends Base {
       // 信息
       webmis.model.WebNews m1 = new webmis.model.WebNews();
       m1.Where("id in("+ids+")");
-      sql = m1.DeleteSql();
+      sql = m1.DeleteSQL();
       ps = m1.Bind(conn, sql[0], sql[1]);
       ps.executeUpdate();
       ps.close();
       // 内容
       webmis.model.WebNewsHtml m2 = new webmis.model.WebNewsHtml();
       m2.Where("nid in("+ids+")");
-      sql = m2.DeleteSql();
+      sql = m2.DeleteSQL();
       ps = m2.Bind(conn, sql[0], sql[1]);
       ps.executeUpdate();
       ps.close();

@@ -164,7 +164,7 @@ public class SysUser extends Base {
       uData.put("tel", tel);
       uData.put("password", Hash.Md5(passwd));
       m1.Values(uData);
-      sql = m1.InsertSql();
+      sql = m1.InsertSQL();
       ps = m1.Bind(conn, sql[0], sql[1]);
       ps.executeUpdate();
       ps.close();
@@ -173,7 +173,7 @@ public class SysUser extends Base {
       uData = new HashMap<String, Object>();
       uData.put("uid", uid);
       m2.Values(uData);
-      sql = m2.InsertSql();
+      sql = m2.InsertSQL();
       ps = m2.Bind(conn, sql[0], sql[1]);
       ps.executeUpdate();
       ps.close();
@@ -184,7 +184,7 @@ public class SysUser extends Base {
       uData.put("role", 1);
       uData.put("utime", Util.Time());
       m3.Values(uData);
-      sql = m3.InsertSql();
+      sql = m3.InsertSQL();
       ps = m3.Bind(conn, sql[0], sql[1]);
       ps.executeUpdate();
       ps.close();
@@ -195,7 +195,7 @@ public class SysUser extends Base {
       uData.put("role", 1);
       uData.put("utime", Util.Time());
       m4.Values(uData);
-      sql = m4.InsertSql();
+      sql = m4.InsertSQL();
       ps = m4.Bind(conn, sql[0], sql[1]);
       ps.executeUpdate();
       ps.close();

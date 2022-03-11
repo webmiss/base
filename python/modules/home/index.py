@@ -30,6 +30,7 @@ class Index(Base) :
     elif name=='server2' : text='https://u.wechat.com/MC35ApmM-JB7K6cJD6CaYJo'
     # 创建目录
     path = 'upload/qrcode/'
+    FileEo.Root = Env.root_dir
     if not FileEo.Mkdir(path): return
     # 是否生成
     file = path + name + '.png'

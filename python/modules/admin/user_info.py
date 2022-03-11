@@ -1,5 +1,6 @@
 from flask import request
 
+from config.env import Env
 from service.base import Base
 from service.data import Data
 from service.admin_token import AdminToken
@@ -84,7 +85,7 @@ class UserInfo(Base):
     model.Where('uid=%s', tData['uid'])
     if not model.Update() : return self.GetJSON({'code':5000, 'msg':'上传失败!'})
     # 清理
-    rmImg = imgData['img']
-    FileEo.RemoveAll(rmImg)
+    FileEo.Root = Env.root_dir
+    FileEo.RemoveAll(imgData['img'])
     # 返回
     return self.GetJSON({'code':0, 'msg':'成功', 'img':Data.Img(self.ImgDir+img)})

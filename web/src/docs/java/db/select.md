@@ -35,5 +35,5 @@ demo.ResType();
 ### 生成SQL
 ```java
 // sql、args
-Object[] sql = demo.SelectSql();
+Object[] sql = demo.SelectSQL();
 ```

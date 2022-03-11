@@ -89,13 +89,13 @@ func (Model) Exec(conn *sql.DB, sql string, args []interface{}) sql.Result {
 		fmt.Println("[Model] Exec: SQL不能为空!")
 		return nil
 	}
-	rows, err := conn.Exec(sql, args...)
+	rs, err := conn.Exec(sql, args...)
 	if err != nil {
 		fmt.Println("[Model] Exec:", err)
 		fmt.Println("[Model] SQL:", sql)
 		return nil
 	}
-	return rows
+	return rs
 }
 
 /* 获取-SQL */
@@ -329,16 +329,25 @@ func (m *Model) Insert() bool {
 		return false
 	}
 	conn := m.DBConn()
-	rows := m.Exec(conn, sql, args)
-	if rows == nil {
+	rs := m.Exec(conn, sql, args)
+	if rs == nil {
 		return false
 	}
-	id, err := rows.LastInsertId()
+	id, err := rs.LastInsertId()
 	if err != nil {
 		return false
 	}
 	m.id = id
 	return true
+}
+
+/* 添加-自增ID */
+func (m *Model) LastInsertId(rs sql.Result) int64 {
+	id, err := rs.LastInsertId()
+	if err != nil {
+		return 0
+	}
+	return id
 }
 
 /* 更新-数据 */
@@ -379,11 +388,11 @@ func (m *Model) UpdateSQL() (string, []interface{}) {
 func (m *Model) Update() bool {
 	sql, args := m.UpdateSQL()
 	conn := m.DBConn()
-	rows := m.Exec(conn, sql, args)
-	if rows == nil {
+	rs := m.Exec(conn, sql, args)
+	if rs == nil {
 		return false
 	}
-	num, err := rows.RowsAffected()
+	num, err := rs.RowsAffected()
 	if err != nil {
 		return false
 	}
@@ -413,11 +422,11 @@ func (m *Model) DeleteSQL() (string, []interface{}) {
 func (m *Model) Delete() bool {
 	sql, args := m.DeleteSQL()
 	conn := m.DBConn()
-	rows := m.Exec(conn, sql, args)
-	if rows == nil {
+	rs := m.Exec(conn, sql, args)
+	if rs == nil {
 		return false
 	}
-	num, err := rows.RowsAffected()
+	num, err := rs.RowsAffected()
 	if err != nil {
 		return false
 	}

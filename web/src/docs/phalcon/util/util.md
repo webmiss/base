@@ -8,6 +8,11 @@ use Util\Util;
 Util::Exec(string $cmd);
 ```
 
+## 字符串长度
+```php
+Util::Len(string $val);
+```
+
 ## 日期转时间戳
 ```php
 Util::Strtotime(string $day);
