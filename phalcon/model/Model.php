@@ -47,11 +47,9 @@ class Model extends Base {
     $class = 'Phalcon\Db\Adapter\Pdo\\'.$cfg['driver'];
     unset($cfg['driver']);
     try {
-      print_r(new $class($cfg));
       return new $class($cfg);
     }catch (\Exception $e){
-      self::Print('[Model] Pool:', $e->getMessage());
-      print_r($e->getMessage());
+      $this->Print('[Model] Pool:', $e->getMessage());
       return null;
     }
   }

@@ -7,7 +7,6 @@ use Library\FileEo;
 use Library\Captcha;
 use Library\Upload;
 use Util\Util;
-use Model\WebNewsClass;
 
 class Index extends Base {
 
@@ -17,16 +16,6 @@ class Index extends Base {
     self::Print($data);
     // 返回
     return self::GetJSON(['code'=>0, 'msg'=>'Web']);
-  }
-
-  static function Test(){
-    // 查询
-    $m = new WebNewsClass();
-    $m->Columns('id', 'name');
-    $m->Where('state=?', '1');
-    $m->Order('sort DESC');
-    $list = $m->Find();
-    return self::GetJSON(['code'=>0, 'data'=>$list]);
   }
 
   /* 验证码 */
