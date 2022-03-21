@@ -16,15 +16,20 @@ cd /xxx/phalcon && composer install
 <br/>
 
 ## Nginx虚拟主机
-``` nginx
+```bash
+vi /home/vhosts/demo-php.webmis.vip.conf
+```
+#### 内容
+```nginx
 upstream demo_php_websocket {
     server 127.0.0.1:9001;
 }
 
 server {
     listen       80;
-    server_name  demo.webmis.vip;
-    set $root_path /xxx/base/phalcon/public;
+    listen       [::]:80;
+    server_name  demo-php.webmis.vip;
+    set $root_path /home/www/base/phalcon/public;
     root $root_path;
     index index.php;
 
@@ -47,46 +52,16 @@ server {
     }
 
     location ~ \.php$ {
-        fastcgi_pass   unix:/var/opt/remi/php74/run/php-fpm/www.sock;
+        fastcgi_pass   unix:/run/php/php7.4-fpm.sock;
         fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
         include        fastcgi_params;
     }
-
-    location ~ /\.ht {
-        deny  all;
-    }
 }
 ```
-<br/>
 
-## 交换分区( 扩充内存 )
-``` bash
-# 创建分区文件
-dd if=/dev/zero of=/swapfile bs=1M count=4096
-
-# 生成SWAP
-mkswap /swapfile
-
-# 激活SWAP
-swapon /swapfile
-
-# 添加到分区列表
-echo '/swapfile swap swap defaults 0 0' >> /etc/fstab
-
-# 查看
-free -m
-
-# 重启服务器
-reboot
-```
-**如果是阿里云服务器**
-``` bash
-vi /etc/sysctl.conf
-```
-vm.swappiness = 60
-``` bash
-# 重启服务器
-reboot
+## SSL证书
+```bash
+certbot --nginx
 ```
 
 <br/><br/>

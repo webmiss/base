@@ -3,15 +3,15 @@
 ## Nginx
 #### 1) 安装
 ```bash
-dnf install nginx -y
-# 开机启动
-systemctl enable nginx
-systemctl start nginx
+apt install nginx -y
+apt autoremove -y
+# 查看
+systemctl status nginx
 ```
 #### 2) 配置 ( vi /etc/nginx/nginx.conf )
 ```nginx
 
-    user root
+    user www-data
 
     keepalive_timeout 30;
 
@@ -57,7 +57,7 @@ server {
 }
 ```
 
-#### 4) 测试( http://IP/index.html )
+#### 4) 测试
 ```bash
 # 创建文件
 mkdir -p /home/www
@@ -66,16 +66,16 @@ chmod -R 777 /home/www/index.html
 # 重启Nginx
 systemctl restart nginx
 ```
-<br/>
+- 预览: http://IP/index.html
+
 
 ## MariaDB
 #### 1) 安装
 ```bash
 # 安装
-dnf install mariadb mariadb-server -y
+apt install omnidb-common mariadb-server -y
 # 开机启动
-systemctl enable mariadb
-systemctl start mariadb
+systemctl status mariadb
 # 查看运行
 netstat -tap | grep mysql
 ```
@@ -94,12 +94,22 @@ mysql -uroot -p
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'IDENTIFIED BY '登录密码' WITH GRANT OPTION;
 # 刷新
 flush privileges;
+# 查看
+use msyql
+select Host, User from user;
+# 修改配置
+vi /etc/mysql/mariadb.conf.d/50-server.cnf
 ```
+- 修改"bind-address = 0.0.0.0"
+- 重启服务"systemctl restart mariadb"
+
 
 ## Redis
 ```bash
 # 安装
-dnf install redis -y
+apt install redis-server -y
+# 查看
+systemctl status redis
 # 远程访问
 vi /etc/redis.conf
 ```
@@ -108,48 +118,39 @@ vi /etc/redis.conf
 
 
 ## PHP
-#### 1) 软件仓库
+#### 1) 安装PHP7
 ```bash
-dnf install http://rpms.remirepo.net/enterprise/remi-release-8.rpm -y
+apt install php-fpm php-cli php-gd php-mysql -y
 ```
-
-#### 2) 安装PHP7
-```bash
-# PHP7.4
-dnf install php74-php-fpm php74-php-cli php74-php-gd php74-php-pdo -y
-# 开机启动
-systemctl enable php74-php-fpm
-# 启动
-systemctl start php74-php-fpm
-```
-
-#### 3) 添加扩展
+#### 2) 添加扩展
 ```bash
 # Phalcon
-dnf install php74-php-phalcon4 -y
+curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | sudo bash
+apt update -y
+apt install php-psr php7.4-phalcon -y
 # Redis
-dnf install redis php74-php-pecl-redis5 -y
-dnf install redis php80-php-pecl-redis5 -y
+apt install redis php-redis
 ```
 
-#### 4) PHP配置
+#### 3) PHP配置
 ```bash
-vi /etc/opt/remi/php74/php.ini
+vi /etc/php/7.4/fpm/php.ini
 ```
 - date.timezone = "Asia/Shanghai"
 - session.save_path = "/tmp"
+- 
 
-#### 5) PHP-FPM配置
+#### 4) PHP-FPM配置
 ```bash
-vi /etc/opt/remi/php74/php-fpm.d/www.conf
+vi /etc/php/7.4/fpm/pool.d/www.conf
 ```
-- user = nginx
-- group = nginx
-- listen = /var/opt/remi/php74/run/php-fpm/www.sock
+- user = www-data
+- group = www-data
+- listen = /run/php/php7.4-fpm.sock
 
-#### 6) Session问题
+#### 5) Session问题
 ```bash
-chmod -R 777 /var/opt/remi/php74/lib/php/session
+chmod -R 777 /var/lib/php/sessions
 ```
 
 #### 7) 探针
@@ -164,7 +165,7 @@ vi /home/vhosts/default.conf
     # PHP-FPM
     location ~ \.php$ {
         #fastcgi_pass   127.0.0.1:9000;
-        fastcgi_pass   unix:/var/opt/remi/php74/run/php-fpm/www.sock;
+        fastcgi_pass   unix:/run/php/php7.4-fpm.sock;
         fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
         include        fastcgi_params;
     }
@@ -173,5 +174,3 @@ vi /home/vhosts/default.conf
 ```bash
 systemctl restart nginx
 ```
-
-<br/><br/>

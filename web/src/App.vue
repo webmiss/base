@@ -13,9 +13,7 @@
         <span @click="openUrl('/docs/gin/install/index')" class="item" :class="$route.params.m1=='gin'?'active':''">Gin</span>
         <span @click="openUrl('/docs/linux/install/index')" class="item" :class="$route.params.m1=='linux'?'active':''">Linux</span>
       </wm-scroll-view>
-      <a href="https://github.com/webmiss/base" class="top_github">
-        <img src="https://img.shields.io/github/stars/webmiss/base?style=social" alt="webmiss/base">
-      </a>
+      <a href="https://github.com/webmiss/base" class="top_github">GitHub</a>
     </div>
   </div>
   <!-- 内容 -->

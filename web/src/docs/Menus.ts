@@ -266,6 +266,10 @@ export default {
         {label: '基础配置', value: 'docs/linux/centos/config'},
         {label: 'LNMP环境', value: 'docs/linux/centos/lnmp'},
       ]},
+      {label:'Ubuntu', children:[
+        {label: '基础配置', value: 'docs/linux/ubuntu/config'},
+        {label: 'LNMP环境', value: 'docs/linux/ubuntu/lnmp'},
+      ]},
       {label:'ArchLinux', children:[
         {label: '安装&配置', value: 'docs/linux/archlinux/install'},
         {label: 'GNOME3桌面', value: 'docs/linux/archlinux/gnome'},

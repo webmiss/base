@@ -10,9 +10,6 @@ import wmMain from '@/components/main/index.vue'
 import wmChartLine from '@/components/chart/line.vue'
 import wmChartInterval from '@/components/chart/interval.vue'
 import wmChartPie from '@/components/chart/pie.vue'
-/* ElementUI */
-// import { ElButton } from 'element-plus';
-// import '@/assets/themes/button.css'
 
 export default defineComponent({
   name: 'Home',
@@ -31,14 +28,14 @@ export default defineComponent({
   },
   activated(){
     // 加载数据
-    // if(Storage.getItem('token')){
-    //   this.loadData();
-    //   // 30刷新
-    //   clearInterval(this.time);
-    //   this.time = setInterval(()=>{
-    //     this.loadData();
-    //   }, 30000);
-    // }
+    if(Storage.getItem('token')){
+      this.loadData();
+      // 30刷新
+      clearInterval(this.time);
+      this.time = setInterval(()=>{
+        this.loadData();
+      }, 30000);
+    }
   },
   // 离开页面
   beforeRouteLeave(to, form, next) {
@@ -51,16 +48,14 @@ export default defineComponent({
     loadData() {
       let token = Storage.getItem('token');
       if(!token) return clearInterval(this.time);
-      const load: any = Loading();
       Post('index/getChart',{
         token: token,
       },(res: any)=>{
-        load.clear();
         const d = res.data;
         if(d.code==0){
-          this.chartData.interval = d.chart1;
-          this.chartData.line = d.chart2;
-          this.chartData.pie = d.chart3;
+          // this.chartData.interval = d.chart1;
+          // this.chartData.line = d.chart2;
+          // this.chartData.pie = d.chart3;
         }else return Toast(d.msg);
       });
     },
