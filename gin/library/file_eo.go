@@ -207,7 +207,7 @@ func (fe FileEo) IsFile(file string) bool {
 /* 创建目录 */
 func (fe FileEo) Mkdir(path string) bool {
 	path = dirRoot + path
-	if err := os.MkdirAll(path, 0766); err != nil {
+	if err := os.MkdirAll(path, 0777); err != nil {
 		return false
 	}
 	return true
