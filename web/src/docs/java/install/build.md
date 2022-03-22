@@ -1,25 +1,26 @@
-# 服务器
+# 服务器环境
 
 ## JRE
 ```bash
 # CentOS
-dnf install java-latest-openjdk
+dnf install java-latest-openjdk -y
 # Ubuntu
-apt install default-jre
+apt install openjdk-17-jre -y
+# 查看版本
+java --version
 ```
 
-## Bash命令
+## 运行
 ```bash
-# 打包
-./bash build
+# 进入项目
+cd /xxx/java
+mkdir public/upload
+chmod -R 777 public/upload
 # 启动
 ./bash start
-# 重启
-./bash restart
-# 停止
-./bash stop
 ```
-**开机启动**
+
+## 开机启动
 ```bash
 # 权限
 chmod +x /etc/rc.d/rc.local
@@ -33,7 +34,7 @@ vi /etc/rc.d/rc.local
 ## Nginx
 ``` nginx
 upstream demo_java {
-    server localhost:9000;
+    server localhost:9020;
 }
 map $http_upgrade $connection_upgrade {
     default upgrade;
@@ -42,8 +43,9 @@ map $http_upgrade $connection_upgrade {
 
 server {
     listen       80;
+    listen       [::]:80;
     server_name  demo-java.webmis.vip;
-    set $root_path /xxx/java/;
+    set $root_path /home/www/base/java/public;
     root $root_path;
     index index.html;
 
@@ -63,10 +65,12 @@ server {
         root $root_path;
     }
 
-    location ~ /\.ht {
-        deny  all;
-    }
 }
+```
+
+## SSL证书
+```bash
+certbot --nginx
 ```
 
 <br/><br/>

@@ -1,6 +1,6 @@
-# CentOS 服务器
+# 服务器
 
-## 安装Composer
+## Composer
 ```bash
 # PHP命令
 ln -s /usr/local/bin/php74 /usr/bin
@@ -10,8 +10,18 @@ php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 # 查看
 composer -V
-# 安装依赖包
-cd /xxx/phalcon && composer install
+```
+
+## 运行
+```bash
+# 进入项目
+cd /xxx/phalcon
+mkdir public/upload
+chmod -R 777 public/upload
+# 依赖包
+composer install
+# 启动
+./bash start
 ```
 <br/>
 

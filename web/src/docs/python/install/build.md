@@ -1,19 +1,35 @@
-# CentOS 服务器
+# 服务器环境
 
-## 安装Python3
+## CentOS
 ```bash
 # Python3
-dnf install python3-devel
+dnf install python3-devel -y
 pip3 install uwsgi
 # 命令
 ln -s /usr/bin/python3 /usr/bin/python
 ln -s /usr/bin/pip3 /usr/bin/pip
-# 安装依赖包
-cd /xxx/python && ./bash install
+# 查看版本
+python -V
+```
+
+## Ubuntu
+```bash
+apt install python3-dev -y
+pip install uwsgi
+```
+
+## 运行
+```bash
+# 进入项目
+cd /xxx/python
+mkdir public/upload
+chmod -R 777 public/upload
+# 依赖包
+./bash install
 # 启动
 ./bash start
 ```
-**开机启动**
+## 开机启动
 ```bash
 # 权限
 chmod +x /etc/rc.d/rc.local
@@ -35,8 +51,9 @@ upstream demo_python_websocket {
 
 server {
     listen       80;
+    listen       [::]:80;
     server_name  demo-python.webmis.vip;
-    set $root_path /xxx/python/public;
+    set $root_path /home/www/base/python/public;
     root $root_path;
     index index.html;
 
@@ -60,11 +77,12 @@ server {
         proxy_set_header Connection "keep-alive";
         proxy_set_header X-Real-IP $remote_addr;
     }
-
-    location ~ /\.ht {
-        deny  all;
-    }
 }
+```
+
+## SSL证书
+```bash
+certbot --nginx
 ```
 
 <br/><br/>

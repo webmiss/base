@@ -1,23 +1,35 @@
-# CentOS 服务器
+# 服务器环境
 
 ## 安装Go
 ```bash
+# CentOS
 dnf install golang -y
+# Ubunut
+apt install golang -y
+```
+
+## 运行
+```bash
+# 进入项目
+cd /xxx/gin
+mkdir public/upload
+chmod -R 777 public/upload
 # 安装依赖包
-cd /xxx/golang && ./bash install
+./bash install
 # 打包
 ./bash build
 # 启动
 ./bash start
 ```
-**开机启动**
+
+## 开机启动
 ```bash
 # 权限
 chmod +x /etc/rc.d/rc.local
 # 编辑文件
 vi /etc/rc.d/rc.local
 ```
-- cd /xxx/golang/ && ./bash start
+- cd /xxx/java/ && ./bash start
 
 <br/>
 
@@ -36,8 +48,9 @@ map $http_upgrade $connection_upgrade {
 
 server {
     listen       80;
+    listen       [::]:80;
     server_name  demo-go.webmis.vip;
-    set $root_path /xxx/golang/;
+    set $root_path /home/www/base/gin/public;
     root $root_path;
     index index.html;
 
@@ -66,10 +79,12 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
     }
 
-    location ~ /\.ht {
-        deny  all;
-    }
 }
+```
+
+## SSL证书
+```bash
+certbot --nginx
 ```
 
 <br/><br/>
