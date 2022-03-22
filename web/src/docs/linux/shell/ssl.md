@@ -51,7 +51,7 @@ systemctl restart nginx
 # 定时器
 crontab -e
 ```
-- 0 2 28 * * sh /home/sh/ssl.sh
+- 0 2 28 * * sh /home/shell/ssl.sh > /dev/null 2>&1 &
 - 每月28号2点更新证书后重启Nginx
 
 **/home/sh/ssl.sh**

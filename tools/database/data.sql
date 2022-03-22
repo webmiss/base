@@ -219,7 +219,7 @@ CREATE TABLE `user_oauth` (
 INSERT INTO `user_oauth` (`id`, `client_id`, `client_secret`, `state`, `name`) VALUES
 (1,	'base@webmis.vip',	'00fb626bbabfdd903231acf6639cddfb',	'1',	'基础系统');
 
-DROP TABLE IF EXISTS `web_news`;
+
 CREATE TABLE `web_news` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `cid` tinyint(3) unsigned NOT NULL COMMENT '所属ID',
