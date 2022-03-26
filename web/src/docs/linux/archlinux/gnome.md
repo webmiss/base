@@ -114,13 +114,34 @@ pacman -S virtualbox virtualbox-host-dkms virtualbox-guest-iso
 modprobe -a vboxnetadp vboxnetflt vboxdrv
 ```
 
-#### 6) 其它工具
+#### 6) FFMPEG
 ``` bash
-# SVN版本控制
-pacman -S subversion
+# 安装
+pacman -S ffmpeg
+# TS合成Mp4
+ffmpeg -i "concat:0.ts|1.ts" -c copy test.mp4
+ffmpeg -i https://dh5.cntv.kcdnvip.com/asp/h5e/hls/2000/0303000a/3/default/49354b5f20674f5fa80d6ccefa076182/2000.m3u8 -vcodec copy -acodec copy test.mp4
+# 合并Mp4
+ffmpeg -i 0.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts 0.ts
+ffmpeg -i 1.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts 1.ts
+ffmpeg -i "concat:0.ts|1.ts" -c copy -bsf:a aac_adtstoasc test.mp4
+# 转成MP4
+ffmpeg -i xxx -y -c:v libx264 -c:a aac -strict -2 test.mp4
+# 缩放: 320×240、640×360、hd480、hd720、hd1080
+ffmpeg -i test.mp4 -s hd480 480.mp4
+# Mp4转HLS：优化方案
+ffmpeg -y -i 480.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 480.ts
+ffmpeg -i 480.ts -c copy -map 0 -f segment -segment_time 10 -segment_list vod/index.m3u8 vod/10s_%3d.ts
+# Mp4转HLS：简单低效
+ffmpeg -i test.mp4 -c:v libx264 -c:a aac -strict -2 -f hls -bsf:v h264_mp4toannexb -hls_time 10 vod/index.m3u8
+```
 
+#### 7) 其它工具
+``` bash
 # 多线程下载工具
 pacman -S axel
+# 下载视频
+pip install you-get
 
 # SSH工具箱 (包括 ssh, scp)
 pacman -S openssh
