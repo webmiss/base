@@ -24,6 +24,7 @@ $loader->registerNamespaces([
   'Config'=> BASE_PATH.'/config/',
   'Library'=> BASE_PATH.'/library/',
   'Library\Aliyun'=> BASE_PATH.'/library/aliyun',
+  'Library\Baidu'=> BASE_PATH.'/library/baidu',
   'Library\Tencent'=> BASE_PATH.'/library/tencent',
   'Middleware'=> BASE_PATH.'/middleware/',
   'Model'=> BASE_PATH.'/model/',

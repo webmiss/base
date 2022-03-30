@@ -12,9 +12,12 @@ class Util extends Base {
     return $res;
   }
 
-  /* 字符串长度 */
-  static function Len(string $val): int {
-    return mb_strlen($val);
+  /* 长度 */
+  static function Len($val): int {
+    $res = 0;
+    if(gettype($val)=='array') $res=count($val);
+    elseif(gettype($val)=='string') $res=mb_strlen($val);
+    return $res;
   }
 
   /* String To Timestamp */

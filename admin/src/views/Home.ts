@@ -5,6 +5,10 @@ import Loading from '@/library/ui/loading'
 import Toast from '@/library/ui/toast'
 import Post from '@/library/request/post'
 import Storage from '@/library/Storage'
+import TimeDate from '@/library/time/date'
+import TimeFormatHour from '@/library/time/format_hour'
+import PriceFormat from '@/library/price/format'
+import PricePercentage from '@/library/price/percentage'
 /* UI组件 */
 import wmMain from '@/components/main/index.vue'
 import wmChartLine from '@/components/chart/line.vue'
@@ -20,9 +24,11 @@ export default defineComponent({
     // 状态
     const store: any = useStore();
     const state: any = store.state;
-    const chartData: any = {line: [], interval:[]};
     const time: any = null;
-    return {state, chartData, time};
+    // const chartData: any = {line: [], interval:[]};
+    // 今日流量
+    const tData: any = {time: '', today:{}, yesterday:{}};
+    return {state, time, tData};
   },
   mounted(){
   },
@@ -34,7 +40,7 @@ export default defineComponent({
       clearInterval(this.time);
       this.time = setInterval(()=>{
         this.loadData();
-      }, 30000);
+      }, 60000);
     }
   },
   // 离开页面
@@ -52,12 +58,26 @@ export default defineComponent({
         token: token,
       },(res: any)=>{
         const d = res.data;
+        console.log(d);
         if(d.code==0){
-          // this.chartData.interval = d.chart1;
-          // this.chartData.line = d.chart2;
-          // this.chartData.pie = d.chart3;
+          this.tData.time = TimeDate();
+          this.tData.today = d.data['TrendRpt']['today'];
+          this.tData.yesterday = d.data['TrendRpt']['yesterday'];
         }else return Toast(d.msg);
       });
+    },
+
+    /* 格式化-数字 */
+    FormatNum(num: string) {
+      return PriceFormat.encode(num, 0);
+    },
+    /* 格式化-百分比 */
+    FormatPercentage(n1: number, n2: number) {
+      return PricePercentage(n1, n2);
+    },
+    /* 格式化-小时 */
+    FormatHour(second: number) {
+      return TimeFormatHour.encode(second);
     },
 
   }
