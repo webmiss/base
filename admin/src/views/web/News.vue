@@ -146,7 +146,7 @@
 
     <!-- Content -->
     <wm-dialog title="新闻内容" width="760px" :show="content.edit" @update:close="content.edit=$event">
-      <wm-tinymce class="form" ref="content" v-model:value="content.form.content" :config="content.tinymce.init" :upload="content.tinymce.upload" placeholder="新闻内容"></wm-tinymce>
+      <wm-tinymce class="form" v-model:value="content.form.content" :menubar="true" :height="500" :upload="content.upload" placeholder="新闻内容"></wm-tinymce>
       <template #footer>
         <wm-button @click="subContent()">保 存</wm-button>
       </template>

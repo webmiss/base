@@ -51,9 +51,25 @@ class Index extends Base {
     $sDate = date('Ymd', strtotime('-1 day'));
     $eDate = date('Ymd');
     $res = TongJi::TrendRpt('17669804', $sDate, $eDate, 'pv_count,visitor_count,ip_count,bounce_ratio,avg_visit_time');
+    $t1 = $res->items[1][1];
+    $t2 = $res->items[1][0];
     $data['TrendRpt'] = [
-      'today'=>['day'=>$res->items[0][1][0], 'pv'=>$res->items[1][1][0], 'uv'=>$res->items[1][1][1], 'ip'=>$res->items[1][1][2], 'ratio'=>$res->items[1][1][3], 'time'=>$res->items[1][1][4]],
-      'yesterday'=>['day'=>$res->items[0][0][0], 'pv'=>$res->items[1][0][0], 'uv'=>$res->items[1][0][1], 'ip'=>$res->items[1][0][2], 'ratio'=>$res->items[1][0][3], 'time'=>$res->items[1][0][4]],
+      'today'=>[
+        'day'=>$res->items[0][1][0],
+        'pv'=>$t1[0]!='--'?$t1[0]:'0',
+        'uv'=>$t1[1]!='--'?$t1[1]:'0',
+        'ip'=>$t1[2]!='--'?$t1[2]:'0',
+        'ratio'=>$t1[3]!='--'?$t1[3]:'0',
+        'time'=>$t1[4]!='--'?$t1[4]:'0',
+      ],
+      'yesterday'=>[
+        'day'=>$res->items[0][0][0],
+        'pv'=>$t2[0]!='--'?$t2[0]:'0',
+        'uv'=>$t2[1]!='--'?$t2[1]:'0',
+        'ip'=>$t2[2]!='--'?$t2[2]:'0',
+        'ratio'=>$t2[3]!='--'?$t2[3]:'0',
+        'time'=>$t2[4]!='--'?$t2[4]:'0',
+      ],
     ];
     // 返回
     return self::GetJSON(['code'=>0, 'msg'=>'成功', 'data'=>$data]);

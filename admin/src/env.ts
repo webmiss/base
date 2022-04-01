@@ -34,6 +34,7 @@ export default {
   copy: 'Copyright © WebMIS.vip ' + now.getFullYear(),  // 版权信息
   baseUrl: baseUrl, //数据地址
   apiUrl: baseUrl+'admin/', //数据接口地址
+  tinymceKey: 'dm9pn8sfmiyaalv1r49hvf8ww9x8denshvuhp1tf7z51k6jj',
   /* Token */
   token: '',
   /* 主题 */

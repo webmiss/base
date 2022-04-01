@@ -51,10 +51,7 @@ export default defineComponent({
       show: false,
       edit: false,
       form: {},
-      tinymce: {
-        init:{menubar: true, height: 500},
-        upload: {url: 'news/up_img', width: 740, param:{id:''}},
-      }
+      upload: {url: 'news/up_img', width: 740, param:{id:''}},
     };
     return {state, getters, page, sea, add, edit, del, menus, menusName, content};
   },
@@ -258,7 +255,7 @@ export default defineComponent({
       const form = this.content.form;
       form.id = id;
       form.content = '';
-      this.content.tinymce.upload.param.id = id;
+      this.content.upload.param.id = id;
       // 内容
       Post("news/get_content", {
         token:Storage.getItem('token'),
@@ -274,7 +271,7 @@ export default defineComponent({
       // 数据
       const data: any = {
         id: this.content.form.id,
-        content: (this.$refs.content as any).getContent(),
+        content: this.content.form.content,
       }
       // 提交
       const load: any = Loading();

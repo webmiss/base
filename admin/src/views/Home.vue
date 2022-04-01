@@ -96,7 +96,7 @@
         </div>
       </div>
       <div class="index_chart">
-        Chart
+        正在开发...
       </div>
       <!-- 趋势分析 End -->
     </div>

@@ -36,10 +36,8 @@ export default defineComponent({
     const checkbox: any = [{label:'游戏', value: 1, checked: false}, {label:'购物', value: 2, checked: true}];
     // 编辑器: UrlEncode('编码')、UrlDecode('解码')
     const tinymce: any = {
-      // 配置
-      init:{menubar: true, height: 260},
       // 上传图片
-      upload: {start: true, width: 640, url: '/demo/tinymce/upImg'},
+      upload: {url: '/demo/tinymce/upImg', width: 640},
     };
     
     return {state, upload, form, checkbox, tinymce}
@@ -76,9 +74,10 @@ export default defineComponent({
     /* 提交表单 */
     onSubmit(){
       const data: string = JSON.stringify(this.form);
-      console.log(this.form);
+      console.log(JSON.stringify(this.form));
       console.log(JSON.stringify(this.checkbox));
-      console.log((this.$refs.tinymce as any).getContent());
+
+      // console.log((this.$refs.tinymce as any).getContent());
       return;
       const load: any = Loading();
       Post('sys_config/edit',{

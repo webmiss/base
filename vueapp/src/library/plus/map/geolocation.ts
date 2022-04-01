@@ -44,7 +44,7 @@ const _geolocation = (callback: any, fail: any)=>{
             Storage.setItem('geolocation',JSON.stringify(data));
             callback(data);
           }
-        });
+        },{geocode:true, provider:'amap'});
       });
     }catch(e){
       setTimeout(()=>{ _geolocation(callback,fail); },3000);

@@ -9,6 +9,7 @@ import TimeDate from '@/library/time/date'
 import TimeFormatHour from '@/library/time/format_hour'
 import PriceFormat from '@/library/price/format'
 import PricePercentage from '@/library/price/percentage'
+
 /* UI组件 */
 import wmMain from '@/components/main/index.vue'
 import wmChartLine from '@/components/chart/line.vue'
@@ -25,10 +26,15 @@ export default defineComponent({
     const store: any = useStore();
     const state: any = store.state;
     const time: any = null;
+    const content: any = '123';
     // const chartData: any = {line: [], interval:[]};
     // 今日流量
-    const tData: any = {time: '', today:{}, yesterday:{}};
-    return {state, time, tData};
+    const tData: any = {
+      time: '',
+      today:{pv:0, uv:0, ip:0, ratio:0, time:0},
+      yesterday:{pv:0, uv:0, ip:0, ratio:0, time:0}
+    };
+    return {state, time, tData, content};
   },
   mounted(){
   },

@@ -25,7 +25,7 @@
         <wm-switch :value="form.switch" @update:value="form.switch=$event"></wm-switch>
       </wm-form-item>
       <wm-form-item label="none" height="auto">
-        <wm-tinymce ref="tinymce" v-model:value="form.tinymce" :config="tinymce.init" :upload="tinymce.upload"></wm-tinymce>
+        <wm-tinymce v-model:value="form.tinymce" :menubar="true" :height="280" :upload="tinymce.upload"></wm-tinymce>
       </wm-form-item>
       <wm-form-item type="botton">
         <wm-button @click="onSubmit()">保存设置</wm-button>
