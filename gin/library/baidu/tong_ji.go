@@ -31,7 +31,6 @@ func (b *Baidu) GetData(body map[string]interface{}) []byte {
 
 /* 返回结果 */
 func (b *Baidu) result(res []byte) map[string]interface{} {
-
 	// data := res["body"]["data"]
 	return nil
 }
