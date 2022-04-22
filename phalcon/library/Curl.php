@@ -7,7 +7,7 @@ use Service\Base;
 class Curl extends Base {
 
   /* GET、POST、PUT、HEAD、DELETE */
-  static function Request(string $method='GET', string $url, string $data, array $headers=[], string $resType='json') {
+  static function Request(string $url, string $data='', string $method='GET', array $headers=[], string $resType='json') {
     // 请求头
     $headerArr = [];
     foreach($headers as $k=>$v){
@@ -26,13 +26,8 @@ class Curl extends Base {
     $text = curl_exec($ch);
     curl_close($ch);
     // 结果
-    if($resType=='json') {
-      $res = !empty($text)?json_decode($text):null;
-    } elseif ($resType=='xml'){
-      $res = $text;
-    } else {
-      $res = $text;
-    }
+    if($resType=='json') $res = !empty($text)?json_decode($text):null;
+    else $res = $text;
     return $res;
   }
 

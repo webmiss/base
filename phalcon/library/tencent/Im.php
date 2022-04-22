@@ -20,19 +20,19 @@ class Im extends Signature {
   static function GroupList() {
     $url = self::GetURL('group_open_http_svc/get_appid_group_list');
     $dataStr = '{}';
-    return Curl::Request('POST', $url, $dataStr);
+    return Curl::Request($url, $dataStr, 'POST');
   }
   /* 群组-创建 */
   static function GroupCreate(array $data) {
     $url = self::GetURL('group_open_http_svc/create_group');
     $dataStr = Util::JsonEncode($data);
-    return Curl::Request('POST', $url, $dataStr);
+    return Curl::Request($url, $dataStr, 'POST');
   }
   /* 群组-解散 */
   static function GroupDestroy(array $data) {
     $url = self::GetURL('group_open_http_svc/destroy_group');
     $dataStr =  Util::JsonEncode($data);
-    return Curl::Request('POST', $url, $dataStr);
+    return Curl::Request($url, $dataStr, 'POST');
   }
 
 }

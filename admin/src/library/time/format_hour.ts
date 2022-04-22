@@ -23,7 +23,7 @@ export default {
     return t1+':'+t2+':'+t3;
   },
   decode(time: string){
-    let arr: any = time.split(":")
+    let arr: any = time.split(':')
     return parseInt(arr[0])*3600 + parseInt(arr[1])*60 + parseInt(arr[2]);
   },
 }

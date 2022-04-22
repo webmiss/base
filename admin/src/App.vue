@@ -40,7 +40,7 @@
         <div class="app_logo bgImg" :style="{backgroundImage:'url('+require('./assets/logo.svg')+')'}"></div>
         <div class="app_title nowrap">{{info.title}}</div>
         <ul class="app_menus">
-          <li v-for="(m,k) in menus" :key="k" @click="menusClick([k,0,0])" :class="menusPos[0]==k?'active':''">
+          <li v-for="(m,k) in state.menus" :key="k" @click="menusClick([k,0,0])" :class="menusPos[0]==k?'active':''">
             <div><i :class="m.icon"></i></div>
             <p>{{m.label}}</p>
           </li>

@@ -120,7 +120,7 @@ vi /etc/redis.conf
 ## PHP
 #### 1) 安装PHP7
 ```bash
-apt install php-fpm php-cli php-gd php-mysql -y
+apt install php-fpm php-cli php-mysql php-curl php-gd -y
 ```
 #### 2) 添加扩展
 ```bash

@@ -89,14 +89,14 @@
       <div class="index_title flex_left">
         <h2>趋势分析</h2>
         <div class="index_title_menu">
-          <span class="active">今天</span>|
-          <span>昨天</span>|
-          <span>近7天</span>|
-          <span>近30天</span>
+          <span :class="type=='t1'?'active':''" @click="Trend('t1')">今天</span>|
+          <span :class="type=='t2'?'active':''" @click="Trend('t2')">昨天</span>|
+          <span :class="type=='t3'?'active':''" @click="Trend('t3')">近7天</span>|
+          <span :class="type=='t4'?'active':''" @click="Trend('t4')">近30天</span>
         </div>
       </div>
       <div class="index_chart">
-        正在开发...
+        <wm-chart-line :data="tData.chart" :height="420" ></wm-chart-line>
       </div>
       <!-- 趋势分析 End -->
     </div>
@@ -114,7 +114,7 @@
 .index_title_menu span:hover{color: #595;}
 .index_title_menu .active{font-weight: bold; color: #595;}
 
-.index_data{padding: 16px; border-radius: 4px; background-color: #F2F4F6; border: #E2E4E6 1px solid;}
+.index_data{padding: 16px; border-radius: 4px; background-color: #F2F4F6; border: #E2E4E8 1px solid;}
 .index_data li{width: 18%; line-height: 22px; text-align: right;}
 .index_data .title{width: 10%;}
 .index_data h3{font-size: 14px; font-weight: normal; padding: 4px 16px 10px 0;}

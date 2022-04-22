@@ -29,9 +29,8 @@ export default defineComponent({
     // 登录数据
     const login: any = {uname:'',passwd:'',subText:'登 录',dis:false};
     // 左侧菜单
-    const menus: any = [];
-    const menusChildren: any = [];
     const menusPos: any = [0,0,0];
+    const menusChildren: any = [];
     const menusSeaList: any = [];
     // 语言
     const language: any = {
@@ -43,7 +42,7 @@ export default defineComponent({
         {name:'go',val:'GoLang( Gin )'},
       ]
     };
-    return {state,router,transitionName,info,login,menus,menusChildren,menusPos,menusSeaList,language}
+    return {state,router,transitionName,info,login,menusChildren,menusPos,menusSeaList,language}
   },
   watch:{
     $route(to,from){
@@ -149,7 +148,7 @@ export default defineComponent({
         let d = res.data;
         if(d.code==0){
           // 全部
-          this.menus = d.menus;
+          this.state.menus = d.menus;
           // 跳转位置
           let active: number[] = [];
           let pos = Storage.getItem('menusPos');
@@ -157,12 +156,12 @@ export default defineComponent({
           this.menusClick(active);
           // 搜索内容
           let data = [];
-          for(let x in this.menus){
-            if(!this.menus[x].children) continue;
-            for(let y in this.menus[x].children){
-              if(!this.menus[x].children[y].children) continue;
-              for(let z in this.menus[x].children[y].children){
-                let arr: any = this.menus[x].children[y].children[z];
+          for(let x in this.state.menus){
+            if(!this.state.menus[x].children) continue;
+            for(let y in this.state.menus[x].children){
+              if(!this.state.menus[x].children[y].children) continue;
+              for(let z in this.state.menus[x].children[y].children){
+                let arr: any = this.state.menus[x].children[y].children[z];
                 data.push({label:arr.label, value:JSON.stringify([x,y,z])});
               }
             }
@@ -179,7 +178,7 @@ export default defineComponent({
       this.menusPos = pos
       Storage.setItem('menusPos',JSON.stringify(pos));
       // 子菜单
-      this.menusChildren = this.menus[pos[0]].children || [];
+      this.menusChildren = this.state.menus[pos[0]].children || [];
       if(pos[0]==0) return NavigateTo(url);
       if(!this.menusChildren[pos[1]] || !this.menusChildren[pos[1]].children) return;
       let menu = this.menusChildren[pos[1]].children[pos[2]];

@@ -116,7 +116,7 @@ dnf install http://rpms.remirepo.net/enterprise/remi-release-8.rpm -y
 #### 2) 安装PHP7
 ```bash
 # PHP7.4
-dnf install php74-php-fpm php74-php-cli php74-php-gd php74-php-pdo -y
+dnf install php74-php-fpm php74-php-cli php74-php-pdo php74-php-mysql php74-php-gd -y
 # 开机启动
 systemctl enable php74-php-fpm
 # 启动

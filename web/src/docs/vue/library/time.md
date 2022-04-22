@@ -1,22 +1,16 @@
 ## 引入
 ```javascript
 import TimeDate from '@/library/time/date'
-import TimeFormat from '@/library/time/format'
 import TimeSize from '@/library/time/size'
 import TimeDay from '@/library/time/day'
 import TimeWeek from '@/library/time/week'
+import TimeFormatHour from '@/library/time/format_hour'
+import TimeFormatTime from '@/library/time/format_time'
 ```
 
 ## 年月日时分秒
 ```typescript
 TimeDate();
-```
-
-## 时间格式化
-```typescript
-TimeFormat(
-  date: string,   //2021-05-18 14:34:32
-);
 ```
 
 ## 时间比较
@@ -39,5 +33,22 @@ TimeDay(
 ```typescript
 TimeWeek(
   date: string | number | Date,   //2021-05-18 14:34:32
+);
+```
+
+## 格式化-小时
+```typescript
+TimeFormatHour.encode(
+  second: number,   //秒
+);
+TimeFormatHour.decode(
+  time: string,     //时间, 00:01:30
+);
+```
+
+## 格式化-时间
+```typescript
+TimeFormatTime(
+  date: string,   //2021-05-18 14:34:32
 );
 ```

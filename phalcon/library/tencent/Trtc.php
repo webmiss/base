@@ -35,7 +35,7 @@ class Trtc extends Signature {
     $dataStr = Util::JsonEncode($data);
     // 请求头
     $header = self::V3Header($data);
-    return Curl::Request('POST', self::$ApiUrl, $dataStr, $header);
+    return Curl::Request(self::$ApiUrl, $dataStr, 'POST', $header);
   }
 
   /* 房间-解散 */
@@ -51,7 +51,7 @@ class Trtc extends Signature {
     $dataStr = Util::JsonEncode($data);
     // 请求头
     $header = self::V3Header($data);
-    return Curl::Request('POST', self::$ApiUrl, $dataStr, $header);
+    return Curl::Request(self::$ApiUrl, $dataStr, 'POST', $header);
   }
 
 }

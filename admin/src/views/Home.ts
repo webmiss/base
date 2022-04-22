@@ -9,7 +9,6 @@ import TimeDate from '@/library/time/date'
 import TimeFormatHour from '@/library/time/format_hour'
 import PriceFormat from '@/library/price/format'
 import PricePercentage from '@/library/price/percentage'
-
 /* UI组件 */
 import wmMain from '@/components/main/index.vue'
 import wmChartLine from '@/components/chart/line.vue'
@@ -26,15 +25,15 @@ export default defineComponent({
     const store: any = useStore();
     const state: any = store.state;
     const time: any = null;
-    const content: any = '123';
-    // const chartData: any = {line: [], interval:[]};
+    const type: any = 't1';
     // 今日流量
     const tData: any = {
       time: '',
       today:{pv:0, uv:0, ip:0, ratio:0, time:0},
-      yesterday:{pv:0, uv:0, ip:0, ratio:0, time:0}
+      yesterday:{pv:0, uv:0, ip:0, ratio:0, time:0},
+      chart: [],
     };
-    return {state, time, tData, content};
+    return {state, time, tData, type};
   },
   mounted(){
   },
@@ -42,7 +41,7 @@ export default defineComponent({
     // 加载数据
     if(Storage.getItem('token')){
       this.loadData();
-      // 30刷新
+      // 60秒刷新
       clearInterval(this.time);
       this.time = setInterval(()=>{
         this.loadData();
@@ -56,19 +55,29 @@ export default defineComponent({
   },
   methods:{
 
+    /* 趋势分析 */
+    Trend(type: string) {
+      this.type = type;
+      this.loadData();
+    },
+
     /* 加载数据 */
     loadData() {
       let token = Storage.getItem('token');
       if(!token) return clearInterval(this.time);
+      const load: any = Loading();
       Post('index/getChart',{
         token: token,
+        type: this.type,
       },(res: any)=>{
+        load.clear();
         const d = res.data;
         console.log(d);
         if(d.code==0){
           this.tData.time = TimeDate();
           this.tData.today = d.data['TrendRpt']['today'];
           this.tData.yesterday = d.data['TrendRpt']['yesterday'];
+          this.tData.chart = d.data['Trend'];
         }else return Toast(d.msg);
       });
     },
@@ -84,6 +93,27 @@ export default defineComponent({
     /* 格式化-小时 */
     FormatHour(second: number) {
       return TimeFormatHour.encode(second);
+    },
+
+    /* 跳转菜单 */
+    openMenus(url: string) {
+      let res: boolean = true;
+      for(let x in this.state.menus){
+        if(!this.state.menus[x].children) continue;
+        for(let y in this.state.menus[x].children){
+          if(!this.state.menus[x].children[y].children) continue;
+          for(let z in this.state.menus[x].children[y].children){
+            let arr: any = this.state.menus[x].children[y].children[z];
+            if(url==arr.value.url){
+              res = false;
+              let pos = [x,y,z];
+              Storage.setItem('menusPos',JSON.stringify(pos));
+              location.reload();
+            }
+          }
+        }
+      }
+      if(res) return Toast('无法访问!');
     },
 
   }

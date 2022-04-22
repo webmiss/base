@@ -1,20 +1,21 @@
 <template>
-  <div ref="chart"></div>
+  <div ref="chart" class="chart"></div>
 </template>
 
 <style scoped>
+.chart{position: relative;}
 </style>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import * as G2 from '@antv/g2'
+import { Chart } from '@antv/g2';
 export default defineComponent({
   name: 'ChartLine',
   props: {
-    data: {type: Array, default: []},         //数据
-    width: {type: Number, default: 600},      //宽
+    data: {type: Array, default: []},         //数据: [{type:'t1',label:'1月',value:1},{type:'t2',label:'1月',value:2}]
     height: {type: Number, default: 240},     //高
     unit: {type: String, default: ''},        //单位
+    lunit: {type: String, default: ''},       //单位(左)
     isDot: {type: Boolean, default: true},    //是否显示点
     isSmooth: {type: Boolean, default: true}, //是否曲线
   },
@@ -24,34 +25,40 @@ export default defineComponent({
   },
   watch:{
     data(val){
-      if(val) this.init();
+      if(val) setTimeout(()=>{ this.init(); }, 300);
     }
   },
   mounted(){
+    
   },
   methods:{
 
     /* 初始化 */
     init(){
-      const body: any = this.$refs.chart;
       // 对象
-      const config: any = {container: body, forceFit: false, width: this.width, height: this.height};
-      if(!this.chart) this.chart = new G2.Chart(config);
+      const body: any = this.$refs.chart;
+      if(!this.chart) this.chart = new Chart({
+        container: body,
+        autoFit: true,
+        height: this.height,
+      });
       // 数据
       this.chart.clear();
       this.chart.data(this.data);
-      // 点
-      if(this.isDot) this.chart.point().position('label*value').size(4).shape('circle').color('type').style({stroke: '#fff', lineWidth: 1});
-      // 创建
-      if(this.isSmooth) this.chart.line().position('label*value').tooltip('label*value', (label: any, value: any)=>{
-        value = value + this.unit;
-        return {name: label, value: value};
-      }).shape('smooth').color('type');
-      else this.chart.line().position('label*value').tooltip('label*value', (label: any, value: any)=>{
+      let line = this.chart.line().position('label*value').tooltip('label*value', (label: any, value: any)=>{
         value = value + this.unit;
         return {name: label, value: value};
       }).color('type');
-      // 加载
+      // 曲线
+      if(this.isSmooth) line.shape('smooth');
+      // 点
+      if(this.isDot) this.chart.point().position('label*value').color('type').shape('circle').style({stroke: '#fff', lineWidth: 1});
+      // 单位(左侧)
+      this.chart.axis('value', {
+        label: {
+          formatter: (val: any) => { return val+this.lunit; },
+        },
+      });
       this.chart.render();
     },
 

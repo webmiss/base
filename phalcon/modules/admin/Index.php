@@ -6,13 +6,12 @@ use Service\Data;
 use Service\AdminToken;
 use Model\SysConfig;
 use Library\Baidu\TongJi;
-
-use Config\Env;
-use Model\Logs;
 use Util\Util;
 
 
 class Index extends Base {
+
+  static private $site_id = '17669804';
 
   /* 首页 */
   static function Index() {
@@ -47,10 +46,16 @@ class Index extends Base {
     // 验证
     $msg = AdminToken::Verify($token, '');
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+
     // 今日流量
     $sDate = date('Ymd', strtotime('-1 day'));
     $eDate = date('Ymd');
-    $res = TongJi::TrendRpt('17669804', $sDate, $eDate, 'pv_count,visitor_count,ip_count,bounce_ratio,avg_visit_time');
+    $res = TongJi::TrendRpt([
+      'site_id'=>self::$site_id,
+      'start_date'=>$sDate,
+      'end_date'=>$eDate,
+      'metrics'=>'pv_count,visitor_count,ip_count,bounce_ratio,avg_visit_time'
+    ]);
     $t1 = $res->items[1][1];
     $t2 = $res->items[1][0];
     $data['TrendRpt'] = [
@@ -71,93 +76,55 @@ class Index extends Base {
         'time'=>$t2[4]!='--'?$t2[4]:'0',
       ],
     ];
+
+    // 趋势分析
+    $tp = self::JsonName($json, 'type');
+    $gran = 'day';
+    if($tp=='t1'){
+      $gran = 'hour';
+      $sDate = date('Ymd');
+      $eDate = date('Ymd');
+    }elseif($tp=='t2'){
+      $gran = 'hour';
+      $sDate = date('Ymd', strtotime('-1 day'));
+      $eDate = date('Ymd', strtotime('-1 day'));
+    }elseif($tp=='t3'){
+      $sDate = date('Ymd', strtotime('-6 day'));
+      $eDate = date('Ymd');
+    }elseif($tp=='t4'){
+      $sDate = date('Ymd', strtotime('-29 day'));
+      $eDate = date('Ymd');
+    }
+    $res = TongJi::Trend([
+      'site_id'=>self::$site_id,
+      'gran'=>$gran,
+      'start_date'=>$sDate,
+      'end_date'=>$eDate,
+      'metrics'=>'pv_count,visitor_count,ip_count'
+    ]);
+    $n = Util::Len($res->items[0])-1;
+    $trend = [];
+    for($i=$n; $i>=0; $i--){
+      if($tp=='t1'||$tp=='t2'){
+        $label = ($n-$i).'点';
+      }else{
+        $label = $res->items[0][$i][0];
+      }
+      // 浏览量(PV)
+      $value = $res->items[1][$i][0]=='--'?0:$res->items[1][$i][0];
+      $trend[]=['type'=>'浏览量(PV)', 'label'=>$label, 'value'=>$value];
+      // 访客数(UV)
+      $value = $res->items[1][$i][1]=='--'?0:$res->items[1][$i][1];
+      $trend[]=['type'=>'访客数(UV)', 'label'=>$label, 'value'=>$value];
+      // IP数
+      $value = $res->items[1][$i][2]=='--'?0:$res->items[1][$i][2];
+      $trend[]=['type'=>'IP数', 'label'=>$label, 'value'=>$value];
+      
+    }
+    $data['Trend'] = $trend;
+
     // 返回
     return self::GetJSON(['code'=>0, 'msg'=>'成功', 'data'=>$data]);
-    // // 统计图1
-    // $chart1 = [];
-    // $day = date('Y-m-d');
-    // $last1 = date('Y-m-d', strtotime('1 day'));
-    // $last2 = date('Y-m-d', strtotime('-1 day'));
-    // for($i=0; $i<24; $i++) {
-    //   // 时间
-    //   if($i==23){
-    //     $dt1 = $day.' '. $i .':00:00';
-    //     $dt2 = $last1 . '00:00:00';
-    //     $dt3 = $last2 . ' ' . $i . ':00:00';
-    //     $dt4 = $day . ' 00:00:00';
-    //   } else {
-    //     $dt1 = $day . ' ' . $i . ':00:00';
-    //     $dt2 = $day . ' ' . ($i+1) . ':00:00';
-    //     $dt3 = $last2 . ' ' . $i . ':00:00';
-    //     $dt4 = $last2 . ' ' . ($i+1) . ':00:00';
-    //   }
-    //   $t1 = Util::Strtotime($dt1);
-    //   $t2 = Util::Strtotime($dt2);
-    //   $t3 = Util::Strtotime($dt3);
-    //   $t4 = Util::Strtotime($dt4);
-    //   // 统计
-    //   $m1 = new Logs();
-    //   $m1->Columns('count(*) as total');
-    //   $m1->Where('ctime>=? AND ctime<? AND source=?', $t1, $t2, Env::$log_source);
-    //   $d1 = $m1->FindFirst();
-    //   $chart1[] = ['type'=>'今日(PV)', 'label'=>(string)$i, 'value'=>(int)$d1['total']];
-    //   $m2 = new Logs();
-    //   $m2->Columns('count(*) as total');
-    //   $m2->Where('ctime>=? AND ctime<? AND source=?', $t3, $t4, Env::$log_source);
-    //   $d2 = $m2->FindFirst();
-    //   $chart1[] = ['type'=>'昨日(PV)', 'label'=>(string)$i, 'value'=>(int)$d2['total']];
-    // }
-    // // 统计图2
-    // $chart2 = [];
-    // $year = date('Y');
-    // $last1 = strval($year+1);
-    // $last2 = strval($year-1);
-    // for($i=0; $i<12; $i++) {
-    //   // 时间
-    //   if($i==11){
-    //     $dt1 = $year . '-' . ($i+1) . '-01';
-    //     $dt2 = $last1 . '-01-01';
-    //     $dt3 = $last2.'-' . ($i+1) . '-01';
-    //     $dt4 = $year . '-01-01';
-    //   } else {
-    //     $dt1 = $year . '-' . ($i+1) . '-01';
-    //     $dt2 = $year . '-' . ($i+2) . '-01';
-    //     $dt3 = $last2 . '-' . ($i+1) . '-01';
-    //     $dt4 = $last2 . '-' . ($i+2) . '-01';
-    //   }
-    //   $t1 = Util::Strtotime($dt1);
-    //   $t2 = Util::Strtotime($dt2);
-    //   $t3 = Util::Strtotime($dt3);
-    //   $t4 = Util::Strtotime($dt4);
-    //   // 统计
-    //   $m1 = new Logs();
-    //   $m1->Columns('count(*) as total');
-    //   $m1->Where('ctime>=? AND ctime<? AND source=?', $t1, $t2, Env::$log_source);
-    //   $d1 = $m1->FindFirst();
-    //   $chart2[] = ['type'=>'今年(PV)', 'label'=>(string)($i+1), 'value'=>(int)$d1['total']];
-    //   $m2 = new Logs();
-    //   $m2->Columns('count(*) as total');
-    //   $m2->Where('ctime>=? AND ctime<? AND source=?', $t3, $t4, Env::$log_source);
-    //   $d2 = $m2->FindFirst();
-    //   $chart2[] = ['type'=>$last2.'年(PV)', 'label'=>(string)($i+1), 'value'=>(int)$d2['total']];
-    // }
-    // // 统计图3
-    // $chart3 = [];
-    // $m1 = new Logs();
-    // $m1->Columns('count(*) as total');
-    // $m1->Where('source=?', Env::$log_source);
-    // $d1 = $m1->FindFirst();
-    // $m2 = new Logs();
-    // $m2->Columns('count(*) as total', 'browser');
-    // $m2->Where('source=?', Env::$log_source);
-    // $m2->Group('browser');
-    // $d2 = $m2->Find();
-    // foreach($d2 as $val) {
-    //   $ratio = intval($val['total']/$d1['total']*100)/100;
-    //   $chart3[] = ['label'=>$val['browser'], 'value'=>$ratio];
-    // }
-    // 返回
-    // return self::GetJSON(['code'=>0, 'msg'=>'成功', 'chart1'=>$chart1, 'chart2'=>$chart2, 'chart3'=>$chart3]);
   }
 
 }
