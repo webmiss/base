@@ -31,6 +31,10 @@ util.If(val bool, tVal interface{}, fVal interface{})
 ## 格式化时间
 ```go
 util.Date(format string, timestamp ...interface{})
+util.DateFormat(
+  format string,    //格式: yyyy-MM-dd HH:mm:ss
+  duration string,  //-1d: 年(y)、月(m)、日(d)、时，分、秒(5h30m40s)
+)
 ```
 
 ## 时间戳

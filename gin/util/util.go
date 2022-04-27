@@ -67,8 +67,24 @@ func Date(format string, timestamp ...interface{}) string {
 	return time.Now().Format(format)
 }
 func DateFormat(format string, duration string) string {
-	dd, _ := time.ParseDuration(duration)
-	return time.Now().Add(dd).Format(format)
+	n := len(duration)
+	r := duration[n-1 : n]
+	// 时，分、秒（5h30m40s）
+	if r == "h" || r == "s" {
+		dd, _ := time.ParseDuration(duration)
+		return time.Now().Add(dd).Format(format)
+	}
+	// 年、月、日
+	l, _ := strconv.Atoi(duration[0 : n-1])
+	if r == "y" {
+		return time.Now().AddDate(l, 0, 0).Format(format)
+	} else if r == "m" {
+		return time.Now().AddDate(0, l, 0).Format(format)
+	} else if r == "d" {
+		return time.Now().AddDate(0, 0, l).Format(format)
+	} else {
+		return time.Now().Format(format)
+	}
 }
 
 /* 时间戳 */

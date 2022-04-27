@@ -20,6 +20,26 @@ class Util extends Base {
     return $res;
   }
 
+  /* 格式化时间 */
+  static function Date(string $format='Y-m-d H:i:s', int $timestamp=0) {
+    return date($format, $timestamp);
+  }
+  static function DateFormat(string $format='Y-m-d H:i:s', string $duration='0s'): string {
+    $l = substr($duration, 0, -1);
+    $r = substr($duration, -1);
+    # 年、月、周、日、时、分、秒
+    $res = '';
+    if($r=='y') $res = date($format, strtotime($l.' year'));
+    elseif($r=='m') $res = date($format, strtotime($l.' month'));
+    elseif($r=='w') $res = date($format, strtotime($l.' week'));
+    elseif($r=='d') $res = date($format, strtotime($l.' day'));
+    elseif($r=='h') $res = date($format, strtotime($l.' hour'));
+    elseif($r=='i') $res = date($format, strtotime($l.' minute'));
+    elseif($r=='s') $res = date($format, strtotime($l.' second'));
+    else $res = date($format);
+    return $res;
+  }
+
   /* String To Timestamp */
   static function Strtotime(string $day): int {
     $t = strtotime(trim($day));

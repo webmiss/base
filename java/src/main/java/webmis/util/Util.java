@@ -17,9 +17,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+import webmis.service.Base;
+
 /* 常用工具 */
 @SuppressWarnings("unchecked")
-public class Util {
+public class Util extends Base {
 
   /* 执行Linux命令 */
   public static JSONArray Exec(String cmd) {
@@ -52,10 +54,24 @@ public class Util {
   public static String Date(String format, String timestamp) {
     return new SimpleDateFormat(format).format(new Date(Long.valueOf(timestamp)*1000));
   }
-  public static String DateFormat(String format, int calendar, int num) {
-    SimpleDateFormat sf = new SimpleDateFormat(format);
+  public static String DateFormat(String format) {
+    return DateFormat(format, "0s");
+  }
+  public static String DateFormat(String format, String duration) {
+    int n = duration.length();
+    int l = Integer.valueOf(duration.substring(0,n-1));
+    String r = duration.substring(n-1);
+    // 年、月、周、日、时、分、秒
     Calendar c = Calendar.getInstance();
-    c.add(calendar, num);
+    if(r.equals("y")) c.add(Calendar.YEAR, l);
+    else if(r.equals("m")) c.add(Calendar.MONTH, l);
+    else if(r.equals("w")) c.add(Calendar.WEDNESDAY, l);
+    else if(r.equals("d")) c.add(Calendar.DATE, l);
+    else if(r.equals("h")) c.add(Calendar.HOUR, l);
+    else if(r.equals("i")) c.add(Calendar.MINUTE, l);
+    else if(r.equals("s")) c.add(Calendar.SECOND, l);
+    else c.add(Calendar.SECOND, 0);
+    SimpleDateFormat sf = new SimpleDateFormat(format);
     return sf.format(c.getTime());
   }
 

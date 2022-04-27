@@ -27,7 +27,7 @@ class TongJi extends Base {
   }
 
   /* 返回结果 */
-  static private function Result($res) {
+  static private function result($res) {
     $data = $res->body->data;
     $res = [];
     if(Util::Len($data)>0 && $data[0]->result) return $data[0]->result;
@@ -38,11 +38,11 @@ class TongJi extends Base {
   static function SiteList() {
     $dataStr = self::GetData();
     $res = Curl::Request(self::$Url.'ReportService/getSiteList', $dataStr, 'POST');
-    return self::Result($res);
+    return self::result($res);
   }
 
   /* 网站概况-趋势数据 */
-  static function TrendRpt(array $param=[]) {
+  static function TrendRpt(array $params=[]) {
     // 参数
     $param = array_merge([
       'method'=>'overview/getTimeTrendRpt',
@@ -50,15 +50,15 @@ class TongJi extends Base {
       'start_date'=>'',           //开始日期
       'end_date'=>'',             //结束日期
       'metrics'=>'pv_count,visitor_count,ip_count,bounce_ratio,avg_visit_time,trans_count',
-    ],$param);
+    ],$params);
     // 请求
     $dataStr = self::GetData($param);
     $res = Curl::Request(self::$Url.'ReportService/getData', $dataStr, 'POST');
-    return self::Result($res);
+    return self::result($res);
   }
 
   /* 趋势分析 */
-  static function Trend(array $param=[]) {
+  static function Trend(array $params=[]) {
     // 参数
     $param = array_merge([
       'method'=>'trend/time/a',
@@ -71,11 +71,11 @@ class TongJi extends Base {
       'clientDevice'=>'all',      //设备: all/pc/mobile
       'area'=>'all',              //地域: all/china/province,1/province,4,90/other
       'visitor'=>'all',           //访客: all/new/old
-    ],$param);
+    ],$params);
     // 请求
     $dataStr = self::GetData($param);
     $res = Curl::Request(self::$Url.'ReportService/getData', $dataStr, 'POST');
-    return self::Result($res);
+    return self::result($res);
   }
 
 }

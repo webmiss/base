@@ -30,7 +30,7 @@ class Trtc:
     }
     # 请求头
     header = Signature.V3Header(data)
-    return Curl.PostJson(Signature.ApiUrl, data, header)
+    return Curl.Request(Signature.ApiUrl, Util.JsonEncode(data), 'POST', header)
 
   # 房间-解散
   def RoomDismiss(roomId: str):
@@ -45,4 +45,4 @@ class Trtc:
     }
     # 请求头
     header = Signature.V3Header(data)
-    return Curl.PostJson(Signature.ApiUrl, data, header)
+    return Curl.Request(Signature.ApiUrl, Util.JsonEncode(data), 'POST', header)

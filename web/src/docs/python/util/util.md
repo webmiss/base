@@ -11,6 +11,10 @@ Util.Exec(cmd: str)
 ## 格式化时间
 ```python
 Util.Date(format: str = '%Y-%m-%d %H:%M:%S', timestamp: float = None)
+Util.DateFormat(
+  format: str = '%Y-%m-%d %H:%M:%S',  #格式
+  duration: str = '-1d',              #年(y)、月(m)、周(w)、日(d)、时(h)、分(i)、秒(s)
+)
 ```
 
 ## 时间戳

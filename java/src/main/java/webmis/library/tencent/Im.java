@@ -22,17 +22,17 @@ public class Im extends Signature {
   /* 群组-列表 */
   public static JSONObject GroupList() {
     String url = GetURL("group_open_http_svc/get_appid_group_list");
-    return Curl.PostJson(url, new JSONObject());
+    return Curl.Request(url, "[]", "POST");
   }
   /* 群组-创建 */
   public static JSONObject GroupCreate(JSONObject data) {
     String url = GetURL("group_open_http_svc/create_group");
-    return Curl.PostJson(url, data);
+    return Curl.Request(url, data.toString(), "POST");
   }
   /* 群组-解散 */
   public static JSONObject GroupDestroy(JSONObject data) {
     String url = GetURL("group_open_http_svc/destroy_group");
-    return Curl.PostJson(url, data);
+    return Curl.Request(url, data.toString(), "POST");
   }
   
 }

@@ -36,7 +36,10 @@ func (t *Trtc) RoomList(StartTime int64, EndTime int64) map[string]interface{} {
 	}
 	// 请求头
 	header := t.V3Header(data)
-	return (&library.Curl{}).PostJson(t.ApiUrl, data, header)
+	byt, _ := (&library.Curl{}).Request(t.ApiUrl, util.JsonEncode(data), "POST", header)
+	res := map[string]interface{}{}
+	util.JsonDecode(byt, &res)
+	return res
 }
 
 /* 房间-解散 */
@@ -51,5 +54,8 @@ func (t *Trtc) RoomDismiss(roomId string) map[string]interface{} {
 	}
 	// 请求头
 	header := t.V3Header(data)
-	return (&library.Curl{}).PostJson(t.ApiUrl, data, header)
+	byt, _ := (&library.Curl{}).Request(t.ApiUrl, util.JsonEncode(data), "POST", header)
+	res := map[string]interface{}{}
+	util.JsonDecode(byt, &res)
+	return res
 }

@@ -12,6 +12,8 @@ from util.util import Util
 
 class Index(Base):
 
+  __site_id: str = '17669804'
+
   # 首页
   def Index(self):
     return self.GetJSON({'code':0,'msg':'Admin'})
@@ -34,6 +36,7 @@ class Index(Base):
   # 图表数据
   def GetChart(self):
     data = {}
+    day = Util.DateFormat('%Y%m%d')
     # 参数
     json = self.Json()
     token = self.JsonName(json, 'token')
@@ -42,114 +45,77 @@ class Index(Base):
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
 
     # 今日流量
-    res = TongJi.SiteList()
-    print(res)
+    sDate = Util.DateFormat('%Y%m%d', '-1d')
+    eDate = day
+    res = TongJi.TrendRpt({
+      'site_id': self.__site_id,
+      'start_date': sDate,
+      'end_date': eDate,
+      'metrics': 'pv_count,visitor_count,ip_count,bounce_ratio,avg_visit_time',
+    })
+    t1 = res['items'][1][1]
+    t2 = res['items'][1][0]
     data['TrendRpt'] = {
       'today': {
-        'day': 0,
-        'pv': 0,
-        'uv': 0,
-        'ip': 0,
-        'ratio': 0,
-        'time': 0,
+        'day': res['items'][0][1][0],
+        'pv': t1[0] if t1[0]!='--' else '0',
+        'uv': t1[1] if t1[1]!='--' else '0',
+        'ip': t1[2] if t1[2]!='--' else '0',
+        'ratio': t1[3] if t1[3]!='--' else '0',
+        'time': t1[4] if t1[4]!='--' else '0',
       },
       'yesterday': {
-        'day': 0,
-        'pv': 0,
-        'uv': 0,
-        'ip': 0,
-        'ratio': 0,
-        'time': 0,
+        'day': res['items'][0][0][0],
+        'pv': t2[0] if t2[0]!='--' else '0',
+        'uv': t2[1] if t2[1]!='--' else '0',
+        'ip': t2[2] if t2[2]!='--' else '0',
+        'ratio': t2[3] if t2[3]!='--' else '0',
+        'time': t2[4] if t2[4]!='--' else '0',
       },
     }
 
     # 趋势分析
-    data['Trend'] = [
-      {'type':'浏览量(PV)', 'label': '1月', 'value':0},
-      {'type':'访客数(UV)', 'label': '1月', 'value':1},
-      {'type':'IP数', 'label': '1月', 'value':2},
-    ]
+    tp = self.JsonName(json, 'type')
+    gran = 'day'
+    if tp=='t1' :
+      gran = 'hour'
+      sDate = day
+      eDate = day
+    elif tp=='t2' :
+      gran = 'hour'
+      sDate = Util.DateFormat('%Y%m%d', '-1d')
+      eDate = sDate
+    elif tp=='t3' :
+      sDate = Util.DateFormat('%Y%m%d', '-6d')
+      eDate = day
+    elif tp=='t4' :
+      sDate = Util.DateFormat('%Y%m%d', '-29d')
+      eDate = day
+    res = TongJi.Trend({
+      'site_id': self.__site_id,
+      'start_date': sDate,
+      'end_date': eDate,
+      'metrics': 'pv_count,visitor_count,ip_count',
+      'gran': gran,
+    })
+    # 数据
+    trend = []
+    n = len(res['items'][0])-1
+    for i in range(n,-1,-1) :
+      if tp=='t1' or tp=='t2':
+        label = str(n-i)+'点'
+      else:
+        label = res['items'][0][i][0]
+      # 浏览量(PV)
+      value = 0 if res['items'][1][i][0]=='--' else res['items'][1][i][0]
+      trend += [{'type':'浏览量(PV)', 'label':label, 'value':value}]
+      # 访客数(UV)
+      value = 0 if res['items'][1][i][1]=='--' else res['items'][1][i][1]
+      trend += [{'type':'访客数(UV)', 'label':label, 'value':value}]
+      # IP数
+      value = 0 if res['items'][1][i][2]=='--' else res['items'][1][i][2]
+      trend += [{'type':'IP数', 'label':label, 'value':value}]
+    data['Trend'] = trend
 
     # 返回
     return self.GetJSON({'code':0,'msg':'成功', 'data':data})
-
-    
-    # # 统计图1
-    # chart1 = []
-    # day = Util.Date('%Y-%m-%d')
-    # last1 = (datetime.datetime.now()+datetime.timedelta(days=1)).strftime('%Y-%m-%d')
-    # last2 = (datetime.datetime.now()+datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
-    # for i in range(24):
-    #   # 时间
-    #   if i==23 :
-    #     dt1 = day + ' ' + str(i) + ':00:00'
-    #     dt2 = last1 + ' 00:00:00'
-    #     dt3 = last2 + ' ' + str(i) + ':00:00'
-    #     dt4 = day + ' 00:00:00'
-    #   else :
-    #     dt1 = day + ' ' + str(i) + ':00:00'
-    #     dt2 = day + ' ' + str(i+1) + ':00:00'
-    #     dt3 = last2 + ' ' + str(i) + ':00:00'
-    #     dt4 = last2 + ' ' + str(i+1) + ':00:00'
-    #   t1 = Util.Strtotime(dt1)
-    #   t2 = Util.Strtotime(dt2)
-    #   t3 = Util.Strtotime(dt3)
-    #   t4 = Util.Strtotime(dt4)
-    #   # 统计
-    #   m1 = Logs()
-    #   m1.Columns('count(*) as total')
-    #   m1.Where('ctime>=%s AND ctime<%s AND source=%s', t1, t2, Env.log_source)
-    #   d1 = m1.FindFirst()
-    #   chart1 += [{'type':'今日(PV)', 'label':str(i), 'value':int(d1['total'])}]
-    #   m2 = Logs()
-    #   m2.Columns('count(*) as total')
-    #   m2.Where('ctime>=%s AND ctime<%s AND source=%s', t3, t4, Env.log_source)
-    #   d2 = m2.FindFirst()
-    #   chart1 += [{'type':'昨日(PV)', 'label':str(i), 'value':int(d2['total'])}]
-    # # 统计图2
-    # chart2 = []
-    # year = Util.Date('%Y')
-    # last1 = str(int(year)+1)
-    # last2 = str(int(year)-1)
-    # for i in range(12):
-    #   # 时间
-    #   if i==11 :
-    #     dt1 = year + '-' + str(i+1) +'-01'
-    #     dt2 = last1 + '-01-01'
-    #     dt3 = last2 + '-' + str(i+1) + '-01'
-    #     dt4 = year + '-01-01'
-    #   else :
-    #     dt1 = year + '-' + str(i+1) + '-01'
-    #     dt2 = year + '-' + str(i+2) + '-01'
-    #     dt3 = last2 + '-' + str(i+1) + '-01'
-    #     dt4 = last2 + '-' + str(i+2) + '-01'
-    #   t1 = Util.Strtotime(dt1, '%Y-%m-%d')
-    #   t2 = Util.Strtotime(dt2, '%Y-%m-%d')
-    #   t3 = Util.Strtotime(dt3, '%Y-%m-%d')
-    #   t4 = Util.Strtotime(dt4, '%Y-%m-%d')
-    #   # 统计
-    #   m1 = Logs()
-    #   m1.Columns('count(*) as total')
-    #   m1.Where('ctime>=%s AND ctime<%s AND source=%s', t1, t2, Env.log_source)
-    #   d1 = m1.FindFirst()
-    #   chart2 += [{'type':'今年(PV)', 'label':str(i+1), 'value':int(d1['total'])}]
-    #   m2 = Logs()
-    #   m2.Columns('count(*) as total')
-    #   m2.Where('ctime>=%s AND ctime<%s AND source=%s', t3, t4, Env.log_source)
-    #   d2 = m2.FindFirst()
-    #   chart2 += [{'type':last2+'年(PV)', 'label':str(i+1), 'value':int(d2['total'])}]
-    # # 统计图3
-    # chart3 = []
-    # m1 = Logs()
-    # m1.Columns('count(*) as total')
-    # m1.Where('source=%s', Env.log_source)
-    # d1 = m1.FindFirst()
-    # m2 = Logs()
-    # m2.Columns('count(*) as total', 'browser')
-    # m2.Where('source=%s', Env.log_source)
-    # m2.Group('browser')
-    # d2 = m2.Find()
-    # for val in d2:
-    #   ratio = float(int(val['total'])/int(d1['total'])*100)/100
-    #   chart3 += [{'label':val['browser'], 'value': ratio}]
-    # return self.GetJSON({'code':0,'msg':'成功', 'chart1':chart1, 'chart2':chart2, 'chart3':chart3})

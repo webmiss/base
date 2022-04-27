@@ -3,6 +3,8 @@ package webmis.modules.admin;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import org.springframework.stereotype.Controller;
@@ -13,12 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 import webmis.service.AdminToken;
 import webmis.service.Base;
 import webmis.service.Data;
+import webmis.util.Util;
+import webmis.library.baidu.TongJi;
 import webmis.model.SysConfig;
 
 @RestController
 @Controller("AdminIndex")
 @RequestMapping("/admin")
 public class Index extends Base {
+
+  private static final String site_id = "17669804";
 
   /* 首页 */
   @RequestMapping("")
@@ -60,7 +66,11 @@ public class Index extends Base {
   @RequestMapping("index/getChart")
   String GetChart(@RequestBody JSONObject json){
     HashMap<String,Object> res;
+    HashMap<String, Object> params;
     HashMap<String,Object> data = new HashMap<String,Object>();
+    String sDate;
+    String eDate;
+    String day = Util.DateFormat("yyyyMMdd");
     // 参数
     String token = JsonName(json, "token");
     // 验证
@@ -72,165 +82,110 @@ public class Index extends Base {
       return GetJSON(res);
     }
 
-    // 今日流量
+    /* 今日流量 */
+    sDate = Util.DateFormat("yyyyMMdd", "-1d");
+    eDate = day;
+    params = new HashMap<String, Object>();
+    params.put("site_id", site_id);
+    params.put("start_date", sDate);
+    params.put("end_date", eDate);
+    params.put("metrics", "pv_count,visitor_count,ip_count,bounce_ratio,avg_visit_time");
+    String res1 = TongJi.TrendRpt(params);
+    JSONObject d1 = JSON.parseObject(res1);
+    JSONArray t = d1.getJSONArray("items");
+    JSONArray t1 = (JSONArray) ((JSONArray) t.get(1)).get(1);
+    JSONArray t2 = (JSONArray) ((JSONArray) t.get(1)).get(0);
     HashMap<String,Object> arr1 = new HashMap<String,Object>();
     HashMap<String,Object> tmp1;
     // 今日
     tmp1 = new HashMap<String,Object>();
-    tmp1.put("day", 0);
-    tmp1.put("pv", 0);
-    tmp1.put("uv", 0);
-    tmp1.put("ip", 0);
-    tmp1.put("ratio", 0);
-    tmp1.put("time", 0);
+    tmp1.put("day", ((JSONArray) ((JSONArray) t.get(0)).get(1)).get(0));
+    tmp1.put("pv", !t1.get(0).equals("--")?t1.get(0):"0");
+    tmp1.put("uv", !t1.get(1).equals("--")?t1.get(1):"0");
+    tmp1.put("ip", !t1.get(2).equals("--")?t1.get(2):"0");
+    tmp1.put("ratio", !t1.get(3).equals("--")?t1.get(3):"0");
+    tmp1.put("time", !t1.get(4).equals("--")?t1.get(4):"0");
     arr1.put("today", tmp1);
     data.put("TrendRpt", arr1);
     // 昨日
     tmp1 = new HashMap<String,Object>();
-    tmp1.put("day", 0);
-    tmp1.put("pv", 0);
-    tmp1.put("uv", 0);
-    tmp1.put("ip", 0);
-    tmp1.put("ratio", 0);
-    tmp1.put("time", 0);
+    tmp1.put("day", ((JSONArray) ((JSONArray) t.get(0)).get(0)).get(0));
+    tmp1.put("pv", !t2.get(0).equals("--")?t2.get(0):"0");
+    tmp1.put("uv", !t2.get(1).equals("--")?t2.get(1):"0");
+    tmp1.put("ip", !t2.get(2).equals("--")?t2.get(2):"0");
+    tmp1.put("ratio", !t2.get(3).equals("--")?t2.get(3):"0");
+    tmp1.put("time", !t2.get(4).equals("--")?t2.get(4):"0");
     arr1.put("yesterday", tmp1);
     data.put("TrendRpt", arr1);
 
-    // 趋势分析
-    ArrayList<HashMap<String,Object>> arr2 = new ArrayList<HashMap<String,Object>>();
-    HashMap<String,Object> tmp2;
-    tmp2 = new HashMap<String,Object>();
-    tmp2.put("type", "浏览量(PV)");
-    tmp2.put("label", "1月");
-    tmp2.put("value", 0);
-    arr2.add(tmp2);
-    tmp2 = new HashMap<String,Object>();
-    tmp2.put("type", "访客数(UV)");
-    tmp2.put("label", "1月");
-    tmp2.put("value", 1);
-    arr2.add(tmp2);
-    tmp2 = new HashMap<String,Object>();
-    tmp2.put("type", "IP数");
-    tmp2.put("label", "1月");
-    tmp2.put("value", 2);
-    arr2.add(tmp2);
-    data.put("Trend", arr2);
+    /* 趋势分析 */
+    String tp = JsonName(json, "type");
+    String gran = "day";
+    if(tp.equals("t1")){
+      gran = "hour";
+      sDate = day;
+      eDate = day;
+    }else if(tp.equals("t2")){
+      gran = "hour";
+      sDate = Util.DateFormat("yyyyMMdd", "-1d");
+      eDate = sDate;
+    }else if(tp.equals("t3")){
+      sDate = Util.DateFormat("yyyyMMdd", "-6d");
+      eDate = day;
+    }else if(tp.equals("t4")){
+      sDate = Util.DateFormat("yyyyMMdd", "-29d");
+      eDate = day;
+    }
+    params = new HashMap<String, Object>();
+    params.put("site_id", site_id);
+    params.put("start_date", sDate);
+    params.put("end_date", eDate);
+    params.put("metrics", "pv_count,visitor_count,ip_count");
+    params.put("gran", gran);
+    String res2 = TongJi.Trend(params);
+    JSONObject d2 = JSON.parseObject(res2);
+    // 数据
+    Object label;
+    Object value;
+    JSONArray trend = new JSONArray();
+    JSONObject tmp2;
+    int n = d2.getJSONArray("items").getJSONArray(0).size()-1;
+    for(int i=n; i>=0; i--){
+      if(tp.equals("t1") || tp.equals("t2")){
+        label = String.valueOf(n-i) + "点";
+      }else{
+        label = d2.getJSONArray("items").getJSONArray(0).getJSONArray(i).get(0);
+      }
+      // 浏览量(PV)
+      value = d2.getJSONArray("items").getJSONArray(1).getJSONArray(i).get(0);
+      tmp2 = new JSONObject();
+      tmp2.put("type", "浏览量(PV)");
+      tmp2.put("label", label);
+      tmp2.put("value", value.equals("--")?0:value);
+      trend.add(tmp2);
+      // 访客数(UV)
+      value = d2.getJSONArray("items").getJSONArray(1).getJSONArray(i).get(1);
+      tmp2 = new JSONObject();
+      tmp2.put("type", "访客数(UV)");
+      tmp2.put("label", label);
+      tmp2.put("value", value.equals("--")?0:value);
+      trend.add(tmp2);
+      // IP数
+      value = d2.getJSONArray("items").getJSONArray(1).getJSONArray(i).get(2);
+      tmp2 = new JSONObject();
+      tmp2.put("type", "IP数");
+      tmp2.put("label", label);
+      tmp2.put("value", value.equals("--")?0:value);
+      trend.add(tmp2);
+    }
+    data.put("Trend", trend);
 
-    // 返回
+    /* 返回 */
     res = new HashMap<String,Object>();
     res.put("code", 0);
     res.put("msg", "成功");
     res.put("data", data);
     return GetJSON(res);
-
-    // // 统计图1
-    // ArrayList<HashMap<String,Object>> chart1 = new ArrayList<HashMap<String,Object>>();
-    // String day = Util.Date("yyyy-MM-dd");
-    // last1 = Util.DateFormat("yyyy-MM-dd", Calendar.DAY_OF_MONTH, 1);
-    // last2 = Util.DateFormat("yyyy-MM-dd", Calendar.DAY_OF_MONTH, -1);
-    // for(int i=0; i<24; i++) {
-    //   if(i==23) {
-    //     dt1 = day + " " + String.valueOf(i) + ":00:00";
-    //     dt2 = last1 + " 00:00:00";
-    //     dt3 = last2 + " " + String.valueOf(i) + ":00:00";
-    //     dt4 = day + " 00:00:00";
-    //   } else {
-    //     dt1 = day + " " + String.valueOf(i) + ":00:00";
-    //     dt2 = day + " " + String.valueOf(i+1) + ":00:00";
-    //     dt3 = last2 + " " + String.valueOf(i) + ":00:00";
-    //     dt4 = last2 + " " + String.valueOf(i+1) + ":00:00";
-    //   }
-    //   t1 = Util.Strtotime(dt1);
-    //   t2 = Util.Strtotime(dt2);
-    //   t3 = Util.Strtotime(dt3);
-    //   t4 = Util.Strtotime(dt4);
-    //   // 统计
-    //   m1 = new Logs();
-    //   m1.Columns("count(*) as total");
-    //   m1.Where("ctime>=? AND ctime<? AND source=?", t1, t2, Env.log_source);
-    //   HashMap<String, Object> d1 = m1.FindFirst();
-    //   res = new HashMap<String,Object>();
-    //   res.put("type", "今日(PV)");
-    //   res.put("label", String.valueOf(i));
-    //   res.put("value", Type.Int(d1.get("total")));
-    //   chart1.add(res);
-    //   m2 = new Logs();
-    //   m2.Columns("count(*) as total");
-    //   m2.Where("ctime>=? AND ctime<? AND source=?", t3, t4, Env.log_source);
-    //   HashMap<String, Object> d2 = m2.FindFirst();
-    //   res = new HashMap<String,Object>();
-    //   res.put("type", "昨日(PV)");
-    //   res.put("label", String.valueOf(i));
-    //   res.put("value", Type.Int(d2.get("total")));
-    //   chart1.add(res);
-    // }
-    // // 统计图2
-    // ArrayList<HashMap<String,Object>> chart2 = new ArrayList<HashMap<String,Object>>();
-    // String year = Util.Date("yyyy");
-    // last1 = String.valueOf(Integer.valueOf(year)+1);
-    // last2 = String.valueOf(Integer.valueOf(year)-1);
-    // for(int i=0; i<12; i++) {
-    //   if(i==11) {
-    //     dt1 = year + "-" + String.valueOf(i+1) + "-01";
-    //     dt2 = last1 + "-01-01";
-    //     dt3 = last2 + "-" + String.valueOf(i+1) + "-01";
-    //     dt4 = year + "-01-01";
-    //   } else {
-    //     dt1 = year + "-" + String.valueOf(i+1) + "-01";
-    //     dt2 = year + "-" + String.valueOf(i+2) + "-01";
-    //     dt3 = last2 + "-" + String.valueOf(i+1) + "-01";
-    //     dt4 = last2 + "-" + String.valueOf(i+2) + "-01";
-    //   }
-    //   t1 = Util.Strtotime(dt1, "yyyy-MM-dd");
-    //   t2 = Util.Strtotime(dt2, "yyyy-MM-dd");
-    //   t3 = Util.Strtotime(dt3, "yyyy-MM-dd");
-    //   t4 = Util.Strtotime(dt4, "yyyy-MM-dd");
-    //   // 统计
-    //   m1 = new Logs();
-    //   m1.Columns("count(*) as total");
-    //   m1.Where("ctime>=? AND ctime<? AND source=?", t1, t2, Env.log_source);
-    //   HashMap<String, Object> d1 = m1.FindFirst();
-    //   res = new HashMap<String,Object>();
-    //   res.put("type", "今年(PV)");
-    //   res.put("label", String.valueOf(i+1));
-    //   res.put("value", Type.Int(d1.get("total")));
-    //   chart2.add(res);
-    //   m2 = new Logs();
-    //   m2.Columns("count(*) as total");
-    //   m2.Where("ctime>=? AND ctime<? AND source=?", t3, t4, Env.log_source);
-    //   HashMap<String, Object> d2 = m2.FindFirst();
-    //   res = new HashMap<String,Object>();
-    //   res.put("type", last2+"年(PV)");
-    //   res.put("label", String.valueOf(i+1));
-    //   res.put("value", Type.Int(d2.get("total")));
-    //   chart2.add(res);
-    // }
-    // // 统计图3
-    // ArrayList<HashMap<String,Object>> chart3 = new ArrayList<HashMap<String,Object>>();
-    // m1 = new Logs();
-    // m1.Columns("count(*) as total");
-    // m1.Where("source=?", Env.log_source);
-    // HashMap<String, Object> d1 = m1.FindFirst();
-    // m2 = new Logs();
-    // m2.Columns("count(*) as total", "browser");
-    // m2.Where("source=?", Env.log_source);
-    // m2.Group("browser");
-    // ArrayList<HashMap<String, Object>> d2 = m2.Find();
-    // for(HashMap<String, Object> val : d2) {
-    //   float ratio = (float)Math.round((float)Type.Int(val.get("total"))/Type.Int(d1.get("total"))*100)/100;
-    //   res = new HashMap<String,Object>();
-    //   res.put("label", val.get("browser"));
-    //   res.put("value", ratio);
-    //   chart3.add(res);
-    // }
-    // // 返回
-    // res = new HashMap<String,Object>();
-    // res.put("code", 0);
-    // res.put("msg", "成功");
-    // res.put("chart1", chart1);
-    // res.put("chart2", chart2);
-    // res.put("chart3", chart3);
-    // return GetJSON(res);
   }
 
 }

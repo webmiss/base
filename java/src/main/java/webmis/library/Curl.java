@@ -17,11 +17,17 @@ import webmis.util.Util;
 @SuppressWarnings("unchecked")
 public class Curl extends Base {
 
-  /* PostJson */
-  static public JSONObject PostJson(String url, JSONObject data) {
-    return PostJson(url, data, new HashMap<String, Object>());
+  /* GET、POST、PUT、HEAD、DELETE */
+  static public JSONObject Request(String url) {
+    return Request(url, "", "GET", new HashMap<String, Object>());
   }
-  static public JSONObject PostJson(String url, JSONObject data, HashMap<String, Object> header) {
+  static public JSONObject Request(String url, String data) {
+    return Request(url, data, "GET", new HashMap<String, Object>());
+  }
+  static public JSONObject Request(String url, String data, String method) {
+    return Request(url, data, method, new HashMap<String, Object>());
+  }
+  static public JSONObject Request(String url, String data, String method, HashMap<String, Object> header) {
     OutputStreamWriter out =null;
     BufferedReader reader = null;
     String response = "";
@@ -30,14 +36,12 @@ public class Curl extends Base {
     HashMap<String, Object> param = new HashMap<String, Object>();
     param.put("Content-Type", "application/json; charset=utf-8"); //JSON方式
     param = Util.ArrayMerge(param, header);
-    // 数据
-    String json = data.toString();
     // 发送
     try {
       URL httpUrl = new URL(url);
       // 建立连接
       HttpURLConnection conn = (HttpURLConnection) httpUrl.openConnection();
-      conn.setRequestMethod("POST");
+      conn.setRequestMethod(method);
       conn.setUseCaches(false);
       conn.setInstanceFollowRedirects(true);
       conn.setDoOutput(true);
@@ -49,7 +53,7 @@ public class Curl extends Base {
       // POST请求
       out = new OutputStreamWriter(
       conn.getOutputStream());
-      out.write(json);
+      out.write(data);
       out.flush();
       // 读取响应
       reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -68,22 +72,6 @@ public class Curl extends Base {
     } catch (Exception e) {
       return null;
     }
-
-    // CloseableHttpClient httpclient = null;
-    // CloseableHttpResponse httpresponse = null;
-    // httpclient = HttpClients.createDefault();
-    // HttpPost curl = new HttpPost(url);
-    // StringEntity se = new StringEntity(json, ContentType.create("text/json", "UTF-8"));
-    // curl.setEntity(se);
-    // try {
-    //   httpresponse = httpclient.execute(curl);
-    //   httpclient.close();
-    //   String res = EntityUtils.toString(httpresponse.getEntity());
-    //   return res.length()>0?Util.JsonDecode(res):null;
-    // } catch (Exception e) {
-    //   return null;
-    // }
-    
   }
   
 }

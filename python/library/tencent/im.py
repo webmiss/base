@@ -16,12 +16,12 @@ class Im:
   # 群组-列表
   def GroupList():
     url = Im.GetURL('group_open_http_svc/get_appid_group_list')
-    return Curl.PostJson(url, {})
+    return Curl.Request(url, '{}', 'POST')
   # 群组-创建
   def GroupCreate(data: dict):
     url = Im.GetURL('group_open_http_svc/create_group')
-    return Curl.PostJson(url, data)
+    return Curl.Request(url, Util.JsonEncode(data), 'POST')
   # 群组-解散
   def GroupDestroy(data: dict):
     url = Im.GetURL('group_open_http_svc/destroy_group')
-    return Curl.PostJson(url, data)
+    return Curl.Request(url, Util.JsonEncode(data), 'POST')

@@ -34,7 +34,7 @@ public class Trtc extends Signature {
     data.put("EndTime", EndTime);
     // 请求头
     HashMap<String, Object> header = V3Header(data);
-    return Curl.PostJson(ApiUrl, data, header);
+    return Curl.Request(ApiUrl, data.toString(), "POST", header);
   }
 
   /* 房间-解散 */
@@ -48,7 +48,7 @@ public class Trtc extends Signature {
     data.put("RoomId", roomId);
     // 请求头
     HashMap<String, Object> header = V3Header(data);
-    return Curl.PostJson(ApiUrl, data, header);
+    return Curl.Request(ApiUrl, data.toString(), "POST", header);
   }
   
 }

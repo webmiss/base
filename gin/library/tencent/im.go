@@ -22,17 +22,26 @@ func (i Im) GetURL(apiUrl string) string {
 /* 群组-列表 */
 func (i Im) GroupList() map[string]interface{} {
 	url := i.GetURL("group_open_http_svc/get_appid_group_list")
-	return (&library.Curl{}).PostJson(url, map[string]interface{}{}, nil)
+	byt, _ := (&library.Curl{}).Request(url, util.JsonEncode(map[string]interface{}{}), "POST", nil)
+	res := map[string]interface{}{}
+	util.JsonDecode(byt, &res)
+	return res
 }
 
 /* 群组-创建 */
 func (i Im) GroupCreate(data interface{}) map[string]interface{} {
 	url := i.GetURL("group_open_http_svc/create_group")
-	return (&library.Curl{}).PostJson(url, data, nil)
+	byt, _ := (&library.Curl{}).Request(url, util.JsonEncode(data), "POST", nil)
+	res := map[string]interface{}{}
+	util.JsonDecode(byt, &res)
+	return res
 }
 
 /* 群组-解散 */
 func (i Im) GroupDestroy(data interface{}) map[string]interface{} {
 	url := i.GetURL("group_open_http_svc/destroy_group")
-	return (&library.Curl{}).PostJson(url, data, nil)
+	byt, _ := (&library.Curl{}).Request(url, util.JsonEncode(data), "POST", nil)
+	res := map[string]interface{}{}
+	util.JsonDecode(byt, &res)
+	return res
 }

@@ -1,4 +1,5 @@
 import time,datetime,json,os
+from dateutil.relativedelta import relativedelta
 
 # 常用工具
 class Util:
@@ -9,9 +10,23 @@ class Util:
     return res.readlines()
 
   # 格式化时间
-  def Date(format: str = '%Y-%m-%d %H:%M:%S', timestamp: float = None):
+  def Date(format: str='%Y-%m-%d %H:%M:%S', timestamp: float=None):
     t = time.localtime(timestamp)
     return time.strftime(format, t)
+  def DateFormat(format: str='%Y-%m-%d %H:%M:%S', duration: str='0s'):
+    l = int(duration[:-1])
+    r = duration[-1:]
+    # 年、月、周、日、时、分、秒
+    now = datetime.datetime.now()
+    if r=='y' : d = now+relativedelta(years=l)
+    elif r=='m' : d = now+relativedelta(months=l)
+    elif r=='w' : d = now+relativedelta(weeks=l)
+    elif r=='d' : d = now+relativedelta(days=l)
+    elif r=='h' : d = now+relativedelta(hours=l)
+    elif r=='i' : d = now+relativedelta(minutes=l)
+    elif r=='s' : d = now+relativedelta(seconds=l)
+    else : now+relativedelta(seconds=0)
+    return d.strftime(format)
 
   # 时间戳
   def Time():

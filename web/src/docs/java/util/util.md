@@ -15,8 +15,14 @@ Util.Len(String val);
 
 ## 格式化时间
 ```java
-Util.Date(String format);
-Util.Date(String format, String timestamp);
+Util.Date(
+  String format,    //yyyy-MM-dd HH:mm:ss
+  String timestamp, //0
+);
+Util.DateFormat(
+  String format,    //格式: yyyy-MM-dd HH:mm:ss
+  String duration,  //-1d: 年(y)、月(m)、周(w)、日(d)、时(h)、分(i)、秒(s)
+);
 ```
 
 ## 时间戳

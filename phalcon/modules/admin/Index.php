@@ -40,6 +40,7 @@ class Index extends Base {
 
   /* 图表数据 */
   static function GetChart() {
+    $day = Util::DateFormat('Ymd');
     // 参数
     $json = self::Json();
     $token = self::JsonName($json, 'token');
@@ -48,8 +49,8 @@ class Index extends Base {
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
 
     // 今日流量
-    $sDate = date('Ymd', strtotime('-1 day'));
-    $eDate = date('Ymd');
+    $sDate = Util::DateFormat('Ymd', '-1d');
+    $eDate = $day;
     $res = TongJi::TrendRpt([
       'site_id'=>self::$site_id,
       'start_date'=>$sDate,
@@ -77,33 +78,33 @@ class Index extends Base {
       ],
     ];
 
-    // 趋势分析
+    /* 趋势分析 */
     $tp = self::JsonName($json, 'type');
     $gran = 'day';
     if($tp=='t1'){
       $gran = 'hour';
-      $sDate = date('Ymd');
-      $eDate = date('Ymd');
+      $sDate = $day;
     }elseif($tp=='t2'){
       $gran = 'hour';
-      $sDate = date('Ymd', strtotime('-1 day'));
-      $eDate = date('Ymd', strtotime('-1 day'));
+      $sDate = Util::DateFormat('Ymd', '-1d');
+      $eDate = $sDate;
     }elseif($tp=='t3'){
-      $sDate = date('Ymd', strtotime('-6 day'));
-      $eDate = date('Ymd');
+      $sDate = Util::DateFormat('Ymd', '-6d');
+      $sDate = $day;
     }elseif($tp=='t4'){
-      $sDate = date('Ymd', strtotime('-29 day'));
-      $eDate = date('Ymd');
+      $sDate = Util::DateFormat('Ymd', '-29d');
+      $sDate = $day;
     }
     $res = TongJi::Trend([
       'site_id'=>self::$site_id,
-      'gran'=>$gran,
       'start_date'=>$sDate,
       'end_date'=>$eDate,
-      'metrics'=>'pv_count,visitor_count,ip_count'
+      'metrics'=>'pv_count,visitor_count,ip_count',
+      'gran'=>$gran,
     ]);
-    $n = Util::Len($res->items[0])-1;
+    // 数据
     $trend = [];
+    $n = Util::Len($res->items[0])-1;
     for($i=$n; $i>=0; $i--){
       if($tp=='t1'||$tp=='t2'){
         $label = ($n-$i).'点';
@@ -123,7 +124,7 @@ class Index extends Base {
     }
     $data['Trend'] = $trend;
 
-    // 返回
+    /* 返回 */
     return self::GetJSON(['code'=>0, 'msg'=>'成功', 'data'=>$data]);
   }
 

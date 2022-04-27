@@ -72,7 +72,6 @@ export default defineComponent({
       },(res: any)=>{
         load.clear();
         const d = res.data;
-        console.log(d);
         if(d.code==0){
           this.tData.time = TimeDate();
           this.tData.today = d.data['TrendRpt']['today'];
