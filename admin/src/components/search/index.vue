@@ -24,7 +24,7 @@
 
 <style lang="less" scoped>
 .wm-search{position: relative; font-size: 14px;}
-.wm-search_input{position: relative; width: 100%; height: 40px; line-height: 40px;}
+.wm-search_input{position: relative; width: 100%; height: 34px; line-height: 34px;}
 .wm-search_input input{width: 100%; height: 100%; padding: 0 16px 0 40px; display: flex; box-sizing: border-box; border-radius: 20px; border: #DCDFE6 1px solid; background-color: #F2F4F6;}
 .wm-search_input input:hover{border-color: #C0C4CC;}
 .wm-search_input input:focus{outline: none; border-color: @Primary;}
@@ -44,7 +44,7 @@ export default defineComponent({
   name:'Search',
   props: {
     data: {type:Array, default:[]},                 //数据: [{label:'Search1', value:'search1'},{label:'Search2', value:'search2'}]
-    width: {type:String, default:'240px'},          //宽度: 240px
+    width: {type:String, default:'100%'},           //宽度: 100%
     placeholder: {type:String, default:'请输入'},   //提示信息
     noneText: {type:String, default:'暂无结果'},    //暂无提示
   },

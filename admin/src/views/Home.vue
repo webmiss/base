@@ -1,13 +1,7 @@
 <template>
   <wm-main>
     <div class="index_body">
-      <!-- <div class="index_interval">
-        <wm-chart-interval :data="chartData.interval" :width="900" :height="300"></wm-chart-interval>
-      </div>
-      <div class="index_chart flex">
-        <wm-chart-line :data="chartData.line" :width="440" :isSmooth="false"></wm-chart-line>
-        <wm-chart-pie :data="chartData.pie" :width="440" html="浏览器" :htmlPosition="['46%', '46%']"></wm-chart-pie>
-      </div> -->
+
       <!-- 今日流量 -->
       <div class="index_title flex_left">
         <h2>今日流量</h2>
@@ -85,6 +79,7 @@
         </li>
       </ul>
       <!-- 今日流量 End -->
+
       <!-- 趋势分析 -->
       <div class="index_title flex_left">
         <h2>趋势分析</h2>
@@ -99,6 +94,7 @@
         <wm-chart-line :data="tData.chart" :height="420" ></wm-chart-line>
       </div>
       <!-- 趋势分析 End -->
+
     </div>
   </wm-main>
 </template>
@@ -124,8 +120,8 @@
 .index_data .p2{font-size: 14px;}
 .index_data .p3{font-size: 12px; color: #999; padding-top: 4px;}
 .index_data i{font-size: 12px;}
-.index_data .up{color: #FF6600;}
-.index_data .down{color: #1DC11D;}
+.index_data .up{color: @Success;}
+.index_data .down{color: @Danger;}
 
 .index_chart{padding: 16px; border: #E2E4E6 1px solid; border-radius: 4px;}
 </style>

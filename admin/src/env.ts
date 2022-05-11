@@ -1,6 +1,6 @@
 import Storage from './library/Storage'
 
-/* 模式: dev(开发模式) */
+/* 模式: dev(开发) */
 const mode: string = '';
 
 /* 接口 */
@@ -57,8 +57,6 @@ export default {
     primary:{
       plain:['#595','#C2E7B0','#F0F9EB'],
       dark:['#FFF','#595','#595'],
-      // plain:['#409EFF','#D9ECFF','#ECF5FF'],
-      // dark:['#FFF','#409EFF','#409EFF'],
     },
     info:{
       plain:['#909399','#E9E9EB','#F4F5F5'],
