@@ -17,12 +17,12 @@
   </wm-popup>
 </template>
 
-<style scoped>
+<style lang="less" scoped>
 .wm-dialog{border-radius: 4px; padding-bottom: 4px;}
 .wm-dialog_title{position: relative; height: 48px; font-size: 16px; padding: 0 16px; text-align: center;}
 .wm-dialog_title .title{line-height: 48px; user-select: none;}
 .wm-dialog_close{cursor: pointer; position: absolute; right: 8px; top: 8px; width: 32px; height: 32px;}
-.wm-dialog_close:hover::after,.wm-dialog_close:hover::before{background-color: #6FB737;}
+.wm-dialog_close:hover::after,.wm-dialog_close:hover::before{background-color: @Primary;}
 .wm-dialog_close::after,.wm-dialog_close::before{content: ''; position: absolute; width: 16px; height: 2px; background-color: #999; left: 50%; top: 50%; transform-origin: center;}
 .wm-dialog_close::after{transform: rotate(45deg); margin-left: -25%;}
 .wm-dialog_close::before{transform: rotate(-45deg); margin-left: -25%;}

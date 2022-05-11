@@ -5,10 +5,11 @@
 </template>
 
 <style scoped>
-.wm-tag{display: inline-block; border-radius: 4px; border: #DCDFE6 1px solid; background-color: #FFF; box-sizing: border-box;}
+.wm-tag{display: inline-block; border-radius: 4px; border: transparent 1px solid; background-color: #FFF; box-sizing: border-box;}
 </style>
 
 <script lang="ts">
+import Env from '../../env'
 import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'Tag',
@@ -21,22 +22,11 @@ export default defineComponent({
   },
   data(){
     const color: any = {
-        primary:{
-          plain:['#C2E7B0','#F0F9EB','#595'],
-          dark:['#595','#595','#FFF'],
-        },
-        info:{
-          plain:['#DCDFE6','#F4F6F8','#909399'],
-          dark:['#909399','#909399','#FFF'],
-        },
-        warning:{
-          plain:['#F5DAB1','#FDF6EC','#E6A23C'],
-          dark:['#E6A23C','#E6A23C','#FFF'],
-        },
-        danger:{
-          plain:['#FBC4C4','#FEF0F0','#F56C6C'],
-          dark:['#F56C6C','#F56C6C','#FFF'],
-        },
+        primary: Env.themes.primary,
+        success: Env.themes.success,
+        warning: Env.themes.warning,
+        danger: Env.themes.danger,
+        info: Env.themes.info,
       };
     return {color}
   },
@@ -45,8 +35,8 @@ export default defineComponent({
     const color = this.color[this.type][this.effect];
     // 颜色
     obj.style.borderColor = color[0];
-    obj.style.backgroundColor = color[1];
-    obj.style.color = color[2];
+    obj.style.backgroundColor = color[2];
+    obj.style.color = color[0];
     // 大小
     obj.style.height = this.height;
     obj.style.lineHeight = this.height;

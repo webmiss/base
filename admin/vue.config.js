@@ -10,6 +10,13 @@ module.exports = {
       args[0].description = 'WebMIS全栈开发基础框架.技术,PHP,Python,SpringBoot,Iris,Phalcon,Flutter,NodeJS,Vue,Socket,Redis,API'
       return args
     })
+    // Less全局变量
+    const oneOfsMap = config.module.rule('less').oneOfs.store
+    oneOfsMap.forEach(item => {
+      item.use('sass-resources-loader').loader('sass-resources-loader').options({
+        resources: ['./src/themes.less']
+      }).end()
+    })
   },
   configureWebpack: (config) => {
     if (process.env.NODE_ENV === 'production') {

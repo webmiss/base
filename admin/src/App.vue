@@ -40,12 +40,17 @@
         <div class="app_logo bgImg" :style="{backgroundImage:'url('+require('./assets/logo.svg')+')'}"></div>
         <div class="app_title nowrap">{{info.title}}</div>
         <ul class="app_menus">
-          <li v-for="(m,k) in state.menus" :key="k" @click="menusClick([k,0,0])" :class="menusPos[0]==k?'active':''">
+          <li
+            v-for="(m,k) in state.menus"
+            :key="k"
+            :class="menusPos[0]==k?'active':''"
+            @click="menusClick([k,0,0])"
+          >
             <div><i :class="m.icon"></i></div>
             <p>{{m.label}}</p>
           </li>
         </ul>
-        <div class="app_copy">&copy; 2022</div>
+        <div class="app_copy">&copy; {{ info.version }}</div>
       </div>
       <!-- Left End -->
       <!-- Right -->
@@ -90,7 +95,12 @@
                 <i class="icons icon_arrow_up_bold" :style="{transform: m1.checked?'rotate(-180deg)':'rotate(0deg)'}"></i>
               </div>
               <ul class="list" v-if="m1.children" :style="{height: m1.checked?'0px':'auto'}">
-                <li v-for="(m2,k2) in m1.children" :key="k2" :class="menusPos[1]==k1 && menusPos[2]==k2?'active':''" @click="menusClick([menusPos[0],k1,k2])">{{m2.label}}</li>
+                <li
+                  v-for="(m2,k2) in m1.children"
+                  :key="k2"
+                  :class="menusPos[1]==k1 && menusPos[2]==k2?'active':''"
+                  @click="menusClick([menusPos[0],k1,k2])"
+                >{{m2.label}}</li>
               </ul>
             </div>
           </div>
@@ -113,26 +123,26 @@
   </div>
 </template>
 
-<style>
+<style lang="less">
 /* 表单缩放问题 */
 @media only screen and (min-device-width : 320px) and (max-device-width : 1024px) {
   select:focus, textarea:focus, input:focus { font-size: 16px !important; }
 }
 /* 样式 */
-@import url('./assets/style/icon.css');
-@import url('./assets/style/ui.css');
-@import url('./assets/style/app.css');
+@import url('./assets/style/icon.less');
+@import url('./assets/style/ui.less');
+@import url('./assets/style/app.less');
 </style>
-<style scoped>
+<style lang="less" scoped>
 .language{position: absolute; padding: 10px 0; top: 16px; right: 16px;}
 .language_text{cursor: pointer; width: 200px; line-height: 40px; text-align: center; border-radius: 20px; color: #CCC; border-radius: 20px; background-color: rgba(0,0,0,.7);}
-.language_text:hover{color: #595;}
+.language_text:hover{color: @Primary;}
 .language_box{display: none; position: absolute; z-index: 1; width: 200px; left: 50%; transform: translate(-50%, 0); margin-left: -4px;}
 .language_box .arrow{position: absolute; top: -6px; left: 50%; transform: translate(-50%, 0); width: 0px; height: 0px; border: 8px solid; border-color: transparent; border-bottom-color: rgba(0,0,0,.7);}
 .language_list{position: absolute; padding: 4px; width: 100%; top: 9px; border-radius: 4px; color: #FFF; background-color: rgba(0,0,0,.7);}
 .language_list li{cursor: pointer; line-height: 40px; padding: 0 16px; border-radius: 4px;}
-.language_list li:hover{background-color: #595;}
-.language_list .active{background-color: #595;}
+.language_list li:hover{background-color: @Primary;}
+.language_list .active{background-color: @Primary;}
 .language:hover .language_box{display: block;}
 </style>
 

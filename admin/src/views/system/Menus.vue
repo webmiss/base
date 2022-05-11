@@ -2,20 +2,20 @@
   <wm-main>
 
     <!-- Action -->
-    <div class="app_action flex_left">
-      <ul class="app_action_list flex_left">
+    <div class="ui_action flex_left">
+      <ul class="ui_action_list flex_left">
         <li v-if="getters.actionShow('add')" @click="add.show=true">添加</li>
         <li v-if="getters.actionShow('edit')" @click="editData()">编辑</li>
         <li v-if="getters.actionShow('del')" @click="delData()">删除</li>
       </ul>
-      <div class="app_action_sea" @click="sea.show=!sea.show">
+      <div class="ui_action_sea" @click="sea.show=!sea.show">
         <div class="arrow_up" v-if="sea.show"></div>
         <i class="icons icon_search"></i>
       </div>
     </div>
 
     <!-- Search -->
-    <ul class="action_sea flex_left" v-if="sea.show">
+    <ul class="ui_action_sea_body flex_left" v-if="sea.show">
       <li class="flex_left">
         <div class="title">FID</div>
         <div class="input"><wm-input :value="sea.form.fid" @update:value="sea.form.fid=$event" placeholder="请输入" /></div>
@@ -170,12 +170,12 @@
   </wm-main>
 </template>
 
-<style scoped>
+<style lang="less" scoped>
 .table{min-width: 800px;}
 .form{padding-right: 24px;}
 .perm_an{position: absolute; margin-top: -14px; white-space: nowrap;}
 .menus_icon{width: 40px; height: 40px; text-align: center; background-color: #FFF; border-radius: 50%;}
-.menus_icon i{position: absolute; font-size: 24px; color: #595; transform: translate(-50%, 0);}
+.menus_icon i{position: absolute; font-size: 24px; color: @Primary; transform: translate(-50%, 0);}
 </style>
 
 <script lang="ts" src="./Menus.ts"></script>

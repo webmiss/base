@@ -11,12 +11,13 @@
 </style>
 
 <script lang="ts">
+import Env from '../../../env'
 import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'ActionClose',
   props: {
     size: {type: String, default: '11px'},        //大小
-    bgColor: {type: String, default: '#F56C6C'},  //背景颜色
+    bgColor: {type: String, default: Env.themes.danger.plain[0]},  //背景颜色
   },
 });
 </script>

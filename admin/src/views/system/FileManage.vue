@@ -2,8 +2,8 @@
   <wm-main>
 
     <!-- Action -->
-    <div class="app_action flex_left">
-      <ul class="app_action_list flex_left">
+    <div class="ui_action flex_left">
+      <ul class="ui_action_list flex_left">
         <li v-if="getters.actionShow('upload')" @click="uploadData()">上传</li>
         <li v-if="getters.actionShow('mkdir')" @click="folder.show=true">新建文件夹</li>
         <li v-if="getters.actionShow('rename')" @click="renameData()">重命名</li>
@@ -24,7 +24,7 @@
       <span class="info">文件夹( {{ lists.dirNum }} ) 文件( {{ lists.fileNum }} ) 大小( {{ lists.size }} )</span>
     </div>
     <!-- 上传进度 -->
-    <div class="file_load" :style="{backgroundImage: 'linear-gradient(to right, #595, #595 '+info.loaded+', #F2F4F6 '+info.loaded+', #F2F4F6 100%)'}">
+    <div class="file_load" :style="{backgroundImage: 'linear-gradient(to right, '+theme.primary+', '+theme.primary+' '+info.loaded+', '+theme.minor+' '+info.loaded+', '+theme.minor+' 100%)'}">
       <span class="text" :style="{width:info.loaded}">{{info.loaded!='0%'&&info.loaded!='100%'?info.loaded:''}}</span>
     </div>
     <!-- 文件信息 End -->
@@ -111,12 +111,12 @@
   </wm-main>
 </template>
 
-<style scoped>
+<style lang="less" scoped>
 .folder_null{position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: #999;}
 /* 信息 */
 .file_path{line-height: 20px; padding: 16px;}
 .file_path a{color: #333; user-select: none;}
-.file_path a:hover{color: #595;}
+.file_path a:hover{color: @Primary;}
 .file_path .path{color: #999;}
 .file_path .path span{padding: 5px 8px;}
 .file_path .info{position: absolute; right: 16px; color: #999; background-color: #FFF; font-size: 12px;}
@@ -136,12 +136,12 @@
 .check{position: absolute; width: 18px; height: 18px; margin: 10px 0 0 -10px; background-color: #24292E; border-radius: 50%;}
 .check:after{content: ""; position: absolute; width: 4px; height: 6px; border: 2px solid #fff; border-left: 0; border-top: 0; left: 6px; top: 4px; transform-origin: center; transform: rotate(45deg) scaleY(1);}
 
-.file_click{position: absolute; z-index: 10; opacity: 0; color: #595; width: 40px; height: 40px; line-height: 40px; font-size: 20px; text-align: center;}
+.file_click{position: absolute; z-index: 10; opacity: 0; color: @Primary; width: 40px; height: 40px; line-height: 40px; font-size: 20px; text-align: center;}
 .file_state:hover .file_click{opacity: 0.7;}
 .file_active .file_click{opacity: 1;}
-.file_active .file_click .check{background-color: #595;}
+.file_active .file_click .check{background-color: @Primary;}
 .file_active:hover .file_click{opacity: 1;}
-.file_active .file{border-color: #595; background-color: #F2F4F6;}
+.file_active .file{border-color: @Primary; background-color: #F2F4F6;}
 
 /* 文件夹 */
 .file_ct{width: 100%; height: 84px; line-height: 84px; text-align: center;}

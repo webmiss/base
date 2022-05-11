@@ -90,10 +90,10 @@ class Index extends Base {
       $eDate = $sDate;
     }elseif($tp=='t3'){
       $sDate = Util::DateFormat('Ymd', '-6d');
-      $sDate = $day;
+      $eDate = $day;
     }elseif($tp=='t4'){
       $sDate = Util::DateFormat('Ymd', '-29d');
-      $sDate = $day;
+      $eDate = $day;
     }
     $res = TongJi::Trend([
       'site_id'=>self::$site_id,

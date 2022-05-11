@@ -32,6 +32,7 @@ export default defineComponent({
     const content: string = '';
     const defInit: any = {
       language: this.language,
+      width: '100%',
       height: this.height,
       menubar: this.menubar,
       branding: false,  //水印

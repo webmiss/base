@@ -1,0 +1,90 @@
+
+/* 登录 */
+.login_bg{position: fixed; z-index: 99; left: 0; top: 0; width: 100%; height: 100%; background-color: #E2E4E8;}
+.login_body{position: absolute; width: 100%; max-width: 360px; left: 50%; top: 50%; transform: translate(-50%,-50%);}
+.login_logo{position: absolute; z-index: 1; margin-top: -36px; width: 72px; height: 72px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,.04); background-size: 64%; background-color: #FFF;}
+.login_title{font-size: 18px; padding-top: 26px; text-align: center;}
+.login_ct{position: relative; padding: 16px 32px; border-radius: 8px; background-color: #F2F4F6; box-shadow: 0 0 8px rgba(0,0,0,.2);}
+.login_input{padding: 8px 0;}
+.login_input input{background-color: #FFF;}
+.login_input button{width: 100%;}
+.login_copy{line-height: 40px; text-align: center; font-size: 12px; color: #000; text-shadow: 0 0 8px #FFF;}
+
+/* 主要框架 */
+.app_body{position: relative; overflow: hidden; height: 100%; min-width: 320px; background-color: #F2F4F6;}
+.app_left{overflow-y: auto; width: 70px; height: 100%; background-color: #24292E;}
+.app_right{width: calc(100% - 70px); height: 100%;}
+.app_right_top{width: 100%; height: 60px; background-color: #FFF; border-bottom: rgba(0,0,0,.04) 1px solid; box-sizing: border-box;}
+.app_right_ct{height: calc(100% - 60px);}
+.app_right_body{height: 100%; background-color: #FFF;}
+
+/* 菜单 */
+.app_logo{width: 40px; height: 40px; margin: 10px auto 4px; border-radius: 50%; background-size: 64%; background-color: #FFF;}
+.app_title{line-height: 24px; color: #999; text-align: center; font-size: 12px;}
+.app_menus{overflow: hidden; border-top: #000 1px solid; border-bottom: #000 1px solid;}
+.app_menus li{cursor: pointer; width: 60px; height: 60px; margin: 10px 5px; text-align: center; color: #FFF; border-radius: 4px;}
+.app_menus li:hover{color: @Primary;}
+.app_menus li div{height: 30px; line-height: 30px; padding-top: 8px;}
+.app_menus li p{font-size: 12px;}
+.app_menus li i{font-size: 28px; transform: translate(-50%,0);}
+.app_menus .active{background-color: @Primary; color: @Minor;}
+.app_menus .active:hover{cursor: default; background-color: @Primary; color: @Minor;}
+.app_copy{padding: 10px 0; font-size: 10px; color: #666; text-align: center;}
+
+.app_right_menus{overflow-y: auto; width: 150px; height: 100%; background-color: #FFF; border-right: rgba(0,0,0,.04) 1px solid; box-sizing: border-box;}
+.app_right_menus .title{line-height: 40px; padding: 0 10px; color: #333; opacity: .7;}
+.app_right_menus .title span{font-size: 14px;}
+.app_right_menus .title i{cursor: pointer; font-size: 12px; transition-duration: .3s;}
+.app_right_menus .title:hover{opacity: 1;}
+.app_right_menus .list{overflow: hidden; padding: 0 10px; color: #262626; transition-duration: 3s;}
+.app_right_menus .list li{cursor: pointer; padding-left: 16px; line-height: 40px; border-radius: 4px;}
+.app_right_menus .list li:hover{color: @Primary;}
+.app_right_menus .active{background-color: @Minor; color: @Primary;}
+.app_right_menus .active:hover{cursor: default;}
+
+/* 搜索 */
+.app_search{position: relative; width: 240px; height: 40px; padding: 10px 16px;}
+.app_search .sea{position: absolute; z-index: 1; width: 40px; height: 40px; line-height: 40px; text-align: center;}
+.app_search .sea i{font-size: 20px; color: #666;}
+
+/* 用户 */
+.app_user{cursor: default; border-left: rgba(0,0,0,.04) 1px solid; padding: 16px;}
+.app_user span{height: 28px; line-height: 28px;}
+.app_user .tu{width: 28px; border-radius: 50%; background-color: #F2F4F6; text-align: center;}
+.app_user .tu i{font-size: 14px; color: #A2A4A6;}
+.app_user .name{padding-left: 5px; font-size: 14px; opacity: .7;}
+.app_user .ico{width: 20px; text-align: center; opacity: .7;}
+.app_user .ico i{position: absolute; font-size: 10px; transition-duration: .3s; transform: translate(-50%,0) rotate(0deg);}
+.app_user .box{display: none; position: absolute; z-index: 1; margin-top: 17px; width: 220px; right: 0; border-radius: 0 0 4px 4px; background-color: #FFF; box-shadow: 0 8px 8px rgba(0,0,0,.2);}
+.app_user:hover .name,.app_user:hover .ico{opacity: 1;}
+.app_user:hover i{transform: translate(-50%,0) rotate(180deg);}
+.app_user:hover .box{display: block;}
+.user_info{overflow: hidden; padding: 16px;}
+.user_info .ico{width: 48px; height: 48px; line-height: 48px; border-radius: 50%; background-color: #F2F4F6;}
+.user_info .ico i{font-size: 24px; color: #A2A4A6;}
+.user_info .info{padding-left: 10px;}
+.user_info .info h2{line-height: 26px; font-size: 16px;}
+.user_info .info p{font-size: 12px; color: #999;}
+.user_list{padding: 10px 0; border-top: rgba(0,0,0,.04) 1px solid; border-bottom: rgba(0,0,0,.04) 1px solid;}
+.user_list li{cursor: pointer; line-height: 36px; padding: 0 16px; margin: 5px 0;}
+.user_list li:hover{color: @Primary; background-color: @Minor;}
+.user_logout{cursor: pointer; line-height: 56px; text-align: center; font-size: 14px; color: #999;}
+.user_logout:hover{color: #FF6600;}
+
+/* 响应式布局 */
+@media screen and ( max-width: 1280px ){
+  .action_sea li{width: 33%;}
+}
+@media screen and ( max-width: 1024px ){
+  .action_sea li{width: 50%;}
+}
+@media screen and ( max-width: 768px ){
+  .action_sea li{width: 100%;}
+  .action_sea .an{text-align: center;}
+}
+@media screen and ( max-width: 640px ){
+}
+@media screen and ( max-width: 375px ){
+}
+@media screen and ( max-width: 320px ) {
+}

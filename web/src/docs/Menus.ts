@@ -21,7 +21,6 @@ export default {
         {label: 'Touch 手势', value: 'docs/vue/app/touch'},
       ]},
       {label:'Admin组件', children:[
-        {label: 'Menu 导航菜单', value: 'docs/vue/admin/menu'},
         {label: 'Action 动作菜单', value: 'docs/vue/admin/action'},
         {label: 'Dialog 对话框', value: 'docs/vue/admin/dialog'},
         {label: 'Form 表单', value: 'docs/vue/admin/form'},

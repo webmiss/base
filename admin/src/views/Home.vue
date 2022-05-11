@@ -103,7 +103,7 @@
   </wm-main>
 </template>
 
-<style scoped>
+<style lang="less" scoped>
 .index_body{min-width: 800px; overflow-x: auto;}
 
 .index_title{overflow: hidden; padding: 20px 0 10px; line-height: 24px;}
@@ -111,8 +111,8 @@
 .index_title .time{padding: 0 10px; font-size: 12px; color: #999;}
 .index_title_menu{color: #999;}
 .index_title_menu span{cursor: pointer; display: inline-block; padding: 0 10px; color: #333;}
-.index_title_menu span:hover{color: #595;}
-.index_title_menu .active{font-weight: bold; color: #595;}
+.index_title_menu span:hover{color: @Primary;}
+.index_title_menu .active{font-weight: bold; color: @Primary;}
 
 .index_data{padding: 16px; border-radius: 4px; background-color: #F2F4F6; border: #E2E4E8 1px solid;}
 .index_data li{width: 18%; line-height: 22px; text-align: right;}
@@ -128,10 +128,6 @@
 .index_data .down{color: #1DC11D;}
 
 .index_chart{padding: 16px; border: #E2E4E6 1px solid; border-radius: 4px;}
-
-/* .index_interval{width: 100%; padding: 20px 0;}
-.index_chart{width: 900px; padding: 20px 0;}
-.index_test{position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);} */
 </style>
 
 <script lang="ts" src="./Home.ts"></script>

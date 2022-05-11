@@ -10,13 +10,14 @@
 </style>
 
 <script lang="ts">
+import Env from '../../env'
 import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'Switch',
   props: {
-    value: {type: Boolean, default: false},             //值
-    activeColor: {type: String, default: '#6FB737'},    //打开颜色
-    inactiveColor: {type: String, default: '#DCDFE6'},  //关闭颜色
+    value: {type: Boolean, default: false},                               //值
+    activeColor: {type: String, default: Env.themes.primary.plain[0]},    //打开颜色
+    inactiveColor: {type: String, default: Env.themes.text.plain[3]},     //关闭颜色
   },
   data(){
     const show: Boolean = false;

@@ -9,12 +9,12 @@
   </div>
 </template>
 
-<style>
+<style lang="less" scoped>
 .wm-tabs{overflow: hidden;}
 .wm-tabs_list{height: 40px; border-bottom: #F2F2F2 2px solid; display: flex; justify-content: flex-start; flex-wrap: wrap; box-sizing: border-box;}
 .wm-tabs_list li{cursor: pointer; height: 38px; line-height: 40px; padding: 0 16px; border-bottom: #F2F2F2 2px solid;}
-.wm-tabs_list li:hover{color: #595;}
-.wm-tabs_list .active{border-bottom: #595 2px solid; color: #595; font-weight: bold;}
+.wm-tabs_list li:hover{color: @Primary;}
+.wm-tabs_list .active{border-bottom: @Primary 2px solid; color: @Primary; font-weight: bold;}
 .wm-tabs_body{overflow: hidden;}
 </style>
 

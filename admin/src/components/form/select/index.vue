@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<style>
+<style lang="less" scoped>
 .wm-select{position: relative; font-size: 14px;}
 .wm-select_input{position: relative; width: 100%; height: 40px;}
 .wm-select_input input{cursor: pointer; width: 100%; height: 100%; padding: 0 32px 0 16px; display: flex; box-sizing: border-box; border-radius: 4px; border: #DCDFE6 1px solid; background-color: #FFF;}
@@ -27,8 +27,8 @@
 .wm-select_arrow{position: absolute; top: -16px; left: 50%; transform: translate(-50%, 0); width: 0px; height: 0px; border: 8px solid; border-color: transparent; border-bottom-color: #E2E4E6;}
 .wm-select_list{padding: 8px 0; overflow-y: auto;}
 .wm-select_list li{cursor: pointer; line-height: 32px; padding: 0 16px;}
-.wm-select_list li:hover{background-color: #F5F7FA; color: #595;}
-.wm-select_active{background-color: #F5F7FA; color: #595; font-weight: bold;}
+.wm-select_list li:hover{background-color: @Minor; color: @Primary;}
+.wm-select_active{background-color: @Minor; color: @Primary; font-weight: bold;}
 </style>
 
 <script lang="ts">

@@ -1,8 +1,8 @@
 <template>
   <input
+    ref="input"
     class="wm-input"
     :value="value"
-    @input="$emit('update:value', $event.target.value)"
     :type="type"
     :maxlength="maxlength"
     :placeholder="placeholder"
@@ -16,17 +16,21 @@
       borderRadius: borderRadius,
       backgroundColor: backgroundColor,
     }"
-  >
+    @input="$emit('update:value', $event.target.value)"
+    @mouseover="inputStyle('over')"
+    @mouseout="inputStyle('out')"
+  />
 </template>
 
-<style scoped>
-.wm-input{border: none; background: none; -webkit-appearance: none; outline: none; font: 400 14px Arial; caret-color: #595;}
-.wm-input{box-sizing: border-box; border-radius: 4px; border: #DCDFE6 1px solid; background-color: #FFF;}
-.wm-input:hover{border: #6FB737 1px solid; box-shadow: 0 0 4px rgba(0,0,0,.1);}
+<style lang="less" scoped>
+.wm-input{border: none; background: none; -webkit-appearance: none; outline: none; font: 400 14px Arial; caret-color: @Primary;}
+.wm-input{box-sizing: border-box; border-radius: 4px; border: transparent 1px solid; background-color: #FFF;}
+.wm-input:hover{box-shadow: 0 0 4px rgba(0,0,0,.1);}
 .wm-input:focus{outline: none;}
 </style>
 
 <script lang="ts">
+import Env from '../../../env'
 import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'Input',
@@ -44,5 +48,22 @@ export default defineComponent({
     borderRadius: {type: String, default: '4px'},     //边框圆角: '4px'
     backgroundColor: {type: String, default: '#FFF'}, //背景色: '#FFF'
   },
+  mounted(){
+    // 初始化
+    this.inputStyle();
+  },
+  methods:{
+
+    /* 样式 */
+    inputStyle(type: string='out'){
+      const obj: any = this.$refs.input;
+      if(type=='over'){
+        obj.style.borderColor = Env.themes.primary.plain[0];
+      }else if(type=='out'){
+        obj.style.borderColor = Env.themes.border.plain[0];
+      }
+    },
+
+  }
 });
 </script>

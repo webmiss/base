@@ -2,20 +2,20 @@
   <wm-main>
     
     <!-- Action -->
-    <div class="app_action flex_left">
-      <ul class="app_action_list flex_left">
+    <div class="ui_action flex_left">
+      <ul class="ui_action_list flex_left">
         <li v-if="getters.actionShow('add')" @click="add.show=true">添加</li>
         <li v-if="getters.actionShow('edit')" @click="editData()">编辑</li>
         <li v-if="getters.actionShow('del')" @click="delData()">删除</li>
       </ul>
-      <div class="app_action_sea" @click="sea.show=!sea.show">
+      <div class="ui_action_sea" @click="sea.show=!sea.show">
         <div class="arrow_up" v-if="sea.show"></div>
         <i class="icons icon_search"></i>
       </div>
     </div>
 
     <!-- Search -->
-    <ul class="action_sea flex_left" v-if="sea.show">
+    <ul class="ui_action_sea_body flex_left" v-if="sea.show">
       <li class="flex_left">
         <div class="title">标题</div>
         <div class="input"><wm-input v-model:value="sea.form.title" placeholder="新闻标题" /></div>
@@ -156,10 +156,10 @@
   </wm-main>
 </template>
 
-<style scoped>
+<style lang="less" scoped>
 .table{min-width: 800px;}
 .news_title{cursor: pointer; line-height: 20px; padding: 8px 0;}
-.news_title:hover{color: #595;}
+.news_title:hover{color: @Primary;}
 .form{padding-top: 10px;}
 /* 预览 */
 .news_body{padding: 16px;}
