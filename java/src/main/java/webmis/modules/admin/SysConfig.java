@@ -23,7 +23,7 @@ import webmis.util.Util;
 
 @RestController
 @Controller("AdminSysConfig")
-@RequestMapping("/admin/sysconfig")
+@RequestMapping("/admin/sys_config")
 public class SysConfig extends Base {
 
   private static final String ImgDir = "upload/admin/img/";

@@ -76,9 +76,7 @@ export default defineComponent({
       const data: string = JSON.stringify(this.form);
       console.log(JSON.stringify(this.form));
       console.log(JSON.stringify(this.checkbox));
-
-      // console.log((this.$refs.tinymce as any).getContent());
-      return;
+      return Toast('请查看Console日志记录！');
       const load: any = Loading();
       Post('sys_config/edit',{
         token: Storage.getItem('token'),
