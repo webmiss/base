@@ -1,5 +1,5 @@
 *{margin: 0; padding: 0;}
-.doc_html{overflow: hidden; line-height: 1.8em; font-size: 14px;}
+.doc_html{overflow: hidden; padding: 16px; line-height: 1.8em; font-size: 14px;}
 .doc_html h1{padding: 24px 0 16px; font-size: 2em; font-weight: 600; text-align: center;}
 .doc_html h2{padding: 16px 0 8px; font-size: 1.6em; font-weight: 600;}
 .doc_html h3{padding: 8px 0 8px; font-size: 1.4em; font-weight: bold;}

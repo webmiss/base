@@ -1,1 +1,72 @@
-/* App 样式 */
+/* 公共 */
+.body{max-width: 1200px; min-width: 320px; margin: 0 auto;}
+
+/* Top */
+.app_top_body{overflow: hidden; width: 100%; background-color: #242628;}
+.app_top{position: relative; padding: 0 8px; height: 56px; line-height: 56px; color: #FFF;}
+.app_logo{margin-top: 8px; width: 40px; height: 40px; border-radius: 50%; background: url(../logo.svg) no-repeat center center #FFF; background-size: 70%; transition: All 0.4s ease-in-out;}
+.app_logo:hover{transform: rotate(360deg);}
+.app_nav_body{overflow-x: auto; width: calc(100% - 120px);}
+.app_nav{position: relative; white-space: nowrap; padding: 0 8px;}
+.app_nav li{cursor: pointer; display: inline-block; padding: 0 16px; color: #C2C4C8; font-size: 16px;}
+.app_nav li:hover{color: #595;}
+.app_nav .active{color: #595; background-color: #000;}
+.app_top_tool{cursor: pointer; width: 80px; color: #595; text-align: center;}
+.app_top_tool li{position: relative; width: 50%;}
+.app_top_tool .ico{width: 32px; height: 32px; line-height: 32px; background-color: #000; border-radius: 50%;}
+.app_top_tool .ico i{color: #F0F9EB; font-size: 20px;}
+.app_top_tool li:hover .ico{background-color: #595;}
+.app_top_tool li:hover .ico i{color: #FFF;}
+.app_top_tool .qrcode{display: block;}
+.app_top_tool .menus{display: none;}
+.app_top_tool .menus .ico{background-color: #595;}
+
+/* Content */
+.app_body{height: calc(100% - 56px); background-color: #242628; padding: 0 4px;}
+.app_copy{line-height: 32px; color: #666; font-size: 12px; text-align: center;}
+.app_content{position: relative; overflow: hidden; height: calc(100% - 32px); background-color: #FFF; border-radius: 4px;}
+.app_left{overflow-y: auto; width: 240px; height: 100%; background-color: #FFF; border-right: #E8E8E8 1px solid; box-sizing: border-box;}
+.app_right{overflow-y: auto; width: calc(100% - 240px); height: 100%;}
+
+.app_menus_bg{display: none; background-color: rgba(0,0,0,.4);}
+.app_menus_title{cursor: pointer; padding: 8px; line-height: 24px; color: #999;}
+.app_menus_title:hover{background-color: #F4F4F4;  color: #666;}
+.app_menus_title h2{font-size: 12px; font-weight: 700;}
+.app_menus_title span{position: relative; width: 24px; height: 24px; transition: All 0.4s ease-in-out;}
+.app_menus_title span i{font-size: 12px;}
+.app_menus_li{cursor: pointer; padding: 0 16px; line-height: 34px; color: #282828;}
+.app_menus_li:hover{color: #595;}
+.app_menus_li h3{font-size: 14px;}
+.app_menus_li.active{background-color: #F0F9EB; color: #595;}
+
+.app_addr{line-height: 40px; padding: 0 8px; font-size: 12px; color: #666; background-color: #F2F2F2;}
+.app_print{cursor: pointer; color: #595;}
+.app_print:hover{color: #FF6600;}
+.app_html{position: relative; overflow-y: auto; height: calc(100% - 40px);}
+.app_html .loading{color: #626468; font-size: 14px;}
+
+/* Tools */
+.app_tools{position: fixed; z-index: 99; right: 8px; top: 50%; transform: translateY(-50%);}
+.app_tools li{width: 40px; height: 40px; margin: 8px 0; text-align: center; border-radius: 50%; background-color: rgba(0,0,0,.8); box-shadow: 0 0 4px rgba(0,0,0,.1);}
+.app_tools .icon{line-height: 40px; color: #595; font-size: 24px;}
+.app_tools li:hover{background-color: #595;}
+.app_tools li:hover .icon{color: #F0F9EB;}
+
+/* 响应式布局 */
+@media screen and ( max-width: 1400px ){
+}
+@media screen and ( max-width: 1280px ){
+}
+@media screen and ( max-width: 1024px ){
+}
+@media screen and ( max-width: 780px ){
+  .app_top_tool .qrcode{display: none;}
+  .app_top_tool .menus{display: block;}
+  .app_left{display: none; position: absolute; z-index: 999;}
+  .app_menus_bg{position: absolute; z-index: 998; width: 100%; height: 100%;}
+  .app_right{width: 100%;}
+}
+@media screen and ( max-width: 540px ){
+}
+@media screen and ( max-width: 420px ){
+}

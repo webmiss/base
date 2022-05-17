@@ -50,7 +50,7 @@ export default defineComponent({
     startY: {type: Number, default: 0},                                     //初始化位置-纵轴
     loading: {type: Number, default: 48},                                   //Loading高度
     loadingTheme: {type: String, default: 'flow'},                          //Loading样式: flow、swing、circle、wave
-    loadingColor: {type: String, default: Env.themes.primary.plain[0]},              //Loading颜色
+    loadingColor: {type: String, default: Env.themes.primary.plain[0]},     //Loading颜色
     upper: {type: Number, default: 64},                                     //顶部距离
     lower: {type: Number, default: 80},                                     //底部距离
     upperText: {type: String, default: '已刷新'},                           //刷新文本

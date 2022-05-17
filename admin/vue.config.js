@@ -14,7 +14,7 @@ module.exports = {
     const oneOfsMap = config.module.rule('less').oneOfs.store
     oneOfsMap.forEach(item => {
       item.use('sass-resources-loader').loader('sass-resources-loader').options({
-        resources: ['./src/themes.less']
+        resources: ['./src/assets/style/themes.less']
       }).end()
     })
   },

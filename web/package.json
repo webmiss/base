@@ -17,21 +17,21 @@
     "@better-scroll/scroll-bar": "^2.1.1",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-    "marked": "^2.0.3",
-    "print-js": "^1.5.0",
-    "text-loader": "^0.0.1",
-    "vue": "^3.2.24",
-    "vue-router": "^4.0.12",
-    "vuex": "^4.0.0"
+    "vue": "^3.2.33",
+    "vue-router": "^4.0.13",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
+    "@types/marked": "^4.0.3",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-typescript": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.2.24",
-    "@types/marked": "^1.2.1",
+    "@vue/compiler-sfc": "^3.2.33",
+    "marked": "^4.0.15",
+    "print-js": "^1.6.0",
+    "text-loader": "^0.0.1",
     "typescript": "~4.2.3"
   },
   "browserslist": [
