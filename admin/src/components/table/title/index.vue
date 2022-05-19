@@ -9,7 +9,7 @@
 
 <style>
 .wm-table_title{font-size: 14px; font-weight: 600; color: #999;}
-.wm-table_title td{border: none; line-height: 40px;}
+.wm-table_title td{border: none; line-height: 32px;}
 .wm-table_title .checkbox{position: relative;}
 .wm-table_title .wm-checkbox{position: absolute;}
 </style>

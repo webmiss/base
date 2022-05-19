@@ -16,6 +16,8 @@ export default createStore({
     /* 菜单 */
     menus: [],          //全部菜单
     menuAction: [],     //动作菜单
+    menuTitle: '',      //菜单名称
+    menuSea: false,     //搜索
     /* 缓存路由 */
     keepAlive: ['Home'],
   },

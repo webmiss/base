@@ -40,14 +40,25 @@
         <div class="app_logo bgImg" :style="{backgroundImage:'url('+require('./assets/logo.svg')+')'}"></div>
         <div class="app_title nowrap">{{info.title}}</div>
         <ul class="app_menus">
-          <li
-            v-for="(m,k) in state.menus"
-            :key="k"
-            :class="menusPos[0]==k?'active':''"
-            @click="menusClick([k,0,0])"
-          >
-            <div><i :class="m.icon"></i></div>
-            <p>{{m.label}}</p>
+          <li v-for="(m1,k1) in state.menus" :key="k1" class="m1" :class="menusPos[0]==k1?'active':''">
+            <div class="m1_click" @click="menusClick([k1,0,0])">
+              <div class="arrow arrow_left" v-if="m1.children"></div>
+              <div class="m1_div"><i class="m1_i" :class="m1.icon"></i></div>
+              <p class="m1_p">{{m1.label}}</p>
+            </div>
+            <ul class="app_menus_list" v-if="m1.children">
+              <template v-for="(m2,k2) in m1.children" :key="k2">
+                <li class="title flex" @click="m2.checked=!m2.checked">
+                  <h2>{{ m2.label }}</h2>
+                  <span :style="{transform: m2.checked?'rotate(-0deg)':'rotate(-180deg)'}">
+                    <i class="icons icon_arrow_down_bold center"></i>
+                  </span>
+                </li>
+                <template v-if="!m2.checked">
+                  <li class="label" v-for="(m3,k3) in m2.children" :key="k3" :class="menusPos[0]==k1 && menusPos[1]==k2 && menusPos[2]==k3?'active':''" @click="menusClick([k1,k2,k3])">{{ m3.label }}</li>
+                </template>
+              </template>
+            </ul>
           </li>
         </ul>
         <div class="app_copy">&copy; {{ info.version }}</div>
@@ -61,6 +72,8 @@
           <div class="app_search">
             <wm-search :data="menusSeaList" @update:active="menusClick(JSON.parse($event))" placeholder="菜单功能" />
           </div>
+          <!-- 标题 -->
+          <div class="app_top_title">{{ state.menuTitle }}</div>
           <!-- User -->
           <div class="app_user">
             <div class="flex_left">
@@ -86,35 +99,14 @@
           </div>
         </div>
         <!-- Top End -->
-        <div class="app_right_ct flex">
-          <!-- Menus -->
-          <div class="app_right_menus scrollbar" v-if="menusChildren.length>0">
-            <div v-for="(m1,k1) in menusChildren" :key="k1">
-              <div class="title flex" @click="menusStyle(m1)">
-                <span>{{m1.label}}</span>
-                <i class="icons icon_arrow_up_bold" :style="{transform: m1.checked?'rotate(-180deg)':'rotate(0deg)'}"></i>
-              </div>
-              <ul class="list" v-if="m1.children" :style="{height: m1.checked?'0px':'auto'}">
-                <li
-                  v-for="(m2,k2) in m1.children"
-                  :key="k2"
-                  :class="menusPos[1]==k1 && menusPos[2]==k2?'active':''"
-                  @click="menusClick([menusPos[0],k1,k2])"
-                >{{m2.label}}</li>
-              </ul>
-            </div>
-          </div>
-          <!-- Content -->
-          <div class="app_right_body" :style="{width: menusChildren.length>0?'calc(100% - 150px)':'100%'}">
-            <router-view v-slot="{ Component }">
-              <transition :name="transitionName">
-                <keep-alive :include="state.keepAlive">
-                  <component :is="Component" class="view" />
-                </keep-alive>
-              </transition>
-            </router-view>
-          </div>
-          <!-- Content End -->
+        <div class="app_ct">
+          <router-view v-slot="{ Component }">
+            <transition :name="transitionName">
+              <keep-alive :include="state.keepAlive">
+                <component :is="Component" class="view" />
+              </keep-alive>
+            </transition>
+          </router-view>
         </div>
       </div>
       <!-- Right End -->

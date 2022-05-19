@@ -1,62 +1,71 @@
 <template>
-  <wm-main>
+  <div>
 
-    <!-- Action -->
-    <div class="ui_action flex_left">
-      <ul class="ui_action_list flex_left">
-        <li v-if="getters.actionShow('upload')" @click="uploadData()">上传</li>
-        <li v-if="getters.actionShow('mkdir')" @click="folder.show=true">新建文件夹</li>
-        <li v-if="getters.actionShow('rename')" @click="renameData()">重命名</li>
-        <li v-if="getters.actionShow('remove')" @click="delData()">删除</li>
-      </ul>
-    </div>
+    <!-- Body -->
+    <div class="app_ct_right">
+      <!-- Action -->
+      <div class="app_action_body flex_left">
+        <ul class="app_action_list flex_left">
+          <li v-if="getters.actionShow('upload')" @click="uploadData()">上传</li>
+          <li v-if="getters.actionShow('mkdir')" @click="folder.show=true">新建文件夹</li>
+          <li v-if="getters.actionShow('rename')" @click="renameData()">重命名</li>
+          <li v-if="getters.actionShow('remove')" @click="delData()">删除</li>
+        </ul>
+      </div>
+      <div class="app_ct_body">
+        <wm-main>
+        <!-- 文件信息 -->
+        <div class="file_path">
+          <span class="path">
+            <span v-if="info.path=='/'">根目录</span>
+            <span v-else @click="backDir()"><a>返回上级</a></span>
+            <span class="split">|</span>
+            <span @click="selectAll()"><a>全选</a></span>
+            <span class="split">|</span>
+            <span>{{ info.path }}</span>
+          </span>
+          <span class="info">文件夹( {{ lists.dirNum }} ) 文件( {{ lists.fileNum }} ) 大小( {{ lists.size }} )</span>
+        </div>
+        <!-- 上传进度 -->
+        <div class="file_load" :style="{backgroundImage: 'linear-gradient(to right, '+theme.primary+', '+theme.primary+' '+info.loaded+', '+theme.minor+' '+info.loaded+', '+theme.minor+' 100%)'}">
+          <span class="text" :style="{width:info.loaded}">{{info.loaded!='0%'&&info.loaded!='100%'?info.loaded:''}}</span>
+        </div>
+        <!-- 文件信息 End -->
 
-    <!-- 文件信息 -->
-    <div class="file_path">
-      <span class="path">
-        <span v-if="info.path=='/'">根目录</span>
-        <span v-else @click="backDir()"><a>返回上级</a></span>
-        <span class="split">|</span>
-        <span @click="selectAll()"><a>全选</a></span>
-        <span class="split">|</span>
-        <span>{{ info.path }}</span>
-      </span>
-      <span class="info">文件夹( {{ lists.dirNum }} ) 文件( {{ lists.fileNum }} ) 大小( {{ lists.size }} )</span>
+        <div class="file_body">
+          <!-- 列表 -->
+          <ul v-if="lists.folder.length!=0 || lists.files.length!=0">
+            <!-- 文件夹 -->
+            <li v-for="(val,key) in lists.folder" :key="'dir'+key" :class="val.check?'file_active':'file_state'">
+              <div class="file_click" @click="val.check=!val.check"><i class="check"></i></div>
+              <div class="file" @click="openFolder(val.name)">
+                <div class="file_ct">
+                  <i class="icons icon_folder_solid"></i>
+                </div>
+                <div class="name nowrap" :title="val.name">{{ val.name }}</div>
+              </div>
+            </li>
+            <!-- 文件 -->
+            <li v-for="(val,key) in lists.files" :key="'file'+key" :class="val.check?'file_active':'file_state'">
+              <div class="file_click" @click="val.check=!val.check"><i class="check"></i></div>
+              <div class="file" @click="openFile(val.name)">
+                <div class="file_ct">
+                  <div class="file_img bgImg" v-if="isImg(val.ext)" :style="{backgroundImage:'url('+info.url+lists.path+val.name+')'}"></div>
+                  <i class="icons icon_file_solid" v-else></i>
+                </div>
+                <div class="name nowrap" :title="val.name">{{ val.name }}</div>
+              </div>
+            </li>
+          </ul>
+          <!-- 列表 End -->
+          <div v-else class="folder_null">文件夹为空</div>
+        </div>
+        </wm-main>
+      </div>
     </div>
-    <!-- 上传进度 -->
-    <div class="file_load" :style="{backgroundImage: 'linear-gradient(to right, '+theme.primary+', '+theme.primary+' '+info.loaded+', '+theme.minor+' '+info.loaded+', '+theme.minor+' 100%)'}">
-      <span class="text" :style="{width:info.loaded}">{{info.loaded!='0%'&&info.loaded!='100%'?info.loaded:''}}</span>
-    </div>
-    <!-- 文件信息 End -->
+    <!-- Body End -->
 
-    <div class="file_body">
-      <!-- 列表 -->
-      <ul v-if="lists.folder.length!=0 || lists.files.length!=0">
-        <!-- 文件夹 -->
-        <li v-for="(val,key) in lists.folder" :key="'dir'+key" :class="val.check?'file_active':'file_state'">
-          <div class="file_click" @click="val.check=!val.check"><i class="check"></i></div>
-          <div class="file" @click="openFolder(val.name)">
-            <div class="file_ct">
-              <i class="icons icon_folder_solid"></i>
-            </div>
-            <div class="name nowrap" :title="val.name">{{ val.name }}</div>
-          </div>
-        </li>
-        <!-- 文件 -->
-        <li v-for="(val,key) in lists.files" :key="'file'+key" :class="val.check?'file_active':'file_state'">
-          <div class="file_click" @click="val.check=!val.check"><i class="check"></i></div>
-          <div class="file" @click="openFile(val.name)">
-            <div class="file_ct">
-              <div class="file_img bgImg" v-if="isImg(val.ext)" :style="{backgroundImage:'url('+info.url+lists.path+val.name+')'}"></div>
-              <i class="icons icon_file_solid" v-else></i>
-            </div>
-            <div class="name nowrap" :title="val.name">{{ val.name }}</div>
-          </div>
-        </li>
-      </ul>
-      <!-- 列表 End -->
-      <div v-else class="folder_null">文件夹为空</div>
-    </div>
+    
 
     <!-- 新建文件夹 -->
     <wm-dialog title="新建文件夹" width="480px" :show="folder.show" @update:close="folder.show=$event">
@@ -108,7 +117,7 @@
     <!-- 图片预览 -->
     <wm-img-view ref="imgShow" :show="imgView.show" @update:close="imgView.show=$event"></wm-img-view>
 
-  </wm-main>
+  </div>
 </template>
 
 <style lang="less" scoped>

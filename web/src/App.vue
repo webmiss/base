@@ -21,6 +21,13 @@
         </li>
         <li class="qrcode">
           <div class="ico center"><i class="icon ico_qrcode"></i></div>
+          <div class="app_qrcode_box">
+            <div class="app_qrcode_body">
+              <div class="arrow arrow_up"></div>
+              <img :src="apiUrl+'index/qrcode/docs'" />
+              <p>手机扫描二维码</p>
+            </div>
+          </div>
         </li>
         <li class="menus">
           <div class="ico center" @click="isShow=!isShow"><i class="icon ico_menus"></i></div>
@@ -77,7 +84,16 @@
 
   <!-- Tools -->
   <ul class="app_tools">
-    <li><i class="icon ico_weixin"></i></li>
+    <li class="weixin">
+      <i class="icon ico_weixin"></i>
+      <div class="app_tools_box">
+        <div class="app_tools_body">
+          <div class="arrow arrow_right"></div>
+          <img :src="apiUrl+'index/qrcode/server1'" />
+          <p>联系我们</p>
+        </div>
+      </div>
+    </li>
   </ul>
   <!-- Tools End -->
 

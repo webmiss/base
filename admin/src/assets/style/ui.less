@@ -28,9 +28,10 @@ h3{font-size: 16px; font-weight: 500;}
 .redNum{position: absolute; padding: 0 5px; margin-top: -5px; line-height: 16px; color: #FFF; font-size: 12px; font-weight: normal; border-radius: 10px; background-color: #FF0000;}
 .bgImg{background-size: cover; background-position: center; background-repeat: no-repeat;}
 .bgTu{width: 100%; height: 100%; border-radius: 50%;}
+.center{position: absolute; z-index: 10; left: 50%; top: 50%; transform: translate3d(-50%,-50%,0);}
 .divCenter{position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto;}
 .ctCenter{position: absolute; margin: 0 auto; left: 0; right: 0;}
-.verticalCenter{position: absolute; z-index: 10; left: 50%; top: 50%; transform: translate3d(-50%,-50%,0);}
+
 .null{text-align: center; color: #999; line-height: 100px;}
 .null::before{content: '暂无数据！';}
 .bLine{text-align: center; color: #999; line-height: 50px;}
@@ -46,7 +47,7 @@ h3{font-size: 16px; font-weight: 500;}
 .scrollbar:hover::-webkit-scrollbar-track{background: rgba(136,136,136,0.1);}
 
 /* 切换动画 */
-.view{position: absolute; z-index: 0; width:100%; height: 100%; background-color: #FFF; box-shadow: 0 0 2px rgba(0,0,0,.1); animation-duration: 400ms; animation-timing-function: cubic-bezier(0.165,0.84,0.44,1);}
+.view{position: absolute; z-index: 0; width:calc(100% - 70px); height: calc(100% - 48px); background-color: #FFF; box-shadow: 0 0 2px rgba(0,0,0,.1); animation-duration: 400ms; animation-timing-function: cubic-bezier(0.165,0.84,0.44,1);}
 @keyframes left-fold-in { 0% {z-index: 1; opacity: 0;} 100% {z-index: 1; opacity: 1;} }
 @keyframes left-fold-out { 0% {z-index: 0; opacity: 1;} 100% {z-index: 0; opacity: 0;} }
 @keyframes right-fold-in { 0% {z-index: 0; opacity: 0;} 100% {z-index: 0; opacity: 1;} }
@@ -82,27 +83,10 @@ h3{font-size: 16px; font-weight: 500;}
 .wm-ui_toast span{display: inline-block; padding: 0 16px; font-size: 14px; color: #FFF; border-radius: 5px; background-color: rgba(0,0,0,.9);}
 
 /* 箭头 */
-.arrow_left{width: 0px; height: 0px; border: 10px solid; border-color:transparent #FFF transparent transparent;}
-.arrow_right{width: 0px; height: 0px; border: 10px solid; border-color:transparent transparent transparent #FFF;}
-.arrow_up{width: 0px; height: 0px; border: 10px solid; border-color:transparent transparent #FFF transparent;}
-.arrow_down{width: 0px; height: 0px; border: 10px solid; border-color:#FFF transparent transparent transparent;}
-
-/* 动作菜单 */
-.ui_action{overflow: hidden; line-height: 40px; margin: 8px 0;}
-.ui_action_list{overflow: hidden; padding: 0 10px; background-color: #F2F4F6; border-radius: 20px; margin-right: 10px;}
-.ui_action_list li{cursor: pointer; padding: 0 16px;}
-.ui_action_list li:hover{color: @Primary;}
-.ui_action_list .mark{color: #999;}
-.ui_action_list .mark:hover{color: #999;}
-.ui_action_sea{cursor: pointer; width: 40px; color: #666; text-align: center; background-color: #F2F4F6; border-radius: 50%;}
-.ui_action_sea i{position: absolute; font-size: 20px; transform: translate(-50%, 0);}
-.ui_action_sea div{position: absolute; z-index: 1; margin: 34px 0 0 13px; border-bottom-color: #F2F4F6;}
-.ui_action_sea:hover{color: @Primary;}
-.ui_action_sea_body{overflow: hidden; background-color: #F2F4F6; margin: 10px 0; padding: 8px 10px; border-radius: 4px;}
-.ui_action_sea_body li{width: 25%; height: 40px; line-height: 40px; padding: 8px 0;}
-.ui_action_sea_body .title{width: 70px; text-align: right; padding-right: 10px;}
-.ui_action_sea_body .input{width: calc(100% - 80px);}
-.ui_action_sea_body .an{height: 56px; padding: 8px 16px; box-sizing: border-box;}
+.arrow_left{width: 0px; height: 0px; border: 8px solid; border-color:transparent #FFF transparent transparent;}
+.arrow_right{width: 0px; height: 0px; border: 8px solid; border-color:transparent transparent transparent #FFF;}
+.arrow_up{width: 0px; height: 0px; border: 8px solid; border-color:transparent transparent #FFF transparent;}
+.arrow_down{width: 0px; height: 0px; border: 8px solid; border-color:#FFF transparent transparent transparent;}
 
 /*
 * ICO-字体图标

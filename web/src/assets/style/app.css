@@ -2,7 +2,7 @@
 .body{max-width: 1200px; min-width: 320px; margin: 0 auto;}
 
 /* Top */
-.app_top_body{overflow: hidden; width: 100%; background-color: #242628;}
+.app_top_body{width: 100%; background-color: #242628;}
 .app_top{position: relative; padding: 0 8px; height: 56px; line-height: 56px; color: #FFF;}
 .app_logo{margin-top: 8px; width: 40px; height: 40px; border-radius: 50%; background: url(../logo.svg) no-repeat center center #FFF; background-size: 70%; transition: All 0.4s ease-in-out;}
 .app_logo:hover{transform: rotate(360deg);}
@@ -20,6 +20,13 @@
 .app_top_tool .qrcode{display: block;}
 .app_top_tool .menus{display: none;}
 .app_top_tool .menus .ico{background-color: #595;}
+
+.app_qrcode_box{display: none; position: absolute; z-index: 99; top: 54px; right: 0;}
+.app_qrcode_body{position: relative; width: 100px; line-height: 18px; padding: 8px; border-radius: 4px; background-color: #FFF; box-shadow: 0 0 8px rgba(0,0,0,.4);}
+.app_qrcode_body .arrow{position: absolute; top: -16px; right: 12px;}
+.app_qrcode_body img{width: 100%;}
+.app_qrcode_body p{font-size: 12px; color: #999;}
+.app_top_tool .qrcode:hover .app_qrcode_box{display: block;}
 
 /* Content */
 .app_body{height: calc(100% - 56px); background-color: #242628; padding: 0 4px;}
@@ -47,10 +54,17 @@
 
 /* Tools */
 .app_tools{position: fixed; z-index: 99; right: 8px; top: 50%; transform: translateY(-50%);}
-.app_tools li{width: 40px; height: 40px; margin: 8px 0; text-align: center; border-radius: 50%; background-color: rgba(0,0,0,.8); box-shadow: 0 0 4px rgba(0,0,0,.1);}
+.app_tools li{position: relative; width: 40px; height: 40px; margin: 8px 0; text-align: center; border-radius: 50%; background-color: rgba(0,0,0,.8); box-shadow: 0 0 4px rgba(0,0,0,.1);}
 .app_tools .icon{line-height: 40px; color: #595; font-size: 24px;}
 .app_tools li:hover{background-color: #595;}
 .app_tools li:hover .icon{color: #F0F9EB;}
+
+.app_tools_box{display: none; position: absolute; z-index: 99; top: 0; right: 48px;}
+.app_tools_body{position: relative; width: 100px; line-height: 18px; padding: 8px; border-radius: 4px; background-color: #FFF; box-shadow: 0 0 8px rgba(0,0,0,.4);}
+.app_tools_body .arrow{position: absolute; top: 12px; right: -16px;}
+.app_tools_body img{width: 100%;}
+.app_tools_body p{font-size: 12px; color: #999;}
+.app_tools .weixin:hover .app_tools_box{display: block;}
 
 /* 响应式布局 */
 @media screen and ( max-width: 1400px ){

@@ -179,10 +179,14 @@ export default defineComponent({
       Storage.setItem('menusPos',JSON.stringify(pos));
       // 子菜单
       this.menusChildren = this.state.menus[pos[0]].children || [];
-      if(pos[0]==0) return NavigateTo(url);
+      if(pos[0]==0){
+        this.state.menuTitle = Env.title;
+        return NavigateTo(url);
+      }
       if(!this.menusChildren[pos[1]] || !this.menusChildren[pos[1]].children) return;
       let menu = this.menusChildren[pos[1]].children[pos[2]];
       this.state.menuAction = menu.value.action;
+      this.state.menuTitle = menu.label;
       // 跳转
       NavigateTo(menu.value.url);
     },
