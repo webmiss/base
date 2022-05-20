@@ -246,7 +246,7 @@ export default [
       {label: 'ElasticSearch 全文搜索', value: 'elasticsearch'},
     ]},
     {label:'Service', value:'service', children:[
-      {label: 'FTP 文件传输', value: 'ftp'},
+      {label: 'Git 服务器搭建', value: 'git'},
     ]},
     {label:'CentOS', value:'centos', children:[
       {label: '基础配置', value: 'config'},

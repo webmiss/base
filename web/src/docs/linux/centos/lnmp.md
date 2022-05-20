@@ -117,6 +117,9 @@ dnf install http://rpms.remirepo.net/enterprise/remi-release-8.rpm -y
 ```bash
 # PHP7.4
 dnf install php74-php-fpm php74-php-cli php74-php-pdo php74-php-mysql php74-php-gd -y
+# 创建连接
+ln -s /usr/bin/php74 /usr/bin/php
+php -v
 # 开机启动
 systemctl enable php74-php-fpm
 # 启动
@@ -128,8 +131,9 @@ systemctl start php74-php-fpm
 # Phalcon
 dnf install php74-php-phalcon4 -y
 # Redis
-dnf install redis php74-php-pecl-redis5 -y
-dnf install redis php80-php-pecl-redis5 -y
+dnf install php74-php-pecl-redis5 -y
+# 查看模块
+php -m
 ```
 
 #### 4) PHP配置

@@ -4,8 +4,8 @@
 /* Top */
 .app_top_body{width: 100%; background-color: #242628;}
 .app_top{position: relative; padding: 0 8px; height: 56px; line-height: 56px; color: #FFF;}
-.app_logo{margin-top: 8px; width: 40px; height: 40px; border-radius: 50%; background: url(../logo.svg) no-repeat center center #FFF; background-size: 70%; transition: All 0.4s ease-in-out;}
-.app_logo:hover{transform: rotate(360deg);}
+.app_logo{margin-top: 8px; width: 40px; height: 40px; border-radius: 50%; border: #000 1px solid; box-sizing: border-box; background: url(../logo.svg) no-repeat center center; background-size: 70%; transition: All 0.4s ease-in-out;}
+.app_logo:hover{transform: rotate(360deg); background-color: #000;}
 .app_nav_body{overflow-x: auto; width: calc(100% - 120px);}
 .app_nav{position: relative; white-space: nowrap; padding: 0 8px;}
 .app_nav li{cursor: pointer; display: inline-block; padding: 0 16px; color: #C2C4C8; font-size: 16px;}

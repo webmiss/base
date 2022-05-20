@@ -94,12 +94,13 @@ export default defineComponent({
         const html = require(`@/docs${url}.md`);
         setTimeout(()=>{
           this.docHtml = marked.parse(html);
+          // 刷新样式
+          HtmlLoad(['/docs/prism.css','/docs/prism.js'],true);
         },1000);
       } catch (e) {
         this.docHtml = '没有文件!';
       }
-      // 刷新样式
-      HtmlLoad(['/docs/prism.css','/docs/prism.js'],true);
+      
     },
 
     /* 打印 */
