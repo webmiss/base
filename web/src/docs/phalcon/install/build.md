@@ -3,11 +3,13 @@
 ## Composer
 ```bash
 # PHP命令
-ln -s /usr/local/bin/php74 /usr/bin
+ln -s /usr/bin/php74 /usr/bin
 # 下载
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 # 安装
 sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+# 删除
+rm -fr composer-setup.php
 # 查看
 composer -V
 ```
@@ -20,8 +22,6 @@ mkdir public/upload
 chmod -R 777 public/upload
 # 依赖包
 composer install
-# 启动
-./bash start
 ```
 <br/>
 
