@@ -5,7 +5,7 @@
     <div class="app_ct_left" v-show="state.menuSea">
       <div class="app_sea_title flex">
         <h2>搜索</h2>
-        <span @click="state.menuSea=false"><i class="icons icon_arrow_left"></i></span>
+        <span @click="state.menuSea=false"><i class="ui ui_left"></i></span>
       </div>
       <ul class="app_sea_form">
         <li>
@@ -22,7 +22,7 @@
     <div class="app_ct_right" :style="{width: state.menuSea?'calc(100% - 240px)':'100%'}">
       <!-- Action -->
       <div class="app_action_body flex_left">
-        <div class="app_action_sea" v-show="!state.menuSea" @click="state.menuSea=true"><i class="icons icon_search"></i></div>
+        <div class="app_action_sea" v-show="!state.menuSea" @click="state.menuSea=true"><i class="ui ui_search"></i></div>
         <ul class="app_action_list flex_left">
           <li v-if="getters.actionShow('add')" @click="add.show=true">添加</li>
           <li v-if="getters.actionShow('edit')" @click="editData()">编辑</li>

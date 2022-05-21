@@ -16,7 +16,7 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Main',
   props: {
-    padding: {type: Number, default: 16}, //边距
+    padding: {type: Number, default: 10}, //边距
   },
 });
 </script>

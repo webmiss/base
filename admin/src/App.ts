@@ -106,11 +106,10 @@ export default defineComponent({
           Storage.setItem('token',d.token);
           Storage.setItem('uname',d.uinfo.uname);
           Storage.setItem('uinfo',JSON.stringify(d.uinfo));
+          // 获取菜单
+          this.getMenus();
           // 刷新路由
-          if(this.$route.path=='/'){
-            window.location.reload();
-          } else {
-            this.getMenus();
+          if(this.$route.path!='/'){
             this.$router.replace({path:'/refresh'});
           }
         }else{

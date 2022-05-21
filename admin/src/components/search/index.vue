@@ -2,7 +2,7 @@
   <div class="wm-search" :style="{width: width}">
     <div class="wm-search_input" @click="checked=!checked">
       <div class="wm-search_input_ico">
-        <i class="icons icon_search"></i>
+        <i class="ui ui_search"></i>
       </div>
       <input type="text" :placeholder="placeholder" v-model="value" @input="seaChange()">
     </div>

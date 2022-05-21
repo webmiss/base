@@ -2,7 +2,7 @@
   <div class="wm-select" :style="{width: width}">
     <div class="wm-select_input" @click="checked=!checked">
       <div class="wm-select_input_ico" :style="{transform: checked?'rotate(-180deg)':'rotate(0deg)'}">
-        <i class="icons icon_arrow_down_bold"></i>
+        <i class="ui ui_down"></i>
       </div>
       <input type="text" readonly :placeholder="placeholder" :value="text" :style="{borderColor: checked?'#6FB737':'', boxShadow: checked?'0 0 4px rgba(0,0,0,.1)':''}">
     </div>
