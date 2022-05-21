@@ -81,7 +81,7 @@
                 <i class="icons icon_image" v-if="state.uInfo.img==''"></i>
               </span>
               <span class="name">{{state.uInfo.nickname || '会员昵称'}}</span>
-              <span class="ico"><i class="icons icon_arrow_down_bold"></i></span>
+              <span class="ico"><i class="arrow icon_arrow_down_bold"></i></span>
             </div>
             <div class="box">
               <div class="user_info flex_left">
