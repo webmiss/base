@@ -50,11 +50,17 @@ export default defineComponent({
       if(to.path=='/' && from.path=='/') return ;
       this.transitionName = this.router.isBack?'slide-right':'slide-left';
       this.router.isBack = false;
-    }
+    },
+    // 清空密码
+    isLogin(val){
+      if(!val) this.login.passwd = '';
+    },
   },
   computed:{
     // @ts-ignore
     mode(){ return this.state.mode; },
+    // @ts-ignore
+    isLogin(){ return this.state.isLogin; },
   },
   mounted(){
     // 启动服务
@@ -130,7 +136,6 @@ export default defineComponent({
       this.state.isLogin = false;
       this.state.uInfo = {};
       Storage.setItem('token','');
-      this.login.passwd = '';
       if(Env.socket.start && this.state.socket) this.state.socket.close();
     },
     /* Enter登录 */

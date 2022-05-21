@@ -70,6 +70,7 @@ export default {
     this.state.isLogin = false;
     this.state.uInfo = {};
     Storage.setItem('token','');
+    if(Env.socket.start && this.state.socket) this.state.socket.close();
   },
 
   /* APP设置 */
