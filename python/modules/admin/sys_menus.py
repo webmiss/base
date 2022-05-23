@@ -37,7 +37,7 @@ class SysMenus(Base):
     # 查询
     m.Columns('id', 'fid', 'title', 'ico', 'FROM_UNIXTIME(ctime, %s) as ctime', 'FROM_UNIXTIME(utime, %s) as utime', 'sort', 'url', 'controller', 'action')
     m.Where('fid like %s AND title like %s AND url like %s', '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', '%'+fid+'%', '%'+title+'%', '%'+url+'%')
-    m.Order('sort DESC', 'fid')
+    m.Order('fid', 'sort', 'id')
     m.Page(int(page), int(limit))
     list = m.Find()
     # 数据
@@ -171,7 +171,7 @@ class SysMenus(Base):
     self.__menus = {}
     model = SysMenu()
     model.Columns('id', 'fid', 'title', 'url', 'ico', 'controller', 'action')
-    model.Order('sort DESC, id')
+    model.Order('sort, id')
     data = model.Find()
     for val in data :
       fid = str(val['fid'])

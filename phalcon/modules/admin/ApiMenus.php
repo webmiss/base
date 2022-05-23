@@ -34,7 +34,7 @@ class ApiMenus extends Base {
     // 查询
     $m->Columns('id', 'fid', 'title', 'ico', 'FROM_UNIXTIME(ctime) as ctime', 'FROM_UNIXTIME(utime) as utime', 'sort', 'url', 'controller', 'action');
     $m->Where('fid like ? AND title like ? AND url like ?', '%'.$fid.'%', '%'.$title.'%', '%'.$url.'%');
-    $m->Order('sort DESC', 'fid');
+    $m->Order('fid', 'sort', 'id');
     $m->Page($page, $limit);
     $list = $m->Find();
     // 数据

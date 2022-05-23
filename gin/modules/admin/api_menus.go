@@ -49,7 +49,7 @@ func (r ApiMenus) List(c *gin.Context) {
 	// 查询
 	m.Columns("id", "fid", "title", "ico", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "sort", "url", "controller", "action")
 	m.Where("fid like ? AND title like ? AND url like ?", "%"+fid+"%", "%"+title+"%", "%"+url+"%")
-	m.Order("sort DESC", "fid")
+	m.Order("fid", "sort", "id")
 	m.Page((&util.Type{}).Int(page), (&util.Type{}).Int(limit))
 	list := m.Find()
 	// 数据
@@ -231,7 +231,7 @@ func (r *ApiMenus) GetMenus(c *gin.Context) {
 	r.menus = map[string][]map[string]interface{}{}
 	model := (&model.ApiMenu{}).New()
 	model.Columns("id", "fid", "title", "url", "ico", "controller", "action")
-	model.Order("sort DESC, id")
+	model.Order("sort, id")
 	data := model.Find()
 	for _, val := range data {
 		fid := (&util.Type{}).Strval(val["fid"])

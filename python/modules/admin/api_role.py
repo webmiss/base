@@ -169,7 +169,7 @@ class ApiRole(Base):
     self.__menus = {}
     model = ApiMenu()
     model.Columns('id', 'fid', 'title', 'url', 'ico', 'controller', 'action')
-    model.Order('sort DESC, id')
+    model.Order('sort, id')
     data = model.Find()
     for val in data :
       fid = str(val['fid'])

@@ -184,7 +184,7 @@ class ApiRole extends Base {
     // 全部菜单
     $model = new ApiMenu();
     $model->Columns('id', 'fid', 'title', 'url', 'ico', 'controller', 'action');
-    $model->Order('sort DESC, id');
+    $model->Order('sort, id');
     $data = $model->Find();
     foreach($data as $val){
       $fid = (string)$val['fid'];

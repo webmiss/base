@@ -224,7 +224,7 @@ func (r *SysRole) PermList(c *gin.Context) {
 	r.menus = map[string][]map[string]interface{}{}
 	model := (&model.SysMenu{}).New()
 	model.Columns("id", "fid", "title", "url", "ico", "controller", "action")
-	model.Order("sort DESC, id")
+	model.Order("sort, id")
 	data := model.Find()
 	for _, val := range data {
 		fid := (&util.Type{}).Strval(val["fid"])

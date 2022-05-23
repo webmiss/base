@@ -64,7 +64,7 @@ public class SysMenus extends Base {
     // 查询
     m.Columns("id", "fid", "title", "ico", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "sort", "url", "controller", "action");
     m.Where("fid like ? AND title like ? AND url like ?", "%"+fid+"%", "%"+title+"%", "%"+url+"%");
-    m.Order("sort DESC", "id DESC", "fid");
+    m.Order("fid", "sort", "id");
     m.Page(page, limit);
     ArrayList<HashMap<String,Object>> list = m.Find();
     // 数据
@@ -286,7 +286,7 @@ public class SysMenus extends Base {
     menus = new HashMap<String, ArrayList<HashMap<String, Object>>>();
     SysMenu model = new SysMenu();
     model.Columns("id", "fid", "title", "url", "ico", "controller", "action");
-    model.Order("sort DESC, id");
+    model.Order("sort, id");
     ArrayList<HashMap<String, Object>> all = model.Find();
     for (HashMap<String, Object> val : all) {
       String fid = String.valueOf(val.get("fid"));

@@ -306,7 +306,7 @@ public class SysRole extends Base {
     menus = new HashMap<String, ArrayList<HashMap<String, Object>>>();
     SysMenu model = new SysMenu();
     model.Columns("id", "fid", "title", "url", "ico", "controller", "action");
-    model.Order("sort DESC, id");
+    model.Order("sort, id");
     ArrayList<HashMap<String, Object>> all = model.Find();
     for (HashMap<String, Object> val : all) {
       String fid = String.valueOf(val.get("fid"));

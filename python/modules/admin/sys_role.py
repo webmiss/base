@@ -169,7 +169,7 @@ class SysRole(Base):
     self.__menus = {}
     model = SysMenu()
     model.Columns('id', 'fid', 'title', 'url', 'ico', 'controller', 'action')
-    model.Order('sort DESC, id')
+    model.Order('sort, id')
     data = model.Find()
     for val in data :
       fid = str(val['fid'])
