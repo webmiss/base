@@ -184,8 +184,8 @@ export default defineComponent({
     /* 追加 */
     permAdd(){
       const list = this.perm.list;
-      const perm = list[list.length-1].perm;
-      list.push({name:'', action:'', perm:perm*2});
+      if(list.length>0) list.push({name:'', action:'', perm:list[list.length-1].perm*2});
+      else this.perm.list = [{name:'', action:'', perm:1}];
     },
     /* 删除 */
     permRemove(key: number){
