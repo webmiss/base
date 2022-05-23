@@ -101,8 +101,8 @@ CREATE TABLE `sys_menus` (
 
 INSERT INTO `sys_menus` (`id`, `fid`, `title`, `ico`, `ctime`, `utime`, `sort`, `url`, `controller`, `action`) VALUES
 (1,	0,	'首页',	'icons icon_home',	0,	0,	0,	'',	'',	''),
-(2,	0,	'内容',	'icons icon_content',	0,	0,	0,	'',	'',	''),
-(3,	0,	'系统',	'icons icon_config',	0,	0,	0,	'',	'',	''),
+(2,	0,	'网站',	'icons icon_web',	0,	0,	0,	'',	'',	''),
+(3,	0,	'系统',	'icons icon_system',	0,	0,	0,	'',	'',	''),
 (4,	2,	'新闻',	'',	0,	0,	0,	'',	'',	''),
 (5,	3,	'文件',	'',	0,	0,	0,	'',	'',	''),
 (6,	3,	'用户',	'',	0,	0,	0,	'',	'',	''),
