@@ -1,5 +1,5 @@
 <template>
-  <tr class="wm-table_title">
+  <tr class="wm-table_title" style="background-color: #F2F2F2;">
     <td width="32" class="checkbox" v-if="checkbox">
       <wm-checkbox :checked="checked" @update:checked="show=$event"></wm-checkbox>
     </td>
@@ -8,8 +8,8 @@
 </template>
 
 <style>
-.wm-table_title{font-size: 14px; font-weight: 600; color: #999;}
-.wm-table_title td{border: none; line-height: 32px;}
+.wm-table_title{font-size: 13px; font-weight: 600; color: #999;}
+.wm-table_title td{line-height: 32px;}
 .wm-table_title .checkbox{position: relative;}
 .wm-table_title .wm-checkbox{position: absolute;}
 </style>

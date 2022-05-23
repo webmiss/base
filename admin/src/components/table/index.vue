@@ -4,12 +4,12 @@
   </table>
 </template>
 
-<style>
-.wm-table{width: 100%; border-collapse:collapse; box-sizing: border-box; border-radius: 4px; margin: 8px 0;}
-.wm-table tr:nth-child(odd){background-color: #F8F8F8;}
+<style lang="less">
+.wm-table{width: 100%; border-collapse: collapse; box-sizing: border-box; border-radius: 4px; margin: 8px 0;}
+.wm-table tr:nth-child(odd){background-color: #F2F4F8;}
 .wm-table tr:nth-child(even){background-color: #FFF;}
-.wm-table tr:hover{background-color: #F2F4F6;}
-.wm-table td{position: relative; padding: 4px 8px; line-height: 40px;}
+.wm-table tr:hover{background-color: @Minor;}
+.wm-table td{position: relative; padding: 4px 8px; line-height: 40px; border: #FFF 1px solid;}
 </style>
 
 <script lang="ts">
