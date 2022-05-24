@@ -21,6 +21,15 @@ export default defineComponent({
   },
   methods:{
 
+    /* 全选&不选 */
+    setCheck(type: boolean){
+      const obj = document.querySelectorAll('.wm-table_checkbox div.checked');
+      for(let i=0; i<obj.length; i++){
+        if(type) obj[i].classList.add("active");
+        else obj[i].classList.remove("active");
+      }
+    },
+
     /* 获取选中值 */
     getVals(){
       let vals: any = [];

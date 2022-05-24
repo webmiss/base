@@ -17,7 +17,7 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Botton',
   props: {
-    type: {type: String, default: 'primary'},         //类型: primary、info、warning、danger、text
+    type: {type: String, default: 'primary'},         //类型: primary、success、warning、danger、info、text
     effect: {type: String, default: 'dark'},          //样式: plain、dark
     height: {type: String, default: '40px'},          //高度
     padding: {type: String, default: '0 24px'},       //间距
