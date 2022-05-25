@@ -10,7 +10,7 @@
 <style lang="less" scoped>
 .wm-radio_item{position: relative; cursor: pointer; display: inline-block; white-space: nowrap; line-height: 32px; padding: 0 16px 0 8px;}
 .wm-radio_item div{display: inline-block;}
-.wm-radio_item .checked{position: absolute; top: 50%; margin-top: -8px; width: 16px; height: 16px; border: #DCDFE6 1px solid; background-color: #F2F4F6; border-radius: 50%;}
+.wm-radio_item .checked{position: absolute; top: 50%; margin-top: -8px; width: 16px; height: 16px; border: #C2C4C8 1px solid; background-color: #F2F4F6; border-radius: 50%;}
 .wm-radio_item .name{padding-left: 24px; font-size: 14px;}
 .wm-radio_item:hover{border-radius: 4px;}
 .wm-radio_item:hover .checked{border-color: @Primary;}

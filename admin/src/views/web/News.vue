@@ -32,8 +32,8 @@
       <div class="app_ct_body">
         <wm-main>
         <!-- List -->
-        <wm-table class="table" ref="Table" :data="page.list">
-          <wm-table-title>
+        <wm-table ref="Table">
+          <template #title>
             <td width="40">ID</td>
             <td width="40">封面</td>
             <td width="220">标题</td>
@@ -41,8 +41,11 @@
             <td width="120">日期</td>
             <td width="60">状态</td>
             <td>操作</td>
-          </wm-table-title>
-          <wm-table-tr v-for="(val,key) in page.list" :key="key" :value="val.id+''">
+          </template>
+          <tr v-for="(val,key) in page.list" :key="key">
+            <td width="30" class="checkbox wm-table_checkbox">
+              <wm-checkbox :value="val.id"></wm-checkbox>
+            </td>
             <td>{{ val.id }}</td>
             <td>
               <wm-img width="40px" height="40px" radius="4px" icoSize="24px" :url="val.img" :title="val.title" @click="openShow(val)"></wm-img>
@@ -70,7 +73,7 @@
               <wm-button v-if="getters.actionShow('edit')" height="32px" fontSize="13px" @click="setContent(val.id)">内容</wm-button>
               <span v-else>-</span>
             </td>
-          </wm-table-tr>
+          </tr>
         </wm-table>
         <wm-page :page="page.page" :limit="page.limit" :total="page.total" @update:page="subPage"></wm-page>
         <!-- List End -->

@@ -9,8 +9,7 @@ import Storage from '@/library/Storage'
 import wmMain from '@/components/main/index.vue'
 import wmRow from '@/components/main/row/index.vue'
 import wmTable from '@/components/table/index.vue'
-import wmTableTitle from '@/components/table/title/index.vue'
-import wmTableTr from '@/components/table/tr/index.vue'
+import wmCheckbox from '@/components/form/checkbox/index.vue'
 import wmTag from '@/components/tag/index.vue'
 import wmPopover from '@/components/popover/index.vue'
 import wmDialog from '@/components/dialog/index.vue'
@@ -24,7 +23,7 @@ import wmTree from '@/components/tree/index.vue'
 /* API角色 */
 export default defineComponent({
   components: {
-    wmMain,wmRow,wmTable,wmTableTitle,wmTableTr,wmTag,wmPopover,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmPage,wmTree
+    wmMain,wmRow,wmTable,wmCheckbox,wmTag,wmPopover,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmPage,wmTree
   },
   data(){
     // 状态
@@ -32,7 +31,7 @@ export default defineComponent({
     const state: any = store.state;
     const getters: any = store.getters;
     // 分页
-    const page: any = {list:[], page:1, limit:10, total:0};
+    const page: any = {list:[], page:1, limit:20, total:0};
     // 搜索、添加、编辑、删除
     const sea: any = {show:false, form:{}};
     const add: any = {show:false, form:{}};

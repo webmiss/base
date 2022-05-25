@@ -32,13 +32,16 @@
       <div class="app_ct_body">
         <wm-main>
         <!-- List -->
-        <wm-table class="table" ref="Table" :data="page.list">
-          <wm-table-title>
+        <wm-table ref="Table">
+          <template #title>
             <td width="60">ID</td>
             <td width="120">名称</td>
             <td>操作</td>
-          </wm-table-title>
-          <wm-table-tr v-for="(val,key) in page.list" :key="key" :value="val.id+''">
+          </template>
+          <tr v-for="(val,key) in page.list" :key="key">
+            <td width="30" class="checkbox wm-table_checkbox">
+              <wm-checkbox :value="val.id"></wm-checkbox>
+            </td>
             <td>{{ val.id }}</td>
             <td>
               <wm-popover type="bottom" effect="dark" width="180px">
@@ -56,7 +59,7 @@
               <wm-button v-else-if="getters.actionShow('perm')" height="32px" @click="permData(val.id,val.perm)">修改权限</wm-button>
               <span v-else>-</span>
             </td>
-          </wm-table-tr>
+          </tr>
         </wm-table>
         <wm-page :page="page.page" :limit="page.limit" :total="page.total" @update:page="subPage"></wm-page>
         <!-- List End -->

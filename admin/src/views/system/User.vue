@@ -32,16 +32,19 @@
       <div class="app_ct_body">
         <wm-main>
         <!-- List -->
-        <wm-table class="table" ref="Table" :data="page.list">
-          <wm-table-title>
+        <wm-table ref="Table">
+          <template #title>
             <td width="60">UID</td>
             <td width="128">账号</td>
             <td width="60">状态</td>
             <td width="90">系统权限</td>
             <td width="90">API权限</td>
             <td>个人信息</td>
-          </wm-table-title>
-          <wm-table-tr v-for="(val,key) in page.list" :key="key" :value="val.uid">
+          </template>
+          <tr v-for="(val,key) in page.list" :key="key">
+            <td width="30" class="checkbox wm-table_checkbox">
+              <wm-checkbox :value="val.id"></wm-checkbox>
+            </td>
             <td>
               <wm-img width="40px" height="40px" radius="50%" icoSize="24px" :url="val.img" :title="val.uid"></wm-img>
             </td>
@@ -82,7 +85,7 @@
               <wm-button v-else-if="getters.actionShow('info')" type="info" height="32px" @click="infoData(val)">无</wm-button>
               <span v-else>-</span>
             </td>
-          </wm-table-tr>
+          </tr>
         </wm-table>
         <wm-page :page="page.page" :limit="page.limit" :total="page.total" @update:page="subPage"></wm-page>
         <!-- List End -->

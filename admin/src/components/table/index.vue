@@ -1,29 +1,54 @@
 <template>
   <table class="wm-table">
-    <slot :data="data"></slot>
+    <tr class="wm-table_title" v-if="isTitle">
+      <td width="32" class="checkbox" v-if="isCheckbox">
+        <wm-checkbox v-model:checked="show"></wm-checkbox>
+      </td>
+      <slot name="title"></slot>
+    </tr>
+    <tbody ref="wmTable" class="wm-table_list">
+      <slot :data="data"></slot>
+    </tbody>
   </table>
 </template>
 
 <style lang="less">
-.wm-table{width: 100%; border-collapse: collapse; box-sizing: border-box; border-radius: 4px; margin: 8px 0;}
-.wm-table tr:nth-child(odd){background-color: #F2F4F8;}
-.wm-table tr:nth-child(even){background-color: #FFF;}
-.wm-table tr:hover{background-color: @Minor;}
-.wm-table td{position: relative; padding: 4px 8px; line-height: 40px; border: #FFF 1px solid;}
+.wm-table{width: 100%; border-collapse: collapse; box-sizing: border-box; border-radius: 4px;}
+.wm-table .checkbox{position: relative;}
+.wm-table .wm-checkbox{position: absolute;}
+.wm-table td{position: relative; padding: 2px 4px; line-height: 32px; border: #FFF 1px solid;}
+.wm-table_title{font-size: 12px; font-weight: 600; color: #999; background-color: #F2F2F2;}
+.wm-table_list tr:nth-child(odd){background-color: #FFF;}
+.wm-table_list tr:nth-child(even){background-color: #FFF;}
+.wm-table_list tr:hover{background-color: @Minor;}
+.wm-table_list td{ border-bottom-color: #F2F2F2;}
 </style>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import wmCheckbox from '../form/checkbox/index.vue'
 export default defineComponent({
   name:'Table',
+  components: {wmCheckbox},
   props: {
-    data: {type:Array, default:[]}, //数据: [{id:val},{id:val}]
+    data: {type:Array, default:[]},             //数据: [{id:val},{id:val}]
+    isTitle: {type: Boolean, default: true},    //显示标题
+    isCheckbox: {type: Boolean, default: true}, //显示多选框
+  },
+  data(){
+    const show: Boolean = false;
+    return {show};
+  },
+  watch: {
+    show(val){
+      this.setCheck(val);
+    },
   },
   methods:{
 
     /* 全选&不选 */
     setCheck(type: boolean){
-      const obj = document.querySelectorAll('.wm-table_checkbox div.checked');
+      const obj = (this.$refs.wmTable as any).querySelectorAll('.wm-table_checkbox div.checked');
       for(let i=0; i<obj.length; i++){
         if(type) obj[i].classList.add("active");
         else obj[i].classList.remove("active");
@@ -33,7 +58,7 @@ export default defineComponent({
     /* 获取选中值 */
     getVals(){
       let vals: any = [];
-      const obj: any = document.querySelectorAll('.wm-table_checkbox div.active');
+      const obj: any = (this.$refs.wmTable as any).querySelectorAll('.wm-table_checkbox div.active');
       if(obj.length==0) return '';
       for(let i=0; i<obj.length; i++){
         vals.push(obj[i].querySelector('input').value);
@@ -46,7 +71,7 @@ export default defineComponent({
       name = name || 'id';
       let row = {};
       // 是否选择
-      const obj: any = document.querySelector('.wm-table_checkbox div.active');
+      const obj: any = (this.$refs.wmTable as any).querySelector('.wm-table_checkbox div.active');
       if(!obj) return '';
       // 获取数据
       const val: any = obj.querySelector('input').value;
@@ -65,7 +90,7 @@ export default defineComponent({
       name = name || 'id';
       let row = [];
       // 是否选择
-      const obj: any = document.querySelectorAll('.wm-table_checkbox div.active');
+      const obj: any = (this.$refs.wmTable as any).querySelectorAll('.wm-table_checkbox div.active');
       if(!obj) return '';
       // 获取数据
       for(let x=0; x<obj.length; x++){

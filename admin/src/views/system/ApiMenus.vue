@@ -38,18 +38,21 @@
       <div class="app_ct_body">
         <wm-main>
         <!-- List -->
-        <wm-table class="table" ref="Table" :data="page.list">
-          <wm-table-title>
+        <wm-table ref="Table">
+          <template #title>
             <td width="40">ID</td>
             <td width="40">FID</td>
             <td width="120">名称</td>
-            <td width="80">权限</td>
+            <td width="100">权限</td>
             <td width="40">图标</td>
             <td width="60" style="text-align: center;">排序</td>
             <td width="120">URL</td>
             <td>API</td>
-          </wm-table-title>
-          <wm-table-tr v-for="(val,key) in page.list" :key="key" :value="val.id+''">
+          </template>
+          <tr v-for="(val,key) in page.list" :key="key">
+            <td width="30" class="checkbox wm-table_checkbox">
+              <wm-checkbox :value="val.id"></wm-checkbox>
+            </td>
             <td>{{ val.id }}</td>
             <td>{{ val.fid }}</td>
             <td>
@@ -75,7 +78,7 @@
             <td style="text-align: center;">{{ val.sort }}</td>
             <td>{{ val.url }}</td>
             <td>{{ val.controller }}</td>
-          </wm-table-tr>
+          </tr>
         </wm-table>
         <wm-page :page="page.page" :limit="page.limit" :total="page.total" @update:page="subPage"></wm-page>
         <!-- List End -->
@@ -151,23 +154,23 @@
 
     <!-- Perm -->
     <wm-dialog width="640px" :title="perm.title" :show="perm.show" @update:close="perm.show=$event">
-      <wm-table>
-        <wm-table-title :checkbox="false">
+      <wm-table :isCheckbox="false">
+        <template #title>
           <td>名称</td>
           <td>动作</td>
           <td width="100">权限</td>
           <td width="30">
             <div class="perm_an"><wm-add @click="permAdd()" /></div>
           </td>
-        </wm-table-title>
-        <wm-table-tr :checkbox="false" v-for="(val,key) in perm.list" :key="key">
+        </template>
+        <tr v-for="(val,key) in perm.list" :key="key">
           <td><wm-input :value="val.name" @update:value="val.name=$event" /></td>
           <td><wm-input :value="val.action" @update:value="val.action=$event" /></td>
           <td><wm-input :value="val.perm" @update:value="val.perm=$event" /></td>
           <td>
             <div class="perm_an"><wm-close @click="permRemove(key)" /></div>
           </td>
-        </wm-table-tr>
+        </tr>
       </wm-table>
       <template #footer>
         <wm-button @click="subPerm()">更 新</wm-button>

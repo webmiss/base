@@ -32,15 +32,18 @@
       <div class="app_ct_body">
         <wm-main>
         <!-- List -->
-        <wm-table class="table" ref="Table" :data="page.list">
-          <wm-table-title>
+        <wm-table ref="Table">
+          <template #title>
             <td width="40">ID</td>
             <td width="120">名称</td>
             <td width="120">日期</td>
             <td width="60">状态</td>
             <td>排序</td>
-          </wm-table-title>
-          <wm-table-tr v-for="(val,key) in page.list" :key="key" :value="val.id+''">
+          </template>
+          <tr v-for="(val,key) in page.list" :key="key">
+            <td width="30" class="checkbox wm-table_checkbox">
+              <wm-checkbox :value="val.id"></wm-checkbox>
+            </td>
             <td>{{ val.id }}</td>
             <td>{{ val.name }}</td>
             <td>
@@ -59,7 +62,7 @@
               <span v-else>-</span>
             </td>
             <td>{{ val.sort }}</td>
-          </wm-table-tr>
+          </tr>
         </wm-table>
         <wm-page :page="page.page" :limit="page.limit" :total="page.total" @update:page="subPage"></wm-page>
         <!-- List End -->
