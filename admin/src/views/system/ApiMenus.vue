@@ -38,7 +38,7 @@
       <div class="app_ct_body">
         <wm-main>
         <!-- List -->
-        <wm-table ref="Table">
+        <wm-table ref="Table" :data="page.list">
           <template #title>
             <td width="40">ID</td>
             <td width="40">FID</td>

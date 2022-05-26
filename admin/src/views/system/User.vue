@@ -32,7 +32,7 @@
       <div class="app_ct_body">
         <wm-main>
         <!-- List -->
-        <wm-table ref="Table">
+        <wm-table ref="Table" :data="page.list">
           <template #title>
             <td width="60">UID</td>
             <td width="128">账号</td>
