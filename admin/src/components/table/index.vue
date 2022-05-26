@@ -19,7 +19,7 @@
 .wm-table td{position: relative; padding: 2px 4px; line-height: 32px; border: #FFF 1px solid;}
 .wm-table_title{font-size: 12px; font-weight: 600; color: #999; background-color: #F2F2F2;}
 .wm-table_list tr:nth-child(odd){background-color: #FFF;}
-.wm-table_list tr:nth-child(even){background-color: #FFF;}
+.wm-table_list tr:nth-child(even){background-color: #FAFAFA;}
 .wm-table_list tr:hover{background-color: @Minor;}
 .wm-table_list td{ border-bottom-color: #F2F2F2;}
 </style>

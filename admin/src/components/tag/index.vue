@@ -34,7 +34,7 @@ export default defineComponent({
     const obj: any = this.$refs.Tag;
     const color = this.color[this.type][this.effect];
     // 颜色
-    obj.style.borderColor = color[0];
+    obj.style.borderColor = color[1];
     obj.style.backgroundColor = color[2];
     obj.style.color = color[0];
     // 大小
