@@ -31,4 +31,11 @@ class Curl extends Base {
     return $res;
   }
 
+  /* 请求参数 */
+  static function UrlParam(array $data): string {
+    $dataStr = '';
+    foreach($data as $k=>$v) $dataStr .= '&'.$k.'='.urlencode($v);
+    return $dataStr;
+  }
+
 }
