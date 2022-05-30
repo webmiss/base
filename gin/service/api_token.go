@@ -28,16 +28,21 @@ func (s ApiToken) Verify(token string, urlPerm string) string {
 	// 是否过期
 	env := config.Env()
 	uid := (&util.Type{}).Strval(tData["uid"])
+	key := env.ApiTokenPrefix + "_token_" + uid
 	redis = (&library.Redis{}).New("")
-	time := redis.TTL(env.ApiTokenPrefix + "_token_" + uid)
+	access_token := redis.Get(key)
+	time := redis.TTL(key)
 	redis.Close()
+	if (&util.Hash{}).Md5(token) != access_token {
+		return "强制退出!"
+	}
 	if time < 1 {
 		return "Token已过期!"
 	}
 	// 续期
 	if env.ApiTokenAuto {
 		redis := (&library.Redis{}).New("")
-		redis.Expire(env.ApiTokenPrefix+"_token_"+uid, env.ApiTokenTime)
+		redis.Expire(key, env.ApiTokenTime)
 		redis.Expire(env.ApiTokenPrefix+"_perm_"+uid, env.ApiTokenTime)
 		redis.Close()
 	}
@@ -112,13 +117,13 @@ func (ApiToken) Create(data map[string]interface{}) string {
 	env := config.Env()
 	redis := (&library.Redis{}).New("")
 	key := env.ApiTokenPrefix + "_token_" + (&util.Type{}).Strval(data["uid"])
-	redis.Set(key, "1")
+	redis.Set(key, (&util.Hash{}).Md5(token))
 	redis.Expire(key, env.ApiTokenTime)
 	redis.Close()
 	return token
 }
 
-/* Token数据 */
+/* 解析 */
 func (ApiToken) Token(token string) jwt.MapClaims {
 	tData, _ := (&library.Safety{}).Decode(token)
 	if tData != nil {

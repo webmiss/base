@@ -9,6 +9,7 @@ import webmis.config.Env;
 import webmis.library.Redis;
 import webmis.library.Safety;
 import webmis.model.ApiMenu;
+import webmis.util.Hash;
 import webmis.util.Util;
 
 /* 后台Token */
@@ -16,16 +17,18 @@ public class ApiToken extends Base {
 
   /* 验证 */
   public static String Verify(String token, String urlPerm) {
-    Redis redis;
     // Token
     if(token.equals("")) return "Token不能为空!";
     HashMap<String, Object> tData = Safety.Decode(token);
     if(tData==null) return "Token验证失败!";
     // 是否过期
     String uid = String.valueOf(tData.get("uid"));
-    redis = new Redis("");
+    String key = Env.api_token_prefix+"_token_"+uid;
+    Redis redis = new Redis("");
+    String access_token = redis.Get(key);
     Long time = redis.Ttl(Env.api_token_prefix+"_token_"+uid);
     redis.Close();
+    if(!access_token.equals(Hash.Md5(token))) return "强制退出!";
     if(time<1) return "Token已过期!";
     // 续期
     if(Env.api_token_auto){
@@ -92,13 +95,13 @@ public class ApiToken extends Base {
     // 缓存
     Redis redis = new Redis("");
     String key = Env.api_token_prefix+"_token_"+String.valueOf(data.get("uid"));
-    redis.Set(key, "1");
+    redis.Set(key, Hash.Md5(token));
     redis.Expire(key, Env.api_token_time);
     redis.Close();
     return token;
   }
 
-  /* 获取 */
+  /* 解析 */
   public static HashMap<String, Object> Token(String token) {
     HashMap<String, Object> tData = Safety.Decode(token);
     if(tData!=null){

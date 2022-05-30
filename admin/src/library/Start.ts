@@ -57,10 +57,9 @@ export default {
             this.state.uInfo = d[Env.login.uinfo];
           }
         }else{
+          Toast(d.msg);
           this.logout();
         }
-      },()=>{
-        this.logout();
       });
     }else{
       this.logout();

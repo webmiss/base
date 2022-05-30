@@ -17,14 +17,17 @@ class AdminToken extends Base {
     if(!$tData) return 'Token验证失败!';
     // 是否过期
     $uid = (string)$tData->uid;
+    $key = Env::$admin_token_prefix.'_token_'.$uid;
     $redis = new Redis();
-    $time = $redis->Ttl(Env::$admin_token_prefix.'_token_'.$uid);
+    $access_token = $redis->Gets($key);
+    $time = $redis->Ttl($key);
     $redis->Close();
+    if(md5($token)!=$access_token) return '强制退出!';
     if($time<1) return 'Token已过期!';
     // 续期
     if(Env::$admin_token_auto){
       $redis = new Redis();
-      $redis->Expire(Env::$admin_token_prefix.'_token_'.$uid, Env::$admin_token_time);
+      $redis->Expire($key, Env::$admin_token_time);
       $redis->Expire(Env::$admin_token_prefix.'_perm_'.$uid, Env::$admin_token_time);
       $redis->Close();
     }
@@ -84,13 +87,13 @@ class AdminToken extends Base {
     // 缓存
     $redis = new Redis();
     $key = Env::$admin_token_prefix.'_token_'.$data['uid'];
-    $redis->Set($key, '1');
+    $redis->Set($key, md5($token));
     $redis->Expire($key, Env::$admin_token_time);
     $redis->Close();
     return $token;
   }
 
-  /* 获取 */
+  /* 解析 */
   static function Token(string $token) {
     $tData = Safety::Decode($token);
     if($tData){

@@ -17,9 +17,12 @@ class ApiToken extends Base {
     if(!$tData) return 'Token验证失败!';
     // 是否过期
     $uid = (string)$tData->uid;
+    $key = Env::$api_token_prefix.'_token_'.$uid;
     $redis = new Redis();
+    $access_token = $redis->Gets($key);
     $time = $redis->Ttl(Env::$api_token_prefix.'_token_'.$uid);
     $redis->Close();
+    if(md5($token)!=$access_token) return '强制退出!';
     if($time<1) return 'Token已过期!';
     // 续期
     if(Env::$api_token_auto){
@@ -85,13 +88,13 @@ class ApiToken extends Base {
     // 缓存
     $redis = new Redis();
     $key = Env::$api_token_prefix.'_token_'.$data['uid'];
-    $redis->Set($key, '1');
+    $redis->Set($key, md5($token));
     $redis->Expire($key, Env::$api_token_time);
     $redis->Close();
     return $token;
   }
 
-  /* 获取 */
+  /* 解析 */
   static function Token(string $token): ?object {
     $token = Safety::Decode($token);
     if($token){

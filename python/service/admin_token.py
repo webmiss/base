@@ -2,6 +2,7 @@ from config.env import Env
 from library.safety import Safety
 from library.redis import Redis
 from util.util import Util
+from util.hash import Hash
 from model.sys_menu import SysMenu
 
 # 后台Token
@@ -15,14 +16,17 @@ class AdminToken:
     if not tData : return 'Token验证失败!'
     # 是否过期
     uid = str(tData['uid'])
+    key = Env.admin_token_prefix+'_token_'+uid
     redis = Redis()
-    time = redis.Ttl(Env.admin_token_prefix+'_token_'+uid)
+    access_token =  str(redis.Get(key))
+    time = redis.Ttl(key)
     redis.Close()
+    if Hash.Md5(token) != access_token: return '强制退出!'
     if time <1 : return 'Token已过期!'
     # 续期
     if Env.admin_token_auto :
       redis = Redis()
-      redis.Expire(Env.admin_token_prefix+'_token_'+uid, Env.admin_token_time)
+      redis.Expire(key, Env.admin_token_time)
       redis.Expire(Env.admin_token_prefix+'_perm_'+uid, Env.admin_token_time)
       redis.Close()
     # URL权限
@@ -75,12 +79,12 @@ class AdminToken:
     # 缓存
     redis = Redis()
     key = Env.admin_token_prefix+'_token_'+str(data['uid'])
-    redis.Set(key, '1')
+    redis.Set(key, Hash.Md5(token))
     redis.Expire(key, Env.admin_token_time)
     redis.Close()
     return token
     
-  # 获取
+  # 解析
   def Token(token: str):
     tData = Safety.Decode(token)
     if tData :
