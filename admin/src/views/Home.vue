@@ -23,10 +23,10 @@
             <p class="p3">
               较昨日 
               <span class="up" v-if="this.tData.today.pv>=this.tData.yesterday.pv">
-                <i class="icons icon_up"></i>{{FormatPercentage(this.tData.today.pv, this.tData.yesterday.pv)}}%
+                <i class="ui ui_up"></i>{{FormatPercentage(this.tData.today.pv, this.tData.yesterday.pv)}}%
               </span>
               <span class="down" v-else>
-                <i class="icons icon_down"></i>{{FormatPercentage(this.tData.today.pv, this.tData.yesterday.pv)}}%
+                <i class="ui ui_down"></i>{{FormatPercentage(this.tData.today.pv, this.tData.yesterday.pv)}}%
               </span>
             </p>
           </div>
@@ -39,10 +39,10 @@
             <p class="p3">
               较昨日 
               <span class="up" v-if="this.tData.today.uv>=this.tData.yesterday.uv">
-                <i class="icons icon_up"></i>{{FormatPercentage(this.tData.today.uv, this.tData.yesterday.uv)}}%
+                <i class="ui ui_up"></i>{{FormatPercentage(this.tData.today.uv, this.tData.yesterday.uv)}}%
               </span>
               <span class="down" v-else>
-                <i class="icons icon_down"></i>{{FormatPercentage(this.tData.today.uv, this.tData.yesterday.uv)}}%
+                <i class="ui ui_down"></i>{{FormatPercentage(this.tData.today.uv, this.tData.yesterday.uv)}}%
               </span>
             </p>
           </div>
@@ -55,10 +55,10 @@
             <p class="p3">
               较昨日 
               <span class="up" v-if="this.tData.today.ip>=this.tData.yesterday.ip">
-                <i class="icons icon_up"></i>{{FormatPercentage(this.tData.today.ip, this.tData.yesterday.ip)}}%
+                <i class="ui ui_up"></i>{{FormatPercentage(this.tData.today.ip, this.tData.yesterday.ip)}}%
               </span>
               <span class="down" v-else>
-                <i class="icons icon_down"></i>{{FormatPercentage(this.tData.today.ip, this.tData.yesterday.ip)}}%
+                <i class="ui ui_down"></i>{{FormatPercentage(this.tData.today.ip, this.tData.yesterday.ip)}}%
               </span>
             </p>
           </div>

@@ -40,7 +40,7 @@
               <div class="file_click" @click="val.check=!val.check"><i class="check"></i></div>
               <div class="file" @click="openFolder(val.name)">
                 <div class="file_ct">
-                  <i class="icons icon_folder_solid"></i>
+                  <i class="ui ui_folder"></i>
                 </div>
                 <div class="name nowrap" :title="val.name">{{ val.name }}</div>
               </div>
@@ -51,7 +51,7 @@
               <div class="file" @click="openFile(val.name)">
                 <div class="file_ct">
                   <div class="file_img bgImg" v-if="isImg(val.ext)" :style="{backgroundImage:'url('+info.url+lists.path+val.name+')'}"></div>
-                  <i class="icons icon_file_solid" v-else></i>
+                  <i class="ui ui_file" v-else></i>
                 </div>
                 <div class="name nowrap" :title="val.name">{{ val.name }}</div>
               </div>
@@ -154,8 +154,9 @@
 
 /* 文件夹 */
 .file_ct{width: 100%; height: 84px; line-height: 84px; text-align: center;}
-.file_ct .icons{font-size: 64px; color: #B9C9D6;}
-.file_ct .icon_folder_solid{color: #FFD65D;}
+.file_ct .ui{font-size: 64px; color: #A9B9C6;}
+.file_ct .ui_folder{color: #FFD65D;}
+.file_ct .ui_folder{color: #FFD65D;}
 
 /* 图片 */
 .file_img{width: 100%; height: 100%; background-color: #F2F4F6;}

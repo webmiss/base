@@ -48,6 +48,7 @@ export default defineComponent({
 
     /* 全选&不选 */
     setCheck(type: boolean){
+      this.show = type;
       const obj = (this.$refs.wmTable as any).querySelectorAll('.wm-table_checkbox div.checked');
       for(let i=0; i<obj.length; i++){
         if(type) obj[i].classList.add("active");

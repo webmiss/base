@@ -51,7 +51,7 @@
                 <li class="title flex" @click="m2.checked=!m2.checked">
                   <h2>{{ m2.label }}</h2>
                   <span :style="{transform: m2.checked?'rotate(-0deg)':'rotate(-180deg)'}">
-                    <i class="ui ui_down center"></i>
+                    <i class="ui ui_arrow_down center"></i>
                   </span>
                 </li>
                 <template v-if="!m2.checked">
@@ -78,15 +78,15 @@
           <div class="app_user">
             <div class="flex_left">
               <span class="tu bgImg" :style="{backgroundImage:'url('+state.uInfo.img+')'}">
-                <i class="ui ui_img" v-if="state.uInfo.img==''"></i>
+                <i class="ui ui_image" v-if="state.uInfo.img==''"></i>
               </span>
               <span class="name">{{state.uInfo.nickname || '会员昵称'}}</span>
-              <span class="ico"><i class="arrow ui ui_down"></i></span>
+              <span class="ico"><i class="arrow ui ui_arrow_down"></i></span>
             </div>
             <div class="box">
               <div class="user_info flex_left">
                 <div class="ico bgImg" :style="{backgroundImage:'url('+state.uInfo.img+')'}">
-                  <i class="ui ui_img" v-if="state.uInfo.img==''"></i>
+                  <i class="ui ui_image" v-if="state.uInfo.img==''"></i>
                 </div>
                 <div class="info"><h2>{{state.uInfo.uname}}</h2><p>ID:{{state.uInfo.uid}}</p></div>
               </div>

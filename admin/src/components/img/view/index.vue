@@ -63,7 +63,7 @@ export default defineComponent({
     opacity: {type: Number, default: 0.8},                  //背景透明度
     loadColor: {type: String, default: '#6FB737'},          //Load颜色
     iconLoading: {type: String, default: 'ui ui_loading'},  //Load图标
-    iconLeft: {type: String, default: 'ui ui_left'},        //上一页
+    iconLeft: {type: String, default: 'ui ui_arrow_left'},        //上一页
     iconRight: {type: String, default: 'ui ui_right'},      //下一页
     iconFull: {type: String, default: 'ui ui_full'},        //全屏
     iconClose: {type: String, default: 'ui ui_close'},      //关闭

@@ -5,7 +5,7 @@
     <div class="app_ct_left" v-show="state.menuSea">
       <div class="app_sea_title flex">
         <h2>搜索</h2>
-        <span @click="state.menuSea=false"><i class="ui ui_left"></i></span>
+        <span @click="state.menuSea=false"><i class="ui ui_arrow_left"></i></span>
       </div>
       <ul class="app_sea_form">
         <li>

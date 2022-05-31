@@ -2,7 +2,7 @@
   <div ref="img" class="wm-img" :title="title">
     <div v-if="url" :style="{backgroundImage:'url('+url+')',backgroundSize:size}"></div>
     <div v-else class="wm-img_null">
-      <i class="ui ui_img" :style="{fontSize:icoSize}"></i>
+      <i class="ui ui_image" :style="{fontSize:icoSize}"></i>
     </div>
   </div>
 </template>

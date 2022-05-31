@@ -1,11 +1,17 @@
 ## 引入
 ```javascript
+import TimeStamp from '@/library/time/timestamp'
 import TimeDate from '@/library/time/date'
 import TimeSize from '@/library/time/size'
 import TimeDay from '@/library/time/day'
 import TimeWeek from '@/library/time/week'
 import TimeFormatHour from '@/library/time/format_hour'
 import TimeFormatTime from '@/library/time/format_time'
+```
+
+## 时间戳(10位)
+```typescript
+TimeStamp();
 ```
 
 ## 年月日时分秒
