@@ -13,10 +13,10 @@
 </template>
 
 <style lang="less">
-.wm-table{width: 100%; border-collapse: collapse; box-sizing: border-box; border-radius: 4px;}
+.wm-table{width: 100%; margin: 4px 0; border-collapse: collapse; box-sizing: border-box; border-radius: 4px;}
 .wm-table .checkbox{position: relative;}
 .wm-table .wm-checkbox{position: absolute;}
-.wm-table td{position: relative; padding: 2px 4px; line-height: 32px; border: #FFF 1px solid;}
+.wm-table td{position: relative; padding: 2px 8px; line-height: 32px; border: #FFF 1px solid;}
 .wm-table_title{font-size: 12px; font-weight: 600; color: #999; background-color: #F2F2F2;}
 .wm-table_list tr:nth-child(odd){background-color: #FFF;}
 .wm-table_list tr:nth-child(even){background-color: #FAFAFA;}

@@ -14,23 +14,21 @@
       padding: padding,
       textAlign: align,
       borderRadius: borderRadius,
-      backgroundColor: backgroundColor,
     }"
+    :disabled="disabled"
     @input="$emit('update:value', $event.target.value)"
-    @mouseover="inputStyle('over')"
-    @mouseout="inputStyle('out')"
   />
 </template>
 
 <style lang="less" scoped>
 .wm-input{border: none; background: none; -webkit-appearance: none; outline: none; font: 400 14px Arial; caret-color: @Primary;}
-.wm-input{box-sizing: border-box; border-radius: 4px; border: transparent 1px solid; background-color: #FFF;}
-.wm-input:hover{box-shadow: 0 0 4px rgba(0,0,0,.1);}
+.wm-input{box-sizing: border-box; border-radius: 4px; border: #DCDFE6 1px solid; background-color: #FFF;}
+.wm-input:hover{box-shadow: 0 0 4px rgba(0,0,0,.1); border-color: @Primary;}
 .wm-input:focus{outline: none;}
+.wm-input:disabled{border-color: #DCDFE6; background-color: #F4F4F4;}
 </style>
 
 <script lang="ts">
-import Env from '../../../env'
 import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'Input',
@@ -46,24 +44,11 @@ export default defineComponent({
     padding: {type: String, default: '10px 16px'},    //间距: '10px 16px'
     align: {type: String, default: ''},               //文本对齐方式: 'left'
     borderRadius: {type: String, default: '4px'},     //边框圆角: '4px'
-    backgroundColor: {type: String, default: '#FFF'}, //背景色: '#FFF'
+    disabled: {type: Boolean, default: false},        //是否禁用
   },
   mounted(){
-    // 初始化
-    this.inputStyle();
   },
   methods:{
-
-    /* 样式 */
-    inputStyle(type: string='out'){
-      const obj: any = this.$refs.input;
-      if(type=='over'){
-        obj.style.borderColor = Env.themes.primary.plain[0];
-      }else if(type=='out'){
-        obj.style.borderColor = Env.themes.border.plain[0];
-      }
-    },
-
   }
 });
 </script>

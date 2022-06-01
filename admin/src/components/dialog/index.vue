@@ -33,7 +33,7 @@
 .wm-dialog_body::-webkit-scrollbar-thumb{border-radius: 4px; background: rgba(136,136,136,0.4);}
 .wm-dialog_body:hover::-webkit-scrollbar-track{background: rgba(136,136,136,0.1);}
 /* 内容 */
-.wm-dialog_content{padding: 8px 16px;}
+.wm-dialog_content{padding: 0px 16px 16px;}
 </style>
 
 <script lang="ts">
@@ -65,29 +65,33 @@ export default defineComponent({
   },
   watch:{
     show(val){
-      if(!val) (this.$refs.Popup as any).close();
-      else this.autoHeight();
+      if(!val){
+        (this.$refs.Popup as any).close();
+      }else{
+        this.changeHeight();
+      }
     }
   },
   mounted(){
-    
   },
   methods:{
 
     /* 监听高度 */
     autoHeight(){
-      let body: any = this.$refs.DialogBody;
-      let content: any = this.$refs.DialogContent;
-      HtmlObserve(body, () => {
-        setTimeout(()=>{
-          let val: string = getComputedStyle(content).getPropertyValue('height');
-          let bh: number = this.state.height;
-          let h: number = parseInt(val.replace(/(px)/g, ''))+48+60+this.hMargin*2;
-          if(h>bh) body.style.height = bh-48-60-this.hMargin*2+'px';
-          else body.style.height = '';
-        }, 300);
+      HtmlObserve(this.$refs.DialogBody, ()=>{
+        this.changeHeight();
       });
-      
+    },
+    changeHeight(){
+      setTimeout(()=>{
+        let body: any = this.$refs.DialogBody;
+        let content: any = this.$refs.DialogContent;
+        let val: string = getComputedStyle(content).getPropertyValue('height');
+        let bh: number = this.state.height;
+        let h: number = parseInt(val.replace(/(px)/g, ''))+48+60+this.hMargin*2;
+        if(h>bh) body.style.height = bh-48-60-this.hMargin*2+'px';
+        else body.style.height = '';
+      }, 300);
     },
 
     /* 更新状态 */
