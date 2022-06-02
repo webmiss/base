@@ -1,24 +1,34 @@
+import Blob from "./blob"
+
 /*
 * 导出
-* param:{data:'', filename:'down.xlsx'}
+* data: [['ID','名称'],[1,测试]]
+* param: {}
 */
-export default (param: any)=>{
-  // 转blob对象
-  const blob: Blob = new Blob([param.data],{
-    type: "application/octet-stream",
-  });
-  const blobURL = window.URL.createObjectURL(blob);
-  // 创建连接
-  const dom = document.createElement('a');
-  dom.style.display = 'none';
-  dom.href = blobURL;
-  dom.setAttribute('download', param.filename);
-  if(typeof dom.download === 'undefined'){
-    dom.setAttribute('target', '_blank');
+export default (data: any=[], param: any={})=>{
+  // 参数
+  param = Object.assign({
+    filename:'export.xlsx',     //文件名
+    borderColor:'#E2E4E8',      //边框颜色
+    titleColor: '#666',         //标题颜色
+    titleBgColor: '#F2F2F2',    //标题背景
+  }, param);
+  // 内容
+  let html: string = '<html>';
+  html += '<style type="text/css">';
+  html += `table td{height: 32px; border: ${param.borderColor} 1px solid;}`;
+  html += `.title{background-color: ${param.titleBgColor}; color: ${param.titleColor}; font-weight: bold;}`;
+  html += '</style>';
+  html += '<table>';
+  for(let x in data){
+    html += '<tr>';
+    for(let y in data[x]){
+      html += x=='0'?`<td class="title">${data[x][y]}</td>`:`<td>${data[x][y]}</td>`;
+    }
+    html += '</tr>';
   }
-  document.body.appendChild(dom);
-  dom.click();
-  // 清除
-  document.body.removeChild(dom);
-  window.URL.revokeObjectURL(blobURL);
+  html += '</table>';
+  html += '</html>';
+  // 下载
+  Blob(html, param.filename);
 }

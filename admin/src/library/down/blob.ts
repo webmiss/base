@@ -1,21 +1,23 @@
-import Toast from '../ui/toast'
-import Post from '../request/post'
-
-/* Blob */
-export default (url: string, param: any)=>{
-  Post(url,param,(res: any)=>{
-    const blob = new Blob([res.data]);
-    const a = document.createElement('a');
-    const href = window.URL.createObjectURL(blob);
-    a.href = href;
-    a.download = param.filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(href);
-  },()=>{
-    Toast('网络加载错误!');
-  },{
-    responseType:'blob',
+/*
+* Blob下载
+*/
+export default (data: any='', filename: string='down.txt')=>{
+  // 转blob对象
+  const blob: Blob = new Blob([data],{
+    type: "application/octet-stream",
   });
+  const blobURL = window.URL.createObjectURL(blob);
+  // 创建连接
+  const dom = document.createElement('a');
+  dom.style.display = 'none';
+  dom.href = blobURL;
+  dom.setAttribute('download', filename);
+  if(typeof dom.download === 'undefined'){
+    dom.setAttribute('target', '_blank');
+  }
+  document.body.appendChild(dom);
+  dom.click();
+  // 清除
+  document.body.removeChild(dom);
+  window.URL.revokeObjectURL(blobURL);
 }

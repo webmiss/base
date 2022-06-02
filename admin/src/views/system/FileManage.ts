@@ -6,7 +6,7 @@ import Loading from '@/library/ui/loading'
 import Toast from '@/library/ui/toast'
 import Post from '@/library/request/post'
 import Storage from '@/library/Storage'
-import DownBlob from '@/library/down/blob'
+import Blob from '@/library/down/blob'
 /* UI组件 */
 import wmMain from '@/components/main/index.vue'
 import wmRow from '@/components/main/row/index.vue'
@@ -136,10 +136,16 @@ export default defineComponent({
     /* 下载 */
     downFile(){
       this.down.show = false;
-      DownBlob('sys_file/down',{
+      Post('sys_file/down',{
         token:Storage.getItem('token'),
         path: this.info.path,
         filename: this.down.filename,
+      },(res: any)=>{
+        Blob(res.data, this.down.filename);
+      },()=>{
+        Toast('网络加载错误!');
+      },{
+        responseType:'blob',
       });
     },
 

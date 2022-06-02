@@ -8,7 +8,7 @@
 </template>
 
 <style>
-.wm-table_info{width: 100%; border-collapse: collapse; border-radius: 4px; background-color: #F2F4F8;}
+.wm-table_info{width: 100%; border-collapse: collapse; border-radius: 4px;}
 .wm-table_info .title{font-size: 14px; font-weight: bold; text-indent: 4px;}
 .wm-table_info td{position: relative; padding: 4px 8px; line-height: 28px; border: #FFF 1px solid;}
 </style>
