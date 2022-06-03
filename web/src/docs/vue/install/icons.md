@@ -80,7 +80,7 @@
 .ui_message:before{content: "\e421";}
 
 .icon_body ul{overflow: hidden; list-style: none; text-align: center;}
-.icon_body ul li{cursor: pointer; width: 16%; padding: 0; border: #E8E8E8 1px solid; box-sizing: border-box;}
+.icon_body ul li{cursor: pointer; width: 16.6%; padding: 0; border: #E8E8E8 1px solid; box-sizing: border-box;}
 .icon_body div{position: relative; padding-top: 10px; height: 40px; line-height: 40px;}
 .icon_body i{font-size: 24px; color: #627488;}
 .icon_body p{line-height: 16px; font-size: 12px;}
