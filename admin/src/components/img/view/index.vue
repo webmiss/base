@@ -25,14 +25,16 @@
   <!-- 关闭 -->
   <div class="imgview_close" @click="close()"><i :class="iconClose"></i></div>
   <!-- 全屏 -->
-  <div class="imgview_full" @click="Fullscreen()"><i :class="iconFull"></i></div>
+  <div class="imgview_full" @click="Fullscreen()">
+    <i :class="!full?iconFull:iconNoFull"></i>
+  </div>
 </div>
 </template>
 
-<style scoped>
+<style lang="less" scoped>
 @keyframes loading { 0% {transform: rotate(0deg);} 50% {transform: rotate(180deg);} 100% {transform: rotate(360deg);} }
 .imgview_load{animation: loading 2s linear 0s infinite; left: 50%; top: 50%; margin: -20px 0 0 -20px;}
-.imgview_load i{font-size: 32px; color: #6FB737;}
+.imgview_load i{font-size: 32px; color: @Primary;}
 .imgview_bg{position: fixed; z-index: 1000; width: 100%; height: 100%; top: 0; left: 0; opacity: 0; transition: all .3s ease;}
 .imgview_bg i{font-size: 24px;}
 .imgview_load,.imgview_close,.imgview_full,.imgview_info,.imgview_left,.imgview_right{position: absolute; z-index: 100;}
@@ -43,8 +45,8 @@
 .imgview_close{top: 10px; right: 10px;}
 .imgview_close:hover{color: #FF6600;}
 .imgview_full{bottom: 10px; right: 10px;}
-.imgview_info{height: 40px; line-height: 40px; left: 0; right: 0; bottom: 20px; text-align: center;}
-.imgview_info .nowrap{border-radius: 20px; padding: 8px 16px; color: #EEE; background-color: rgba(0,0,0,0.3);}
+.imgview_info{height: 40px; line-height: 40px; left: 0; right: 0; bottom: 10px; text-align: center;}
+.imgview_info .nowrap{border-radius: 20px; padding: 8px 16px; color: #EEE; background-color: rgba(0,0,0,0.2);}
 .imgview_info .nowrap span{padding: 0 5px;}
 .imgview_left,.imgview_right{top: 0; width: 50%; height: 100%;}
 .imgview_left i,.imgview_right i{position: absolute; color: #FFF; top: 50%; transform: translate3d(0,-50%,0);}
@@ -59,21 +61,23 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'ImgView',
   props: {
-    show: {type: Boolean, default: false},                  //显示
-    opacity: {type: Number, default: 0.8},                  //背景透明度
-    loadColor: {type: String, default: '#6FB737'},          //Load颜色
-    iconLoading: {type: String, default: 'ui ui_loading'},  //Load图标
-    iconLeft: {type: String, default: 'ui ui_arrow_left'},        //上一页
-    iconRight: {type: String, default: 'ui ui_right'},      //下一页
-    iconFull: {type: String, default: 'ui ui_full'},        //全屏
-    iconClose: {type: String, default: 'ui ui_close'},      //关闭
+    show: {type: Boolean, default: false},                                //显示
+    opacity: {type: Number, default: 0.8},                                //背景透明度
+    loadColor: {type: String, default: '#6FB737'},                        //Load颜色
+    iconLoading: {type: String, default: 'ui ui_loading'},                //Load图标
+    iconLeft: {type: String, default: 'ui ui_arrow_left'},                //上一页
+    iconRight: {type: String, default: 'ui ui_arrow_right'},              //下一页
+    iconFull: {type: String, default: 'ui ui_video_fullscreen'},          //全屏
+    iconNoFull: {type: String, default: 'ui ui_video_fullscreen_exit'},   //全屏
+    iconClose: {type: String, default: 'ui ui_close'},                    //关闭
   },
   data(){
     const loading: boolean = true;
     const index: number = 0;
     const imgs: any = [];
     const info: any = {src:'',name:'',size:''};
-    return {loading,index,imgs,info}
+    const full: boolean = false;
+    return {loading,index,imgs,info,full}
   },
   mounted(){
   },
@@ -158,6 +162,7 @@ export default defineComponent({
 
     /* 全屏 */
     Fullscreen(){
+      this.full = !this.full;
       let obj: any = this.$refs.ImgBG;
       if(obj.webkitRequestFullScreen){
         // @ts-ignore Chrome

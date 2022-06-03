@@ -1,7 +1,7 @@
 <template>
   <table class="wm-table">
     <tr class="wm-table_title" v-if="isTitle">
-      <td width="32" class="checkbox" v-if="isCheckbox">
+      <td width="24" class="checkbox" v-if="isCheckbox">
         <wm-checkbox v-model:checked="show"></wm-checkbox>
       </td>
       <slot name="title"></slot>
@@ -16,7 +16,7 @@
 .wm-table{width: 100%; margin: 4px 0; border-collapse: collapse; box-sizing: border-box; border-radius: 4px;}
 .wm-table .checkbox{position: relative;}
 .wm-table .wm-checkbox{position: absolute;}
-.wm-table td{position: relative; padding: 2px 8px; line-height: 32px; border: #FFF 1px solid;}
+.wm-table td{position: relative; padding: 4px 8px; line-height: 28px; border: #FFF 1px solid;}
 .wm-table_title{font-size: 12px; font-weight: 600; color: #999; background-color: #F2F2F2;}
 .wm-table_list tr:nth-child(odd){background-color: #FFF;}
 .wm-table_list tr:nth-child(even){background-color: #FAFAFA;}

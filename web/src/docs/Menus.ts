@@ -7,6 +7,7 @@ export default [
       {label: '开发环境', value: 'install'},
       {label: '安装&运行', value: 'index'},
       {label: '打包&发布', value: 'build'},
+      {label: '字体图标', value: 'icons'},
     ]},
     {label:'App组件', value:'app', children:[
       {label: 'Chart 图表', value: 'chart'},
