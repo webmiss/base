@@ -1,5 +1,5 @@
 /* 公共 */
-.body{max-width: 1360px; min-width: 320px; margin: 0 auto;}
+.body{max-width: 1280px; min-width: 320px; margin: 0 auto;}
 
 /* Top */
 .app_top_body{width: 100%; background-color: #242628;}
@@ -46,8 +46,8 @@
 
 .app_menus_body{overflow-y: auto; height: calc(100% - 50px);}
 .app_menus_bg{display: none; background-color: rgba(0,0,0,.4);}
-.app_menus_title{cursor: pointer; padding: 8px; line-height: 24px; color: #999;}
-.app_menus_title:hover{background-color: #F4F4F4;  color: #666;}
+.app_menus_title{cursor: pointer; padding: 8px; line-height: 24px; color: #627488; border-bottom: #F2F4F8 1px solid;}
+.app_menus_title:hover{background-color: #F4F4F4;  color: #627488;}
 .app_menus_title h2{font-size: 12px; font-weight: 700;}
 .app_menus_title span{position: relative; width: 24px; height: 24px; transition: All 0.4s ease-in-out;}
 .app_menus_title span i{font-size: 12px;}

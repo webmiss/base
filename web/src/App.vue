@@ -88,7 +88,7 @@
       <div class="app_right">
         <div class="app_addr flex">
           <span>{{ addr }}</span>
-          <span class="app_print" @click="clickPrint">打印、下载</span>
+          <span class="app_print" @click="clickPrint">打印/下载</span>
         </div>
         <div class="app_html">
           <div v-if="docHtml!=''" id="Print" class="doc_html" v-html="docHtml"></div>
