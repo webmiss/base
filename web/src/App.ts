@@ -15,12 +15,13 @@ export default defineComponent({
     // 菜单
     const isShow: boolean = true;
     const nav: any = Menus;
+    const sea: any = {key:'', list:[]};
     const menus: any = [];
     const pos: any = ['vue', 'install', 'index'];
     // 内容
     const addr: string = '';
     const docHtml: string = '';
-    return {apiUrl,copy,isShow,nav,menus,pos,addr,docHtml}
+    return {apiUrl,copy,isShow,nav,sea,menus,pos,addr,docHtml}
   },
   watch:{
     $route(to,from){
@@ -40,6 +41,23 @@ export default defineComponent({
     }, 400);
   },
   methods:{
+
+    /* 搜索 */
+    seaInput(){
+      if(!this.sea.key) return this.sea.list = [];
+      // 数据
+      let data = [];
+      const reg =new RegExp(this.sea.key);
+      for(let x in this.menus){
+        for(let y in this.menus[x].children){
+          if(reg.test(this.menus[x].children[y].key)){
+            this.menus[x].children[y].url = this.menus[x].value;
+            data.push(this.menus[x].children[y])
+          }
+        }
+      }
+      this.sea.list = data;
+    },
 
     /* 菜单数据 */
     menusClick(pos: any){
@@ -96,7 +114,7 @@ export default defineComponent({
           this.docHtml = marked.parse(html);
           // 刷新样式
           HtmlLoad(['/docs/prism.css','/docs/prism.js'],true);
-        },1000);
+        },400);
       } catch (e) {
         this.docHtml = '没有文件!';
       }

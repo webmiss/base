@@ -3,8 +3,13 @@ package webmis.library;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -73,5 +78,37 @@ public class Curl extends Base {
       return null;
     }
   }
-  
+
+  /* URL参数-生成 */
+  static public String UrlEncode(HashMap<String, Object> data){
+    String res = "";
+    try {
+      for(Entry<String, Object> entry : data.entrySet()){
+        res += entry.getKey()+'='+URLEncoder.encode(String.valueOf(entry.getValue()), "UTF-8")+"&";
+      }
+    } catch (UnsupportedEncodingException e) {
+      Print("[Curl] Encode: ", e.getMessage());
+    }
+    res = res.length()>0?res.substring(0,res.length()-1):"";
+    return res;
+  }
+
+  /* URL参数-解析 */
+  static public HashMap<String, String> UrlDecode(String data){
+    HashMap<String, String> res = new HashMap<String, String>();
+    ArrayList<String> arr = new ArrayList<String>();
+    ArrayList<String> tmp;
+    Collections.addAll(arr, data.split("&"));
+    try {
+      for(String v : arr){
+        tmp = new ArrayList<String>();
+        Collections.addAll(tmp, v.split("="));
+        if(tmp.size()==2) res.put(tmp.get(0), URLDecoder.decode(tmp.get(1), "UTF-8"));
+      }
+    } catch (UnsupportedEncodingException e) {
+      Print("[Curl] Decode: ", e.getMessage());
+    }
+    return res;
+  }
+
 }

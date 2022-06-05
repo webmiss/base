@@ -31,11 +31,19 @@ class Curl extends Base {
     return $res;
   }
 
-  /* 请求参数 */
-  static function UrlParam(array $data): string {
-    $dataStr = '';
-    foreach($data as $k=>$v) $dataStr .= '&'.$k.'='.urlencode($v);
-    return $dataStr;
+  /* URL参数-生成 */
+  static function UrlEncode(array $data): string {
+    return http_build_query($data);
+  }
+  /* URL参数-解析 */
+  static function UrlDecode(string $data): array {
+    $res = [];
+    $arr = explode('&', $data);
+    foreach($arr as $v){
+      $tmp = explode('=', $v);
+      if($tmp[1]) $res[$tmp[0]]=urldecode($tmp[1]);
+    }
+    return $res;
   }
 
 }

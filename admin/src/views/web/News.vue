@@ -32,7 +32,7 @@
       <div class="app_ct_body">
         <wm-main>
         <!-- List -->
-        <wm-table ref="Table" :data="page.list">
+        <wm-table ref="Table" :data="page.list" class="table">
           <template #title>
             <td width="40">ID</td>
             <td width="40">封面</td>
@@ -170,7 +170,8 @@
 </template>
 
 <style lang="less" scoped>
-.table{min-width: 800px;}
+.table{min-width: 820px;}
+/* 标题 */
 .news_title{cursor: pointer; line-height: 20px; padding: 8px 0;}
 .news_title:hover{color: @Primary;}
 .form{padding-top: 10px;}

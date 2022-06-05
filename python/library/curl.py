@@ -1,5 +1,6 @@
 import requests
 from util.util import Util
+from urllib.parse import urlencode,unquote
 
 # 请求
 class Curl:
@@ -20,3 +21,16 @@ class Curl:
     if resType=='json' : res=Util.JsonDecode(text)
     else: res=text
     return res
+
+  # URL参数-生成
+  def UrlEncode(data: dict):
+    return urlencode(data)
+  # URL参数-解析
+  def UrlDecode(data: str):
+    res = {}
+    arr = data.split('&')
+    for v in arr :
+      tmp = v.split('=')
+      if len(tmp)==2 : res[tmp[0]] = unquote(tmp[1])
+    return res
+

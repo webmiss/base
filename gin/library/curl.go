@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"io/ioutil"
 	"net/http"
+	"net/url"
+	"strings"
 	"webmis/util"
 )
 
@@ -33,4 +35,27 @@ func (c Curl) Request(url string, data []byte, method string, header map[string]
 	}
 	defer resp.Body.Close()
 	return ioutil.ReadAll(resp.Body)
+}
+
+/* URL参数-生成 */
+func (c Curl) UrlEncode(data map[string]interface{}) string {
+	res := ""
+	for k, v := range data {
+		res += k + "=" + url.QueryEscape((&util.Type{}).Strval(v)) + "&"
+	}
+	res = strings.TrimRight(res, "&")
+	return res
+}
+
+/* URL参数-解析 */
+func (c Curl) UrlDecode(data string) map[string]interface{} {
+	res := map[string]interface{}{}
+	arr := strings.Split(data, "&")
+	for _, v := range arr {
+		tmp := strings.Split(v, "=")
+		if len(tmp) == 2 {
+			res[tmp[0]], _ = url.QueryUnescape(tmp[1])
+		}
+	}
+	return res
 }

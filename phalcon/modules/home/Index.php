@@ -8,12 +8,12 @@ use Library\Captcha;
 use Library\Upload;
 use Util\Util;
 
+use Library\Export;
+
 class Index extends Base {
 
   /* 首页 */
   static function Index() {
-    $data = Util::Exec('echo 123456 > upload/callback.txt');
-    self::Print($data);
     // 返回
     return self::GetJSON(['code'=>0, 'msg'=>'Web']);
   }

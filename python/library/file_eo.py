@@ -110,15 +110,15 @@ class FileEo:
     return False
 
   # 写入
-  def Writer(file: str='', content=''):
+  def Writer(file: str='', content: str='', type: str='wb'):
     file = FileEo.Root+file
-    with open(file,'wb') as f :
+    with open(file, type) as f :
       f.write(content)
       f.close()
     return True
 
   # 追加
-  def WriterEnd(file: str='', content=''):
+  def WriterEnd(file: str='', content: str=''):
     file = FileEo.Root+file
     with open(file,'a+') as f :
       f.write(content)
@@ -126,9 +126,9 @@ class FileEo:
     return True
 
   # 读取
-  def Bytes(file: str):
+  def Bytes(file: str, type: str='rb'):
     dst = FileEo.Root+file
-    with open(dst, 'rb') as f: return f.read()
+    with open(dst, type) as f: return f.read()
 
   # 删除(文件夹&文件)
   def RemoveAll(path: str=''):

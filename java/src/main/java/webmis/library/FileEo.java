@@ -201,6 +201,9 @@ public class FileEo {
   }
 
   /* 写入 */
+  public static boolean Writer(String file, String content){
+    return Writer(file, content.getBytes());
+  }
   public static boolean Writer(String file, byte[] content){
     file = Root+file;
     FileOutputStream fos = null;
