@@ -3,10 +3,11 @@
 import wmForm from '@/components/form/index.vue'
 import wmFormTitle from '@/components/form/title/index.vue'
 import wmFormItem from '@/components/form/item/index.vue'
+import wmInput from '@/components/form/input/index.vue'
 import wmButton from '@/components/form/button/index.vue'
 import wmCheckbox from '@/components/form/checkbox/index.vue'
-import wmInput from '@/components/form/input/index.vue'
 import wmRadio from '@/components/form/radio/index.vue'
+import wmSelect from '@/components/form/select/index.vue'
 ```
 
 ## 表单
@@ -28,6 +29,24 @@ import wmRadio from '@/components/form/radio/index.vue'
 ```
 - type: {type: String, default: 'label'},
 - label: {type: String, default: ''},
+
+## 输入框
+```html
+<wm-input></wm-input>
+```
+- value: {default: ''},                             //值
+- type: {type: String, default: 'text'},            //类型: input属性
+- maxlength: {type: String, default: ''},           //最大字符: 默认
+- placeholder: {type: String, default: '请输入'},   //提示: 无
+- width: {type: String, default: '100%'},           //宽度: '100%'
+- maxWidth: {type: String, default: 'auto'},        //宽度: '100%'
+- height: {type: String, default: '40px'},          //高度: '40px'
+- lineHeight: {type: String, default: '20px'},      //行高: '20px'
+- padding: {type: String, default: '10px 16px'},    //间距: '10px 16px'
+- align: {type: String, default: ''},               //文本对齐方式: 'left'
+- borderRadius: {type: String, default: '4px'},     //边框圆角: '4px'
+- disabled: {type: Boolean, default: false},        //是否禁用
+- @update:value //事件
 
 ## 按钮
 ```html
@@ -58,18 +77,15 @@ import wmRadio from '@/components/form/radio/index.vue'
 - value: {default: ''},             //默认值: val
 - @update:value                     //事件
 
-## 输入框
+
+## 下拉菜单
 ```html
-<wm-input></wm-input>
+<wm-select></wm-select>
 ```
-- value: {default: ''},                           //值
-- type: {type: String, default: 'text'},          //类型: input属性
-- maxlength: {type: String, default: ''},         //最大字符: 默认
-- placeholder: {type: String, default: ''},       //提示: 无
-- width: {type: String, default: '100%'},         //宽度: '100%'
-- maxWidth: {type: String, default: 'auto'},      //宽度: '100%'
-- height: {type: String, default: '40px'},        //高度: '40px'
-- lineHeight: {type: String, default: '20px'},    //行高: '20px'
-- padding: {type: String, default: '10px 16px'},  //间距: '10px 16px'
-- align: {type: String, default: ''},             //文本对齐方式: 'left'
-- @update:value //事件
+- value: {type:String, default:''},               //默认选择
+- data: {type:Array, default:[]},                 //数据: [{label:'Option1', value:'option1'},{label:'Option2', value:'option2'}]
+- width: {type:String, default:'100%'},           //宽度
+- height: {type:String, default:'40px'},          //高度
+- placeholder: {type:String, default:'请选择'},   //提示信息
+- maxHeight: {type:String, default:'160px'},      //最大高度
+- @update:value                                 //事件

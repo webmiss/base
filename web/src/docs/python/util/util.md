@@ -27,6 +27,11 @@ Util.Time()
 Util.Strtotime(day: str=None, format: str='%Y-%m-%d %H:%M:%S')
 ```
 
+## Gmt时间格式
+```python
+Util.GmtISO8601(timestamp: int)
+```
+
 ## 去首尾空格
 ```python
 Util.Trim(content, charlist: str = None)
@@ -42,14 +47,12 @@ Util.Explode(delimiter: str, string: str)
 Util.Implode(glue: str, pieces: list)
 ```
 
-## JSON转字符串
+## Json转换
 ```python
-Util.JsonEncode(arr)
-```
-
-## JSON字符串转数组
-```python
-Util.JsonDecode(str: str)
+# 编码
+Util.JsonEncode(json)
+# 解码
+Util.JsonDecode(json: str)
 ```
 
 ## 合并数组

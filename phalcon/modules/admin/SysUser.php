@@ -332,7 +332,7 @@ class SysUser extends Base {
       'nickname'=> isset($param->nickname)?trim($param->nickname):'',
       'name'=> isset($param->name)?trim($param->name):'',
       'gender'=> isset($param->gender)?trim($param->gender):'',
-      'birthday'=> isset($param->birthday)?Util::Strtotime($param->birthday):0,
+      'birthday'=> isset($param->birthday)?Util::StrToTime($param->birthday):0,
       'position'=> isset($param->position)?trim($param->position):'',
     ];
     // 模型

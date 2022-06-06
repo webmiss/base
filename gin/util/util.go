@@ -21,6 +21,11 @@ func Exec(cmd string) string {
 	return string(res)
 }
 
+/* 字符串长度 */
+func Len(val string) int {
+	return utf8.RuneCountInString(val)
+}
+
 /* 是否为空 */
 func Empty(val interface{}) bool {
 	r := reflect.ValueOf(val)
@@ -38,6 +43,16 @@ func InKey(name string, data map[string]interface{}) bool {
 	return ok
 }
 
+/* 是否存在于数组 */
+func InArray(needle string, haystack []string) bool {
+	for _, val := range haystack {
+		if val == needle {
+			return true
+		}
+	}
+	return false
+}
+
 /* 三元表达式 */
 func If(val bool, tVal interface{}, fVal interface{}) interface{} {
 	if val {
@@ -45,11 +60,6 @@ func If(val bool, tVal interface{}, fVal interface{}) interface{} {
 	} else {
 		return fVal
 	}
-}
-
-/* 字符串长度 */
-func Len(val string) int {
-	return utf8.RuneCountInString(val)
 }
 
 /*
@@ -96,7 +106,7 @@ func Time() int64 {
 String To Timestamp
 @format "2006-01-02 15:04:05"
 */
-func Strtotime(day string, format string) int64 {
+func StrToTime(day string, format string) int64 {
 	if format == "" {
 		format = "2006-01-02 15:04:05"
 	}
@@ -162,16 +172,6 @@ func ArrayMerge(arrays ...map[string]interface{}) map[string]interface{} {
 		}
 	}
 	return res
-}
-
-/* 是否存在于数组 */
-func InArray(needle string, haystack []string) bool {
-	for _, val := range haystack {
-		if val == needle {
-			return true
-		}
-	}
-	return false
 }
 
 /* 截取小数位数-四舍五入 */

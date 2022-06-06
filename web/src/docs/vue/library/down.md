@@ -8,16 +8,16 @@ import DownExport from '@/library/down/export'
 ## Blob下载
 ```typescript
 DownBlob(
-  data: any,          //数据
-  filename: string,   //文件名: down.txt
+  data: any='',                 //数据
+  filename: string='down.txt'   //文件名
 );
 ```
 
 ## 文件下载
 ```typescript
 DownFile(
-  url: string,        //文件地址: https://xxx/test.txt
-  filename: string,   //重命名: down.txt
+  url: string,                  //文件地址
+  filename: string='down.txt'   //文件名
 );
 ```
 

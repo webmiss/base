@@ -68,8 +68,7 @@ export default defineComponent({
     },
 
     /* 获取单条 */
-    getRow(name: string){
-      name = name || 'id';
+    getRow(name: string='id'){
       let row = {};
       // 是否选择
       const obj: any = (this.$refs.wmTable as any).querySelector('.wm-table_checkbox div.active');
@@ -87,8 +86,7 @@ export default defineComponent({
     },
 
     /* 获取多条 */
-    getData(name: string){
-      name = name || 'id';
+    getData(name: string='id'){
       let row = [];
       // 是否选择
       const obj: any = (this.$refs.wmTable as any).querySelectorAll('.wm-table_checkbox div.active');

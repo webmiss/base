@@ -38,7 +38,7 @@ pre[class*="language-"] {
 }
 pre[class*="language-"]>code {
 	position: relative;
-	border-left: 3px solid #595;
+	border-left: 2px solid #595;
 	box-shadow: -1px 0px 0px 0px #595, 0px 0px 0px 1px #FFF;
 	background-color: #fdfdfd;
 	background-image: linear-gradient(transparent 50%, rgba(69, 142, 209, 0.04) 50%);

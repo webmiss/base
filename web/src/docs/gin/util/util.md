@@ -18,9 +18,14 @@ util.Len(val string)
 util.Empty(val interface{})
 ```
 
-## 是否KEY
+## 是否存在KEY
 ```go
 util.InKey(name string, data map[string]interface{})
+```
+
+## 是否存在于数组
+```go
+util.InArray(needle string, haystack []string)
 ```
 
 ## 三元表达式
@@ -47,6 +52,11 @@ util.Time()
 util.Strtotime(day string, format string)
 ```
 
+## Gmt时间格式
+```go
+util.GmtISO8601(timestamp int64)
+```
+
 ## 去首尾空格
 ```go
 util.Trim(str interface{}, charlist ...string)
@@ -62,13 +72,11 @@ util.Explode(delimiter string, str string)
 util.Implode(glue string, pieces []string)
 ```
 
-## JSON转字符串
+## Json转换
 ```go
+// 编码
 util.JsonEncode(arr interface{})
-```
-
-## JSON字符串转数组
-```go
+// 解码
 util.JsonDecode(str interface{}, res interface{})
 ```
 
@@ -77,7 +85,10 @@ util.JsonDecode(str interface{}, res interface{})
 util.ArrayMerge(arrays ...map[string]interface{})
 ```
 
-## 是否存在于数组
+## 截取小数位数
 ```go
-util.InArray(needle string, haystack []string)
+// 四舍五入
+util.FloatRound(f float64, n int)
+// 不四舍五入
+util.FloatFloor(f float64, n int)
 ```

@@ -4,11 +4,11 @@ import wmMain from '@/components/main/index.vue'
 import wmRow from '@/components/main/row/index.vue'
 ```
 
-## 内容
+## 容器
 ```html
 <wm-main></wm-main>
 ```
-- padding: {type: Number, default: 16}, //边距
+- padding: {type: Number, default: 10}, //边距
 
 ## 单行
 ```html

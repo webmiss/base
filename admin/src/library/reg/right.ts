@@ -1,8 +1,7 @@
 import Toast from '../ui/toast'
 
 /* 公共 */
-export default (name: string, val: string, isMsg?: boolean)=>{
-  isMsg = isMsg || false;
+export default (name: string, val: string, isMsg: boolean=false)=>{
   let isRight=false;
   let msg='';
   // 规则

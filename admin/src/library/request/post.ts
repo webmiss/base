@@ -2,7 +2,7 @@ import Env from '@/env'
 import axios, { AxiosRequestConfig } from 'axios'
 
 /* Post请求 */
-export default (url: string, data?: any, success?: any, fail?: any, config?: any)=>{
+export default (url: string, data: any={}, success?: any, fail?: any, config?: any)=>{
   // URL
   if(url.substr(0,4)=='http') url=url;
   else if(url.substr(0,1)=='/') url=Env.baseUrl+url.substr(1);

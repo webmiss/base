@@ -87,7 +87,7 @@ public class UserInfo extends Base {
     info.put("name", Util.Trim(param.get("name").toString()));
     info.put("gender", Util.Trim(param.get("gender").toString()));
     String birthday = Util.Trim(param.get("birthday").toString());
-    info.put("birthday", Util.Strtotime(birthday, "yyyy-MM-dd"));
+    info.put("birthday", Util.StrToTime(birthday, "yyyy-MM-dd"));
     info.put("position", Util.Trim(param.get("position").toString()));
     model.Set(info);
     model.Where("uid=?", tData.get("uid").toString());

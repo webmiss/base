@@ -22,3 +22,8 @@ Hash::HmacSha1(string $data, string $key, bool $binary=true);
 ```php
 Hash::HmacSha256(string $data, string $key, bool $binary=true);
 ```
+
+## Bytes
+```php
+Hash::GetBytes(string $data);
+```

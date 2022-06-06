@@ -7,9 +7,9 @@ import HtmlObserve from '@/library/html/observe'
 ## 加载Css和JS
 ```typescript
 HtmlLoad(
-  files: Array<string>,  //文件: ['file']
-  reload?: boolean,       //是否刷新
-  type?: string,          //类型: js、css
+  files: Array<string>,     //文件: ['file']
+  reload: boolean=false,    //是否刷新
+  type: string=''           //类型: js、css
 );
 ```
 

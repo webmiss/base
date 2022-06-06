@@ -40,10 +40,10 @@ export default defineComponent({
   name: 'Page',
   components: {wmInput},
   props: {
-    page: {type: Number, default: 1},           //当前页码: 1
-    limit: {type: Number, default: 10},         //每页条数: 10
-    total: {type: Number, default: 0},          //总条目数: 0
-    padding: {type: String, default: '16px 0'}, //边距: '32px 0'
+    page: {type: Number, default: 1},             //当前页码
+    limit: {type: Number, default: 10},           //每页条数
+    total: {type: Number, default: 0},            //总条数
+    padding: {type: String, default: '16px 0'},   //间距
   },
   data(){
     const max: number = 0;

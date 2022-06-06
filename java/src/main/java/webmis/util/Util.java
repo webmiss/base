@@ -81,10 +81,10 @@ public class Util extends Base {
   }
 
   /* String To Timestamp */
-  public static long Strtotime(String day) {
-    return Strtotime(day, "yyyy-MM-dd HH:mm:ss");
+  public static long StrToTime(String day) {
+    return StrToTime(day, "yyyy-MM-dd HH:mm:ss");
   }
-  public static long Strtotime(String day, String format) {
+  public static long StrToTime(String day, String format) {
     try {
       SimpleDateFormat sdf = new SimpleDateFormat(format);
       Date data = sdf.parse(day);

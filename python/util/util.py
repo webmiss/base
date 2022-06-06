@@ -33,7 +33,7 @@ class Util:
     return int(time.time())
 
   # String To Timestamp
-  def Strtotime(day: str=None, format: str='%Y-%m-%d %H:%M:%S'):
+  def StrToTime(day: str=None, format: str='%Y-%m-%d %H:%M:%S'):
     tArr = time.strptime(day, format)
     t = time.mktime(tArr)
     return t if t>0 else 0
@@ -57,16 +57,16 @@ class Util:
     return glue.join(pieces)
 
   # Array to String
-  def JsonEncode(arr):
+  def JsonEncode(json):
     try :
-      return json.dumps(arr)
+      return json.dumps(json)
     except Exception as e :
       return ''
 
   # String to Array
-  def JsonDecode(str: str):
+  def JsonDecode(json: str):
     try :
-      return json.loads(str)
+      return json.loads(json)
     except Exception as e :
       return []
 

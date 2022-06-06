@@ -21,9 +21,9 @@ export default defineComponent({
   name:'TableForm',
   components: {},
   props: {
-    width: {type: String, default: '80px'},      //外部间距
+    width: {type: String, default: '80px'},      //lable宽度
     margin: {type: String, default: '4px 0'},    //外部间距
-    bgColor: {type: String, default: '#FFF'},    //显示标题
+    bgColor: {type: String, default: '#FFF'},    //背景颜色
   },
   mounted(){
     const obj = (this.$refs.wmTableForm as any).querySelectorAll('.lable');

@@ -41,7 +41,7 @@ class Util extends Base {
   }
 
   /* String To Timestamp */
-  static function Strtotime(string $day): int {
+  static function StrToTime(string $day): int {
     $t = strtotime(trim($day));
     return $t>0?$t:0;
   }
@@ -57,14 +57,14 @@ class Util extends Base {
   }
 
   /* Array to String */
-  static function JsonEncode($arr): string {
-    $res = json_encode($arr);
+  static function JsonEncode(array $json): string {
+    $res = json_encode($json);
     return $res?$res:'';
   }
 
   /* String to Array */
-  static function JsonDecode($arr): array {
-    $res = json_decode($arr, true);
+  static function JsonDecode(string $json): array {
+    $res = json_decode($json, true);
     return $res?$res:[];
   }
 

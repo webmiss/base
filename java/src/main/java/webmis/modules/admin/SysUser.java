@@ -513,7 +513,7 @@ public class SysUser extends Base {
     info.put("nickname", param.containsKey("nickname")?String.valueOf(param.get("nickname")).trim():"");
     info.put("name", param.containsKey("name")?String.valueOf(param.get("name")).trim():"");
     info.put("gender", param.containsKey("gender")?String.valueOf(param.get("gender")).trim():"");
-    info.put("birthday", param.containsKey("birthday")?Util.Strtotime(param.get("birthday").toString(), "yyyy-MM-dd"):0);
+    info.put("birthday", param.containsKey("birthday")?Util.StrToTime(param.get("birthday").toString(), "yyyy-MM-dd"):0);
     info.put("position", param.containsKey("position")?String.valueOf(param.get("position")).trim():"");
     // 执行
     UserInfo m = new UserInfo();

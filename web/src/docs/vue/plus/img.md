@@ -4,7 +4,7 @@ import ImgCompress from '@/library/plus/img/compress'
 import ImgReader from '@/library/plus/img/reader'
 ```
 
-## 文件
+## 图片压缩(文件方式)
 ```typescript
 ImgCompress(
   file: any,      //文件
@@ -19,7 +19,7 @@ ImgCompress(
 );
 ```
 
-## 文件对象
+## 图片压缩(文件对象)
 ```typescript
 ImgReader(
   fileObj: any,   //对象

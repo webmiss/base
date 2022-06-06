@@ -24,7 +24,20 @@ Util::Len(string $val);
 
 ## 日期转时间戳
 ```php
-Util::Strtotime(string $day);
+Util::StrToTime(string $day);
+```
+
+## Gmt时间格式
+```php
+Util::GmtISO8601(int $timestamp);
+```
+
+## Json转换
+```php
+// 编码
+Util::JsonEncode(array $json);
+// 解码
+Util::JsonDecode(string $json);
 ```
 
 ## URL参数

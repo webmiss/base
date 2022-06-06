@@ -51,7 +51,7 @@ class UserInfo extends Base {
       'nickname'=> trim($param->nickname),
       'name'=> trim($param->name),
       'gender'=> trim($param->gender),
-      'birthday'=> Util::Strtotime($param->birthday),
+      'birthday'=> Util::StrToTime($param->birthday),
       'position'=> trim($param->position),
     ];
     $model->Set($info);

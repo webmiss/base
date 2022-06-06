@@ -65,7 +65,7 @@ func (r UserInfo) Edit(c *gin.Context) {
 		"nickname": util.Trim(param["nickname"]),
 		"name":     util.Trim(param["name"]),
 		"gender":   util.Trim(param["gender"]),
-		"birthday": util.Strtotime(util.Trim(param["birthday"]), "2006-01-02"),
+		"birthday": util.StrToTime(util.Trim(param["birthday"]), "2006-01-02"),
 		"position": util.Trim(param["position"]),
 	}
 	model.Set(info)

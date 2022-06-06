@@ -391,7 +391,7 @@ func (r SysUser) Info(c *gin.Context) {
 		"nickname": util.If(util.InKey("nickname", param), util.Trim(param["nickname"]), ""),
 		"name":     util.If(util.InKey("name", param), util.Trim(param["name"]), ""),
 		"gender":   util.If(util.InKey("gender", param), util.Trim(param["gender"]), ""),
-		"birthday": util.If(util.InKey("birthday", param), util.Strtotime(util.Trim(param["birthday"]), "2006-01-02"), 0),
+		"birthday": util.If(util.InKey("birthday", param), util.StrToTime(util.Trim(param["birthday"]), "2006-01-02"), 0),
 		"position": util.If(util.InKey("position", param), util.Trim(param["position"]), ""),
 	}
 	// 执行

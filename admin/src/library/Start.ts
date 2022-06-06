@@ -6,8 +6,8 @@ import Storage from '@/library/Storage'
 import Post from '@/library/request/post'
 import Back from '@/library/ui/back'
 /* JS组件 */
-import PlusReady from '@/library/plus/ready'
-import PlusBack from '@/library/plus/back'
+import PlusReady from '@/library/plus/inc/ready'
+import PlusBack from '@/library/plus/inc/back'
 import Socket from '@/library/Socket'
 
 /* 启动设置 */

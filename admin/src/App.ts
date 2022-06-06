@@ -113,11 +113,10 @@ export default defineComponent({
           Storage.setItem('uname',d.uinfo.uname);
           Storage.setItem('uinfo',JSON.stringify(d.uinfo));
           // 获取菜单
+          Storage.removeItem('menusPos');
           this.getMenus();
           // 刷新路由
-          if(this.$route.path!='/'){
-            this.$router.replace({path:'/refresh'});
-          }
+          this.$router.replace({path:'/refresh'});
         }else{
           this.state.isLogin = false;
           this.state.uInfo = {};

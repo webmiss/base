@@ -6,7 +6,7 @@ import Storage from '@/library/storage'
 ## 本地硬盘
 ```typescript
 // 保存
-Storage.setItem(key: string,data: string);
+Storage.setItem(key: string, data: string);
 // 获取
 Storage.getItem(key: string);
 // 删除

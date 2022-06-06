@@ -311,7 +311,7 @@ class SysUser(Base):
       'nickname': Util.Trim(param['nickname']) if 'nickname' in param.keys() else '',
       'name': Util.Trim(param['name']) if 'name' in param.keys() else '',
       'gender': Util.Trim(param['gender']) if 'gender' in param.keys() else '',
-      'birthday': Util.Strtotime(param['birthday'], '%Y-%m-%d') if 'birthday' in param.keys() else 0,
+      'birthday': Util.StrToTime(param['birthday'], '%Y-%m-%d') if 'birthday' in param.keys() else 0,
       'position': Util.Trim(param['position']) if 'position' in param.keys() else '',
     }
     # 模型

@@ -78,7 +78,7 @@ export default defineComponent({
           if(d.code==0) succFun(d.img);
           else succFun('');
           return Toast(d.msg);
-        });
+        }, failFun);
       });
     },
 

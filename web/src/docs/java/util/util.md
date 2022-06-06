@@ -32,8 +32,13 @@ Util.Time();
 
 ## 日期转时间戳
 ```java
-Util.Strtotime(String day);
-Util.Strtotime(String day, String format);
+Util.StrToTime(String day);
+Util.StrToTime(String day, String format);
+```
+
+## Gmt时间格式
+```java
+Util.GmtISO8601(long timestamp);
 ```
 
 ## 去首尾空格
@@ -53,13 +58,11 @@ Util.Implode(String glue, ArrayList<String> pieces);
 Util.Implode(String glue, JSONArray pieces);
 ```
 
-## JSON转字符串
+## Json转换
 ```java
+// 编码
 Util.JsonEncode(Object arr);
-```
-
-## JSON字符串转数组
-```java
+// 解码
 Util.JsonDecode(String str);
 Util.JsonDecodeArray(String str);
 ```

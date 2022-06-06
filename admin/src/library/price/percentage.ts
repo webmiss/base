@@ -1,4 +1,4 @@
-/* 不四舍五入 */
+/* 比较增长(百分比) */
 export default (n1: number, n2: number, fixed: number=2)=>{
   n1+=1; n2+=1;
   let t: any = (n1-n2)/n2*100;

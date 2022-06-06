@@ -1,8 +1,8 @@
 ## 引入
 ```javascript
-import PlusReady from '@/library/plus/ready'
-import PlusBack from '@/library/plus/back'
-import VersionDiff from '@/library/inc/version-diff'
+import PlusReady from '@/library/plus/inc/ready'
+import PlusBack from '@/library/plus/inc/back'
+import VersionDiff from '@/library/plus/inc/version-diff'
 ```
 
 ## 监听加载

@@ -32,3 +32,10 @@ Base64::Compress(string $data);
 ```php
 Base64::UnCompress(string $data);
 ```
+
+## 获取后缀
+```php
+Base64::GetExt(
+  string $base64Type  //data:image/jpeg;base64、data:image/png;base64、data:image/gif;base64
+);
+```

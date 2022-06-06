@@ -7,9 +7,9 @@ import RegTest from '@/library/reg/test'
 ## 公共
 ```typescript
 RegRight(
-  name: string,     //项目: uname、tel、email、vcode、passwd
-  val: string,      //内容
-  isMsg?: boolean,  //错误提示
+  name: string,           //项目: uname、tel、email、vcode、passwd
+  val: string,            //内容
+  isMsg: boolean=false,   //错误提示
 );
 ```
 

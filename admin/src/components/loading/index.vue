@@ -37,7 +37,7 @@
 </div>
 </template>
 
-<style scoped>
+<style lang="less" scoped>
 .wm-load{display: inline-block;}
 
 /* Flow */
@@ -88,7 +88,7 @@
 .wm-load_circle { position: relative; width: 32px; height: 32px; }
 .wm-load_circle .sk-child { position: absolute; width: 80%; height: 80%; left: 0; top: 0; }
 .wm-load_circle .sk-child:before {
-  width: 20%; height: 20%; content: ''; display: block; margin: 0 auto; background-color: #6FB737; border-radius: 50%;
+  width: 20%; height: 20%; content: ''; display: block; margin: 0 auto; background-color: @Primary; border-radius: 50%;
   -webkit-animation: sk-circleBounceDelay 1.2s infinite ease-in-out both;
   animation: sk-circleBounceDelay 1.2s infinite ease-in-out both;
 }

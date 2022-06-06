@@ -50,7 +50,7 @@ class UserInfo(Base):
       'nickname': Util.Trim(param['nickname']),
       'name': Util.Trim(param['name']),
       'gender': Util.Trim(param['gender']),
-      'birthday': Util.Strtotime(Util.Trim(param['birthday']), '%Y-%m-%d'),
+      'birthday': Util.StrToTime(Util.Trim(param['birthday']), '%Y-%m-%d'),
       'position': Util.Trim(param['position']),
     }
     model.Set(info)

@@ -53,7 +53,7 @@
           <li
             v-for="(v,k) in sea.list"
             :key="k"
-            :class="v.value==pos[2]?'active':''"
+            :class="v.url==pos[1]&&v.value==pos[2]?'active':''"
             @click="menusClick([pos[0], v.url, v.value])"
           >
             {{ v.label }}
@@ -73,7 +73,7 @@
                 v-for="(v2,k2) in v1.children"
                 :key="k2"
                 class="app_menus_li"
-                :class="v2.value==pos[2]?'active':''"
+                :class="v1.value==pos[1]&&v2.value==pos[2]?'active':''"
                 @click="menusClick([pos[0], v1.value, v2.value])"
               >
                 <h3>{{ v2.label }}</h3>

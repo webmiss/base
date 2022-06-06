@@ -16,5 +16,6 @@ import wmDialog from '@/components/dialog/index.vue'
 - footerAlign: {type: String, default: 'center'}, //底部对齐方式
 - bgColor: {type: String, default: '#FFF'},       //内容背景颜色
 - bgClose: {type: Boolean, default: false},       //点击背景关闭
+- isFooter: {type: Boolean, default: true},       //是否底部
 - @update:show //事件
 

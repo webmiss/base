@@ -1,20 +1,18 @@
 /* 是否存在 */
-const _isInclude = (name: string, type?: string)=>{
+const _isInclude = (name: string, type: string='')=>{
   let js: boolean = type=='js' || /js$/i.test(name);
   const es=document.getElementsByTagName(js?'script':'link');
   for(let val of es){
     let url: string = js?'src':'href';
     if((val as any)[url].indexOf(name)!=-1) return true;
   }
-  
   return false;
 }
 
 /* 加载Css和JS */
-export default (files: Array<string>, reload?: boolean, type?: string)=>{
+export default (files: Array<string>, reload: boolean=false, type: string='')=>{
   let ext: string[] = [];
   let isLoad = false;
-  reload = reload || false;
   for(let file of files){
     // 是否存在
     isLoad = _isInclude(file,type);
