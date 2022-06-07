@@ -5,7 +5,7 @@
       <div class="wm-tree_content" style="padding-left: 0px;" @click="v1.show=!v1.show">
         <span class="wm-tree_arrow">{{v1.show?'-':'+'}}</span>
         <span class="wm-tree_checkbox" :id="'wm-tree_node_'+v1.id">
-          <wm-checkbox :checked="v1.checked" @click="click(v1.id, v1.checked=!v1.checked, v1.children)" :disclick="true"></wm-checkbox>
+          <wm-checkbox :checked="v1.checked" @click.stop="click(v1.id, v1.checked=!v1.checked, v1.children)"></wm-checkbox>
         </span>
         <span class="wm-tree_label">{{v1.label}}</span>
       </div>
@@ -15,7 +15,7 @@
           <span class="wm-tree_arrow" v-if="v2.children && v2.children.length>0">{{v2.show?'-':'+'}}</span>
           <span class="wm-tree_arrow_none" v-else></span>
           <span class="wm-tree_checkbox" :id="'wm-tree_node_'+v2.id">
-            <wm-checkbox :checked="v2.checked" @click="click(v2.id, v2.checked=!v2.checked, v2.children)" :disclick="true"></wm-checkbox>
+            <wm-checkbox :checked="v2.checked" @click.stop="click(v2.id, v2.checked=!v2.checked, v2.children)"></wm-checkbox>
           </span>
           <span class="wm-tree_label">{{v2.label}}</span>
         </div>
@@ -25,7 +25,7 @@
             <span class="wm-tree_arrow" v-if="v3.children && v3.children.length>0">{{v3.show?'-':'+'}}</span>
             <span class="wm-tree_arrow_none" v-else></span>
             <span class="wm-tree_checkbox" :id="'wm-tree_node_'+v3.id">
-              <wm-checkbox :checked="v3.checked" @click="click(v3.id, v3.checked=!v3.checked, v3.children)" :disclick="true"></wm-checkbox>
+              <wm-checkbox :checked="v3.checked" @click.stop="click(v3.id, v3.checked=!v3.checked, v3.children)"></wm-checkbox>
             </span>
             <span class="wm-tree_label">{{v3.label}}</span>
           </div>
@@ -35,7 +35,7 @@
               <span class="wm-tree_arrow" v-if="v4.children && v4.children.length>0">{{v4.show?'-':'+'}}</span>
               <span class="wm-tree_arrow_none" v-else></span>
               <span class="wm-tree_checkbox" :id="'wm-tree_node_'+v4.id">
-                <wm-checkbox :checked="v4.checked" @click="click(v4.id, v4.checked=!v4.checked, v4.children)" :disclick="true"></wm-checkbox>
+                <wm-checkbox :checked="v4.checked" @click.stop="click(v4.id, v4.checked=!v4.checked, v4.children)"></wm-checkbox>
               </span>
               <span class="wm-tree_label">{{v4.label}}</span>
             </div>
@@ -45,7 +45,7 @@
                 <span class="wm-tree_arrow" v-if="v5.children && v5.children.length>0">{{v5.show?'-':'+'}}</span>
                 <span class="wm-tree_arrow_none" v-else></span>
                 <span class="wm-tree_checkbox" :id="'wm-tree_node_'+v5.id">
-                  <wm-checkbox :checked="v5.checked" @click="click(v5.id, v5.checked=!v5.checked, v5.children)" :disclick="true"></wm-checkbox>
+                  <wm-checkbox :checked="v5.checked" @click.stop="click(v5.id, v5.checked=!v5.checked, v5.children)"></wm-checkbox>
                 </span>
                 <span class="wm-tree_label">{{v5.label}}</span>
               </div>
@@ -55,7 +55,7 @@
                   <span class="wm-tree_arrow" v-if="v6.children && v6.children.length>0">{{v6.show?'-':'+'}}</span>
                   <span class="wm-tree_arrow_none" v-else></span>
                   <span class="wm-tree_checkbox" :id="'wm-tree_node_'+v6.id">
-                    <wm-checkbox :checked="v6.checked" @click="click(v6.id, v6.checked=!v6.checked, v6.children)" :disclick="true"></wm-checkbox>
+                    <wm-checkbox :checked="v6.checked" @click.stop="click(v6.id, v6.checked=!v6.checked, v6.children)"></wm-checkbox>
                   </span>
                   <span class="wm-tree_label">{{v6.label}}</span>
                 </div>
@@ -79,10 +79,10 @@
 .wm-tree_content{user-select: none; cursor: pointer; display: flex; align-items: center; height: 26px;}
 .wm-tree_content:hover{background-color: #F2F4F8;}
 .wm-tree_node{white-space: nowrap; outline: none;}
-.wm-tree_arrow{width: 8px; margin-top: -2px; text-align: center; font-size: 14px; font-weight: 600; color: #A2A4A8;}
-.wm-tree_arrow_none{width: 8px;}
+.wm-tree_arrow{width: 16px; margin-top: -2px; text-align: center; font-size: 14px; font-weight: 600; color: #A2A4A8;}
+.wm-tree_arrow_none{width: 16px;}
 .wm-tree_checkbox{position: relative; width: 24px;}
-.wm-tree_checkbox .wm-checkbox{position: absolute; margin: 1px 0 0 -3px;}
+.wm-tree_checkbox .wm-checkbox{position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);}
 .wm-tree_label{font-size: 14px; color: #606266; padding: 0 4px;}
 </style>
 
@@ -93,7 +93,7 @@ export default defineComponent({
   name: 'Tree',
   components: {wmCheckbox},
   props: {
-    data: {default: []}, //数据:  [{id: "1", label: "测试接口", checked: true, show: true, action: true, children: []}]
+    data: {default: []}, //数据: [{id: "1", label: "测试接口", checked: true, show: true, action: true, children: []}]
   },
   data(){
     let menus: any = [];
@@ -124,7 +124,7 @@ export default defineComponent({
     },
     /* Checkbox状态 */
     setCheckbox(id: any, checked: boolean) {
-      let obj = document.querySelector('#wm-tree_node_'+id+' div.checked');
+      let obj = document.querySelector('#wm-tree_node_'+id+' .checked');
       if(obj) checked?obj.classList.add("active"):obj.classList.remove("active");
     },
 

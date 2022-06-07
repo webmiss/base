@@ -358,7 +358,7 @@ public class ApiRole extends Base {
         Long permVal = Long.valueOf(actionArr.getJSONObject(i).get("perm").toString());
         boolean checked = (perm&permVal)>0?true:false;
         actionTmp = new HashMap<String, Object>();
-        actionTmp.put("id", Long.valueOf(val.get("id").toString())+Long.valueOf(actionArr.getJSONObject(i).get("perm").toString()));
+        actionTmp.put("id", String.valueOf(val.get("id").toString())+"_"+String.valueOf(actionArr.getJSONObject(i).get("perm").toString()));
         actionTmp.put("label", actionArr.getJSONObject(i).get("name"));
         actionTmp.put("checked", checked);
         actionTmp.put("perm", actionArr.getJSONObject(i).get("perm"));

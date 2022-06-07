@@ -35,13 +35,13 @@
 @keyframes loading { 0% {transform: rotate(0deg);} 50% {transform: rotate(180deg);} 100% {transform: rotate(360deg);} }
 .imgview_load{animation: loading 2s linear 0s infinite; left: 50%; top: 50%; margin: -20px 0 0 -20px;}
 .imgview_load i{font-size: 32px; color: @Primary;}
-.imgview_bg{position: fixed; z-index: 1000; width: 100%; height: 100%; top: 0; left: 0; opacity: 0; transition: all .3s ease;}
+.imgview_bg{position: fixed; z-index: 1000; width: 100%; height: 100%; top: 0; left: 0; opacity: 0; transition: @Transition;}
 .imgview_bg i{font-size: 24px;}
 .imgview_load,.imgview_close,.imgview_full,.imgview_info,.imgview_left,.imgview_right{position: absolute; z-index: 100;}
 .imgview_load,.imgview_close,.imgview_full{cursor: pointer; border-radius: 50%; color: #FFF; text-align: center; width: 40px; height: 40px; line-height: 40px;}
 .imgview_img img{left: 50%; top: 50%; transform: translate(-50%,-50%);}
 .imgview_img{width: 100%; height: 100%;}
-.imgview_img img{transition: all .3s ease; position: absolute;}
+.imgview_img img{position: absolute; transition: @Transition;}
 .imgview_close{top: 10px; right: 10px;}
 .imgview_close:hover{color: #FF6600;}
 .imgview_full{bottom: 10px; right: 10px;}

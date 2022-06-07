@@ -1,23 +1,36 @@
 <template>
-  <div class="wm-checkbox" @click.stop="click()">
-    <div class="checked" :class="show?'active':''">
-      <input type="checkbox" class="checkbox" :value="value">
-    </div>
-    <div v-if="label" class="name">{{label}}</div>
-  </div>
+  <ul class="wm-checkbox">
+    <li class="disabled" v-if="disabled">
+      <span class="checked" :class="show?'active':''">
+        <input type="checkbox" class="checkbox" :value="value">
+      </span>
+      <span class="label">{{ label }}</span>
+    </li>
+    <li class="enabled" v-else @click="$emit('update:checked',this.show=!this.show)">
+      <span class="checked" :class="show?'active':''">
+        <input type="checkbox" class="checkbox" :value="value">
+      </span>
+      <span class="label">{{ label }}</span>
+    </li>
+  </ul>
 </template>
 
 <style lang="less" scoped>
-.wm-checkbox{position: relative; cursor: pointer; display: inline-block; white-space: nowrap; line-height: 32px; padding: 0 8px;}
-.wm-checkbox div{display: inline-block;}
-.wm-checkbox .checked{position: absolute; top: 50%; margin-top: -8px; width: 14px; height: 14px; border: #C2C4C8 1px solid; background-color: #FFF; border-radius: 2px;}
-.wm-checkbox .name{padding-left: 24px; font-size: 14px;}
-.wm-checkbox:hover{border-radius: 4px;}
-.wm-checkbox:hover .checked{border-color: @Primary;}
-.wm-checkbox:hover .name{color: @Primary;}
-.wm-checkbox .active{border-color: @Primary; background-color: @Primary;}
-.wm-checkbox .active:after{content: ""; position: absolute; width: 4px; height: 8px; border: 2px solid #fff; border-left: 0; border-top: 0; left: 4px; top: 1px; transform-origin: center; transform: rotate(45deg) scaleY(1);}
+.wm-checkbox{display: inline-block; height: 26px; line-height: 26px;}
+.wm-checkbox li{float: left; cursor: pointer; padding: 5px; margin: 0 4px;}
+.wm-checkbox span{float: left;}
 .wm-checkbox .checkbox{display: none;}
+.wm-checkbox .checked{position: relative; display: inline-block; width: 15px; height: 15px; border: @BorderColor 1px solid; border-radius: 2px; background-color: #FFF; transition: @Transition;}
+.wm-checkbox .label{display: inline-block; height: 15px; line-height: 15px; padding-left: 6px;}
+.wm-checkbox .enabled:hover .checked{border-color: @Primary;}
+.wm-checkbox .enabled:hover .label{color: @Primary;}
+.wm-checkbox .active{position: relative; border-color: @Primary; background-color: @Primary;}
+.wm-checkbox .active::after{content: ""; position: absolute; width: 4px; height: 8px; border: 2px solid #fff; border-left: 0; border-top: 0; left: 5px; top: 2px; transform: rotate(45deg);}
+.wm-checkbox .disabled{cursor: not-allowed;}
+.wm-checkbox .disabled .checked{background-color: #F2F2F2;}
+.wm-checkbox .disabled .label{color: @Disabled;}
+.wm-checkbox .disabled .active{border-color: @BorderColor;}
+.wm-checkbox .disabled .active::after{border-color: @Disabled;}
 </style>
 
 <script lang="ts">
@@ -28,7 +41,7 @@ export default defineComponent({
     value: {default: ''},                       //checkbox[value]
     label: {type: String, default: ''},         //名称
     checked: {type: Boolean, default: false},   //是否选中
-    disclick: {type: Boolean, default: false},  //禁用Click
+    disabled: {type: Boolean, default: false},  //禁用Click
   },
   watch:{
     checked(val: boolean){
@@ -43,13 +56,6 @@ export default defineComponent({
     this.show = this.checked;
   },
   methods:{
-
-    /* 选择 */
-    click(){
-      if(this.disclick) return;
-      this.$emit('update:checked',this.show=!this.show);
-    }
-
   }
 });
 </script>

@@ -15,13 +15,13 @@ import wmImg from '@/components/img/index.vue'
 import wmImgUpload from '@/components/img/upload/index.vue'
 import wmSelect from '@/components/form/select/index.vue'
 import wmRadio from '@/components/form/radio/index.vue'
-import wmCheckbox from '@/components/form/checkbox/index.vue'
+import wmCheckboxGroup from '@/components/form/checkbox/group.vue'
 import wmSwitch from '@/components/switch/index.vue'
 import wmTinymce from '@/components/tinymce/index.vue'
 
 /* 系统配置 */
 export default defineComponent({
-  components: {wmMain,wmForm,wmFormItem,wmInput,wmButton,wmImg,wmImgUpload,wmSelect,wmRadio,wmCheckbox,wmSwitch,wmTinymce},
+  components: {wmMain,wmForm,wmFormItem,wmInput,wmButton,wmImg,wmImgUpload,wmSelect,wmRadio,wmCheckboxGroup,wmSwitch,wmTinymce},
   data(){
     // 状态
     const store: any = useStore();
@@ -32,15 +32,16 @@ export default defineComponent({
       param: {name:'logo', token:Storage.getItem('token')},
     };
     // 表单
-    const form: any = {logo:'', input:'', select1:'option2', select2:'option1', radio:'女', switch:true, tinymce:'<b>测试</b>'};
-    const checkbox: any = [{label:'游戏', value: 1, checked: false}, {label:'购物', value: 2, checked: true}];
+    const form: any = {logo:'', input:'', select1:'option2', select2:'option1', radio:'无', checkbox:[], switch:true, tinymce:'<b>测试</b>'};
+    const radio: any = [{label:'男',value:'男'},{label:'女',value:'女'},{label:'无',value:'无',disabled: true}];
+    const checkbox: any = [{label:'游戏', value: 1},{label:'购物', value: 2},{label:'其他', value: 3, checked: true, disabled: true}];
     // 编辑器: UrlEncode('编码')、UrlDecode('解码')
     const tinymce: any = {
       // 上传图片
       upload: {url: '/demo/tinymce/upImg', width: 640},
     };
     
-    return {state, upload, form, checkbox, tinymce}
+    return {state, upload, form, radio, checkbox, tinymce}
   },
   mounted(){
     // 加载数据
@@ -67,25 +68,14 @@ export default defineComponent({
             }, 1000);
           }, 1000);
         }, 3000);
-        // else this.form = d.list;
       });
     },
 
     /* 提交表单 */
     onSubmit(){
       const data: string = JSON.stringify(this.form);
-      console.log(JSON.stringify(this.form));
-      console.log(JSON.stringify(this.checkbox));
+      console.log(data);
       return Toast('请查看Console日志记录！');
-      const load: any = Loading();
-      Post('sys_config/edit',{
-        token: Storage.getItem('token'),
-        data: data
-      },(res: any)=>{
-        load.clear();
-        const d = res.data;
-        return Toast(d.msg);
-      });
     },
 
     /* 上传头像 */

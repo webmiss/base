@@ -4,9 +4,9 @@
   </div>
 </template>
 
-<style scoped>
-.wm-switch{position: relative; cursor: pointer; width: 40px; height: 20px; border-radius: 10px;}
-.wm-switch_cursor{position: absolute; width: 16px; height: 16px; background-color: #FFF; border-radius: 50%; top: 50%; transform: translate(0,-50%);}
+<style lang="less" scoped>
+.wm-switch{position: relative; cursor: pointer; width: 40px; height: 20px; border-radius: 10px; transition: @Transition;}
+.wm-switch_cursor{position: absolute; width: 16px; height: 16px; background-color: #FFF; border-radius: 50%; top: 50%; transform: translate(0,-50%); transition: @Transition;}
 </style>
 
 <script lang="ts">
@@ -17,7 +17,7 @@ export default defineComponent({
   props: {
     value: {type: Boolean, default: false},                               //值
     activeColor: {type: String, default: Env.themes.primary.plain[0]},    //打开颜色
-    inactiveColor: {type: String, default: Env.themes.text.plain[3]},     //关闭颜色
+    inactiveColor: {type: String, default: Env.themes.border.plain[0]},     //关闭颜色
   },
   data(){
     const show: Boolean = false;
@@ -51,8 +51,8 @@ export default defineComponent({
       const box: any = this.$refs.Switch;
       const cursor: any = this.$refs.SwitchCursor;
       // 动画
-      box.style.transitionDuration = `400ms`;
-      cursor.style.transitionDuration = `400ms`;
+      // box.style.transitionDuration = `400ms`;
+      // cursor.style.transitionDuration = `400ms`;
       // 位置
       if(this.show){
         box.style.backgroundColor = this.activeColor;

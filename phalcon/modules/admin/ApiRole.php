@@ -222,7 +222,7 @@ class ApiRole extends Base {
         $permVal = (int)$v['perm'];
         $checked = ($perm&$permVal)>0?true:false;
         $action[]=[
-          'id'=> $val['id']+$v['perm'],
+          'id'=> $val['id'].'_'.$v['perm'],
           'label'=> $v['name'],
           'checked'=> $checked,
           'perm'=> $v['perm'],

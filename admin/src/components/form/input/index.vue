@@ -22,9 +22,9 @@
 
 <style lang="less" scoped>
 .wm-input{border: none; background: none; -webkit-appearance: none; outline: none; font: 400 14px Arial; caret-color: @Primary;}
-.wm-input{box-sizing: border-box; border-radius: 4px; border: #DCDFE6 1px solid; background-color: #FFF;}
-.wm-input:hover{box-shadow: 0 0 4px rgba(0,0,0,.1); border-color: @Primary;}
-.wm-input:focus{outline: none;}
+.wm-input{box-sizing: border-box; border-radius: 4px; border: @BorderColor 1px solid; background-color: #FFF;}
+.wm-input:hover{box-shadow: 0 0 4px rgba(0,0,0,.1); border-color: @BorderHover;}
+.wm-input:focus{outline: none; border-color: @Primary;}
 .wm-input:disabled{border-color: #DCDFE6; background-color: #F4F4F4;}
 </style>
 

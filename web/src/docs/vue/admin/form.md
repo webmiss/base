@@ -69,11 +69,18 @@ import wmSelect from '@/components/form/select/index.vue'
 - disclick: {type: Boolean, default: false},  //禁用Click
 - @update:checked                             //事件
 
+## 多选组
+```html
+<wm-checkbox-group v-model:value="form.checkbox" :data="checkbox"></wm-checkbox-group>
+```
+- value: {type: Array, default: []},    //获取值
+- data: {type: Array, default: []},     //数据: [{label:'游戏', value: 1},{label:'购物', value: 2, checked: true},{label:'其他', value: 3, disabled: true}]
+
 ## 单选
 ```html
 <wm-radio></wm-radio>
 ```
-- data: {type: Array, default: []}, //数据: [{label:'男',value:'男'},{label:'女',value:'女'}]
+- data: {type: Array, default: []}, //数据: [{label:'男',value:'男', disabled: true},{label:'女',value:'女'}]
 - value: {default: ''},             //默认值: val
 - @update:value                     //事件
 
@@ -83,7 +90,7 @@ import wmSelect from '@/components/form/select/index.vue'
 <wm-select></wm-select>
 ```
 - value: {type:String, default:''},               //默认选择
-- data: {type:Array, default:[]},                 //数据: [{label:'Option1', value:'option1'},{label:'Option2', value:'option2'}]
+- data: {type:Array, default:[]},                 //数据: [{label:'Option1', value:'option1', disabled: true},{label:'Option2', value:'option2'}]
 - width: {type:String, default:'100%'},           //宽度
 - height: {type:String, default:'40px'},          //高度
 - placeholder: {type:String, default:'请选择'},   //提示信息

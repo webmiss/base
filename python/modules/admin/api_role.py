@@ -206,7 +206,7 @@ class ApiRole(Base):
         permVal = int(v['perm'])
         checked = True if perm&permVal>0 else False
         action += [{
-          'id': int(val['id'])+int(v['perm']),
+          'id': str(val['id'])+'_'+str(v['perm']),
           'label': str(v['name']),
           'checked': checked,
           'perm': v['perm'],

@@ -278,7 +278,7 @@ func (r *ApiRole) _getMenu(fid string) []map[string]interface{} {
 			permVal := (&util.Type{}).Int64(v["perm"])
 			checked := util.If(perm&permVal > 0, true, false)
 			action = append(action, map[string]interface{}{
-				"id":      (&util.Type{}).Int64(val["id"]) + (&util.Type{}).Int64(v["perm"]),
+				"id":      (&util.Type{}).Strval(val["id"]) + "_" + (&util.Type{}).Strval(v["perm"]),
 				"label":   v["name"],
 				"checked": checked,
 				"perm":    v["perm"],

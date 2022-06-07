@@ -55,7 +55,6 @@ export default defineComponent({
     bgColor: {type: String, default: '#FFF'},       //内容背景颜色
     bgClose: {type: Boolean, default: false},       //点击背景关闭
     isFooter: {type: Boolean, default: true},       //是否底部
-    
   },
   data(){
     // 状态
@@ -68,7 +67,7 @@ export default defineComponent({
       if(!val){
         (this.$refs.Popup as any).close();
       }else{
-        this.changeHeight();
+        this.autoHeight();
       }
     }
   },

@@ -7,19 +7,19 @@
         </wm-img-upload>
       </wm-form-item>
       <wm-form-item label="Input">
-        <wm-input v-model:value="form.input" maxlength="32" placeholder="请输名称" />
+        <wm-input v-model:value="form.input" width="240px" placeholder="请输名称" />
       </wm-form-item>
       <wm-form-item label="Select">
-        <wm-select v-model:value="form.select1" placeholder="选择所属" :data="[{label:'Option1', value:'option1'},{label:'Option2', value:'option2'}]" />
+        <wm-select v-model:value="form.select" width="240px" placeholder="选择所属" :data="[{label:'Option1', value:'option1', disabled: true},{label:'Option2', value:'option2'}]" />
       </wm-form-item>
       <wm-form-item label="Select">
         <wm-select v-model:value="form.select2" :data="[{label:'Option1', value:'option1'},{label:'Option2', value:'option2'}]" />
       </wm-form-item>
       <wm-form-item label="Radio">
-        <wm-radio v-model:value="form.radio" :data="[{label:'男',value:'男'},{label:'女',value:'女'}]"></wm-radio>
+        <wm-radio v-model:value="form.radio" :data="radio"></wm-radio>
       </wm-form-item>
       <wm-form-item label="Checkbox">
-        <wm-checkbox v-for="(v,k) in checkbox" :key="k" :label="v.label" :value="v.value" v-model:checked="v.checked"></wm-checkbox>
+        <wm-checkbox-group v-model:value="form.checkbox" :data="checkbox"></wm-checkbox-group>
       </wm-form-item>
       <wm-form-item label="Switch">
         <wm-switch :value="form.switch" @update:value="form.switch=$event"></wm-switch>
