@@ -13,9 +13,11 @@ public class Env {
   public static final String admin_token_prefix = "AdminToken_";              //前缀
   public static final int admin_token_time = 2*3600;                          //有效时长(2小时)
   public static final boolean admin_token_auto = true;                        //自动续期
+  public static final boolean admin_token_sso = false;                        //单点登录
   public static final String api_token_prefix = "ApiToken_";                  //前缀
   public static final int api_token_time = 7*24*3600;                         //有效时长(7天)
   public static final boolean api_token_auto = true;                          //自动续期
+  public static final boolean api_token_sso = false;                          //单点登录
   /* Logs */
   public static final String log_source = "java";     //访问日志-来源
   public static final boolean log_db = false;         //访问日志-数据库

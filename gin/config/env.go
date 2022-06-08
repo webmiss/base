@@ -12,9 +12,11 @@ type EnvType struct {
 	AdminTokenPrefix string
 	AdminTokenTime   int64
 	AdminTokenAuto   bool
+	AdminTokenSso    bool
 	ApiTokenPrefix   string
 	ApiTokenTime     int64
 	ApiTokenAuto     bool
+	ApiTokenSso      bool
 	LogSource        string
 	LogDb            bool
 	LogFile          bool
@@ -37,9 +39,11 @@ func Env() *EnvType {
 	cfg.AdminTokenPrefix = "Admin"   //前缀
 	cfg.AdminTokenTime = 2 * 3600    //有效时长(2小时)
 	cfg.AdminTokenAuto = true        //自动续期
+	cfg.AdminTokenSso = false        //单点登录
 	cfg.ApiTokenPrefix = "Api"       //前缀
 	cfg.ApiTokenTime = 7 * 24 * 3600 //有效时长(7天)
 	cfg.ApiTokenAuto = true          //自动续期
+	cfg.ApiTokenSso = false          //单点登录
 	/* Logs */
 	cfg.LogSource = "go" //访问日志-来源
 	cfg.LogDb = false    //访问日志-数据库

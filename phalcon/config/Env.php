@@ -14,9 +14,11 @@ class Env {
   static $admin_token_prefix = 'Admin';                     //前缀
   static $admin_token_time = 2*3600;                        //有效时长(2小时)
   static $admin_token_auto = true;                          //自动续期
+  static $admin_token_sso = false;                          //单点登录
   static $api_token_prefix = 'Api';                         //前缀
   static $api_token_time = 7*24*3600;                       //有效时长(7天)
   static $api_token_auto = true;                            //自动续期
+  static $api_token_sso = false;                            //单点登录
   /* Logs */
   static $log_source = 'php';     //访问日志-来源
   static $log_db = false;          //访问日志-数据库

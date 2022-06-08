@@ -33,7 +33,7 @@ func (s ApiToken) Verify(token string, urlPerm string) string {
 	access_token := redis.Get(key)
 	time := redis.TTL(key)
 	redis.Close()
-	if (&util.Hash{}).Md5(token) != access_token {
+	if env.ApiTokenSso && (&util.Hash{}).Md5(token) != access_token {
 		return "强制退出!"
 	}
 	if time < 1 {

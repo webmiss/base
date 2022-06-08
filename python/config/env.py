@@ -14,9 +14,11 @@ class Env :
   admin_token_prefix: str = 'Admin'                     #前缀
   admin_token_time: int = 2*3600                        #有效时长(2小时)
   admin_token_auto: bool = True                         #自动续期
+  admin_token_sso: bool = False                         #单点登录
   api_token_prefix: str = 'Api'                         #前缀
   api_token_time: int = 7*24*3600                       #有效时长(7天)
   api_token_auto: bool = True                           #自动续期
+  api_token_sso: bool = False                           #单点登录
   # Logs
   log_source: str = 'python'                            #访问日志-来源
   log_db: bool = False                                  #访问日志-数据库

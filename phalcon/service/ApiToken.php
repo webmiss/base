@@ -22,7 +22,7 @@ class ApiToken extends Base {
     $access_token = $redis->Gets($key);
     $time = $redis->Ttl(Env::$api_token_prefix.'_token_'.$uid);
     $redis->Close();
-    if(md5($token)!=$access_token) return '强制退出!';
+    if(Env::$api_token_sso && md5($token)!=$access_token) return '强制退出!';
     if($time<1) return 'Token已过期!';
     // 续期
     if(Env::$api_token_auto){

@@ -28,7 +28,9 @@ public class ApiToken extends Base {
     String access_token = redis.Get(key);
     Long time = redis.Ttl(Env.api_token_prefix+"_token_"+uid);
     redis.Close();
-    if(!access_token.equals(Hash.Md5(token))) return "强制退出!";
+    if(Env.api_token_sso) {
+      if(!access_token.equals(Hash.Md5(token))) return "强制退出!";
+    }
     if(time<1) return "Token已过期!";
     // 续期
     if(Env.api_token_auto){

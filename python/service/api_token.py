@@ -21,7 +21,7 @@ class ApiToken:
     access_token =  str(redis.Get(key))
     time = redis.Ttl(key)
     redis.Close()
-    if Hash.Md5(token) != access_token: return '强制退出!'
+    if Env.api_token_sso and Hash.Md5(token) != access_token: return '强制退出!'
     if time <1 : return 'Token已过期!'
     # 续期
     if Env.api_token_auto :

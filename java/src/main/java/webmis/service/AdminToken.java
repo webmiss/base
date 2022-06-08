@@ -28,7 +28,9 @@ public class AdminToken extends Base {
     String access_token = redis.Get(key);
     Long time = redis.Ttl(key);
     redis.Close();
-    if(!access_token.equals(Hash.Md5(token))) return "强制退出!";
+    if(Env.admin_token_sso) {
+      if(!access_token.equals(Hash.Md5(token))) return "强制退出!";
+    }
     if(time<1) return "Token已过期!";
     // 续期
     if(Env.admin_token_auto){

@@ -22,7 +22,7 @@ class AdminToken extends Base {
     $access_token = $redis->Gets($key);
     $time = $redis->Ttl($key);
     $redis->Close();
-    if(md5($token)!=$access_token) return '强制退出!';
+    if(Env::$admin_token_sso && md5($token)!=$access_token) return '强制退出!';
     if($time<1) return 'Token已过期!';
     // 续期
     if(Env::$admin_token_auto){
@@ -88,7 +88,7 @@ class AdminToken extends Base {
     $redis = new Redis();
     $key = Env::$admin_token_prefix.'_token_'.$data['uid'];
     $redis->Set($key, md5($token));
-    $redis->Expire($key, Env::$admin_token_time);
+    $res = $redis->Expire($key, Env::$admin_token_time);
     $redis->Close();
     return $token;
   }
