@@ -38,4 +38,11 @@ Docs：[https://webmis.vip](https://webmis.vip)
 - 前端-API( [https://demo-go.webmis.vip/api/](https://demo-go.webmis.vip/api/index) )
 - 后台-API( [https://demo-go.webmis.vip/admin/](https://demo-go.webmis.vip/admin/index) )
 
-<br/><br/>
+<br/>
+
+## 更新日志
+#### v3.0.0
+- [重构] 后台UI界面风格
+- [优化] UI组件
+- [新增] Select下拉菜单，Checkbox多选组
+- [新增] 百度统计、Curl请求、Excel导出、SSO单点登录

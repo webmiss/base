@@ -36,7 +36,8 @@ import wmSelect from '@/components/form/select/index.vue'
 ```
 - value: {default: ''},                             //值
 - type: {type: String, default: 'text'},            //类型: input属性
-- maxlength: {type: String, default: ''},           //最大字符: 默认
+- maxlength: {type: String, default: ''},           //最大长度: 默认
+- minlength: {type: String, default: ''},           //最小长度: 默认
 - placeholder: {type: String, default: '请输入'},   //提示: 无
 - width: {type: String, default: '100%'},           //宽度: '100%'
 - maxWidth: {type: String, default: 'auto'},        //宽度: '100%'
@@ -46,6 +47,7 @@ import wmSelect from '@/components/form/select/index.vue'
 - align: {type: String, default: ''},               //文本对齐方式: 'left'
 - borderRadius: {type: String, default: '4px'},     //边框圆角: '4px'
 - disabled: {type: Boolean, default: false},        //是否禁用
+- clearable: {type: Boolean, default: false},       //一键清空
 - @update:value //事件
 
 ## 按钮
@@ -95,4 +97,5 @@ import wmSelect from '@/components/form/select/index.vue'
 - height: {type:String, default:'40px'},          //高度
 - placeholder: {type:String, default:'请选择'},   //提示信息
 - maxHeight: {type:String, default:'160px'},      //最大高度
-- @update:value                                 //事件
+- clearable: {type: Boolean, default: false},       //一键清空
+- @update:value   //事件

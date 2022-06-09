@@ -7,13 +7,13 @@
         </wm-img-upload>
       </wm-form-item>
       <wm-form-item label="Input">
-        <wm-input v-model:value="form.input" width="240px" placeholder="请输名称" />
+        <wm-input v-model:value="form.input" width="240px" clearable />
       </wm-form-item>
       <wm-form-item label="Select">
-        <wm-select v-model:value="form.select" width="240px" placeholder="选择所属" :data="[{label:'Option1', value:'option1', disabled: true},{label:'Option2', value:'option2'}]" />
+        <wm-select v-model:value="form.select" width="240px" clearable :data="select" />
       </wm-form-item>
-      <wm-form-item label="Select">
-        <wm-select v-model:value="form.select2" :data="[{label:'Option1', value:'option1'},{label:'Option2', value:'option2'}]" />
+      <wm-form-item label="Cascader">
+        <wm-cascader v-model:value="form.cascader" width="240px" :data="cascader" />
       </wm-form-item>
       <wm-form-item label="Radio">
         <wm-radio v-model:value="form.radio" :data="radio"></wm-radio>

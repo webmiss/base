@@ -14,6 +14,7 @@ import wmButton from '@/components/form/button/index.vue'
 import wmImg from '@/components/img/index.vue'
 import wmImgUpload from '@/components/img/upload/index.vue'
 import wmSelect from '@/components/form/select/index.vue'
+import wmCascader from '@/components/form/cascader/index.vue'
 import wmRadio from '@/components/form/radio/index.vue'
 import wmCheckboxGroup from '@/components/form/checkbox/group.vue'
 import wmSwitch from '@/components/switch/index.vue'
@@ -21,7 +22,7 @@ import wmTinymce from '@/components/tinymce/index.vue'
 
 /* 系统配置 */
 export default defineComponent({
-  components: {wmMain,wmForm,wmFormItem,wmInput,wmButton,wmImg,wmImgUpload,wmSelect,wmRadio,wmCheckboxGroup,wmSwitch,wmTinymce},
+  components: {wmMain,wmForm,wmFormItem,wmInput,wmButton,wmImg,wmImgUpload,wmSelect,wmCascader,wmRadio,wmCheckboxGroup,wmSwitch,wmTinymce},
   data(){
     // 状态
     const store: any = useStore();
@@ -33,6 +34,20 @@ export default defineComponent({
     };
     // 表单
     const form: any = {logo:'', input:'', select1:'option2', select2:'option1', radio:'无', checkbox:[], switch:true, tinymce:'<b>测试</b>'};
+    const select: any = [{label:'Option1', value:'option1', disabled: true},{label:'Option2', value:'option2'}];
+    const cascader: any = [
+      {label:'首页', value:'1', children: [
+        {label:'用户信息', value:'3'},
+        {label:'修改密码', value:'4'},
+      ]},
+      {label:'内容', value:'2', children: [
+        {label:'新闻管理', value:'5', children: [
+          {label:'新闻列表', value:'7'},
+          {label:'新闻分类', value:'8'},
+        ]},
+        {label:'产品中心', value:'6'},
+      ]}
+    ];
     const radio: any = [{label:'男',value:'男'},{label:'女',value:'女'},{label:'无',value:'无',disabled: true}];
     const checkbox: any = [{label:'游戏', value: 1},{label:'购物', value: 2},{label:'其他', value: 3, checked: true, disabled: true}];
     // 编辑器: UrlEncode('编码')、UrlDecode('解码')
@@ -41,7 +56,7 @@ export default defineComponent({
       upload: {url: '/demo/tinymce/upImg', width: 640},
     };
     
-    return {state, upload, form, radio, checkbox, tinymce}
+    return {state, upload, form, select, cascader, radio, checkbox, tinymce}
   },
   mounted(){
     // 加载数据
