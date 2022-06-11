@@ -5,7 +5,7 @@
         <span class="checked" :class="v.value==value?'active':''"></span>
         <span class="label">{{v.label}}</span>
       </li>
-      <li class="enabled" v-else @click="$emit('update:value',v.value)">
+      <li class="enabled" v-else @click.stop="$emit('update:value',v.value)">
         <span class="checked" :class="v.value==value?'active':''"></span>
         <span class="label">{{v.label}}</span>
       </li>

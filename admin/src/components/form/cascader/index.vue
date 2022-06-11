@@ -1,18 +1,18 @@
 <template>
   <div class="wm-cascader" :style="{width: width}">
-    <div class="wm-cascader_input" :style="{height: height, lineHeight: height}" @click="checked=!checked">
+    <div class="wm-cascader_input" :style="{height: height, lineHeight: height}" @click="show=!show">
       <!-- Clear -->
       <div class="wm-cascader_clear_body" v-if="value&&clearable">
-        <span class="wm-cascader_clear" @click.stop="$emit('update:value', '')"></span>
+        <span class="wm-cascader_clear" @click.stop="clear()"></span>
       </div>
       <!-- Arrow -->
-      <div class="wm-cascader_input_ico" :style="{transform: checked?'rotate(-180deg)':'rotate(0deg)'}">
+      <div class="wm-cascader_input_ico" :style="{transform: show?'rotate(-180deg)':'rotate(0deg)'}">
         <i class="ui ui_arrow_down"></i>
       </div>
       <!-- Value -->
-      <input type="text" readonly :placeholder="placeholder" :value="text" :style="{borderColor: checked?'#6FB737':'', boxShadow: checked?'0 0 4px rgba(0,0,0,.1)':''}">
+      <input type="text" readonly :placeholder="placeholder" :value="text" :style="{borderColor: show?'#6FB737':'', boxShadow: show?'0 0 4px rgba(0,0,0,.1)':''}">
     </div>
-    <div class="wm-cascader_body flex" v-if="checked">
+    <div class="wm-cascader_body flex" v-if="show">
       <!-- Arrow -->
       <span class="wm-cascader_arrow"></span>
       <!-- 一级菜单 -->
@@ -22,7 +22,7 @@
             <span>{{v.label}}</span>
             <i class="ui ui_arrow_right" v-if="v.children"></i>
           </li>
-          <li v-else :class="v.value==value?'wm-cascader_active':''" @click.stop="selectClick(k, -1, -1)">
+          <li v-else :class="v.checked?'wm-cascader_active':''" @click.stop="selectClick('1', [k, -1, -1, -1])">
             <span>{{v.label}}</span>
             <i class="ui ui_arrow_right" v-if="v.children"></i>
           </li>
@@ -35,7 +35,7 @@
             <span>{{v.label}}</span>
             <i class="ui ui_arrow_right" v-if="v.children"></i>
           </li>
-          <li v-else :class="v.value==value?'wm-cascader_active':''" @click="selectClick(k1, k, -1)">
+          <li v-else :class="v.checked?'wm-cascader_active':''" @click="selectClick('2', [k1, k, -1, -1])">
             <span>{{v.label}}</span>
             <i class="ui ui_arrow_right" v-if="v.children"></i>
           </li>
@@ -48,7 +48,20 @@
             <span>{{v.label}}</span>
             <i class="ui ui_arrow_right" v-if="v.children"></i>
           </li>
-          <li v-else :class="v.value==value?'wm-cascader_active':''" @click="selectClick(k1, k2, k)">
+          <li v-else :class="v.checked?'wm-cascader_active':''" @click="selectClick('3', [k1, k2, k, -1])">
+            <span>{{v.label}}</span>
+            <i class="ui ui_arrow_right" v-if="v.children"></i>
+          </li>
+        </template>
+      </ul>
+      <!-- 四级菜单 -->
+      <ul v-if="k3>=0 && dataList[k1].children[k2].children[k3].children" class="wm-cascader_list scrollbar" :style="{width: maxWidth, maxHeight: maxHeight}">
+        <template v-for="(v,k) in dataList[k1].children[k2].children[k3].children" :key="k">
+          <li v-if="v.disabled" class="wm-cascader_disabled" style="cursor: not-allowed;">
+            <span>{{v.label}}</span>
+            <i class="ui ui_arrow_right" v-if="v.children"></i>
+          </li>
+          <li v-else :class="v.checked?'wm-cascader_active':''" @click="selectClick('4', [k1, k2, k3, k])">
             <span>{{v.label}}</span>
             <i class="ui ui_arrow_right" v-if="v.children"></i>
           </li>
@@ -91,38 +104,46 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { Explode } from '@/library/util/index'
+import { RTrim } from '@/library/util/trim'
 export default defineComponent({
   name:'Cascader',
   props: {
-    value: {type:String, default:''},               //默认选择
+    value: {type:Array, default:[]},                //默认值
     data: {type:Array, default:[]},                 //数据: [{label:'Option1', value:'option1', disabled: true},{label:'Option2', value:'option2'}]
     width: {type:String, default:'100%'},           //宽度
     height: {type:String, default:'40px'},          //高度
     placeholder: {type:String, default:'请选择'},   //提示信息
-    maxWidth: {type:String, default:'180px'},      //最大宽度
+    maxWidth: {type:String, default:'180px'},       //最大宽度
     maxHeight: {type:String, default:'160px'},      //最大高度
     clearable: {type: Boolean, default: false},     //一键清空
+    checkStrictly: {type: Boolean, default: false}, //选择任意
   },
   data(){
-    const checked: boolean = false;
+    const show: boolean = false;
     const text: string = '';
     const dataList: any = null;
-    let k1: number=-1, k2: number=-1, k3: number=-1;
-    return {checked, text, dataList, k1, k2, k3}
+    let k1: any=-1, k2: any=-1, k3: any=-1, k4: any=-1;
+    return {show, text, dataList, k1, k2, k3, k4}
   },
   watch:{
-    value(val: any){
-      this.selectDisplay(val);
+    value(v: any){
+      const n: number = v.length;
+      if(n>0) this.k1= v[0]; this.selectChechked(v[0], this.dataList);
+      if(n>1) this.k2= v[1]; this.selectChechked(v[1], this.dataList[v[0]].children);
+      if(n>2) this.k3= v[2]; this.selectChechked(v[2], this.dataList[v[0]].children[v[1]].children);
+      if(n>3) this.k4= v[3]; this.selectChechked(v[3], this.dataList[v[0]].children[v[1]].children[v[2]].children);
+      this.getValue();
     },
     data(val: any){
       this.dataList = val;
-      this.selectDisplay(this.value);
+      this.getValue();
     }
   },
   mounted(){
     // 默认值
     this.dataList = this.data;
-    this.selectDisplay(this.value);
+    this.getValue();
     // 阻止穿透
     const obj: any = document.getElementsByClassName('wm-cascader');
     for(let i=0; i<obj.length; i++){
@@ -131,29 +152,97 @@ export default defineComponent({
       });
     }
     // 监听外部
-    document.addEventListener('click',()=>{ this.checked = false; });
+    document.addEventListener('click',()=>{ this.show = false; });
   },
   methods:{
 
     /* 选择 */
-    selectClick(k1: number, k2: number, k3: number){
-      this.k1= k1;
-      this.k2= k2;
-      this.k3= k3;
-      console.log(k1, k2, k3);
-      console.log(this.dataList[this.k1].children);
-      // this.selectDisplay(val);
-      // this.$emit('update:value', val);
+    selectClick(type: string, pos: any){
+      this.k1= pos[0];
+      this.k2= pos[1];
+      this.k3= pos[2];
+      this.k4= pos[3];
+      const data: any = this.dataList;
+      if(type=='1') this.selectRouter(this.k1, data);
+      else if(type=='2') this.selectRouter(this.k2, data[this.k1].children);
+      else if(type=='3') this.selectRouter(this.k3, data[this.k1].children[this.k2].children);
+      else if(type=='4') this.selectRouter(this.k4, data[this.k1].children[this.k2].children[this.k3].children);
+    },
+    // 改变状态
+    selectRouter(k: any, data: any){
+      for(let i in data){
+        if(i==k){
+          data[i].checked = true;
+          if(this.checkStrictly){
+            // 清理下级
+            if(data[k].children) this.selectClear(data[k].children);
+            // 获取值
+            this.getValue();
+          }else if(!data[k].children){
+            this.show = false;
+            // 获取值
+            this.getValue();
+          }
+        }else{
+          data[i].checked = false;
+          // 清理下级
+          if(data[i].children) this.selectClear(data[i].children);
+        }
+      }
+    },
+    // 选中
+    selectChechked(k:any, data: any){
+      for(let i in data){
+        data[i].checked = i==k?true:false;
+      }
+    },
+    // 清空下级
+    selectClear(data: any) {
+      for(let i in data){
+        data[i].checked = false;
+        if(data[i].children) this.selectClear(data[i].children);
+      }
     },
 
-    /* 显示值 */
-    selectDisplay(val: string){
-      const data: any = this.data;
-      if(val=='') return this.text='';
+    /* 获取选中值 */
+    getValue(){
+      let res: any = this.selectValue(this.dataList);
+      this.text = RTrim(res.label, '/');
+      this.$emit('update:value', Explode('/', RTrim(res.key, '/')));
+    },
+    // 递归
+    selectValue(data: any){
+      let key: string = '';
+      let label: string = '';
+      let value: string = '';
+      let tmp: any = {};
       for(let i in data){
-        if(data[i]['value']==val) return this.text=data[i]['label'];
+        if(data[i].checked){
+          key = i;
+          label = data[i].label;
+          value = data[i].value;
+          if(data[i].children){
+            tmp = this.selectValue(data[i].children);
+            key += '/'+tmp['key'];
+            label += '/'+tmp['label'];
+            value += '/'+tmp['value'];
+          }
+          break;
+        }
       }
-    }
+      return {key:key, label:label, value:value};
+    },
+
+    /* 清空 */
+    clear() {
+      this.k1= -1;
+      this.k2= -1;
+      this.k3= -1;
+      this.k4= -1;
+      this.text = '';
+      this.$emit('update:value', []);
+      this.selectClear(this.dataList);
+    },
 
   },
 });

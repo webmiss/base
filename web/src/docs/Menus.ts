@@ -55,6 +55,7 @@ export default [
       {label: 'Tel 手机号码', value: 'tel', key:'tel,手机号码,拨号,隐藏手机号码'},
       {label: 'Time 时间', value: 'time', key:'time,时间,时间戳(10位),年月日时分秒,时间比较,获取日期,获取星期几,格式化小时,格式化时间'},
       {label: 'URL 编码&解码', value: 'url', key:'url编码,url解码'},
+      {label: 'Util 常用工具', value: 'util', key:'util常用工具'},
     ]},
     {label:'Plus模块', value:'plus', children:[
       {label: 'Plus 公共', value: 'plus', key:'plus,公共,plus监听,android返回键,版本比较'},

@@ -33,20 +33,25 @@ export default defineComponent({
       param: {name:'logo', token:Storage.getItem('token')},
     };
     // 表单
-    const form: any = {logo:'', input:'', select1:'option2', select2:'option1', radio:'无', checkbox:[], switch:true, tinymce:'<b>测试</b>'};
+    const form: any = {logo:'', input:'', select:'option1', cascader:[], radio:'无', checkbox:[], switch:true, tinymce:'<b>测试</b>'};
     const select: any = [{label:'Option1', value:'option1', disabled: true},{label:'Option2', value:'option2'}];
     const cascader: any = [
-      {label:'首页', value:'1', children: [
-        {label:'用户信息', value:'3'},
-        {label:'修改密码', value:'4'},
+      {label:'A', value:'1', children: [
+        {label:'A_1', value:'3'},
+        {label:'A_2', value:'4'},
       ]},
-      {label:'内容', value:'2', children: [
-        {label:'新闻管理', value:'5', children: [
-          {label:'新闻列表', value:'7'},
-          {label:'新闻分类', value:'8'},
+      {label:'B', value:'2', children: [
+        {label:'B_1', value:'5', children: [
+          {label:'B_1_1', value:'7'},
+          {label:'B_1_2', value:'8'},
         ]},
-        {label:'产品中心', value:'6'},
-      ]}
+        {label:'B_2', value:'5', disabled: true, children: [
+          {label:'B_2_1', value:'9'},
+          {label:'B_2_2', value:'10'},
+        ]},
+        {label:'B_3', value:'6'},
+      ]},
+      {label:'C', value:'1', disabled: true},
     ];
     const radio: any = [{label:'男',value:'男'},{label:'女',value:'女'},{label:'无',value:'无',disabled: true}];
     const checkbox: any = [{label:'游戏', value: 1},{label:'购物', value: 2},{label:'其他', value: 3, checked: true, disabled: true}];
@@ -75,7 +80,8 @@ export default defineComponent({
         if(d.code!=0) return Toast(d.msg);
         setTimeout(()=>{
           this.form.tinymce = '<b>测试1</b>';
-          this.form.select2 = 'option2';
+          this.form.select = 'option2';
+          this.form.cascader = [1,0,1];
           setTimeout(()=>{
             this.form.tinymce = '<b>测试2</b>';
             setTimeout(()=>{

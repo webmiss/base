@@ -6,7 +6,7 @@
       </span>
       <span class="label">{{ label }}</span>
     </li>
-    <li class="enabled" v-else @click="$emit('update:checked',this.show=!this.show)">
+    <li class="enabled" v-else @click.stop="$emit('update:checked',this.show=!this.show)">
       <span class="checked" :class="show?'active':''">
         <input type="checkbox" class="checkbox" :value="value">
       </span>
