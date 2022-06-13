@@ -88,22 +88,22 @@
     <!-- Body End -->
 
     <!-- Add -->
-    <wm-dialog title="添加" width="540px" :show="add.show" @update:close="add.show=$event">
+    <wm-dialog title="添加" width="700px" :show="add.show" @update:close="add.show=$event">
       <wm-form class="form">
         <wm-form-item label="所属">
-          <wm-input v-model:value="add.form.fid" maxlength="3" maxWidth="80px" placeholder="FID" />
+          <wm-cascader width="240px" :value="menus.value" @update:value="menus.value=$event" :data="menus.data" checkStrictly clearable />
         </wm-form-item>
         <wm-form-item label="名称">
-          <wm-input v-model:value="add.form.title" maxlength="8" maxWidth="320px" placeholder="菜单名称" />
-        </wm-form-item>
-        <wm-form-item label="控制器">
-          <wm-input v-model:value="add.form.controller" maxlength="64" placeholder="例如: /admin/sys_menus" />
+          <wm-input v-model:value="add.form.title" maxlength="8" maxWidth="80%" placeholder="菜单名称" clearable />
         </wm-form-item>
         <wm-form-item label="URL">
-          <wm-input v-model:value="add.form.url" maxlength="24" maxWidth="320px" placeholder="URL" />
+          <wm-input v-model:value="add.form.url" maxlength="24" maxWidth="80%" placeholder="URL" clearable />
+        </wm-form-item>
+        <wm-form-item label="API">
+          <wm-input v-model:value="add.form.controller" maxlength="64" maxWidth="80%" placeholder="例如: /admin/sys_menus" clearable />
         </wm-form-item>
         <wm-form-item label="图标样式">
-          <wm-input v-model:value="add.form.ico" maxlength="32" maxWidth="240px" placeholder="图标样式" />
+          <wm-input v-model:value="add.form.ico" maxlength="32" maxWidth="80%" placeholder="图标样式" clearable />
         </wm-form-item>
         <wm-form-item label="排序">
           <wm-input v-model:value="add.form.sort" maxlength="2" maxWidth="240px" placeholder="例如: 1、2、3" />
@@ -116,22 +116,22 @@
     <!-- Add End -->
 
     <!-- Edit -->
-    <wm-dialog title="编辑" width="540px" :show="edit.show" @update:close="edit.show=$event">
+    <wm-dialog title="编辑" width="700px" :show="edit.show" @update:close="edit.show=$event">
       <wm-form class="form">
         <wm-form-item label="所属">
-          <wm-input v-model:value="edit.form.fid" maxlength="3" maxWidth="80px" placeholder="FID" />
+          <wm-cascader width="240px" v-model:value="menus.value" :data="menus.data" checkStrictly clearable />
         </wm-form-item>
         <wm-form-item label="名称">
-          <wm-input v-model:value="edit.form.title" maxlength="8" maxWidth="320px" placeholder="菜单名称" />
-        </wm-form-item>
-        <wm-form-item label="控制器">
-          <wm-input v-model:value="edit.form.controller" maxlength="64" placeholder="例如: /admin/sys_menus" />
+          <wm-input v-model:value="edit.form.title" maxlength="8" maxWidth="80%" placeholder="菜单名称" clearable />
         </wm-form-item>
         <wm-form-item label="URL">
-          <wm-input v-model:value="edit.form.url" maxlength="24" maxWidth="320px" placeholder="URL" />
+          <wm-input v-model:value="edit.form.url" maxlength="24" maxWidth="80%" placeholder="URL" clearable />
+        </wm-form-item>
+        <wm-form-item label="API">
+          <wm-input v-model:value="edit.form.controller" maxlength="64" maxWidth="80%" placeholder="例如: /admin/sys_menus" clearable />
         </wm-form-item>
         <wm-form-item label="图标样式">
-          <wm-input v-model:value="edit.form.ico" maxlength="32" maxWidth="240px" placeholder="图标样式" />
+          <wm-input v-model:value="edit.form.ico" maxlength="32" maxWidth="80%" placeholder="图标样式" clearable />
         </wm-form-item>
         <wm-form-item label="排序">
           <wm-input v-model:value="edit.form.sort" maxlength="2" maxWidth="240px" placeholder="例如: 1、2、3" />

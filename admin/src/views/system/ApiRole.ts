@@ -155,7 +155,7 @@ export default defineComponent({
       const load = Loading();
       Post('api_role/permList',{
         token: Storage.getItem('token'),
-        perm: perm,
+        perm: perm || '',
       },(res: any)=>{
         load.clear();
         const d = res.data;

@@ -147,7 +147,7 @@ export default defineComponent({
 
     /* 用户菜单 */
     getMenus(){
-      Post('sys_menus/getMenus',{token:Storage.getItem('token')},(res: any)=>{
+      Post('sys_menus/getMenusPerm',{token:Storage.getItem('token')},(res: any)=>{
         let d = res.data;
         if(d.code==0){
           // 全部

@@ -35,24 +35,7 @@ export default defineComponent({
     // 表单
     const form: any = {logo:'', input:'', select:'option1', cascader:[], radio:'无', checkbox:[], switch:true, tinymce:'<b>测试</b>'};
     const select: any = [{label:'Option1', value:'option1', disabled: true},{label:'Option2', value:'option2'}];
-    const cascader: any = [
-      {label:'A', value:'1', children: [
-        {label:'A_1', value:'3'},
-        {label:'A_2', value:'4'},
-      ]},
-      {label:'B', value:'2', children: [
-        {label:'B_1', value:'5', children: [
-          {label:'B_1_1', value:'7'},
-          {label:'B_1_2', value:'8'},
-        ]},
-        {label:'B_2', value:'5', disabled: true, children: [
-          {label:'B_2_1', value:'9'},
-          {label:'B_2_2', value:'10'},
-        ]},
-        {label:'B_3', value:'6'},
-      ]},
-      {label:'C', value:'1', disabled: true},
-    ];
+    const cascader: any = [{label:'A', value:'1', children: [{label:'1', value:'3'},{label:'2', value:'4'}]},{label:'b', value:'2', disabled: true}];
     const radio: any = [{label:'男',value:'男'},{label:'女',value:'女'},{label:'无',value:'无',disabled: true}];
     const checkbox: any = [{label:'游戏', value: 1},{label:'购物', value: 2},{label:'其他', value: 3, checked: true, disabled: true}];
     // 编辑器: UrlEncode('编码')、UrlDecode('解码')
@@ -81,7 +64,7 @@ export default defineComponent({
         setTimeout(()=>{
           this.form.tinymce = '<b>测试1</b>';
           this.form.select = 'option2';
-          this.form.cascader = [1,0,1];
+          this.form.cascader = [0,1];
           setTimeout(()=>{
             this.form.tinymce = '<b>测试2</b>';
             setTimeout(()=>{

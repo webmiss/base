@@ -172,14 +172,7 @@ class SysMenus extends Base {
   }
 
   /* 获取菜单 */
-  static function GetMenus() {
-    // 参数
-    $json = self::Json();
-    $token = self::JsonName($json, 'token');
-    // 验证
-    $msg = AdminToken::Verify($token, '');
-    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
-    // 全部菜单
+  private static function _getMenus() {
     $model = new SysMenu();
     $model->Columns('id', 'fid', 'title', 'url', 'ico', 'controller', 'action');
     $model->Order('sort, id');
@@ -188,13 +181,51 @@ class SysMenus extends Base {
       $fid = (string)$val['fid'];
       self::$menus[$fid][] = $val;
     }
+    
+  }
+  
+  /* 获取菜单-全部 */
+  static function GetMenusAll() {
+    // 参数
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    // 验证
+    $msg = AdminToken::Verify($token, '');
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    // 全部菜单
+    self::_getMenus();
+    // 返回
+    return self::GetJSON(['code'=>0, 'msg'=>'成功', 'menus'=>self::_getMenusAll('0')]);
+  }
+  private static function _getMenusAll(string $fid) {
+    $data = [];
+    $M = isset(self::$menus[$fid])?self::$menus[$fid]:[];
+    foreach($M as $val){
+      $tmp = ['label'=>$val['title'], 'value'=>$val['id']];
+      $menu = self::_getMenusAll($val['id']);
+      if(!empty($menu)) $tmp['children'] = $menu;
+      $data[] = $tmp;
+    }
+    return $data;
+  }
+
+  /* 获取菜单-权限 */
+  static function GetMenusPerm() {
+    // 参数
+    $json = self::Json();
+    $token = self::JsonName($json, 'token');
+    // 验证
+    $msg = AdminToken::Verify($token, '');
+    if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
+    // 全部菜单
+    self::_getMenus();
     // 用户权限
     self::$permAll = AdminToken::Perm($token);
     // 返回
-    return self::GetJSON(['code'=>0, 'msg'=>'成功', 'menus'=>self::_getMenu('0')]);
+    return self::GetJSON(['code'=>0, 'msg'=>'成功', 'menus'=>self::_getMenusPerm('0')]);
   }
   // 递归菜单
-  private static function _getMenu(string $fid) {
+  private static function _getMenusPerm(string $fid) {
     $data = [];
     $M = isset(self::$menus[$fid])?self::$menus[$fid]:[];
     foreach($M as $val){
@@ -214,7 +245,7 @@ class SysMenus extends Base {
       // 数据
       $value = ['url'=>$val['url'], 'controller'=>$val['controller'], 'action'=>$action];
       $tmp = ['icon'=>$val['ico'], 'label'=>$val['title'], 'value'=>$value];
-      $menu = self::_getMenu($id);
+      $menu = self::_getMenusPerm($id);
       if(!empty($menu)) $tmp['children'] = $menu;
       $data[] = $tmp;
     }

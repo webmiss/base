@@ -13,7 +13,7 @@
         <wm-select v-model:value="form.select" width="240px" clearable :data="select" />
       </wm-form-item>
       <wm-form-item label="Cascader">
-        <wm-cascader width="240px" :value="form.cascader" :data="cascader" clearable />
+        <wm-cascader width="240px" :value="form.cascader" @update:value="form.cascader=$event" :data="cascader" clearable />
       </wm-form-item>
       <wm-form-item label="Radio">
         <wm-radio v-model:value="form.radio" :data="radio"></wm-radio>

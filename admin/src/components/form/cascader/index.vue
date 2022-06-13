@@ -2,7 +2,7 @@
   <div class="wm-cascader" :style="{width: width}">
     <div class="wm-cascader_input" :style="{height: height, lineHeight: height}" @click="show=!show">
       <!-- Clear -->
-      <div class="wm-cascader_clear_body" v-if="value&&clearable">
+      <div class="wm-cascader_clear_body" v-if="value.length>0&&clearable">
         <span class="wm-cascader_clear" @click.stop="clear()"></span>
       </div>
       <!-- Arrow -->
@@ -15,8 +15,11 @@
     <div class="wm-cascader_body flex" v-if="show">
       <!-- Arrow -->
       <span class="wm-cascader_arrow"></span>
+      <ul class="wm-cascader_list scrollbar" :style="{width: maxWidth, maxHeight: maxHeight}" v-if="dataList.length==0">
+        <li>暂无数据</li>
+      </ul>
       <!-- 一级菜单 -->
-      <ul class="wm-cascader_list scrollbar" :style="{width: maxWidth, maxHeight: maxHeight}">
+      <ul class="wm-cascader_list scrollbar" :style="{width: maxWidth, maxHeight: maxHeight}" v-else>
         <template v-for="(v,k) in dataList" :key="k">
           <li v-if="v.disabled" class="wm-cascader_disabled" style="cursor: not-allowed;">
             <span>{{v.label}}</span>
@@ -94,7 +97,7 @@
 .wm-cascader_arrow{position: absolute; width: 10px; height: 10px; top: -5px; left: 40px;}
 .wm-cascader_arrow::before{content: ''; position: absolute; width: 10px; height: 10px; border: @BorderColor 1px solid; border-right-color: transparent; border-bottom-color: transparent; background-color: #FFF; transform: rotate(45deg); box-sizing: border-box;}
 
-.wm-cascader_list{padding: 8px 0; overflow-y: auto; border-right: @BorderColor 1px solid; box-sizing: border-box;}
+.wm-cascader_list{user-select: none; padding: 8px 0; overflow-y: auto; border-right: @BorderColor 1px solid; box-sizing: border-box;}
 .wm-cascader_list li{position: relative; cursor: pointer; line-height: 32px; padding: 0 16px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
 .wm-cascader_list li:hover{background-color: @Minor;}
 .wm-cascader_list li i{position: absolute; right: 8px; font-size: 12px;}
@@ -110,7 +113,7 @@ export default defineComponent({
   name:'Cascader',
   props: {
     value: {type:Array, default:[]},                //默认值
-    data: {type:Array, default:[]},                 //数据: [{label:'Option1', value:'option1', disabled: true},{label:'Option2', value:'option2'}]
+    data: {type:Array, default:[]},                 //数据: [{label:'A', value:'1', children: [{label:'1', value:'3'},{label:'2', value:'4'}]},{label:'b', value:'2', disabled: true}];
     width: {type:String, default:'100%'},           //宽度
     height: {type:String, default:'40px'},          //高度
     placeholder: {type:String, default:'请选择'},   //提示信息
@@ -122,28 +125,39 @@ export default defineComponent({
   data(){
     const show: boolean = false;
     const text: string = '';
+    const keys: any = [];
     const dataList: any = null;
     let k1: any=-1, k2: any=-1, k3: any=-1, k4: any=-1;
-    return {show, text, dataList, k1, k2, k3, k4}
+    return {show, text, keys, dataList, k1, k2, k3, k4}
   },
   watch:{
     value(v: any){
       const n: number = v.length;
-      if(n>0) this.k1= v[0]; this.selectChechked(v[0], this.dataList);
-      if(n>1) this.k2= v[1]; this.selectChechked(v[1], this.dataList[v[0]].children);
-      if(n>2) this.k3= v[2]; this.selectChechked(v[2], this.dataList[v[0]].children[v[1]].children);
-      if(n>3) this.k4= v[3]; this.selectChechked(v[3], this.dataList[v[0]].children[v[1]].children[v[2]].children);
+      if(n>0){
+        this.k1= v[0];
+        this.selectChechked(v[0], this.dataList);
+      }
+      if(n>1){
+        this.k2= v[1];
+        this.selectChechked(v[1], this.dataList[v[0]].children);
+      }
+      if(n>2){
+        this.k3= v[2];
+        this.selectChechked(v[2], this.dataList[v[0]].children[v[1]].children);
+      }
+      if(n>3){
+        this.k4= v[3];
+        this.selectChechked(v[3], this.dataList[v[0]].children[v[1]].children[v[2]].children);
+      }
       this.getValue();
     },
     data(val: any){
       this.dataList = val;
-      this.getValue();
     }
   },
   mounted(){
     // 默认值
     this.dataList = this.data;
-    this.getValue();
     // 阻止穿透
     const obj: any = document.getElementsByClassName('wm-cascader');
     for(let i=0; i<obj.length; i++){
@@ -176,13 +190,14 @@ export default defineComponent({
           if(this.checkStrictly){
             // 清理下级
             if(data[k].children) this.selectClear(data[k].children);
-            // 获取值
-            this.getValue();
           }else if(!data[k].children){
             this.show = false;
-            // 获取值
-            this.getValue();
           }
+          // 获取值
+          this.getValue();
+          setTimeout(()=>{
+            this.$emit('update:value', this.keys);
+          },400);
         }else{
           data[i].checked = false;
           // 清理下级
@@ -208,7 +223,7 @@ export default defineComponent({
     getValue(){
       let res: any = this.selectValue(this.dataList);
       this.text = RTrim(res.label, '/');
-      this.$emit('update:value', Explode('/', RTrim(res.key, '/')));
+      if(res.key) this.keys = Explode('/', RTrim(res.key, '/'));
     },
     // 递归
     selectValue(data: any){

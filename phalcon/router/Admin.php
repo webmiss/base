@@ -52,7 +52,8 @@ class Admin {
     $app->post('/admin/sys_menus/edit', 'App\Admin\SysMenus::Edit');
     $app->post('/admin/sys_menus/del', 'App\Admin\SysMenus::Del');
     $app->post('/admin/sys_menus/perm', 'App\Admin\SysMenus::Perm');
-    $app->post('/admin/sys_menus/getMenus', 'App\Admin\SysMenus::GetMenus');
+    $app->post('/admin/sys_menus/getMenusAll', 'App\Admin\SysMenus::GetMenusAll');
+    $app->post('/admin/sys_menus/getMenusPerm', 'App\Admin\SysMenus::GetMenusPerm');
     // 系统角色
     $app->post('/admin/sys_role/list', 'App\Admin\SysRole::List');
     $app->post('/admin/sys_role/add', 'App\Admin\SysRole::Add');

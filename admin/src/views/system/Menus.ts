@@ -19,11 +19,12 @@ import wmForm from '@/components/form/index.vue'
 import wmFormItem from '@/components/form/item/index.vue'
 import wmInput from '@/components/form/input/index.vue'
 import wmButton from '@/components/form/button/index.vue'
+import wmCascader from '@/components/form/cascader/index.vue'
 import wmPage from '@/components/page/index.vue'
 
 /* 系统菜单 */
 export default defineComponent({
-  components: {wmMain,wmRow,wmTable,wmCheckbox,wmTag,wmPopover,wmDialog,wmAdd,wmClose,wmForm,wmFormItem,wmInput,wmButton,wmPage},
+  components: {wmMain,wmRow,wmTable,wmCheckbox,wmTag,wmPopover,wmDialog,wmAdd,wmClose,wmForm,wmFormItem,wmInput,wmButton,wmCascader,wmPage},
   data(){
     // 状态
     const store: any = useStore();
@@ -38,11 +39,17 @@ export default defineComponent({
     const del: any = {show:false, ids:''};
     // 权限
     const perm: any = {show:false, id:'', title:'权限', list:[]};
-    return {state, getters, page, sea, add, edit, del, perm};
+    // 联动菜单
+    let keys: any = [];
+    const menus: any = {value:[], data:[]};
+    return {state, getters, page, sea, add, edit, del, perm, keys, menus};
   },
   mounted(){
     // 加载数据
-    if(Storage.getItem('token')) this.loadData();
+    if(Storage.getItem('token')){
+      this.loadData();
+      this.getMenus();
+    }
   },
   methods:{
 
@@ -78,15 +85,25 @@ export default defineComponent({
       this.loadData();
     },
 
+    /* 验证 */
+    verify(d: any){
+      if(!d.title || d.title.length<2) return '名称大于2个字符';
+      return '';
+    },
+
     /* 添加 */
     subAdd(){
-      this.add.show = false;
+      // 验证
+      const d: any = this.add.form;
+      d.fid = this.getFid();
+      let msg: string = this.verify(d);
+      if(msg) return Toast(msg);
       // 提交
-      const data: string = JSON.stringify(this.add.form);
+      this.add.show = false;
       const load: any = Loading();
       Post('sys_menus/add',{
         token: Storage.getItem('token'),
-        data: data
+        data: JSON.stringify(d),
       },(res: any)=>{
         load.clear();
         const d = res.data;
@@ -109,17 +126,57 @@ export default defineComponent({
       this.edit.form.ico = row.ico;
       this.edit.form.sort = row.sort;
       this.edit.form.controller = row.controller;
+      // 联动菜单
+      this.editKeys();
+    },
+    editKeys(){
+      const fid = this.edit.form.fid;
+      const d: any = this.menus.data;
+      let keys: any = [];
+      if(fid!=0){
+        // 一级
+        for(let k1 in d){
+          if(fid==d[k1].value){
+            keys=[k1]; break;
+          }
+          // 二级
+          if(!d[k1].children) continue;
+          for(let k2 in d[k1].children){
+            if(fid==d[k1].children[k2].value){
+              keys=[k1, k2]; break;
+            }
+            // 三级
+            if(!d[k1].children[k2].children) continue;
+            for(let k3 in d[k1].children[k2].children){
+              if(fid==d[k1].children[k2].children[k3].value){
+                keys=[k1, k2, k3]; break;
+              }
+              // 四级
+              if(!d[k1].children[k2].children[k3].children) continue;
+              for(let k4 in d[k1].children[k2].children[k3].children){
+                if(fid==d[k1].children[k2].children[k3].children[k4].value){
+                  keys=[k1, k2, k3, k4]; break;
+                }
+              }
+            }
+          }
+        }
+      }
+      this.menus.value = keys;
     },
     subEdit(){
-      this.edit.show = false;
+      // 验证
+      const d: any = this.edit.form;
+      d.fid = this.getFid();
+      let msg: string = this.verify(d);
+      if(msg) return Toast(msg);
       // 提交
-      const id: number = this.edit.id;
-      const data: string = JSON.stringify(this.edit.form);
+      this.edit.show = false;
       const load: any = Loading();
       Post('sys_menus/edit',{
         token: Storage.getItem('token'),
-        id: id,
-        data: data
+        id: this.edit.id,
+        data: JSON.stringify(d),
       },(res: any)=>{
         load.clear();
         const d = res.data;
@@ -149,6 +206,28 @@ export default defineComponent({
         if(d.code===0) this.loadData();
         return Toast(d.msg);
       });
+    },
+
+    /* 全部菜单 */
+    getMenus(){
+      Post('sys_menus/getMenusAll',{
+        token: Storage.getItem('token'),
+        data: this.del.ids
+      },(res: any)=>{
+        const d = res.data;
+        if(d.code===0) this.menus.data = d.menus;
+      });
+    },
+    getFid(){
+      let fid: number = 0;
+      const pos: any = this.menus.value;
+      const n: number = pos.length;
+      const data: any = this.menus.data;
+      if(n==1) fid = data[pos[0]].value;
+      if(n==2) fid = data[pos[0]].children[pos[1]].value;
+      if(n==3) fid = data[pos[0]].children[pos[1]].children[pos[2]].value;
+      if(n==4) fid = data[pos[0]].children[pos[1]].children[pos[2]].children[pos[3]].value;
+      return fid;
     },
 
     /* 动作权限 */
