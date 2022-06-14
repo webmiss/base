@@ -8,6 +8,7 @@ import wmButton from '@/components/form/button/index.vue'
 import wmCheckbox from '@/components/form/checkbox/index.vue'
 import wmRadio from '@/components/form/radio/index.vue'
 import wmSelect from '@/components/form/select/index.vue'
+import wmCascader from '@/components/form/cascader/index.vue'
 ```
 
 ## 表单
@@ -86,7 +87,6 @@ import wmSelect from '@/components/form/select/index.vue'
 - value: {default: ''},             //默认值: val
 - @update:value                     //事件
 
-
 ## 下拉菜单
 ```html
 <wm-select></wm-select>
@@ -98,4 +98,19 @@ import wmSelect from '@/components/form/select/index.vue'
 - placeholder: {type:String, default:'请选择'},   //提示信息
 - maxHeight: {type:String, default:'160px'},      //最大高度
 - clearable: {type: Boolean, default: false},       //一键清空
+- @update:value   //事件
+
+## 级联选择器
+```html
+<wm-cascader></wm-cascader>
+```
+- value: {type:Array, default:[]},                //默认值
+- data: {type:Array, default:[]},                 //数据: [{label:'A', value:'1', children: [{label:'1', value:'3'},{label:'2', value:'4'}]},{label:'b', value:'2', disabled: true}];
+- width: {type:String, default:'100%'},           //宽度
+- height: {type:String, default:'40px'},          //高度
+- placeholder: {type:String, default:'请选择'},   //提示信息
+- maxWidth: {type:String, default:'180px'},       //最大宽度
+- maxHeight: {type:String, default:'180px'},      //最大高度
+- clearable: {type: Boolean, default: false},     //一键清空
+- checkStrictly: {type: Boolean, default: false}, //选择任意
 - @update:value   //事件

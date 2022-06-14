@@ -49,7 +49,7 @@ func (r ApiMenus) List(c *gin.Context) {
 	// 查询
 	m.Columns("id", "fid", "title", "ico", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "sort", "url", "controller", "action")
 	m.Where("fid like ? AND title like ? AND url like ?", "%"+fid+"%", "%"+title+"%", "%"+url+"%")
-	m.Order("fid", "sort", "id")
+	m.Order("fid DESC", "sort", "id DESC")
 	m.Page((&util.Type{}).Int(page), (&util.Type{}).Int(limit))
 	list := m.Find()
 	// 数据

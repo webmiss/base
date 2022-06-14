@@ -35,30 +35,26 @@
         <wm-table ref="Table" :data="page.list">
           <template #title>
             <td width="60">ID</td>
-            <td width="120">名称</td>
-            <td>操作</td>
+            <td width="100">名称</td>
+            <td width="140">创建时间</td>
+            <td width="140">更新时间</td>
+            <td width="60" class="tCenter">权限</td>
+            <td>权限值</td>
           </template>
           <tr v-for="(val,key) in page.list" :key="key">
             <td width="30" class="checkbox wm-table_checkbox">
               <wm-checkbox :value="val.id"></wm-checkbox>
             </td>
             <td>{{ val.id }}</td>
-            <td>
-              <wm-popover type="bottom" effect="dark" width="180px">
-                <template #body>
-                  <p>创建: {{ val.ctime || '无' }}</p>
-                  <p>更新: {{ val.utime || '无' }}</p>
-                </template>
-                <template #reference>
-                  <wm-tag size="medium">{{ val.name }}</wm-tag>
-                </template>
-              </wm-popover>
-            </td>
-            <td>
-              <wm-button v-if="getters.actionShow('perm') && !val.perm" type="danger" height="32px" @click="permData(val.id,val.perm)">设置权限</wm-button>
-              <wm-button v-else-if="getters.actionShow('perm')" height="32px" @click="permData(val.id,val.perm)">修改权限</wm-button>
+            <td><b>{{ val.name }}</b></td>
+            <td>{{ val.ctime }}</td>
+            <td>{{ val.utime }}</td>
+            <td class="tCenter">
+              <wm-button type="text" textColor="danger" v-if="getters.actionShow('perm') && !val.perm" @click="permData(val.id,val.perm)">设置</wm-button>
+              <wm-button type="text" v-else-if="getters.actionShow('perm')" @click="permData(val.id,val.perm)">编辑</wm-button>
               <span v-else>-</span>
             </td>
+            <td>{{ val.perm }}</td>
           </tr>
         </wm-table>
         <wm-page :page="page.page" :limit="page.limit" :total="page.total" @update:page="subPage"></wm-page>

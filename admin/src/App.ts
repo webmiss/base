@@ -183,7 +183,7 @@ export default defineComponent({
       // 子菜单
       this.menusChildren = this.state.menus[pos[0]].children || [];
       if(pos[0]==0){
-        this.state.menuTitle = Env.title;
+        this.state.menuTitle = '首页';
         return NavigateTo(url);
       }
       if(!this.menusChildren[pos[1]] || !this.menusChildren[pos[1]].children) return;

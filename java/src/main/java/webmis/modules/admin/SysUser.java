@@ -63,10 +63,18 @@ public class SysUser extends Base {
     }
     JSONObject param = Util.JsonDecode(data);
     String uname = param.containsKey("uname")?String.valueOf(param.get("uname")).trim():"";
+    String nickname = param.containsKey("nickname")?String.valueOf(param.get("nickname")).trim():"";
+    String name = param.containsKey("name")?String.valueOf(param.get("name")).trim():"";
+    String department = param.containsKey("department")?String.valueOf(param.get("department")).trim():"";
+    String position = param.containsKey("position")?String.valueOf(param.get("position")).trim():"";
+    String where = "(a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?) AND b.nickname LIKE ? AND b.name LIKE ? AND b.department LIKE ? AND b.position LIKE ?";
+    Object[] whereData = {"%"+uname+"%", "%"+uname+"%", "%"+uname+"%", "%"+nickname+"%", "%"+name+"%", "%"+department+"%", "%"+position+"%"};
     // 统计
     User m = new User();
     m.Columns("count(*) AS num");
-    m.Where("uname LIKE ? OR tel LIKE ? OR email LIKE ?", "%"+uname+"%", "%"+uname+"%", "%"+uname+"%");
+    m.Table("user as a");
+    m.LeftJoin("user_info as b", "a.id=b.uid");
+    m.Where(where, whereData);
     HashMap<String, Object> total = m.FindFirst();
     // 查询
     m.Table("user as a");
@@ -75,11 +83,11 @@ public class SysUser extends Base {
     m.LeftJoin("api_perm as d", "a.id=d.uid");
     m.Columns(
       "a.id AS uid", "a.uname", "a.email", "a.tel", "a.state", "FROM_UNIXTIME(a.rtime, '%Y-%m-%d %H:%i:%s') as rtime", "FROM_UNIXTIME(a.ltime, '%Y-%m-%d %H:%i:%s') as ltime", "FROM_UNIXTIME(a.utime, '%Y-%m-%d %H:%i:%s') as utime",
-      "b.nickname", "b.position", "b.name", "b.gender", "FROM_UNIXTIME(b.birthday, '%Y-%m-%d') as birthday", "b.img",
+      "b.nickname", "b.position", "b.name", "b.gender", "b.img", "FROM_UNIXTIME(b.birthday, '%Y-%m-%d') as birthday",
       "c.role AS sys_role", "c.perm AS sys_perm",
       "d.role AS api_role", "d.perm AS api_perm"
     );
-    m.Where("a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?", "%"+uname+"%", "%"+uname+"%", "%"+uname+"%");
+    m.Where(where, whereData);
     m.Order("a.id DESC");
     m.Page(page, limit);
     ArrayList<HashMap<String,Object>> list = m.Find();
@@ -514,6 +522,7 @@ public class SysUser extends Base {
     info.put("name", param.containsKey("name")?String.valueOf(param.get("name")).trim():"");
     info.put("gender", param.containsKey("gender")?String.valueOf(param.get("gender")).trim():"");
     info.put("birthday", param.containsKey("birthday")?Util.StrToTime(param.get("birthday").toString(), "yyyy-MM-dd"):0);
+    info.put("department", param.containsKey("department")?String.valueOf(param.get("department")).trim():"");
     info.put("position", param.containsKey("position")?String.valueOf(param.get("position")).trim():"");
     // 执行
     UserInfo m = new UserInfo();

@@ -61,7 +61,7 @@ public class ApiMenus extends Base {
     // 查询
     m.Columns("id", "fid", "title", "ico", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "sort", "url", "controller", "action");
     m.Where("fid like ? AND title like ? AND url like ?", "%"+fid+"%", "%"+title+"%", "%"+url+"%");
-    m.Order("fid", "sort", "id");
+    m.Order("fid DESC", "sort", "id DESC");
     m.Page(page, limit);
     ArrayList<HashMap<String,Object>> list = m.Find();
     // 数据

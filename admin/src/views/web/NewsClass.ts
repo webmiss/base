@@ -10,7 +10,6 @@ import wmMain from '@/components/main/index.vue'
 import wmRow from '@/components/main/row/index.vue'
 import wmTable from '@/components/table/index.vue'
 import wmCheckbox from '@/components/form/checkbox/index.vue'
-import wmTag from '@/components/tag/index.vue'
 import wmDialog from '@/components/dialog/index.vue'
 import wmForm from '@/components/form/index.vue'
 import wmFormItem from '@/components/form/item/index.vue'
@@ -18,10 +17,9 @@ import wmInput from '@/components/form/input/index.vue'
 import wmButton from '@/components/form/button/index.vue'
 import wmPage from '@/components/page/index.vue'
 import wmSwitch from '@/components/switch/index.vue'
-import wmPopover from '@/components/popover/index.vue'
 
 export default defineComponent({
-  components: {wmMain,wmRow,wmTable,wmCheckbox,wmTag,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmPage,wmSwitch,wmPopover},
+  components: {wmMain,wmRow,wmTable,wmCheckbox,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmPage,wmSwitch},
   data(){
     // 状态
     const store: any = useStore();

@@ -29,7 +29,7 @@ func (r UserInfo) List(c *gin.Context) {
 	tData := (&service.AdminToken{}).Token(token)
 	// 查询
 	model := (&model.UserInfo{}).New()
-	model.Columns("nickname", "name", "gender", "FROM_UNIXTIME(birthday, '%Y-%m-%d') as birthday", "position", "img")
+	model.Columns("nickname", "name", "gender", "FROM_UNIXTIME(birthday, '%Y-%m-%d') as birthday", "department", "position", "img")
 	model.Where("uid=?", tData["uid"])
 	list := model.FindFirst()
 	// 数据
@@ -62,11 +62,12 @@ func (r UserInfo) Edit(c *gin.Context) {
 	util.JsonDecode(data, &param)
 	model := (&model.UserInfo{}).New()
 	info := map[string]interface{}{
-		"nickname": util.Trim(param["nickname"]),
-		"name":     util.Trim(param["name"]),
-		"gender":   util.Trim(param["gender"]),
-		"birthday": util.StrToTime(util.Trim(param["birthday"]), "2006-01-02"),
-		"position": util.Trim(param["position"]),
+		"nickname":   util.Trim(param["nickname"]),
+		"name":       util.Trim(param["name"]),
+		"gender":     util.Trim(param["gender"]),
+		"birthday":   util.StrToTime(util.Trim(param["birthday"]), "2006-01-02"),
+		"department": util.Trim(param["department"]),
+		"position":   util.Trim(param["position"]),
 	}
 	model.Set(info)
 	model.Where("uid=?", tData["uid"])

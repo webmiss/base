@@ -24,7 +24,7 @@ class UserInfo(Base):
     tData = AdminToken.Token(token)
     # 查询
     model = UserInfoM()
-    model.Columns('nickname', 'name', 'gender', 'FROM_UNIXTIME(birthday, %s) as birthday', 'position', 'img')
+    model.Columns('nickname', 'name', 'gender', 'FROM_UNIXTIME(birthday, %s) as birthday', 'department', 'position', 'img')
     model.Where('uid=%s', '%Y-%m-%d', str(tData['uid']))
     list = model.FindFirst()
     # 数据
@@ -51,6 +51,7 @@ class UserInfo(Base):
       'name': Util.Trim(param['name']),
       'gender': Util.Trim(param['gender']),
       'birthday': Util.StrToTime(Util.Trim(param['birthday']), '%Y-%m-%d'),
+      'department': Util.Trim(param['department']),
       'position': Util.Trim(param['position']),
     }
     model.Set(info)

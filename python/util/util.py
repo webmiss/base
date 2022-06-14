@@ -57,16 +57,16 @@ class Util:
     return glue.join(pieces)
 
   # Array to String
-  def JsonEncode(json):
+  def JsonEncode(data):
     try :
-      return json.dumps(json)
+      return json.dumps(data)
     except Exception as e :
       return ''
 
   # String to Array
-  def JsonDecode(json: str):
+  def JsonDecode(data: str):
     try :
-      return json.loads(json)
+      return json.loads(data)
     except Exception as e :
       return []
 

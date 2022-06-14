@@ -1,11 +1,11 @@
 <template>
-  <div ref="Switch" class="wm-switch" @click="click();">
-    <div ref="SwitchCursor" class="wm-switch_cursor"></div>
-  </div>
+  <span ref="Switch" class="wm-switch" @click="click();">
+    <span ref="SwitchCursor" class="wm-switch_cursor"></span>
+  </span>
 </template>
 
 <style lang="less" scoped>
-.wm-switch{position: relative; cursor: pointer; width: 40px; height: 20px; border-radius: 10px; transition: @Transition;}
+.wm-switch{display: inline-block; position: relative; cursor: pointer; width: 36px; height: 20px; border-radius: 10px; transition: @Transition;}
 .wm-switch_cursor{position: absolute; width: 16px; height: 16px; background-color: #FFF; border-radius: 50%; top: 50%; transform: translate(0,-50%); transition: @Transition;}
 </style>
 
@@ -50,13 +50,10 @@ export default defineComponent({
       // 对象
       const box: any = this.$refs.Switch;
       const cursor: any = this.$refs.SwitchCursor;
-      // 动画
-      // box.style.transitionDuration = `400ms`;
-      // cursor.style.transitionDuration = `400ms`;
       // 位置
       if(this.show){
         box.style.backgroundColor = this.activeColor;
-        cursor.style.left = '22px';
+        cursor.style.left = '18px';
       }else{
         box.style.backgroundColor = this.inactiveColor;
         cursor.style.left = '2px';

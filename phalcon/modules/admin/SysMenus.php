@@ -37,7 +37,7 @@ class SysMenus extends Base {
     // 查询
     $m->Columns('id', 'fid', 'title', 'ico', 'FROM_UNIXTIME(ctime) as ctime', 'FROM_UNIXTIME(utime) as utime', 'sort', 'url', 'controller', 'action');
     $m->Where('fid like ? AND title like ? AND url like ?', '%'.$fid.'%', '%'.$title.'%', '%'.$url.'%');
-    $m->Order('fid', 'sort', 'id');
+    $m->Order('fid DESC', 'sort', 'id DESC');
     $m->Page($page, $limit);
     $list = $m->Find();
     // 数据
@@ -171,19 +171,6 @@ class SysMenus extends Base {
     }
   }
 
-  /* 获取菜单 */
-  private static function _getMenus() {
-    $model = new SysMenu();
-    $model->Columns('id', 'fid', 'title', 'url', 'ico', 'controller', 'action');
-    $model->Order('sort, id');
-    $data = $model->Find();
-    foreach($data as $val){
-      $fid = (string)$val['fid'];
-      self::$menus[$fid][] = $val;
-    }
-    
-  }
-  
   /* 获取菜单-全部 */
   static function GetMenusAll() {
     // 参数
@@ -197,12 +184,14 @@ class SysMenus extends Base {
     // 返回
     return self::GetJSON(['code'=>0, 'msg'=>'成功', 'menus'=>self::_getMenusAll('0')]);
   }
+  // 递归菜单
   private static function _getMenusAll(string $fid) {
     $data = [];
     $M = isset(self::$menus[$fid])?self::$menus[$fid]:[];
     foreach($M as $val){
-      $tmp = ['label'=>$val['title'], 'value'=>$val['id']];
-      $menu = self::_getMenusAll($val['id']);
+      $id = $val['id'];
+      $tmp = ['label'=>$val['title'], 'value'=>$id];
+      $menu = self::_getMenusAll($id);
       if(!empty($menu)) $tmp['children'] = $menu;
       $data[] = $tmp;
     }
@@ -250,6 +239,18 @@ class SysMenus extends Base {
       $data[] = $tmp;
     }
     return $data;
+  }
+
+  /* 全部菜单 */
+  private static function _getMenus() {
+    $model = new SysMenu();
+    $model->Columns('id', 'fid', 'title', 'url', 'ico', 'controller', 'action');
+    $model->Order('sort, id');
+    $data = $model->Find();
+    foreach($data as $val){
+      $fid = (string)$val['fid'];
+      self::$menus[$fid][] = $val;
+    }
   }
 
 }

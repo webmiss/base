@@ -43,7 +43,7 @@ public class UserInfo extends Base {
     HashMap<String, Object> tData = AdminToken.Token(token);
     // 查询
     webmis.model.UserInfo model = new webmis.model.UserInfo();
-    model.Columns("nickname", "name", "gender", "FROM_UNIXTIME(birthday, '%Y-%m-%d') as birthday", "position", "img");
+    model.Columns("nickname", "name", "gender", "FROM_UNIXTIME(birthday, '%Y-%m-%d') as birthday", "department", "position", "img");
     model.Where("uid=?", tData.get("uid").toString());
     HashMap<String, Object> list = model.FindFirst();
     // 数据
@@ -88,6 +88,7 @@ public class UserInfo extends Base {
     info.put("gender", Util.Trim(param.get("gender").toString()));
     String birthday = Util.Trim(param.get("birthday").toString());
     info.put("birthday", Util.StrToTime(birthday, "yyyy-MM-dd"));
+    info.put("department", Util.Trim(param.get("department").toString()));
     info.put("position", Util.Trim(param.get("position").toString()));
     model.Set(info);
     model.Where("uid=?", tData.get("uid").toString());

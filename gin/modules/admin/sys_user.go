@@ -37,10 +37,18 @@ func (r SysUser) List(c *gin.Context) {
 	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
 	uname := util.Trim(util.If(util.InKey("uname", param), param["uname"], ""))
+	nickname := util.Trim(util.If(util.InKey("nickname", param), param["nickname"], ""))
+	name := util.Trim(util.If(util.InKey("name", param), param["name"], ""))
+	department := util.Trim(util.If(util.InKey("department", param), param["department"], ""))
+	position := util.Trim(util.If(util.InKey("position", param), param["position"], ""))
+	where := "(a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?) AND b.nickname LIKE ? AND b.name LIKE ? AND b.department LIKE ? AND b.position LIKE ?"
+	whereData := []interface{}{"%" + uname + "%", "%" + uname + "%", "%" + uname + "%", "%" + nickname + "%", "%" + name + "%", "%" + department + "%", "%" + position + "%"}
 	// 统计
 	m := (&model.User{}).New()
+	m.Table("user as a")
+	m.LeftJoin("user_info as b", "a.id=b.uid")
 	m.Columns("count(*) AS num")
-	m.Where("uname LIKE ? OR tel LIKE ? OR email LIKE ?", "%"+uname+"%", "%"+uname+"%", "%"+uname+"%")
+	m.Where(where, whereData...)
 	total := m.FindFirst()
 	// 查询
 	m.Table("user as a")
@@ -49,11 +57,11 @@ func (r SysUser) List(c *gin.Context) {
 	m.LeftJoin("api_perm as d", "a.id=d.uid")
 	m.Columns(
 		"a.id AS uid", "a.uname", "a.email", "a.tel", "a.state", "FROM_UNIXTIME(a.rtime, '%Y-%m-%d %H:%i:%s') as rtime", "FROM_UNIXTIME(a.ltime, '%Y-%m-%d %H:%i:%s') as ltime", "FROM_UNIXTIME(a.utime, '%Y-%m-%d %H:%i:%s') as utime",
-		"b.nickname", "b.position", "b.name", "b.gender", "FROM_UNIXTIME(b.birthday, '%Y-%m-%d') as birthday", "b.img",
+		"b.nickname", "b.position", "b.name", "b.gender", "b.img", "FROM_UNIXTIME(b.birthday, '%Y-%m-%d') as birthday",
 		"c.role AS sys_role", "c.perm AS sys_perm",
 		"d.role AS api_role", "d.perm AS api_perm",
 	)
-	m.Where("a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?", "%"+uname+"%", "%"+uname+"%", "%"+uname+"%")
+	m.Where(where, whereData...)
 	m.Order("a.id DESC")
 	m.Page((&util.Type{}).Int(page), (&util.Type{}).Int(limit))
 	list := m.Find()
@@ -388,11 +396,12 @@ func (r SysUser) Info(c *gin.Context) {
 	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
 	info := map[string]interface{}{
-		"nickname": util.If(util.InKey("nickname", param), util.Trim(param["nickname"]), ""),
-		"name":     util.If(util.InKey("name", param), util.Trim(param["name"]), ""),
-		"gender":   util.If(util.InKey("gender", param), util.Trim(param["gender"]), ""),
-		"birthday": util.If(util.InKey("birthday", param), util.StrToTime(util.Trim(param["birthday"]), "2006-01-02"), 0),
-		"position": util.If(util.InKey("position", param), util.Trim(param["position"]), ""),
+		"nickname":   util.If(util.InKey("nickname", param), util.Trim(param["nickname"]), ""),
+		"name":       util.If(util.InKey("name", param), util.Trim(param["name"]), ""),
+		"gender":     util.If(util.InKey("gender", param), util.Trim(param["gender"]), ""),
+		"birthday":   util.If(util.InKey("birthday", param), util.StrToTime(util.Trim(param["birthday"]), "2006-01-02"), 0),
+		"department": util.If(util.InKey("department", param), util.Trim(param["department"]), ""),
+		"position":   util.If(util.InKey("position", param), util.Trim(param["position"]), ""),
 	}
 	// 执行
 	m := (&model.UserInfo{}).New()

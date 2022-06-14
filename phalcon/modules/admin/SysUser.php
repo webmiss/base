@@ -34,10 +34,18 @@ class SysUser extends Base {
     // 条件
     $param = json_decode($data);
     $uname = isset($param->uname)?trim($param->uname):'';
+    $nickname = isset($param->nickname)?trim($param->nickname):'';
+    $name = isset($param->name)?trim($param->name):'';
+    $department = isset($param->department)?trim($param->department):'';
+    $position = isset($param->position)?trim($param->position):'';
+    $where = '(a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?) AND b.nickname LIKE ? AND b.name LIKE ? AND b.department LIKE ? AND b.position LIKE ?';
+    $whereData = ['%'.$uname.'%', '%'.$uname.'%', '%'.$uname.'%', '%'.$nickname.'%', '%'.$name.'%', '%'.$department.'%', '%'.$position.'%'];
     // 统计
     $model = new User();
     $model->Columns('count(*) AS num');
-    $model->Where('uname LIKE ? OR tel LIKE ? OR email LIKE ?', '%'.$uname.'%', '%'.$uname.'%', '%'.$uname.'%');
+    $model->Table('user as a');
+    $model->LeftJoin('user_info as b', 'a.id=b.uid');
+    $model->Where($where, ...$whereData);
     $total = $model->FindFirst();
     // 查询
     $model->Table('user as a');
@@ -46,11 +54,11 @@ class SysUser extends Base {
     $model->LeftJoin('api_perm as d', 'a.id=d.uid');
     $model->Columns(
       'a.id AS uid', 'a.uname', 'a.email', 'a.tel', 'a.state', 'FROM_UNIXTIME(a.rtime) as rtime', 'FROM_UNIXTIME(a.ltime) as ltime', 'FROM_UNIXTIME(a.utime) as utime',
-      'b.nickname', 'b.position', 'b.name', 'b.gender', 'FROM_UNIXTIME(b.birthday, "%Y-%m-%d") as birthday', 'b.img',
+      'b.nickname', 'b.department', 'b.position', 'b.name', 'b.gender', 'b.img', 'FROM_UNIXTIME(b.birthday, "%Y-%m-%d") as birthday',
       'c.role AS sys_role', 'c.perm AS sys_perm',
       'd.role AS api_role', 'd.perm AS api_perm'
     );
-    $model->Where('a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?', '%'.$uname.'%', '%'.$uname.'%', '%'.$uname.'%');
+    $model->Where($where, ...$whereData);
     $model->Order('a.id DESC');
     $model->Page($page, $limit);
     $list = $model->Find();
@@ -333,6 +341,7 @@ class SysUser extends Base {
       'name'=> isset($param->name)?trim($param->name):'',
       'gender'=> isset($param->gender)?trim($param->gender):'',
       'birthday'=> isset($param->birthday)?Util::StrToTime($param->birthday):0,
+      'department'=> isset($param->department)?trim($param->department):'',
       'position'=> isset($param->position)?trim($param->position):'',
     ];
     // 模型

@@ -24,7 +24,7 @@ class UserInfo extends Base {
     $tData = AdminToken::Token($token);
     // 查询
     $model = new UserInfoM();
-    $model->Columns('nickname', 'name', 'gender', 'FROM_UNIXTIME(birthday, "%Y-%m-%d") as birthday', 'position', 'img');
+    $model->Columns('nickname', 'name', 'gender', 'FROM_UNIXTIME(birthday, "%Y-%m-%d") as birthday', 'department', 'position', 'img');
     $model->Where('uid=?', $tData->uid);
     $list = $model->FindFirst();
     // 数据
@@ -52,6 +52,7 @@ class UserInfo extends Base {
       'name'=> trim($param->name),
       'gender'=> trim($param->gender),
       'birthday'=> Util::StrToTime($param->birthday),
+      'department'=> trim($param->department),
       'position'=> trim($param->position),
     ];
     $model->Set($info);

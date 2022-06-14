@@ -48,7 +48,7 @@ func (r SysMenus) List(c *gin.Context) {
 	// 查询
 	m.Columns("id", "fid", "title", "ico", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "sort", "url", "controller", "action")
 	m.Where("fid like ? AND title like ? AND url like ?", "%"+fid+"%", "%"+title+"%", "%"+url+"%")
-	m.Order("fid", "sort", "id")
+	m.Order("fid DESC", "sort", "id DESC")
 	m.Page((&util.Type{}).Int(page), (&util.Type{}).Int(limit))
 	list := m.Find()
 	// 数据
@@ -213,8 +213,8 @@ func (r SysMenus) Perm(c *gin.Context) {
 	}
 }
 
-/* 获取菜单 */
-func (r *SysMenus) GetMenus(c *gin.Context) {
+/* 获取菜单-全部 */
+func (r *SysMenus) GetMenusAll(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
@@ -226,26 +226,52 @@ func (r *SysMenus) GetMenus(c *gin.Context) {
 		return
 	}
 	// 全部菜单
-	r.menus = map[string][]map[string]interface{}{}
-	model := (&model.SysMenu{}).New()
-	model.Columns("id", "fid", "title", "url", "ico", "controller", "action")
-	model.Order("sort, id")
-	data := model.Find()
-	for _, val := range data {
-		fid := (&util.Type{}).Strval(val["fid"])
-		if _, ok := r.menus[fid]; !ok {
-			r.menus[fid] = []map[string]interface{}{}
-		}
-		r.menus[fid] = append(r.menus[fid], val)
-	}
-	// 用户权限
-	r.permAll = (&service.AdminToken{}).Perm(token)
+	r._getMenus()
 	// 返回
-	r.GetJSON(c, gin.H{"code": 0, "menus": r._getMenu("0")})
+	r.GetJSON(c, gin.H{"code": 0, "menus": r._getMenusAll("0")})
 }
 
 // 递归菜单
-func (r *SysMenus) _getMenu(fid string) []map[string]interface{} {
+func (r *SysMenus) _getMenusAll(fid string) []map[string]interface{} {
+	data := []map[string]interface{}{}
+	M, ok := r.menus[fid]
+	if !ok {
+		M = data
+	}
+	for _, val := range M {
+		id := (&util.Type{}).Strval(val["id"])
+		tmp := map[string]interface{}{"icon": val["ico"], "label": val["title"], "value": id}
+		menu := r._getMenusAll(id)
+		if len(menu) > 0 {
+			tmp["children"] = menu
+		}
+		data = append(data, tmp)
+	}
+	return data
+}
+
+/* 获取菜单-权限 */
+func (r *SysMenus) GetMenusPerm(c *gin.Context) {
+	// 参数
+	json := map[string]interface{}{}
+	c.BindJSON(&json)
+	token, _ := r.JsonName(json, "token")
+	// 验证
+	msg := (&service.AdminToken{}).Verify(token, "")
+	if msg != "" {
+		r.GetJSON(c, gin.H{"code": 4001, "msg": msg})
+		return
+	}
+	// 全部菜单
+	r._getMenus()
+	// 用户权限
+	r.permAll = (&service.AdminToken{}).Perm(token)
+	// 返回
+	r.GetJSON(c, gin.H{"code": 0, "menus": r._getMenusPerm("0")})
+}
+
+// 递归菜单
+func (r *SysMenus) _getMenusPerm(fid string) []map[string]interface{} {
 	data := []map[string]interface{}{}
 	M, ok := r.menus[fid]
 	if !ok {
@@ -274,11 +300,27 @@ func (r *SysMenus) _getMenu(fid string) []map[string]interface{} {
 		// 数据
 		value := map[string]interface{}{"url": val["url"], "controller": val["controller"], "action": action}
 		tmp := map[string]interface{}{"icon": val["ico"], "label": val["title"], "value": value}
-		menu := r._getMenu(id)
+		menu := r._getMenusPerm(id)
 		if len(menu) > 0 {
 			tmp["children"] = menu
 		}
 		data = append(data, tmp)
 	}
 	return data
+}
+
+/* 全部菜单 */
+func (r *SysMenus) _getMenus() {
+	r.menus = map[string][]map[string]interface{}{}
+	model := (&model.SysMenu{}).New()
+	model.Columns("id", "fid", "title", "url", "ico", "controller", "action")
+	model.Order("sort, id")
+	data := model.Find()
+	for _, val := range data {
+		fid := (&util.Type{}).Strval(val["fid"])
+		if _, ok := r.menus[fid]; !ok {
+			r.menus[fid] = []map[string]interface{}{}
+		}
+		r.menus[fid] = append(r.menus[fid], val)
+	}
 }

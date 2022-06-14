@@ -64,7 +64,7 @@ public class SysMenus extends Base {
     // 查询
     m.Columns("id", "fid", "title", "ico", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "sort", "url", "controller", "action");
     m.Where("fid like ? AND title like ? AND url like ?", "%"+fid+"%", "%"+title+"%", "%"+url+"%");
-    m.Order("fid", "sort", "id");
+    m.Order("fid DESC", "sort", "id DESC");
     m.Page(page, limit);
     ArrayList<HashMap<String,Object>> list = m.Find();
     // 数据
@@ -267,9 +267,9 @@ public class SysMenus extends Base {
     return GetJSON(res);
   }
 
-  /* 获取菜单 */
-  @RequestMapping("getMenus")
-  String GetMenus(@RequestBody JSONObject json) {
+  /* 获取菜单-全部 */
+  @RequestMapping("getMenusAll")
+  String GetMenusAll(@RequestBody JSONObject json) {
     HashMap<String,Object> res;
     // 参数
     String token = JsonName(json, "token");
@@ -282,33 +282,59 @@ public class SysMenus extends Base {
       return GetJSON(res);
     }
     // 全部菜单
-    ArrayList<HashMap<String, Object>> tmp;
-    menus = new HashMap<String, ArrayList<HashMap<String, Object>>>();
-    SysMenu model = new SysMenu();
-    model.Columns("id", "fid", "title", "url", "ico", "controller", "action");
-    model.Order("sort, id");
-    ArrayList<HashMap<String, Object>> all = model.Find();
-    for (HashMap<String, Object> val : all) {
-      String fid = String.valueOf(val.get("fid"));
-      if (menus.containsKey(fid)) {
-        menus.get(fid).add(val);
-      } else {
-        tmp = new ArrayList<HashMap<String, Object>>();
-        tmp.add(val);
-        menus.put(fid,tmp);
-      }
+    _getMenus();
+    // 返回
+    res = new HashMap<String,Object>();
+    res.put("code", 0);
+    res.put("msg", "成功");
+    res.put("menus", _getMenusAll("0"));
+    return GetJSON(res);
+  }
+  // 递归菜单
+  private ArrayList<HashMap<String, Object>> _getMenusAll(String fid) {
+    HashMap<String, Object> tmp;
+    ArrayList<HashMap<String, Object>> menu;
+    ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
+    ArrayList<HashMap<String, Object>> M = menus.containsKey(fid)?menus.get(fid):data;
+    for( HashMap<String, Object> val : M) {
+      String id = val.get("id").toString();
+      tmp = new HashMap<String, Object>();
+      tmp.put("label", val.get("title"));
+      tmp.put("value", id);
+      menu = _getMenusAll(id);
+      if(menu.size()>0) tmp.put("children",menu);
+      data.add(tmp);
     }
+    return data;
+  }
+
+  /* 获取菜单-权限 */
+  @RequestMapping("getMenusPerm")
+  String GetMenusPerm(@RequestBody JSONObject json) {
+    HashMap<String,Object> res;
+    // 参数
+    String token = JsonName(json, "token");
+    // 验证
+    String msg = AdminToken.Verify(token, "");
+    if(!msg.equals("")){
+      res = new HashMap<String,Object>();
+      res.put("code", 4001);
+      res.put("msg", msg);
+      return GetJSON(res);
+    }
+    // 全部菜单
+    _getMenus();
     // 用户权限
     permAll = AdminToken.Perm(token);
     // 返回
     res = new HashMap<String,Object>();
     res.put("code", 0);
     res.put("msg", "成功");
-    res.put("menus", _getMenu("0"));
+    res.put("menus", _getMenusPerm("0"));
     return GetJSON(res);
   }
   // 递归菜单
-  private ArrayList<HashMap<String, Object>> _getMenu(String fid) {
+  private ArrayList<HashMap<String, Object>> _getMenusPerm(String fid) {
     HashMap<String, Object> tmp;
     ArrayList<HashMap<String, Object>> menu;
     ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
@@ -338,11 +364,31 @@ public class SysMenus extends Base {
       tmp.put("icon", val.get("ico"));
       tmp.put("label", val.get("title"));
       tmp.put("value", value);
-      menu = _getMenu(id);
+      menu = _getMenusPerm(id);
       if(menu.size()>0) tmp.put("children",menu);
       data.add(tmp);
     }
     return data;
+  }
+
+  /* 全部菜单 */
+  private void _getMenus(){
+    ArrayList<HashMap<String, Object>> tmp;
+    menus = new HashMap<String, ArrayList<HashMap<String, Object>>>();
+    SysMenu model = new SysMenu();
+    model.Columns("id", "fid", "title", "url", "ico", "controller", "action");
+    model.Order("sort, id");
+    ArrayList<HashMap<String, Object>> all = model.Find();
+    for (HashMap<String, Object> val : all) {
+      String fid = String.valueOf(val.get("fid"));
+      if (menus.containsKey(fid)) {
+        menus.get(fid).add(val);
+      } else {
+        tmp = new ArrayList<HashMap<String, Object>>();
+        tmp.add(val);
+        menus.put(fid,tmp);
+      }
+    }
   }
   
 }

@@ -37,7 +37,7 @@ class SysMenus(Base):
     # 查询
     m.Columns('id', 'fid', 'title', 'ico', 'FROM_UNIXTIME(ctime, %s) as ctime', 'FROM_UNIXTIME(utime, %s) as utime', 'sort', 'url', 'controller', 'action')
     m.Where('fid like %s AND title like %s AND url like %s', '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', '%'+fid+'%', '%'+title+'%', '%'+url+'%')
-    m.Order('fid', 'sort', 'id')
+    m.Order('fid DESC', 'sort', 'id DESC')
     m.Page(int(page), int(limit))
     list = m.Find()
     # 数据
@@ -159,8 +159,8 @@ class SysMenus(Base):
     else :
       return self.GetJSON({'code':5000, 'msg':'更新失败!'})
 
-  # 获取菜单
-  def GetMenus(self):
+  # 获取菜单-全部
+  def GetMenusAll(self):
     # 参数
     json = self.Json()
     token = self.JsonName(json, 'token')
@@ -168,22 +168,39 @@ class SysMenus(Base):
     msg = AdminToken.Verify(token, '')
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
     # 全部菜单
-    self.__menus = {}
-    model = SysMenu()
-    model.Columns('id', 'fid', 'title', 'url', 'ico', 'controller', 'action')
-    model.Order('sort, id')
-    data = model.Find()
-    for val in data :
-      fid = str(val['fid'])
-      if fid in self.__menus : self.__menus[fid] += [val]
-      else : self.__menus[fid] = [val]
+    self._getMenus()
+    # 返回
+    return self.GetJSON({'code':0, 'msg':'成功', 'menus':self._getMenusAll('0')})
+
+  # 递归菜单
+  def _getMenusAll(self, fid: str):
+    data = []
+    M = self.__menus[fid] if fid in self.__menus else []
+    for val in M :
+      id = str(val['id'])
+      tmp = {'label': val['title'], 'value': id}
+      menu = self._getMenusAll(id)
+      if len(menu)>0 : tmp['children']=menu
+      data += [tmp]
+    return data
+
+  # 获取菜单-权限
+  def GetMenusPerm(self):
+    # 参数
+    json = self.Json()
+    token = self.JsonName(json, 'token')
+    # 验证
+    msg = AdminToken.Verify(token, '')
+    if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
+    # 全部菜单
+    self._getMenus()
     # 用户权限
     self.__permAll = AdminToken.Perm(token)
     # 返回
-    return self.GetJSON({'code':0, 'msg':'成功', 'menus':self._getMenu('0')})
+    return self.GetJSON({'code':0, 'msg':'成功', 'menus':self._getMenusPerm('0')})
 
   # 递归菜单
-  def _getMenu(self, fid: str):
+  def _getMenusPerm(self, fid: str):
     data = []
     M = self.__menus[fid] if fid in self.__menus else []
     for val in M :
@@ -202,7 +219,19 @@ class SysMenus(Base):
       # 数据
       value = {'url': val['url'], 'controller': val['controller'], 'action': action}
       tmp = {'icon': val['ico'], 'label': val['title'], 'value': value}
-      menu = self._getMenu(id)
+      menu = self._getMenusPerm(id)
       if len(menu)>0 : tmp['children']=menu
       data += [tmp]
     return data
+
+  # 全部菜单
+  def _getMenus(self):
+    self.__menus = {}
+    model = SysMenu()
+    model.Columns('id', 'fid', 'title', 'url', 'ico', 'controller', 'action')
+    model.Order('sort, id')
+    data = model.Find()
+    for val in data :
+      fid = str(val['fid'])
+      if fid in self.__menus : self.__menus[fid] += [val]
+      else : self.__menus[fid] = [val]

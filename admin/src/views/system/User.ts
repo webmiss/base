@@ -237,6 +237,7 @@ export default defineComponent({
       this.info.form.name = row.name || '';
       this.info.form.gender = row.gender || '';
       this.info.form.birthday = row.birthday || '';
+      this.info.form.department = row.department || '';
       this.info.form.position = row.position || '';
     },
     subInfo(){

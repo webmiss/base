@@ -69,11 +69,15 @@
         <!-- Top -->
         <div class="app_right_top flex">
           <!-- Search -->
-          <div class="app_search">
+          <!-- <div class="app_search">
             <wm-search :data="menusSeaList" @update:active="menusClick(JSON.parse($event))" placeholder="菜单功能" />
-          </div>
+          </div> -->
           <!-- 标题 -->
-          <div class="app_top_title">{{ state.menuTitle }}</div>
+          <div class="app_top_title flex_left">
+            <span>{{info.title}}</span>
+            <i class="arrow ui ui_arrow_right"></i>
+            <span class="a" @click="$router.replace({path:'/refresh'})" title="重新加载">{{ state.menuTitle }}</span>
+          </div>
           <!-- User -->
           <div class="app_user">
             <div class="flex_left">

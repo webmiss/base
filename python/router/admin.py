@@ -82,7 +82,8 @@ def sysMenus(a) :
   elif a=='edit' : return SysMenus().Edit()
   elif a=='del' : return SysMenus().Del()
   elif a=='perm' : return SysMenus().Perm()
-  elif a=='getMenus' : return SysMenus().GetMenus()
+  elif a=='getMenusAll' : return SysMenus().GetMenusAll()
+  elif a=='getMenusPerm' : return SysMenus().GetMenusPerm()
 # 系统角色
 @Admin.route('/sys_role/<a>',methods=['POST'])
 def apiRole(a) :

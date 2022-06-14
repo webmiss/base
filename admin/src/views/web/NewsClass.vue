@@ -36,8 +36,9 @@
           <template #title>
             <td width="40">ID</td>
             <td width="120">名称</td>
-            <td width="120">日期</td>
-            <td width="60">状态</td>
+            <td width="140">创建时间</td>
+            <td width="140">更新时间</td>
+            <td width="60" class="tCenter">状态</td>
             <td>排序</td>
           </template>
           <tr v-for="(val,key) in page.list" :key="key">
@@ -46,18 +47,9 @@
             </td>
             <td>{{ val.id }}</td>
             <td>{{ val.name }}</td>
-            <td>
-              <wm-popover type="bottom" effect="dark" width="180px">
-                <template #body>
-                  <p>创建: {{ val.ctime || '无' }}</p>
-                  <p>更新: {{ val.utime || '无' }}</p>
-                </template>
-                <template #reference>
-                  <wm-tag size="medium">{{ val.utime.substr(0,10) }}</wm-tag>
-                </template>
-              </wm-popover>
-            </td>
-            <td>
+            <td>{{ val.ctime }}</td>
+            <td>{{ val.utime }}</td>
+            <td class="tCenter">
               <wm-switch v-if="getters.actionShow('state')" :value="val.state" @update:value="setState($event,val.id)"></wm-switch>
               <span v-else>-</span>
             </td>

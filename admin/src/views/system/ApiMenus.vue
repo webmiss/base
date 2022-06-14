@@ -38,15 +38,17 @@
       <div class="app_ct_body">
         <wm-main>
         <!-- List -->
-        <wm-table ref="Table" :data="page.list">
+        <wm-table ref="Table" :data="page.list" style="min-width: 1080px;">
           <template #title>
             <td width="40">ID</td>
             <td width="40">FID</td>
-            <td width="120">名称</td>
-            <td width="100">权限</td>
-            <td width="40">图标</td>
-            <td width="60" style="text-align: center;">排序</td>
-            <td width="120">URL</td>
+            <td>名称</td>
+            <td width="40" class="tCenter">图标</td>
+            <td width="140">创建时间</td>
+            <td width="140">更新时间</td>
+            <td width="60" class="tCenter">排序</td>
+            <td width="60" class="tCenter">权限</td>
+            <td width="140">URL</td>
             <td>API</td>
           </template>
           <tr v-for="(val,key) in page.list" :key="key">
@@ -55,27 +57,19 @@
             </td>
             <td>{{ val.id }}</td>
             <td>{{ val.fid }}</td>
-            <td>
-              <wm-popover type="bottom" effect="dark" width="180px">
-                <template #body>
-                  <p>创建: {{ val.ctime || '无' }}</p>
-                  <p>更新: {{ val.utime || '无' }}</p>
-                </template>
-                <template #reference>
-                  <wm-tag size="medium">{{ val.title }}</wm-tag>
-                </template>
-              </wm-popover>
-            </td>
-            <td style="text-align: center;">
-              <wm-button v-if="getters.actionShow('perm') && val.controller && !val.action" type="danger" height="32px" @click="permData(val.id, val.title, val.controller, val.action)">设置</wm-button>
-              <wm-button v-else-if="getters.actionShow('perm') && val.controller && val.action" height="32px" @click="permData(val.id, val.title, val.controller, val.action)">动作</wm-button>
+            <td><b>{{ val.title }}</b></td>
+            <td class="tCenter">
+              <span class="menus_icon" v-if="val.ico"><i :class="val.ico"></i></span>
               <span v-else>-</span>
             </td>
-            <td style="text-align: center;">
-              <div class="menus_icon" v-if="val.ico"><i :class="val.ico"></i></div>
+            <td>{{ val.ctime }}</td>
+            <td>{{ val.utime }}</td>
+            <td class="tCenter">{{ val.sort }}</td>
+            <td class="tCenter">
+              <wm-button type="text" textColor="danger" v-if="getters.actionShow('perm') && val.controller && !val.action" @click="permData(val.id, val.title, val.controller, val.action)">设置</wm-button>
+              <wm-button type="text" v-else-if="getters.actionShow('perm') && val.controller && val.action" @click="permData(val.id, val.title, val.controller, val.action)">编辑</wm-button>
               <span v-else>-</span>
             </td>
-            <td style="text-align: center;">{{ val.sort }}</td>
             <td>{{ val.url }}</td>
             <td>{{ val.controller }}</td>
           </tr>

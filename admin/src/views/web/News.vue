@@ -35,12 +35,14 @@
         <wm-table ref="Table" :data="page.list" class="table">
           <template #title>
             <td width="40">ID</td>
-            <td width="40">封面</td>
-            <td width="220">标题</td>
+            <td width="28">封面</td>
+            <td>标题</td>
             <td width="80">所属</td>
-            <td width="120">日期</td>
-            <td width="60">状态</td>
-            <td>操作</td>
+            <td width="120">时间</td>
+            <td width="60" class="tCenter">状态</td>
+            <td width="60" class="tCenter">内容</td>
+            <td>来源</td>
+            <td>作者</td>
           </template>
           <tr v-for="(val,key) in page.list" :key="key">
             <td width="30" class="checkbox wm-table_checkbox">
@@ -48,15 +50,13 @@
             </td>
             <td>{{ val.id }}</td>
             <td>
-              <wm-img width="40px" height="40px" radius="4px" icoSize="24px" :url="val.img" :title="val.title" @click="openShow(val)"></wm-img>
+              <wm-img width="28px" height="28px" radius="2px" icoSize="24px" :url="val.img" :title="val.title" @click="openShow(val)"></wm-img>
             </td>
             <td><div class="news_title" @click="openShow(val)">{{ val.title }}</div></td>
             <td>{{ menusName[val.cid] }}</td>
             <td>
               <wm-popover type="bottom" effect="dark" width="180px">
                 <template #body>
-                  <p>来源: {{ val.source || '无' }}</p>
-                  <p>作者: {{ val.author || '无' }}</p>
                   <p>创建: {{ val.ctime || '无' }}</p>
                   <p>更新: {{ val.utime || '无' }}</p>
                 </template>
@@ -65,14 +65,16 @@
                 </template>
               </wm-popover>
             </td>
-            <td>
+            <td class="tCenter">
               <wm-switch v-if="getters.actionShow('state')" :value="val.state" @update:value="setState($event,val.id)"></wm-switch>
               <span v-else>-</span>
             </td>
-            <td>
-              <wm-button v-if="getters.actionShow('edit')" height="32px" fontSize="13px" @click="setContent(val.id)">内容</wm-button>
+            <td class="tCenter">
+              <wm-button type="text" v-if="getters.actionShow('edit')" @click="setContent(val.id)">编辑</wm-button>
               <span v-else>-</span>
             </td>
+            <td>{{ val.source }}</td>
+            <td>{{ val.author }}</td>
           </tr>
         </wm-table>
         <wm-page :page="page.page" :limit="page.limit" :total="page.total" @update:page="subPage"></wm-page>

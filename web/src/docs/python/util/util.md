@@ -50,9 +50,9 @@ Util.Implode(glue: str, pieces: list)
 ## Json转换
 ```python
 # 编码
-Util.JsonEncode(json)
+Util.JsonEncode(data)
 # 解码
-Util.JsonDecode(json: str)
+Util.JsonDecode(data: str)
 ```
 
 ## 合并数组

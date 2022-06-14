@@ -10,8 +10,6 @@ import wmMain from '@/components/main/index.vue'
 import wmRow from '@/components/main/row/index.vue'
 import wmTable from '@/components/table/index.vue'
 import wmCheckbox from '@/components/form/checkbox/index.vue'
-import wmTag from '@/components/tag/index.vue'
-import wmPopover from '@/components/popover/index.vue'
 import wmDialog from '@/components/dialog/index.vue'
 import wmAdd from '@/components/action/add/index.vue'
 import wmClose from '@/components/action/close/index.vue'
@@ -23,7 +21,7 @@ import wmPage from '@/components/page/index.vue'
 
 /* 系统菜单 */
 export default defineComponent({
-  components: {wmMain,wmRow,wmTable,wmCheckbox,wmTag,wmPopover,wmDialog,wmAdd,wmClose,wmForm,wmFormItem,wmInput,wmButton,wmPage},
+  components: {wmMain,wmRow,wmTable,wmCheckbox,wmDialog,wmAdd,wmClose,wmForm,wmFormItem,wmInput,wmButton,wmPage},
   data(){
     // 状态
     const store: any = useStore();

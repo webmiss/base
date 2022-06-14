@@ -25,7 +25,7 @@
 <style lang="less" scoped>
 .wm-search{position: relative; font-size: 14px;}
 .wm-search_input{position: relative; width: 100%; height: 34px; line-height: 34px;}
-.wm-search_input input{width: 100%; height: 100%; padding: 0 16px 0 40px; display: flex; box-sizing: border-box; border-radius: 20px; border: #DCDFE6 1px solid; background-color: #F2F4F6;}
+.wm-search_input input{width: 100%; height: 100%; padding: 0 16px 0 40px; display: flex; box-sizing: border-box; border-radius: 20px; border: #F2F2F2 1px solid; background-color: #F2F4F6;}
 .wm-search_input input:hover{border-color: #C0C4CC;}
 .wm-search_input input:focus{outline: none; border-color: @Primary;}
 .wm-search_input_ico{cursor: pointer; position: absolute; width: 40px; height: 100%; text-align: center;}

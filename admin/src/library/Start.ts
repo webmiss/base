@@ -60,6 +60,8 @@ export default {
           Toast(d.msg);
           this.logout();
         }
+      }, ()=>{
+        Toast('无法连接服务器!');
       });
     }else{
       this.logout();

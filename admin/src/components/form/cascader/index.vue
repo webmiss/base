@@ -118,7 +118,7 @@ export default defineComponent({
     height: {type:String, default:'40px'},          //高度
     placeholder: {type:String, default:'请选择'},   //提示信息
     maxWidth: {type:String, default:'180px'},       //最大宽度
-    maxHeight: {type:String, default:'160px'},      //最大高度
+    maxHeight: {type:String, default:'180px'},      //最大高度
     clearable: {type: Boolean, default: false},     //一键清空
     checkStrictly: {type: Boolean, default: false}, //选择任意
   },

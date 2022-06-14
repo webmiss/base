@@ -58,7 +58,8 @@ func Admin(r *gin.Engine) {
 		g.POST("sys_menus/edit", (&admin.SysMenus{}).Edit)
 		g.POST("sys_menus/del", (&admin.SysMenus{}).Del)
 		g.POST("sys_menus/perm", (&admin.SysMenus{}).Perm)
-		g.POST("sys_menus/getMenus", (&admin.SysMenus{}).GetMenus)
+		g.POST("sys_menus/getMenusAll", (&admin.SysMenus{}).GetMenusAll)
+		g.POST("sys_menus/getMenusPerm", (&admin.SysMenus{}).GetMenusPerm)
 		// 系统角色
 		g.POST("sys_role/list", (&admin.SysRole{}).List)
 		g.POST("sys_role/add", (&admin.SysRole{}).Add)

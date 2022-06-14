@@ -24,7 +24,7 @@ export default [
       {label: 'Action 动作图标', value: 'action', key:'action,动作图标'},
       {label: 'Chart 图表', value: 'chart', key:'chart,图表'},
       {label: 'Dialog 对话框', value: 'dialog', key:'dialog,对话框'},
-      {label: 'Form 表单', value: 'form', key:'form,表单,input,输入框,button,按钮,checkbox,多选,radio,单选,select,下拉菜单'},
+      {label: 'Form 表单', value: 'form', key:'form表单,input输入框,button按钮,checkbox多选,radio单选,select下拉菜单,cascader级联选择器'},
       {label: 'Img 图片', value: 'img', key:'img,图片上传,图片预览'},
       {label: 'Loading 动画', value: 'loading', key:'loading,动画'},
       {label: 'Main 布局', value: 'main', key:'main,布局,容器,row,单行'},

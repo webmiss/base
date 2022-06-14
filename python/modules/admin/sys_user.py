@@ -33,10 +33,18 @@ class SysUser(Base):
     # 条件
     param = Util.JsonDecode(data)
     uname = Util.Trim(param['uname']) if 'uname' in param.keys() else ''
+    nickname = Util.Trim(param['nickname']) if 'nickname' in param.keys() else ''
+    name = Util.Trim(param['name']) if 'name' in param.keys() else ''
+    department = Util.Trim(param['department']) if 'department' in param.keys() else ''
+    position = Util.Trim(param['position']) if 'position' in param.keys() else ''
+    where = '(a.uname LIKE %s OR a.tel LIKE %s OR a.email LIKE %s) AND b.nickname LIKE %s AND b.name LIKE %s AND b.department LIKE %s AND b.position LIKE %s'
+    whereData = ('%'+uname+'%', '%'+uname+'%', '%'+uname+'%', '%'+nickname+'%', '%'+name+'%', '%'+department+'%', '%'+position+'%')
     # 统计
     m = User()
     m.Columns('count(*) AS num')
-    m.Where('uname LIKE %s OR tel LIKE %s OR email LIKE %s', '%'+uname+'%', '%'+uname+'%', '%'+uname+'%')
+    m.Table('user as a')
+    m.LeftJoin('user_info as b', 'a.id=b.uid')
+    m.Where(where, *whereData)
     total = m.FindFirst()
     # 查询
     m.Table('user as a')
@@ -45,15 +53,11 @@ class SysUser(Base):
     m.LeftJoin('api_perm as d', 'a.id=d.uid')
     m.Columns(
       'a.id AS uid', 'a.uname', 'a.email', 'a.tel', 'a.state', 'FROM_UNIXTIME(a.rtime, %s) as rtime', 'FROM_UNIXTIME(a.ltime, %s) as ltime', 'FROM_UNIXTIME(a.utime, %s) as utime',
-      'b.nickname', 'b.position', 'b.name', 'b.gender', 'FROM_UNIXTIME(b.birthday, %s) as birthday', 'b.img',
+      'b.nickname', 'b.position', 'b.name', 'b.gender', 'b.img', 'FROM_UNIXTIME(b.birthday, %s) as birthday',
       'c.role AS sys_role', 'c.perm AS sys_perm',
       'd.role AS api_role', 'd.perm AS api_perm'
     )
-    m.Where(
-      'a.uname LIKE %s OR a.tel LIKE %s OR a.email LIKE %s',
-      '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', '%Y-%m-%d',
-      '%'+uname+'%', '%'+uname+'%', '%'+uname+'%'
-    )
+    m.Where(where, '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', '%Y-%m-%d', *whereData)
     m.Order('a.id DESC')
     m.Page(int(page), int(limit))
     list = m.Find()
@@ -312,6 +316,7 @@ class SysUser(Base):
       'name': Util.Trim(param['name']) if 'name' in param.keys() else '',
       'gender': Util.Trim(param['gender']) if 'gender' in param.keys() else '',
       'birthday': Util.StrToTime(param['birthday'], '%Y-%m-%d') if 'birthday' in param.keys() else 0,
+      'department': Util.Trim(param['department']) if 'department' in param.keys() else '',
       'position': Util.Trim(param['position']) if 'position' in param.keys() else '',
     }
     # 模型
