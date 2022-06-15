@@ -29,9 +29,9 @@ export default defineComponent({
     // 登录数据
     const login: any = {uname:'',passwd:'',subText:'登 录',dis:false};
     // 左侧菜单
+    const sea: any = {show: true, key:'', list:[]};
     const menusPos: any = [0,0,0];
     const menusChildren: any = [];
-    const menusSeaList: any = [];
     // 语言
     const language: any = {
       num: 0,
@@ -42,7 +42,7 @@ export default defineComponent({
         {name:'go',val:'GoLang( Gin )'},
       ]
     };
-    return {state,router,transitionName,info,login,menusChildren,menusPos,menusSeaList,language}
+    return {state,router,transitionName,info,login,menusChildren,sea,menusPos,language}
   },
   watch:{
     $route(to,from){
@@ -165,11 +165,11 @@ export default defineComponent({
               if(!this.state.menus[x].children[y].children) continue;
               for(let z in this.state.menus[x].children[y].children){
                 let arr: any = this.state.menus[x].children[y].children[z];
-                data.push({label:arr.label, value:JSON.stringify([x,y,z])});
+                data.push({label:arr.label, en:arr.en, value:[x,y,z], show: true});
               }
             }
           }
-          this.menusSeaList = data;
+          this.sea.list = data;
         }
       },()=>{
         this.logout();
@@ -196,6 +196,17 @@ export default defineComponent({
     /* 菜单动画 */
     menusStyle(v: any){
       v.checked = v.checked?false:true;
+    },
+
+    /* 搜索 */
+    seaInput(){
+      const reg =new RegExp(this.sea.key.toLowerCase());
+      let label: string, en: string;
+      for(let i in this.sea.list){
+        label = this.sea.list[i].label.toLowerCase();
+        en = this.sea.list[i].en.toLowerCase();
+        this.sea.list[i].show = reg.test(label)||reg.test(en);
+      }
     },
 
   }

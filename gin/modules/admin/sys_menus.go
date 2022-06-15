@@ -39,15 +39,18 @@ func (r SysMenus) List(c *gin.Context) {
 	util.JsonDecode(data, &param)
 	fid := util.Trim(util.If(util.InKey("fid", param), param["fid"], ""))
 	title := util.Trim(util.If(util.InKey("title", param), param["title"], ""))
+	en := util.Trim(util.If(util.InKey("en", param), param["en"], ""))
 	url := util.Trim(util.If(util.InKey("url", param), param["url"], ""))
+	where := "fid like ? AND title like ? AND en like ? AND url like ?"
+	whereData := []interface{}{"%" + fid + "%", "%" + title + "%", "%" + en + "%", "%" + url + "%"}
 	// 统计
 	m := (&model.SysMenu{}).New()
 	m.Columns("count(*) AS num")
-	m.Where("fid like ? AND title like ? AND url like ?", "%"+fid+"%", "%"+title+"%", "%"+url+"%")
+	m.Where(where, whereData...)
 	total := m.FindFirst()
 	// 查询
-	m.Columns("id", "fid", "title", "ico", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "sort", "url", "controller", "action")
-	m.Where("fid like ? AND title like ? AND url like ?", "%"+fid+"%", "%"+title+"%", "%"+url+"%")
+	m.Columns("id", "fid", "title", "en", "ico", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "sort", "url", "controller", "action")
+	m.Where(where, whereData...)
 	m.Order("fid DESC", "sort", "id DESC")
 	m.Page((&util.Type{}).Int(page), (&util.Type{}).Int(limit))
 	list := m.Find()
@@ -95,6 +98,7 @@ func (r SysMenus) Add(c *gin.Context) {
 	m.Values(map[string]interface{}{
 		"fid":        util.Trim(util.If(util.InKey("fid", param), param["fid"], 0)),
 		"title":      title,
+		"en":         util.Trim(util.If(util.InKey("en", param), param["en"], "")),
 		"url":        util.Trim(util.If(util.InKey("url", param), param["url"], "")),
 		"ico":        util.Trim(util.If(util.InKey("ico", param), param["ico"], "")),
 		"sort":       util.Trim(util.If(util.InKey("sort", param), param["sort"], 0)),
@@ -139,6 +143,7 @@ func (r SysMenus) Edit(c *gin.Context) {
 	m.Set(map[string]interface{}{
 		"fid":        util.Trim(util.If(util.InKey("fid", param), param["fid"], 0)),
 		"title":      title,
+		"en":         util.Trim(util.If(util.InKey("en", param), param["en"], "")),
 		"url":        util.Trim(util.If(util.InKey("url", param), param["url"], "")),
 		"ico":        util.Trim(util.If(util.InKey("ico", param), param["ico"], "")),
 		"sort":       util.Trim(util.If(util.InKey("sort", param), param["sort"], 0)),
@@ -299,7 +304,7 @@ func (r *SysMenus) _getMenusPerm(fid string) []map[string]interface{} {
 		}
 		// 数据
 		value := map[string]interface{}{"url": val["url"], "controller": val["controller"], "action": action}
-		tmp := map[string]interface{}{"icon": val["ico"], "label": val["title"], "value": value}
+		tmp := map[string]interface{}{"icon": val["ico"], "label": val["title"], "en": val["en"], "value": value}
 		menu := r._getMenusPerm(id)
 		if len(menu) > 0 {
 			tmp["children"] = menu
@@ -313,7 +318,7 @@ func (r *SysMenus) _getMenusPerm(fid string) []map[string]interface{} {
 func (r *SysMenus) _getMenus() {
 	r.menus = map[string][]map[string]interface{}{}
 	model := (&model.SysMenu{}).New()
-	model.Columns("id", "fid", "title", "url", "ico", "controller", "action")
+	model.Columns("id", "fid", "title", "en", "url", "ico", "controller", "action")
 	model.Order("sort, id")
 	data := model.Find()
 	for _, val := range data {

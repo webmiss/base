@@ -28,15 +28,18 @@ class SysMenus extends Base {
     $param = json_decode($data);
     $fid = isset($param->fid)?trim($param->fid):'';
     $title = isset($param->title)?trim($param->title):'';
+    $en = isset($param->en)?trim($param->en):'';
     $url = isset($param->url)?trim($param->url):'';
+    $where = 'fid like ? AND title like ? AND en like ? AND url like ?';
+    $whereData = ['%'.$fid.'%', '%'.$title.'%', '%'.$en.'%', '%'.$url.'%'];
     // 统计
     $m = new SysMenu();
     $m->Columns('count(*) AS num');
-    $m->Where('fid like ? AND title like ? AND url like ?', '%'.$fid.'%', '%'.$title.'%', '%'.$url.'%');
+    $m->Where($where, ...$whereData);
     $total = $m->FindFirst();
     // 查询
-    $m->Columns('id', 'fid', 'title', 'ico', 'FROM_UNIXTIME(ctime) as ctime', 'FROM_UNIXTIME(utime) as utime', 'sort', 'url', 'controller', 'action');
-    $m->Where('fid like ? AND title like ? AND url like ?', '%'.$fid.'%', '%'.$title.'%', '%'.$url.'%');
+    $m->Columns('id', 'fid', 'title', 'en', 'ico', 'FROM_UNIXTIME(ctime) as ctime', 'FROM_UNIXTIME(utime) as utime', 'sort', 'url', 'controller', 'action');
+    $m->Where($where, ...$whereData);
     $m->Order('fid DESC', 'sort', 'id DESC');
     $m->Page($page, $limit);
     $list = $m->Find();
@@ -71,6 +74,7 @@ class SysMenus extends Base {
     $m->Values([
       'fid'=> isset($param->fid)?trim($param->fid):0,
       'title'=> $title,
+      'en'=> isset($param->en)?trim($param->en):'',
       'url'=> isset($param->url)?trim($param->url):'',
       'ico'=> isset($param->ico)?trim($param->ico):'',
       'sort'=> isset($param->sort)?trim($param->sort):0,
@@ -108,6 +112,7 @@ class SysMenus extends Base {
     $m->Set([
       'fid'=> isset($param->fid)?trim($param->fid):0,
       'title'=> $title,
+      'en'=> isset($param->en)?trim($param->en):'',
       'url'=> isset($param->url)?trim($param->url):'',
       'ico'=> isset($param->ico)?trim($param->ico):'',
       'sort'=> isset($param->sort)?trim($param->sort):0,
@@ -233,7 +238,7 @@ class SysMenus extends Base {
       }
       // 数据
       $value = ['url'=>$val['url'], 'controller'=>$val['controller'], 'action'=>$action];
-      $tmp = ['icon'=>$val['ico'], 'label'=>$val['title'], 'value'=>$value];
+      $tmp = ['icon'=>$val['ico'], 'label'=>$val['title'], 'en'=>$val['en'], 'value'=>$value];
       $menu = self::_getMenusPerm($id);
       if(!empty($menu)) $tmp['children'] = $menu;
       $data[] = $tmp;
@@ -244,7 +249,7 @@ class SysMenus extends Base {
   /* 全部菜单 */
   private static function _getMenus() {
     $model = new SysMenu();
-    $model->Columns('id', 'fid', 'title', 'url', 'ico', 'controller', 'action');
+    $model->Columns('id', 'fid', 'title', 'en', 'url', 'ico', 'controller', 'action');
     $model->Order('sort, id');
     $data = $model->Find();
     foreach($data as $val){

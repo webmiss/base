@@ -15,6 +15,9 @@
           <wm-input :value="sea.form.title" @update:value="sea.form.title=$event" placeholder="菜单名称" />
         </li>
         <li>
+          <wm-input :value="sea.form.en" @update:value="sea.form.en=$event" placeholder="英文名称" />
+        </li>
+        <li>
           <div class="input"><wm-input :value="sea.form.url" @update:value="sea.form.url=$event" placeholder="API关键字" /></div>
         </li>
       </ul>
@@ -38,11 +41,12 @@
       <div class="app_ct_body">
         <wm-main>
         <!-- List -->
-        <wm-table ref="Table" :data="page.list" style="min-width: 1080px;">
+        <wm-table ref="Table" :data="page.list" style="min-width: 1200px;">
           <template #title>
             <td width="40">ID</td>
             <td width="40">FID</td>
             <td>名称</td>
+            <td>英文</td>
             <td width="40" class="tCenter">图标</td>
             <td width="140">创建时间</td>
             <td width="140">更新时间</td>
@@ -58,6 +62,7 @@
             <td>{{ val.id }}</td>
             <td>{{ val.fid }}</td>
             <td><b>{{ val.title }}</b></td>
+            <td>{{ val.en }}</td>
             <td class="tCenter">
               <span class="menus_icon" v-if="val.ico"><i :class="val.ico"></i></span>
               <span v-else>-</span>
@@ -90,6 +95,9 @@
         <wm-form-item label="名称">
           <wm-input v-model:value="add.form.title" maxlength="8" maxWidth="80%" placeholder="菜单名称" clearable />
         </wm-form-item>
+        <wm-form-item label="英文">
+          <wm-input v-model:value="add.form.en" maxlength="16" maxWidth="80%" placeholder="英文名称" clearable />
+        </wm-form-item>
         <wm-form-item label="URL">
           <wm-input v-model:value="add.form.url" maxlength="24" maxWidth="80%" placeholder="URL" clearable />
         </wm-form-item>
@@ -117,6 +125,9 @@
         </wm-form-item>
         <wm-form-item label="名称">
           <wm-input v-model:value="edit.form.title" maxlength="8" maxWidth="80%" placeholder="菜单名称" clearable />
+        </wm-form-item>
+        <wm-form-item label="英文">
+          <wm-input v-model:value="edit.form.en" maxlength="16" maxWidth="80%" placeholder="英文名称" clearable />
         </wm-form-item>
         <wm-form-item label="URL">
           <wm-input v-model:value="edit.form.url" maxlength="24" maxWidth="80%" placeholder="URL" clearable />

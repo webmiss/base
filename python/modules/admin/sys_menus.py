@@ -28,15 +28,18 @@ class SysMenus(Base):
     param = Util.JsonDecode(data)
     fid = Util.Trim(param['fid']) if 'fid' in param.keys() else ''
     title = Util.Trim(param['title']) if 'title' in param.keys() else ''
+    en = Util.Trim(param['en']) if 'en' in param.keys() else ''
     url = Util.Trim(param['url']) if 'url' in param.keys() else ''
+    where = 'fid like %s AND title like %s AND en like %s AND url like %s'
+    whereData = ('%'+fid+'%', '%'+title+'%', '%'+en+'%', '%'+url+'%')
     # 统计
     m = SysMenu()
     m.Columns('count(*) AS num')
-    m.Where('fid like %s AND title like %s AND url like %s', '%'+fid+'%', '%'+title+'%', '%'+url+'%')
+    m.Where(where, *whereData)
     total = m.FindFirst()
     # 查询
-    m.Columns('id', 'fid', 'title', 'ico', 'FROM_UNIXTIME(ctime, %s) as ctime', 'FROM_UNIXTIME(utime, %s) as utime', 'sort', 'url', 'controller', 'action')
-    m.Where('fid like %s AND title like %s AND url like %s', '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', '%'+fid+'%', '%'+title+'%', '%'+url+'%')
+    m.Columns('id', 'fid', 'title', 'en', 'ico', 'FROM_UNIXTIME(ctime, %s) as ctime', 'FROM_UNIXTIME(utime, %s) as utime', 'sort', 'url', 'controller', 'action')
+    m.Where(where, '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', *whereData)
     m.Order('fid DESC', 'sort', 'id DESC')
     m.Page(int(page), int(limit))
     list = m.Find()
@@ -68,6 +71,7 @@ class SysMenus(Base):
     m.Values({
       'fid': Util.Trim(param['fid']) if 'fid' in param.keys() else 0,
       'title': title,
+      'en': Util.Trim(param['en']) if 'en' in param.keys() else '',
       'url': Util.Trim(param['url']) if 'url' in param.keys() else '',
       'ico': Util.Trim(param['ico']) if 'ico' in param.keys() else '',
       'sort': Util.Trim(param['sort']) if 'sort' in param.keys() else 0,
@@ -102,6 +106,7 @@ class SysMenus(Base):
     m.Set({
       'fid': Util.Trim(param['fid']) if 'fid' in param.keys() else 0,
       'title': title,
+      'en': Util.Trim(param['en']) if 'en' in param.keys() else '',
       'url': Util.Trim(param['url']) if 'url' in param.keys() else '',
       'ico': Util.Trim(param['ico']) if 'ico' in param.keys() else '',
       'sort': Util.Trim(param['sort']) if 'sort' in param.keys() else 0,
@@ -218,7 +223,7 @@ class SysMenus(Base):
         if (perm&permVal)>0 : action += [v]
       # 数据
       value = {'url': val['url'], 'controller': val['controller'], 'action': action}
-      tmp = {'icon': val['ico'], 'label': val['title'], 'value': value}
+      tmp = {'icon': val['ico'], 'label': val['title'], 'en': val['en'], 'value': value}
       menu = self._getMenusPerm(id)
       if len(menu)>0 : tmp['children']=menu
       data += [tmp]
@@ -228,7 +233,7 @@ class SysMenus(Base):
   def _getMenus(self):
     self.__menus = {}
     model = SysMenu()
-    model.Columns('id', 'fid', 'title', 'url', 'ico', 'controller', 'action')
+    model.Columns('id', 'fid', 'title', 'en', 'url', 'ico', 'controller', 'action')
     model.Order('sort, id')
     data = model.Find()
     for val in data :

@@ -55,15 +55,18 @@ public class SysMenus extends Base {
     JSONObject param = Util.JsonDecode(data);
     String fid = param.containsKey("fid")?String.valueOf(param.get("fid")).trim():"";
     String title = param.containsKey("title")?String.valueOf(param.get("title")).trim():"";
+    String en = param.containsKey("en")?String.valueOf(param.get("en")).trim():"";
     String url = param.containsKey("url")?String.valueOf(param.get("url")).trim():"";
+    String where = "fid like ? AND title like ? AND en like ? AND url like ?";
+    Object[] whereData = {"%"+fid+"%", "%"+title+"%", "%"+en+"%", "%"+url+"%"};
     // 统计
     SysMenu m = new SysMenu();
     m.Columns("count(*) AS num");
-    m.Where("fid like ? AND title like ? AND url like ?", "%"+fid+"%", "%"+title+"%", "%"+url+"%");
+    m.Where(where, whereData);
     HashMap<String, Object> total = m.FindFirst();
     // 查询
-    m.Columns("id", "fid", "title", "ico", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "sort", "url", "controller", "action");
-    m.Where("fid like ? AND title like ? AND url like ?", "%"+fid+"%", "%"+title+"%", "%"+url+"%");
+    m.Columns("id", "fid", "title", "en", "ico", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "sort", "url", "controller", "action");
+    m.Where(where, whereData);
     m.Order("fid DESC", "sort", "id DESC");
     m.Page(page, limit);
     ArrayList<HashMap<String,Object>> list = m.Find();
@@ -115,6 +118,7 @@ public class SysMenus extends Base {
     HashMap<String,Object> uData = new HashMap<String,Object>();
     uData.put("fid", param.containsKey("fid")?String.valueOf(param.get("fid")).trim():0);
     uData.put("title", title);
+    uData.put("en", param.containsKey("en")?String.valueOf(param.get("en")).trim():"");
     uData.put("url", param.containsKey("url")?String.valueOf(param.get("url")).trim():"");
     uData.put("ico", param.containsKey("ico")?String.valueOf(param.get("ico")).trim():"");
     uData.put("sort", param.containsKey("sort")?String.valueOf(param.get("sort")).trim():0);
@@ -169,6 +173,7 @@ public class SysMenus extends Base {
     HashMap<String,Object> uData = new HashMap<String,Object>();
     uData.put("fid", param.containsKey("fid")?String.valueOf(param.get("fid")).trim():0);
     uData.put("title", title);
+    uData.put("en", param.containsKey("en")?String.valueOf(param.get("en")).trim():"");
     uData.put("url", param.containsKey("url")?String.valueOf(param.get("url")).trim():"");
     uData.put("ico", param.containsKey("ico")?String.valueOf(param.get("ico")).trim():"");
     uData.put("sort", param.containsKey("sort")?String.valueOf(param.get("sort")).trim():0);
@@ -363,6 +368,7 @@ public class SysMenus extends Base {
       tmp = new HashMap<String, Object>();
       tmp.put("icon", val.get("ico"));
       tmp.put("label", val.get("title"));
+      tmp.put("en", val.get("en"));
       tmp.put("value", value);
       menu = _getMenusPerm(id);
       if(menu.size()>0) tmp.put("children",menu);
@@ -376,7 +382,7 @@ public class SysMenus extends Base {
     ArrayList<HashMap<String, Object>> tmp;
     menus = new HashMap<String, ArrayList<HashMap<String, Object>>>();
     SysMenu model = new SysMenu();
-    model.Columns("id", "fid", "title", "url", "ico", "controller", "action");
+    model.Columns("id", "fid", "title", "en", "url", "ico", "controller", "action");
     model.Order("sort, id");
     ArrayList<HashMap<String, Object>> all = model.Find();
     for (HashMap<String, Object> val : all) {

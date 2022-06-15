@@ -123,6 +123,7 @@ export default defineComponent({
       this.edit.id = row.id;
       this.edit.form.fid = row.fid;
       this.edit.form.title = row.title;
+      this.edit.form.en = row.en;
       this.edit.form.url = row.url;
       this.edit.form.ico = row.ico;
       this.edit.form.sort = row.sort;

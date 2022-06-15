@@ -88,7 +88,8 @@ DROP TABLE IF EXISTS `sys_menus`;
 CREATE TABLE `sys_menus` (
   `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `fid` smallint(5) unsigned NOT NULL COMMENT '父ID',
-  `title` varchar(12) DEFAULT '' COMMENT '标题',
+  `title` varchar(8) DEFAULT '' COMMENT '标题',
+  `en` varchar(16) DEFAULT '' COMMENT '英文',
   `ico` varchar(32) DEFAULT '' COMMENT '图标',
   `ctime` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '创建时间',
   `utime` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '更新时间',
@@ -99,25 +100,25 @@ CREATE TABLE `sys_menus` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统菜单';
 
-INSERT INTO `sys_menus` (`id`, `fid`, `title`, `ico`, `ctime`, `utime`, `sort`, `url`, `controller`, `action`) VALUES
-(1,	0,	'首页',	'icons icon_home',	0,	0,	0,	'',	'',	''),
-(2,	0,	'网站',	'icons icon_web',	0,	0,	0,	'',	'',	''),
-(3,	0,	'系统',	'icons icon_system',	0,	0,	0,	'',	'',	''),
-(4,	2,	'新闻',	'',	0,	0,	0,	'',	'',	''),
-(5,	3,	'文件',	'',	0,	0,	0,	'',	'',	''),
-(6,	3,	'用户',	'',	0,	0,	0,	'',	'',	''),
-(7,	3,	'权限',	'',	0,	0,	0,	'',	'',	''),
-(8,	3,	'设置',	'',	0,	0,	0,	'',	'',	''),
-(9,	4,	'新闻管理',	'',	0,	0,	0,	'/News',	'/admin/news',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"name\":\"状态\",\"action\":\"state\",\"perm\":32}]'),
-(10,	4,	'新闻分类',	'',	0,	0,	0,	'/NewsClass',	'/admin/news_class',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"name\":\"状态\",\"action\":\"state\",\"perm\":32}]'),
-(11,	5,	'网站目录',	'',	0,	0,	0,	'/SysFileManage',	'/admin/sys_file',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"新建文件夹\",\"action\":\"mkdir\",\"perm\":2},{\"name\":\"重命名\",\"action\":\"rename\",\"perm\":4},{\"name\":\"上传\",\"action\":\"upload\",\"perm\":8},{\"name\":\"下载\",\"action\":\"down\",\"perm\":16},{\"name\":\"删除\",\"action\":\"remove\",\"perm\":32}]'),
-(12,	6,	'系统帐户',	'',	0,	0,	0,	'/SysUser',	'/admin/sys_user',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"name\":\"状态\",\"action\":\"state\",\"perm\":32},{\"name\":\"权限\",\"action\":\"perm\",\"perm\":64},{\"name\":\"个人信息\",\"action\":\"info\",\"perm\":128}]'),
-(13,	7,	'系统菜单',	'',	0,	0,	0,	'/SysMenus',	'/admin/sys_menus',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"name\":\"权限\",\"action\":\"perm\",\"perm\":32}]'),
-(14,	7,	'系统角色',	'',	0,	0,	0,	'/SysRole',	'/admin/sys_role',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"name\":\"权限\",\"action\":\"perm\",\"perm\":32}]'),
-(15,	7,	'API菜单',	'',	0,	0,	0,	'/ApiMenus',	'/admin/api_menus',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"name\":\"权限\",\"action\":\"perm\",\"perm\":32}]'),
-(16,	7,	'API角色',	'',	0,	0,	0,	'/ApiRole',	'/admin/api_role',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"name\":\"权限\",\"action\":\"perm\",\"perm\":32}]'),
-(17,	8,	'系统配置',	'',	0,	0,	0,	'/SysConfig',	'/admin/sys_config',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"编辑\",\"action\":\"edit\",\"perm\":2},{\"name\":\"图片\",\"action\":\"upimg\",\"perm\":4}]'),
-(18,	8,	'系统帮助',	'',	0,	0,	0,	'/SysHelp',	'/admin/sys_help',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"编辑\",\"action\":\"edit\",\"perm\":2}]');
+INSERT INTO `sys_menus` (`id`, `fid`, `title`, `en`, `ico`, `ctime`, `utime`, `sort`, `url`, `controller`, `action`) VALUES
+(1,	0,	'首页', '',	'icons icon_home',	0,	0,	0,	'',	'',	''),
+(2,	0,	'网站', '',	'icons icon_web',	0,	0,	0,	'',	'',	''),
+(3,	0,	'系统', '',	'icons icon_system',	0,	0,	0,	'',	'',	''),
+(4,	2,	'新闻', '',	'',	0,	0,	0,	'',	'',	''),
+(5,	3,	'文件', '',	'',	0,	0,	0,	'',	'',	''),
+(6,	3,	'用户', '',	'',	0,	0,	0,	'',	'',	''),
+(7,	3,	'权限', '',	'',	0,	0,	0,	'',	'',	''),
+(8,	3,	'设置', '',	'',	0,	0,	0,	'',	'',	''),
+(9,	4,	'新闻管理', 'XinWenGuanLi',	'',	0,	0,	0,	'/News',	'/admin/news',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"name\":\"状态\",\"action\":\"state\",\"perm\":32}]'),
+(10,	4,	'新闻分类', 'XinWenFenLei',	'',	0,	0,	0,	'/NewsClass',	'/admin/news_class',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"name\":\"状态\",\"action\":\"state\",\"perm\":32}]'),
+(11,	5,	'网站目录', 'WangZhanMuLu',	'',	0,	0,	0,	'/SysFileManage',	'/admin/sys_file',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"新建文件夹\",\"action\":\"mkdir\",\"perm\":2},{\"name\":\"重命名\",\"action\":\"rename\",\"perm\":4},{\"name\":\"上传\",\"action\":\"upload\",\"perm\":8},{\"name\":\"下载\",\"action\":\"down\",\"perm\":16},{\"name\":\"删除\",\"action\":\"remove\",\"perm\":32}]'),
+(12,	6,	'系统帐户', 'XiTongZhangHu',	'',	0,	0,	0,	'/SysUser',	'/admin/sys_user',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"name\":\"状态\",\"action\":\"state\",\"perm\":32},{\"name\":\"权限\",\"action\":\"perm\",\"perm\":64},{\"name\":\"个人信息\",\"action\":\"info\",\"perm\":128}]'),
+(13,	7,	'系统菜单', 'XiTongCaiDan',	'',	0,	0,	0,	'/SysMenus',	'/admin/sys_menus',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"name\":\"权限\",\"action\":\"perm\",\"perm\":32}]'),
+(14,	7,	'系统角色', 'XiTongJiaoSe',	'',	0,	0,	0,	'/SysRole',	'/admin/sys_role',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"name\":\"权限\",\"action\":\"perm\",\"perm\":32}]'),
+(15,	7,	'API菜单', 'ApiCaiDan',	'',	0,	0,	0,	'/ApiMenus',	'/admin/api_menus',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"name\":\"权限\",\"action\":\"perm\",\"perm\":32}]'),
+(16,	7,	'API角色', 'ApiJiaoSe',	'',	0,	0,	0,	'/ApiRole',	'/admin/api_role',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"搜索\",\"action\":\"sea\",\"perm\":2},{\"name\":\"添加\",\"action\":\"add\",\"perm\":4},{\"name\":\"编辑\",\"action\":\"edit\",\"perm\":8},{\"name\":\"删除\",\"action\":\"del\",\"perm\":16},{\"name\":\"权限\",\"action\":\"perm\",\"perm\":32}]'),
+(17,	8,	'系统配置', 'XiTongPeiZhi',	'',	0,	0,	0,	'/SysConfig',	'/admin/sys_config',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"编辑\",\"action\":\"edit\",\"perm\":2},{\"name\":\"图片\",\"action\":\"upimg\",\"perm\":4}]'),
+(18,	8,	'系统帮助', 'XiTongBangZhu',	'',	0,	0,	0,	'/SysHelp',	'/admin/sys_help',	'[{\"name\":\"列表\",\"action\":\"list\",\"perm\":1},{\"name\":\"编辑\",\"action\":\"edit\",\"perm\":2}]');
 
 DROP TABLE IF EXISTS `sys_perm`;
 CREATE TABLE `sys_perm` (
@@ -178,6 +179,7 @@ CREATE TABLE `user_info` (
   `uid` bigint(19) unsigned NOT NULL COMMENT 'uid',
   `utime` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '更新时间',
   `nickname` varchar(8) NOT NULL DEFAULT '' COMMENT '昵称',
+  `department` varchar(8) NOT NULL DEFAULT '' COMMENT '部门',
   `position` varchar(8) NOT NULL DEFAULT '' COMMENT '职位',
   `name` varchar(8) NOT NULL DEFAULT '' COMMENT '姓名',
   `gender` enum('男','女','') NOT NULL DEFAULT '' COMMENT '性别',
@@ -186,9 +188,9 @@ CREATE TABLE `user_info` (
   PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户信息';
 
-INSERT INTO `user_info` (`uid`, `utime`, `nickname`, `position`, `name`, `gender`, `birthday`, `img`) VALUES
-(1,	0,	'WebMIS',	'系统开发',	'管理员',	'男',	0,	''),
-(2,	0,	'User',	'测试',	'会员',	'男',	0,	'');
+INSERT INTO `user_info` (`uid`, `utime`, `nickname`, `department`, `position`, `name`, `gender`, `birthday`, `img`) VALUES
+(1,	0,	'WebMIS',  '信息部', '系统开发',	'管理员',	'男',	0,	''),
+(2,	0,  'User', '信息部',	'测试',	'会员',	'男',	0,	'');
 
 DROP TABLE IF EXISTS `user_msg`;
 CREATE TABLE `user_msg` (
@@ -220,6 +222,7 @@ INSERT INTO `user_oauth` (`id`, `client_id`, `client_secret`, `state`, `name`) V
 (1,	'base@webmis.vip',	'00fb626bbabfdd903231acf6639cddfb',	'1',	'基础系统');
 
 
+DROP TABLE IF EXISTS `web_news`;
 CREATE TABLE `web_news` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `cid` tinyint(3) unsigned NOT NULL COMMENT '所属ID',

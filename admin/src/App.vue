@@ -46,7 +46,24 @@
               <div class="m1_div"><i class="m1_i" :class="m1.icon"></i></div>
               <p class="m1_p">{{m1.label}}</p>
             </div>
-            <ul class="app_menus_list" v-if="m1.children">
+            <!-- Search -->
+            <ul class="app_menus_list" v-if="k1==0">
+              <li class="app_search">
+                <i class="ui ui_search"></i>
+                <input type="text" placeholder="菜单名称" v-model="sea.key" @input="seaInput()" />
+              </li>
+              <li class="title flex" @click="sea.show=!sea.show">
+                <h2>全部</h2>
+                <span :style="{transform: sea.show?'rotate(-0deg)':'rotate(-180deg)'}">
+                  <i class="ui ui_arrow_down center"></i>
+                </span>
+              </li>
+              <template v-for="(m,k) in sea.list" :key="k">
+                <li class="label" v-if="sea.show&&m.show" :class="menusPos==m.value?'active':''" @click="menusClick(m.value)">{{ m.label }}</li>
+              </template>
+            </ul>
+            <!-- Menus -->
+            <ul class="app_menus_list" v-else-if="m1.children">
               <template v-for="(m2,k2) in m1.children" :key="k2">
                 <li class="title flex" @click="m2.checked=!m2.checked">
                   <h2>{{ m2.label }}</h2>
@@ -59,6 +76,7 @@
                 </template>
               </template>
             </ul>
+            <!-- Menus End -->
           </li>
         </ul>
         <div class="app_copy">&copy; {{ info.version }}</div>
@@ -68,10 +86,6 @@
       <div class="app_right">
         <!-- Top -->
         <div class="app_right_top flex">
-          <!-- Search -->
-          <!-- <div class="app_search">
-            <wm-search :data="menusSeaList" @update:active="menusClick(JSON.parse($event))" placeholder="菜单功能" />
-          </div> -->
           <!-- 标题 -->
           <div class="app_top_title flex_left">
             <span>{{info.title}}</span>
@@ -116,6 +130,7 @@
       <!-- Right End -->
     </div>
     <!-- Main End -->
+    
   </div>
 </template>
 
