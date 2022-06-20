@@ -52,7 +52,7 @@
             <td width="140">更新时间</td>
             <td width="60" class="tCenter">排序</td>
             <td width="60" class="tCenter">权限</td>
-            <td width="140">URL</td>
+            <td>URL</td>
             <td>API</td>
           </template>
           <tr v-for="(val,key) in page.list" :key="key">

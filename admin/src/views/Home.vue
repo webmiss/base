@@ -1,5 +1,5 @@
 <template>
-  <wm-main>
+  <wm-main :padding="16">
     <div class="index_body">
 
       <!-- 今日流量 -->

@@ -1,5 +1,20 @@
 # GNOME3桌面
 
+## 显卡驱动
+``` bash
+# Intel
+pacman -S mesa xf86-video-intel vulkan-intel
+pacman -S libva-intel-driver libvdpau-va-gl intel-compute-runtime
+pacman -S lib32-vulkan-intel lib32-mesa intel-gpu-tools
+# Nvidia
+pacman -S nvidia nvidia-prime nvidia-settings nvidia-utils opencl-nvidia
+pacman -S lib32-nvidia-utils lib32-opencl-nvidia libva-vdpau-driver
+# AMD
+pacman -S mesa xf86-video-amdgpu vulkan-radeon libva-mesa-driver mesa-vdpau
+pacman -S opencl-mesa lib32-vulkan-radeon lib32-mesa
+```
+- 驱动安装完了，但是不知道如何使用。建议先sudo mkinitcpio -P再重启后，才会启动驱动。
+
 ## 安装
 ``` bash
 # 桌面环境
@@ -31,10 +46,21 @@ pacman -S networkmanager-pptp
 # 开机启动
 systemctl disable dhcpcd
 systemctl enable NetworkManager
+```
 
-# 重启
+#### 4) 蓝牙
+``` bash
+pacman -S bluez bluez-utils
+# 开机启动
+systemctl enable bluetooth
+systemctl start bluetooth
+```
+
+#### 5) 重启系统
+``` bash
 reboot
 ```
+
 <br/>
 
 ## 键盘快捷键
@@ -47,45 +73,51 @@ reboot
 ``` bash
 pacman -S ibus ibus-libpinyin
 ```
-- 注:然后到“系统设置->区域和语言->输入源”,添加 中文(智能拼音) 后注销并重新登录!
+- 注:然后到“系统设置->键盘->输入源”,添加 中文(智能拼音) 后注销并重新登录!
 
 <br/>
+
+## 软件仓库
+**vi /etc/pacman.conf**
+```bash
+	[archlinuxcn]
+	SigLevel = Optional TrustAll
+	Server = https://mirrors.aliyun.com/archlinuxcn/$arch
+```
+**安装**
+```bash
+# 密钥
+pacman -S archlinux-keyring archlinuxcn-keyring
+# 包管理器
+pacman -Syu yay
+# 编译环境
+pacman -S linux-headers dkms fakeroot
+```
 
 ## 美化桌面
 ``` bash
 # 优化工具
 pacman -S gnome-tweaks
 ```
-- 安装: 软件 > 实用工具 > 扩展
-- 下载: [Shell主题](https://github.com/webmiss/gnome-shell)
-- 字体: 优化工具 > 字体 > "文泉驿微米黑"
-- Shell主题: 优化工具 > 扩展 > User themes
-- 
+- 字体: 将微软雅黑字体拷贝到 /usr/share/fonts/WindowsFonts
+- 界面: 优化工具 > 字体 > "Microsoft YaHei UI Regular"
+- 扩展: Firefox浏览器 > https://extensions.gnome.org
+- 插件: pacman -S chrome-gnome-shell
+- 开启: User Themes > https://extensions.gnome.org/extension/19/user-themes
+- 下载: [Shell主题](https://github.com/webmiss/gnome-shell) 放入主目录
+- 主题: 优化工具 > 外观 > shell > "WebMIS"
 
 <br/>
 
 ## 常用软件
 #### 1) 浏览器
 ``` bash
+# Firefox
+pacman -S firefox firefox-i18n-zh-cn
 # Chrome 开源版
 pacman -S chromium
 # 视频解码
 pacman -S gst-libav
-```
-
-#### 2) 软件仓库
-``` bash
-# 编辑
-vi /etc/pacman.conf
-	[archlinuxcn]
-	SigLevel = Optional TrustAll
-	Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch
-# 安装
-pacman -Syu yay
-# 编译环境
-pacman -S linux-headers dkms fakeroot
-# 密钥
-pacman -S archlinux-keyring archlinuxcn-keyring
 ```
 
 #### 3) 扩展VI和文本编辑器
@@ -95,21 +127,18 @@ pacman -S vim gedit
 
 #### 4) WEB开发工具
 ``` bash
-# 安装
-yaourt -S sublime-text-dev
-# 启动方式
-vi /usr/bin/sublime
-	#!/bin/sh
-	export SUBLIME_HOME="/opt/sublime_text_3"
-	$SUBLIME_HOME/sublime_text "$*"
-# 权限
-chmod -R 777 /usr/bin/sublime
+# Sublime
+yay -S sublime-text-dev
+# vsCode
+yay -S visual-studio-code-bin
 ```
+- 扩展: Code Runner, Vetur, vscode-json
 
 #### 5) VirtualBox虚拟机
 ``` bash
 # 安装
-pacman -S virtualbox virtualbox-host-dkms virtualbox-guest-iso
+pacman -S virtualbox virtualbox-guest-utils virtualbox-host-dkms virtualbox-guest-iso
+systemctl enable --now vboxservice
 # 升级内核无法启动虚拟机
 modprobe -a vboxnetadp vboxnetflt vboxdrv
 ```

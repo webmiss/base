@@ -74,16 +74,28 @@ mkdir /mnt/boot/efi && mount /dev/sda1 /mnt/boot/efi
 ```
 <br/>
 
+## 连接网络
+```bash
+# 有线
+dhcpcd
+
+# Wifi
+iwctl
+device list
+station wlan0 connect TP-LINK_45DF
+exit
+```
+
 ## 安装系统
 #### 1) 编辑更新源
 ``` bash
 vi /etc/pacman.d/mirrorlist
 ```
-Server = http://mirrors.163.com/archlinux/$repo/os/$arch
+Server = http://mirrors.aliyun.com/archlinux/$repo/os/$arch
 
 #### 2) 安装基础系统
 ``` bash
-pacstrap /mnt base
+pacstrap /mnt base base-devel linux linux-firmware
 ```
 
 #### 3) 生成磁盘挂载列表
@@ -100,7 +112,7 @@ arch-chroot /mnt
 ## 基础配置
 ``` bash
 # 添加主机名
-echo "Test" > /etc/hostname
+echo webmis > /etc/hostname
 
 # 键盘映射和字体
 echo KEYMAP=us > /etc/vconsole.conf
@@ -121,12 +133,15 @@ locale-gen
 <br/>
 
 ## 启动器
-#### 1) EFI模式( 推荐 )
+#### 1) EFI模式
 ``` bash
 # 安装Grub2
-pacman -S grub efibootmgr dosfstools
-# 安装到sda
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch_Grub --recheck
+pacman -S grub efibootmgr
+# 安装到EFI分区
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=ArchLinux_Grub --recheck
+# Warning: os-prober will not
+echo GRUB_DISABLE_OS_PROBER=false >> /etc/default/grub
+# 生成引导文件
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
 - 引导: 现在BIOS引导模式，多个系统引导文件可共享1个分区下(双系统重装不会覆盖其他系统引导，可调整启动顺序)
@@ -146,20 +161,14 @@ grub-mkconfig -o /boot/grub/grub.cfg
 <br/>
 
 ## 完成
-#### 1) 设置root密码
-``` bash
+```bash
+# 设置root密码
 passwd root
-```
-#### 2) 卸载被挂载的分区
-``` bash
 # 退出系统
 exit
 # 取消挂载
 umount /mnt/boot/efi
 umount /mnt/{boot,home,}
-```
-#### 3) 重启系统
-``` bash
-# 重启
+# 重启系统
 reboot
 ```
