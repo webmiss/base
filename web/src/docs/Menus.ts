@@ -75,9 +75,9 @@ export default [
     ]},
   ]},
 
-  /* Phalcon */
-  {label:'Phalcon', value:'phalcon', children:[
-    {label:'Phalcon项目', value:'install', children:[
+  /* PHP */
+  {label:'PHP', value:'php', children:[
+    {label:'PHP项目', value:'install', children:[
       {label: '开发环境', value: 'install', key:'开发环境'},
       {label: '安装&运行', value: 'index', key:'安装&运行'},
       {label: '打包&发布', value: 'build', key:'打包&发布'},
@@ -273,6 +273,7 @@ export default [
       {label: '安装&配置', value: 'install', key:'archLinux安装&配置'},
       {label: 'GNOME3桌面', value: 'gnome', key:'gnome3桌面'},
       {label: 'Nginx+PHP+MariaDB', value: 'lnmp', key:'lnmp环境'},
+      {label: 'Github SSH方式', value: 'github', key:'github,ssh方式'},
     ]},
   ]},
 

@@ -4,7 +4,7 @@ CHCP 65001 >nul
 REM 配置
 set s=%1%
 set ip=127.0.0.1
-set port=9000
+set port=9040
 set cli=cli.php
 
 REM 运行

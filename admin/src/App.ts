@@ -36,7 +36,8 @@ export default defineComponent({
     const language: any = {
       num: 0,
       list: [
-        {name:'php',val:'PHP7( Phalcon4 )'},
+        {name:'php',val:'PHP( 8.1.7 )'},
+        {name:'phalcon',val:'PHP( Phalcon4 )'},
         {name:'python',val:'Python3( Flask )'},
         {name:'java',val:'Java( SpringBoot )'},
         {name:'go',val:'GoLang( Gin )'},

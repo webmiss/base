@@ -31,6 +31,14 @@ if(lag && lag.name=='python'){
     baseUrl = 'https://demo-go.webmis.vip/';
     socket = 'wss://demo-go.webmis.vip/websocket';
   }
+}else if(lag && lag.name=='phalcon'){
+  if(mode=='dev'){
+    baseUrl = 'http://localhost:9040/';
+    socket = 'ws://localhost:9041/websocket';
+  }else{
+    baseUrl = 'https://demo-phalcon.webmis.vip/';
+    socket = 'wss://demo-phalcon.webmis.vip/websocket';
+  }
 }else{
   if(mode=='dev'){
     baseUrl = 'http://localhost:9000/';

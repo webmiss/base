@@ -69,10 +69,18 @@ group = webmis  #账户组名
 listen = /run/php-fpm/php-fpm.sock
 ;listen = 127.0.0.1:9000
 ```
-重启PHP
+#### 3) 扩展
 ``` bash
-systemctl start php-fpm
+# Composer
+pacman -S composer
+# Phalcon
+yay -S php-phalcon
+# Redis
+pacman -S redis php-redis
 ```
+- extension=psr
+- extension=phalcon
+
 <br/>
 
 ## 虚拟主机

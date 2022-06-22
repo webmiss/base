@@ -41,30 +41,21 @@ class Model extends Base {
 
   /* 连接池 */
   function DBPool(array $cfg) {
-    // Postgresql
-    if ($cfg['driver'] == 'Postgresql') unset($params['charset']);
-    // 命名空间
-    $class = 'Phalcon\Db\Adapter\Pdo\\'.$cfg['driver'];
-    unset($cfg['driver']);
     try {
-      return new $class($cfg);
-    }catch (\Exception $e){
+      // 配置文件
+      $option = [
+          // 长链接
+          \PDO::ATTR_PERSISTENT => $cfg['persistent'],
+          // 异常设置
+          \PDO::ATTR_ERRMODE => 2
+      ];
+      // 链接
+      $conn = new \PDO($cfg['driver'].':host='.$cfg['host'].';dbname='.$cfg['dbname'],$cfg['username'],$cfg['password'],$option);
+      // 设置编码
+      $conn->exec('SET NAMES "'.$cfg['charset'].'";');
+      return $conn;
+    } catch (\PDOException $e) {
       $this->Print('[Model] Pool:', $e->getMessage());
-      return null;
-    }
-  }
-
-  /* 查询 */
-  function Query($conn, string $sql, array $args) {
-    if(empty($sql)){
-      $this->Print('[Model] Query: SQL不能为空!');
-      return null;
-    }
-    try {
-      return $conn->query($sql, $args);
-    }catch (\Exception $e){
-      $this->Print('[Model] Query:', $e->getMessage());
-      $this->Print('[Model] SQL:', $sql);
       return null;
     }
   }
@@ -76,7 +67,8 @@ class Model extends Base {
       return null;
     }
     try {
-      return $conn->execute($sql, $args);
+      
+      // return $conn->execute($sql, $args);
     }catch (\Exception $e){
       $this->Print('[Model] Exec:', $e->getMessage());
       $this->Print('[Model] SQL:', $sql, $args);

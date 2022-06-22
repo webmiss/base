@@ -10,7 +10,7 @@
 ```bash
 git clone https://github.com/webmiss/base.git --depth=1
 ```
-- WebMIS-Base > phalcon
+- WebMIS-Base > php, phalocn
 - 网站根目录: public下创建upload目录，修改权限为777
 - 数据库: project/database/data.sql
 - 修改密码: user表password字段，md5加密即可

@@ -10,12 +10,6 @@ set cli=cli/main.go
 REM 运行
 if "%s%"=="serve" (
   go run %index%
-REM 热更新
-) else if "%s%"=="fresh" (
-  fresh
-REM 热更新-启动
-) else if "%s%"=="freshStart" (
-  nohup fresh 2>&1 &
 REM 安装
 ) else if "%s%"=="install" (
   go clean --modcache && go get -v
@@ -40,8 +34,6 @@ REM Logs-运行
   echo ----------------------------------------------------
   echo ^<command^>
   echo   serve         运行: go run %index%
-  echo   fresh         热更新: 运行
-  echo   freshStart    热更新: 启动
   echo   install       安装依赖包: go get -v
   echo   clear         清理依赖包: go mod tidy
   echo   build         打包: go build

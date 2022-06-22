@@ -8,7 +8,7 @@ pacman -S git
 
 #### 2) 安装Go
 ```bash
-sudo pacman -S go
+pacman -S go
 # 查看
 go version
 ```

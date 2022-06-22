@@ -7,7 +7,7 @@ pacman -S git
 ```
 #### 2) 安装NodeJS
 ```bash
-pacman -S nodejs
+pacman -S nodejs-lts-gallium
 ```
 #### 3) 安装Yarn
 ```bash

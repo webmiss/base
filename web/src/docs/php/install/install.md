@@ -15,10 +15,11 @@ php -v
 pacman -S composer
 ```
 
-#### 3) Phalcon框架
+#### 3) 安装MariaDB
 ```bash
-pacman -S yay
-yay -S php-phalcon
+pacman -S mariadb
+# 启动
+systemctl start mysqld
 ```
 
 #### 4) 安装Redis
@@ -28,11 +29,10 @@ pacman -S redis php-redis
 systemctl start redis
 ```
 
-#### 5) 安装MariaDB
+#### 5) Phalcon框架
 ```bash
-pacman -S mariadb
-# 启动
-systemctl start mysqld
+pacman -S yay
+yay -S php-phalcon
 ```
 
 <br/>
@@ -58,12 +58,13 @@ systemctl start mysqld
 composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 ```
 
-#### 3) Phalcon框架
-- [Phalcon4](https://windows.php.net/download#php-7.4) 、[php-psr](https://pecl.php.net/package/psr/1.0.1/windows)
-- 解压: "php_phalcon.dll" 到 "D:\server\php\ext"
-- 解压: "php_psr.dll" 到 "D:\server\php\ext"
-- 扩展: "extension=psr" 和 "extension=phalcon"
+### 3) 安装MariaDB
+- [MariaDB](https://downloads.mariadb.org/)
+- 安装: "mariadb-10.5.9-winx64.msi" 到 "D:\server\MariaDB"
+- 搜索: "环境变量" > "Path" > "添加" > "D:\server\MariaDB\bin"
+- 扩展: "extension=mysqli" 和 "extension=pdo_mysql"
 - CMD: php -m
+- PHP数据库工具: [Adminer](https://github.com/vrana/adminer/releases/)
 
 #### 4) 安装Redis
 - [Redis](https://github.com/MicrosoftArchive/redis/releases) 、[php-redis](http://pecl.php.net/package/redis/5.3.2/windows)
@@ -74,13 +75,12 @@ composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 - 扩展: "extension=redis"
 - CMD: php -m
 
-### 5) 安装MariaDB
-- [MariaDB](https://downloads.mariadb.org/)
-- 安装: "mariadb-10.5.9-winx64.msi" 到 "D:\server\MariaDB"
-- 搜索: "环境变量" > "Path" > "添加" > "D:\server\MariaDB\bin"
-- 扩展: "extension=mysqli" 和 "extension=pdo_mysql"
+#### 5) Phalcon框架
+- [Phalcon4](https://windows.php.net/download#php-7.4) 、[php-psr](https://pecl.php.net/package/psr/1.0.1/windows)
+- 解压: "php_phalcon.dll" 到 "D:\server\php\ext"
+- 解压: "php_psr.dll" 到 "D:\server\php\ext"
+- 扩展: "extension=psr" 和 "extension=phalcon"
 - CMD: php -m
-- PHP数据库工具: [Adminer](https://github.com/vrana/adminer/releases/)
 
 <br/>
 

@@ -18,7 +18,7 @@ javac --version
 ```bash
 pacman -S maven
 # 查看
-mvn –-version
+mvn –v
 ```
 <br/>
 
@@ -41,7 +41,7 @@ mvn –-version
 - 解压: "apache-maven-3.6.3-bin.zip" 到 "D:\server\maven"
 - 搜索: "环境变量" > "新建" > 变量名: "MAVEN_HOME" 变量值: "D:\server\maven"
 - 搜索: "环境变量" > "Path" > "添加" > "%MAVEN_HOME%\bin"
-- 查看: "mvn –version"
+- 查看: "mvn –v"
 - CMD: "java –version" 和 "javac –version"
 
 <br/>
