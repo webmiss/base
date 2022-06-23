@@ -14,6 +14,9 @@ class Home {
     $app['router']->group(['namespace'=>'App\Home', 'middleware'>['Middleware\Cors@Init']], function($router){
       // 首页
       $router->get('/', "Index@Index");
+      $router->get('/vcode', "Index@Vcode");
+      $router->get('/index/qrcode/{name}', "Index@Qrcode");
+      $router->post('/ossCallback', "Index@OssCallback");
     });
     
   }

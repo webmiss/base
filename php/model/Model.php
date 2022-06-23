@@ -44,10 +44,10 @@ class Model extends Base {
     try {
       // 配置文件
       $option = [
-          // 长链接
-          \PDO::ATTR_PERSISTENT => $cfg['persistent'],
-          // 异常设置
-          \PDO::ATTR_ERRMODE => 2
+        // 长链接
+        \PDO::ATTR_PERSISTENT => $cfg['persistent'],
+        // 异常设置
+        \PDO::ATTR_ERRMODE => 2
       ];
       // 链接
       $conn = new \PDO($cfg['driver'].':host='.$cfg['host'].';dbname='.$cfg['dbname'],$cfg['username'],$cfg['password'],$option);
@@ -61,14 +61,19 @@ class Model extends Base {
   }
 
   /* 执行 */
-  function Exec($conn, string $sql, array $args) {
+  function Exec($conn, string $sql, array $args=[]) {
     if(empty($sql)){
       $this->Print('[Model] Exec: SQL不能为空!');
       return null;
     }
     try {
-      
-      // return $conn->execute($sql, $args);
+      $stmt = $conn->prepare($sql);
+      foreach($args as $k=>$v){
+        $stmt->bindValue($k+1, $v);
+      }
+      $this->nums = $stmt->execute();
+      $this->id = $conn->lastInsertId();
+      return $stmt;
     }catch (\Exception $e){
       $this->Print('[Model] Exec:', $e->getMessage());
       $this->Print('[Model] SQL:', $sql, $args);
@@ -84,7 +89,7 @@ class Model extends Base {
   function GetID() : int {
     return $this->id;
   }
-  /* 获取-条数 */
+  /* 获取-影响条数 */
   function GetNums() : int {
     return $this->nums;
   }
@@ -179,12 +184,12 @@ class Model extends Base {
   }
   /* 查询-多条 */
   function Find(): array {
-    $res = [];
     list($sql, $args) = $this->SelectSQL();
     $conn = $this->DBConn();
-    $data = $conn->fetchAll($sql, 2, $args);
-    if(count($this->columnsType)==0) return $data;
+    $stmt = $this->Exec($conn, $sql, $args);
+    $data = $stmt?$stmt->fetchAll(\PDO::FETCH_ASSOC):[];
     // 转换类型
+    if(count($this->columnsType)==0) return $data;
     foreach($data as $k1=>$v1) {
       foreach($v1 as $k2=>$v2){
         if(isset($this->columnsType[$k2])){
@@ -200,10 +205,10 @@ class Model extends Base {
     $this->limit = '0,1';
     list($sql, $args) = $this->SelectSQL();
     $conn = $this->DBConn();
-    $data = $conn->fetchOne($sql, 2, $args);
-    if(!$data) return [];
-    if(count($this->columnsType)==0) return $data;
+    $stmt = $this->Exec($conn, $sql, $args);
+    $data = $this->nums>0?$stmt->fetch(\PDO::FETCH_ASSOC):[];
     // 转换类型
+    if(count($this->columnsType)==0) return $data;
     foreach($data as $k=>$v) {
       if(isset($this->columnsType[$k])){
         $data[$k] = Type::ToType($this->columnsType[$k], $v);
@@ -264,12 +269,8 @@ class Model extends Base {
   function Insert(): bool {
     list($sql, $args) = $this->InsertSQL();
     $conn = $this->DBConn();
-    $res = $this->Exec($conn, $sql, $args);
-    if($res){
-       $this->id = $conn->lastInsertId();
-      return true;
-    }
-    return false;
+    $this->Exec($conn, $sql, $args);
+    return $this->nums>0?true:false;
   }
   /* 添加-自增ID */
   function LastInsertId($conn): int {
@@ -312,12 +313,8 @@ class Model extends Base {
   function Update(): bool {
     list($sql, $args) = $this->UpdateSQL();
     $conn = $this->DBConn();
-    $res = $this->Exec($conn, $sql, $args);
-    if($res){
-      $this->nums = $conn->affectedRows();
-      return true;
-    }
-    return false;
+    $this->Exec($conn, $sql, $args);
+    return $this->nums>0?true:false;
   }
 
   /* 删除-SQL */
@@ -342,12 +339,8 @@ class Model extends Base {
   function Delete(): bool {
     list($sql, $args) = $this->DeleteSQL();
     $conn = $this->DBConn();
-    $res = $this->Exec($conn, $sql, $args);
-    if($res){
-      $this->nums = $conn->affectedRows();
-      return true;
-    }
-    return false;
+    $this->Exec($conn, $sql, $args);
+    return $this->nums>0?true:false;
   }
 
 }

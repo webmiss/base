@@ -13,7 +13,10 @@ class Api {
     $app = Container::getInstance();
     $app['router']->group(['namespace'=>'App\Api', 'middleware'>['Middleware\Cors@Init']], function($router){
       // 首页
-      $router->get('api', "Index@Index");
+      $router->get('/api', "Index@Index");
+      // 登录
+      $router->get('/api/user/login', "User@Login");
+      $router->get('/api/user/token', "User@Token");
     });
     
   }

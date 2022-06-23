@@ -8,8 +8,6 @@ use Library\Captcha;
 use Library\Upload;
 use Util\Util;
 
-use Library\Export;
-
 class Index extends Base {
 
   /* 首页 */

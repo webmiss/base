@@ -65,7 +65,7 @@
               <wm-checkbox :value="val.id"></wm-checkbox>
             </td>
             <td>
-              <wm-img width="40px" height="40px" radius="50%" icoSize="24px" :url="val.img" :title="val.uid"></wm-img>
+              <wm-img width="40px" height="40px" radius="50%" icoSize="24px" :url="val.img" :title="val.uid+''"></wm-img>
             </td>
             <td><b>{{ val.tel || val.email || val.uname }}</b></td>
             <td>
