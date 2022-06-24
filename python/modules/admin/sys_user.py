@@ -157,8 +157,8 @@ class SysUser(Base):
     m.Columns('id')
     m.Where('tel=%s', tel)
     user = m.FindFirst()
-    if user :
-      return self.GetJSON({'code':4000, 'msg':'该用户已存在!'})
+    if not user :
+      return self.GetJSON({'code':4000, 'msg':'该用户不存在!'})
     # 更新
     uData = {'tel': tel}
     if passwd != '' : uData['password'] = Hash.Md5(passwd)

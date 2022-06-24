@@ -263,10 +263,10 @@ public class SysUser extends Base {
     m.Columns("id");
     m.Where("tel=?", tel);
     HashMap<String, Object> user = m.FindFirst();
-    if(!user.isEmpty()){
+    if(user.isEmpty()){
       res = new HashMap<String,Object>();
       res.put("code", 4000);
-      res.put("msg", "该用户已存在!");
+      res.put("msg", "该用户不存在!");
       return GetJSON(res);
     }
     // 更新

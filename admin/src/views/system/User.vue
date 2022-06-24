@@ -62,7 +62,7 @@
           </template>
           <tr v-for="(val,key) in page.list" :key="key">
             <td width="30" class="checkbox wm-table_checkbox">
-              <wm-checkbox :value="val.id"></wm-checkbox>
+              <wm-checkbox :value="val.uid"></wm-checkbox>
             </td>
             <td>
               <wm-img width="40px" height="40px" radius="50%" icoSize="24px" :url="val.img" :title="val.uid+''"></wm-img>

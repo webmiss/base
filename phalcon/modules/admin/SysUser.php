@@ -164,8 +164,8 @@ class SysUser extends Base {
     $m->Columns('id');
     $m->Where('tel=?', $tel);
     $user = $m->FindFirst();
-    if(!empty($user)) {
-      return self::GetJSON(['code'=>4000, 'msg'=>'该用户已存在!']);
+    if(empty($user)) {
+      return self::GetJSON(['code'=>4000, 'msg'=>'该用户不存在!']);
     }
     // 模型
     $uData = ['tel'=>$tel];

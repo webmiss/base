@@ -186,8 +186,8 @@ func (r SysUser) Edit(c *gin.Context) {
 	m.Columns("id")
 	m.Where("tel=?", tel)
 	user := m.FindFirst()
-	if !util.Empty(user) {
-		r.GetJSON(c, gin.H{"code": 4000, "msg": "该用户已存在!"})
+	if util.Empty(user) {
+		r.GetJSON(c, gin.H{"code": 4000, "msg": "该用户不存在!"})
 		return
 	}
 	// 更新

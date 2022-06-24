@@ -7,7 +7,7 @@
 </template>
 
 <style lang="less" scoped>
-.wm-checkbox_group{display: inline-block;}
+.wm-checkbox_group{display: inline-block; margin: 4px 0;}
 .wm-checkbox_group li{float: left; height: 26px; line-height: 26px;}
 </style>
 
@@ -35,7 +35,7 @@ export default defineComponent({
       let value: any = [];
       const data: any = this.data;
       for(let i in this.data){
-        if(k && i==k) data[i].checked = v;
+        if(i==k) data[i].checked = v;
         if(data[i].checked) value.push(data[i].value);
       }
       this.$emit('update:value', value);

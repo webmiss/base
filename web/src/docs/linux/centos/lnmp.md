@@ -113,47 +113,47 @@ vi /etc/redis.conf
 dnf install http://rpms.remirepo.net/enterprise/remi-release-8.rpm -y
 ```
 
-#### 2) 安装PHP7
+#### 2) 安装PHP
 ```bash
-# PHP7.4
-dnf install php74-php-fpm php74-php-cli php74-php-pdo php74-php-mysql php74-php-gd -y
+# PHP8   
+dnf install php81-php-fpm php81-php-cli php81-php-mysqlnd php81-php-pdo php81-php-gd -y
 # 创建连接
-ln -s /usr/bin/php74 /usr/bin/php
+ln -s /usr/bin/php81 /usr/bin/php
 php -v
 # 开机启动
-systemctl enable php74-php-fpm
+systemctl enable php81-php-fpm
 # 启动
-systemctl start php74-php-fpm
+systemctl start php81-php-fpm
 ```
 
 #### 3) 添加扩展
 ```bash
 # Phalcon
-dnf install php74-php-phalcon4 -y
+dnf install php81-php-phalcon5 -y
 # Redis
-dnf install php74-php-pecl-redis5 -y
+dnf install php81-php-pecl-redis5 -y
 # 查看模块
 php -m
 ```
 
 #### 4) PHP配置
 ```bash
-vi /etc/opt/remi/php74/php.ini
+vi /etc/opt/remi/php81/php.ini
 ```
 - date.timezone = "Asia/Shanghai"
 - session.save_path = "/tmp"
 
 #### 5) PHP-FPM配置
 ```bash
-vi /etc/opt/remi/php74/php-fpm.d/www.conf
+vi /etc/opt/remi/php81/php-fpm.d/www.conf
 ```
 - user = nginx
 - group = nginx
-- listen = /var/opt/remi/php74/run/php-fpm/www.sock
+- listen = /var/opt/remi/php81/run/php-fpm/www.sock
 
 #### 6) Session问题
 ```bash
-chmod -R 777 /var/opt/remi/php74/lib/php/session
+chmod -R 777 /var/opt/remi/php81/lib/php/session
 ```
 
 #### 7) 探针
@@ -168,7 +168,7 @@ vi /home/vhosts/default.conf
     # PHP-FPM
     location ~ \.php$ {
         #fastcgi_pass   127.0.0.1:9000;
-        fastcgi_pass   unix:/var/opt/remi/php74/run/php-fpm/www.sock;
+        fastcgi_pass   unix:/var/opt/remi/php81/run/php-fpm/www.sock;
         fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
         include        fastcgi_params;
     }

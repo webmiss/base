@@ -83,23 +83,23 @@ class WebNews extends Base {
     $model = new WebNewsM();
     $conn = $model->DBConn();
     try {
-      $conn->begin();
+      $conn->beginTransaction();
       // 信息
       $m1 = new WebNewsM();
       $m1->Values(['cid'=>$cid, 'title'=>$title, 'source'=>$source, 'author'=>$author, 'summary'=>$summary, 'ctime'=>time(), 'utime'=>time(), 'img'=>$path.$img]);
       list($sql, $args) = $m1->InsertSQL();
-      $conn->execute($sql, $args);
+      $model->Exec($conn, $sql, $args);
       $id = $model->LastInsertId($conn);
       // 内容
       $m2 = new WebNewsHtml();
       $m2->Values(['nid'=>$id]);
       list($sql, $args) = $m2->InsertSQL();
-      $conn->execute($sql, $args);
+      $model->Exec($conn, $sql, $args);
       // 提交
       $conn->commit();
       $res = ['code'=>0,'msg'=>'成功'];
     } catch (\Exception $e) {
-      $conn->rollback();
+      $conn->rollBack();
       FileEo::RemoveAll($path.$img);
       $res = ['code'=>5000,'msg'=>'添加失败!'];
     }
@@ -181,17 +181,17 @@ class WebNews extends Base {
     $model = new WebNewsM();
     $conn = $model->DBConn();
     try {
-      $conn->begin();
+      $conn->beginTransaction();
       // 信息
       $m1 = new WebNewsM();
       $m1->Where('id in('.$ids.')');
       list($sql, $args) = $m1->DeleteSQL();
-      $conn->execute($sql, $args);
+      $model->Exec($conn, $sql, $args);
       // 内容
       $m2 = new WebNewsHtml();
       $m2->Where('nid in('.$ids.')');
       list($sql, $args) = $m2->DeleteSQL();
-      $conn->execute($sql, $args);
+      $model->Exec($conn, $sql, $args);
       // 提交
       $conn->commit();
       // 清理图片
@@ -201,7 +201,7 @@ class WebNews extends Base {
       }
       $res = ['code'=>0,'msg'=>'成功'];
     } catch (\Exception $e) {
-      $conn->rollback();
+      $conn->rollBack();
       $res = ['code'=>5000,'msg'=>'删除失败!'];
     }
     // 返回

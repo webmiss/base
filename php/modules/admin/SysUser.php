@@ -108,32 +108,32 @@ class SysUser extends Base {
     $uid = Data::Mist('ID');
     $conn = $m->DBConn();
     try{
-      $conn->begin();
+      $conn->beginTransaction();
       // 用户
       $m1 = new User();
       $m1->Values(['id'=>$uid, 'tel'=>$tel, 'password'=>md5($passwd)]);
       list($sql, $args) = $m1->InsertSQL();
-      $conn->execute($sql, $args);
+      $m->Exec($conn, $sql, $args);
       // 详情
       $m2 = new UserInfo();
       $m2->Values(['uid'=>$uid]);
       list($sql, $args) = $m2->InsertSQL();
-      $conn->execute($sql, $args);
+      $m->Exec($conn, $sql, $args);
       // 权限-System
       $m3 = new SysPerm();
       $m3->Values(['uid'=>$uid, 'role'=>1, 'utime'=>time()]);
       list($sql, $args) = $m3->InsertSQL();
-      $conn->execute($sql, $args);
+      $m->Exec($conn, $sql, $args);
       // 权限-Api
       $m4 = new ApiPerm();
       $m4->Values(['uid'=>$uid, 'role'=>1, 'utime'=>time()]);
       list($sql, $args) = $m4->InsertSQL();
-      $conn->execute($sql, $args);
+      $m->Exec($conn, $sql, $args);
       // 提交
       $conn->commit();
       return self::GetJSON(['code'=>0,'msg'=>'成功']);
     } catch (\Exception $e) {
-      $conn->rollback();
+      $conn->rollBack();
       return self::GetJSON(['code'=>5000,'msg'=>'添加失败!']);
     }
   }
@@ -164,8 +164,8 @@ class SysUser extends Base {
     $m->Columns('id');
     $m->Where('tel=?', $tel);
     $user = $m->FindFirst();
-    if(!empty($user)) {
-      return self::GetJSON(['code'=>4000, 'msg'=>'该用户已存在!']);
+    if(empty($user)) {
+      return self::GetJSON(['code'=>4000, 'msg'=>'该用户不存在!']);
     }
     // 模型
     $uData = ['tel'=>$tel];
