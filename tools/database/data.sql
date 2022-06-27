@@ -94,7 +94,7 @@ CREATE TABLE `sys_menus` (
   `ctime` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '创建时间',
   `utime` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '更新时间',
   `sort` tinyint(3) unsigned DEFAULT 0 COMMENT '排序',
-  `url` varchar(16) DEFAULT '' COMMENT '地址',
+  `url` varchar(32) DEFAULT '' COMMENT '地址',
   `controller` varchar(32) DEFAULT '',
   `action` text DEFAULT '',
   PRIMARY KEY (`id`)
