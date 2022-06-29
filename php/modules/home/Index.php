@@ -65,7 +65,7 @@ class Index extends Base {
     FileEo::WriterEnd('upload/callback_youtube.json', json_encode($_GET));
     return self::GetJSON(['code'=>0]);
   }
-  static function GetToken() {
+  static function YouTubeToken() {
     $code = $_GET['code'];
     $res = OAuth::YouTubeToken($code);
     if(!is_string($res)){

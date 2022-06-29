@@ -19,6 +19,7 @@ class Home {
       // 回调
       $router->post('/ossCallback', "Index@OssCallback");
       $router->get('/youtube_oauth', "Index@YouTubeOAuth");
+      $router->get('/youtube_token', "Index@YouTubeToken");
       $router->post('/googleCallback', "Index@YouTubeCallback");
     });
     
