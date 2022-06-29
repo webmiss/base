@@ -259,7 +259,8 @@ export default [
       {label: 'ElasticSearch 全文搜索', value: 'elasticsearch', key:'elasticsearch全文搜索'},
     ]},
     {label:'Service', value:'service', children:[
-      {label: 'Git 服务器搭建', value: 'git', key:'git服务器搭建'},
+      {label: 'Git 服务器', value: 'git', key:'git服务器搭建'},
+      {label: 'VPN 服务器', value: 'vpn', key:'pn服务器'},
     ]},
     {label:'CentOS', value:'centos', children:[
       {label: '基础配置', value: 'config', key:'centos基础配置'},
@@ -268,7 +269,6 @@ export default [
     {label:'Ubuntu', value:'ubuntu', children:[
       {label: '基础配置', value: 'config', key:'ubuntu基础配置'},
       {label: 'LNMP环境', value: 'lnmp', key:'lnmp环境'},
-      {label: 'VPN服务器', value: 'vpn', key:'pn服务器'},
     ]},
     {label:'ArchLinux', value:'archlinux', children:[
       {label: '安装&配置', value: 'install', key:'archLinux安装&配置'},

@@ -16,7 +16,10 @@ class Home {
       $router->get('/', "Index@Index");
       $router->get('/vcode', "Index@Vcode");
       $router->get('/index/qrcode/{name}', "Index@Qrcode");
+      // 回调
       $router->post('/ossCallback', "Index@OssCallback");
+      $router->get('/youtube_oauth', "Index@YouTubeOAuth");
+      $router->post('/googleCallback', "Index@YouTubeCallback");
     });
     
   }

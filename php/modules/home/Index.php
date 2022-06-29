@@ -6,6 +6,7 @@ use Library\Qrcode;
 use Library\FileEo;
 use Library\Captcha;
 use Library\Upload;
+use Library\Google\OAuth;
 use Util\Util;
 
 class Index extends Base {
@@ -47,14 +48,31 @@ class Index extends Base {
 
   /* OSS-上传回调 */
   static function OssCallback() {
-    // 参数
-    $param = self::Json();
     // 验证
+    $param = self::Json();
     if(!Upload::OssPolicyVerify($param)) return '';
-    // 数据处理
-    $text = json_encode($param);
-    Util::Exec('echo '.$text.' > upload/callback.txt');
+    FileEo::WriterEnd('upload/callback_oss.json', json_encode($param));
     return self::GetJSON(['Status'=>'Ok']);
+  }
+
+  /* YouTube-OAuth */
+  static function YouTubeOAuth() {
+    $url = OAuth::YouTubeCode();
+    $html = '<a href="'.$url.'">点击授权</a>';
+    echo $html;
+  }
+  static function YouTubeCallback() {
+    FileEo::WriterEnd('upload/callback_youtube.json', json_encode($_GET));
+    return self::GetJSON(['code'=>0]);
+  }
+  static function GetToken() {
+    $code = $_GET['code'];
+    $res = OAuth::YouTubeToken($code);
+    if(!is_string($res)){
+      return self::GetJSON(['code'=>0, 'msg'=>'获取Token', 'data'=>$res]);
+    }else{
+      return self::GetJSON(['code'=>0, 'msg'=>$res]);
+    }
   }
 
 }

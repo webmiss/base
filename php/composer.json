@@ -11,14 +11,16 @@
     }
   ],
   "require": {
-    "php": ">=7.0.0",
-    "illuminate/routing": "10.x-dev",
-    "illuminate/events": "10.x-dev",
-    "firebase/php-jwt": "dev-main",
+    "php": ">=8.0",
+    "illuminate/routing": "^9.19.0",
+    "illuminate/events": "^9.19.0",
+    "firebase/php-jwt": "^6.2.0",
     "textalk/websocket": "^1.4.2",
-    "khanamiryan/qrcode-detector-decoder": "dev-master",
-    "cboden/ratchet": "dev-master",
-    "aliyuncs/oss-sdk-php": "dev-master"
+    "khanamiryan/qrcode-detector-decoder": "^1.0.5.2",
+    "cboden/ratchet": "^0.4.4",
+    "aliyuncs/oss-sdk-php": "^2.5.0",
+    "google/apiclient": "^2.12.1"
+    
   },
   "autoload": {
     "psr-4": {
@@ -26,6 +28,7 @@
       "Library\\": "library/",
       "Library\\Aliyun\\": "library/aliyun/",
       "Library\\Baidu\\": "library/baidu/",
+      "Library\\Google\\": "library/google/",
       "Library\\Tencent\\": "library/tencent/",
       "Middleware\\": "middleware/",
       "Model\\": "model/",
