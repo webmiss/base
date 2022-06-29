@@ -20,7 +20,7 @@ class Home {
       $router->post('/ossCallback', "Index@OssCallback");
       $router->get('/youtube_oauth', "Index@YouTubeOAuth");
       $router->get('/youtube_token', "Index@YouTubeToken");
-      $router->post('/googleCallback', "Index@YouTubeCallback");
+      $router->get('/googleCallback', "Index@YouTubeCallback");
     });
     
   }
