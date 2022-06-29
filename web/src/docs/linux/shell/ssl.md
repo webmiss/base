@@ -4,7 +4,8 @@
 ### CentOS
 ```bash
 # CentOS
-dnf install epel-release python3-certbot-nginx -y
+dnf install epel-release -y
+dnf install python3-certbot-nginx -y
 # Ubuntu
 apt install python3-certbot-nginx -y
 # 验证

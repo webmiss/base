@@ -124,12 +124,13 @@ apt install php-fpm php-cli php-mysql php-curl php-gd -y
 ```
 #### 2) 添加扩展
 ```bash
+# Redis
+apt install php-redis
+
 # Phalcon
 curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | sudo bash
 apt update -y
 apt install php-psr php7.4-phalcon -y
-# Redis
-apt install redis php-redis
 ```
 
 #### 3) PHP配置

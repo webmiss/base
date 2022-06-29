@@ -1,3 +1,18 @@
+## 开启远程登录
+```bash
+ vi /etc/ssh/sshd_config
+```
+- PasswordAuthentication yes
+- systemctl restart ssh
+
+## Sudo权限
+```bash
+chmod +w /etc/sudoers
+vi /etc/sudoers
+```
+- webmis ALL=(ALL:ALL) NOPASSWD: ALL
+
+
 ## 交换空间
 ```bash
 # 查看

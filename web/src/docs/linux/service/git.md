@@ -63,3 +63,13 @@ git push -u origin "master"
 ```bash
 git clone git@服务IP:/home/git/gitrepo/test.git
 ```
+
+## 四、自动更新代码
+脚本文件: /home/shell/demo.sh
+```bash
+#!/bin/bash
+cd /home/www/base && git pull
+mysql -uwebmis -pe4b99adec618e653400966be536c45f8 data < /home/www/base/tools/database/data.sql
+```
+
+

@@ -4,21 +4,25 @@
 #### 1) 安装
 ```bash
 # Ubuntu
-apt install docker.io
+apt install docker.io -y
 # CentOS
-dnf install docker
+dnf install docker -y
 ```
 
 #### 2)账号和密码
 ```bash
+# 创建目录
 mkdir /home/vpn
+# 新增文件
 vi /home/vpn/chap-secrets
 ```
 - webmis * eckingsoul *
 
 ### 3)拉取镜像
 ```bash
+docker search vpn-pptp
 docker pull mobtitude/vpn-pptp
+docker images
 ```
 
 ### 4)运行容器
