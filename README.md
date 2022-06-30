@@ -12,31 +12,31 @@ Docs：[https://webmis.vip](https://webmis.vip)
 
 # Demo
 - Web(文档)：[https://webmis.vip](https://webmis.vip)
-- App(H5+混合型APP)：[https://demo-app.webmis.vip](https://demo-app.webmis.vip)
-- Api(接口工具)：[https://demo-api.webmis.vip](https://demo-api.webmis.vip)
-- Admin(后台管理)：[https://demo-admin.webmis.vip](https://demo-admin.webmis.vip)
+- Api(接口工具)：[https://api.webmis.vip](https://api.webmis.vip)
+- App(H5+混合型APP)：[https://app.webmis.vip](https://app.webmis.vip)
+- Admin(后台管理)：[https://admin.webmis.vip](https://admin.webmis.vip)
 - 管理员账号: admin 密码:123456
-- 测试数据恢复: 2小时/次
+- 测试数据恢复: 1小时/次
 
 #### Phalcon
-- 网站-API( [https://demo-php.webmis.vip/](https://demo-php.webmis.vip/) )
-- 前端-API( [https://demo-php.webmis.vip/api/](https://demo-php.webmis.vip/api/) )
-- 后台-API( [https://demo-php.webmis.vip/admin/](https://demo-php.webmis.vip/admin/) )
+- 网站-API( [https://php.webmis.vip/](https://php.webmis.vip/) )
+- 前端-API( [https://php.webmis.vip/api/](https://php.webmis.vip/api/) )
+- 后台-API( [https://php.webmis.vip/admin/](https://php.webmis.vip/admin/) )
 
 #### Python
-- 网站-API( [https://demo-python.webmis.vip/](https://demo-python.webmis.vip/) )
-- 前端-API( [https://demo-python.webmis.vip/api/](https://demo-python.webmis.vip/api/index) )
-- 后台-API( [https://demo-python.webmis.vip/admin/](https://demo-python.webmis.vip/admin/index) )
+- 网站-API( [https://python.webmis.vip/](https://python.webmis.vip/) )
+- 前端-API( [https://python.webmis.vip/api/](https://python.webmis.vip/api/index) )
+- 后台-API( [https://python.webmis.vip/admin/](https://python.webmis.vip/admin/index) )
 
 #### Java
-- 网站-API( [https://demo-java.webmis.vip/](https://demo-java.webmis.vip/) )
-- 前端-API( [https://demo-java.webmis.vip/api/](https://demo-java.webmis.vip/api/index) )
-- 后台-API( [https://demo-java.webmis.vip/admin/](https://demo-java.webmis.vip/admin/index) )
+- 网站-API( [https://java.webmis.vip/](https://java.webmis.vip/) )
+- 前端-API( [https://java.webmis.vip/api/](https://java.webmis.vip/api/index) )
+- 后台-API( [https://java.webmis.vip/admin/](https://java.webmis.vip/admin/index) )
 
 #### Go
-- 网站-API( [https://demo-go.webmis.vip/](https://demo-go.webmis.vip/) )
-- 前端-API( [https://demo-go.webmis.vip/api/](https://demo-go.webmis.vip/api/index) )
-- 后台-API( [https://demo-go.webmis.vip/admin/](https://demo-go.webmis.vip/admin/index) )
+- 网站-API( [https://go.webmis.vip/](https://go.webmis.vip/) )
+- 前端-API( [https://go.webmis.vip/api/](https://go.webmis.vip/api/index) )
+- 后台-API( [https://go.webmis.vip/admin/](https://go.webmis.vip/admin/index) )
 
 <br/>
 
