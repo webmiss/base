@@ -1,7 +1,8 @@
 webmis
 public/logs
 public/upload/*
-tmp
+tmp/*
+!.gitkeep
 
 # Editor directories and files
 .idea

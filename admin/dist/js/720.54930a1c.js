@@ -1,0 +1,1 @@
+"use strict";(self["webpackChunkwebmis_vue"]=self["webpackChunkwebmis_vue"]||[]).push([[720],{4720:function(e,u,n){function r(e,u,n,r,t,a){return null}n.r(u),n.d(u,{default:function(){return s}});var t=n(6252),a=(0,t.aZ)({beforeRouteEnter(e,u,n){n((e=>{e.$router.replace(u.path)}))},mounted(){}}),c=n(3744);const o=(0,c.Z)(a,[["render",r]]);var s=o}}]);

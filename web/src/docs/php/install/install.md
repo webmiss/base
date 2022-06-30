@@ -13,6 +13,8 @@ pacman -S php php-fpm php-gd
 php -v
 # 安装Composer
 pacman -S composer
+# 国内镜像
+composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 ```
 
 #### 3) 安装MariaDB
@@ -53,10 +55,6 @@ yay -S php-phalcon
 - CMD: php -v
 **安装Composer**
 - [Composer](https://getcomposer.org/Composer-Setup.exe)
-```bash
-# 国内镜像
-composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
-```
 
 ### 3) 安装MariaDB
 - [MariaDB](https://downloads.mariadb.org/)

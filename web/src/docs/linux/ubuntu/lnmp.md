@@ -73,7 +73,7 @@ systemctl restart nginx
 #### 1) 安装
 ```bash
 # 安装
-apt install omnidb-common mariadb-server -y
+apt install mariadb-server -y
 # 开机启动
 systemctl status mariadb
 # 查看运行
