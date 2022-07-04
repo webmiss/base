@@ -58,7 +58,7 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name:'Select',
   props: {
-    value: {type:String, default:''},               //默认选择
+    value: {default:''},                            //默认选择
     data: {type:Array, default:[]},                 //数据: [{label:'Option1', value:'option1', disabled: true},{label:'Option2', value:'option2'}]
     width: {type:String, default:'100%'},           //宽度
     height: {type:String, default:'40px'},          //高度

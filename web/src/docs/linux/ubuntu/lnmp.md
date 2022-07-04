@@ -129,7 +129,6 @@ apt install php-redis
 
 # Phalcon
 curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | sudo bash
-apt update -y
 apt install php-psr php7.4-phalcon -y
 ```
 

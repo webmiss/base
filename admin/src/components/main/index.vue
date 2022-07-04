@@ -1,6 +1,6 @@
 <template>
   <div
-    class="wm-main scrollbar"
+    class="wm-main"
     :style="{width:'calc(100% - '+padding*2+'px)', height:'calc(100% - '+padding*2+'px)', padding:padding+'px'}"
   >
     <slot></slot>
@@ -9,6 +9,10 @@
 
 <style scoped>
 .wm-main{position: relative; overflow: auto;}
+.wm-main::-webkit-scrollbar{width: 8px; height: 8px;}
+.wm-main::-webkit-scrollbar-thumb{border-radius: 4px; background: transparent;}
+.wm-main:hover::-webkit-scrollbar-thumb{background: rgba(136,136,136,0.8);}
+.wm-main:hover::-webkit-scrollbar-track{background: rgba(136,136,136,0.2);}
 </style>
 
 <script lang="ts">

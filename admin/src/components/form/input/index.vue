@@ -58,7 +58,7 @@ export default defineComponent({
     maxWidth: {type: String, default: 'auto'},        //宽度: '100%'
     height: {type: String, default: '40px'},          //高度: '40px'
     lineHeight: {type: String, default: '20px'},      //行高: '20px'
-    padding: {type: String, default: '10px 16px'},    //间距: '10px 16px'
+    padding: {type: String, default: '10px 10px'},    //间距: '10px 10px'
     align: {type: String, default: ''},               //文本对齐方式: 'left'
     borderRadius: {type: String, default: '4px'},     //边框圆角: '4px'
     disabled: {type: Boolean, default: false},        //是否禁用

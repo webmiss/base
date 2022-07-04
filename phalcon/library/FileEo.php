@@ -116,6 +116,17 @@ class FileEo extends Base {
     if(!file_exists($path)) return mkdir($path,0777,true);
     return true;
   }
+  static function MkdirFile(string $file=''): bool {
+    if(empty($file)) return false;
+    $arr = explode('/', $file);
+    $n = count($arr);
+    if($n>=2){
+      unset($arr[$n-1]);
+      $dir = implode('/', $arr);
+      if(!file_exists($dir)) return mkdir($dir, 0777, true);
+    }
+    return true;
+  }
 
   /* 重命名 */
   static function Rename(string $rename, string $name): bool {
@@ -133,12 +144,14 @@ class FileEo extends Base {
   /* 写入 */
   static function Writer(string $file='', string $content): bool {
     $file = self::$Root.$file;
+    self::MkdirFile($file);
     return file_put_contents($file, $content)?true:false;
   }
 
   /* 追加 */
   static function WriterEnd(string $file='', string $content): bool {
     $file = self::$Root.$file;
+    self::MkdirFile($file);
     return file_put_contents($file, $content, FILE_APPEND)?true:false;
   }
 

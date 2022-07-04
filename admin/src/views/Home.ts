@@ -78,6 +78,9 @@ export default defineComponent({
           this.tData.yesterday = d.data['TrendRpt']['yesterday'];
           this.tData.chart = d.data['Trend'];
         }else return Toast(d.msg);
+      },()=>{
+        load.clear();
+        Toast('网络错误!', 'danger', 5000);
       });
     },
 

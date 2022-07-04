@@ -3,23 +3,16 @@
 ## Composer
 ```bash
 # PHP命令
-ln -s /usr/bin/php74 /usr/bin
-# 下载
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+ln -s /usr/bin/php74 /usr/bin/php
 # 安装
-sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-# 删除
-rm -fr composer-setup.php
-# 查看
-composer -V
+apt install composer
 ```
 
 ## 运行
 ```bash
 # 进入项目
-cd /xxx/phalcon
-mkdir public/upload
-chmod -R 777 public/upload
+cd /xxx/php
+chmod -R 777 public
 # 依赖包
 composer install
 ```
@@ -27,19 +20,19 @@ composer install
 
 ## Nginx虚拟主机
 ```bash
-vi /home/vhosts/demo-php.webmis.vip.conf
+vi /home/vhosts/webmis.php.conf
 ```
 #### 内容
 ```nginx
-upstream demo_php_websocket {
+upstream php_websocket {
     server 127.0.0.1:9001;
 }
 
 server {
     listen       80;
     listen       [::]:80;
-    server_name  demo-php.webmis.vip;
-    set $root_path /home/www/base/phalcon/public;
+    server_name  php.webmis.vip;
+    set $root_path /home/www/base/php/public;
     root $root_path;
     index index.php;
 
@@ -53,7 +46,7 @@ server {
         root $root_path;
     }
     location /wss {
-        proxy_pass http://demo_php_websocket;
+        proxy_pass http://php_websocket;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "Upgrade";

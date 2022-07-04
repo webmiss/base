@@ -20,10 +20,11 @@ class Base {
 
   /* JSON参数 */
   static function Json() {
-    return json_decode(file_get_contents('php://input'), true);
+    $param = file_get_contents('php://input');
+    return $param?json_decode($param, true):[];
   }
   static function JsonName(array $param, string $name) {
-    return isset($param[$name])?$param[$name]:null;
+    return isset($param[$name])?$param[$name]:'';
   }
 
   /* 输出到控制台 */

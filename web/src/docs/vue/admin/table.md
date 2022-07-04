@@ -2,7 +2,7 @@
 ```javascript
 import wmTable from '@/components/table/index.vue'
 import wmTableForm from '@/components/table/form.vue'
-import wmTableShow from '@/components/table/show.vue'
+import wmTableOrder from '@/components/table/order.vue'
 import wmCheckbox from '@/components/form/checkbox/index.vue'
 ```
 
@@ -44,3 +44,18 @@ import wmCheckbox from '@/components/form/checkbox/index.vue'
 - width: {type: String, default: '80px'},      //lable宽度
 - margin: {type: String, default: '4px 0'},    //外部间距
 - bgColor: {type: String, default: '#FFF'},    //背景颜色
+
+## 排序
+```html
+<wm-table-order :value="oby.list.id" @update:value="OrderBy('id', $event)" />
+```
+- value: {default: ''},      //值: ''、ASC、DESC
+```javascript
+/* 排序 */
+OrderBy(name: string, val: string){
+  for(let i in this.oby.list) this.oby.list[i] = i==name?val:'';
+  this.oby.name = val?name+' '+ val:'';
+  this.loadData();
+},
+```
+- const oby: any = {id:''}};

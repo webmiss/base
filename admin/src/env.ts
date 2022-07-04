@@ -12,40 +12,40 @@ if(lag && lag.name=='python'){
     baseUrl = 'http://localhost:9010/';
     socket = 'ws://localhost:9011/';
   }else{
-    baseUrl = 'https://demo-python.webmis.vip/';
-    socket = 'wss://demo-python.webmis.vip/wss';
+    baseUrl = 'https://python.webmis.vip/';
+    socket = 'wss://python.webmis.vip/wss';
   }
 }else if(lag && lag.name=='java'){
   if(mode=='dev'){
     baseUrl = 'http://localhost:9020/';
     socket = 'ws://localhost:9020/websocket';
   }else{
-    baseUrl = 'https://demo-java.webmis.vip/';
-    socket = 'wss://demo-java.webmis.vip/websocket';
+    baseUrl = 'https://java.webmis.vip/';
+    socket = 'wss://java.webmis.vip/websocket';
   }
 }else if(lag && lag.name=='go'){
   if(mode=='dev'){
     baseUrl = 'http://localhost:9030/';
     socket = 'ws://localhost:9031/websocket';
   }else{
-    baseUrl = 'https://demo-go.webmis.vip/';
-    socket = 'wss://demo-go.webmis.vip/websocket';
+    baseUrl = 'https://go.webmis.vip/';
+    socket = 'wss://go.webmis.vip/websocket';
   }
 }else if(lag && lag.name=='phalcon'){
   if(mode=='dev'){
     baseUrl = 'http://localhost:9040/';
     socket = 'ws://localhost:9041/websocket';
   }else{
-    baseUrl = 'https://demo-phalcon.webmis.vip/';
-    socket = 'wss://demo-phalcon.webmis.vip/websocket';
+    baseUrl = 'https://phalcon.webmis.vip/';
+    socket = 'wss://phalcon.webmis.vip/websocket';
   }
 }else{
   if(mode=='dev'){
     baseUrl = 'http://localhost:9000/';
     socket = 'ws://localhost:9001/';
   }else{
-    baseUrl = 'https://demo-php.webmis.vip/';
-    socket = 'wss://demo-php.webmis.vip/wss';
+    baseUrl = 'https://php.webmis.vip/';
+    socket = 'wss://php.webmis.vip/wss';
   }
 }
 

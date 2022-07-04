@@ -60,7 +60,7 @@
           </li>
         </ul>
         <!-- Menus -->
-        <div class="app_menus_body" v-else>
+        <div class="app_menus_body scrollbar" v-else>
           <template v-for="(v1,k1) in menus" :key="k1">
             <div class="app_menus_title flex" @click="v1.checked=!v1.checked">
               <h2>{{ v1.label }}</h2>
@@ -90,7 +90,7 @@
           <span>{{ addr }}</span>
           <span class="app_print" @click="clickPrint">打印/下载</span>
         </div>
-        <div class="app_html">
+        <div class="app_html scrollbar">
           <div v-if="docHtml!=''" id="Print" class="doc_html" v-html="docHtml"></div>
           <div v-else class="loading center">Loading...</div>
         </div>

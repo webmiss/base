@@ -18,7 +18,7 @@ export default defineComponent({
   name: 'CheckboxGroup',
   components: {wmCheckbox},
   props: {
-    value: {type: Array, default: []},    //获取值
+    value: {default: []},                 //获取值
     data: {type: Array, default: []},     //数据: [{label:'游戏', value: 1},{label:'购物', value: 2, checked: true},{label:'其他', value: 3, disabled: true}]
   },
   data(){

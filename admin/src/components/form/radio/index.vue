@@ -36,7 +36,7 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Radio',
   props: {
-    value: {type:String, default:''},  //默认选择
+    value: {default:''},                //默认选择
     data: {type: Array, default: []},   //数据: [{label:'男',value:'男', disabled: true},{label:'女',value:'女'}]
   },
   methods:{

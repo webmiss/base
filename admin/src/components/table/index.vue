@@ -17,12 +17,12 @@
 .wm-table .checkbox{position: relative;}
 .wm-table .wm-checkbox{position: absolute; top: 50%; transform: translateY(-50%);}
 .wm-table td{position: relative; padding: 4px 8px; line-height: 28px; border: #FFF 1px solid;}
-.wm-table_title td{font-size: 12px; font-weight: 600; color: #828488; background-color: #F4F4F4;}
+.wm-table_title td{position: relative; font-size: 12px; font-weight: 600; color: #828488; background-color: #F4F4F4;}
 .wm-table_title td:first-child{border-radius: 8px 0 0 0;}
 .wm-table_title td:last-child{border-radius: 0 8px 0 0;}
 .wm-table_list tr:nth-child(odd){background-color: #FFF;}
 .wm-table_list tr:nth-child(even){background-color: #FAFAFA;}
-.wm-table_list tr:hover{background-color: @Minor;}
+.wm-table_list tr:hover{background-color: #F2F4F8;}
 .wm-table_list td{ border-bottom-color: #F4F4F4;}
 </style>
 

@@ -11,19 +11,18 @@ static function Index() {
 }
 ```
 
-### 多条
+### 查询结果
 ```php
+// 多条
 $model->Find();
-```
-
-### 单条
-```php
+// 单条
 $model->FindFirst();
 ```
 
 ### 返回类型
 ```php
-$model->ResType();
+// string、int、float
+$model->ResType(['id'=>'string']);
 ```
 
 ### 生成SQL
