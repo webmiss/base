@@ -42,17 +42,17 @@ vi /etc/rc.d/rc.local
 
 ## Nginx虚拟主机
 ``` nginx
-upstream demo_flask {
+upstream flask {
     server unix:///home/www/base/python/tmp/web.sock;
 }
-upstream demo_python_websocket {
+upstream python_websocket {
     server 127.0.0.1:9011;
 }
 
 server {
     listen       80;
     listen       [::]:80;
-    server_name  demo-python.webmis.vip;
+    server_name  python.webmis.vip;
     set $root_path /home/www/base/python/public;
     root $root_path;
     index index.html;
@@ -60,7 +60,7 @@ server {
     charset utf-8;
 
     location / {
-        uwsgi_pass  demo_flask;
+        uwsgi_pass  flask;
         uwsgi_send_timeout 60;
         uwsgi_connect_timeout 60;
         uwsgi_read_timeout 60;
@@ -70,7 +70,7 @@ server {
         root $root_path;
     }
     location /wss {
-        proxy_pass http://demo_python_websocket;
+        proxy_pass http://python_websocket;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "Upgrade";

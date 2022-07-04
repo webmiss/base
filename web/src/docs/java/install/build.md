@@ -33,7 +33,7 @@ vi /etc/rc.d/rc.local
 
 ## Nginx
 ``` nginx
-upstream demo_java {
+upstream java {
     server localhost:9020;
 }
 map $http_upgrade $connection_upgrade {
@@ -44,7 +44,7 @@ map $http_upgrade $connection_upgrade {
 server {
     listen       80;
     listen       [::]:80;
-    server_name  demo-java.webmis.vip;
+    server_name  java.webmis.vip;
     set $root_path /home/www/base/java/public;
     root $root_path;
     index index.html;
@@ -55,7 +55,7 @@ server {
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_pass http://demo_java;
+        proxy_pass http://java;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $connection_upgrade;

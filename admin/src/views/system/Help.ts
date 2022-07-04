@@ -1,6 +1,5 @@
 import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
-import Env from '@/env'
 /* JS组件 */
 import NavigateTo from '@/library/ui/navigate-to'
 /* UI组件 */

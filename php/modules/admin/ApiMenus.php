@@ -15,6 +15,7 @@ class ApiMenus extends Base {
     $data = self::JsonName($json, 'data');
     $page = self::JsonName($json, 'page');
     $limit = self::JsonName($json, 'limit');
+    $order = self::JsonName($json, 'order');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
@@ -34,7 +35,7 @@ class ApiMenus extends Base {
     // 查询
     $m->Columns('id', 'fid', 'title', 'ico', 'FROM_UNIXTIME(ctime) as ctime', 'FROM_UNIXTIME(utime) as utime', 'sort', 'url', 'controller', 'action');
     $m->Where('fid like ? AND title like ? AND url like ?', '%'.$fid.'%', '%'.$title.'%', '%'.$url.'%');
-    $m->Order('fid DESC', 'sort', 'id DESC');
+    $m->Order($order?:'fid DESC, sort, id DESC');
     $m->Page($page, $limit);
     $list = $m->Find();
     // 数据

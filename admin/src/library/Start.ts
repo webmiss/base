@@ -61,7 +61,7 @@ export default {
           this.logout();
         }
       }, ()=>{
-        Toast('无法连接服务器!');
+        Toast('请检测网络!');
       });
     }else{
       this.logout();

@@ -6,6 +6,8 @@
 dnf install golang -y
 # Ubunut
 apt install golang -y
+# 查看版本
+go version
 ```
 
 ## 运行
@@ -35,10 +37,10 @@ vi /etc/rc.d/rc.local
 
 ## Nginx虚拟主机
 ``` nginx
-upstream demo_go {
+upstream go {
     server localhost:9030;
 }
-upstream demo_go_websocket {
+upstream go_websocket {
     server localhost:9031;
 }
 map $http_upgrade $connection_upgrade {
@@ -49,7 +51,7 @@ map $http_upgrade $connection_upgrade {
 server {
     listen       80;
     listen       [::]:80;
-    server_name  demo-go.webmis.vip;
+    server_name  go.webmis.vip;
     set $root_path /home/www/base/gin/public;
     root $root_path;
     index index.html;
@@ -60,7 +62,7 @@ server {
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_pass http://demo_go;
+        proxy_pass http://go;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $connection_upgrade;
@@ -71,7 +73,7 @@ server {
     }
 
     location /wss {
-        proxy_pass http://demo_go_websocket;
+        proxy_pass http://go_websocket;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "Upgrade";

@@ -6,13 +6,14 @@ import Toast from '@/library/ui/toast'
 import Post from '@/library/request/post'
 import Storage from '@/library/Storage'
 /* UI组件 */
+import wmSearch from '@/components/search/index.vue'
 import wmMain from '@/components/main/index.vue'
 import wmRow from '@/components/main/row/index.vue'
 import wmTable from '@/components/table/index.vue'
+import wmTableForm from '@/components/table/form.vue'
+import wmTableOrder from '@/components/table/order.vue'
 import wmCheckbox from '@/components/form/checkbox/index.vue'
 import wmDialog from '@/components/dialog/index.vue'
-import wmForm from '@/components/form/index.vue'
-import wmFormItem from '@/components/form/item/index.vue'
 import wmInput from '@/components/form/input/index.vue'
 import wmButton from '@/components/form/button/index.vue'
 import wmPage from '@/components/page/index.vue'
@@ -20,9 +21,7 @@ import wmTree from '@/components/tree/index.vue'
 
 /* API角色 */
 export default defineComponent({
-  components: {
-    wmMain,wmRow,wmTable,wmCheckbox,wmDialog,wmForm,wmFormItem,wmInput,wmButton,wmPage,wmTree
-  },
+  components: {wmSearch,wmMain,wmRow,wmTable,wmTableForm,wmTableOrder,wmCheckbox,wmDialog,wmInput,wmButton,wmPage,wmTree},
   data(){
     // 状态
     const store: any = useStore();
@@ -30,14 +29,15 @@ export default defineComponent({
     const getters: any = store.getters;
     // 分页
     const page: any = {list:[], page:1, limit:20, total:0};
-    // 搜索、添加、编辑、删除
+    // 搜索、排序、添加、编辑、删除
     const sea: any = {show:false, form:{}};
+    const oby: any = {name:'', list:{id:'', name:'', ctime:'', utime:''}};
     const add: any = {show:false, form:{}};
     const edit: any = {show:false, id:'', form:{}};
     const del: any = {show:false, ids:''};
     // 权限
     const perm: any = {show:false, id:'', perm:'', permList:[]};
-    return {state, getters, page, sea, add, edit, del, perm}
+    return {state, getters, page, sea, oby, add, edit, del, perm}
   },
   mounted(){
     // 加载数据
@@ -54,7 +54,8 @@ export default defineComponent({
         token: Storage.getItem('token'),
         page: this.page.page,
         limit: this.page.limit,
-        data: JSON.stringify(this.sea.form)
+        data: JSON.stringify(this.sea.form),
+        order: this.oby.name,
       },(res: any)=>{
         load.clear();
         const d = res.data;
@@ -74,6 +75,13 @@ export default defineComponent({
     /* 搜索 */
     subSea(){
       this.page.page = 1;
+      this.loadData();
+    },
+
+    /* 排序 */
+    OrderBy(name: string, val: string){
+      for(let i in this.oby.list) this.oby.list[i] = i==name?val:'';
+      this.oby.name = val?name+' '+ val:'';
       this.loadData();
     },
 

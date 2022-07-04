@@ -19,6 +19,7 @@ class ApiRole extends Base {
     $data = self::JsonName($json, 'data');
     $page = self::JsonName($json, 'page');
     $limit = self::JsonName($json, 'limit');
+    $order = self::JsonName($json, 'order');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
@@ -36,6 +37,7 @@ class ApiRole extends Base {
     // 查询
     $m->Columns('id', 'name', 'FROM_UNIXTIME(ctime) as ctime', 'FROM_UNIXTIME(utime) as utime', 'perm');
     $m->Where('name like ?', '%'.$name.'%');
+    $m->Order($order?:'id DESC');
     $m->Page($page, $limit);
     $list = $m->Find();
     // 返回

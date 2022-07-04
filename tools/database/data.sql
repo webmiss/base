@@ -51,21 +51,6 @@ CREATE TABLE `api_role` (
 INSERT INTO `api_role` (`id`, `name`, `ctime`, `utime`, `perm`) VALUES
 (1,	'普通会员',	0,	1645154938,	'1:2');
 
-DROP TABLE IF EXISTS `logs`;
-CREATE TABLE `logs` (
-  `id` bigint(19) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `source` varchar(8) NOT NULL COMMENT '来源',
-  `ip` varchar(16) NOT NULL COMMENT 'IP',
-  `os` varchar(16) NOT NULL COMMENT 'OS',
-  `browser` varchar(16) NOT NULL COMMENT 'Browser',
-  `ctime` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '访问时间',
-  `method` varchar(8) NOT NULL DEFAULT '' COMMENT '请求类型',
-  `url` varchar(256) NOT NULL DEFAULT '' COMMENT '访问地址',
-  `user_agent` varchar(512) NOT NULL DEFAULT '' COMMENT '用户信息',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
 DROP TABLE IF EXISTS `sys_config`;
 CREATE TABLE `sys_config` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
@@ -79,9 +64,9 @@ CREATE TABLE `sys_config` (
 
 INSERT INTO `sys_config` (`id`, `title`, `name`, `val`, `ctime`, `utime`) VALUES
 (1,	'LOGO',	'logo',	'',	0,	0),
-(2,	'系统名称',	'title',	'数据中心',	0,	0),
+(2,	'系统名称',	'title',	'WebMIS',	0,	0),
 (3,	'网站域名',	'http',	'webmis.vip',	0,	0),
-(4,	'版权信息',	'copy',	'2021 webmis.vip MIT license',	0,	0),
+(4,	'版权信息',	'copy',	'2022 webmis.vip MIT license',	0,	0),
 (5,	'登录背景',	'login_bg',	'',	0,	0);
 
 DROP TABLE IF EXISTS `sys_menus`;

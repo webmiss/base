@@ -92,11 +92,11 @@ mysql_secure_installation
 mysql -uroot -p
 # 设置权限
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'IDENTIFIED BY '登录密码' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost'IDENTIFIED BY 'EC12webmis@' WITH GRANT OPTION;
 # 刷新
 flush privileges;
 # 查看
-use msyql
-select Host, User from user;
+select user,host,password from mysql.user;
 # 修改配置
 vi /etc/mysql/mariadb.conf.d/50-server.cnf
 ```

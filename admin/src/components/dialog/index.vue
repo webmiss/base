@@ -1,8 +1,8 @@
 <template>
-  <wm-popup ref="Popup" :show="show" @update:show="updateShow" :bgClose="bgClose">
+  <wm-popup ref="Popup" :show="show" @update:show="$emit('update:show',$event)" :bgClose="bgClose">
     <div class="wm-dialog" :style="{width:width, height:height, backgroundColor:bgColor}">
       <div class="wm-dialog_title">
-        <div class="wm-dialog_close" @click="$emit('update:close', !show)"></div>
+        <div class="wm-dialog_close" @click="$emit('update:show', false)"></div>
         <div class="title" :style="{textAlign:titleAlign}">{{title}}</div>
       </div>
       <div ref="DialogBody"  class="wm-dialog_body">
@@ -19,16 +19,16 @@
 
 <style lang="less" scoped>
 .wm-dialog{border-radius: 4px; padding-bottom: 4px;}
-.wm-dialog_title{position: relative; height: 48px; font-size: 16px; padding: 0 16px; text-align: center;}
-.wm-dialog_title .title{line-height: 48px; user-select: none;}
-.wm-dialog_close{cursor: pointer; position: absolute; right: 8px; top: 8px; width: 32px; height: 32px;}
+.wm-dialog_title{position: relative; height: 40px; font-size: 16px; padding: 0 8px; text-align: center;}
+.wm-dialog_title .title{line-height: 40px; user-select: none;}
+.wm-dialog_close{cursor: pointer; position: absolute; right: 8px; top: 4px; width: 32px; height: 32px; border-radius: 50%;}
 .wm-dialog_close:hover::after,.wm-dialog_close:hover::before{background-color: @Primary;}
-.wm-dialog_close::after,.wm-dialog_close::before{content: ''; position: absolute; width: 16px; height: 2px; background-color: #999; left: 50%; top: 50%; transform-origin: center;}
-.wm-dialog_close::after{transform: rotate(45deg); margin-left: -25%;}
-.wm-dialog_close::before{transform: rotate(-45deg); margin-left: -25%;}
+.wm-dialog_close::after,.wm-dialog_close::before{content: ''; position: absolute; width: 14px; height: 1.6px; background-color: #999; left: 50%; top: 50%; transform-origin: center;}
+.wm-dialog_close::after{transform: rotate(45deg); margin-left: -16%;}
+.wm-dialog_close::before{transform: rotate(-45deg); margin-left: -16%;}
 .wm-dialog_footer{height: 40px; padding: 8px 0 16px;}
 /* 滚动条 */
-.wm-dialog_body{overflow: auto; width: 100%; height: calc(100% - 48px - 60px);}
+.wm-dialog_body{overflow: auto; width: 100%; height: calc(100% - 40px - 60px);}
 .wm-dialog_body::-webkit-scrollbar{width: 8px;}
 .wm-dialog_body::-webkit-scrollbar-thumb{border-radius: 4px; background: rgba(136,136,136,0.4);}
 .wm-dialog_body:hover::-webkit-scrollbar-track{background: rgba(136,136,136,0.1);}
@@ -87,15 +87,10 @@ export default defineComponent({
         let content: any = this.$refs.DialogContent;
         let val: string = getComputedStyle(content).getPropertyValue('height');
         let bh: number = this.state.height;
-        let h: number = parseInt(val.replace(/(px)/g, ''))+48+60+this.hMargin*2;
+        let h: number = parseInt(val.replace(/(px)/g, ''))+40+60+this.hMargin*2;
         if(h>bh) body.style.height = bh-48-60-this.hMargin*2+'px';
         else body.style.height = '';
       }, 300);
-    },
-
-    /* 更新状态 */
-    updateShow(val: boolean){
-      this.$emit('update:show',val);
     },
 
   },

@@ -71,5 +71,13 @@ git clone git@服务IP:/home/git/gitrepo/test.git
 cd /home/www/base && git pull
 mysql -uwebmis -pe4b99adec618e653400966be536c45f8 data < /home/www/base/tools/database/data.sql
 ```
+- 修改权限: sudo chmod -R 777 demo.sh
+
+**定时执行**
+```bash
+crontab -e
+```
+- 0 * * * *  /home/shell/demo.sh > /dev/null 2>&1 &
+- 每小时执行1次
 
 
