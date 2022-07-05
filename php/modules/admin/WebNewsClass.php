@@ -15,6 +15,7 @@ class WebNewsClass extends Base {
     $data = self::JsonName($json, 'data');
     $page = self::JsonName($json, 'page');
     $limit = self::JsonName($json, 'limit');
+    $order = self::JsonName($json, 'order');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
@@ -23,17 +24,17 @@ class WebNewsClass extends Base {
     }
     // 条件
     $param = json_decode($data);
-    $name = isset($param->name)?trim($param->name):'';
+    list($where, $whereData) = self::getWhere($param);
     // 统计
     $m = new WebNewsClassM();
     $m->Columns('count(*) AS num');
-    $m->Where('name like ?', '%'.$name.'%');
+    $m->Where($where, ...$whereData);
     $total = $m->FindFirst();
     // 查询
     $m->Columns('id', 'name', 'FROM_UNIXTIME(ctime) as ctime', 'FROM_UNIXTIME(utime) as utime', 'state', 'sort');
-    $m->Where('name like ?', '%'.$name.'%');
+    $m->Where($where, ...$whereData);
     $m->Page($page, $limit);
-    $m->Order('sort DESC');
+    $m->Order($order?:'sort DESC');
     $list = $m->Find();
     // 数据
     foreach ($list as $k => $v) {
@@ -41,6 +42,15 @@ class WebNewsClass extends Base {
     }
     // 返回
     return self::GetJSON(['code'=>0,'msg'=>'成功','list'=>$list,'total'=>(int)$total['num']]);
+  }
+  /* 搜索条件 */
+  static private function getWhere(object $param): array {
+    // 参数
+    $name = isset($param->name)?trim($param->name):'';
+    // 条件
+    $where = 'name like ?';
+    $whereData = ['%'.$name.'%'];
+    return [$where, $whereData];
   }
 
   /* 添加 */
@@ -58,14 +68,13 @@ class WebNewsClass extends Base {
     // 数据
     $param = json_decode($data);
     $name = isset($param->name)?trim($param->name):'';
-    $state = $param->state?'1':'0';
     $sort = isset($param->sort)?trim($param->sort):0;
     if($name=='') {
       return self::GetJSON(['code'=>4000, 'msg'=>'名称不能为空!']);
     }
     // 模型
     $m = new WebNewsClassM();
-    $m->Values(['name'=>$name, 'ctime'=>time(), 'utime'=>time(), 'state'=>$state, 'sort'=>$sort]);
+    $m->Values(['name'=>$name, 'sort'=>$sort, 'ctime'=>time(), 'utime'=>time()]);
     if($m->Insert()) {
       return self::GetJSON(['code'=>0,'msg'=>'成功']);
     } else {
@@ -89,14 +98,13 @@ class WebNewsClass extends Base {
     // 数据
     $param = json_decode($data);
     $name = isset($param->name)?trim($param->name):'';
-    $state = $param->state?'1':'0';
     $sort = isset($param->sort)?trim($param->sort):0;
     if($name=='') {
       return self::GetJSON(['code'=>4000, 'msg'=>'名称不能为空!']);
     }
     // 模型
     $m = new WebNewsClassM();
-    $m->Set(['name'=>$name, 'utime'=>time(), 'state'=>$state, 'sort'=>$sort]);
+    $m->Set(['name'=>$name, 'sort'=>$sort, 'utime'=>time()]);
     $m->Where('id=?', $id);
     if($m->Update()) {
       return self::GetJSON(['code'=>0,'msg'=>'成功']);

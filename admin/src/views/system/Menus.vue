@@ -5,16 +5,16 @@
     <div class="app_ct_left" v-show="sea.show">
       <wm-search v-model:show="sea.show" @update:submit="subSea()">
         <li>
-          <wm-input :value="sea.form.fid" @update:value="sea.form.fid=$event" placeholder="FID" />
+          <wm-input v-model:value="sea.form.fid" placeholder="FID" clearable />
         </li>
         <li>
-          <wm-input :value="sea.form.title" @update:value="sea.form.title=$event" placeholder="菜单名称" />
+          <wm-input v-model:value="sea.form.title" placeholder="菜单名称" clearable />
         </li>
         <li>
-          <wm-input :value="sea.form.en" @update:value="sea.form.en=$event" placeholder="英文名称" />
+          <wm-input v-model:value="sea.form.en" placeholder="英文名称" clearable />
         </li>
         <li>
-          <div class="input"><wm-input :value="sea.form.url" @update:value="sea.form.url=$event" placeholder="API关键字" /></div>
+          <wm-input v-model:value="sea.form.url" placeholder="API关键字" clearable />
         </li>
       </wm-search>
     </div>
@@ -34,7 +34,7 @@
       <div class="app_ct_body">
         <wm-main>
         <!-- List -->
-        <wm-table ref="Table" :data="page.list" style="min-width: 1200px;">
+        <wm-table ref="Table" :data="page.list" style="min-width: 1300px;">
           <template #title>
             <td width="40">ID<wm-table-order :value="oby.list.id" @update:value="OrderBy('id', $event)" /></td>
             <td width="40">FID<wm-table-order :value="oby.list.fid" @update:value="OrderBy('fid', $event)" /></td>
@@ -184,7 +184,7 @@
     <!-- Edit End -->
 
     <!-- Del -->
-    <wm-dialog title="删除" width="320px" v-model:show="del.show">
+    <wm-dialog title="删除" width="360px" v-model:show="del.show">
       <wm-row>是否删除已选择数据？</wm-row>
       <template #footer>
         <wm-button @click="subDel()">彻底删除</wm-button>
@@ -222,8 +222,6 @@
 </template>
 
 <style lang="less" scoped>
-.table{min-width: 800px;}
-.form{padding-right: 24px;}
 .perm_an{position: absolute; margin-top: -14px; white-space: nowrap;}
 .menus_icon{position: absolute; transform: translate(-50%, -50%);}
 .menus_icon i{font-size: 20px; color: @Primary;}

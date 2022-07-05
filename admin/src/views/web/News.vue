@@ -2,27 +2,29 @@
   <div class="flex">
 
     <!-- Search -->
-    <div class="app_ct_left" v-show="state.menuSea">
-      <div class="app_sea_title flex">
-        <h2>搜索</h2>
-        <span @click="state.menuSea=false"><i class="ui ui_arrow_left"></i></span>
-      </div>
-      <ul class="app_sea_form">
+    <div class="app_ct_left" v-show="sea.show">
+      <wm-search v-model:show="sea.show" @update:submit="subSea()">
         <li>
-          <wm-input v-model:value="sea.form.title" placeholder="新闻标题" />
+          <wm-select v-model:value="sea.form.cid" placeholder="选择分类" :data="menus.data" clearable />
         </li>
-      </ul>
-      <div class="app_sea_sub">
-        <wm-button @click="subSea()" height="32px">搜 索</wm-button>
-      </div>
+        <li>
+          <wm-input v-model:value="sea.form.title" placeholder="新闻标题" clearable />
+        </li>
+        <li>
+          <wm-input v-model:value="sea.form.source" placeholder="来源" clearable />
+        </li>
+        <li>
+          <wm-input v-model:value="sea.form.author" placeholder="作者" clearable />
+        </li>
+      </wm-search>
     </div>
     <!-- Search End -->
 
     <!-- Body -->
-    <div class="app_ct_right" :style="{width: state.menuSea?'calc(100% - 240px)':'100%'}">
+    <div class="app_ct_right" :style="{width: sea.show?'calc(100% - 240px)':'100%'}">
       <!-- Action -->
       <div class="app_action_body flex_left">
-        <div class="app_action_sea" v-show="!state.menuSea" @click="state.menuSea=true"><i class="ui ui_search"></i></div>
+        <div class="app_action_sea" v-show="!sea.show" @click="sea.show=true"><i class="ui ui_search"></i></div>
         <ul class="app_action_list flex_left">
           <li v-if="getters.actionShow('add')" @click="add.show=true">添加</li>
           <li v-if="getters.actionShow('edit')" @click="editData()">编辑</li>
@@ -32,17 +34,17 @@
       <div class="app_ct_body">
         <wm-main>
         <!-- List -->
-        <wm-table ref="Table" :data="page.list" class="table">
+        <wm-table ref="Table" :data="page.list" style="min-width: 1200px;">
           <template #title>
-            <td width="40">ID</td>
+            <td width="40">ID<wm-table-order :value="oby.list.id" @update:value="OrderBy('id', $event)" /></td>
             <td width="28">封面</td>
-            <td>标题</td>
+            <td>标题<wm-table-order :value="oby.list.title" @update:value="OrderBy('title', $event)" /></td>
             <td width="80">所属</td>
-            <td width="120">时间</td>
+            <td width="120">时间<wm-table-order :value="oby.list.utime" @update:value="OrderBy('utime', $event)" /></td>
             <td width="60" class="tCenter">状态</td>
             <td width="60" class="tCenter">内容</td>
-            <td>来源</td>
-            <td>作者</td>
+            <td>来源<wm-table-order :value="oby.list.source" @update:value="OrderBy('source', $event)" /></td>
+            <td>作者<wm-table-order :value="oby.list.author" @update:value="OrderBy('author', $event)" /></td>
           </template>
           <tr v-for="(val,key) in page.list" :key="key">
             <td width="30" class="checkbox wm-table_checkbox">
@@ -85,27 +87,45 @@
     <!-- Body End -->
 
     <!-- Add -->
-    <wm-dialog title="添加" width="720px" :show="add.show" @update:close="add.show=$event">
-      <wm-form class="form">
-        <wm-form-item label="封面图" height="auto">
-          <wm-img width="120px" height="120px" radius="4px" :url="add.form.img" @click="upImg('add')"></wm-img>
-        </wm-form-item>
-        <wm-form-item label="所属">
-          <wm-select v-model:value="add.form.cid" placeholder="选择分类" :data="menus.data" />
-        </wm-form-item>
-        <wm-form-item label="标题">
-          <wm-input v-model:value="add.form.title" maxlength="30" maxWidth="80%" placeholder="新闻标题" />
-        </wm-form-item>
-        <wm-form-item label="来源">
-          <wm-input v-model:value="add.form.source" maxlength="16" maxWidth="240px" />
-        </wm-form-item>
-        <wm-form-item label="作者">
-          <wm-input v-model:value="add.form.author" maxlength="16" maxWidth="240px" />
-        </wm-form-item>
-        <wm-form-item label="摘要">
-          <wm-input v-model:value="add.form.summary" maxlength="300" maxWidth="90%" placeholder="新闻简介" />
-        </wm-form-item>
-      </wm-form>
+    <wm-dialog title="添加" width="720px" v-model:show="add.show">
+      <wm-table-form>
+        <tr>
+          <td class="lable">封面图</td>
+          <td>
+            <wm-img width="120px" height="120px" radius="4px" :url="add.form.img" @click="upImg('add')"></wm-img>
+          </td>
+        </tr>
+        <tr>
+          <td class="lable">所属</td>
+          <td>
+            <wm-select v-model:value="add.form.cid" width="240px" placeholder="选择分类" :data="menus.data" />
+          </td>
+        </tr>
+        <tr>
+          <td class="lable">标题</td>
+          <td>
+            <wm-input v-model:value="add.form.title" maxlength="30" maxWidth="90%" placeholder="新闻标题" />
+          </td>
+        </tr>
+        <tr>
+          <td class="lable">来源</td>
+          <td>
+            <wm-input v-model:value="add.form.source" maxlength="16" maxWidth="240px" />
+          </td>
+        </tr>
+        <tr>
+          <td class="lable">作者</td>
+          <td>
+            <wm-input v-model:value="add.form.author" maxlength="16" maxWidth="240px" />
+          </td>
+        </tr>
+        <tr>
+          <td class="lable">摘要</td>
+          <td>
+            <wm-input v-model:value="add.form.summary" maxlength="300" maxWidth="90%" placeholder="新闻简介" />
+          </td>
+        </tr>
+      </wm-table-form>
       <template #footer>
         <wm-button @click="subAdd()">添 加</wm-button>
       </template>
@@ -113,27 +133,45 @@
     <!-- Add End -->
 
     <!-- Edit -->
-    <wm-dialog title="编辑" width="720px" :show="edit.show" @update:close="edit.show=$event">
-      <wm-form class="form">
-        <wm-form-item label="封面图" height="auto">
-          <wm-img width="120px" height="120px" radius="4px" :url="edit.form.img" @click="upImg('edit')"></wm-img>
-        </wm-form-item>
-        <wm-form-item label="所属">
-          <wm-select v-model:value="edit.form.cid" placeholder="选择分类" :data="menus.data" />
-        </wm-form-item>
-        <wm-form-item label="标题">
-          <wm-input v-model:value="edit.form.title" maxlength="30" maxWidth="80%" placeholder="新闻标题" />
-        </wm-form-item>
-        <wm-form-item label="来源">
-          <wm-input v-model:value="edit.form.source" maxlength="16" maxWidth="240px" />
-        </wm-form-item>
-        <wm-form-item label="作者">
-          <wm-input v-model:value="edit.form.author" maxlength="16" maxWidth="240px" />
-        </wm-form-item>
-        <wm-form-item label="摘要">
-          <wm-input v-model:value="edit.form.summary" maxlength="300" maxWidth="90%" placeholder="新闻简介" />
-        </wm-form-item>
-      </wm-form>
+    <wm-dialog title="编辑" width="720px" v-model:show="edit.show">
+      <wm-table-form>
+        <tr>
+          <td class="lable">封面图</td>
+          <td>
+            <wm-img width="120px" height="120px" radius="4px" :url="edit.form.img" @click="upImg('edit')"></wm-img>
+          </td>
+        </tr>
+        <tr>
+          <td class="lable">所属</td>
+          <td>
+            <wm-select v-model:value="edit.form.cid" width="240px" placeholder="选择分类" :data="menus.data" />
+          </td>
+        </tr>
+        <tr>
+          <td class="lable">标题</td>
+          <td>
+            <wm-input v-model:value="edit.form.title" maxlength="30" maxWidth="90%" placeholder="新闻标题" />
+          </td>
+        </tr>
+        <tr>
+          <td class="lable">来源</td>
+          <td>
+            <wm-input v-model:value="edit.form.source" maxlength="16" maxWidth="240px" />
+          </td>
+        </tr>
+        <tr>
+          <td class="lable">作者</td>
+          <td>
+            <wm-input v-model:value="edit.form.author" maxlength="16" maxWidth="240px" />
+          </td>
+        </tr>
+        <tr>
+          <td class="lable">摘要</td>
+          <td>
+            <wm-input v-model:value="edit.form.summary" maxlength="300" maxWidth="90%" placeholder="新闻简介" />
+          </td>
+        </tr>
+      </wm-table-form>
       <template #footer>
         <wm-button @click="subEdit()">保 存</wm-button>
       </template>
@@ -141,7 +179,7 @@
     <!-- Edit End -->
 
     <!-- Del -->
-    <wm-dialog title="删除" width="320px" :show="del.show" @update:close="del.show=$event">
+    <wm-dialog title="删除" width="360px" v-model:show="del.show">
       <wm-row>是否删除已选择数据？</wm-row>
       <template #footer>
         <wm-button @click="subDel()">彻底删除</wm-button>
@@ -150,7 +188,7 @@
     <!-- Del End -->
 
     <!-- Show -->
-    <wm-dialog title="预览" width="720px" :show="content.show" @update:close="content.show=$event" :isFooter="false">
+    <wm-dialog title="预览" width="720px" v-model:show="content.show" :isFooter="false">
       <div class="news_body">
         <h1 class="title">{{content.form.title}}</h1>
         <div class="info">{{content.form.utime}} | 作者: {{content.form.author}} | 来源：{{content.form.source}}</div>
@@ -160,7 +198,7 @@
     <!-- Show End -->
 
     <!-- Content -->
-    <wm-dialog title="新闻内容" width="760px" :show="content.edit" @update:close="content.edit=$event">
+    <wm-dialog title="新闻内容" width="760px" v-model:show="content.edit">
       <wm-tinymce class="form" v-model:value="content.form.content" :menubar="true" :height="500" :upload="content.upload" placeholder="新闻内容"></wm-tinymce>
       <template #footer>
         <wm-button @click="subContent()">保 存</wm-button>
@@ -172,7 +210,6 @@
 </template>
 
 <style lang="less" scoped>
-.table{min-width: 820px;}
 /* 标题 */
 .news_title{cursor: pointer; line-height: 20px; padding: 8px 0;}
 .news_title:hover{color: @Primary;}

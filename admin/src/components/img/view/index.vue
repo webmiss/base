@@ -111,7 +111,7 @@ export default defineComponent({
     /* 关闭 */
     close(){
       setTimeout(()=>{
-        this.$emit('update:close',false);
+        this.$emit('update:show',false);
       },300);
       // 背景动画
       let bg: any = this.$refs.ImgBG;

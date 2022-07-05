@@ -23,6 +23,7 @@ class WebNews extends Base {
     $data = self::JsonName($json, 'data');
     $page = self::JsonName($json, 'page');
     $limit = self::JsonName($json, 'limit');
+    $order = self::JsonName($json, 'order');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
@@ -31,18 +32,19 @@ class WebNews extends Base {
     }
     // 条件
     $param = json_decode($data);
-    $title = isset($param->title)?trim($param->title):'';
+    list($where, $whereData) = self::getWhere($param);
     // 统计
     $m = new WebNewsM();
     $m->Columns('count(*) AS num');
-    $m->Where('title like ?', '%'.$title.'%');
+    $m->Where($where, ...$whereData);
     $total = $m->FindFirst();
     // 查询
     $m->Columns('id', 'cid', 'title', 'source', 'author', 'FROM_UNIXTIME(ctime) as ctime', 'FROM_UNIXTIME(utime) as utime', 'state', 'img', 'summary');
-    $m->Where('title like ?', '%'.$title.'%');
+    $m->Where($where, ...$whereData);
     $m->Page($page, $limit);
-    $m->Order('id DESC');
+    $m->Order($order?:'id DESC');
     $list = $m->Find();
+    self::Print($m->GetSql());
     // 数据
     foreach ($list as $k => $v) {
       $list[$k]['img'] = Data::Img($v['img']);
@@ -50,6 +52,18 @@ class WebNews extends Base {
     }
     // 返回
     return self::GetJSON(['code'=>0,'msg'=>'成功','list'=>$list,'total'=>(int)$total['num']]);
+  }
+  /* 搜索条件 */
+  static private function getWhere(object $param): array {
+    // 参数
+    $cid = isset($param->cid)?trim($param->cid):'';
+    $title = isset($param->title)?trim($param->title):'';
+    $source = isset($param->source)?trim($param->source):'';
+    $author = isset($param->author)?trim($param->author):'';
+    // 条件
+    $where = 'cid like ? AND title like ? AND source like ? AND author like ?';
+    $whereData = ['%'.$cid.'%', '%'.$title.'%', '%'.$source.'%', '%'.$author.'%'];
+    return [$where, $whereData];
   }
 
   /* 添加 */
@@ -83,23 +97,23 @@ class WebNews extends Base {
     $model = new WebNewsM();
     $conn = $model->DBConn();
     try {
-      $conn->begin();
+      $conn->beginTransaction();
       // 信息
       $m1 = new WebNewsM();
       $m1->Values(['cid'=>$cid, 'title'=>$title, 'source'=>$source, 'author'=>$author, 'summary'=>$summary, 'ctime'=>time(), 'utime'=>time(), 'img'=>$path.$img]);
       list($sql, $args) = $m1->InsertSQL();
-      $conn->execute($sql, $args);
+      $model->Exec($conn, $sql, $args);
       $id = $model->LastInsertId($conn);
       // 内容
       $m2 = new WebNewsHtml();
       $m2->Values(['nid'=>$id]);
       list($sql, $args) = $m2->InsertSQL();
-      $conn->execute($sql, $args);
+      $model->Exec($conn, $sql, $args);
       // 提交
       $conn->commit();
       $res = ['code'=>0,'msg'=>'成功'];
     } catch (\Exception $e) {
-      $conn->rollback();
+      $conn->rollBack();
       FileEo::RemoveAll($path.$img);
       $res = ['code'=>5000,'msg'=>'添加失败!'];
     }
@@ -181,17 +195,17 @@ class WebNews extends Base {
     $model = new WebNewsM();
     $conn = $model->DBConn();
     try {
-      $conn->begin();
+      $conn->beginTransaction();
       // 信息
       $m1 = new WebNewsM();
       $m1->Where('id in('.$ids.')');
       list($sql, $args) = $m1->DeleteSQL();
-      $conn->execute($sql, $args);
+      $model->Exec($conn, $sql, $args);
       // 内容
       $m2 = new WebNewsHtml();
       $m2->Where('nid in('.$ids.')');
       list($sql, $args) = $m2->DeleteSQL();
-      $conn->execute($sql, $args);
+      $model->Exec($conn, $sql, $args);
       // 提交
       $conn->commit();
       // 清理图片
@@ -201,7 +215,7 @@ class WebNews extends Base {
       }
       $res = ['code'=>0,'msg'=>'成功'];
     } catch (\Exception $e) {
-      $conn->rollback();
+      $conn->rollBack();
       $res = ['code'=>5000,'msg'=>'删除失败!'];
     }
     // 返回

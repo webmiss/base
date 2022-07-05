@@ -16,6 +16,7 @@ class ApiMenus(Base):
     data = self.JsonName(json, 'data')
     page = self.JsonName(json, 'page')
     limit = self.JsonName(json, 'limit')
+    order = self.JsonName(json, 'order')
     # 验证
     msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
@@ -23,18 +24,16 @@ class ApiMenus(Base):
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
     # 条件
     param = Util.JsonDecode(data)
-    fid = Util.Trim(param['fid']) if 'fid' in param.keys() else ''
-    title = Util.Trim(param['title']) if 'title' in param.keys() else ''
-    url = Util.Trim(param['url']) if 'url' in param.keys() else ''
+    where, whereData = self.__getWhere(param)
     # 统计
     m = ApiMenu()
     m.Columns('count(*) AS num')
-    m.Where('fid like %s AND title like %s AND url like %s', '%'+fid+'%', '%'+title+'%', '%'+url+'%')
+    m.Where(where, *whereData)
     total = m.FindFirst()
     # 查询
     m.Columns('id', 'fid', 'title', 'ico', 'FROM_UNIXTIME(ctime, %s) as ctime', 'FROM_UNIXTIME(utime, %s) as utime', 'sort', 'url', 'controller', 'action')
-    m.Where('fid like %s AND title like %s AND url like %s', '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', '%'+fid+'%', '%'+title+'%', '%'+url+'%')
-    m.Order('fid DESC', 'sort', 'id DESC')
+    m.Where(where, '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', *whereData)
+    m.Order(order if order else 'fid DESC, sort, id DESC')
     m.Page(int(page), int(limit))
     list = m.Find()
     # 数据
@@ -42,7 +41,18 @@ class ApiMenus(Base):
       val['action'] = Util.JsonDecode(val['action']) if str(val['action'])!='' else ''
     # 返回
     return self.GetJSON({'code':0, 'msg':'成功', 'list':list, 'total':int(total['num'])})
-    
+
+  # 搜索条件
+  def __getWhere(self, param):
+    # 参数
+    fid = Util.Trim(param['fid']) if 'fid' in param.keys() else ''
+    title = Util.Trim(param['title']) if 'title' in param.keys() else ''
+    url = Util.Trim(param['url']) if 'url' in param.keys() else ''
+    # 条件
+    where = 'fid like %s AND title like %s AND url like %s'
+    whereData = ('%'+fid+'%', '%'+title+'%', '%'+url+'%')
+    return where, whereData
+
   # 添加
   def Add(self):
     # 参数

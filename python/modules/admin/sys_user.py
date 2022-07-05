@@ -25,6 +25,7 @@ class SysUser(Base):
     data = self.JsonName(json, 'data')
     page = self.JsonName(json, 'page')
     limit = self.JsonName(json, 'limit')
+    order = self.JsonName(json, 'order')
     # 验证
     msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
@@ -32,13 +33,7 @@ class SysUser(Base):
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
     # 条件
     param = Util.JsonDecode(data)
-    uname = Util.Trim(param['uname']) if 'uname' in param.keys() else ''
-    nickname = Util.Trim(param['nickname']) if 'nickname' in param.keys() else ''
-    name = Util.Trim(param['name']) if 'name' in param.keys() else ''
-    department = Util.Trim(param['department']) if 'department' in param.keys() else ''
-    position = Util.Trim(param['position']) if 'position' in param.keys() else ''
-    where = '(a.uname LIKE %s OR a.tel LIKE %s OR a.email LIKE %s) AND b.nickname LIKE %s AND b.name LIKE %s AND b.department LIKE %s AND b.position LIKE %s'
-    whereData = ('%'+uname+'%', '%'+uname+'%', '%'+uname+'%', '%'+nickname+'%', '%'+name+'%', '%'+department+'%', '%'+position+'%')
+    where, whereData = self.__getWhere(param)
     # 统计
     m = User()
     m.Columns('count(*) AS num')
@@ -58,7 +53,7 @@ class SysUser(Base):
       'd.role AS api_role', 'd.perm AS api_perm'
     )
     m.Where(where, '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', '%Y-%m-%d', *whereData)
-    m.Order('a.id DESC')
+    m.Order(order if order else 'a.id DESC')
     m.Page(int(page), int(limit))
     list = m.Find()
     # 数据
@@ -70,7 +65,20 @@ class SysUser(Base):
       if not val['sys_perm'] : val['sys_perm']=''
     # 返回
     return self.GetJSON({'code':0, 'msg':'成功', 'list':list, 'total':int(total['num'])})
-    
+
+  # 搜索条件
+  def __getWhere(self, param):
+    # 参数
+    uname = Util.Trim(param['uname']) if 'uname' in param.keys() else ''
+    nickname = Util.Trim(param['nickname']) if 'nickname' in param.keys() else ''
+    name = Util.Trim(param['name']) if 'name' in param.keys() else ''
+    department = Util.Trim(param['department']) if 'department' in param.keys() else ''
+    position = Util.Trim(param['position']) if 'position' in param.keys() else ''
+    # 条件
+    where = '(a.uname LIKE %s OR a.tel LIKE %s OR a.email LIKE %s) AND b.nickname LIKE %s AND b.name LIKE %s AND b.department LIKE %s AND b.position LIKE %s'
+    whereData = ('%'+uname+'%', '%'+uname+'%', '%'+uname+'%', '%'+nickname+'%', '%'+name+'%', '%'+department+'%', '%'+position+'%')
+    return where, whereData
+
   # 添加
   def Add(self):
     # 参数

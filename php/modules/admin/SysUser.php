@@ -25,6 +25,7 @@ class SysUser extends Base {
     $data = self::JsonName($json, 'data');
     $page = self::JsonName($json, 'page');
     $limit = self::JsonName($json, 'limit');
+    $order = self::JsonName($json, 'order');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
@@ -33,35 +34,29 @@ class SysUser extends Base {
     }
     // 条件
     $param = json_decode($data);
-    $uname = isset($param->uname)?trim($param->uname):'';
-    $nickname = isset($param->nickname)?trim($param->nickname):'';
-    $name = isset($param->name)?trim($param->name):'';
-    $department = isset($param->department)?trim($param->department):'';
-    $position = isset($param->position)?trim($param->position):'';
-    $where = '(a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?) AND b.nickname LIKE ? AND b.name LIKE ? AND b.department LIKE ? AND b.position LIKE ?';
-    $whereData = ['%'.$uname.'%', '%'.$uname.'%', '%'.$uname.'%', '%'.$nickname.'%', '%'.$name.'%', '%'.$department.'%', '%'.$position.'%'];
+    list($where, $whereData) = self::getWhere($param);
     // 统计
-    $model = new User();
-    $model->Columns('count(*) AS num');
-    $model->Table('user as a');
-    $model->LeftJoin('user_info as b', 'a.id=b.uid');
-    $model->Where($where, ...$whereData);
-    $total = $model->FindFirst();
+    $m = new User();
+    $m->Columns('count(*) AS num');
+    $m->Table('user as a');
+    $m->LeftJoin('user_info as b', 'a.id=b.uid');
+    $m->Where($where, ...$whereData);
+    $total = $m->FindFirst();
     // 查询
-    $model->Table('user as a');
-    $model->LeftJoin('user_info as b', 'a.id=b.uid');
-    $model->LeftJoin('sys_perm as c', 'a.id=c.uid');
-    $model->LeftJoin('api_perm as d', 'a.id=d.uid');
-    $model->Columns(
+    $m->Table('user as a');
+    $m->LeftJoin('user_info as b', 'a.id=b.uid');
+    $m->LeftJoin('sys_perm as c', 'a.id=c.uid');
+    $m->LeftJoin('api_perm as d', 'a.id=d.uid');
+    $m->Columns(
       'a.id AS uid', 'a.uname', 'a.email', 'a.tel', 'a.state', 'FROM_UNIXTIME(a.rtime) as rtime', 'FROM_UNIXTIME(a.ltime) as ltime', 'FROM_UNIXTIME(a.utime) as utime',
       'b.nickname', 'b.department', 'b.position', 'b.name', 'b.gender', 'b.img', 'FROM_UNIXTIME(b.birthday, "%Y-%m-%d") as birthday',
       'c.role AS sys_role', 'c.perm AS sys_perm',
       'd.role AS api_role', 'd.perm AS api_perm'
     );
-    $model->Where($where, ...$whereData);
-    $model->Order('a.id DESC');
-    $model->Page($page, $limit);
-    $list = $model->Find();
+    $m->Where($where, ...$whereData);
+    $m->Order($order?:'a.id DESC');
+    $m->Page($page, $limit);
+    $list = $m->Find();
     // 数据
     foreach ($list as $key => $val) {
       $list[$key]['state'] = $val['state']?true:false;
@@ -71,6 +66,19 @@ class SysUser extends Base {
     }
     // 返回
     return self::GetJSON(['code'=>0,'msg'=>'成功','list'=>$list,'total'=>(int)$total['num']]);
+  }
+  /* 搜索条件 */
+  static private function getWhere(object $param): array {
+    // 参数
+    $uname = isset($param->uname)?trim($param->uname):'';
+    $nickname = isset($param->nickname)?trim($param->nickname):'';
+    $name = isset($param->name)?trim($param->name):'';
+    $department = isset($param->department)?trim($param->department):'';
+    $position = isset($param->position)?trim($param->position):'';
+    // 条件
+    $where = '(a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?) AND b.nickname LIKE ? AND b.name LIKE ? AND b.department LIKE ? AND b.position LIKE ?';
+    $whereData = ['%'.$uname.'%', '%'.$uname.'%', '%'.$uname.'%', '%'.$nickname.'%', '%'.$name.'%', '%'.$department.'%', '%'.$position.'%'];
+    return [$where, $whereData];
   }
 
   /* 添加 */

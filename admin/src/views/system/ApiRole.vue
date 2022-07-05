@@ -5,7 +5,7 @@
     <div class="app_ct_left" v-show="sea.show">
       <wm-search v-model:show="sea.show" @update:submit="subSea()">
         <li>
-          <wm-input :value="sea.form.name" @update:value="sea.form.name=$event" maxlength="16" placeholder="角色名称" />
+          <wm-input v-model:value="sea.form.name" maxlength="16" placeholder="角色名称" clearable />
         </li>
       </wm-search>
     </div>
@@ -111,8 +111,6 @@
 </template>
 
 <style scoped>
-.table{min-width: 480px;}
-.form{padding-right: 24px;}
 </style>
 
 <script lang="ts" src="./ApiRole.ts"></script>

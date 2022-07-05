@@ -23,6 +23,7 @@ class WebNews extends Base {
     $data = self::JsonName($json, 'data');
     $page = self::JsonName($json, 'page');
     $limit = self::JsonName($json, 'limit');
+    $order = self::JsonName($json, 'order');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
@@ -31,18 +32,19 @@ class WebNews extends Base {
     }
     // 条件
     $param = json_decode($data);
-    $title = isset($param->title)?trim($param->title):'';
+    list($where, $whereData) = self::getWhere($param);
     // 统计
     $m = new WebNewsM();
     $m->Columns('count(*) AS num');
-    $m->Where('title like ?', '%'.$title.'%');
+    $m->Where($where, ...$whereData);
     $total = $m->FindFirst();
     // 查询
     $m->Columns('id', 'cid', 'title', 'source', 'author', 'FROM_UNIXTIME(ctime) as ctime', 'FROM_UNIXTIME(utime) as utime', 'state', 'img', 'summary');
-    $m->Where('title like ?', '%'.$title.'%');
+    $m->Where($where, ...$whereData);
     $m->Page($page, $limit);
-    $m->Order('id DESC');
+    $m->Order($order?:'id DESC');
     $list = $m->Find();
+    self::Print($m->GetSql());
     // 数据
     foreach ($list as $k => $v) {
       $list[$k]['img'] = Data::Img($v['img']);
@@ -50,6 +52,18 @@ class WebNews extends Base {
     }
     // 返回
     return self::GetJSON(['code'=>0,'msg'=>'成功','list'=>$list,'total'=>(int)$total['num']]);
+  }
+  /* 搜索条件 */
+  static private function getWhere(object $param): array {
+    // 参数
+    $cid = isset($param->cid)?trim($param->cid):'';
+    $title = isset($param->title)?trim($param->title):'';
+    $source = isset($param->source)?trim($param->source):'';
+    $author = isset($param->author)?trim($param->author):'';
+    // 条件
+    $where = 'cid like ? AND title like ? AND source like ? AND author like ?';
+    $whereData = ['%'.$cid.'%', '%'.$title.'%', '%'.$source.'%', '%'.$author.'%'];
+    return [$where, $whereData];
   }
 
   /* 添加 */

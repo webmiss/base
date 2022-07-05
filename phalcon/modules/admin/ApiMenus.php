@@ -15,6 +15,7 @@ class ApiMenus extends Base {
     $data = self::JsonName($json, 'data');
     $page = self::JsonName($json, 'page');
     $limit = self::JsonName($json, 'limit');
+    $order = self::JsonName($json, 'order');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
@@ -23,18 +24,16 @@ class ApiMenus extends Base {
     }
     // 条件
     $param = json_decode($data);
-    $fid = isset($param->fid)?trim($param->fid):'';
-    $title = isset($param->title)?trim($param->title):'';
-    $url = isset($param->url)?trim($param->url):'';
+    list($where, $whereData) = self::getWhere($param);
     // 统计
     $m = new ApiMenu();
     $m->Columns('count(*) AS num');
-    $m->Where('fid like ? AND title like ? AND url like ?', '%'.$fid.'%', '%'.$title.'%', '%'.$url.'%');
+    $m->Where($where, ...$whereData);
     $total = $m->FindFirst();
     // 查询
     $m->Columns('id', 'fid', 'title', 'ico', 'FROM_UNIXTIME(ctime) as ctime', 'FROM_UNIXTIME(utime) as utime', 'sort', 'url', 'controller', 'action');
-    $m->Where('fid like ? AND title like ? AND url like ?', '%'.$fid.'%', '%'.$title.'%', '%'.$url.'%');
-    $m->Order('fid DESC', 'sort', 'id DESC');
+    $m->Where($where, ...$whereData);
+    $m->Order($order?:'fid DESC, sort, id DESC');
     $m->Page($page, $limit);
     $list = $m->Find();
     // 数据
@@ -43,6 +42,17 @@ class ApiMenus extends Base {
     }
     // 返回
     return self::GetJSON(['code'=>0,'msg'=>'成功','list'=>$list,'total'=>(int)$total['num']]);
+  }
+  /* 搜索条件 */
+  static private function getWhere(object $param): array {
+    // 参数
+    $fid = isset($param->fid)?trim($param->fid):'';
+    $title = isset($param->title)?trim($param->title):'';
+    $url = isset($param->url)?trim($param->url):'';
+    // 条件
+    $where = 'fid like ? AND title like ? AND url like ?';
+    $whereData = ['%'.$fid.'%', '%'.$title.'%', '%'.$url.'%'];
+    return [$where, $whereData];
   }
 
   /* 添加 */

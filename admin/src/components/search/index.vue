@@ -1,7 +1,7 @@
 <template>
   <div class="wm-search">
     <div class="wm-search_title flex">
-      <h2>搜索</h2>
+      <h2 class="color1">搜索</h2>
       <span @click="$emit('update:show', false)"><i class="ui ui_arrow_left"></i></span>
     </div>
     <div class="wm-search_body scrollbar">
@@ -17,15 +17,15 @@
 
 <style lang="less">
 .wm-search{position: relative; height: 100%; font-size: 14px;}
-.wm-search_title{height: 42px; line-height: 42px; background-image: linear-gradient(to right, #FFF, #F2F4F8); border-bottom: rgba(0,0,0,.04) 1px solid; box-sizing: border-box;}
-.wm-search_title h2{font-size: 14px; padding-left: 16px; color: #999;}
-.wm-search_title span{cursor: pointer; width: 40px; line-height: 38px; text-align: center; border-radius: 2px;}
-.wm-search_title span i{font-size: 14px;}
+.wm-search_title{height: 38px; line-height: 32px; padding: 3px 4px; background-image: linear-gradient(to right, #F1F3F4, #F1F3F4); box-sizing: border-box;}
+.wm-search_title h2{font-size: 14px; padding-left: 10px; font-weight: 600;}
+.wm-search_title span{cursor: pointer; width: 32px; height: 32px; line-height: 32px; text-align: center; border-radius: 50%;}
+.wm-search_title span i{font-size: 14px; color: @IconColor;}
+.wm-search_title span:hover{background-color: @Hover;}
 .wm-search_title span:hover i{color: @Primary;}
 .wm-search_body{overflow-y: auto; height: calc(100% - 42px);}
 .wm-search_form{padding: 8px 10px;}
 .wm-search_form li{padding: 4px 0;}
-.wm-search_form .title{font-size: 12px; color: #999;}
 .wm-search_button{text-align: center; padding-bottom: 16px;}
 </style>
 

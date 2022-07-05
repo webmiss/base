@@ -19,6 +19,7 @@ class SysRole(Base):
     data = self.JsonName(json, 'data')
     page = self.JsonName(json, 'page')
     limit = self.JsonName(json, 'limit')
+    order = self.JsonName(json, 'order')
     # 验证
     msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
@@ -26,20 +27,30 @@ class SysRole(Base):
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
     # 条件
     param = Util.JsonDecode(data)
-    name = Util.Trim(param['name']) if 'name' in param.keys() else ''
+    where, whereData = self.__getWhere(param)
     # 统计
     m = SysRoleM()
     m.Columns('count(*) AS num')
-    m.Where('name LIKE %s', '%'+name+'%')
+    m.Where(where, whereData)
     total = m.FindFirst()
     # 查询
     m.Columns('id', 'name', 'FROM_UNIXTIME(ctime, %s) as ctime', 'FROM_UNIXTIME(utime, %s) as utime', 'perm')
-    m.Where('name LIKE %s', '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', '%'+name+'%')
+    m.Where(where, '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', whereData)
+    m.Order(order if order else 'id DESC')
     m.Page(int(page), int(limit))
     list = m.Find()
     # 返回
     return self.GetJSON({'code':0, 'msg':'成功', 'list':list, 'total':int(total['num'])})
-    
+
+  # 搜索条件
+  def __getWhere(self, param):
+    # 参数
+    name = Util.Trim(param['name']) if 'name' in param.keys() else ''
+    # 条件
+    where = 'name LIKE %s'
+    whereData = ('%'+name+'%')
+    return where, whereData
+
   # 添加
   def Add(self):
     # 参数

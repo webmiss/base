@@ -5,13 +5,13 @@
     <div class="app_ct_left" v-show="sea.show">
       <wm-search v-model:show="sea.show" @update:submit="subSea()">
         <li>
-          <wm-input :value="sea.form.fid" @update:value="sea.form.fid=$event" placeholder="FID" />
+          <wm-input v-model:value="sea.form.fid" placeholder="FID" clearable />
         </li>
         <li>
-          <wm-input :value="sea.form.title" @update:value="sea.form.title=$event" placeholder="菜单名称" />
+          <wm-input v-model:value="sea.form.title" placeholder="菜单名称" clearable />
         </li>
         <li>
-          <div class="input"><wm-input :value="sea.form.url" @update:value="sea.form.url=$event" placeholder="API关键字" /></div>
+          <wm-input v-model:value="sea.form.url" placeholder="API关键字" clearable />
         </li>
       </wm-search>
     </div>

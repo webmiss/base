@@ -14,7 +14,7 @@
 .app_body{position: relative; overflow: hidden; height: 100%; min-width: 320px; background-color: #F2F4F6;}
 .app_left{width: 70px; height: 100%; background-color: #24292E;}
 .app_right{width: calc(100% - 70px); height: 100%;}
-.app_right_top{width: 100%; height: 48px; border-bottom: rgba(0,0,0,.04) 1px solid; background-color: #FFF; box-sizing: border-box;}
+.app_right_top{width: 100%; height: 48px; border-bottom: #F2F2F2 1px solid; background-color: #FFF; box-sizing: border-box;}
 
 /* 菜单 */
 .app_logo{width: 40px; height: 40px; margin: 10px auto 4px; border-radius: 50%; background-size: 64%; background-color: #FFF;}
@@ -61,7 +61,7 @@
 .app_top_title .a:hover{color: @Primary;}
 
 /* 用户 */
-.app_user{cursor: default; border-left: rgba(0,0,0,.04) 1px solid; padding: 10px 16px;}
+.app_user{cursor: default; padding: 10px 16px;}
 .app_user span{height: 28px; line-height: 28px;}
 .app_user .tu{width: 28px; border-radius: 50%; background-color: #F2F4F6; text-align: center;}
 .app_user .tu i{font-size: 14px; color: #A2A4A6;}
@@ -86,17 +86,17 @@
 
 /* 内容 */
 .app_ct{height: calc(100% - 48px);}
-.app_ct_left{width: 240px; height: 100%; border-right: rgba(0,0,0,.08) 1px solid; box-sizing: border-box; background-color: #FFF;}
+.app_ct_left{width: 240px; height: 100%; border-right: #E2E2E2 1px solid; box-sizing: border-box; background-color: #FFF;}
 .app_ct_right{position: relative; height: 100%;}
 .app_ct_body{height: calc(100% - 44px); background-color: #FFF;}
 
 /* 动作 */
-.app_action_body{overflow-y: hidden; overflow-x: auto; height: 42px; line-height: 32px; padding: 4px 0; border-bottom: rgba(0,0,0,.04) 1px solid; background-image: linear-gradient(to right, #F2F4F8, #FFF); box-sizing: border-box;}
-.app_action_sea{cursor: pointer; margin-left: 8px; width: 33px; height: 33px; border-radius: 50%; border: #E2E2E2 1px solid; background-color: #FFF; text-align: center; box-sizing: border-box;}
-.app_action_sea i{font-size: 20px;}
+.app_action_body{overflow-y: hidden; overflow-x: auto; height: 38px; line-height: 32px; padding: 2px 0; background-image: linear-gradient(to right, #F1F3F4, #F1F3F4); box-sizing: border-box;}
+.app_action_sea{cursor: pointer; margin-left: 8px; width: 33px; height: 33px; border-radius: 50%; border: #DEE1E6 1px solid; background-color: #FFF; text-align: center; box-sizing: border-box;}
+.app_action_sea i{font-size: 20px; color: @IconColor;}
 .app_action_sea:hover{background-color: @Minor;}
 .app_action_sea:hover i{color: @Primary;}
-.app_action_list{overflow: hidden; margin-left: 8px; padding: 0 10px; height: 33px; border: #E2E2E2 1px solid; background-color: #FFF; border-radius: 16px; box-sizing: border-box;}
+.app_action_list{user-select: none; overflow: hidden; margin-left: 8px; padding: 0 10px; height: 33px; border: #DEE1E6 1px solid; background-color: #FFF; border-radius: 16px; box-sizing: border-box;}
 .app_action_list li{cursor: pointer; padding: 0 10px; line-height: 32px;}
 .app_action_list li:hover{color: @Primary;}
 

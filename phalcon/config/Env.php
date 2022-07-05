@@ -19,8 +19,4 @@ class Env {
   static $api_token_time = 7*24*3600;                       //有效时长(7天)
   static $api_token_auto = true;                            //自动续期
   static $api_token_sso = false;                            //单点登录
-  /* Logs */
-  static $log_source = 'php';     //访问日志-来源
-  static $log_db = false;          //访问日志-数据库
-  static $log_file = false;       //访问日志-文件
 }

@@ -27,12 +27,7 @@ class SysMenus extends Base {
     }
     // 条件
     $param = json_decode($data);
-    $fid = isset($param->fid)?trim($param->fid):'';
-    $title = isset($param->title)?trim($param->title):'';
-    $en = isset($param->en)?trim($param->en):'';
-    $url = isset($param->url)?trim($param->url):'';
-    $where = 'fid like ? AND title like ? AND en like ? AND url like ?';
-    $whereData = ['%'.$fid.'%', '%'.$title.'%', '%'.$en.'%', '%'.$url.'%'];
+    list($where, $whereData) = self::getWhere($param);
     // 统计
     $m = new SysMenu();
     $m->Columns('count(*) AS num');
@@ -50,6 +45,18 @@ class SysMenus extends Base {
     }
     // 返回
     return self::GetJSON(['code'=>0,'msg'=>'成功','list'=>$list,'total'=>(int)$total['num']]);
+  }
+  /* 搜索条件 */
+  static private function getWhere(object $param): array {
+    // 参数
+    $fid = isset($param->fid)?trim($param->fid):'';
+    $title = isset($param->title)?trim($param->title):'';
+    $en = isset($param->en)?trim($param->en):'';
+    $url = isset($param->url)?trim($param->url):'';
+    // 条件
+    $where = 'fid like ? AND title like ? AND en like ? AND url like ?';
+    $whereData = ['%'.$fid.'%', '%'.$title.'%', '%'.$en.'%', '%'.$url.'%'];
+    return [$where, $whereData];
   }
 
   /* 添加 */

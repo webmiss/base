@@ -18,6 +18,7 @@ class SysMenus extends Base {
     $data = self::JsonName($json, 'data');
     $page = self::JsonName($json, 'page');
     $limit = self::JsonName($json, 'limit');
+    $order = self::JsonName($json, 'order');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '') return self::GetJSON(['code'=>4001, 'msg'=>$msg]);
@@ -26,12 +27,7 @@ class SysMenus extends Base {
     }
     // 条件
     $param = json_decode($data);
-    $fid = isset($param->fid)?trim($param->fid):'';
-    $title = isset($param->title)?trim($param->title):'';
-    $en = isset($param->en)?trim($param->en):'';
-    $url = isset($param->url)?trim($param->url):'';
-    $where = 'fid like ? AND title like ? AND en like ? AND url like ?';
-    $whereData = ['%'.$fid.'%', '%'.$title.'%', '%'.$en.'%', '%'.$url.'%'];
+    list($where, $whereData) = self::getWhere($param);
     // 统计
     $m = new SysMenu();
     $m->Columns('count(*) AS num');
@@ -40,7 +36,7 @@ class SysMenus extends Base {
     // 查询
     $m->Columns('id', 'fid', 'title', 'en', 'ico', 'FROM_UNIXTIME(ctime) as ctime', 'FROM_UNIXTIME(utime) as utime', 'sort', 'url', 'controller', 'action');
     $m->Where($where, ...$whereData);
-    $m->Order('fid DESC', 'sort', 'id DESC');
+    $m->Order($order?:'fid DESC,sort,id DESC');
     $m->Page($page, $limit);
     $list = $m->Find();
     // 数据
@@ -49,6 +45,18 @@ class SysMenus extends Base {
     }
     // 返回
     return self::GetJSON(['code'=>0,'msg'=>'成功','list'=>$list,'total'=>(int)$total['num']]);
+  }
+  /* 搜索条件 */
+  static private function getWhere(object $param): array {
+    // 参数
+    $fid = isset($param->fid)?trim($param->fid):'';
+    $title = isset($param->title)?trim($param->title):'';
+    $en = isset($param->en)?trim($param->en):'';
+    $url = isset($param->url)?trim($param->url):'';
+    // 条件
+    $where = 'fid like ? AND title like ? AND en like ? AND url like ?';
+    $whereData = ['%'.$fid.'%', '%'.$title.'%', '%'.$en.'%', '%'.$url.'%'];
+    return [$where, $whereData];
   }
 
   /* 添加 */

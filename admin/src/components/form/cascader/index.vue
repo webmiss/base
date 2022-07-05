@@ -100,9 +100,11 @@
 .wm-cascader_list{user-select: none; padding: 8px 0; overflow-y: auto; border-right: @BorderColor 1px solid; box-sizing: border-box;}
 .wm-cascader_list li{position: relative; cursor: pointer; line-height: 32px; padding: 0 16px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
 .wm-cascader_list li:hover{background-color: @Minor;}
-.wm-cascader_list li i{position: absolute; right: 8px; font-size: 12px;}
+.wm-cascader_list i{position: absolute; right: 8px; font-size: 14px; transform: scale(0.8); color: @Info;}
 .wm-cascader_active{color: @Primary; font-weight: bold;}
+.wm-cascader_active i{color: @Primary; font-weight: normal;}
 .wm-cascader_disabled{color: @Disabled;}
+.wm-cascader_disabled i{color: @Disabled; font-weight: normal;}
 </style>
 
 <script lang="ts">

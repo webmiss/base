@@ -19,6 +19,7 @@ class SysRole extends Base {
     $data = self::JsonName($json, 'data');
     $page = self::JsonName($json, 'page');
     $limit = self::JsonName($json, 'limit');
+    $order = self::JsonName($json, 'order');
     // 验证
     $msg = AdminToken::Verify($token, $_SERVER['REQUEST_URI']);
     if($msg != '')
@@ -27,19 +28,29 @@ class SysRole extends Base {
       return self::GetJSON(['code'=>4000, 'msg'=>'参数错误!']);
     // 条件
     $param = json_decode($data);
-    $name = isset($param->name)?trim($param->name):'';
+    list($where, $whereData) = self::getWhere($param);
     // 统计
     $m = new SysRoleM();
     $m->Columns('count(*) AS num');
-    $m->Where('name like ?', '%'.$name.'%');
+    $m->Where($where, ...$whereData);
     $total = $m->FindFirst();
     // 查询
     $m->Columns('id', 'name', 'FROM_UNIXTIME(ctime) as ctime', 'FROM_UNIXTIME(utime) as utime', 'perm');
-    $m->Where('name like ?', '%'.$name.'%');
+    $m->Where($where, ...$whereData);
+    $m->Order($order?:'id DESC');
     $m->Page($page, $limit);
     $list = $m->Find();
     // 返回
     return self::GetJSON(['code'=>0,'msg'=>'成功','list'=>$list,'total'=>(int)$total['num']]);
+  }
+  /* 搜索条件 */
+  static private function getWhere(object $param): array {
+    // 参数
+    $name = isset($param->name)?trim($param->name):'';
+    // 条件
+    $where = 'name like ?';
+    $whereData = ['%'.$name.'%'];
+    return [$where, $whereData];
   }
 
   /* 添加 */

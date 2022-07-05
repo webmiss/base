@@ -2,12 +2,8 @@
   <div class="flex">
 
     <!-- Search -->
-    <div class="app_ct_left" v-show="state.menuSea">
-      <div class="app_sea_title flex">
-        <h2>搜索</h2>
-        <span @click="state.menuSea=false"><i class="ui ui_arrow_left"></i></span>
-      </div>
-      <ul class="app_sea_form">
+    <div class="app_ct_left" v-show="sea.show">
+      <wm-search v-model:show="sea.show" @update:submit="subSea()">
         <li>
           <wm-input v-model:value="sea.form.uname" placeholder="用户名/手机号码/邮箱" clearable />
         </li>
@@ -23,18 +19,15 @@
         <li>
           <wm-input v-model:value="sea.form.position" placeholder="职务" clearable />
         </li>
-      </ul>
-      <div class="app_sea_sub">
-        <wm-button @click="subSea()" height="32px">搜 索</wm-button>
-      </div>
+      </wm-search>
     </div>
     <!-- Search End -->
 
     <!-- Body -->
-    <div class="app_ct_right" :style="{width: state.menuSea?'calc(100% - 240px)':'100%'}">
+    <div class="app_ct_right" :style="{width: sea.show?'calc(100% - 240px)':'100%'}">
       <!-- Action -->
       <div class="app_action_body flex_left">
-        <div class="app_action_sea" v-show="!state.menuSea" @click="state.menuSea=true"><i class="ui ui_search"></i></div>
+        <div class="app_action_sea" v-show="!sea.show" @click="sea.show=true"><i class="ui ui_search"></i></div>
         <ul class="app_action_list flex_left">
           <li v-if="getters.actionShow('add')" @click="add.show=true">添加</li>
           <li v-if="getters.actionShow('edit')" @click="editData()">编辑</li>
@@ -44,17 +37,17 @@
       <div class="app_ct_body">
         <wm-main>
         <!-- List -->
-        <wm-table ref="Table" :data="page.list" style="min-width: 1080px;">
+        <wm-table ref="Table" :data="page.list" style="min-width: 1200px;">
           <template #title>
-            <td width="60">UID</td>
-            <td>账号</td>
-            <td width="100">登录时间</td>
-            <td>昵称</td>
-            <td>姓名</td>
-            <td>性别</td>
-            <td>生日</td>
-            <td>部门</td>
-            <td>职务</td>
+            <td width="60">UID<wm-table-order :value="oby.list['a.id']" @update:value="OrderBy('a.id', $event)" /></td>
+            <td>账号<wm-table-order :value="oby.list['a.tel']" @update:value="OrderBy('a.tel', $event)" /></td>
+            <td width="100">登录时间<wm-table-order :value="oby.list['a.ltime']" @update:value="OrderBy('a.ltime', $event)" /></td>
+            <td>昵称<wm-table-order :value="oby.list['b.nickname']" @update:value="OrderBy('b.nickname', $event)" /></td>
+            <td width="60">姓名<wm-table-order :value="oby.list['b.name']" @update:value="OrderBy('b.name', $event)" /></td>
+            <td width="40">性别<wm-table-order :value="oby.list['b.gender']" @update:value="OrderBy('b.gender', $event)" /></td>
+            <td width="100">生日<wm-table-order :value="oby.list['b.birthday']" @update:value="OrderBy('b.birthday', $event)" /></td>
+            <td>部门<wm-table-order :value="oby.list['b.department']" @update:value="OrderBy('b.department', $event)" /></td>
+            <td>职务<wm-table-order :value="oby.list['b.position']" @update:value="OrderBy('b.position', $event)" /></td>
             <td width="60" class="tCenter">状态</td>
             <td width="60" class="tCenter">系统权限</td>
             <td width="60" class="tCenter">API权限</td>
@@ -81,7 +74,7 @@
             </td>
             <td>{{ val.nickname || '-' }}</td>
             <td>{{ val.name || '-' }}</td>
-            <td>{{ val.gender || '-' }}</td>
+            <td class="tCenter">{{ val.gender || '-' }}</td>
             <td>{{ val.birthday || '-' }}</td>
             <td>{{ val.department || '-' }}</td>
             <td>{{ val.position || '-' }}</td>
@@ -116,15 +109,21 @@
     <!-- Body End -->
 
     <!-- Add -->
-    <wm-dialog title="添加" width="480px" :show="add.show" @update:close="add.show=$event">
-      <wm-form class="form">
-        <wm-form-item label="手机">
-          <wm-input :value="add.form.tel" @update:value="add.form.tel=$event" maxlength="11" placeholder="输入手机号码" />
-        </wm-form-item>
-        <wm-form-item label="密码">
-          <wm-input :value="add.form.passwd" @update:value="add.form.passwd=$event" maxlength="16" placeholder="默认密码" />
-        </wm-form-item>
-      </wm-form>
+    <wm-dialog title="添加" width="480px" v-model:show="add.show">
+      <wm-table-form>
+        <tr>
+          <td class="lable">手机</td>
+          <td>
+            <wm-input v-model:value="add.form.tel" maxlength="11" placeholder="输入手机号码" clearable />
+          </td>
+        </tr>
+        <tr>
+          <td class="lable">密码</td>
+          <td>
+            <wm-input v-model:value="add.form.passwd" maxlength="16" placeholder="默认密码" clearable />
+          </td>
+        </tr>
+      </wm-table-form>
       <template #footer>
         <wm-button @click="subAdd()">添 加</wm-button>
       </template>
@@ -132,15 +131,21 @@
     <!-- Add End -->
 
     <!-- Edit -->
-    <wm-dialog title="编辑" width="480px" :show="edit.show" @update:close="edit.show=$event">
-      <wm-form class="form">
-        <wm-form-item label="手机">
-          <wm-input :value="edit.form.tel" @update:value="edit.form.tel=$event" maxlength="11" placeholder="输入手机号码" />
-        </wm-form-item>
-        <wm-form-item label="密码">
-          <wm-input :value="edit.form.passwd" @update:value="edit.form.passwd=$event" maxlength="16" placeholder="重置密码" />
-        </wm-form-item>
-      </wm-form>
+    <wm-dialog title="编辑" width="480px" v-model:show="edit.show">
+      <wm-table-form>
+        <tr>
+          <td class="lable">手机</td>
+          <td>
+            <wm-input v-model:value="edit.form.tel" maxlength="11" placeholder="输入手机号码" clearable />
+          </td>
+        </tr>
+        <tr>
+          <td class="lable">密码</td>
+          <td>
+            <wm-input v-model:value="edit.form.passwd" maxlength="16" placeholder="默认密码" clearable />
+          </td>
+        </tr>
+      </wm-table-form>
       <template #footer>
         <wm-button @click="subEdit()">保 存</wm-button>
       </template>
@@ -148,7 +153,7 @@
     <!-- Edit End -->
 
     <!-- Del -->
-    <wm-dialog title="删除" width="360px" :show="del.show" @update:close="del.show=$event">
+    <wm-dialog title="删除" width="360px" v-model:show="del.show">
       <wm-row>是否删除已选择数据？</wm-row>
       <template #footer>
         <wm-button @click="subDel()">彻底删除</wm-button>
@@ -157,27 +162,39 @@
     <!-- Del End -->
 
     <!-- Info -->
-    <wm-dialog title="用户信息" width="540px" :show="info.show" @update:close="info.show=$event">
-      <wm-form class="form">
-        <wm-form-item label="昵称">
-          <wm-input v-model:value="info.form.nickname" maxlength="12" placeholder="用户昵称" />
-        </wm-form-item>
-        <wm-form-item label="姓名">
-          <wm-input v-model:value="info.form.name" maxlength="8" placeholder="填写姓名" />
-        </wm-form-item>
-        <wm-form-item label="性别">
-          <wm-radio v-model:value="info.form.gender" :data="gender"></wm-radio>
-        </wm-form-item>
-        <wm-form-item label="生日">
-          <wm-date v-model:value="info.form.birthday"></wm-date>
-        </wm-form-item>
-        <wm-form-item label="部门">
-          <wm-input v-model:value="info.form.department" maxlength="8" placeholder="部门名称" />
-        </wm-form-item>
-        <wm-form-item label="职务">
-          <wm-input v-model:value="info.form.position" maxlength="8" placeholder="职务、职称" />
-        </wm-form-item>
-      </wm-form>
+    <wm-dialog title="用户信息" width="540px" v-model:show="info.show">
+      <wm-table-form>
+        <tr>
+          <td class="lable">昵称</td>
+          <td>
+            <wm-input v-model:value="info.form.nickname" maxlength="12" placeholder="用户昵称" />
+          </td>
+        </tr>
+        <tr>
+          <td class="lable">姓名</td>
+          <td>
+            <wm-input v-model:value="info.form.name" maxlength="8" placeholder="填写姓名" />
+          </td>
+        </tr>
+        <tr>
+          <td class="lable">生日</td>
+          <td>
+            <wm-date v-model:value="info.form.birthday"></wm-date>
+          </td>
+        </tr>
+        <tr>
+          <td class="lable">部门</td>
+          <td>
+            <wm-input v-model:value="info.form.department" maxlength="8" placeholder="部门名称" />
+          </td>
+        </tr>
+        <tr>
+          <td class="lable">职务</td>
+          <td>
+            <wm-input v-model:value="info.form.position" maxlength="8" placeholder="职务、职称" />
+          </td>
+        </tr>
+      </wm-table-form>
       <template #footer>
         <wm-button @click="subInfo()">更 新</wm-button>
       </template>
@@ -185,7 +202,7 @@
     <!-- Info End -->
 
     <!-- Perm -->
-    <wm-dialog title="权限" width="540px" :show="perm.show" @update:close="perm.show=$event">
+    <wm-dialog title="权限" width="540px" v-model:show="perm.show">
       <wm-tabs v-model:active="perm.active" :data="[{label:'角色', name:'role'},{label:'私有', name:'perm'}]">
         <template #role>
           <wm-radio class="content" :data="perm.roleList" :value="perm.role+''" @update:value="perm.role=$event"></wm-radio>
@@ -204,8 +221,6 @@
 </template>
 
 <style scoped>
-.table{min-width: 800px;}
-.form{padding-right: 24px;}
 .content{padding: 16px 8px;}
 </style>
 
