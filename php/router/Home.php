@@ -17,10 +17,10 @@ class Home {
       $router->get('/vcode', "Index@Vcode");
       $router->get('/index/qrcode/{name}', "Index@Qrcode");
       // 回调
-      $router->post('/ossCallback', "Index@OssCallback");
+      $router->post('/oss_callback', "Index@OssCallback");
       $router->get('/youtube_oauth', "Index@YouTubeOAuth");
       $router->get('/youtube_token', "Index@YouTubeToken");
-      $router->get('/googleCallback', "Index@YouTubeCallback");
+      $router->get('/youtube_callback', "Index@YouTubeCallback");
     });
     
   }
