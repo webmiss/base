@@ -7,7 +7,7 @@ class Env :
   key: str = 'e4b99adec618e653400966be536c45f8'         #KEY
   password: str = '123456'                              #默认密码
   # 资源
-  base_url: str = 'https://demo-python.webmis.vip/'
+  base_url: str = 'https://python.webmis.vip/'
   # base_url: str = 'http://localhost/python/public/'
   root_dir: str = 'public/'
   # Token

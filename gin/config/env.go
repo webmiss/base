@@ -22,14 +22,14 @@ type EnvType struct {
 /* 公共配置 */
 func Env() *EnvType {
 	cfg := &EnvType{}
-	cfg.MachineId = 1                            	//机器标识
-	cfg.Mode = "debug"                         		//模式: debug, release, test
-	cfg.Host = "127.0.0.1"                       	//主机
-	cfg.Port = "9030"                            	//端口
-	cfg.Key = "e4b99adec618e653400966be536c45f8" 	//Key
-	cfg.Password = "123456"                      	//默认密码
+	cfg.MachineId = 1                            //机器标识
+	cfg.Mode = "debug"                           //模式: debug, release, test
+	cfg.Host = "127.0.0.1"                       //主机
+	cfg.Port = "9030"                            //端口
+	cfg.Key = "e4b99adec618e653400966be536c45f8" //Key
+	cfg.Password = "123456"                      //默认密码
 	/* 资源 */
-	cfg.BaseURL = "https://demo-go.webmis.vip/"
+	cfg.BaseURL = "https://go.webmis.vip/"
 	// cfg.BaseURL = "http://localhost/gin/public/"
 	cfg.RootDir = "public/"
 	/* Token */
