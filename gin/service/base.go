@@ -16,12 +16,12 @@ func (Base) GetJSON(c *gin.Context, data interface{}) {
 }
 
 /* JSON参数 */
-func (b Base) JsonName(param map[string]interface{}, name string) (string, bool) {
+func (b Base) JsonName(param map[string]interface{}, name string) string {
 	res, ok := param[name]
 	if !ok {
-		return "", false
+		return ""
 	}
-	return (&util.Type{}).Strval(res), true
+	return (&util.Type{}).Strval(res)
 }
 
 /* 输出到控制台 */

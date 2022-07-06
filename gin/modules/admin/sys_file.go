@@ -21,8 +21,8 @@ func (r SysFile) List(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	path, _ := r.JsonName(json, "path")
+	token := r.JsonName(json, "token")
+	path := r.JsonName(json, "path")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -45,9 +45,9 @@ func (r SysFile) Mkdir(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	path, _ := r.JsonName(json, "path")
-	name, _ := r.JsonName(json, "name")
+	token := r.JsonName(json, "token")
+	path := r.JsonName(json, "path")
+	name := r.JsonName(json, "name")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -73,10 +73,10 @@ func (r SysFile) Rename(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	path, _ := r.JsonName(json, "path")
-	rename, _ := r.JsonName(json, "rename")
-	name, _ := r.JsonName(json, "name")
+	token := r.JsonName(json, "token")
+	path := r.JsonName(json, "path")
+	rename := r.JsonName(json, "rename")
+	name := r.JsonName(json, "name")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -128,9 +128,9 @@ func (r SysFile) Down(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	path, _ := r.JsonName(json, "path")
-	filename, _ := r.JsonName(json, "filename")
+	token := r.JsonName(json, "token")
+	path := r.JsonName(json, "path")
+	filename := r.JsonName(json, "filename")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -150,9 +150,9 @@ func (r SysFile) Remove(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	path, _ := r.JsonName(json, "path")
-	data, _ := r.JsonName(json, "data")
+	token := r.JsonName(json, "token")
+	path := r.JsonName(json, "path")
+	data := r.JsonName(json, "data")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {

@@ -30,15 +30,15 @@ class WebNews(Base):
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
     # 条件
     param = Util.JsonDecode(data)
-    title = Util.Trim(param['title']) if 'title' in param.keys() else ''
+    where, whereData = self.__getWhere(param)
     # 统计
     m = WebNewsM()
     m.Columns('count(*) AS num')
-    m.Where('title LIKE %s', '%'+title+'%')
+    m.Where(where, *whereData)
     total = m.FindFirst()
     # 查询
     m.Columns('id', 'cid', 'title', 'source', 'author', 'FROM_UNIXTIME(ctime, %s) as ctime', 'FROM_UNIXTIME(utime, %s) as utime', 'state', 'img', 'summary')
-    m.Where('title LIKE %s', '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', '%'+title+'%')
+    m.Where(where, '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', *whereData)
     m.Page(int(page), int(limit))
     m.Order('id DESC')
     list = m.Find()
@@ -48,7 +48,19 @@ class WebNews(Base):
       v['state'] = True if v['state']=='1' else False
     # 返回
     return self.GetJSON({'code':0, 'msg':'成功', 'list':list, 'total':int(total['num'])})
-    
+
+  # 搜索条件
+  def __getWhere(self, param):
+    # 参数
+    cid = Util.Trim(param['cid']) if 'cid' in param.keys() else ''
+    title = Util.Trim(param['title']) if 'title' in param.keys() else ''
+    source = Util.Trim(param['source']) if 'source' in param.keys() else ''
+    author = Util.Trim(param['author']) if 'author' in param.keys() else ''
+    # 条件
+    where = 'cid LIKE %s AND title LIKE %s AND source LIKE %s AND author LIKE %s'
+    whereData = ('%'+cid+'%', '%'+title+'%', '%'+source+'%', '%'+author+'%')
+    return where, whereData
+
   # 添加
   def Add(self):
     # 参数

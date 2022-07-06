@@ -24,12 +24,10 @@ func main() {
 	app.Use(middleware.Recovery)                //处理异常
 	app.NoRoute(middleware.HandleNotFound)      //路由404
 	app.NoMethod(middleware.HandleNotFound)     //请求方式404
-	app.Use(middleware.Logs())                  //访问日志
 	// 路由
 	router.API(app)
 	router.Admin(app)
 	router.Home(app)
-	router.Demo(app)
 	// 运行
 	app.Run(config.Env().Host + ":" + config.Env().Port)
 }

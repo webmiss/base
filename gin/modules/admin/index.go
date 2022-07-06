@@ -54,7 +54,7 @@ func (r Index) GetChart(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
+	token := r.JsonName(json, "token")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
@@ -95,7 +95,7 @@ func (r Index) GetChart(c *gin.Context) {
 	data["TrendRpt"] = map[string]interface{}{"today": today, "yesterday": yesterday}
 
 	/* 趋势分析 */
-	tp, _ := r.JsonName(json, "type")
+	tp := r.JsonName(json, "type")
 	gran := "day"
 	if tp == "t1" {
 		gran = "hour"

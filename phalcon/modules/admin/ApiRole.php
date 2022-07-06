@@ -29,7 +29,6 @@ class ApiRole extends Base {
     // 条件
     $param = json_decode($data);
     list($where, $whereData) = self::getWhere($param);
-    
     // 统计
     $m = new ApiRoleM();
     $m->Columns('count(*) AS num');

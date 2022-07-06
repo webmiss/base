@@ -19,10 +19,14 @@ func (r SysUser) List(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	data, _ := r.JsonName(json, "data")
-	page, _ := r.JsonName(json, "page")
-	limit, _ := r.JsonName(json, "limit")
+	token := r.JsonName(json, "token")
+	data := r.JsonName(json, "data")
+	page := (&util.Type{}).Int(r.JsonName(json, "page"))
+	limit := (&util.Type{}).Int(r.JsonName(json, "limit"))
+	order := r.JsonName(json, "order")
+	if order == "" {
+		order = "a.id DESC"
+	}
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -36,13 +40,7 @@ func (r SysUser) List(c *gin.Context) {
 	// 条件
 	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
-	uname := util.Trim(util.If(util.InKey("uname", param), param["uname"], ""))
-	nickname := util.Trim(util.If(util.InKey("nickname", param), param["nickname"], ""))
-	name := util.Trim(util.If(util.InKey("name", param), param["name"], ""))
-	department := util.Trim(util.If(util.InKey("department", param), param["department"], ""))
-	position := util.Trim(util.If(util.InKey("position", param), param["position"], ""))
-	where := "(a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?) AND b.nickname LIKE ? AND b.name LIKE ? AND b.department LIKE ? AND b.position LIKE ?"
-	whereData := []interface{}{"%" + uname + "%", "%" + uname + "%", "%" + uname + "%", "%" + nickname + "%", "%" + name + "%", "%" + department + "%", "%" + position + "%"}
+	where, whereData := r.__getWhere(param)
 	// 统计
 	m := (&model.User{}).New()
 	m.Table("user as a")
@@ -62,8 +60,8 @@ func (r SysUser) List(c *gin.Context) {
 		"d.role AS api_role", "d.perm AS api_perm",
 	)
 	m.Where(where, whereData...)
-	m.Order("a.id DESC")
-	m.Page((&util.Type{}).Int(page), (&util.Type{}).Int(limit))
+	m.Order(order)
+	m.Page(page, limit)
 	list := m.Find()
 	// 数据
 	for _, val := range list {
@@ -79,13 +77,27 @@ func (r SysUser) List(c *gin.Context) {
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list, "total": (&util.Type{}).Int(total["num"])})
 }
 
+/* 搜索条件 */
+func (r SysUser) __getWhere(param map[string]interface{}) (string, []interface{}) {
+	// 参数
+	uname := util.Trim(util.If(util.InKey("uname", param), param["uname"], ""))
+	nickname := util.Trim(util.If(util.InKey("nickname", param), param["nickname"], ""))
+	name := util.Trim(util.If(util.InKey("name", param), param["name"], ""))
+	department := util.Trim(util.If(util.InKey("department", param), param["department"], ""))
+	position := util.Trim(util.If(util.InKey("position", param), param["position"], ""))
+	// 条件
+	where := "(a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?) AND b.nickname LIKE ? AND b.name LIKE ? AND b.department LIKE ? AND b.position LIKE ?"
+	whereData := []interface{}{"%" + uname + "%", "%" + uname + "%", "%" + uname + "%", "%" + nickname + "%", "%" + name + "%", "%" + department + "%", "%" + position + "%"}
+	return where, whereData
+}
+
 /* 添加 */
 func (r SysUser) Add(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	data, _ := r.JsonName(json, "data")
+	token := r.JsonName(json, "token")
+	data := r.JsonName(json, "data")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -158,9 +170,9 @@ func (r SysUser) Edit(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	uid, _ := r.JsonName(json, "uid")
-	data, _ := r.JsonName(json, "data")
+	token := r.JsonName(json, "token")
+	uid := r.JsonName(json, "uid")
+	data := r.JsonName(json, "data")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -209,8 +221,8 @@ func (r SysUser) Del(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	data, _ := r.JsonName(json, "data")
+	token := r.JsonName(json, "token")
+	data := r.JsonName(json, "data")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -246,9 +258,9 @@ func (r SysUser) State(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	uid, _ := r.JsonName(json, "uid")
-	state, _ := r.JsonName(json, "state")
+	token := r.JsonName(json, "token")
+	uid := r.JsonName(json, "uid")
+	state := r.JsonName(json, "state")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -282,11 +294,11 @@ func (r SysUser) Perm(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	tp, _ := r.JsonName(json, "type")
-	uid, _ := r.JsonName(json, "uid")
-	role, _ := r.JsonName(json, "role")
-	perm, _ := r.JsonName(json, "perm")
+	token := r.JsonName(json, "token")
+	tp := r.JsonName(json, "type")
+	uid := r.JsonName(json, "uid")
+	role := r.JsonName(json, "role")
+	perm := r.JsonName(json, "perm")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -379,9 +391,9 @@ func (r SysUser) Info(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	uid, _ := r.JsonName(json, "uid")
-	data, _ := r.JsonName(json, "data")
+	token := r.JsonName(json, "token")
+	uid := r.JsonName(json, "uid")
+	data := r.JsonName(json, "data")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {

@@ -19,9 +19,9 @@ func (r UserPasswd) Edit(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	passwd, _ := r.JsonName(json, "passwd")
-	passwdNew, _ := r.JsonName(json, "passwdNew")
+	token := r.JsonName(json, "token")
+	passwd := r.JsonName(json, "passwd")
+	passwdNew := r.JsonName(json, "passwdNew")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {

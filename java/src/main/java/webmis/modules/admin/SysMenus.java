@@ -25,6 +25,8 @@ import webmis.util.Util;
 @RequestMapping("/admin/sys_menus")
 public class SysMenus extends Base {
 
+  private static String where;
+  private static Object[] whereData;
   private static HashMap<String, ArrayList<HashMap<String, Object>>> menus = null;  //全部菜单
   private static HashMap<String, Long> permAll = null;                           //用户权限
 
@@ -37,6 +39,7 @@ public class SysMenus extends Base {
     String data = JsonName(json, "data");
     int page = Integer.valueOf(JsonName(json, "page"));
     int limit = Integer.valueOf(JsonName(json, "limit"));
+    String order = JsonName(json, "order");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -53,12 +56,7 @@ public class SysMenus extends Base {
     }
     // 条件
     JSONObject param = Util.JsonDecode(data);
-    String fid = param.containsKey("fid")?String.valueOf(param.get("fid")).trim():"";
-    String title = param.containsKey("title")?String.valueOf(param.get("title")).trim():"";
-    String en = param.containsKey("en")?String.valueOf(param.get("en")).trim():"";
-    String url = param.containsKey("url")?String.valueOf(param.get("url")).trim():"";
-    String where = "fid like ? AND title like ? AND en like ? AND url like ?";
-    Object[] whereData = {"%"+fid+"%", "%"+title+"%", "%"+en+"%", "%"+url+"%"};
+    whereData = getWhere(param);
     // 统计
     SysMenu m = new SysMenu();
     m.Columns("count(*) AS num");
@@ -67,7 +65,7 @@ public class SysMenus extends Base {
     // 查询
     m.Columns("id", "fid", "title", "en", "ico", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "sort", "url", "controller", "action");
     m.Where(where, whereData);
-    m.Order("fid DESC", "sort", "id DESC");
+    m.Order(!order.equals("")?order:"fid DESC, sort, id DESC");
     m.Page(page, limit);
     ArrayList<HashMap<String,Object>> list = m.Find();
     // 数据
@@ -81,6 +79,18 @@ public class SysMenus extends Base {
     res.put("list", list);
     res.put("total", Type.Int(total.get("num")));
     return GetJSON(res);
+  }
+  /* 搜索条件 */
+  private Object[] getWhere(JSONObject param) {
+    // 参数
+    String fid = param.containsKey("fid")?String.valueOf(param.get("fid")).trim():"";
+    String title = param.containsKey("title")?String.valueOf(param.get("title")).trim():"";
+    String en = param.containsKey("en")?String.valueOf(param.get("en")).trim():"";
+    String url = param.containsKey("url")?String.valueOf(param.get("url")).trim():"";
+    // 条件
+    where = "fid like ? AND title like ? AND en like ? AND url like ?";
+    Object[] whereData = {"%"+fid+"%", "%"+title+"%", "%"+en+"%", "%"+url+"%"};
+    return whereData;
   }
 
   /* 添加 */

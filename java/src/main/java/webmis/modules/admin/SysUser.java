@@ -37,6 +37,9 @@ import webmis.util.Util;
 @RequestMapping("/admin/sys_user")
 public class SysUser extends Base {
 
+  private static String where;
+  private static Object[] whereData;
+
   /* 列表 */
   @RequestMapping("list")
   String List(@RequestBody JSONObject json, HttpServletRequest request) {
@@ -46,6 +49,7 @@ public class SysUser extends Base {
     String data = JsonName(json, "data");
     int page = Integer.valueOf(JsonName(json, "page"));
     int limit = Integer.valueOf(JsonName(json, "limit"));
+    String order = JsonName(json, "order");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -62,13 +66,7 @@ public class SysUser extends Base {
       return GetJSON(res);
     }
     JSONObject param = Util.JsonDecode(data);
-    String uname = param.containsKey("uname")?String.valueOf(param.get("uname")).trim():"";
-    String nickname = param.containsKey("nickname")?String.valueOf(param.get("nickname")).trim():"";
-    String name = param.containsKey("name")?String.valueOf(param.get("name")).trim():"";
-    String department = param.containsKey("department")?String.valueOf(param.get("department")).trim():"";
-    String position = param.containsKey("position")?String.valueOf(param.get("position")).trim():"";
-    String where = "(a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?) AND b.nickname LIKE ? AND b.name LIKE ? AND b.department LIKE ? AND b.position LIKE ?";
-    Object[] whereData = {"%"+uname+"%", "%"+uname+"%", "%"+uname+"%", "%"+nickname+"%", "%"+name+"%", "%"+department+"%", "%"+position+"%"};
+    whereData = getWhere(param);
     // 统计
     User m = new User();
     m.Columns("count(*) AS num");
@@ -88,7 +86,7 @@ public class SysUser extends Base {
       "d.role AS api_role", "d.perm AS api_perm"
     );
     m.Where(where, whereData);
-    m.Order("a.id DESC");
+    m.Order(!order.equals("")?order:"a.id DESC");
     m.Page(page, limit);
     ArrayList<HashMap<String,Object>> list = m.Find();
     // 数据
@@ -106,6 +104,19 @@ public class SysUser extends Base {
     res.put("list", list);
     res.put("total", Type.Int(total.get("num")));
     return GetJSON(res);
+  }
+  /* 搜索条件 */
+  private Object[] getWhere(JSONObject param) {
+    // 参数
+    String uname = param.containsKey("uname")?String.valueOf(param.get("uname")).trim():"";
+    String nickname = param.containsKey("nickname")?String.valueOf(param.get("nickname")).trim():"";
+    String name = param.containsKey("name")?String.valueOf(param.get("name")).trim():"";
+    String department = param.containsKey("department")?String.valueOf(param.get("department")).trim():"";
+    String position = param.containsKey("position")?String.valueOf(param.get("position")).trim():"";
+    // 条件
+    where = "(a.uname LIKE ? OR a.tel LIKE ? OR a.email LIKE ?) AND b.nickname LIKE ? AND b.name LIKE ? AND b.department LIKE ? AND b.position LIKE ?";
+    Object[] whereData = {"%"+uname+"%", "%"+uname+"%", "%"+uname+"%", "%"+nickname+"%", "%"+name+"%", "%"+department+"%", "%"+position+"%"};
+    return whereData;
   }
 
   /* 添加 */

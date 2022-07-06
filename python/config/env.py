@@ -19,7 +19,3 @@ class Env :
   api_token_time: int = 7*24*3600                       #有效时长(7天)
   api_token_auto: bool = True                           #自动续期
   api_token_sso: bool = False                           #单点登录
-  # Logs
-  log_source: str = 'python'                            #访问日志-来源
-  log_db: bool = False                                  #访问日志-数据库
-  log_file: bool = False                                #访问日志-文件

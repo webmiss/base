@@ -6,11 +6,9 @@ from flask_cors import CORS
 from middleware.cors import Cors
 
 from config.env import Env
-from middleware.logs import Logs
 from router.api import Api
 from router.admin import Admin
 from router.home import Home
-from router.demo import Demo
 
 # 配置
 app = Flask(__name__)
@@ -19,10 +17,8 @@ app.debug=Env.debug
 CORS(app, supports_credentials=True)
 
 # 中间件
-@app.before_request
-def Before():
-  # 访问日志
-  Logs.Init()
+# @app.before_request
+# def Before():
 
 # 响应
 @app.after_request
@@ -41,7 +37,6 @@ def handle_exception(e):
 app.register_blueprint(Home, url_prefix="")
 app.register_blueprint(Api, url_prefix="/api")
 app.register_blueprint(Admin, url_prefix="/admin")
-app.register_blueprint(Demo, url_prefix="/demo")
 
 # 运行
 if __name__ == '__main__':

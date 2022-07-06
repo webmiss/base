@@ -21,16 +21,16 @@ func (r User) Login(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	uname, _ := r.JsonName(json, "uname")
-	passwd, _ := r.JsonName(json, "passwd")
+	uname := r.JsonName(json, "uname")
+	passwd := r.JsonName(json, "passwd")
 	// 验证用户名
 	safety := (&library.Safety{})
-	if safety.IsRight("uname", uname) != true && safety.IsRight("tel", uname) != true && safety.IsRight("email", uname) != true {
+	if !safety.IsRight("uname", uname) && !safety.IsRight("tel", uname) && !safety.IsRight("email", uname) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "请输入用户名/手机/邮箱"})
 		return
 	}
 	// 密码长度
-	if safety.IsRight("passwd", passwd) != true {
+	if !safety.IsRight("passwd", passwd) {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "请输入6~16位密码"})
 		return
 	}
@@ -96,8 +96,8 @@ func (r User) Token(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	uinfo, _ := r.JsonName(json, "uinfo")
+	token := r.JsonName(json, "token")
+	uinfo := r.JsonName(json, "uinfo")
 	// 验证
 	msg := (&service.ApiToken{}).Verify(token, "")
 	if msg != "" {

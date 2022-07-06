@@ -19,7 +19,7 @@ func (r UserInfo) List(c *gin.Context) {
 	// 参数
 	param := map[string]interface{}{}
 	c.BindJSON(&param)
-	token, _ := r.JsonName(param, "token")
+	token := r.JsonName(param, "token")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
@@ -43,8 +43,8 @@ func (r UserInfo) Edit(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	data, _ := r.JsonName(json, "data")
+	token := r.JsonName(json, "token")
+	data := r.JsonName(json, "data")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
@@ -84,8 +84,8 @@ func (r UserInfo) Upimg(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	base64, _ := r.JsonName(json, "base64")
+	token := r.JsonName(json, "token")
+	base64 := r.JsonName(json, "base64")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {

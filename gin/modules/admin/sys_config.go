@@ -19,7 +19,7 @@ func (r SysConfig) List(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
+	token := r.JsonName(json, "token")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -48,8 +48,8 @@ func (r SysConfig) Edit(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	data, _ := r.JsonName(json, "data")
+	token := r.JsonName(json, "token")
+	data := r.JsonName(json, "data")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -83,9 +83,9 @@ func (r SysConfig) Upimg(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	name, _ := r.JsonName(json, "name")
-	base64, _ := r.JsonName(json, "base64")
+	token := r.JsonName(json, "token")
+	name := r.JsonName(json, "name")
+	base64 := r.JsonName(json, "base64")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {

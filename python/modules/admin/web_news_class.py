@@ -15,6 +15,7 @@ class WebNewsClass(Base):
     data = self.JsonName(json, 'data')
     page = self.JsonName(json, 'page')
     limit = self.JsonName(json, 'limit')
+    order = self.JsonName(json, 'order')
     # 验证
     msg = AdminToken.Verify(token, request.path)
     if msg != '' : return self.GetJSON({'code':4001, 'msg':msg})
@@ -22,24 +23,33 @@ class WebNewsClass(Base):
       return self.GetJSON({'code':4000, 'msg':'参数错误!'})
     # 条件
     param = Util.JsonDecode(data)
-    name = Util.Trim(param['name']) if 'name' in param.keys() else ''
+    where, whereData = self.__getWhere(param)
     # 统计
     m = WebNewsClassM()
     m.Columns('count(*) AS num')
-    m.Where('name LIKE %s', '%'+name+'%')
+    m.Where(where, whereData)
     total = m.FindFirst()
     # 查询
     m.Columns('id', 'name', 'FROM_UNIXTIME(ctime, %s) as ctime', 'FROM_UNIXTIME(utime, %s) as utime', 'state', 'sort')
-    m.Where('name LIKE %s', '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', '%'+name+'%')
+    m.Where(where, '%Y-%m-%d %H:%i:%s', '%Y-%m-%d %H:%i:%s', whereData)
     m.Page(int(page), int(limit))
-    m.Order('sort DESC')
+    m.Order(order if order else 'sort DESC')
     list = m.Find()
     # 数据
     for val in list :
       val['state'] = True if val['state']=='1' else False
     # 返回
     return self.GetJSON({'code':0, 'msg':'成功', 'list':list, 'total':int(total['num'])})
-    
+
+  # 搜索条件
+  def __getWhere(self, param):
+    # 参数
+    name = Util.Trim(param['name']) if 'name' in param.keys() else ''
+    # 条件
+    where = 'name LIKE %s'
+    whereData = ('%'+name+'%')
+    return where, whereData
+
   # 添加
   def Add(self):
     # 参数

@@ -20,10 +20,14 @@ func (r SysMenus) List(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	data, _ := r.JsonName(json, "data")
-	page, _ := r.JsonName(json, "page")
-	limit, _ := r.JsonName(json, "limit")
+	token := r.JsonName(json, "token")
+	data := r.JsonName(json, "data")
+	page := (&util.Type{}).Int(r.JsonName(json, "page"))
+	limit := (&util.Type{}).Int(r.JsonName(json, "limit"))
+	order := r.JsonName(json, "order")
+	if order == "" {
+		order = "fid DESC, sort, id DESC"
+	}
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -37,12 +41,7 @@ func (r SysMenus) List(c *gin.Context) {
 	// 条件
 	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
-	fid := util.Trim(util.If(util.InKey("fid", param), param["fid"], ""))
-	title := util.Trim(util.If(util.InKey("title", param), param["title"], ""))
-	en := util.Trim(util.If(util.InKey("en", param), param["en"], ""))
-	url := util.Trim(util.If(util.InKey("url", param), param["url"], ""))
-	where := "fid like ? AND title like ? AND en like ? AND url like ?"
-	whereData := []interface{}{"%" + fid + "%", "%" + title + "%", "%" + en + "%", "%" + url + "%"}
+	where, whereData := r.__getWhere(param)
 	// 统计
 	m := (&model.SysMenu{}).New()
 	m.Columns("count(*) AS num")
@@ -51,8 +50,8 @@ func (r SysMenus) List(c *gin.Context) {
 	// 查询
 	m.Columns("id", "fid", "title", "en", "ico", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "sort", "url", "controller", "action")
 	m.Where(where, whereData...)
-	m.Order("fid DESC", "sort", "id DESC")
-	m.Page((&util.Type{}).Int(page), (&util.Type{}).Int(limit))
+	m.Order(order)
+	m.Page(page, limit)
 	list := m.Find()
 	// 数据
 	for _, val := range list {
@@ -68,13 +67,26 @@ func (r SysMenus) List(c *gin.Context) {
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list, "total": (&util.Type{}).Int(total["num"])})
 }
 
+/* 搜索条件 */
+func (r SysMenus) __getWhere(param map[string]interface{}) (string, []interface{}) {
+	// 参数
+	fid := util.Trim(util.If(util.InKey("fid", param), param["fid"], ""))
+	title := util.Trim(util.If(util.InKey("title", param), param["title"], ""))
+	en := util.Trim(util.If(util.InKey("en", param), param["en"], ""))
+	url := util.Trim(util.If(util.InKey("url", param), param["url"], ""))
+	// 条件
+	where := "fid like ? AND title like ? AND en like ? AND url like ?"
+	whereData := []interface{}{"%" + fid + "%", "%" + title + "%", "%" + en + "%", "%" + url + "%"}
+	return where, whereData
+}
+
 /* 添加 */
 func (r SysMenus) Add(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	data, _ := r.JsonName(json, "data")
+	token := r.JsonName(json, "token")
+	data := r.JsonName(json, "data")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -117,9 +129,9 @@ func (r SysMenus) Edit(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	id, _ := r.JsonName(json, "id")
-	data, _ := r.JsonName(json, "data")
+	token := r.JsonName(json, "token")
+	id := r.JsonName(json, "id")
+	data := r.JsonName(json, "data")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -163,8 +175,8 @@ func (r SysMenus) Del(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	data, _ := r.JsonName(json, "data")
+	token := r.JsonName(json, "token")
+	data := r.JsonName(json, "data")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -194,9 +206,9 @@ func (r SysMenus) Perm(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	id, _ := r.JsonName(json, "id")
-	data, _ := r.JsonName(json, "data")
+	token := r.JsonName(json, "token")
+	id := r.JsonName(json, "id")
+	data := r.JsonName(json, "data")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -223,7 +235,7 @@ func (r *SysMenus) GetMenusAll(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
+	token := r.JsonName(json, "token")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
@@ -260,7 +272,7 @@ func (r *SysMenus) GetMenusPerm(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
+	token := r.JsonName(json, "token")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {

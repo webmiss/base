@@ -30,6 +30,8 @@ import webmis.util.Util;
 @RequestMapping("/admin/news")
 public class WebNews extends Base {
 
+  private static String where;
+  private static Object[] whereData;
   private static final String ImgDir = "upload/news/";
 
   /* 列表 */
@@ -41,6 +43,7 @@ public class WebNews extends Base {
     String data = JsonName(json, "data");
     int page = Integer.valueOf(JsonName(json, "page"));
     int limit = Integer.valueOf(JsonName(json, "limit"));
+    String order = JsonName(json, "order");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -57,17 +60,17 @@ public class WebNews extends Base {
     }
     // 条件
     JSONObject param = Util.JsonDecode(data);
-    String title = param.containsKey("title")?String.valueOf(param.get("title")).trim():"";
+    whereData = getWhere(param);
     // 统计
     webmis.model.WebNews m = new webmis.model.WebNews();
     m.Columns("count(*) AS num");
-    m.Where("title LIKE ?", "%"+title+"%");
+    m.Where(where, whereData);
     HashMap<String, Object> total = m.FindFirst();
     // 查询
     m.Columns("id", "cid", "title", "source", "author", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "state", "img", "summary");
-    m.Where("title LIKE ?", "%"+title+"%");
+    m.Where(where, whereData);
+    m.Order(!order.equals("")?order:"id DESC");
     m.Page(page, limit);
-    m.Order("id DESC");
     ArrayList<HashMap<String,Object>> list = m.Find();
     // 数据
     for (HashMap<String, Object> val : list) {
@@ -81,6 +84,18 @@ public class WebNews extends Base {
     res.put("list", list);
     res.put("total", Type.Int(total.get("num")));
     return GetJSON(res);
+  }
+  /* 搜索条件 */
+  private Object[] getWhere(JSONObject param) {
+    // 参数
+    String cid = param.containsKey("cid")?String.valueOf(param.get("cid")).trim():"";
+    String title = param.containsKey("title")?String.valueOf(param.get("title")).trim():"";
+    String source = param.containsKey("source")?String.valueOf(param.get("source")).trim():"";
+    String author = param.containsKey("author")?String.valueOf(param.get("author")).trim():"";
+    // 条件
+    where = "cid like ? AND title like ? AND source like ? AND author like ?";
+    Object[] whereData = {"%"+cid+"%", "%"+title+"%", "%"+source+"%", "%"+author+"%"};
+    return whereData;
   }
 
   /* 添加 */

@@ -21,8 +21,8 @@ func (r User) Login(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	uname, _ := r.JsonName(json, "uname")
-	passwd, _ := r.JsonName(json, "passwd")
+	uname := r.JsonName(json, "uname")
+	passwd := r.JsonName(json, "passwd")
 	// 验证用户名
 	safety := (&library.Safety{})
 	if !safety.IsRight("uname", uname) && !safety.IsRight("tel", uname) && !safety.IsRight("email", uname) {
@@ -96,8 +96,8 @@ func (r User) Token(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	uinfo, _ := r.JsonName(json, "uinfo")
+	token := r.JsonName(json, "token")
+	uinfo := r.JsonName(json, "uinfo")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {

@@ -18,8 +18,4 @@ public class Env {
   public static final int api_token_time = 7*24*3600;                         //有效时长(7天)
   public static final boolean api_token_auto = true;                          //自动续期
   public static final boolean api_token_sso = false;                          //单点登录
-  /* Logs */
-  public static final String log_source = "java";     //访问日志-来源
-  public static final boolean log_db = false;         //访问日志-数据库
-  public static final boolean log_file = false;       //访问日志-文件
 }

@@ -3,12 +3,9 @@ use Phalcon\Loader;
 use Phalcon\Mvc\Micro;
 
 use Middleware\Cors;
-use Middleware\Logs;
-
 use Router\Home;
 use Router\Api;
 use Router\Admin;
-use Router\Demo;
 
 define('BASE_PATH', __DIR__);
 define('STDERR',fopen('php://stderr', 'a'));
@@ -44,14 +41,12 @@ $app = new Micro();
 /* 中间件 */
 $app->before(function() use ($app) {
   Cors::Init(); //允许跨域请求
-  Logs::Init(); //访问日志
 });
 
 // 路由 
 Api::Init($app);
 Admin::Init($app);
 Home::Init($app);
-Demo::Init($app);
 
 // 运行
 try {

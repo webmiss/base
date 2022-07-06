@@ -23,6 +23,9 @@ import webmis.util.Util;
 @RequestMapping("/admin/news_class")
 public class WebNewsClass extends Base {
 
+  private static String where;
+  private static Object[] whereData;
+
   /* 列表 */
   @RequestMapping("list")
   String List(@RequestBody JSONObject json, HttpServletRequest request) {
@@ -32,6 +35,7 @@ public class WebNewsClass extends Base {
     String data = JsonName(json, "data");
     int page = Integer.valueOf(JsonName(json, "page"));
     int limit = Integer.valueOf(JsonName(json, "limit"));
+    String order = JsonName(json, "order");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -48,17 +52,17 @@ public class WebNewsClass extends Base {
     }
     // 条件
     JSONObject param = Util.JsonDecode(data);
-    String name = param.containsKey("name")?String.valueOf(param.get("name")).trim():"";
+    whereData = getWhere(param);
     // 统计
     webmis.model.WebNewsClass m = new webmis.model.WebNewsClass();
     m.Columns("count(*) AS num");
-    m.Where("name LIKE ?", "%"+name+"%");
+    m.Where(where, whereData);
     HashMap<String, Object> total = m.FindFirst();
     // 查询
     m.Columns("id", "name", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "state", "sort");
-    m.Where("name LIKE ?", "%"+name+"%");
+    m.Where(where, whereData);
+    m.Order(!order.equals("")?order:"sort DESC");
     m.Page(page, limit);
-    m.Order("sort DESC");
     ArrayList<HashMap<String,Object>> list = m.Find();
     // 数据
     for (HashMap<String, Object> val : list) {
@@ -71,6 +75,15 @@ public class WebNewsClass extends Base {
     res.put("list", list);
     res.put("total", Type.Int(total.get("num")));
     return GetJSON(res);
+  }
+  /* 搜索条件 */
+  private Object[] getWhere(JSONObject param) {
+    // 参数
+    String name = param.containsKey("name")?String.valueOf(param.get("name")).trim():"";
+    // 条件
+    where = "name LIKE ?";
+    Object[] whereData = {"%"+name+"%"};
+    return whereData;
   }
 
   /* 添加 */

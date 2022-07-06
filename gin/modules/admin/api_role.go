@@ -19,10 +19,14 @@ func (r ApiRole) List(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	data, _ := r.JsonName(json, "data")
-	page, _ := r.JsonName(json, "page")
-	limit, _ := r.JsonName(json, "limit")
+	token := r.JsonName(json, "token")
+	data := r.JsonName(json, "data")
+	page := (&util.Type{}).Int(r.JsonName(json, "page"))
+	limit := (&util.Type{}).Int(r.JsonName(json, "limit"))
+	order := r.JsonName(json, "order")
+	if order == "" {
+		order = "id DESC"
+	}
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -36,19 +40,30 @@ func (r ApiRole) List(c *gin.Context) {
 	// 条件
 	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
-	name := util.Trim(util.If(util.InKey("name", param), param["name"], ""))
+	where, whereData := r.__getWhere(param)
 	// 统计
 	m := (&model.ApiRole{}).New()
 	m.Columns("count(*) AS num")
-	m.Where("name LIKE ?", "%"+name+"%")
+	m.Where(where, whereData...)
 	total := m.FindFirst()
 	// 查询
 	m.Columns("id", "name", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "perm")
-	m.Where("name LIKE ?", "%"+name+"%")
-	m.Page((&util.Type{}).Int(page), (&util.Type{}).Int(limit))
+	m.Where(where, whereData...)
+	m.Order(order)
+	m.Page(page, limit)
 	list := m.Find()
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list, "total": (&util.Type{}).Int(total["num"])})
+}
+
+/* 搜索条件 */
+func (r ApiRole) __getWhere(param map[string]interface{}) (string, []interface{}) {
+	// 参数
+	name := util.Trim(util.If(util.InKey("name", param), param["name"], ""))
+	// 条件
+	where := "name like ?"
+	whereData := []interface{}{"%" + name + "%"}
+	return where, whereData
 }
 
 /* 添加 */
@@ -56,8 +71,8 @@ func (r ApiRole) Add(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	data, _ := r.JsonName(json, "data")
+	token := r.JsonName(json, "token")
+	data := r.JsonName(json, "data")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -91,9 +106,9 @@ func (r ApiRole) Edit(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	id, _ := r.JsonName(json, "id")
-	data, _ := r.JsonName(json, "data")
+	token := r.JsonName(json, "token")
+	id := r.JsonName(json, "id")
+	data := r.JsonName(json, "data")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -128,8 +143,8 @@ func (r ApiRole) Del(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	data, _ := r.JsonName(json, "data")
+	token := r.JsonName(json, "token")
+	data := r.JsonName(json, "data")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -159,9 +174,9 @@ func (r ApiRole) Perm(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	id, _ := r.JsonName(json, "id")
-	perm, _ := r.JsonName(json, "perm")
+	token := r.JsonName(json, "token")
+	id := r.JsonName(json, "id")
+	perm := r.JsonName(json, "perm")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -188,7 +203,7 @@ func (r ApiRole) RoleList(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
+	token := r.JsonName(json, "token")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
@@ -212,8 +227,8 @@ func (r *ApiRole) PermList(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	perm, _ := r.JsonName(json, "perm")
+	token := r.JsonName(json, "token")
+	perm := r.JsonName(json, "perm")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {

@@ -21,10 +21,14 @@ func (r WebNews) List(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	data, _ := r.JsonName(json, "data")
-	page, _ := r.JsonName(json, "page")
-	limit, _ := r.JsonName(json, "limit")
+	token := r.JsonName(json, "token")
+	data := r.JsonName(json, "data")
+	page := (&util.Type{}).Int(r.JsonName(json, "page"))
+	limit := (&util.Type{}).Int(r.JsonName(json, "limit"))
+	order := r.JsonName(json, "order")
+	if order == "" {
+		order = "id DESC"
+	}
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -38,17 +42,17 @@ func (r WebNews) List(c *gin.Context) {
 	// 条件
 	param := map[string]interface{}{}
 	util.JsonDecode(data, &param)
-	title := util.Trim(util.If(util.InKey("title", param), param["title"], ""))
+	where, whereData := r.__getWhere(param)
 	// 统计
 	m := (&model.WebNews{}).New()
 	m.Columns("count(*) AS num")
-	m.Where("title LIKE ?", "%"+title+"%")
+	m.Where(where, whereData...)
 	total := m.FindFirst()
 	// 查询
 	m.Columns("id", "cid", "title", "source", "author", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "state", "img", "summary")
-	m.Where("title LIKE ?", "%"+title+"%")
-	m.Page((&util.Type{}).Int(page), (&util.Type{}).Int(limit))
-	m.Order("id DESC")
+	m.Where(where, whereData...)
+	m.Order(order)
+	m.Page(page, limit)
 	list := m.Find()
 	// 数据
 	for _, v := range list {
@@ -63,13 +67,26 @@ func (r WebNews) List(c *gin.Context) {
 	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list, "total": (&util.Type{}).Int(total["num"])})
 }
 
+/* 搜索条件 */
+func (r WebNews) __getWhere(param map[string]interface{}) (string, []interface{}) {
+	// 参数
+	cid := util.Trim(util.If(util.InKey("cid", param), param["cid"], ""))
+	title := util.Trim(util.If(util.InKey("title", param), param["title"], ""))
+	source := util.Trim(util.If(util.InKey("source", param), param["source"], ""))
+	author := util.Trim(util.If(util.InKey("author", param), param["author"], ""))
+	// 条件
+	where := "name like ?"
+	whereData := []interface{}{"%" + cid + "%", "%" + title + "%", "%" + source + "%", "%" + author + "%"}
+	return where, whereData
+}
+
 /* 添加 */
 func (r WebNews) Add(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	data, _ := r.JsonName(json, "data")
+	token := r.JsonName(json, "token")
+	data := r.JsonName(json, "data")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -135,9 +152,9 @@ func (r WebNews) Edit(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	id, _ := r.JsonName(json, "id")
-	data, _ := r.JsonName(json, "data")
+	token := r.JsonName(json, "token")
+	id := r.JsonName(json, "id")
+	data := r.JsonName(json, "data")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -205,8 +222,8 @@ func (r WebNews) Del(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	data, _ := r.JsonName(json, "data")
+	token := r.JsonName(json, "token")
+	data := r.JsonName(json, "data")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -260,9 +277,9 @@ func (r WebNews) State(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	id, _ := r.JsonName(json, "id")
-	state, _ := r.JsonName(json, "state")
+	token := r.JsonName(json, "token")
+	id := r.JsonName(json, "id")
+	state := r.JsonName(json, "state")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, c.Request.RequestURI)
 	if msg != "" {
@@ -289,7 +306,7 @@ func (r WebNews) GetClass(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
+	token := r.JsonName(json, "token")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
@@ -315,8 +332,8 @@ func (r WebNews) GetContent(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	nid, _ := r.JsonName(json, "id")
+	token := r.JsonName(json, "token")
+	nid := r.JsonName(json, "id")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
@@ -336,8 +353,8 @@ func (r WebNews) Content(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	data, _ := r.JsonName(json, "data")
+	token := r.JsonName(json, "token")
+	data := r.JsonName(json, "data")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {
@@ -371,9 +388,9 @@ func (r WebNews) UpImg(c *gin.Context) {
 	// 参数
 	json := map[string]interface{}{}
 	c.BindJSON(&json)
-	token, _ := r.JsonName(json, "token")
-	base64, _ := r.JsonName(json, "base64")
-	id, _ := r.JsonName(json, "id")
+	token := r.JsonName(json, "token")
+	base64 := r.JsonName(json, "base64")
+	id := r.JsonName(json, "id")
 	// 验证
 	msg := (&service.AdminToken{}).Verify(token, "")
 	if msg != "" {

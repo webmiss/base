@@ -24,6 +24,8 @@ import webmis.util.Util;
 @RequestMapping("/admin/sys_role")
 public class SysRole extends Base {
 
+  private static String where;
+  private static Object[] whereData;
   private static HashMap<String, ArrayList<HashMap<String, Object>>> menus = null;  //全部菜单
   private static HashMap<String, Long> permAll = null;                              //用户权限
 
@@ -36,6 +38,7 @@ public class SysRole extends Base {
     String data = JsonName(json, "data");
     int page = Integer.valueOf(JsonName(json, "page"));
     int limit = Integer.valueOf(JsonName(json, "limit"));
+    String order = JsonName(json, "order");
     // 验证
     String msg = AdminToken.Verify(token, request.getRequestURI());
     if(!msg.equals("")){
@@ -52,15 +55,16 @@ public class SysRole extends Base {
     }
     // 条件
     JSONObject param = Util.JsonDecode(data);
-    String name = param.containsKey("name")?String.valueOf(param.get("name")).trim():"";
+    whereData = getWhere(param);
     // 统计
     webmis.model.SysRole m = new webmis.model.SysRole();
     m.Columns("count(*) AS num");
-    m.Where("name LIKE ?", "%"+name+"%");
+    m.Where(where, whereData);
     HashMap<String, Object> total = m.FindFirst();
     // 查询
     m.Columns("id", "name", "FROM_UNIXTIME(ctime, '%Y-%m-%d %H:%i:%s') as ctime", "FROM_UNIXTIME(utime, '%Y-%m-%d %H:%i:%s') as utime", "perm");
-    m.Where("name LIKE ?", "%"+name+"%");
+    m.Where(where, whereData);
+    m.Order(!order.equals("")?order:"id DESC");
     m.Page(page, limit);
     ArrayList<HashMap<String,Object>> list = m.Find();
     // 返回
@@ -70,6 +74,15 @@ public class SysRole extends Base {
     res.put("list", list);
     res.put("total", Type.Int(total.get("num")));
     return GetJSON(res);
+  }
+  /* 搜索条件 */
+  private Object[] getWhere(JSONObject param) {
+    // 参数
+    String name = param.containsKey("name")?String.valueOf(param.get("name")).trim():"";
+    // 条件
+    where = "name LIKE ?";
+    Object[] whereData = {"%"+name+"%"};
+    return whereData;
   }
 
   /* 添加 */

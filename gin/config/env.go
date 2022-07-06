@@ -17,9 +17,6 @@ type EnvType struct {
 	ApiTokenTime     int64
 	ApiTokenAuto     bool
 	ApiTokenSso      bool
-	LogSource        string
-	LogDb            bool
-	LogFile          bool
 }
 
 /* 公共配置 */
@@ -44,9 +41,5 @@ func Env() *EnvType {
 	cfg.ApiTokenTime = 7 * 24 * 3600 //有效时长(7天)
 	cfg.ApiTokenAuto = true          //自动续期
 	cfg.ApiTokenSso = false          //单点登录
-	/* Logs */
-	cfg.LogSource = "go" //访问日志-来源
-	cfg.LogDb = false    //访问日志-数据库
-	cfg.LogFile = false  //访问日志-文件
 	return cfg
 }
