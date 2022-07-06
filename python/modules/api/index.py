@@ -4,4 +4,4 @@ class Index(Base) :
 
   # 首页
   def Index(self):
-    return self.GetJSON({'code':0,'msg':'Api'})
+    return self.GetJSON({'code':0,'msg':'Python Api'})

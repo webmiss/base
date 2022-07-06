@@ -7,7 +7,7 @@ class Index extends Base {
 
   /* 首页 */
   static function Index() {
-    return self::GetJSON(['code'=>0, 'msg'=>'Api']);
+    return self::GetJSON(['code'=>0, 'msg'=>'PHP Api']);
   }
 
 }

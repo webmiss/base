@@ -16,7 +16,7 @@ class Index(Base):
 
   # 首页
   def Index(self):
-    return self.GetJSON({'code':0,'msg':'Admin'})
+    return self.GetJSON({'code':0,'msg':'Python Admin'})
 
   # 系统配置
   def GetConfig(self):

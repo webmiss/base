@@ -33,7 +33,7 @@ public class Index extends Base {
     // 返回
     res = new HashMap<String,Object>();
     res.put("code",0);
-    res.put("msg","Admin");
+    res.put("msg","Java Admin");
     return GetJSON(res);
   }
 

@@ -13,7 +13,7 @@ class Index extends Base {
   /* 首页 */
   static function Index() {
     // 返回
-    return self::GetJSON(['code'=>0, 'msg'=>'Web']);
+    return self::GetJSON(['code'=>0, 'msg'=>'Phalcon Web']);
   }
 
   /* 验证码 */

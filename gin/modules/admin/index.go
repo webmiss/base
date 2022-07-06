@@ -18,7 +18,7 @@ type Index struct {
 /* 首页 */
 func (r Index) Index(c *gin.Context) {
 	// 返回
-	r.GetJSON(c, gin.H{"code": 0, "msg": "Admin"})
+	r.GetJSON(c, gin.H{"code": 0, "msg": "GO Admin"})
 }
 
 /* 系统配置 */

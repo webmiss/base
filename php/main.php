@@ -22,18 +22,16 @@ require $load;
 $app = new Container();
 $app::setInstance($app);
 
-/* 注册 */
-(new EventServiceProvider($app))->register();
-(new RoutingServiceProvider($app))->register();
-
-/* 路由 */
-Home::Init();
-Admin::Init();
-Api::Init();
-
-/* 请求 */
-$request = Request::createFromGlobals();
 try{
+  /* 注册 */
+  (new EventServiceProvider($app))->register();
+  (new RoutingServiceProvider($app))->register();
+  /* 路由 */
+  Home::Init();
+  Admin::Init();
+  Api::Init();
+  /* 请求 */
+  $request = Request::createFromGlobals();
   $response = $app['router']->dispatch($request);
   $response->send();
 }catch (\Exception $e){

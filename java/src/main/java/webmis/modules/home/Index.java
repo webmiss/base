@@ -31,7 +31,7 @@ public class Index extends Base{
     HashMap<String,Object> res;
     res = new HashMap<String,Object>();
     res.put("code", 0);
-    res.put("msg", "Web");
+    res.put("msg", "Java Web");
     return GetJSON(res);
   }
 

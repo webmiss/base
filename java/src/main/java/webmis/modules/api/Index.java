@@ -20,7 +20,7 @@ public class Index extends Base {
     // 返回
     res = new HashMap<String,Object>();
     res.put("code",0);
-    res.put("msg","Api");
+    res.put("msg","Java Api");
     return GetJSON(res);
   }
   
