@@ -12,7 +12,7 @@ class Google {
       'ClientSecret'=> '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',
       'ProjectId'=> 'geometric-shine-354612',
       'JavascriptOrigins'=> 'https://php.webmis.vip',
-      'RedirectUris'=> 'https://php.webmis.vip/googleCallback',
+      'RedirectUris'=> 'https://php.webmis.vip/youtube_callback',
       'AuthUri'=> 'https://accounts.google.com/o/oauth2/auth',
       'TokenUri'=> 'https://oauth2.googleapis.com/token',
       'auth_provider_x509_cert_url'=> 'https://www.googleapis.com/oauth2/v1/certs',
