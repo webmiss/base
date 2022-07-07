@@ -4,6 +4,7 @@ namespace Library\Google;
 use Service\Base;
 use Config\Google;
 use Library\Redis;
+use Library\Curl;
 
 /* YouTube */
 class YouTube extends Base {
@@ -15,81 +16,57 @@ class YouTube extends Base {
   }
 
   /* 获取Token */
-  static function GetToken(){}
+  static function GetToken($code=''){
+    if($code){
+      // 获取
+      $res = Oauth::GetToken($code);
+      self::SaveToken($res);
+      return $res;
+    }else{
+      // 缓存
+      $client = Google::YouTubeClient();
+      $redis = new Redis();
+      $access_token = $redis->Gets($client->access_token);
+      $refresh_token = $redis->Gets($client->refresh_token);
+      $time = $redis->Ttl($client->access_token);
+      if($time>0) return (object)['access_token'=>$access_token, 'expires_in'=>$time, 'refresh_token'=>$refresh_token];
+      // 刷新
+      $res = Oauth::RefreshToken($refresh_token);
+      self::SaveToken($res);
+      return $res;
+    }
+  }
+  /* 保存Token */
+  static private function SaveToken($data){
+    $client = Google::YouTubeClient();
+    $redis = new Redis();
+    $redis->Set($client->access_token, $data->access_token);
+    $redis->Expire($client->access_token, $client->refresh_time);
+    if(isset($data->refresh_token)) $redis->Set($client->refresh_token, $data->refresh_token);
+  }
 
-  // static private $client;
-  
-  // /* 初始化 */
-  // static function Init() {
-  //   if(self::$client) return null;
-  //   // 配置
-  //   $cfg = Google::YouTubeCfg();
-  //   // 客户端
-  //   self::$client = new Client();
-  //   self::$client->setClientId($cfg->ClientId);
-  //   self::$client->setClientSecret($cfg->ClientSecret);
-  //   self::$client->setScopes('https://www.googleapis.com/auth/youtube');
-  //   self::$client->setRedirectUri($cfg->RedirectUris);
-  //   self::$client->setApplicationName($cfg->AppName);
-  //   self::$client->setAccessType('offline');
-  // }
+  /* 请求数据 */
+  static function GetData($method, $url, $param){
+    $cfg = Google::YouTube();
+    $token = self::GetToken();
+    $param['key'] = $cfg->ApiKey;
+    $param = Curl::UrlEncode($param);
+    $headers = [
+      'Authorization'=> 'Bearer '.$token->access_token,
+      'Accept'=> 'application/json',
+    ];
+    if($method=='GET') return Curl::Request($url.'?'.$param, '', $method, $headers);
+    else return Curl::Request($url, $param, $method, $headers);
+  }
 
-  // /* 获取Code */
-  // static function GetCode(): string {
-  //   self::Init();
-  //   self::$client->setState(mt_rand());
-  //   return self::$client->createAuthUrl();
-  // }
-
-  // /* Token-获取 */
-  // static function GetToken(string $code) {
-  //   self::Init();
-  //   $res = self::$client->fetchAccessTokenWithAuthCode($code);
-  //   if(isset($res['error'])) return $res['error_description'];
-  //   // 保存Token
-  //   self::SaveToken($res);
-  //   return self::$client->getAccessToken();
-  // }
-
-  // /* Token-更新 */
-  // static function RefreshToken(){
-  //   self::Init();
-  //   // 查询
-  //   $redis = new Redis();
-  //   $access_token = $redis->Gets('youtube_access_token');
-  //   $refresh_token = $redis->Gets('youtube_refresh_token');
-  //   $time = $redis->Ttl('youtube_access_token');
-  //   if($time>60) return ['access_token'=>$access_token, 'refresh_token'=>$refresh_token, 'expires_in'=>$time];
-  //   self::$client->setAccessToken($refresh_token);
-  //   // 保存Token
-  //   $res = self::$client->getAccessToken();
-  //   self::SaveToken($res);
-  //   return $res;
-  // }
-
-  // /* Token-保存 */
-  // static function SaveToken($data) {
-  //   $redis = new Redis();
-  //   $redis->Set('youtube_access_token', $data['access_token']);
-  //   $redis->Set('youtube_refresh_token', $data['access_token']);
-  //   $redis->Expire('youtube_access_token', 60);
-  //   $redis->Close();
-  // }
-
-  // /* 视频列表 */
-  // static function GetPlayList(){
-  //   self::RefreshToken();
-  //   $res = self::$client->getAccessToken();
-  //   $youtube = new YouTubeService(self::$client);
-  //   // $channelsResponse = $youtube->channels->listChannels('contentDetails', [
-  //   //   'mine' => 'true',
-  //   // ]);
-  //   self::Print($youtube);
-  //   // foreach ($channelsResponse['items'] as $channel) {
-  //   //   self::Print($channel);
-  //   // }
-    
-
-  // }
+  /* 视频-列表 */
+  static function LiveBroadcastsList(){
+    $data = [
+      'part'=> 'id,snippet,contentDetails',
+      'broadcastStatus'=> 'all',
+      'broadcastType'=> 'all',
+    ];
+    return self::GetData('GET', 'https://www.googleapis.com/youtube/v3/liveBroadcasts', $data);
+  }
 
 }

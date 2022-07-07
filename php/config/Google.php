@@ -1,7 +1,7 @@
 <?php
 namespace Config;
 
-/* 阿里云配置 */
+/* Google */
 class Google {
 
   /* 接口 */
@@ -9,6 +9,7 @@ class Google {
     return (object)[
       'AuthUri'=> 'https://accounts.google.com/o/oauth2/auth',
       'TokenUri'=> 'https://oauth2.googleapis.com/token',
+      'TokenRevokeUri'=> 'https://oauth2.googleapis.com/revoke',
     ];
   }
 
@@ -18,16 +19,18 @@ class Google {
       'AppName'=> 'WebMIS',
       'ClientId'=> '737411831813-7getan44tfqk4r4ps1cr0fknhsj3riru.apps.googleusercontent.com',
       'ClientSecret'=> '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',
-      'Scope'=> 'https://php.webmis.vip',
       'RedirectUris'=> 'https://php.webmis.vip/youtube',
-      'JavascriptOrigins'=> 'https://php.webmis.vip',
-      
+      'Scope'=> 'https://www.googleapis.com/auth/youtube',
+      'ApiKey'=> 'AIzaSyDfGM6FpnmUt4LH5zGm-nPuDFDEbgckccs',
+    ];
+  }
 
-      // 'ProjectId'=> 'geometric-shine-354612',
-      
-      // 'AuthUri'=> 'https://accounts.google.com/o/oauth2/auth',
-      // 'TokenUri'=> 'https://oauth2.googleapis.com/token',
-      // 'auth_provider_x509_cert_url'=> 'https://www.googleapis.com/oauth2/v1/certs',
+  /* YouTube-Client */
+  static function YouTubeClient(): object {
+    return (object)[
+      'access_token'=> 'youtube_access_token',      //Redis名称 
+      'refresh_token'=> 'youtube_refresh_token',    //Redis名称
+      'refresh_time'=> 50*60,                       //刷新间隔(秒)
     ];
   }
 
