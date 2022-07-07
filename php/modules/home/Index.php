@@ -6,7 +6,7 @@ use Library\Qrcode;
 use Library\FileEo;
 use Library\Captcha;
 use Library\Upload;
-use Library\Google\OAuth;
+use Library\Google\YouTube;
 use Util\Util;
 
 class Index extends Base {
@@ -55,24 +55,44 @@ class Index extends Base {
     return self::GetJSON(['Status'=>'Ok']);
   }
 
-  /* YouTube-OAuth */
-  static function YouTubeOAuth() {
-    $url = OAuth::YouTubeCode();
+  /* YouTube */
+  static function YouTubeToken() {
+    $url = YouTube::GetCode();
     $html = '<a href="'.$url.'">点击授权</a>';
     echo $html;
   }
-  static function YouTubeCallback() {
-    FileEo::WriterEnd('upload/callback_youtube.json', json_encode($_GET));
-    return self::GetJSON(['code'=>0]);
+  static function YouTubeData() {
+
   }
-  static function YouTubeToken() {
-    $code = $_GET['code'];
-    $res = OAuth::YouTubeToken($code);
-    if(!is_string($res)){
-      return self::GetJSON(['code'=>0, 'msg'=>'获取Token', 'data'=>$res]);
-    }else{
-      return self::GetJSON(['code'=>0, 'msg'=>$res]);
-    }
-  }
+
+  // /* 一、授权: YouTube-OAuth */
+  // static function YouTubeOAuth() {
+  //   $url = YouTube::GetCode();
+  //   $html = '<a href="'.$url.'">点击授权</a>';
+  //   echo $html;
+  // $code = $_GET['code'];
+    // $res = YouTube::GetToken($code);
+    // if(!is_string($res)){
+    //   return self::GetJSON(['code'=>0, 'msg'=>'获取Token', 'data'=>$res]);
+    // }else{
+    //   return self::GetJSON(['code'=>0, 'msg'=>$res]);
+    // }
+  // }
+  // /* 二、回调: youtube_code.json */
+  // static function YouTubeCallback() {
+  //   FileEo::WriterEnd('upload/youtube_code.json', json_encode($_GET));
+  //   return self::GetJSON(['code'=>0]);
+  // }
+  // /* 三、令牌: /youtube_token?code=xxx */
+  
+  // /* 四、刷新: 1分钟后自动获取 */
+  // static function YouTubeRefreshToken() {
+  //   $res = YouTube::RefreshToken();
+  //   if(!is_string($res)){
+  //     return self::GetJSON(['code'=>0, 'msg'=>'获取Token', 'data'=>$res]);
+  //   }else{
+  //     return self::GetJSON(['code'=>0, 'msg'=>$res]);
+  //   }
+  // }
 
 }
