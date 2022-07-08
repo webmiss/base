@@ -101,6 +101,7 @@ class Index extends Base {
       $access_token = $redis->Set($client->access_token, '');
       $refresh_token = $redis->Set($client->refresh_token, '');
       $res = YouTube::RevokeToken($revoke);
+      return self::GetJSON(['code'=>0, 'msg'=>'获取Token', 'data'=>$res]);
     }
   }
   /* YouTube-发送评论 */
