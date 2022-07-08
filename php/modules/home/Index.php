@@ -59,14 +59,28 @@ class Index extends Base {
 
   /* YouTube */
   static function YouTubeToken() {
-    // 参数
-    $api = 'https://php.webmis.vip/';
-    $code = isset($_GET['code'])?$_GET['code']:'';
-    $revoke = isset($_GET['revoke'])?$_GET['revoke']:'';
+    $mode = '';
     $redis = new Redis();
     $client = Google::YouTubeClient();
+    // 参数
+    if($mode=='dev'){
+      $api = 'http://localhost:9000/';
+      // $redis->Set($client->access_token, 'ya29.A0AVA9y1tE6BDlWGqsm6dtwKfTNAa2aJRBmBh2a1NUFWKBQD-WuyJ_LNna7duueFp4IVAFxLrIlNiXdlAf9NwHf2UpnDzXueQeQjq1qWIS6jJzMzytqy7cdlx5vvOPO5OfqKxeIv4fRtcnv3aNOL66tRM1sVMaYUNnWUtBVEFTQVRBU0ZRRl91NjFWQnc5SlFlM2RwN1pIUjY3SlA2YkhSQQ0163');
+      // $redis->Set($client->refresh_token, '1//0e3LBGPs4BpfSCgYIARAAGA4SNwF-L9IrCgfH-6_cWYvUjxLf2srZ4HZ-QIbMmArhSmcs54Ef_du56DRU_Qbhp826oyoo90fzIvk');
+    }else{
+      $api = 'https://php.webmis.vip/';
+    }
+    $code = isset($_GET['code'])?$_GET['code']:'';
+    $revoke = isset($_GET['revoke'])?true:false;
     $access_token = $redis->Gets($client->access_token);
     $refresh_token = $redis->Gets($client->refresh_token);
+    // 撤销
+    if($revoke){
+      $redis->Set($client->access_token, '');
+      $redis->Set($client->refresh_token, '');
+      $res = YouTube::RevokeToken($revoke);
+      return self::GetJSON(['code'=>0, 'msg'=>'撤销Token']);
+    }
     // 授权
     if($code){
       $token = YouTube::GetToken($code);
@@ -96,13 +110,7 @@ class Index extends Base {
       }
       echo $html;
     }
-    // 清理
-    if($revoke){
-      $access_token = $redis->Set($client->access_token, '');
-      $refresh_token = $redis->Set($client->refresh_token, '');
-      $res = YouTube::RevokeToken($revoke);
-      return self::GetJSON(['code'=>0, 'msg'=>'获取Token', 'data'=>$res]);
-    }
+    
   }
   /* YouTube-发送评论 */
   static function YouTubeMessage(){
@@ -110,7 +118,7 @@ class Index extends Base {
     $redis = new Redis();
     $liveChatId = $redis->Gets($client->liveChatId);
     $name = $_GET['name'];
-    $msg = $_GET['msg'];
+    $msg = $_GET['name'].' '.$_GET['msg'];
     $res = YouTube::LiveChatMessagesInsert($liveChatId, $name, $msg);
     if(isset($res->error)){
       return self::GetJSON(['code'=>$res->error->code, 'msg'=>$res->error->message]);
