@@ -60,13 +60,17 @@ class Index extends Base {
   /* YouTube */
   static function YouTubeToken() {
     // 参数
+    $api = 'https://php.webmis.vip/';
     $code = isset($_GET['code'])?$_GET['code']:'';
+    $revoke = isset($_GET['revoke'])?$_GET['revoke']:'';
     $redis = new Redis();
     $client = Google::YouTubeClient();
+    $access_token = $redis->Gets($client->access_token);
     $refresh_token = $redis->Gets($client->refresh_token);
     // 授权
     if($code){
       $token = YouTube::GetToken($code);
+      echo '<h2>授权成功</h2>';
       return self::GetJSON(['code'=>0, 'msg'=>'获取Token', 'data'=>$token]);
     }elseif($refresh_token){
       $token = YouTube::GetToken();
@@ -80,14 +84,23 @@ class Index extends Base {
       foreach($res->items as $v){
         $snippet = $v->snippet;
         $state = $liveChatId==$snippet->liveChatId?'正在推送':'未开启';
-        $html .= '<p><a href="http://localhost:9000/youtube?liveChatId='.$snippet->liveChatId.'">'.$snippet->title.'( '.$state.' )</p>';
+        $html .= '<p><a href="'.$api.'youtube?liveChatId='.$snippet->liveChatId.'">'.$snippet->title.'( '.$state.' )</p>';
       }
       echo $html;
     }else{
       $url = YouTube::GetCode();
       $html = '<h2>获取授权</h2>';
-      $html .= '<a href="'.$url.'">YouTube 授权</a>';
+      $html .= '<p><a href="'.$url.'">YouTube 授权</a></p>';
+      if($access_token){
+        $html .= '<p><a href="'.$api.'youtube?revoke='.$access_token.'">撤销授权</a></p>';
+      }
       echo $html;
+    }
+    // 清理
+    if($revoke){
+      $access_token = $redis->Set($client->access_token, '');
+      $refresh_token = $redis->Set($client->refresh_token, '');
+      $res = YouTube::RevokeToken($revoke);
     }
   }
   /* YouTube-发送评论 */

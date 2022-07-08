@@ -44,6 +44,10 @@ class YouTube extends Base {
     $redis->Expire($client->access_token, $client->refresh_time);
     if(isset($data->refresh_token)) $redis->Set($client->refresh_token, $data->refresh_token);
   }
+  /* 撤销Token */
+  static function RevokeToken($token){
+    return Oauth::RevokeToken($token);
+  }
 
   /* 请求数据 */
   static function GetData($method, $url, $param){
