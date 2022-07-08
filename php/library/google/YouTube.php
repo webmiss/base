@@ -47,26 +47,48 @@ class YouTube extends Base {
 
   /* 请求数据 */
   static function GetData($method, $url, $param){
-    $cfg = Google::YouTube();
+    // 获取Token
     $token = self::GetToken();
-    $param['key'] = $cfg->ApiKey;
-    $param = Curl::UrlEncode($param);
     $headers = [
       'Authorization'=> 'Bearer '.$token->access_token,
       'Accept'=> 'application/json',
+      'Content-Type'=> 'application/json',
     ];
-    if($method=='GET') return Curl::Request($url.'?'.$param, '', $method, $headers);
-    else return Curl::Request($url, $param, $method, $headers);
+    // 请求方式
+    $cfg = Google::YouTube();
+    if($method=='GET'){
+      $param['key'] = $cfg->ApiKey;
+      $param = Curl::UrlEncode($param);
+      return Curl::Request($url.'?'.$param, '', $method, $headers);
+    }else{
+      $param = json_encode($param);
+      return Curl::Request($url, $param, $method, $headers);
+    }
   }
 
-  /* 视频-列表 */
+  /* 直播-列表 */
   static function LiveBroadcastsList(){
     $data = [
-      'part'=> 'id,snippet,contentDetails',
-      'broadcastStatus'=> 'all',
-      'broadcastType'=> 'all',
+      'part'=> 'snippet',
+      'broadcastStatus'=> 'active',
+      'broadcastType'=> 'event',
     ];
     return self::GetData('GET', 'https://www.googleapis.com/youtube/v3/liveBroadcasts', $data);
+  }
+
+  /* 直播-评论 */
+  static function LiveChatMessagesInsert(string $liveChatId, string $name, string $msg){
+    $data = [
+      'snippet'=>[
+        'liveChatId'=> $liveChatId,
+        'type'=> 'textMessageEvent',
+        'textMessageDetails'=> ['messageText'=>$msg],
+      ],
+      'authorDetails'=>[
+        'displayName'=>$name
+      ]
+    ];
+    return self::GetData('POST', 'https://www.googleapis.com/youtube/v3/liveChat/messages?part=snippet,authorDetails&key='.Google::YouTube()->ApiKey, $data);
   }
 
 }

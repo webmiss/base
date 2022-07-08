@@ -70,16 +70,40 @@ class Index extends Base {
       return self::GetJSON(['code'=>0, 'msg'=>'获取Token', 'data'=>$token]);
     }elseif($refresh_token){
       $token = YouTube::GetToken();
-      return self::GetJSON(['code'=>0, 'msg'=>'刷新Token', 'data'=>$token]);
+      if(!isset($token->access_token)) return self::GetJSON(['code'=>0, 'msg'=>'刷新Token', 'data'=>$token]);
+      // 设置直播
+      if(isset($_GET['liveChatId'])) $redis->Set($client->liveChatId, $_GET['liveChatId']);
+      // 直播列表
+      $res = YouTube::LiveBroadcastsList();
+      $html = '<h2>直播列表</h2>';
+      $liveChatId = $redis->Gets($client->liveChatId);
+      foreach($res->items as $v){
+        $snippet = $v->snippet;
+        $state = $liveChatId==$snippet->liveChatId?'正在推送':'未开启';
+        $html .= '<p><a href="http://localhost:9000/youtube?liveChatId='.$snippet->liveChatId.'">'.$snippet->title.'( '.$state.' )</p>';
+      }
+      echo $html;
     }else{
       $url = YouTube::GetCode();
-      $html = '<a href="'.$url.'">YouTube 授权</a>';
+      $html = '<h2>获取授权</h2>';
+      $html .= '<a href="'.$url.'">YouTube 授权</a>';
       echo $html;
     }
   }
-  static function YouTubeData() {
-    $res = YouTube::LiveBroadcastsList();
-    self::Print($res);
+  /* YouTube-发送评论 */
+  static function YouTubeMessage(){
+    $client = Google::YouTubeClient();
+    $redis = new Redis();
+    $liveChatId = $redis->Gets($client->liveChatId);
+    $name = $_GET['name'];
+    $msg = $_GET['msg'];
+    $res = YouTube::LiveChatMessagesInsert($liveChatId, $name, $msg);
+    if(isset($res->error)){
+      return self::GetJSON(['code'=>$res->error->code, 'msg'=>$res->error->message]);
+    }else{
+      return self::GetJSON(['code'=>0, 'msg'=>'发送消息']);
+    }
+    
   }
 
 }
