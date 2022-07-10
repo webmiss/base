@@ -20,7 +20,7 @@ class YouTube extends Base {
     if($code){
       // 获取
       $res = Oauth::GetToken($code);
-      self::SaveToken($res);
+      if(isset($res->access_token)) self::SaveToken($res);
       return $res;
     }else{
       // 缓存
@@ -32,7 +32,7 @@ class YouTube extends Base {
       if($time>0) return (object)['access_token'=>$access_token, 'expires_in'=>$time, 'refresh_token'=>$refresh_token];
       // 刷新
       $res = Oauth::RefreshToken($refresh_token);
-      self::SaveToken($res);
+      if(isset($res->access_token)) self::SaveToken($res);
       return $res;
     }
   }

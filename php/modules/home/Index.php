@@ -59,14 +59,12 @@ class Index extends Base {
 
   /* YouTube */
   static function YouTubeToken() {
-    $mode = '';
+    $mode = 'dev';
     $redis = new Redis();
     $client = Google::YouTubeClient();
     // 参数
     if($mode=='dev'){
       $api = 'http://localhost:9000/';
-      // $redis->Set($client->access_token, '');
-      // $redis->Set($client->refresh_token, '');
     }else{
       $api = 'https://php.webmis.vip/';
     }
@@ -79,12 +77,12 @@ class Index extends Base {
       $redis->Set($client->access_token, '');
       $redis->Set($client->refresh_token, '');
       $res = YouTube::RevokeToken($revoke);
-      return self::GetJSON(['code'=>0, 'msg'=>'撤销Token']);
+      return self::GetJSON(['code'=>0, 'msg'=>'撤销Token', 'data'=>$res]);
     }
     // 授权
     if($code){
       $token = YouTube::GetToken($code);
-      echo '<h2>授权成功</h2>';
+      echo isset($token->access_token)?'<h2>授权成功</h2>':'<h2>授权失败</h2>';
       return self::GetJSON(['code'=>0, 'msg'=>'获取Token', 'data'=>$token]);
     }elseif($refresh_token){
       $token = YouTube::GetToken();
