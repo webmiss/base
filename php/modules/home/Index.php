@@ -72,9 +72,8 @@ class Index extends Base {
     if($revoke){
       $redis->Set($client->access_token, '');
       $redis->Set($client->refresh_token, '');
-      $res = YouTube::RevokeToken($revoke);
+      if($access_token) YouTube::RevokeToken($access_token);
       echo '<p><a href="https://myaccount.google.com/permissions">授权管理</p>';
-      return self::GetJSON(['code'=>0, 'msg'=>'撤销Token', 'data'=>$res]);
     }
     // 授权
     if($code){
@@ -104,17 +103,17 @@ class Index extends Base {
           $state = $liveChatId==$snippet->liveChatId?'正在推送':'未开启';
           $html .= '<p><a href="'.$api.'youtube?liveChatId='.$snippet->liveChatId.'">'.$snippet->title.'( '.$state.' )</p>';
         }
-        echo $html;
-      }else{
-        echo $html;
-        return self::GetJSON(['code'=>0, 'msg'=>'直播列表', 'data'=>$res]);
+        return $html;
       }
+      $html .= '<p><a href="https://myaccount.google.com/permissions">授权管理</p>';
+      echo $html;
+      return self::GetJSON(['code'=>0, 'msg'=>'直播列表', 'data'=>$res]);
     }else{
       $url = YouTube::GetCode();
       $html = '<h2>获取授权</h2>';
       $html .= '<p><a href="'.$url.'">YouTube 授权</a></p>';
       if($access_token){
-        $html .= '<p><a href="'.$api.'youtube?revoke='.$access_token.'">撤销授权</a></p>';
+        $html .= '<p><a href="'.$api.'youtube?revoke">撤销授权</a></p>';
       }
       echo $html;
     }
