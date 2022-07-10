@@ -77,9 +77,9 @@ class Index extends Base {
       }
       return '<script language="javascript">location.href="'.self::$api_url.'youtube/oauth";</script>';
     }
-    // 授权列表
+    // 账号授权
     $token = isset($_GET['token'])?$_GET['token']:'';
-    $html = '<h2>授权列表</h2>';
+    $html = '<h2>账号授权</h2>';
     if($token) $html .= '<p>'.$token.'</p>';
     $html .= '<p>------------------------------------------------------------------------------------------------------------------------</p>';
     foreach($user as $k1=>$v1){
