@@ -73,13 +73,22 @@ class Index extends Base {
       $redis->Set($client->access_token, '');
       $redis->Set($client->refresh_token, '');
       $res = YouTube::RevokeToken($revoke);
-      return self::GetJSON(['code'=>0, 'msg'=>'撤销Token', 'data'=>$res, 'url'=>'https://myaccount.google.com/permissions']);
+      echo '<p><a href="https://myaccount.google.com/permissions">授权管理</p>';
+      return self::GetJSON(['code'=>0, 'msg'=>'撤销Token', 'data'=>$res]);
     }
     // 授权
     if($code){
-      $token = YouTube::GetToken($code);
-      echo isset($token->access_token)?'<h2>授权成功</h2>':'<h2>授权失败</h2>';
-      return self::GetJSON(['code'=>0, 'msg'=>'获取Token', 'data'=>$token]);
+      $res = YouTube::GetToken($code);
+      $html = '';
+      if(isset($res->access_token)){
+        $html .= '<h2>授权成功</h2>';
+        $html .= '<p><a href="'.$api.'youtube">获取直播列表</p>';
+      }else{
+        $html .= '<h2>授权失败</h2>';
+        $html .= '<p><a href="https://myaccount.google.com/permissions">授权管理</p>';
+      }
+      echo $html;
+      return self::GetJSON(['code'=>0, 'msg'=>'获取Token', 'data'=>$res]);
     }elseif($refresh_token){
       $token = YouTube::GetToken();
       if(!isset($token->access_token)) return self::GetJSON(['code'=>0, 'msg'=>'刷新Token', 'data'=>$token]);
