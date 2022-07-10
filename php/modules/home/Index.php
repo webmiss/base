@@ -131,8 +131,8 @@ class Index extends Base {
         foreach($res->items as $v){
           $snippet = $v->snippet;
           $html .= '<p>';
-          $html .= 'liveChatId [ '.$snippet->liveChatId.' ]<br/>';
-          $html .= $snippet->title;
+          $html .= '频道ID: [ <b>'.$snippet->liveChatId.'</b> ]<br/>';
+          $html .= '标题: '.$snippet->title;
           $html .= '</p>';
         }
       }else{
