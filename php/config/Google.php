@@ -31,7 +31,7 @@ class Google {
       'access_token'=> 'youtube_access_token',      //Redis名称 
       'refresh_token'=> 'youtube_refresh_token',    //Redis名称
       'liveChatId'=> 'youtube_liveChatId',          //Redis名称
-      'refresh_time'=> 50*60,                       //刷新间隔(秒)
+      'refresh_time'=> 55*60,                       //刷新间隔(秒)
     ];
   }
 
