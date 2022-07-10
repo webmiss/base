@@ -87,15 +87,19 @@ class Index extends Base {
       if(isset($_GET['liveChatId'])) $redis->Set($client->liveChatId, $_GET['liveChatId']);
       // 直播列表
       $res = YouTube::LiveBroadcastsList();
-      self::Print($res);
       $html = '<h2>直播列表</h2>';
-      $liveChatId = $redis->Gets($client->liveChatId);
-      foreach($res->items as $v){
-        $snippet = $v->snippet;
-        $state = $liveChatId==$snippet->liveChatId?'正在推送':'未开启';
-        $html .= '<p><a href="'.$api.'youtube?liveChatId='.$snippet->liveChatId.'">'.$snippet->title.'( '.$state.' )</p>';
+      if(isset($res->items)){
+        $liveChatId = $redis->Gets($client->liveChatId);
+        foreach($res->items as $v){
+          $snippet = $v->snippet;
+          $state = $liveChatId==$snippet->liveChatId?'正在推送':'未开启';
+          $html .= '<p><a href="'.$api.'youtube?liveChatId='.$snippet->liveChatId.'">'.$snippet->title.'( '.$state.' )</p>';
+        }
+        echo $html;
+      }else{
+        echo $html;
+        return self::GetJSON(['code'=>0, 'msg'=>'直播列表', 'data'=>$res]);
       }
-      echo $html;
     }else{
       $url = YouTube::GetCode();
       $html = '<h2>获取授权</h2>';
