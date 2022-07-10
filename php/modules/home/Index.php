@@ -105,6 +105,7 @@ class Index extends Base {
         }
         return $html;
       }
+      $html .= '<p><a href="'.$api.'youtube?revoke">撤销授权</a></p>';
       $html .= '<p><a href="https://myaccount.google.com/permissions">授权管理</p>';
       echo $html;
       return self::GetJSON(['code'=>0, 'msg'=>'直播列表', 'data'=>$res]);
