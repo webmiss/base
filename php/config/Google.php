@@ -17,11 +17,16 @@ class Google {
   static function YouTube(): object {
     return (object)[
       'AppName'=> 'WebMIS',
-      'ClientId'=> '737411831813-7getan44tfqk4r4ps1cr0fknhsj3riru.apps.googleusercontent.com',
-      'ClientSecret'=> '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',
+      // 'ClientId'=> '737411831813-7getan44tfqk4r4ps1cr0fknhsj3riru.apps.googleusercontent.com',
+      // 'ClientSecret'=> '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',
+      // 'RedirectUris'=> 'https://php.webmis.vip/youtube',
+      // 'Scope'=> 'https://www.googleapis.com/auth/youtube',
+      // 'ApiKey'=> 'AIzaSyDfGM6FpnmUt4LH5zGm-nPuDFDEbgckccs',
+      'ClientId'=> '290157829658-hidt46oodd0bdt8df2o4b43cd1hu3cki.apps.googleusercontent.com',
+      'ClientSecret'=> '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',
       'RedirectUris'=> 'https://php.webmis.vip/youtube',
       'Scope'=> 'https://www.googleapis.com/auth/youtube',
-      'ApiKey'=> 'AIzaSyDfGM6FpnmUt4LH5zGm-nPuDFDEbgckccs',
+      'ApiKey'=> 'AIzaSyDIVBPxhjI1go9HVtzVIt3NbWC4TC0i4tQ',
     ];
   }
 

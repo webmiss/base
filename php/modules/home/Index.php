@@ -59,14 +59,14 @@ class Index extends Base {
 
   /* YouTube */
   static function YouTubeToken() {
-    $mode = '';
+    $mode = 'dev';
     $redis = new Redis();
     $client = Google::YouTubeClient();
     // 参数
     if($mode=='dev'){
       $api = 'http://localhost:9000/';
-      // $redis->Set($client->access_token, 'ya29.A0AVA9y1tE6BDlWGqsm6dtwKfTNAa2aJRBmBh2a1NUFWKBQD-WuyJ_LNna7duueFp4IVAFxLrIlNiXdlAf9NwHf2UpnDzXueQeQjq1qWIS6jJzMzytqy7cdlx5vvOPO5OfqKxeIv4fRtcnv3aNOL66tRM1sVMaYUNnWUtBVEFTQVRBU0ZRRl91NjFWQnc5SlFlM2RwN1pIUjY3SlA2YkhSQQ0163');
-      // $redis->Set($client->refresh_token, '1//0e3LBGPs4BpfSCgYIARAAGA4SNwF-L9IrCgfH-6_cWYvUjxLf2srZ4HZ-QIbMmArhSmcs54Ef_du56DRU_Qbhp826oyoo90fzIvk');
+      $redis->Set($client->access_token, '');
+      $redis->Set($client->refresh_token, '');
     }else{
       $api = 'https://php.webmis.vip/';
     }
@@ -93,6 +93,7 @@ class Index extends Base {
       if(isset($_GET['liveChatId'])) $redis->Set($client->liveChatId, $_GET['liveChatId']);
       // 直播列表
       $res = YouTube::LiveBroadcastsList();
+      self::Print($res);
       $html = '<h2>直播列表</h2>';
       $liveChatId = $redis->Gets($client->liveChatId);
       foreach($res->items as $v){
