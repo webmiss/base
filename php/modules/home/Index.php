@@ -59,14 +59,14 @@ class Index extends Base {
 
   /* YouTube */
   static function YouTubeToken() {
-    $mode = 'dev';
+    $mode = '';
     $redis = new Redis();
     $client = Google::YouTubeClient();
     // 参数
     if($mode=='dev'){
       $api = 'http://localhost:9000/';
-      $redis->Set($client->access_token, '');
-      $redis->Set($client->refresh_token, '');
+      // $redis->Set($client->access_token, '');
+      // $redis->Set($client->refresh_token, '');
     }else{
       $api = 'https://php.webmis.vip/';
     }
