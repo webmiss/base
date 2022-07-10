@@ -13,6 +13,9 @@ use Library\Google\YouTube;
 
 class Index extends Base {
 
+  static private $api_url = 'https://php.webmis.vip/';
+  // static private $api_url = 'http://localhost:9000/';
+
   /* 首页 */
   static function Index() {
     // 返回
@@ -57,86 +60,120 @@ class Index extends Base {
     return self::GetJSON(['Status'=>'Ok']);
   }
 
-  /* YouTube */
-  static function YouTubeToken() {
+  /* YouTube-授权 */
+  static function YouTubeOauth() {
     // 参数
-    $api = 'https://php.webmis.vip/';
-    // $api = 'http://localhost:9000/';
-    $code = isset($_GET['code'])?$_GET['code']:'';
-    $revoke = isset($_GET['revoke'])?true:false;
     $redis = new Redis();
-    $client = Google::YouTubeClient();
-    $access_token = $redis->Gets($client->access_token);
-    $refresh_token = $redis->Gets($client->refresh_token);
-    // 撤销
+    $user = Google::YouTube();
+    // 撤销授权
+    $revoke = isset($_GET['revoke'])?$_GET['revoke']:'';
     if($revoke){
-      $redis->Set($client->access_token, '');
-      $redis->Set($client->refresh_token, '');
-      if($access_token) YouTube::RevokeToken($access_token);
-      $html = '<h2>撤销授权</h2>';
-      $html .= '<p><a href="'.$api.'youtube">1、获取授权</a></p>';
-      $html .= '<p><a href="https://myaccount.google.com/permissions">2、授权管理</p>';
-    }
-    // 授权
-    if($code){
-      $res = YouTube::GetToken($code);
-      $html = '';
-      if(isset($res->access_token)){
-        $html .= '<h2>授权成功</h2>';
-        $html .= '<p><a href="'.$api.'youtube">获取直播列表</p>';
-      }else{
-        $html .= '<h2>授权失败</h2>';
-        $html .= '<p><a href="https://myaccount.google.com/permissions">授权管理</p>';
+      $redis->Set('access_token_'.$revoke, '');
+      $redis->Set('refresh_token_'.$revoke, '');
+      $time = $redis->Ttl('access_token_'.$revoke);
+      if($time>0) {
+        $token = $redis->Gets('access_token_'.$revoke);
+        YouTube::RevokeToken($token);
       }
-      echo $html;
-      return self::GetJSON(['code'=>0, 'msg'=>'获取Token', 'data'=>$res]);
-    }elseif($refresh_token){
-      $token = YouTube::GetToken();
-      if(!isset($token->access_token)) return self::GetJSON(['code'=>0, 'msg'=>'刷新Token', 'data'=>$token]);
-      // 设置直播
-      if(isset($_GET['liveChatId'])) $redis->Set($client->liveChatId, $_GET['liveChatId']);
-      // 直播列表
-      $res = YouTube::LiveBroadcastsList();
-      $html = '<h2>直播列表</h2>';
+      return '<script language="javascript">location.href="'.self::$api_url.'youtube/oauth";</script>';
+    }
+    // 授权列表
+    $token = isset($_GET['token'])?$_GET['token']:'';
+    $html = '<h2>授权列表</h2>';
+    if($token) $html .= '<p>'.$token.'</p>';
+    $html .= '<p>------------------------------------------------------------------------------------------------------------------------</p>';
+    foreach($user as $k1=>$v1){
+      $html .= '<h3>'.$k1.'[ <a href="'.self::$api_url.'youtube?user='.$k1.'">直播列表</a> ]</h3>';
+      foreach($v1 as $k2=>$v2){
+        $name = $k1.'_'.$k2;
+        $refresh_token = $redis->Gets('refresh_token_'.$name);
+        $time = $redis->Ttl('access_token_'.$name);
+        $url = YouTube::GetCode($name, $v2['ClientId']);
+        $html .= '<p>';
+        $html .= ($k2+1).' [ '.$v2['uname'].' ]&nbsp;&nbsp;';
+        $html .= '<a href="'.$url.'">授权</a>&nbsp;&nbsp;|&nbsp;&nbsp;';
+        $html .= '<a href="'.self::$api_url.'youtube/oauth?revoke='.$name.'">清除</a>&nbsp;&nbsp;|&nbsp;&nbsp;';
+        $html .= '过期( '.$time.' ) &nbsp;&nbsp;';
+        $html .= '刷新指令( '.($refresh_token?'<a href="'.self::$api_url.'youtube/oauth?token='.$refresh_token.'">查看</a>':'-').' )';
+        $html .= '</p>';
+      }
+    }
+    $html .= '<p>------------------------------------------------------------------------------------------------------------------------</p>';
+    $html .= '<p>';
+    $html .= '<a href="https://console.developers.google.com/iam-admin/quotas" target="_blank">查看配额</a>&nbsp;&nbsp;|&nbsp;&nbsp;';
+    $html .= '<a href="https://myaccount.google.com/permissions" target="_blank">解除授权</a>';
+    $html .= '</p>';
+    echo $html;
+  }
+  
+  /* YouTube-Token */
+  static function YouTubeToken() {
+    // 授权
+    $code = isset($_GET['code'])?$_GET['code']:'';
+    if($code){
+      $state = isset($_GET['state'])?$_GET['state']:'';
+      $res = YouTube::GetToken($state, $code);
+      if(isset($res->access_token)){
+        return '<script language="javascript">location.href="'.self::$api_url.'youtube/oauth";</script>';
+      }
+      return self::GetJSON(['code'=>0, 'msg'=>'授权失败', 'data'=>$res]);
+    }
+    // 直播列表
+    $user = isset($_GET['user'])?$_GET['user']:'';
+    if($user){
+      // 切换账号
+      self::setUser($user);
+      // 获取数据
+      $res = YouTube::LiveBroadcastsList($user);
+      $html = '<h2>直播列表[ '.$user.' ]</h2>';
+      $html .= '<p>------------------------------------------------------------------------------------------------------------------------</p>';
       if(isset($res->items)){
-        $liveChatId = $redis->Gets($client->liveChatId);
         foreach($res->items as $v){
           $snippet = $v->snippet;
-          $state = $liveChatId==$snippet->liveChatId?'正在推送':'未开启';
-          $html .= '<p><a href="'.$api.'youtube?liveChatId='.$snippet->liveChatId.'">'.$snippet->title.'( '.$state.' )</p>';
+          $html .= '<p>';
+          $html .= 'liveChatId [ '.$snippet->liveChatId.' ]<br/>';
+          $html .= $snippet->title;
+          $html .= '</p>';
         }
-        return $html;
+      }else{
+        $html .= '<p>Error: '.json_encode($res).'</p>';
       }
-      $html .= '<p><a href="'.$api.'youtube?revoke">1、撤销授权</a></p>';
-      $html .= '<p><a href="https://myaccount.google.com/permissions">2、授权管理</p>';
-      $html .= '<p><a href="https://console.developers.google.com/iam-admin/quotas">3、查看配额</p>';
-      echo $html;
-      return self::GetJSON(['code'=>0, 'msg'=>'直播列表', 'data'=>$res]);
-    }else{
-      $url = YouTube::GetCode();
-      $html = '<h2>获取授权</h2>';
-      $html .= '<p><a href="'.$url.'">YouTube 授权</a></p>';
-      if($access_token){
-        $html .= '<p><a href="'.$api.'youtube?revoke">撤销授权</a></p>';
-      }
-      echo $html;
+      $html .= '<p>------------------------------------------------------------------------------------------------------------------------</p>';
+      $html .= '<p>';
+      $html .= '< <a href="'.self::$api_url.'youtube/oauth">授权管理</a>';
+      $html .= '</p>';
+      return $html;
     }
-    
   }
+
   /* YouTube-发送评论 */
   static function YouTubeMessage(){
-    $client = Google::YouTubeClient();
-    $redis = new Redis();
-    $liveChatId = $redis->Gets($client->liveChatId);
-    $name = $_GET['name'];
-    $msg = $_GET['name'].' '.$_GET['msg'];
-    $res = YouTube::LiveChatMessagesInsert($liveChatId, $name, $msg);
+    // 参数
+    $user = isset($_GET['user'])?$_GET['user']:'';
+    $liveChatId = isset($_GET['liveChatId'])?$_GET['liveChatId']:'';
+    $name = isset($_GET['name'])?$_GET['name']:'';
+    $msg = isset($_GET['msg'])?$_GET['msg']:'';
+    // 切换账号
+    self::setUser($user);
+    // 推送
+    $res = YouTube::LiveChatMessagesInsert($user, $liveChatId, $name, $msg);
     if(isset($res->error)){
       return self::GetJSON(['code'=>$res->error->code, 'msg'=>$res->error->message]);
     }else{
       return self::GetJSON(['code'=>0, 'msg'=>'发送消息']);
     }
-    
+  }
+
+  /* 切换账号 */
+  static private function setUser($user){
+    $redis = new Redis();
+    $list = Google::YouTube();
+    $num = $redis->Gets('token_num_'.$user);
+    $n = (int)$num+1;
+    if($n>=count($list[$user])) $n = 0;
+    // 记录位置
+    $redis->Set('token_num_'.$user, $n);
+    $redis->Set('token_apikey_'.$user, $list[$user][$n]['ApiKey']);
   }
 
 }
