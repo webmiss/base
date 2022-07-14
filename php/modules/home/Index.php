@@ -105,7 +105,7 @@ class Index extends Base {
           $html .= '<a href="'.self::$api_url.'youtube/oauth?refresh='.$name.'">刷新</a>&nbsp;&nbsp;|&nbsp;&nbsp;';
         }
         $type = $time>0?'全部':'部分';
-        $html .= '<a href="'.self::$api_url.'youtube/oauth?revoke='.$name.'">'.$type.'清除</a>&nbsp;&nbsp;|&nbsp;&nbsp;';
+        $html .= '<a href="'.self::$api_url.'youtube/oauth?revoke='.$name.'">清除('.$type.')</a>&nbsp;&nbsp;|&nbsp;&nbsp;';
         $html .= '过期( '.$time.' ) &nbsp;&nbsp;';
         $html .= '刷新指令( '.($refresh_token?'<a href="'.self::$api_url.'youtube/oauth?token='.$refresh_token.'">查看</a>':'-').' )';
         $html .= '</p>';
