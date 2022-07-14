@@ -66,6 +66,12 @@ class Index extends Base {
     $redis = new Redis();
     $user = Google::YouTube();
     // 撤销授权
+    $refresh = isset($_GET['refresh'])?$_GET['refresh']:'';
+    if($refresh){
+      YouTube::GetToken($refresh);
+      return '<script language="javascript">location.href="'.self::$api_url.'youtube/oauth";</script>';
+    }
+    // 撤销授权
     $revoke = isset($_GET['revoke'])?$_GET['revoke']:'';
     if($revoke){
       $redis->Set('access_token_'.$revoke, '');
@@ -85,13 +91,19 @@ class Index extends Base {
     foreach($user as $k1=>$v1){
       $html .= '<h3>'.$k1.'[ <a href="'.self::$api_url.'youtube?user='.$k1.'">直播列表</a> ]</h3>';
       foreach($v1 as $k2=>$v2){
+        // 参数
         $name = $k1.'_'.$k2;
         $refresh_token = $redis->Gets('refresh_token_'.$name);
         $time = $redis->Ttl('access_token_'.$name);
-        $url = YouTube::GetCode($name, $v2['ClientId']);
+        // 操作
         $html .= '<p>';
         $html .= ($k2+1).' [ '.$v2['uname'].' ]&nbsp;&nbsp;';
-        $html .= '<a href="'.$url.'">授权</a>&nbsp;&nbsp;|&nbsp;&nbsp;';
+        if(!$refresh_token){
+          $url = YouTube::GetCode($name, $v2['ClientId']);
+          $html .= '<a href="'.$url.'">授权</a>&nbsp;&nbsp;|&nbsp;&nbsp;';
+        }else{
+          $html .= '<a href="'.self::$api_url.'youtube/oauth?refresh='.$name.'">刷新</a>&nbsp;&nbsp;|&nbsp;&nbsp;';
+        }
         $html .= '<a href="'.self::$api_url.'youtube/oauth?revoke='.$name.'">清除</a>&nbsp;&nbsp;|&nbsp;&nbsp;';
         $html .= '过期( '.$time.' ) &nbsp;&nbsp;';
         $html .= '刷新指令( '.($refresh_token?'<a href="'.self::$api_url.'youtube/oauth?token='.$refresh_token.'">查看</a>':'-').' )';
