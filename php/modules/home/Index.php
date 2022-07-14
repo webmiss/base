@@ -167,7 +167,7 @@ class Index extends Base {
     $name = isset($_GET['name'])?$_GET['name']:'';
     $msg = isset($_GET['msg'])?$_GET['msg']:'';
     // 切换账号
-    self::setUser($user);
+    if(!self::setUser($user)) return self::GetJSON(['code'=>500, 'msg'=>'没有'.$user]);
     // 推送
     $res = YouTube::LiveChatMessagesInsert($user, $liveChatId, $name, $msg);
     if(isset($res->error)){
@@ -181,12 +181,15 @@ class Index extends Base {
   static private function setUser($user){
     $redis = new Redis();
     $list = Google::YouTube();
+    if(!isset($list[$user])) return false;
+    // 叠加
     $num = $redis->Gets('token_num_'.$user);
     $n = (int)$num+1;
     if($n>=count($list[$user])) $n = 0;
     // 记录位置
     $redis->Set('token_num_'.$user, $n);
     $redis->Set('token_apikey_'.$user, $list[$user][$n]['ApiKey']);
+    return true;
   }
 
 }
