@@ -99,7 +99,7 @@
     <!-- Del End -->
 
     <!-- Perm -->
-    <wm-dialog title="权限" width="540px" :show="perm.show" @update:close="perm.show=$event">
+    <wm-dialog title="权限" width="540px" v-model:show="perm.show">
       <wm-tree ref="perm" :data="perm.permList"></wm-tree>
       <template #footer>
         <wm-button @click="subPerm()">更 新</wm-button>
