@@ -1,6 +1,6 @@
 <template>
   <div class="wm-page" :style="{padding: padding}">
-    <div class="wm-page_info">共 {{total}} 条, {{max}} 页</div>
+    <div class="wm-page_info">共 {{total}} 条, {{max}} 页, 每页 {{limit}} 条 </div>
     <ul class="wm-page_list">
       <li class="arrow arrow_dis" v-if="page<=1"><i class="wm-page_arrow_left"></i></li>
       <li class="arrow" v-else @click="toPage(page-1)"><i class="wm-page_arrow_left"></i></li>
@@ -40,10 +40,10 @@ export default defineComponent({
   name: 'Page',
   components: {wmInput},
   props: {
-    page: {type: Number, default: 1},             //当前页码
-    limit: {type: Number, default: 10},           //每页条数
-    total: {type: Number, default: 0},            //总条数
-    padding: {type: String, default: '16px 0'},   //间距
+    page: {type: Number, default: 1},           //当前页码: 1
+    limit: {type: Number, default: 10},         //每页条数: 10
+    total: {type: Number, default: 0},          //总条目数: 0
+    padding: {type: String, default: '16px 0'}, //边距: '32px 0'
   },
   data(){
     const max: number = 0;
