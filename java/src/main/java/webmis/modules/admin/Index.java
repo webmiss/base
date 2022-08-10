@@ -1,6 +1,5 @@
 package webmis.modules.admin;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.alibaba.fastjson.JSON;
@@ -14,10 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import webmis.service.AdminToken;
 import webmis.service.Base;
-import webmis.service.Data;
 import webmis.util.Util;
 import webmis.library.baidu.TongJi;
-import webmis.model.SysConfig;
 
 @RestController
 @Controller("AdminIndex")
@@ -34,31 +31,6 @@ public class Index extends Base {
     res = new HashMap<String,Object>();
     res.put("code",0);
     res.put("msg","Java Admin");
-    return GetJSON(res);
-  }
-
-  /* 系统配置 */
-  @RequestMapping("index/getConfig")
-  String GetConfig(){
-    // 查询
-    SysConfig config = new SysConfig();
-    config.Columns("name","val");
-    config.Where("name in ('title','copy','logo','login_bg')");
-    ArrayList<HashMap<String, Object>> data = config.Find();
-    // 数据
-    HashMap<String,Object> list = new HashMap<String,Object>();
-    for(HashMap<String, Object> val : data){
-      if(val.get("name").equals("logo") || val.get("name").equals("login_bg")){
-        list.put(val.get("name").toString(), Data.Img(val.get("val")));
-      } else {
-        list.put(val.get("name").toString(), val.get("val"));
-      }
-    }
-    // 返回
-    HashMap<String,Object> res = new HashMap<String,Object>();
-    res.put("code", 0);
-    res.put("msg", "成功");
-    res.put("list", list);
     return GetJSON(res);
   }
 

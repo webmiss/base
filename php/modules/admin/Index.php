@@ -2,9 +2,7 @@
 namespace App\Admin;
 
 use Service\Base;
-use Service\Data;
 use Service\AdminToken;
-use Model\SysConfig;
 use Library\Baidu\TongJi;
 use Util\Util;
 
@@ -17,25 +15,6 @@ class Index extends Base {
   static function Index() {
     // 返回
     return self::GetJSON(['code'=>0, 'msg'=>'PHP Admin']);
-  }
-
-  /* 系统配置 */
-  static function GetConfig() {
-    $config = new SysConfig();
-    $config->Columns('name','val');
-    $config->Where('name in ("title","copy","logo","login_bg")');
-    $data = $config->Find();
-    // 数据
-    $list = [];
-    foreach($data as $val){
-      if($val['name']=='logo' || $val['name']=='login_bg'){
-        $list[$val['name']] = Data::Img($val['val']);
-      }else{
-        $list[$val['name']] = $val['val'];
-      }
-    }
-    // 返回
-    return self::GetJSON(['code'=>0, 'msg'=>'成功', 'list'=>$list]);
   }
 
   /* 图表数据 */

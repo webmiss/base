@@ -37,17 +37,17 @@
     <div class="app_body flex" v-show="state.isLogin===true">
       <!-- Left -->
       <div class="app_left scrollbar">
-        <div class="app_logo bgImg" :style="{backgroundImage:'url('+require('./assets/logo.svg')+')'}"></div>
+        <div class="app_logo bgImg" :style="{backgroundImage:'url('+require('./assets/logo.svg')+')'}" @click="menusClick([0,0,0])"></div>
         <div class="app_title nowrap">{{info.title}}</div>
         <ul class="app_menus">
           <li v-for="(m1,k1) in state.menus" :key="k1" class="m1" :class="menusPos[0]==k1?'active':''">
-            <div class="m1_click" @click="menusClick([k1,0,0])">
-              <div class="arrow arrow_left" v-if="m1.children"></div>
+            <div class="m1_click" @click="menusDisplay(k1)">
+              <div class="arrow arrow_left" :style="{display:m1.checked?'block':'none'}"></div>
               <div class="m1_div"><i class="m1_i" :class="m1.icon"></i></div>
               <p class="m1_p">{{m1.label}}</p>
             </div>
             <!-- Search -->
-            <ul class="app_menus_list" v-if="k1==0">
+            <ul class="app_menus_list" v-if="k1==0" :style="{display:m1.checked?'block':'none'}">
               <li class="app_search">
                 <i class="ui ui_search"></i>
                 <input type="text" placeholder="菜单名称" v-model="sea.key" @input="seaInput()" />
@@ -63,7 +63,7 @@
               </template>
             </ul>
             <!-- Menus -->
-            <ul class="app_menus_list" v-else-if="m1.children">
+            <ul class="app_menus_list" v-else-if="m1.children" :style="{display:m1.checked?'block':'none'}">
               <template v-for="(m2,k2) in m1.children" :key="k2">
                 <li class="title flex" @click="m2.checked=!m2.checked">
                   <h2>{{ m2.label }}</h2>
@@ -83,7 +83,7 @@
       </div>
       <!-- Left End -->
       <!-- Right -->
-      <div class="app_right">
+      <div class="app_right" @click="menusDisplay()">
         <!-- Top -->
         <div class="app_right_top flex">
           <!-- 标题 -->

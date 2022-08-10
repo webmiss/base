@@ -86,7 +86,7 @@
         <tr>
           <td class="lable">名称</td>
           <td>
-            <wm-input v-model:value="add.form.title" maxlength="8" maxWidth="320px" placeholder="菜单名称" />
+            <wm-input v-model:value="add.form.title" maxlength="16" maxWidth="320px" placeholder="菜单名称" />
           </td>
         </tr>
         <tr>
@@ -132,7 +132,7 @@
         <tr>
           <td class="lable">名称</td>
           <td>
-            <wm-input v-model:value="edit.form.title" maxlength="8" maxWidth="320px" placeholder="菜单名称" />
+            <wm-input v-model:value="edit.form.title" maxlength="16" maxWidth="320px" placeholder="菜单名称" />
           </td>
         </tr>
         <tr>

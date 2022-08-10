@@ -100,6 +100,9 @@ flush privileges;
 ```bash
 # 安装
 dnf install redis -y
+# 启动
+systemctl enable redis
+systemctl start redis
 # 远程访问
 vi /etc/redis.conf
 ```

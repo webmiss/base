@@ -9,7 +9,6 @@ from modules.admin.api_menus import ApiMenus
 from modules.admin.api_role import ApiRole
 from modules.admin.sys_menus import SysMenus
 from modules.admin.sys_role import SysRole
-from modules.admin.sys_config import SysConfig
 from modules.admin.web_news import WebNews
 from modules.admin.web_news_class import WebNewsClass
 
@@ -18,8 +17,6 @@ Admin = Blueprint('admin', __name__)
 # 首页
 @Admin.route('/',methods=['GET'])
 def index() : return Index().Index()
-@Admin.route('/index/getConfig',methods=['GET'])
-def getConfig() : return Index().GetConfig()
 @Admin.route('/index/getChart',methods=['POST'])
 def getChart() : return Index().GetChart()
 # 登录
@@ -94,12 +91,6 @@ def apiRole(a) :
   elif a=='perm' : return SysRole().Perm()
   elif a=='permList' : return SysRole().PermList()
   elif a=='roleList' : return SysRole().RoleList()
-# 系统配置
-@Admin.route('/sys_config/<a>',methods=['POST'])
-def sysConfig(a) :
-  if a=='list' : return SysConfig().List()
-  elif a=='edit' : return SysConfig().Edit()
-  elif a=='upimg' : return SysConfig().Upimg()
 # 新闻
 @Admin.route('/news/<a>',methods=['POST'])
 def webNews(a) :

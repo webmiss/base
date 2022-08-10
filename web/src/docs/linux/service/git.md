@@ -41,6 +41,10 @@ cat id_rsa.pub >> .ssh/authorized_keys
 mkdir /home/git/gitrepo
 chown git:git /home/git/gitrepo
 cd /home/git/gitrepo
+# 配置
+git config --global init.defaultBranch main
+git config --global user.name "webmis"
+git config --global user.email "klingsoul@163.com"
 # 创建仓库
 git init --bare test.git
 chown -R git:git test.git
@@ -56,7 +60,7 @@ touch README.md
 git add README.md
 git commit -m "first commit"
 git remote add origin git@127.0.0.1:/home/git/gitrepo/test.git
-git push -u origin "master"
+git push -u origin "main"
 ```
 
 #### 3) 克隆仓库

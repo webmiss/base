@@ -176,8 +176,15 @@ export default defineComponent({
         this.logout();
       });
     },
+    /* 显示菜单 */
+    menusDisplay(index?: number){
+      for(let i in this.state.menus) this.state.menus[i].checked = false;
+      if(index!=undefined) this.state.menus[index].checked = true;
+    },
     /* 点击菜单 */
     menusClick(pos: number[], url: string='/'){
+      // 隐藏菜单
+      this.menusDisplay();
       // 位置
       this.menusPos = pos
       Storage.setItem('menusPos',JSON.stringify(pos));

@@ -12,7 +12,6 @@ func Admin(r *gin.Engine) {
 	{
 		// 首页
 		g.GET("", (&admin.Index{}).Index)
-		g.GET("index/getConfig", (&admin.Index{}).GetConfig)
 		g.POST("index/getChart", (&admin.Index{}).GetChart)
 		// 登录
 		g.POST("user/login", (&admin.User{}).Login)
@@ -68,10 +67,6 @@ func Admin(r *gin.Engine) {
 		g.POST("sys_role/perm", (&admin.SysRole{}).Perm)
 		g.POST("sys_role/permList", (&admin.SysRole{}).PermList)
 		g.POST("sys_role/roleList", (&admin.SysRole{}).RoleList)
-		// 系统配置
-		g.POST("sys_config/list", (&admin.SysConfig{}).List)
-		g.POST("sys_config/edit", (&admin.SysConfig{}).Edit)
-		g.POST("sys_config/upimg", (&admin.SysConfig{}).Upimg)
 		// 新闻分类
 		g.POST("news/list", (&admin.WebNews{}).List)
 		g.POST("news/add", (&admin.WebNews{}).Add)

@@ -2,7 +2,6 @@ package admin
 
 import (
 	"webmis/library/baidu"
-	"webmis/model"
 	"webmis/service"
 	"webmis/util"
 
@@ -19,27 +18,6 @@ type Index struct {
 func (r Index) Index(c *gin.Context) {
 	// 返回
 	r.GetJSON(c, gin.H{"code": 0, "msg": "GO Admin"})
-}
-
-/* 系统配置 */
-func (r Index) GetConfig(c *gin.Context) {
-	// 查询
-	model := (&model.SysConfig{}).New()
-	model.Where("name in (?,?,?,?)", "title", "copy", "logo", "login_bg")
-	model.Columns("name", "val")
-	data := model.Find()
-	// 数据
-	list := map[string]interface{}{}
-	for _, val := range data {
-		name := (&util.Type{}).Strval(val["name"])
-		if name == "logo" || name == "login_bg" {
-			list[name] = (&service.Data{}).Img(val["val"])
-		} else {
-			list[name] = val["val"]
-		}
-	}
-	// 返回
-	r.GetJSON(c, gin.H{"code": 0, "msg": "成功", "list": list})
 }
 
 /* 图表数据 */

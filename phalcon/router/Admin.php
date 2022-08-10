@@ -62,10 +62,6 @@ class Admin {
     $app->post('/admin/sys_role/perm', 'App\Admin\SysRole::Perm');
     $app->post('/admin/sys_role/permList', 'App\Admin\SysRole::PermList');
     $app->post('/admin/sys_role/roleList', 'App\Admin\SysRole::RoleList');
-    // 系统配置
-    $app->post('/admin/sys_config/list', 'App\Admin\SysConfig::List');
-    $app->post('/admin/sys_config/edit', 'App\Admin\SysConfig::Edit');
-    $app->post('/admin/sys_config/upimg', 'App\Admin\SysConfig::Upimg');
     // 新闻
     $app->post('/admin/news/list', 'App\Admin\WebNews::List');
     $app->post('/admin/news/add', 'App\Admin\WebNews::Add');

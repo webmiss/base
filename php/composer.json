@@ -12,8 +12,8 @@
   ],
   "require": {
     "php": ">=7.1",
-    "illuminate/routing": "^8.83.18",
-    "illuminate/events": "^8.83.18",
+    "illuminate/routing": "10.x-dev",
+    "illuminate/events": "10.x-dev",
     "firebase/php-jwt": "^6.2.0",
     "textalk/websocket": "^1.4.2",
     "khanamiryan/qrcode-detector-decoder": "^1.0.5.2",

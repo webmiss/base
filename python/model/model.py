@@ -145,12 +145,12 @@ class Model :
     if self.__where != '' :
       self.__sql += ' WHERE '+self.__where
       self.__where = ''
-    if self.__order != '' :
-      self.__sql += ' ORDER BY '+self.__order
-      self.__order = ''
     if self.__group != '' :
       self.__sql += ' GROUP BY '+self.__group
       self.__group = ''
+    if self.__order != '' :
+      self.__sql += ' ORDER BY '+self.__order
+      self.__order = ''
     if self.__limit != '' :
       self.__sql += ' LIMIT '+self.__limit
       self.__limit = ''

@@ -46,7 +46,7 @@ class Admin {
       $router->post('/admin/api_menus/edit', "ApiMenus@Edit");
       $router->post('/admin/api_menus/del', "ApiMenus@Del");
       $router->post('/admin/api_menus/perm', "ApiMenus@Perm");
-      // API菜单
+      // API角色
       $router->post('/admin/api_role/list', "ApiRole@List");
       $router->post('/admin/api_role/add', "ApiRole@Add");
       $router->post('/admin/api_role/edit', "ApiRole@Edit");
@@ -62,7 +62,7 @@ class Admin {
       $router->post('/admin/sys_menus/perm', "SysMenus@Perm");
       $router->post('/admin/sys_menus/getMenusAll', "SysMenus@GetMenusAll");
       $router->post('/admin/sys_menus/getMenusPerm', "SysMenus@GetMenusPerm");
-      // 系统菜单
+      // 系统角色
       $router->post('/admin/sys_role/list', "SysRole@List");
       $router->post('/admin/sys_role/add', "SysRole@Add");
       $router->post('/admin/sys_role/edit', "SysRole@Edit");
@@ -70,10 +70,6 @@ class Admin {
       $router->post('/admin/sys_role/perm', "SysRole@Perm");
       $router->post('/admin/sys_role/permList', "SysRole@PermList");
       $router->post('/admin/sys_role/roleList', "SysRole@RoleList");
-      // 系统配置
-      $router->post('/admin/sys_config/list', "SysConfig@List");
-      $router->post('/admin/sys_config/edit', "SysConfig@Edit");
-      $router->post('/admin/sys_config/upimg', "SysConfig@Upimg");
       // 新闻
       $router->post('/admin/news/list', "WebNews@List");
       $router->post('/admin/news/add', "WebNews@Add");
@@ -84,7 +80,7 @@ class Admin {
       $router->post('/admin/news/get_content', "WebNews@GetContent");
       $router->post('/admin/news/content', "WebNews@Content");
       $router->post('/admin/news/up_img', "WebNews@UpImg");
-      // 新闻
+      // 新闻分类
       $router->post('/admin/news_class/list', "WebNewsClass@List");
       $router->post('/admin/news_class/add', "WebNewsClass@Add");
       $router->post('/admin/news_class/edit', "WebNewsClass@Edit");

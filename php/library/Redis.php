@@ -139,6 +139,14 @@ class Redis extends Base {
     if(!$this->conn) return null;
     return $this->conn->lRange($key, $start, $end);
   }
+  function RPop($key) {
+    if(!$this->conn) return null;
+    return $this->conn->rPop($key);
+  }
+  function LPop($key) {
+    if(!$this->conn) return null;
+    return $this->conn->lPop($key);
+  }
   function BRPop($key, $timeout): array {
     if(!$this->conn) return null;
     return $this->conn->brPop($key, $timeout);

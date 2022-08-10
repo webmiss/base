@@ -153,8 +153,10 @@ export default defineComponent({
       for(let x in data) {
         let perm = 0;
         if(data[x].action) {
-          for(let y in data[x].children) if(data[x].children[y].checked) perm += data[x].children[y].perm
-        } else if(data[x].children) this.setPerms(data[x].children);
+          for(let y in data[x].children) if(data[x].children[y].checked) perm += parseInt(data[x].children[y].perm);
+        } else if(data[x].children){
+          this.setPerms(data[x].children);
+        }
         if(data[x].checked) this.perms += data[x].id+':'+perm+' ';
       }
     },

@@ -36,6 +36,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import wmInput from '../form/input/index.vue'
+import PriceToFixed from '@/library/price/to-fixed'
 export default defineComponent({
   name: 'Page',
   components: {wmInput},
@@ -43,6 +44,7 @@ export default defineComponent({
     page: {type: Number, default: 1},           //当前页码: 1
     limit: {type: Number, default: 10},         //每页条数: 10
     total: {type: Number, default: 0},          //总条目数: 0
+    maxPage: {type: Number, default: 11},       //显示页数: 11
     padding: {type: String, default: '16px 0'}, //边距: '32px 0'
   },
   data(){
@@ -75,11 +77,12 @@ export default defineComponent({
       else if(n>this.max) page = this.max;
       // 中间
       let list = [];
-      const start = n-2>=1?n-2:1;
-      if(this.max>5){
-        for(let i=0; i<5; i++){
-          if(n+2<=this.max) list.push(start+i);
-          else list.push(start+i-(n+2-this.max));
+      const nx = PriceToFixed(this.maxPage/2, 0);
+      const start = n-nx>=1?n-nx:1;
+      if(this.max>this.maxPage){
+        for(let i=0; i<this.maxPage; i++){
+          if(n+nx<=this.max) list.push(start+i);
+          else list.push(start+i-(n+nx-this.max));
         }
       }else{
         for(let i=0; i<this.max; i++) list.push(i+1);

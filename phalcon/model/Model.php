@@ -169,13 +169,13 @@ class Model extends Base {
       $this->sql .= ' WHERE '.$this->where;
       $this->where = '';
     }
-    if($this->order != ''){
-      $this->sql .= ' ORDER BY '.$this->order;
-      $this->order = '';
-    }
     if($this->group != ''){
       $this->sql .= ' GROUP BY '.$this->group;
       $this->group = '';
+    }
+    if($this->order != ''){
+      $this->sql .= ' ORDER BY '.$this->order;
+      $this->order = '';
     }
     if($this->limit != ''){
       $this->sql .= ' LIMIT '.$this->limit;

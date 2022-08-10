@@ -19,6 +19,7 @@
         padding: padding,
         textAlign: align,
         borderRadius: borderRadius,
+        backgroundColor: bgColor,
       }"
       :disabled="disabled"
       @input="$emit('update:value', $event.target.value)"
@@ -61,6 +62,7 @@ export default defineComponent({
     padding: {type: String, default: '10px 10px'},    //间距: '10px 10px'
     align: {type: String, default: ''},               //文本对齐方式: 'left'
     borderRadius: {type: String, default: '4px'},     //边框圆角: '4px'
+    bgColor: {type: String, default: '#FFF'},         //背景颜色: '#FFF'
     disabled: {type: Boolean, default: false},        //是否禁用
     clearable: {type: Boolean, default: false},       //一键清空
   },

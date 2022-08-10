@@ -196,13 +196,13 @@ func (m *Model) SelectSQL() (string, []interface{}) {
 		m.sql += " WHERE " + m.where
 		m.where = ""
 	}
-	if m.order != "" {
-		m.sql += " ORDER BY " + m.order
-		m.order = ""
-	}
 	if m.group != "" {
 		m.sql += " GROUP BY " + m.group
 		m.group = ""
+	}
+	if m.order != "" {
+		m.sql += " ORDER BY " + m.order
+		m.order = ""
 	}
 	if m.limit != "" {
 		m.sql += " LIMIT " + m.limit

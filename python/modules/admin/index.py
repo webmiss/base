@@ -1,13 +1,6 @@
-import datetime
-
-from config.env import Env
 from service.base import Base
-from service.data import Data
 from service.admin_token import AdminToken
-from model.sys_config import SysConfig
 from library.baidu.tong_ji import TongJi
-
-from model.logs import Logs
 from util.util import Util
 
 class Index(Base):
@@ -17,21 +10,6 @@ class Index(Base):
   # 首页
   def Index(self):
     return self.GetJSON({'code':0,'msg':'Python Admin'})
-
-  # 系统配置
-  def GetConfig(self):
-    config = SysConfig()
-    config.Columns('name','val')
-    config.Where('name in ("title","copy","logo","login_bg")')
-    data = config.Find()
-    # 数据
-    list = {}
-    for val in data :
-      if val['name']=='logo' or val['name']=='login_bg' :
-        list[val['name']] = Data.Img(val['val'])
-      else :
-        list[val['name']] = val['val']
-    return self.GetJSON({'code':0,'msg':'成功', 'list':list})
 
   # 图表数据
   def GetChart(self):

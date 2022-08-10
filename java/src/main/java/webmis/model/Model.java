@@ -247,13 +247,13 @@ public class Model extends Base {
       _sql += " WHERE "+_where;
       _where = "";
     }
-    if(!_order.equals("")){
-      _sql += " ORDER BY "+_order;
-      _order = "";
-    }
     if(!_group.equals("")){
       _sql += " GROUP BY "+_group;
       _group = "";
+    }
+    if(!_order.equals("")){
+      _sql += " ORDER BY "+_order;
+      _order = "";
     }
     if(!_limit.equals("")){
       _sql += " LIMIT "+_limit;
