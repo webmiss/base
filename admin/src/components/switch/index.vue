@@ -1,10 +1,13 @@
 <template>
-  <span ref="Switch" class="wm-switch" @click="click();">
-    <span ref="SwitchCursor" class="wm-switch_cursor"></span>
-  </span>
+  <div class="wm-switch_body">
+    <span ref="Switch" class="wm-switch" @click="click();">
+      <span ref="SwitchCursor" class="wm-switch_cursor"></span>
+    </span>
+  </div>
 </template>
 
 <style lang="less" scoped>
+.wm-switch_body{height: 20px; padding: 0 4px;}
 .wm-switch{display: inline-block; position: relative; cursor: pointer; width: 36px; height: 20px; border-radius: 10px; transition: @Transition;}
 .wm-switch_cursor{position: absolute; width: 16px; height: 16px; background-color: #FFF; border-radius: 50%; top: 50%; transform: translate(0,-50%); transition: @Transition;}
 </style>

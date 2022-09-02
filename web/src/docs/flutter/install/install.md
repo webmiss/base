@@ -17,13 +17,10 @@ javac -version
 #### 3) 安装AndroidSdk
 ```bash
 pacman -S android-studio
-# SDK目录
-mkdir /opt/android-sdk
-chmod -R 777 /opt/android-sdk
 ```
 **环境变量** ( vi /etc/profile )
 ```bash
-export ANDROID_HOME=/opt/android-sdk
+export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
 ```
 **刷新**
@@ -31,7 +28,7 @@ export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
 source /etc/profile
 ```
 **SDK Manager**
-打开 AndroidStudio > Configure > SDK Manager
+打开 AndroidStudio > More Actions > SDK Manager
 ```bash
 # SDK Location
 /opt/android-sdk
@@ -48,8 +45,15 @@ Android SDK Platform-Tools
 #### 4) 模拟器
 ```bash
 pacman -S genymotion
+
+# 安装 arm translation tool
+adb push Genymotion-ARM-Translation_for_9.0.zip /sdcard/Download
+adb shell flash-archive.sh /sdcard/Download/Genymotion-ARM-Translation_for_9.0.zip
+# 效验是否成功
+adb shell getprop ro.product.cpu.abilist
 ```
 - Custom Phone 6.0  480x854  160-MDPI
+- https://github.com/m9rco/Genymotion_ARM_Translation/tree/master/package
 
 
 #### 5) 安装Flutter
@@ -68,6 +72,25 @@ export FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
 ```bash
 flutter doctor -v
 ```
+
+## UI自动化工具
+#### 1)安装
+```bash
+pip install uiautomator2
+pip install weditor
+```
+#### 2)使用
+```bash
+# 已连接设备
+adb devices
+# 当前运行应用
+uiautomator2 current
+# 定位元素
+python -m weditor
+# 安装APK包
+adb install -r xxx.apk
+```
+
 
 <br/>
 

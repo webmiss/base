@@ -256,6 +256,7 @@ export default [
       {label: 'MariaDB 数据库', value: 'mariadb', key:'mariadb数据库'},
       {label: 'MaxScale 中间件', value: 'maxscale', key:'maxscale中间件'},
       {label: 'Pulsar 消息列队', value: 'pulsar', key:'pulsar消息列队'},
+      {label: 'PyQt5 图形界面编程', value: 'pyqt', key:'pyqt5图形界面编程'},
       {label: 'ElasticSearch 全文搜索', value: 'elasticsearch', key:'elasticsearch全文搜索'},
     ]},
     {label:'Service', value:'service', children:[
