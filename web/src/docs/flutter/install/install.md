@@ -44,9 +44,10 @@ Android SDK Platform-Tools
 
 #### 4) 模拟器
 ```bash
+# 安装
 pacman -S genymotion
 
-# 安装 arm translation tool
+# ARM Translation Tool
 adb push Genymotion-ARM-Translation_for_9.0.zip /sdcard/Download
 adb shell flash-archive.sh /sdcard/Download/Genymotion-ARM-Translation_for_9.0.zip
 # 效验是否成功
@@ -76,9 +77,14 @@ flutter doctor -v
 ## UI自动化工具
 #### 1)安装
 ```bash
-pip install uiautomator2
-pip install weditor
+# App
+pip install uiautomator2 weditor
+# 浏览器
+pip install selenium requests
 ```
+- 火狐浏览器: http://www.firefox.com.cn/
+- 浏览器驱动: https://github.com/mozilla/geckodriver/releases
+
 #### 2)使用
 ```bash
 # 已连接设备
@@ -87,8 +93,6 @@ adb devices
 uiautomator2 current
 # 定位元素
 python -m weditor
-# 安装APK包
-adb install -r xxx.apk
 ```
 
 

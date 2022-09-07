@@ -13,7 +13,6 @@ export default defineComponent({
   props: {
     type: {type: String, default: 'dodge'}, //类型: dodge、stack
     data: {type: Array, default: []},       //数据
-    width: {type: Number, default: 600},    //宽
     height: {type: Number, default: 240},   //高
     unit: {type: String, default: ''},      //单位
   },
@@ -33,7 +32,7 @@ export default defineComponent({
     /* 初始化 */
     init(){
       // 对象
-      const config: any = {container: this.$refs.chart, width: this.width, height: this.height};
+      const config: any = {container: this.$refs.chart, autoFit: true, height: this.height};
       if(!this.chart) this.chart = new G2.Chart(config);
       // 数据
       this.chart.clear();

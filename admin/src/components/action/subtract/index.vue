@@ -14,7 +14,7 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'ActionSubtract',
   props: {
-    size: {type: String, default: '11px'},        //大小
+    size: {type: String, default: '9px'},        //大小
     bgColor: {type: String, default: '#6FB737'},  //背景颜色
   },
 });

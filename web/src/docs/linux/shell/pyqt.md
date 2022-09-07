@@ -14,7 +14,7 @@ pip install PyQt5-tools
 pip install pyinstaller
 ```
 
-# 打包
+## 打包
 ```bash
 # 静态库
 pyinstaller -F -w -i=logo.ico main.py

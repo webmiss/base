@@ -200,7 +200,7 @@
           <td>动作</td>
           <td width="100">权限</td>
           <td width="30">
-            <div class="perm_an"><wm-add @click="permAdd()" /></div>
+            <span class="center perm_an"><wm-add @click="permAdd()" /></span>
           </td>
         </template>
         <tr v-for="(val,key) in perm.list" :key="key">
@@ -208,7 +208,7 @@
           <td><wm-input :value="val.action" @update:value="val.action=$event" /></td>
           <td><wm-input :value="val.perm" @update:value="val.perm=$event" /></td>
           <td>
-            <div class="perm_an" ><wm-close @click="permRemove(key)" /></div>
+            <div class="center perm_an" ><wm-close @click="permRemove(key)" /></div>
           </td>
         </tr>
       </wm-table>
@@ -222,7 +222,7 @@
 </template>
 
 <style lang="less" scoped>
-.perm_an{position: absolute; margin-top: -14px; white-space: nowrap;}
+.perm_an{margin-top: 6px;}
 .menus_icon{position: absolute; transform: translate(-50%, -50%);}
 .menus_icon i{font-size: 20px; color: @Primary;}
 </style>

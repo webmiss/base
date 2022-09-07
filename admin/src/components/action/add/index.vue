@@ -16,7 +16,7 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'ActionAdd',
   props: {
-    size: {type: String, default: '11px'},        //大小
+    size: {type: String, default: '9px'},        //大小
     bgColor: {type: String, default: Env.themes.primary.plain[0]},  //背景颜色
   },
 });
