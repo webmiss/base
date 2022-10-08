@@ -30,10 +30,10 @@ class Model extends Base {
   /* 连接 */
   function DBConn() {
     if($this->db=='other'){
-      if(!Model::$DBOther) Model::$DBOther=$this->DBPool(Db::Other());
+      Model::$DBOther=$this->DBPool(Db::Other());
       $conn = self::$DBOther;
     } else {     
-      if(!Model::$DBDefault) Model::$DBDefault=$this->DBPool(Db::Default());
+      Model::$DBDefault=$this->DBPool(Db::Default());
       $conn = self::$DBDefault;
     }
     return $conn;

@@ -259,9 +259,8 @@ export default defineComponent({
       for(let i in list){
         if(list[i].action && list[i].perm) data.push(list[i]);
       }
-      this.perm.list = data;
-      this.perm.show = false;
       // 提交
+      this.perm.show = false;
       const load: any = Loading();
       Post('sys_menus/perm',{
         token: Storage.getItem('token'),
